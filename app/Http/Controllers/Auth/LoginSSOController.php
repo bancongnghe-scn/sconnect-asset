@@ -15,22 +15,22 @@ class LoginSSOController extends Controller
 {
     public function login()
     {
-        $redirectUrl = config('login_sso.url_login').'?redirect_url='.config('app.url');
+        $redirectUrl = config('sso.url_login').'?redirect_url='.config('app.url');
         return redirect($redirectUrl);
     }
     public function loginSSO(): Redirector|Application|RedirectResponse
     {
-        $secretKey = config('app.sso-secret-key');
+        $secretKey = config('sso.sso-secret-key');
         $token = @$_GET['token'];
         $sig = @$_GET['sig'];
         $sessionCookie = @$_COOKIE['scn_session'];
         if ($token && $sig) {
             if (!hash_equals(hash_hmac('sha256', $token, $secretKey), $sig)) {
-                $url = config('app.logout-sso');
+                $url = config('sso.logout-sso');
                 $this->callApiWithSession($url, $sessionCookie, $secretKey);
                 return redirect()->route('login');
             }
-            $data = $this->callApiWithSession(config('app.get-session-sso'), $sessionCookie, $secretKey);
+            $data = $this->callApiWithSession(config('sso.get-session-sso'), $sessionCookie, $secretKey);
             if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
                 $user = @$data['data']['user'];
                 $exists = User::query()->where('email', $user['email'])->where('status', User::STATUS_ACTIVE)->exists();
@@ -39,7 +39,7 @@ class LoginSSOController extends Controller
                     return redirect()->route('home');
                 }
             }
-            $url = config('app.logout-sso');
+            $url = config('sso.logout-sso');
             $this->callApiWithSession($url, $sessionCookie, $secretKey);
             Auth::logout();
             return redirect()->route('login');
@@ -64,7 +64,7 @@ class LoginSSOController extends Controller
     public function logoutSSO(Request $request)
     {
         $sessionCookie = @$_COOKIE['scn_session'];
-        $url = config('app.logout-sso');
+        $url = config('sso.logout-sso');
         $ch = curl_init($url);
 
         // Cấu hình cURL

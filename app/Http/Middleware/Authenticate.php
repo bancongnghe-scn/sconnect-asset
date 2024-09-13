@@ -15,23 +15,23 @@ class Authenticate extends Middleware
      */
     public function handle($request, \Closure $next, ...$guards): mixed
     {
-        if (config('app.login-local')) {
+        if (config('sso.login-local')) {
             $this->authenticate($request, $guards);
             return $next($request);
         }
-        $secretKey = config('app.sso-secret-key');
+        $secretKey = config('sso.sso-secret-key');
         $token = @$_GET['token'];
         $sig = @$_GET['sig'];
         $sessionCookie = @$_COOKIE['scn_session'];
 
         if ($token && $sig) {
             if (!hash_equals(hash_hmac('sha256', $token, $secretKey), $sig)) {
-                $url = config('app.logout-sso');
+                $url = config('sso.logout-sso');
                 $this->callApiWithSession($url, $sessionCookie, $secretKey);
                 Auth::logout();
                 return redirect()->route('login');
             }
-            $data = $this->callApiWithSession(config('app.get-session-sso'), $sessionCookie, $secretKey);
+            $data = $this->callApiWithSession(config('sso.get-session-sso'), $sessionCookie, $secretKey);
             // Kiểm tra phản hồi từ API đầu tiên
             if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
                 $user = @$data['data']['user'];
@@ -40,7 +40,7 @@ class Authenticate extends Middleware
                 $userId = auth()->user()->id;
                 return redirect()->route('home.tkp-side-bar', ['month' => $time, 'id' => $userId]);
             }
-            $url = config('app.logout-sso');
+            $url = config('sso.logout-sso');
             $this->callApiWithSession($url, $sessionCookie, $secretKey);
             Auth::logout();
             return redirect()->route('login');
@@ -52,7 +52,7 @@ class Authenticate extends Middleware
     private function storeSession($sessionCookie, $secretKey, $next)
     {
         //Gọi API get-session
-        $data = $this->callApiWithSession(config('app.get-session-sso'), $sessionCookie, $secretKey);
+        $data = $this->callApiWithSession(config('sso.get-session-sso'), $sessionCookie, $secretKey);
 
         // Kiểm tra phản hồi từ API đầu tiên
         if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
@@ -62,7 +62,7 @@ class Authenticate extends Middleware
             }
             return $next;
         }
-        $url = config('app.logout-sso');
+        $url = config('sso.logout-sso');
         $this->callApiWithSession($url, $sessionCookie, $secretKey);
         Auth::logout();
         return redirect()->route('login');
