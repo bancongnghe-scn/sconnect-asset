@@ -15,12 +15,11 @@ class LoginSSOController extends Controller
 {
     public function login()
     {
-        $redirectUrl = config('login_sso.url_login').'?redirect_url='.config('app.url').'/loginSSO';
+        $redirectUrl = config('login_sso.url_login').'?redirect_url='.config('app.url');
         return redirect($redirectUrl);
     }
     public function loginSSO(): Redirector|Application|RedirectResponse
     {
-        dd(1);
         $secretKey = config('app.sso-secret-key');
         $token = @$_GET['token'];
         $sig = @$_GET['sig'];
@@ -37,7 +36,7 @@ class LoginSSOController extends Controller
                 $exists = User::query()->where('email', $user['email'])->where('status', User::STATUS_ACTIVE)->exists();
                 if($exists){
                     Auth::loginUsingId($user['id']);
-                    return redirect()->route('welcome');
+                    return redirect()->route('home');
                 }
             }
             $url = config('app.logout-sso');
