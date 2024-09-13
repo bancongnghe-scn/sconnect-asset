@@ -7,7 +7,10 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
+                'node_modules/select2/dist/css/select2.min.css',
                 'resources/js/app.js',
+                'node_modules/select2/dist/js/select2.min.js',
+                'node_modules/jquery/dist/jquery.min.js',
             ],
             refresh: true,
         }),
