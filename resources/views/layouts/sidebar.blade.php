@@ -5,8 +5,8 @@
 
         <li class="nav-item">
             <a class="nav-link " href="index.html">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
