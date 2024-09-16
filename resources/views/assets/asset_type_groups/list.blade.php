@@ -26,7 +26,12 @@
             </div>
         </div>
 
-        <div>
+        <div
+            @view="viewTypeGroup($event.detail.id)"
+            @edit="editTypeGroup($event.detail.id)"
+            @remove="removeTypeGroup($event.detail.id)"
+            @page-change.window="console.log($event.detail.page)"
+        >
             @include('common.table')
         </div>
     </div>
@@ -39,25 +44,43 @@
                 //created
                 init() {
                     $('.select2').select2()
+                    this.dataTable = this.getListTypeGroup()
                 },
 
                 //data
-                listTypeGroup: [],
-
+                dataTable: [],
+                columns: {
+                    id: 'ID',
+                    name: 'Tên loại'
+                },
+                totalPages: 5,
+                currentPage: 1,
                 //methods
                 getListTypeGroup() {
-                    axios.get("{{ route('hrm.asset.industry.list') }}")
-                        .then(response => {
-                            const data = response.data;
-                            if (!data.success) {
-                                toastr.error(data.message)
-                            }
+                    return [
+                        {
+                            id: 1,
+                            name: 'Loai 1',
+                        },
+                        {
+                            id: 2,
+                            name: 'Loai 2',
+                        },
+                    ];
+                },
 
-                            this.listIndustry = data.data
-                        })
-                        .catch(error => {
-                            toastr.error(data.message)
-                        });
+                viewTypeGroup(id) {
+                    this.totalPages = 5
+                    this.currentPage = Math.min(this.currentPage, this.totalPages); // Ensure currentPage does not exceed totalPages
+
+                },
+
+                editTypeGroup(id) {
+                    console.log(id)
+                },
+
+                removeTypeGroup(id) {
+                    console.log(id)
                 }
             }
         }
