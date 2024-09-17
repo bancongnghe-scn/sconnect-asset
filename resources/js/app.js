@@ -43,3 +43,39 @@ app.component('example-component', ExampleComponent);
  */
 
 app.mount('#app');
+
+import { Toast } from 'bootstrap';
+
+// Toast helpers
+const toast = {
+    success(message) {
+        this.showToast(message, 'bg-success text-white');
+    },
+    error(message) {
+        this.showToast(message, 'bg-danger text-white');
+    },
+    showToast(message,className = '') {
+        // Tạo HTML cho Toast
+        const toastContainer = document.createElement('div');
+        toastContainer.innerHTML = `
+            <div class="toast ${className}" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-body">${message}</div>
+            </div>
+        `;
+
+        document.querySelector('.toast-container').append(toastContainer);
+
+        // Khởi tạo Bootstrap toast
+        const toastEl = new Toast(toastContainer.querySelector('.toast'));
+        toastEl.show();
+
+        // Xóa toast sau khi ẩn
+        toastContainer.querySelector('.toast').addEventListener('hidden.bs.toast', () => {
+            toastContainer.remove();
+        });
+    }
+};
+
+// Export để sử dụng ở những nơi khác
+window.toast = toast;
+

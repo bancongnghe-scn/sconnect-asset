@@ -10,30 +10,16 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+    // Tắt tính năng auto-increment
+    public $incrementing = false;
+
+    // Đặt kiểu khóa chính nếu ID là chuỗi
+    protected $keyType = 'int'; // 'string' nếu ID là chuỗi
     public const STATUS_ACTIVE = 1;
+    public const USER_ID_ADMIN = 1;
     protected $fillable = [
+        'id',
         'name',
         'email',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
 }

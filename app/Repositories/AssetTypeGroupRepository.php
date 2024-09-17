@@ -2,7 +2,34 @@
 
 namespace App\Repositories;
 
-class AssetTypeGroupRepository
-{
+use App\Models\AssetTypeGroup;
+use App\Repositories\Base\BaseReadRepository;
+use App\Repositories\Base\BaseRepository;
 
+class AssetTypeGroupRepository extends BaseRepository
+{
+    public function getModelClass(): string
+    {
+        return AssetTypeGroup::class;
+    }
+
+    public function getListAssetTypeGroup(array $filters, $columns = ['*'])
+    {
+        $query = $this->_model->newQuery()->select($columns);
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'like',$filters['name'] . '%');
+        }
+
+        if (!empty($filters['limit'])) {
+            return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
+        }
+
+        return $query->get();
+    }
+
+    public function getAssetTypeByName($name)
+    {
+        return $this->_model->where('name', $name)->first();
+    }
 }

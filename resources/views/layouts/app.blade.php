@@ -32,12 +32,12 @@
 
 @include('layouts.sidebar')
 
-<main id="main" class="main">
+<main id="main" class="main" x-data="{loading: false}">
     <div class="pagetitle">
         <h1>{{$title}}</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('home')}}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{route('home')}}">Trang chủ</a></li>
                 <li class="breadcrumb-item active">{{$title}}</li>
             </ol>
         </nav>
@@ -47,10 +47,19 @@
             @yield('content')
         </div>
     </section>
+    <div x-show="loading" class="tw-fixed tw-left-1/2 tw-top-20">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div class="tw-fixed tw-inset-0 tw-bg-black tw-bg-opacity-20 z-40"></div>
+    </div>
 </main><!-- End #main -->
 
-@include('layouts.footer')
+{{--@include('layouts.footer')--}}
+
+<div class="toast-container position-fixed top-0 tw-right-2"></div>
 
 @yield('js')
 </body>
 </html>
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\UserService;
 use Carbon\Carbon;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Http\Request;
@@ -35,6 +36,7 @@ class Authenticate extends Middleware
             // Kiểm tra phản hồi từ API đầu tiên
             if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
                 $user = @$data['data']['user'];
+                resolve(UserService::class)->checkUserExistLogin($user);
                 Auth::loginUsingId($user['id']);
                 $time = Carbon::now()->format('Y-m');
                 $userId = auth()->user()->id;
@@ -45,7 +47,6 @@ class Authenticate extends Middleware
             Auth::logout();
             return redirect()->route('login');
         }
-
         return $this->storeSession($sessionCookie, $secretKey, $next($request));
     }
 
@@ -57,6 +58,7 @@ class Authenticate extends Middleware
         // Kiểm tra phản hồi từ API đầu tiên
         if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
             $user = @$data['data']['user'];
+            resolve(UserService::class)->checkUserExistLogin($user);
             if (!Auth::check()) {
                 Auth::loginUsingId($user['id']);
             }

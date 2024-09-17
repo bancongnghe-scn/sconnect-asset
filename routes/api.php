@@ -19,6 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('asset-type-group')->controller(AssetTypeGroupController::class)->group(function (){
-    Route::get('/list', 'getListAssetTypeGroup');
+Route::middleware('')->prefix('asset-type-group')
+    ->controller(AssetTypeGroupController::class)
+    ->group(function (){
+    Route::get('/list', 'getListAssetTypeGroup')->name('asset.type_group.list');
+    Route::post('/create', 'createAssetTypeGroup')->name('asset.type_group.create');
+    Route::post('/delete', 'deleteAssetTypeGroup')->name('asset.type_group.delete');
 });
