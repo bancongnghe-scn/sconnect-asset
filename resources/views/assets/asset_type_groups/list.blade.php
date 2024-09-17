@@ -19,7 +19,8 @@
                             <input type="text" class="form-control" x-model="filters.name">
                         </div>
                         <div class="">
-                            <button @click="getListTypeGroup" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
+                            <button @click="getListTypeGroup" type="button" class="btn btn-block btn-primary">Tìm kiếm
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -28,7 +29,7 @@
 
         <div
             @edit="handleShowModalCreateOrUpdate('update', $event.detail.id)"
-            @remove="removeTypeGroup($event.detail.id)"
+            @remove="confirmRemove($event.detail.id)"
             @page-change.window="changePage($event.detail.page)"
             @change-limit.window="getListTypeGroup"
         >
@@ -39,6 +40,16 @@
         <div
             @save-type-group="handleCreateOrUpdate">
             @include('assets.asset_type_groups.modalCreateTypeGroup')
+        </div>
+
+        <div
+            x-data="{
+                modalId: idModalConfirmDelete,
+                contentBody: 'Bạn có chắc chắn muốn xóa nhóm tài sản này không ?'
+            }"
+            @ok="removeTypeGroup"
+        >
+            @include('common.modal-confirm')
         </div>
     </div>
 @endsection
@@ -65,9 +76,9 @@
                 total: null,
                 limit: 10,
                 showAction: {
-                  view: false,
-                  edit: true,
-                  remove: true
+                    view: false,
+                    edit: true,
+                    remove: true
                 },
 
                 //data
@@ -83,6 +94,7 @@
                 titleAction: null,
                 action: null,
                 id: null,
+                idModalConfirmDelete: "deleteAssetTypeGroup",
 
                 //methods
                 async getListTypeGroup() {
@@ -90,7 +102,7 @@
                     this.filters.page = this.currentPage
                     this.filters.limit = this.limit
                     const response = await this.apiGetAssetTypeGroup(this.filters)
-                    if(response.success) {
+                    if (response.success) {
                         const data = response.data
                         this.dataTable = data.data.data
                         this.totalPages = data.data.last_page
@@ -156,15 +168,16 @@
                     }
                 },
 
-                async removeTypeGroup(id) {
+                async removeTypeGroup() {
                     this.loading = true
                     try {
-                        const response = await axios.post("{{ route('asset.type_group.delete') }}", {id: id})
+                        const response = await axios.post("{{ route('asset.type_group.delete') }}", {id: this.id})
                         const data = response.data;
                         if (!data.success) {
                             toast.error(data.message)
                             return
                         }
+                        $("#"+this.idModalConfirmDelete).modal('hide')
                         await this.getListTypeGroup()
                         toast.success('Xóa nhóm tài sản thành công !')
                     } catch (error) {
@@ -184,13 +197,14 @@
                             return
                         }
                         toast.success('Tạo nhóm tài sản thành công !')
+                        $('#modalCreateTypeGroup').modal('hide');
                         this.resetDataCreateOrUpdateAssetTypeGroup()
                         await this.getListTypeGroup()
                     } catch (error) {
+                        $('#modalCreateTypeGroup').modal('hide');
                         toast.error(error?.response?.data?.message || error?.message)
                     } finally {
                         this.loading = false
-                        $('#modalCreateTypeGroup').modal('hide');
                     }
                 },
 
@@ -217,11 +231,11 @@
                 },
 
                 handleCreateOrUpdate() {
-                  if (this.action === 'create') {
-                      this.createTypeGroup()
-                  } else {
-                      this.editTypeGroup()
-                  }
+                    if (this.action === 'create') {
+                        this.createTypeGroup()
+                    } else {
+                        this.editTypeGroup()
+                    }
                 },
 
                 changePage(page) {
@@ -233,6 +247,11 @@
                     this.createOrUpdateAssetTypeGroup.name = null
                     this.createOrUpdateAssetTypeGroup.description = null
                 },
+
+                confirmRemove(id) {
+                    $("#"+this.idModalConfirmDelete).modal('show');
+                    this.id = id
+                }
             }
         }
 
