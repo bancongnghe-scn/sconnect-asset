@@ -2,17 +2,17 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Thêm mới nhóm tài sản</h4>
+                <h4 class="modal-title" x-text="titleAction + ' nhóm tài sản'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Tên nhóm tài sản</label>
-                    <input type="text" class="form-control" x-model="createAssetTypeGroup.name">
+                    <input type="text" class="form-control" x-model="createOrUpdateAssetTypeGroup.name">
                 </div>
                 <div class="mb-3">
                     <label for="floatingTextarea2">Mô tả</label>
-                    <textarea class="form-control tw-h-40" x-model="createAssetTypeGroup.description"></textarea>
+                    <textarea class="form-control tw-h-40" x-model="createOrUpdateAssetTypeGroup.description"></textarea>
                 </div>
             </div>
             <div class="modal-footer">

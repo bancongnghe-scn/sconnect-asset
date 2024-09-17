@@ -13,6 +13,8 @@ class AssetTypeGroup extends Model
         'name',
         'description',
         'created_by',
+        'updated_at',
+        'updated_by',
         'deleted_at',
         'deleted_by',
     ];

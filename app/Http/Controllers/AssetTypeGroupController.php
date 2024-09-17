@@ -19,7 +19,7 @@ class AssetTypeGroupController extends Controller
     public function getListAssetTypeGroup(Request $request) {
         $request->validate([
             'id' => 'integer',
-            'name' => 'string|min:2',
+            'name' => 'string|min:2|nullable',
             'page' => 'integer',
             'limit' => 'integer|max:200',
         ]);
@@ -68,6 +68,33 @@ class AssetTypeGroupController extends Controller
         ]);
         try {
             $result = $this->assetTypeGroupService->deleteAssetTypeGroup($request->integer('id'));
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function updateAssetTypeGroup(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'string',
+            'id' => 'required|integer',
+        ],
+            [
+                'name.required' => 'Tên nhóm tài sản là bắt buộc.',
+                'name.string' => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
+                'description.string' => 'Mô tả phải là một chuỗi ký tự.'
+            ]
+        );
+
+        try {
+            $result = $this->assetTypeGroupService->updateAssetTypeGroup($request->all());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="typeGroup">
         <div class="tw-mb-3 d-flex tw-justify-end">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCreateTypeGroup">
+            <button type="button" class="btn btn-primary" @click="handleShowModalCreateOrUpdate('create')">
                 Thêm mới
             </button>
         </div>
@@ -27,7 +27,7 @@
         </div>
 
         <div
-            @edit="editTypeGroup($event.detail.id)"
+            @edit="handleShowModalCreateOrUpdate('update', $event.detail.id)"
             @remove="removeTypeGroup($event.detail.id)"
             @page-change.window="changePage($event.detail.page)"
             @change-limit.window="getListTypeGroup"
@@ -37,8 +37,7 @@
 
         {{-- modal--}}
         <div
-        @save-type-group="createTypeGroup"
-        >
+            @save-type-group="handleCreateOrUpdate">
             @include('assets.asset_type_groups.modalCreateTypeGroup')
         </div>
     </div>
@@ -77,86 +76,163 @@
                     page: null,
                     limit: null
                 },
-                createAssetTypeGroup: {
+                createOrUpdateAssetTypeGroup: {
                     name: null,
                     description: null,
                 },
+                titleAction: null,
+                action: null,
+                id: null,
 
                 //methods
                 async getListTypeGroup() {
                     this.loading = true
                     this.filters.page = this.currentPage
                     this.filters.limit = this.limit
-                    await axios.get("{{ route('asset.type_group.list') }}", {
-                        params: this.filters
-                    })
-                        .then(response => {
-                            const data = response.data;
-                            if (!data.success) {
-                                this.loading = false
-                                toast.error(data.message)
-                                return
-                            }
-                            this.dataTable = data.data.data
-                            this.totalPages = data.data.last_page
-                            this.currentPage = data.data.current_page
-                            this.total = data.data.total
-                            this.loading = false
-                            toast.success('Lấy danh sách nhóm tài sản thành công !')
-                        })
-                        .catch(error => {
-                            this.loading = false
-                            toast.error(error?.response?.data?.message || error?.message)
-                        });
+                    const response = await this.apiGetAssetTypeGroup(this.filters)
+                    if(response.success) {
+                        const data = response.data
+                        this.dataTable = data.data.data
+                        this.totalPages = data.data.last_page
+                        this.currentPage = data.data.current_page
+                        this.total = data.data.total
+                    }
                 },
 
-                editTypeGroup(id) {
-                    console.log(id)
+                async apiGetAssetTypeGroup(filters) {
+                    this.loading = true
+                    try {
+                        const response = await axios.get("{{ route('asset.type_group.list') }}", {
+                            params: filters
+                        })
+
+                        const data = response.data;
+                        if (!data.success) {
+                            toast.error(data.message)
+                            return {
+                                success: false,
+                            }
+                        }
+
+                        toast.success('Lấy danh sách nhóm tài sản thành công !')
+                        return {
+                            success: true,
+                            data: data
+                        }
+                    } catch (error) {
+                        this.loading = false
+                        toast.error(error?.response?.data?.message || error?.message)
+                        return {
+                            success: false,
+                        }
+                    } finally {
+                        this.loading = false
+                    }
+                },
+
+                async editTypeGroup() {
+                    this.loading = true
+                    try {
+                        const param = {
+                            id: this.id,
+                            name: this.createOrUpdateAssetTypeGroup.name,
+                            description: this.createOrUpdateAssetTypeGroup.description,
+                        }
+                        const response = await axios.post("{{ route('asset.type_group.update') }}", param)
+                        const data = response.data;
+                        if (!data.success) {
+                            toast.error(data.message)
+                            return
+                        }
+                        toast.success('Cập nhập nhóm tài sản thành công !')
+                        $('#modalCreateTypeGroup').modal('hide');
+                        this.resetDataCreateOrUpdateAssetTypeGroup()
+                        await this.getListTypeGroup()
+                    } catch (error) {
+                        toast.error(error?.response?.data?.message || error?.message)
+                        $('#modalCreateTypeGroup').modal('hide');
+                    } finally {
+                        this.loading = false
+                    }
                 },
 
                 async removeTypeGroup(id) {
                     this.loading = true
-                    await axios.post("{{ route('asset.type_group.delete') }}", {id: id})
-                        .then(response => {
-                            const data = response.data;
-                            if (!data.success) {
-                                this.loading = false
-                                toast.error(data.message)
-                                return
-                            }
-                            this.getListTypeGroup()
-                            toast.success('Xóa nhóm tài sản thành công !')
-                        })
-                        .catch(error => {
-                            this.loading = false
-                            toast.error(error?.response?.data?.message || error?.message)
-                        });
+                    try {
+                        const response = await axios.post("{{ route('asset.type_group.delete') }}", {id: id})
+                        const data = response.data;
+                        if (!data.success) {
+                            toast.error(data.message)
+                            return
+                        }
+                        await this.getListTypeGroup()
+                        toast.success('Xóa nhóm tài sản thành công !')
+                    } catch (error) {
+                        toast.error(error?.response?.data?.message || error?.message)
+                    } finally {
+                        this.loading = false
+                    }
                 },
 
                 async createTypeGroup() {
                     this.loading = true
-                    await axios.post("{{ route('asset.type_group.create') }}", this.createAssetTypeGroup)
-                        .then(response => {
-                            const data = response.data;
-                            if (!data.success) {
-                                this.loading = false
-                                toast.error(data.message)
-                                return
-                            }
-                            $('#modalCreateTypeGroup').modal('hide');
-                            toast.success('Tạo nhóm tài sản thành công !')
-                            this.getListTypeGroup()
-                        })
-                        .catch(error => {
-                            this.loading = false
-                            toast.error(error?.response?.data?.message || error?.message)
-                        });
+                    try {
+                        const response = await axios.post("{{ route('asset.type_group.create') }}", this.createOrUpdateAssetTypeGroup)
+                        const data = response.data;
+                        if (!data.success) {
+                            toast.error(data.message)
+                            return
+                        }
+                        toast.success('Tạo nhóm tài sản thành công !')
+                        this.resetDataCreateOrUpdateAssetTypeGroup()
+                        await this.getListTypeGroup()
+                    } catch (error) {
+                        toast.error(error?.response?.data?.message || error?.message)
+                    } finally {
+                        this.loading = false
+                        $('#modalCreateTypeGroup').modal('hide');
+                    }
+                },
+
+                async handleShowModalCreateOrUpdate(action, id = null) {
+                    this.action = action
+                    if (action === 'create') {
+                        this.titleAction = 'Thêm mới'
+                    } else {
+                        this.titleAction = 'Cập nhật'
+                        this.id = id
+                        const filters = {
+                            id: id,
+                            page: 1,
+                            limit: 1
+                        }
+                        const response = await this.apiGetAssetTypeGroup(filters)
+                        if (response.success) {
+                            const data = response.data.data.data
+                            this.createOrUpdateAssetTypeGroup.name = data[0].name
+                            this.createOrUpdateAssetTypeGroup.description = data[0].description
+                        }
+                    }
+                    $('#modalCreateTypeGroup').modal('show');
+                },
+
+                handleCreateOrUpdate() {
+                  if (this.action === 'create') {
+                      this.createTypeGroup()
+                  } else {
+                      this.editTypeGroup()
+                  }
                 },
 
                 changePage(page) {
                     this.filters.page = page
                     this.getListTypeGroup()
-                }
+                },
+
+                resetDataCreateOrUpdateAssetTypeGroup() {
+                    this.createOrUpdateAssetTypeGroup.name = null
+                    this.createOrUpdateAssetTypeGroup.description = null
+                },
             }
         }
 

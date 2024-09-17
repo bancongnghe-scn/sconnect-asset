@@ -71,4 +71,29 @@ class AssetTypeGroupService
             'success' => true
         ];
     }
+
+    public function updateAssetTypeGroup($data)
+    {
+        $assetTypeGroup = $this->assetTypeGroupRepository->find($data['id']);
+        if (is_null($assetTypeGroup)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2002
+            ];
+        }
+
+        $data['updated_by'] = User::USER_ID_ADMIN;
+        $data['updated_at'] = date('Y-m-d H:i:s');
+        $assetTypeGroup->fill($data);
+        if (!$assetTypeGroup->save()) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2003
+            ];
+        }
+
+        return [
+            'success' => true
+        ];
+    }
 }
