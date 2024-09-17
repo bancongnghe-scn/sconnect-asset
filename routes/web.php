@@ -18,8 +18,10 @@ Route::controller(\App\Http\Controllers\Auth\LoginSSOController::class)->group(f
     Route::get('/login', 'login')->name('login');
 });
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function (){
+    Route::view('/home', 'home')->name('home');
 
-Route::middleware('auth')->prefix('asset-type-group')->group(function (){
-    Route::view('/list', 'assets.asset_type_groups.list');
+    Route::prefix('asset-type-group')->group(function (){
+        Route::view('/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
+    });
 });

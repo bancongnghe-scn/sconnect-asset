@@ -35,12 +35,14 @@
 <main id="main" class="main" x-data="{loading: false}">
     <div class="pagetitle">
         <h1>{{$title}}</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{route('home')}}">Trang chủ</a></li>
-                <li class="breadcrumb-item active">{{$title}}</li>
-            </ol>
-        </nav>
+        @if($title !== "Trang chủ")
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{route('home')}}">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">{{$title}}</li>
+                </ol>
+            </nav>
+        @endif
     </div>
     <section class="section dashboard">
         <div class="row">
