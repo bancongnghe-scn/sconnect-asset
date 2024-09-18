@@ -34,7 +34,8 @@ Route::group([], function (){
 
     Route::resources([
         'asset-type' => \App\Http\Controllers\AssetTypeController::class,
-        'industry' => \App\Http\Controllers\industryController::class
+        'industry' => \App\Http\Controllers\industryController::class,
+        'supplier' => \App\Http\Controllers\SupplierController::class
     ]);
 });
 

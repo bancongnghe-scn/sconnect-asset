@@ -32,6 +32,11 @@
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Ngành hàng</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/supplier/list">
+                        <i class="fa-solid fa-glass-water-droplet"></i><span>Nhà cung cấp</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Components Nav -->
     </ul>
