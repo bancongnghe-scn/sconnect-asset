@@ -2,17 +2,17 @@
 
 namespace App\Repositories;
 
-use App\Models\AssetType;
+use App\Models\Industry;
 use App\Repositories\Base\BaseRepository;
 
-class AssetTypeRepository extends BaseRepository
+class IndustryRepository extends BaseRepository
 {
     public function getModelClass(): string
     {
-        return AssetType::class;
+        return Industry::class;
     }
 
-    public function getListAssetType(array $filters, $columns = ['*'], $with = [])
+    public function getListIndustry(array $filters, $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()
             ->select($columns)
@@ -23,10 +23,6 @@ class AssetTypeRepository extends BaseRepository
             $query->where('name', 'like', $filters['name'] . '%');
         }
 
-        if (!empty($filters['asset_type_group_id'])) {
-            $query->whereIn('asset_type_group_id', $filters['asset_type_group_id']);
-        }
-
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }
@@ -34,7 +30,7 @@ class AssetTypeRepository extends BaseRepository
         return $query->get();
     }
 
-    public function findAssetTypeByName($name)
+    public function findIndustryByName($name)
     {
         return $this->_model->where('name', $name)->first();
     }

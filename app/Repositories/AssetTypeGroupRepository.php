@@ -14,7 +14,7 @@ class AssetTypeGroupRepository extends BaseRepository
 
     public function getListAssetTypeGroup(array $filters, $columns = ['*'])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()->select($columns)->orderBy('created_at', 'desc');
 
         if (!empty($filters['name'])) {
             $query->where('name', 'like',$filters['name'] . '%');

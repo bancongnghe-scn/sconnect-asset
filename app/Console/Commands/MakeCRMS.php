@@ -149,7 +149,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class " . $name . "Model extends Model
+class " . $name . " extends Model
 {
     use HasFactory;
 }

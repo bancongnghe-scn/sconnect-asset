@@ -32,7 +32,10 @@ Route::group([], function (){
             Route::post('/update', 'updateAssetTypeGroup')->name('asset.type_group.update');
         });
 
-    Route::resource('asset-type', \App\Http\Controllers\AssetTypeController::class);
+    Route::resources([
+        'asset-type' => \App\Http\Controllers\AssetTypeController::class,
+        'industry' => \App\Http\Controllers\industryController::class
+    ]);
 });
 
 

@@ -13,4 +13,8 @@ return [
     AppErrorCode::CODE_2006 => 'Tạo loại tài sản thất bại !',
     AppErrorCode::CODE_2007 => 'Đã tồn tại loai tài sản cùng tên !',
     AppErrorCode::CODE_2008 => 'Cập nhật loai tài sản thất bại !',
+    AppErrorCode::CODE_2009 => 'Đã tồn tại ngành hàng cùng tên !',
+    AppErrorCode::CODE_2010 => 'Tạo ngành hàng thất bại !',
+    AppErrorCode::CODE_2011 => 'Ngành hàng không tồn tại !',
+    AppErrorCode::CODE_2012 => 'Cập nhật ngành hàng thất bại !',
 ];

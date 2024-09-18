@@ -27,6 +27,11 @@
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Loại tài sản</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/industry/list">
+                        <i class="fa-solid fa-glass-water-droplet"></i><span>Ngành hàng</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Components Nav -->
     </ul>

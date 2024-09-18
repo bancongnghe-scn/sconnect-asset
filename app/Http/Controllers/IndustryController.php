@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\AssetTypeService;
+use App\Services\industryService;
 use Illuminate\Http\Request;
 
-class AssetTypeController extends Controller
+class IndustryController extends Controller
 {
     public function __construct(
-        protected AssetTypeService $assetTypeService
+        protected industryService $industryService
     )
     {
+
     }
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $request->validate([
             'name' => 'nullable|string',
-            'asset_type_group_id' => 'nullable|array',
-            'asset_type_group_id.*' => 'integer',
             'page' => 'integer',
             'limit' => 'integer|max:200',
         ]);
 
         try {
-            $result = $this->assetTypeService->getListAssetType($request->all());
+            $result = $this->industryService->getListIndustry($request->all());
 
             return response_success($result);
         } catch (\Throwable $exception) {
@@ -42,13 +38,11 @@ class AssetTypeController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'asset_type_group_id' => 'required|integer',
-            'maintenance_months' => 'required|integer',
             'description' => 'nullable|string',
         ]);
 
         try {
-            $result = $this->assetTypeService->createAssetType($request->all());
+            $result = $this->industryService->createIndustry($request->all());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -66,7 +60,7 @@ class AssetTypeController extends Controller
     public function show(string $id)
     {
         try {
-            $result = $this->assetTypeService->findAssetType($id);
+            $result = $this->industryService->findIndustry($id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -86,13 +80,11 @@ class AssetTypeController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'asset_type_group_id' => 'required|integer',
-            'maintenance_months' => 'required|integer',
             'description' => 'nullable|string',
         ]);
 
         try {
-            $result = $this->assetTypeService->updateAssetType($request->all(), $id);
+            $result = $this->industryService->updateIndustry($request->all(), $id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -110,7 +102,7 @@ class AssetTypeController extends Controller
     public function destroy(string $id)
     {
         try {
-            $result = $this->assetTypeService->deleteAssetTypeById($id);
+            $result = $this->industryService->deleteIndustryById($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

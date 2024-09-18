@@ -14,4 +14,11 @@ class AppErrorCode
     public const CODE_2006 = 2006; // Tạo loại tài sản thất bại !
     public const CODE_2007 = 2007; //  Đã tồn tại loai tài sản cùng tên !
     public const CODE_2008 = 2008; //  Cập nhật loai tài sản thất bại !
+    public const CODE_2009 = 2009; //  Đã tồn tại ngành hàng cùng tên !
+    public const CODE_2010 = 2010; //  Tạo ngành hàng thất bại !
+    public const CODE_2011 = 2011; //  Ngành hàng không tồn tại !.
+    public const CODE_2012 = 2012; //  Cập nhật ngành hàng thất bại !
+
+
+
 }

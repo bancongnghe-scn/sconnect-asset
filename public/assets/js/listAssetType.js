@@ -85,7 +85,7 @@ document.addEventListener('alpine:init', () => {
             toast.success('Cập nhập loại tài sản thành công !')
             $('#modalAssetTypeUI').modal('hide');
             this.resetDataAssetType()
-            await this.getListTypeGroup()
+            await this.getListAssetType(this.filters)
             this.loading = false
         },
 
@@ -101,10 +101,7 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDelete).modal('hide')
             toast.success('Xóa loại tài sản thành công !')
 
-            this.getListAssetType({
-                page: 1,
-                limit: this.filters.limit
-            })
+            this.getListAssetType(this.filters)
 
             this.loading = false
         },
@@ -120,7 +117,7 @@ document.addEventListener('alpine:init', () => {
             toast.success('Tạo loại tài sản thành công !')
             $('#modalAssetTypeUI').modal('hide');
             this.resetDataAssetType()
-            await this.getListAssetType()
+            await this.getListAssetType(this.filters)
             this.loading = false
         },
 
