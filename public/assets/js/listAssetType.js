@@ -70,7 +70,7 @@ document.addEventListener('alpine:init', () => {
                 const data = response.data
                 this.listAssetTypeGroup = data.data
             } else {
-                toast.error('Lấy danh sách nhóm tài sản thất bại !')
+                toast.error('Lấy danh sách loại tài sản thất bại !')
             }
             this.loading = false
         },
@@ -99,9 +99,9 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa nhóm tài sản thành công !')
+            toast.success('Xóa loại tài sản thành công !')
 
-            this.getListType({
+            this.getListAssetType({
                 page: 1,
                 limit: this.filters.limit
             })
@@ -117,7 +117,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
                 return
             }
-            toast.success('Tạo nhóm tài sản thành công !')
+            toast.success('Tạo loại tài sản thành công !')
             $('#modalAssetTypeUI').modal('hide');
             this.resetDataAssetType()
             await this.getListAssetType()
@@ -156,12 +156,12 @@ document.addEventListener('alpine:init', () => {
 
         changePage(page) {
             this.filters.page = page
-            this.getListType(this.filters)
+            this.getListAssetType(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListType(this.filters)
+            this.getListAssetType(this.filters)
         },
 
         resetDataAssetType() {
@@ -178,7 +178,7 @@ document.addEventListener('alpine:init', () => {
 
         searchAssetType() {
             this.filters.asset_type_group_id = $('select[name="asset_type_group"]').val()
-            this.getListType(this.filters)
+            this.getListAssetType(this.filters)
         }
     }));
 });

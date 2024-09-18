@@ -23,20 +23,22 @@
             @include('common.table')
         </div>
 
-         modal
-        <div
-            @save-asset-type="handleAssetTypeUI">
-            @include('assets.asset_type.modalAssetTypeUI')
-        </div>
+        {{-- modal--}}
+        <div>
+            <div
+                @save-asset-type="handleAssetTypeUI">
+                @include('assets.asset_type.modalAssetTypeUI')
+            </div>
 
-        <div
-            x-data="{
+            <div
+                x-data="{
                 modalId: idModalConfirmDelete,
                 contentBody: 'Bạn có chắc chắn muốn xóa loại tài sản này không ?'
             }"
-            @ok="removeAssetType"
-        >
-            @include('common.modal-confirm')
+                @ok="removeAssetType"
+            >
+                @include('common.modal-confirm')
+            </div>
         </div>
     </div>
 @endsection
