@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\Base\BaseRepository;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -48,9 +49,14 @@ class MakeCRMS extends Command
 
 namespace App\Repositories;
 
-class " . $name . "Repository
+use App\Repositories\Base\BaseRepository;
+
+class " . $name . "Repository extends BaseRepository
 {
-    // Add your repository methods here
+    public function getModelClass(): string
+    {
+        return ;
+    }
 }
 ";
 
@@ -111,7 +117,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AssetTypeGroupController extends Controller
+class " . $name . "Controller extends Controller
 {
     public function __construct()
     {
@@ -135,7 +141,7 @@ class AssetTypeGroupController extends Controller
         if (!File::exists($modelPath)) {
             File::makeDirectory($modelPath, 0755, true);
         }
-        $filePath = $modelPath . '/' . $name . 'Model.php';
+        $filePath = $modelPath . '/' . $name . '.php';
         $template = "<?php
 
 namespace App\Models;

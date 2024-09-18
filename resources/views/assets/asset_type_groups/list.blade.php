@@ -30,7 +30,7 @@
         <div
             @edit="handleShowModalCreateOrUpdate('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
-            @page-change.window="changePage($event.detail.page)"
+            @change-page.window="changePage($event.detail.page)"
             @change-limit.window="getListTypeGroup"
         >
             @include('common.table')

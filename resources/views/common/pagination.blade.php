@@ -87,7 +87,7 @@
             changePage(page) {
                 this.currentPage = page
                 this.renderPagination
-                this.$dispatch('page-change',{ page: this.currentPage })
+                this.$dispatch('change-page',{ page: this.currentPage })
             }
         }
     }

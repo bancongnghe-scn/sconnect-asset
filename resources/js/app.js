@@ -9,10 +9,11 @@ import { createApp } from 'vue';
 import '@fortawesome/fontawesome-free/css/all.css';
 import Alpine from 'alpinejs'
 
+window.Alpine = Alpine
+
 Alpine.start()
 
 // If you want Alpine's instance to be available globally
-window.Alpine = Alpine
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
  * registering components with the application instance so they are ready

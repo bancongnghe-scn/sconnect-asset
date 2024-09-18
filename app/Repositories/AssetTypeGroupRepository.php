@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\AssetTypeGroup;
-use App\Repositories\Base\BaseReadRepository;
 use App\Repositories\Base\BaseRepository;
 
 class AssetTypeGroupRepository extends BaseRepository

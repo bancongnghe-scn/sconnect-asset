@@ -20,8 +20,7 @@ Route::controller(\App\Http\Controllers\Auth\LoginSSOController::class)->group(f
 
 Route::middleware('auth')->group(function (){
     Route::view('/home', 'home')->name('home');
-
-    Route::prefix('asset-type-group')->group(function (){
-        Route::view('/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
-    });
+    Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
+    Route::view('asset-type/list', 'assets.asset_type.listAssetType');
 });
+

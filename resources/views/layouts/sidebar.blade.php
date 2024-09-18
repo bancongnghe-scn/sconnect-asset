@@ -23,7 +23,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="/asset-type/list">
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Loại tài sản</span>
                     </a>
                 </li>
