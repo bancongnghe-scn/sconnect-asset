@@ -20,6 +20,10 @@ class AssetTypeGroupRepository extends BaseRepository
             $query->where('name', 'like',$filters['name'] . '%');
         }
 
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }

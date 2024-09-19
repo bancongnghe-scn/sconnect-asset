@@ -96,9 +96,8 @@ document.addEventListener('alpine:init', () => {
             }
             toast.success('Tạo ngành hàng thành công !')
             $('#modalIndustryUI').modal('hide');
-            this.resetDataIndustry()
-            await this.getListIndustry(this.filters)
             this.loading = false
+            window.location.reload();
         },
 
         async handShowModalIndustryUI(action, id = null) {

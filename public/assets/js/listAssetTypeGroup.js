@@ -3,13 +3,15 @@ function typeGroup() {
         //created
         init() {
             $('.select2').select2()
-            this.getListTypeGroup()
+            this.getListTypeGroup({
+                page: 1,
+                limit: 10
+            })
         },
 
         //dataTable
         dataTable: [],
         columns: {
-            id: 'ID',
             name: 'Tên loại',
             description: 'Mô tả'
         },
@@ -26,8 +28,8 @@ function typeGroup() {
         //data
         filters: {
             name: null,
-            page: null,
-            limit: null
+            page: 1,
+            limit: 10
         },
         createOrUpdateAssetTypeGroup: {
             name: null,
@@ -39,22 +41,29 @@ function typeGroup() {
         idModalConfirmDelete: "deleteAssetTypeGroup",
 
         //methods
-        async getListTypeGroup() {
+        searchTypeGroup() {
+            this.filters.page = 1
+            this.getListTypeGroup(this.filters)
+        },
+
+        async getListTypeGroup(filters) {
             this.loading = true
-            this.filters.page = this.currentPage
-            this.filters.limit = this.limit
-            const response = await this.apiGetAssetTypeGroup(this.filters)
-            if (response.success) {
-                const data = response.data
-                this.dataTable = data.data.data
-                this.totalPages = data.data.last_page
-                this.currentPage = data.data.current_page
-                this.total = data.data.total
+            const response = await this.apiGetAssetTypeGroup(filters)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
             }
+            const data = response.data
+            this.dataTable = data.data.data
+            this.totalPages = data.data.last_page
+            this.currentPage = data.data.current_page
+            this.total = data.data.total
+            toast.success('Lấy danh sách nhóm tài sản thành công !')
+            this.loading = false
         },
 
         async apiGetAssetTypeGroup(filters) {
-            this.loading = true
             try {
                 const response = await axios.get("/api/asset-type-group/list", {
                     params: filters
@@ -62,25 +71,21 @@ function typeGroup() {
 
                 const data = response.data;
                 if (!data.success) {
-                    toast.error(data.message)
                     return {
                         success: false,
+                        message: data.message
                     }
                 }
 
-                toast.success('Lấy danh sách nhóm tài sản thành công !')
                 return {
                     success: true,
                     data: data
                 }
             } catch (error) {
-                this.loading = false
-                toast.error(error?.response?.data?.message || error?.message)
                 return {
                     success: false,
+                    message: error?.response?.data?.message || error?.message
                 }
-            } finally {
-                this.loading = false
             }
         },
 
@@ -101,7 +106,7 @@ function typeGroup() {
                 toast.success('Cập nhập nhóm tài sản thành công !')
                 $('#modalCreateTypeGroup').modal('hide');
                 this.resetDataCreateOrUpdateAssetTypeGroup()
-                await this.getListTypeGroup()
+                await this.getListTypeGroup(this.filters)
             } catch (error) {
                 toast.error(error?.response?.data?.message || error?.message)
                 $('#modalCreateTypeGroup').modal('hide');
@@ -120,7 +125,7 @@ function typeGroup() {
                     return
                 }
                 $("#"+this.idModalConfirmDelete).modal('hide')
-                await this.getListTypeGroup()
+                await this.getListTypeGroup(this.filters)
                 toast.success('Xóa nhóm tài sản thành công !')
             } catch (error) {
                 toast.error(error?.response?.data?.message || error?.message)
@@ -140,8 +145,7 @@ function typeGroup() {
                 }
                 toast.success('Tạo nhóm tài sản thành công !')
                 $('#modalCreateTypeGroup').modal('hide');
-                this.resetDataCreateOrUpdateAssetTypeGroup()
-                await this.getListTypeGroup()
+                window.location.reload();
             } catch (error) {
                 $('#modalCreateTypeGroup').modal('hide');
                 toast.error(error?.response?.data?.message || error?.message)
@@ -182,7 +186,12 @@ function typeGroup() {
 
         changePage(page) {
             this.filters.page = page
-            this.getListTypeGroup()
+            this.getListTypeGroup(this.filters)
+        },
+
+        changLimit() {
+            this.filters.limit = this.limit
+            this.getListTypeGroup(this.filters)
         },
 
         resetDataCreateOrUpdateAssetTypeGroup() {

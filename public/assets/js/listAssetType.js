@@ -116,9 +116,8 @@ document.addEventListener('alpine:init', () => {
             }
             toast.success('Tạo loại tài sản thành công !')
             $('#modalAssetTypeUI').modal('hide');
-            this.resetDataAssetType()
-            await this.getListAssetType(this.filters)
             this.loading = false
+            window.location.reload();
         },
 
         async handShowModalAssetTypeUI(action, id = null) {

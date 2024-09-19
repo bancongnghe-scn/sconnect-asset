@@ -19,7 +19,7 @@
                             <input type="text" class="form-control" x-model="filters.name">
                         </div>
                         <div class="">
-                            <button @click="getListTypeGroup" type="button" class="btn btn-block btn-primary">Tìm kiếm
+                            <button @click="searchTypeGroup" type="button" class="btn btn-block btn-primary">Tìm kiếm
                             </button>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
             @edit="handleShowModalCreateOrUpdate('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
             @change-page.window="changePage($event.detail.page)"
-            @change-limit.window="getListTypeGroup"
+            @change-limit.window="changLimit"
         >
             @include('common.table')
         </div>
