@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AssetTypeGroup extends Model
 {
-    use SoftDeletes;
     protected $table = 'asset_type_groups';
     protected $fillable = [
         'name',
@@ -15,7 +14,5 @@ class AssetTypeGroup extends Model
         'created_by',
         'updated_at',
         'updated_by',
-        'deleted_at',
-        'deleted_by',
     ];
 }

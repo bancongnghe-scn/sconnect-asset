@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1,
                 limit: 10
             })
+            this.getListIndustry({})
         },
 
         //dataTable
@@ -30,17 +31,26 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name: null,
+            level: null,
+            industry_id: null,
             page: 1,
             limit: 10
         },
-        industry: {
+        supplier: {
             name: null,
+            contact: null,
+            address: null,
+            industries: [],
+            tax_code: null,
             description: null,
+            level: null,
+            note_evaluate: null
         },
+        listIndustry : [],
         titleAction: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteIndustry",
+        idModalConfirmDelete: "deleteSupplier",
 
         //methods
         async getListSupplier(filters) {
@@ -59,23 +69,34 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async editIndustry() {
+        async getListIndustry(filters) {
             this.loading = true
-            const response = await window.apiUpdateIndustry(this.industry, this.id)
+            const response = await window.apiGetIndustry(filters)
+            if (response.success) {
+                this.listIndustry = response.data.data
+            } else {
+                toast.error('Lấy danh sách ngành hàng thất bại !')
+            }
+            this.loading = false
+        },
+
+        async editSupplier() {
+            this.loading = true
+            const response = await window.apiUpdateSupplier(this.supplier, this.id)
             if (!response.success) {
                 toast.error(response.message)
                 return
             }
             toast.success('Cập nhập nhà cung cấp thành công !')
-            $('#modalIndustryUI').modal('hide');
-            this.resetDataIndustry()
-            await this.getListIndustry(this.filters)
+            $('#modalSupplierUI').modal('hide');
+            this.resetDataSupplier()
+            await this.getListSupplier(this.filters)
             this.loading = false
         },
 
-        async removeIndustry() {
+        async removeSupplier() {
             this.loading = true
-            const response = await window.apiRemoveIndustry(this.id)
+            const response = await window.apiRemoveSupplier(this.id)
             if (!response.success) {
                 toast.error(response.message)
                 this.loading = false
@@ -85,67 +106,67 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDelete).modal('hide')
             toast.success('Xóa nhà cung cấp thành công !')
 
-            this.getListIndustry(this.filters)
+            this.getListSupplier(this.filters)
 
             this.loading = false
         },
 
-        async createIndustry() {
+        async createSupplier() {
             this.loading = true
-            const response = await window.apiCreateIndustry(this.industry)
+            const response = await window.apiCreateSupplier(this.supplier)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
             toast.success('Tạo nhà cung cấp thành công !')
-            $('#modalIndustryUI').modal('hide');
-            this.resetDataIndustry()
-            await this.getListIndustry(this.filters)
+            $('#modalSupplierUI').modal('hide');
+            this.resetDataSupplier()
+            await this.getListSupplier(this.filters)
             this.loading = false
         },
 
-        async handShowModalIndustryUI(action, id = null) {
+        async handShowModalSupplierUI(action, id = null) {
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
             } else {
                 this.titleAction = 'Cập nhật'
                 this.id = id
-                const response = await window.apiShowIndustry(id)
+                const response = await window.apiShowSupplier(id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
                 const data = response.data.data
-                this.industry.name = data.name
-                this.industry.description = data.description
+                this.supplier.name = data.name
+                this.supplier.description = data.description
             }
 
-            $('#modalIndustryUI').modal('show');
+            $('#modalSupplierUI').modal('show');
         },
 
-        handleIndustryUI() {
+        handleSupplierUI() {
             if (this.action === 'create') {
-                this.createIndustry()
+                this.createSupplier()
             } else {
-                this.editIndustry()
+                this.editSupplier()
             }
         },
 
         changePage(page) {
             this.filters.page = page
-            this.getListIndustry(this.filters)
+            this.getListSupplier(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListIndustry(this.filters)
+            this.getListSupplier(this.filters)
         },
 
-        resetDataIndustry() {
-            this.industry.name = null
-            this.industry.description = null
+        resetDataSupplier() {
+            this.supplier.name = null
+            this.supplier.description = null
         },
 
         confirmRemove(id) {

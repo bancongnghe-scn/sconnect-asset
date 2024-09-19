@@ -8,30 +8,32 @@ class ListSupplierResource extends JsonResource
 {
     public function toArray($request)
     {
-        $listIndustry = $this->additional['list_industry'] ?? [];
         $data = [];
         foreach ($this->resource as $supplier) {
-            if (empty($data[$supplier->id])) {
-                $data[$supplier->id] = [
-                    'id' => $supplier->id,
-                    'name' => $supplier->name,
-                    'contact' => $supplier->contact,
-                    'address' => $supplier->address,
-                    'website' => $supplier->website,
-                    'level' => $supplier->level,
-                ];
-            }
+            $data[$supplier->id] = [
+                'id' => $supplier->id,
+                'name' => $supplier->name,
+                'contact' => $supplier->contact,
+                'address' => $supplier->address,
+                'website' => $supplier->website,
+                'level' => $supplier->level,
+                'industries' => []
+            ];
 
-            $industry = $listIndustry[$supplier['industries_id']];
-            $data['industries'][] = $industry['name'];
+            $supplierAssetIndustries = $supplier->supplierAssetIndustries ?? [];
+            foreach ($supplierAssetIndustries as $supplierIndustry) {
+                if (!empty($supplierIndustry?->industry?->name)) {
+                    $data[$supplier->id]['industries'][] = $supplierIndustry?->industry?->name;
+                }
+            }
         }
 
         $listSupplier = $this->resource->toArray();
         return [
             'data' => $data,
-            'total' => $listSupplier['total'] ?? null,
-            'last_page' => $listSupplier['last_page'] ?? null,
-            'current_page' => $listSupplier['current_page'] ?? null,
+            'total' => $listSupplier['total'] ?? 0,
+            'last_page' => $listSupplier['last_page'] ?? 1,
+            'current_page' => $listSupplier['current_page'] ?? 1,
         ];
     }
 }

@@ -40,10 +40,7 @@ class AssetTypeService
             ];
         }
 
-        $assetType->deleted_at = date('Y-m-d H:i:s');
-        $assetType->deleted_by = User::USER_ID_ADMIN;
-
-        if (!$assetType->save()) {
+        if (!$assetType->delete()) {
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2005

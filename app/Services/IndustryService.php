@@ -36,10 +36,7 @@ class IndustryService
             ];
         }
 
-        $industry->deleted_at = date('Y-m-d H:i:s');
-        $industry->deleted_by = User::USER_ID_ADMIN;
-
-        if (!$industry->save()) {
+        if (!$industry->delete()) {
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2005

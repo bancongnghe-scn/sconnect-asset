@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Industry extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     protected $table = 'industries';
     protected $fillable = [
@@ -17,7 +16,5 @@ class Industry extends Model
         'description',
         'created_by',
         'updated_by',
-        'deleted_at',
-        'deleted_by',
     ];
 }

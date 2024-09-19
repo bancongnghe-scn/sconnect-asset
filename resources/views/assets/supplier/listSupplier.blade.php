@@ -11,7 +11,7 @@
         </div>
 
         <div>
-{{--            @include('assets.supplier.filterSupplier')--}}
+            @include('assets.supplier.filterSupplier')
         </div>
 
         <div
@@ -20,30 +20,31 @@
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
         >
-            @include('assets.supplier.tableIndustry')
+            @include('assets.supplier.tableSupplier')
         </div>
 
         {{-- modal--}}
-{{--        <div>--}}
-{{--            <div--}}
-{{--                @save-supplier="handleSupplierUI">--}}
-{{--                @include('assets.supplier.modalSupplierUI')--}}
-{{--            </div>--}}
+        <div>
+            <div
+                @save-supplier="handleSupplierUI">
+                @include('assets.supplier.modalSupplierUI')
+            </div>
 
 {{--            <div--}}
 {{--                x-data="{--}}
-{{--                modalId: idModalConfirmDelete,--}}
-{{--                contentBody: 'Bạn có chắc chắn muốn xóa ngành hàng này không ?'--}}
-{{--            }"--}}
+{{--                        modalId: idModalConfirmDelete,--}}
+{{--                        contentBody: 'Bạn có chắc chắn muốn xóa ngành hàng này không ?'--}}
+{{--                    }"--}}
 {{--                @ok="removeSupplier"--}}
 {{--            >--}}
 {{--                @include('common.modal-confirm')--}}
 {{--            </div>--}}
-{{--        </div>--}}
+        </div>
     </div>
 @endsection
 
 @section('js')
     <script src="/assets/js/api/apiSupplier.js"></script>
+    <script src="/assets/js/api/apiIndustry.js"></script>
     <script src="/assets/js/listSupplier.js"></script>
 @endsection

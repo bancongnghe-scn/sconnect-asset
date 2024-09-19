@@ -57,10 +57,7 @@ class AssetTypeGroupService
             ];
         }
 
-        $assetTypeGroup->deleted_at = date('Y-m-d H:i:s');
-        $assetTypeGroup->deleted_by = User::USER_ID_ADMIN;
-
-        if (!$assetTypeGroup->save()) {
+        if (!$assetTypeGroup->delete()) {
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2003

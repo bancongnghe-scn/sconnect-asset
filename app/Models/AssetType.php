@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class AssetType extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $table = 'asset_type';
     protected $fillable = [
        'name',
@@ -19,8 +18,6 @@ class AssetType extends Model
        'maintenance_months',
        'created_by',
        'updated_by',
-       'deleted_at',
-       'deleted_by',
     ];
 
     public function assetTypeGroup() : HasOne
