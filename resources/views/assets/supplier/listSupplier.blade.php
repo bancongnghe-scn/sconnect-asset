@@ -10,20 +10,20 @@
             </button>
         </div>
 
-        <div>
-            @include('assets.supplier.filterSupplier')
-        </div>
+{{--        <div>--}}
+{{--            @include('assets.supplier.filterSupplier')--}}
+{{--        </div>--}}
 
-        <div
-            @edit="handShowModalSupplierUI('update', $event.detail.id)"
-            @remove="confirmRemove($event.detail.id)"
-            @change-page.window="changePage($event.detail.page)"
-            @change-limit.window="changeLimit"
-        >
-            @include('assets.supplier.tableSupplier')
-        </div>
+{{--        <div--}}
+{{--            @edit="handShowModalSupplierUI('update', $event.detail.id)"--}}
+{{--            @remove="confirmRemove($event.detail.id)"--}}
+{{--            @change-page.window="changePage($event.detail.page)"--}}
+{{--            @change-limit.window="changeLimit"--}}
+{{--        >--}}
+{{--            @include('assets.supplier.tableSupplier')--}}
+{{--        </div>--}}
 
-        {{-- modal--}}
+{{--         modal--}}
         <div>
             <div
                 @save-supplier="handleSupplierUI">
@@ -46,5 +46,7 @@
 @section('js')
     <script src="/assets/js/api/apiSupplier.js"></script>
     <script src="/assets/js/api/apiIndustry.js"></script>
+    <script src="/assets/js/api/apiAssetType.js"></script>
     <script src="/assets/js/listSupplier.js"></script>
 @endsection
+

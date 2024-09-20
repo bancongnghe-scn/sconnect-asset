@@ -18,4 +18,6 @@ return [
     AppErrorCode::CODE_2011 => 'Ngành hàng không tồn tại !',
     AppErrorCode::CODE_2012 => 'Cập nhật ngành hàng thất bại !',
     AppErrorCode::CODE_2013 => 'Nhà cung cấp không tồn tại !',
+    AppErrorCode::CODE_2014 => 'Nhà cung cấp đã tồn tại !',
+    AppErrorCode::CODE_2015 => 'Tạo nhà cung cấp thất bại !',
 ];

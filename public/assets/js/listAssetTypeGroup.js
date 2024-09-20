@@ -2,7 +2,6 @@ function typeGroup() {
     return {
         //created
         init() {
-            $('.select2').select2()
             this.getListTypeGroup({
                 page: 1,
                 limit: 10

@@ -19,4 +19,6 @@ class AppErrorCode
     public const CODE_2011 = 2011; //  Ngành hàng không tồn tại !.
     public const CODE_2012 = 2012; //  Cập nhật ngành hàng thất bại !
     public const CODE_2013 = 2013; //  Nhà cung cấp không tồn tại !.
+    public const CODE_2014 = 2014; //  Nhà cung cấp đã tồn tại !.
+    public const CODE_2015 = 2015; //  Tạo nhà cung cấp thất bại !
 }

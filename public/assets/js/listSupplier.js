@@ -6,6 +6,8 @@ document.addEventListener('alpine:init', () => {
                 limit: 10
             })
             this.getListIndustry({})
+            this.getListAssetType({})
+            this.initSelect2InModal()
         },
 
         //dataTable
@@ -30,27 +32,42 @@ document.addEventListener('alpine:init', () => {
 
         //data
         filters: {
-            name: null,
-            level: null,
-            industry_id: null,
+            code_name: null,
+            status: [],
+            industries_id: [],
             page: 1,
             limit: 10
         },
         supplier: {
             name: null,
+            code: null,
+            website: null,
             contact: null,
             address: null,
-            industries: [],
+            industry_ids: [],
+            asset_type_ids: [],
             tax_code: null,
             description: null,
-            level: null,
-            note_evaluate: null
+            meta_data: {
+                payment_terms: {
+                    debt_day: null,
+                    discount_period : null,
+                    discount_rate: null,
+                    deposit_amount : null,
+                    description: null
+                }
+            }
         },
         listIndustry : [],
+        listAssetType : [],
         titleAction: null,
         action: null,
         id: null,
         idModalConfirmDelete: "deleteSupplier",
+        activeLink: {
+            payment_terms : true,
+            payment_account : false
+        },
 
         //methods
         async getListSupplier(filters) {
@@ -77,6 +94,32 @@ document.addEventListener('alpine:init', () => {
             } else {
                 toast.error('Lấy danh sách ngành hàng thất bại !')
             }
+            this.loading = false
+        },
+
+        async getListAssetType(filters) {
+            this.loading = true
+            const response = await window.apiGetAssetType(filters)
+            if (response.success) {
+                this.listAssetType = response.data.data.data
+            } else {
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            }
+            this.loading = false
+        },
+
+        async createSupplier() {
+            this.loading = true
+            const response = await window.apiCreateSupplier(this.supplier)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            toast.success('Tạo nhà cung cấp thành công !')
+            $('#modalSupplierUI').modal('hide');
+            this.resetDataSupplier()
+            this.reloadPage()
             this.loading = false
         },
 
@@ -111,25 +154,11 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async createSupplier() {
-            this.loading = true
-            const response = await window.apiCreateSupplier(this.supplier)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-            toast.success('Tạo nhà cung cấp thành công !')
-            $('#modalSupplierUI').modal('hide');
-            this.resetDataSupplier()
-            await this.getListSupplier(this.filters)
-            this.loading = false
-        },
-
         async handShowModalSupplierUI(action, id = null) {
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
+                this.supplier.code = generateShortCode()
             } else {
                 this.titleAction = 'Cập nhật'
                 this.id = id
@@ -165,13 +194,57 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetDataSupplier() {
-            this.supplier.name = null
-            this.supplier.description = null
+            this.supplier = {
+                name: null,
+                contact: null,
+                address: null,
+                industries: [],
+                tax_code: null,
+                description: null,
+                level: null,
+                note_evaluate: null,
+                meta_data: {
+                    payment_terms: {
+                        debt_day: null,
+                        discount_period: null,
+                        discount_rate: null,
+                        deposit_amount: null,
+                        description: null
+                    }
+                }
+            }
         },
 
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        reloadPage() {
+            const filters = {
+                code_name: null,
+                status: [],
+                industries_id: [],
+                page: 1,
+                limit: this.limit
+            }
+
+            this.getListSupplier(filters)
+        },
+
+        initSelect2InModal() {
+            $('#modalSupplierUI').on('shown.bs.modal', function () {
+                $('.select2').select2({
+                    dropdownParent: $('#modalSupplierUI') // Gán dropdown vào modal
+                });
+            });
+            $('.select2').on('select2:select select2:unselect', (event) => {
+                if (event.target.id === 'industrySelect2') {
+                    this.supplier.industry_ids = $(event.target).val();
+                } else if (event.target.id === 'assetTypeSelect2') {
+                    this.supplier.asset_type_ids = $(event.target).val();
+                }
+            });
         },
     }));
 });

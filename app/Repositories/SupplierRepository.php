@@ -52,4 +52,17 @@ class SupplierRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function getFirst($filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()
+            ->select($columns)
+            ->with($with);
+
+        if (!empty($filters['code'])) {
+            $query->where('code', $filters['code']);
+        }
+
+        return $query->first();
+    }
 }

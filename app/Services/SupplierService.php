@@ -61,4 +61,27 @@ class SupplierService
             'data' => $supplier->toArray()
         ];
     }
+
+    public function createSupplier($data)
+    {
+        $supplier = $this->supplierRepository->getFirst(['code' => $data['code']]);
+        if (!empty($supplier)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2014
+            ];
+        }
+
+        $supplier = $this->supplierRepository->insert($data);
+        if (!$supplier) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2015
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

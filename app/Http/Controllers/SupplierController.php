@@ -29,7 +29,6 @@ class SupplierController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
             return response_error();
         }
     }
@@ -40,8 +39,18 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'code' => 'required|string',
             'name' => 'required|string',
+            'contact' => 'nullable|string',
+            'tax_code' => 'nullable|string',
+            'address' => 'nullable|string',
+            'website' => 'nullable|string',
+            'industry_ids' => 'required|array',
+            'industry_ids.*' => 'integer',
+            'asset_type_ids' => 'required|array',
+            'asset_type_ids.*' => 'integer',
             'description' => 'nullable|string',
+            'meta_data' => 'nullable|array',
         ]);
 
         try {
