@@ -6,12 +6,13 @@ use App\Http\Resources\ListSupplierResource;
 use App\Repositories\IndustryRepository;
 use App\Repositories\SupplierRepository;
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\DB;
 
 class SupplierService
 {
     public function __construct(
         protected SupplierRepository $supplierRepository,
-        protected IndustryRepository $industryRepository
+        protected IndustryRepository $industryRepository,
     )
     {
 
@@ -72,8 +73,22 @@ class SupplierService
             ];
         }
 
-        $supplier = $this->supplierRepository->insert($data);
-        if (!$supplier) {
+        DB::beginTransaction();
+        try {
+            $supplier = $this->supplierRepository->createSupplier($data);
+
+            resolve(SupplierAsseTypeService::class)->insertByAssetTypeIdsAndSupplierId(
+                $data['asset_type_ids'], $supplier['id']
+            );
+
+            resolve(SupplierAssetIndustryService::class)->insertByIndustryIdsAndSupplierId(
+                $data['industry_ids'], $supplier['id']
+            );
+            DB::commit();
+
+        } catch (\Throwable $throwable) {
+            DB::rollBack();
+
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2015

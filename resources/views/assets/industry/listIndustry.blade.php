@@ -44,6 +44,6 @@
 @endsection
 
 @section('js')
-    <script src="/assets/js/api/apiIndustry.js"></script>
-    <script src="/assets/js/listIndustry.js"></script>
+    <script src="/js/api/apiIndustry.js"></script>
+    <script src="/js/listIndustry.js"></script>
 @endsection

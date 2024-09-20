@@ -11,6 +11,7 @@ class AssetType extends Model
 {
     use HasFactory;
     protected $table = 'asset_type';
+
     protected $fillable = [
        'name',
        'asset_type_group_id',

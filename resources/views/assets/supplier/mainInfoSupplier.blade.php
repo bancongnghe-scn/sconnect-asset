@@ -2,7 +2,7 @@
     <div class="row mb-3">
         <div class="col-4">
             <label class="form-label tw-font-bold">Mã nhà cung cấp</label>
-            <input type="text" class="form-control" x-model="supplier.code">
+            <input type="text" class="form-control" x-model="supplier.code" disabled>
         </div>
         <div class="col-4">
             <label class="form-label tw-font-bold">Tên nhà cung cấp</label>
@@ -10,13 +10,13 @@
         </div>
         <div class="col-4">
             <label class="form-label tw-font-bold">Mã số thuế</label>
-            <input type="text" class="form-control" x-model="supplier.tax_code">
+            <input type="number" class="form-control" x-model="supplier.tax_code">
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-4">
             <label class="form-label tw-font-bold">Số điện thoại</label>
-            <input type="text" class="form-control" x-model="supplier.contact">
+            <input type="number" class="form-control" x-model="supplier.contact">
         </div>
         <div class="col-4">
             <label class="form-label tw-font-bold">Địa chỉ</label>

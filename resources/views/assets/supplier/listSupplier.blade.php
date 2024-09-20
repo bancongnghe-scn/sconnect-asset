@@ -44,9 +44,10 @@
 @endsection
 
 @section('js')
-    <script src="/assets/js/api/apiSupplier.js"></script>
-    <script src="/assets/js/api/apiIndustry.js"></script>
-    <script src="/assets/js/api/apiAssetType.js"></script>
-    <script src="/assets/js/listSupplier.js"></script>
+    <script src="/js/api/apiSupplier.js"></script>
+    <script src="/js/api/apiIndustry.js"></script>
+    <script src="/js/api/apiAssetType.js"></script>
+    <script src="/js/listSupplier.js"></script>
+    <script src="/js/helpers.js"></script>
 @endsection
 

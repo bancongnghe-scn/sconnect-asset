@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSupplierRequest;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
 
@@ -36,25 +37,10 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreSupplierRequest $request)
     {
-        $request->validate([
-            'code' => 'required|string',
-            'name' => 'required|string',
-            'contact' => 'nullable|string',
-            'tax_code' => 'nullable|string',
-            'address' => 'nullable|string',
-            'website' => 'nullable|string',
-            'industry_ids' => 'required|array',
-            'industry_ids.*' => 'integer',
-            'asset_type_ids' => 'required|array',
-            'asset_type_ids.*' => 'integer',
-            'description' => 'nullable|string',
-            'meta_data' => 'nullable|array',
-        ]);
-
         try {
-            $result = $this->supplierService->createSupplier($request->all());
+            $result = $this->supplierService->createSupplier($request->validated());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

@@ -158,7 +158,9 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
-                this.supplier.code = generateShortCode()
+                window.generateShortCode().then(code => {
+                    this.supplier.code = code
+                })
             } else {
                 this.titleAction = 'Cập nhật'
                 this.id = id

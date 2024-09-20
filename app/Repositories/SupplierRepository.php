@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Supplier;
+use App\Models\User;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
@@ -64,5 +65,22 @@ class SupplierRepository extends BaseRepository
         }
 
         return $query->first();
+    }
+
+    public function createSupplier($data)
+    {
+        $dataCreate = [
+            'name' => $data['name'],
+            'code' => $data['code'],
+            'contact' => $data['contact'] ?? null,
+            'address' => $data['address'] ?? null,
+            'website' => $data['website'] ?? null,
+            'description' => $data['description'] ?? null,
+            'tax_code' => $data['tax_code'] ?? null,
+            'meta_data' => $data['tax_code'] ?? null,
+            'status' => Supplier::STATUS_PENDING_APPROVAL,
+            'created_by' => User::USER_ID_ADMIN
+        ];
+        return $this->_model->newQuery()->create($dataCreate);
     }
 }
