@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListSupplierResource extends JsonResource
@@ -12,11 +13,12 @@ class ListSupplierResource extends JsonResource
         foreach ($this->resource as $supplier) {
             $data[$supplier->id] = [
                 'id' => $supplier->id,
+                'code' => $supplier->code,
                 'name' => $supplier->name,
                 'contact' => $supplier->contact,
                 'address' => $supplier->address,
                 'website' => $supplier->website,
-                'level' => $supplier->level,
+                'status' => Supplier::STATUS_NAME[$supplier->status] ?? '',
                 'industries' => []
             ];
 

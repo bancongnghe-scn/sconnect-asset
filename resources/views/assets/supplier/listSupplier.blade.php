@@ -10,35 +10,35 @@
             </button>
         </div>
 
-{{--        <div>--}}
-{{--            @include('assets.supplier.filterSupplier')--}}
-{{--        </div>--}}
+        <div>
+            @include('assets.supplier.filterSupplier')
+        </div>
 
-{{--        <div--}}
-{{--            @edit="handShowModalSupplierUI('update', $event.detail.id)"--}}
-{{--            @remove="confirmRemove($event.detail.id)"--}}
-{{--            @change-page.window="changePage($event.detail.page)"--}}
-{{--            @change-limit.window="changeLimit"--}}
-{{--        >--}}
-{{--            @include('assets.supplier.tableSupplier')--}}
-{{--        </div>--}}
+        <div
+            @edit="handShowModalSupplierUI('update', $event.detail.id)"
+            @remove="confirmRemove($event.detail.id)"
+            @change-page.window="changePage($event.detail.page)"
+            @change-limit.window="changeLimit"
+        >
+            @include('assets.supplier.tableSupplier')
+        </div>
 
-{{--         modal--}}
+        {{-- modal--}}
         <div>
             <div
                 @save-supplier="handleSupplierUI">
                 @include('assets.supplier.modalSupplierUI')
             </div>
 
-{{--            <div--}}
-{{--                x-data="{--}}
-{{--                        modalId: idModalConfirmDelete,--}}
-{{--                        contentBody: 'Bạn có chắc chắn muốn xóa ngành hàng này không ?'--}}
-{{--                    }"--}}
-{{--                @ok="removeSupplier"--}}
-{{--            >--}}
-{{--                @include('common.modal-confirm')--}}
-{{--            </div>--}}
+            <div
+                x-data="{
+                        modalId: idModalConfirmDelete,
+                        contentBody: 'Bạn có chắc chắn muốn xóa nhà cung cấp này không ?'
+                    }"
+                @ok="removeSupplier"
+            >
+                @include('common.modal-confirm')
+            </div>
         </div>
     </div>
 @endsection

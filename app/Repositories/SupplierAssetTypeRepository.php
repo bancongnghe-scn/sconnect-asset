@@ -2,33 +2,33 @@
 
 namespace App\Repositories;
 
-use App\Models\SupplierAssetIndustry;
+use App\Models\SupplierAsseType;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
-class SupplierAssetIndustryRepository extends BaseRepository
+class SupplierAssetTypeRepository extends BaseRepository
 {
     public function getModelClass(): string
     {
-        return SupplierAssetIndustry::class;
+        return SupplierAsseType::class;
     }
 
-    public function getListing($filters, $columns = ['*'], $with = [])
+    public function getListing($filters = [], $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()
             ->select($columns)
             ->with($with);
 
         if (!empty($filters['supplier_id'])) {
-            $query->where('supplier_id', $filters['supplier_id']);
+            $query->whereIn('supplier_id', Arr::wrap($filters['supplier_id']));
         }
 
         return $query->get();
     }
 
-    public function removeIndustriesOfSupplier($industriesIds, $supplierId)
+    public function removeAssetTypeOfSupplier($assetTypeIds, $supplierId)
     {
         return $this->_model->where('supplier_id', $supplierId)
-            ->whereIn('industries_id', Arr::wrap($industriesIds))->delete();
+            ->whereIn('asset_type_id', Arr::wrap($assetTypeIds))->delete();
     }
 }

@@ -20,4 +20,11 @@ return [
     AppErrorCode::CODE_2013 => 'Nhà cung cấp không tồn tại !',
     AppErrorCode::CODE_2014 => 'Nhà cung cấp đã tồn tại !',
     AppErrorCode::CODE_2015 => 'Tạo nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2016 => 'Xóa nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2017 => 'Cập nhật nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2018 => 'Cập nhật loại tài sản cho nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2019 => 'Xóa loại tài sản của nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2020 => 'Tạo loại tài sản cho nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2021 => 'Xóa ngành hàng của nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2022 => 'Tạo ngành hàng cho nhà cung cấp thất bại !',
 ];

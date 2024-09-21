@@ -20,34 +20,24 @@
                                 <template x-for="(data,index) in dataTable" x-data="{line: 1}">
                                     <tr>
                                         <td x-text="index + 1"></td>
-                                        <template x-for="(columnName, key) in columns" :key="key">
+                                        <template x-for="(columnName, key) in columns">
                                             <td>
-                                                <template x-if="key === 'level'">
-                                                    <div class="ratings">
-                                                        <template x-for="index in data[key]" :key="index">
-                                                            <i class="fa fa-star tw-text-yellow-400"></i>
-                                                        </template>
-                                                        <template x-data="{star: 5 - data[key]}" x-for="index in star">
-                                                            <i class="fa fa-star tw-text-gray-200"></i>
-                                                        </template>
-                                                    </div>
-                                                </template>
-                                                <template x-if="key !== 'level'">
+                                                <template x-if="key !== 'website'">
                                                     <span x-text="data[key]"></span>
+                                                </template>
+                                                <template x-if="key === 'website'">
+                                                    <a :href="data[key]" x-text="data[key]" target="_blank"></a>
                                                 </template>
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" x-show="showAction.view ?? true"
-                                                    @click="$dispatch('view', { id: data.id })">
+                                            <button class="border-0 bg-body" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
                                                 <i class="fa-regular fa-eye" style="color: #63E6BE;"></i>
                                             </button>
-                                            <button class="border-0 bg-body" x-show="showAction.edit ?? true"
-                                                    @click="$dispatch('edit', { id: data.id })">
+                                            <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #1ec258;"></i>
                                             </button>
-                                            <button class="border-0 bg-body" x-show="showAction.remove ?? true"
-                                                    @click="$dispatch('remove', { id: data.id })">
+                                            <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
                                                 <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
                                             </button>
                                         </td>

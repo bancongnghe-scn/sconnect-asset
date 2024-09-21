@@ -31,8 +31,16 @@ class Supplier extends Model
     ];
 
     public const STATUS_PENDING_APPROVAL = 1;
+    public const STATUS_NAME = [
+      self::STATUS_PENDING_APPROVAL => 'Chờ phê duyệt'
+    ];
     public function supplierAssetIndustries(): HasMany
     {
         return $this->hasMany(SupplierAssetIndustry::class, 'supplier_id');
+    }
+
+    public function supplierAssetType(): HasMany
+    {
+        return $this->hasMany(SupplierAsseType::class, 'supplier_id');
     }
 }

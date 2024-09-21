@@ -18,9 +18,11 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'industry_id' => 'nullable|integer',
-            'level' => 'nullable|integer',
+            'code_name' => 'nullable|string',
+            'industry_ids' => 'nullable|array',
+            'industry_ids.*' => 'integer',
+            'status' => 'nullable|array',
+            'status.*' => 'integer',
             'page' => 'integer',
             'limit' => 'integer|max:200',
         ]);
@@ -74,15 +76,10 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreSupplierRequest $request, string $id)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'nullable|string',
-        ]);
-
         try {
-            $result = $this->supplierService->updateSupplier($request->all(), $id);
+            $result = $this->supplierService->updateSupplier($request->validated(), $id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

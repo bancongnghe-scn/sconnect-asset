@@ -19,18 +19,19 @@ class SupplierRepository extends BaseRepository
         $query = $this->_model->newQuery()
             ->select($columns);
 
-        if (!empty($filters['name'])) {
-            $query->where('supplier.name', 'like', $filters['name'] . '%');
+        if (!empty($filters['code_name'])) {
+            $query->where('supplier.name', 'like', $filters['code_name'] . '%')
+            ->orWhere('supplier.code', $filters['code_name']);
         }
 
-        if (!empty($filters['industry_id'])) {
+        if (!empty($filters['industry_ids'])) {
             $query->leftJoin('supplier_asset_industries','supplier_asset_industries.supplier_id', 'supplier.id');
 
-            $query->whereIn('supplier_asset_industries.industries_id', Arr::wrap($filters['industry_id']));
+            $query->whereIn('supplier_asset_industries.industries_id', Arr::wrap($filters['industry_ids']));
         }
 
-        if (!empty($filters['level'])) {
-            $query->whereIn('supplier.level', Arr::wrap($filters['level']));
+        if (!empty($filters['status'])) {
+            $query->whereIn('supplier.status', Arr::wrap($filters['status']));
         }
 
         return $query->get();
@@ -64,6 +65,10 @@ class SupplierRepository extends BaseRepository
             $query->where('code', $filters['code']);
         }
 
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
         return $query->first();
     }
 
@@ -77,7 +82,7 @@ class SupplierRepository extends BaseRepository
             'website' => $data['website'] ?? null,
             'description' => $data['description'] ?? null,
             'tax_code' => $data['tax_code'] ?? null,
-            'meta_data' => $data['tax_code'] ?? null,
+            'meta_data' => $data['meta_data'] ?? null,
             'status' => Supplier::STATUS_PENDING_APPROVAL,
             'created_by' => User::USER_ID_ADMIN
         ];

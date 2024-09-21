@@ -13,12 +13,13 @@ document.addEventListener('alpine:init', () => {
         //dataTable
         dataTable: [],
         columns: {
+            code: 'Mã',
             name: 'Tên nhà cung cấp',
             industries: 'Ngành hàng',
             contact: 'Liên hệ',
             address: 'Địa chỉ',
+            status: 'Đánh giá',
             website: 'Website',
-            level: 'Xếp hạng',
         },
         totalPages: null,
         currentPage: 1,
@@ -34,7 +35,7 @@ document.addEventListener('alpine:init', () => {
         filters: {
             code_name: null,
             status: [],
-            industries_id: [],
+            industry_ids: [],
             page: 1,
             limit: 10
         },
@@ -68,6 +69,9 @@ document.addEventListener('alpine:init', () => {
             payment_terms : true,
             payment_account : false
         },
+        status: {
+           1: 'Chờ phê duyệt'
+        },
 
         //methods
         async getListSupplier(filters) {
@@ -75,11 +79,10 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetSupplier(filters)
             if (response.success) {
                 const data = response.data
-                this.dataTable = data.data.data
-                this.totalPages = data.data.last_page
-                this.currentPage = data.data.current_page
-                this.total = data.data.total
-                toast.success('Lấy danh sách nhà cung cấp thành công !')
+                this.dataTable = data.data.data ?? []
+                this.totalPages = data.data.last_page ?? 1
+                this.currentPage = data.data.current_page ?? 1
+                this.total = data.data.total ?? 0
             } else {
                 toast.error('Lấy danh sách nhà cung cấp thất bại !')
             }
@@ -170,8 +173,9 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 const data = response.data.data
-                this.supplier.name = data.name
-                this.supplier.description = data.description
+                this.supplier = data
+                $('#industrySelect2').val(data.industry_ids).change()
+                $('#assetTypeSelect2').val(data.asset_type_ids).change()
             }
 
             $('#modalSupplierUI').modal('show');
@@ -198,19 +202,20 @@ document.addEventListener('alpine:init', () => {
         resetDataSupplier() {
             this.supplier = {
                 name: null,
+                code: null,
+                website: null,
                 contact: null,
                 address: null,
-                industries: [],
+                industry_ids: [],
+                asset_type_ids: [],
                 tax_code: null,
                 description: null,
-                level: null,
-                note_evaluate: null,
                 meta_data: {
                     payment_terms: {
                         debt_day: null,
-                        discount_period: null,
+                        discount_period : null,
                         discount_rate: null,
-                        deposit_amount: null,
+                        deposit_amount : null,
                         description: null
                     }
                 }
@@ -235,16 +240,22 @@ document.addEventListener('alpine:init', () => {
         },
 
         initSelect2InModal() {
+            $('.select2').select2();
             $('#modalSupplierUI').on('shown.bs.modal', function () {
                 $('.select2').select2({
                     dropdownParent: $('#modalSupplierUI') // Gán dropdown vào modal
                 });
             });
             $('.select2').on('select2:select select2:unselect', (event) => {
+                const value = $(event.target).val()
                 if (event.target.id === 'industrySelect2') {
-                    this.supplier.industry_ids = $(event.target).val();
+                    this.supplier.industry_ids = value
                 } else if (event.target.id === 'assetTypeSelect2') {
-                    this.supplier.asset_type_ids = $(event.target).val();
+                    this.supplier.asset_type_ids = value
+                } else if (event.target.id === 'industriesFilter') {
+                    this.filters.industry_ids = value
+                } else if (event.target.id === 'statusFilter') {
+                    this.filters.status = value
                 }
             });
         },

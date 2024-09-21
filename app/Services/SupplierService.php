@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListSupplierResource;
+use App\Http\Resources\SupplierInfoResource;
 use App\Repositories\IndustryRepository;
 use App\Repositories\SupplierRepository;
 use App\Support\AppErrorCode;
@@ -36,7 +37,7 @@ class SupplierService
             'page' => $filters['page'] ?? 1,
             'limit' => $filters['limit'] ?? 10
         ], [
-            'id','name','contact','address','website','level'
+            'id','code','name','contact','address','website','status'
         ],
         [
             'supplierAssetIndustries:id,supplier_id,industries_id' => [
@@ -49,8 +50,8 @@ class SupplierService
 
     public function findSupplier($id)
     {
-        $supplier = $this->supplierRepository->find($id);
-        if (is_null($supplier)) {
+        $supplier = $this->supplierRepository->getFirst(['id' => $id], with: ['supplierAssetIndustries','supplierAssetType']);
+        if (empty($supplier)) {
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2013
@@ -59,7 +60,7 @@ class SupplierService
 
         return [
             'success' => true,
-            'data' => $supplier->toArray()
+            'data' => SupplierInfoResource::make($supplier)->resolve()
         ];
     }
 
@@ -77,7 +78,7 @@ class SupplierService
         try {
             $supplier = $this->supplierRepository->createSupplier($data);
 
-            resolve(SupplierAsseTypeService::class)->insertByAssetTypeIdsAndSupplierId(
+            resolve(SupplierAssetTypeService::class)->insertByAssetTypeIdsAndSupplierId(
                 $data['asset_type_ids'], $supplier['id']
             );
 
@@ -97,6 +98,80 @@ class SupplierService
 
         return [
             'success' => true,
+        ];
+    }
+
+    public function deleteSupplierById($id)
+    {
+        $supplier = $this->supplierRepository->find($id);
+        if (is_null($supplier)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2013
+            ];
+        }
+
+        if (!$supplier->delete()) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2016
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function updateSupplier($data, $id)
+    {
+        $supplier = $this->supplierRepository->find($id);
+        if (is_null($supplier)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2013
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $supplier->fill($data);
+            if (!$supplier->save()) {
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'error_code' => AppErrorCode::CODE_2017
+                ];
+            }
+
+            $updateSupplierAssetType = resolve(SupplierAssetTypeService::class)->updateSupplierAssetType(
+                $data['asset_type_ids'], $id
+            );
+            if (!$updateSupplierAssetType['success']) {
+                DB::rollBack();
+                return $updateSupplierAssetType;
+            }
+
+            $updateSupplierAssetIndustry = resolve(SupplierAssetIndustryService::class)->updateSupplierAssetIndustry(
+                $data['industry_ids'], $id
+            );
+            if (!$updateSupplierAssetIndustry['success']) {
+                DB::rollBack();
+                return $updateSupplierAssetIndustry;
+            }
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            dd($exception);
+            DB::rollBack();
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2017
+            ];
+        }
+
+        return [
+            'success' => true
         ];
     }
 }
