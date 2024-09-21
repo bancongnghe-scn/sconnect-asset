@@ -56,6 +56,13 @@ document.addEventListener('alpine:init', () => {
                     discount_rate: null,
                     deposit_amount : null,
                     description: null
+                },
+                payment_account: {
+                    number: null,
+                    name: null,
+                    owner: null,
+                    branch: null,
+                    province: null
                 }
             }
         },
@@ -121,7 +128,6 @@ document.addEventListener('alpine:init', () => {
             }
             toast.success('Tạo nhà cung cấp thành công !')
             $('#modalSupplierUI').modal('hide');
-            this.resetDataSupplier()
             this.reloadPage()
             this.loading = false
         },
@@ -161,6 +167,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
+                this.resetDataSupplier()
                 window.generateShortCode().then(code => {
                     this.supplier.code = code
                 })
@@ -217,9 +224,19 @@ document.addEventListener('alpine:init', () => {
                         discount_rate: null,
                         deposit_amount : null,
                         description: null
+                    },
+                    payment_account: {
+                        number: null,
+                        name: null,
+                        owner: null,
+                        branch: null,
+                        province: null
                     }
                 }
             }
+
+            $('#industrySelect2').val([]).change()
+            $('#assetTypeSelect2').val([]).change()
         },
 
         confirmRemove(id) {
@@ -259,5 +276,13 @@ document.addEventListener('alpine:init', () => {
                 }
             });
         },
+
+        handleMetaData(active) {
+            for (const activeKey in this.activeLink) {
+                this.activeLink[activeKey] = false
+            }
+
+            this.activeLink[active] = true
+        }
     }));
 });

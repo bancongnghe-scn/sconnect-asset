@@ -17,11 +17,15 @@
                         <div class="mb-4">
                             <div class="d-flex tw-gap-x-4">
                                 <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                                   :class="activeLink.payment_terms ? 'active-link' : 'inactive-link'">
+                                   :class="activeLink.payment_terms ? 'active-link' : 'inactive-link'"
+                                   @click="handleMetaData('payment_terms')"
+                                >
                                     Điều khoản thanh toán
                                 </a>
                                 <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                                   :class="activeLink.payment_account ? 'active-link' : 'inactive-link'">
+                                   :class="activeLink.payment_account ? 'active-link' : 'inactive-link'"
+                                   @click="handleMetaData('payment_account')"
+                                >
                                     Tài khoản ngân hàng
                                 </a>
                             </div>
@@ -30,6 +34,9 @@
                         <div>
                             <div x-show="activeLink.payment_terms">
                                 @include('assets.supplier.paymentTerms')
+                            </div>
+                            <div x-show="activeLink.payment_account">
+                                @include('assets.supplier.paymentAccount')
                             </div>
                         </div>
                     </div>
