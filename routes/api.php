@@ -32,6 +32,11 @@ Route::middleware('auth')->group(function (){
             Route::post('/update', 'updateAssetTypeGroup')->name('asset.type_group.update');
         });
 
+    Route::prefix('asset-type')->controller(\App\Http\Controllers\AssetTypeController::class)
+        ->group(function (){
+            Route::post('/delete-multiple', 'deleteMultiple');
+        });
+
     Route::resources([
         'asset-type' => \App\Http\Controllers\AssetTypeController::class,
         'industry' => \App\Http\Controllers\industryController::class,

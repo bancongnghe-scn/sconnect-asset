@@ -26,6 +26,7 @@ class AssetTypeService
             'asset_type.asset_type_group_id',
             'asset_type.description',
             'asset_type.maintenance_months',
+            'asset_type.measure',
         ], ['assetTypeGroup:id,name']);
 
         return ListAssetTypeResource::make($listAssetType)->resolve();
@@ -109,6 +110,21 @@ class AssetTypeService
             return [
                 'success' => false,
                 'error_code' => AppErrorCode::CODE_2008
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deleteMultipleByIds($ids)
+    {
+        $result = $this->assetTypeRepository->deleteMultipleByIds($ids);
+        if (!$result) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2005
             ];
         }
 

@@ -17,8 +17,22 @@ class AssetType extends Model
        'asset_type_group_id',
        'description',
        'maintenance_months',
+       'measure',
        'created_by',
        'updated_by',
+    ];
+
+    public const MEASURE_NAME = [
+        1 => 'Chiếc',
+        2 => 'Cái',
+        3 => 'Bộ',
+        4 => 'Bình',
+        5 => 'Cuộn',
+        6 => 'Hộp',
+        7 => 'Túi',
+        8 => 'Lọ',
+        9 => 'Thùng',
+        10 => 'Đôi',
     ];
 
     public function assetTypeGroup() : HasOne

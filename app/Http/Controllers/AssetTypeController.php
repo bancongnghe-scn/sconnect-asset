@@ -44,6 +44,7 @@ class AssetTypeController extends Controller
             'name' => 'required|string',
             'asset_type_group_id' => 'required|integer',
             'maintenance_months' => 'required|integer',
+            'measure' => 'required|integer',
             'description' => 'nullable|string',
         ]);
 
@@ -88,6 +89,7 @@ class AssetTypeController extends Controller
             'name' => 'required|string',
             'asset_type_group_id' => 'required|integer',
             'maintenance_months' => 'required|integer',
+            'measure' => 'required|integer',
             'description' => 'nullable|string',
         ]);
 
@@ -111,6 +113,25 @@ class AssetTypeController extends Controller
     {
         try {
             $result = $this->assetTypeService->deleteAssetTypeById($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function deleteMultiple(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'integer',
+        ]);
+
+        try {
+            $result = $this->assetTypeService->deleteMultipleByIds($request->get('ids'));
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

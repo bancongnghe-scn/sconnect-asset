@@ -4,9 +4,12 @@
 
 @section('content')
     <div x-data="assetType">
-        <div class="tw-mb-3 d-flex tw-justify-end">
+        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
             <button type="button" class="btn btn-primary" @click="handShowModalAssetTypeUI('create')">
                 Thêm mới
+            </button>
+            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple">
+                Xóa chọn
             </button>
         </div>
 
@@ -36,6 +39,16 @@
                 contentBody: 'Bạn có chắc chắn muốn xóa loại tài sản này không ?'
             }"
                 @ok="removeAssetType"
+            >
+                @include('common.modal-confirm')
+            </div>
+
+            <div
+                x-data="{
+                modalId: idModalConfirmDeleteMultiple,
+                contentBody: 'Bạn có chắc chắn muốn xóa danh sách loại tài sản này không ?'
+            }"
+                @ok="deleteMultiple"
             >
                 @include('common.modal-confirm')
             </div>

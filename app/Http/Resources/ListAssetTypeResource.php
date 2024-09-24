@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\AssetType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListAssetTypeResource extends JsonResource
@@ -14,6 +15,7 @@ class ListAssetTypeResource extends JsonResource
                 'name' => $assetType->name,
                 'description' => $assetType->description,
                 'maintenance_months' => $assetType->maintenance_months,
+                'measure' => AssetType::MEASURE_NAME[$assetType->measure] ?? "",
                 'asset_type_group' => $assetType->assetTypeGroup?->name
             ];
         }

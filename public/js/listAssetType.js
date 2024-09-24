@@ -15,17 +15,21 @@ document.addEventListener('alpine:init', () => {
             name: 'Tên loại tài sản',
             asset_type_group: 'Nhóm loại',
             maintenance_months: 'Thời gian bảo dưỡng(Tháng)',
+            measure: 'Đơn vị tính',
             description: 'Ghi chú'
         },
-        totalPages: null,
-        currentPage: 1,
-        total: null,
-        limit: 10,
         showAction: {
             view: false,
             edit: true,
             remove: true
         },
+        selectedRow: [],
+        showChecked: true,
+        //pagination
+        totalPages: null,
+        currentPage: 1,
+        total: null,
+        limit: 10,
 
         //data
         filters: {
@@ -39,11 +43,25 @@ document.addEventListener('alpine:init', () => {
             asset_type_group_id: null,
             maintenance_months: null,
             description: null,
+            measure: null,
+        },
+        listMeasure: {
+            1: 'Chiếc',
+            2: 'Cái',
+            3: 'Bộ',
+            4: 'Bình',
+            5: 'Cuộn',
+            6: 'Hộp',
+            7: 'Túi',
+            8: 'Lọ',
+            9: 'Thùng',
+            10: 'Đôi',
         },
         titleAction: null,
         action: null,
         id: null,
         idModalConfirmDelete: "deleteAssetTypeGroup",
+        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         listAssetTypeGroup: [],
 
         //methods
@@ -120,6 +138,26 @@ document.addEventListener('alpine:init', () => {
             window.location.reload();
         },
 
+        async deleteMultiple() {
+            this.loading = true
+            const ids = Object.keys(this.selectedRow)
+            const response = await window.apiDeleteMultipleByIds(ids)
+            if (!response.success) {
+                toast.error(response.message)
+                this.loading = false
+
+                return;
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide');
+
+            toast.success('Xóa danh sách loại tài sản thành công !')
+
+            this.getListAssetType(this.filters)
+
+            this.loading = false
+        },
+
         async handShowModalAssetTypeUI(action, id = null) {
             this.action = action
             if (action === 'create') {
@@ -170,6 +208,10 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        confirmDeleteMultiple() {
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
         },
 
         searchAssetType() {
