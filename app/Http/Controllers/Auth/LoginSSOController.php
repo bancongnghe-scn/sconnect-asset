@@ -20,14 +20,12 @@ class LoginSSOController extends Controller
     }
     public function loginSSO(): Redirector|Application|RedirectResponse
     {
-        Auth::loginUsingId(Auth::id());
-        return redirect()->route('home');
-
         $secretKey = config('sso.sso-secret-key');
         $token = @$_GET['token'];
         $sig = @$_GET['sig'];
         $sessionCookie = @$_COOKIE['scn_session'];
         if ($token && $sig) {
+            dd($sig);
             if (!hash_equals(hash_hmac('sha256', $token, $secretKey), $sig)) {
                 $url = config('sso.logout-sso');
                 $this->callApiWithSession($url, $sessionCookie, $secretKey);
