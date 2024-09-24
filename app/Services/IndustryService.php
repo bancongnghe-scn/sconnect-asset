@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\industryRepository;
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
 
 class IndustryService
 {
@@ -74,7 +75,7 @@ class IndustryService
             ];
         }
 
-        $data['created_by'] = User::USER_ID_ADMIN;
+        $data['created_by'] = Auth::id();
         $createIndustry = $this->industryRepository->insert($data);
         if (!$createIndustry) {
             return [
@@ -98,7 +99,7 @@ class IndustryService
             ];
         }
 
-        $data['updated_by'] = User::USER_ID_ADMIN;
+        $data['updated_by'] = Auth::id();
         $industry->fill($data);
         if (!$industry->save()) {
             return [

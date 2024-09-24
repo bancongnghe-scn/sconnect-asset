@@ -22,7 +22,7 @@ Route::get('ping', function () {
     dd(resolve(\App\Services\AssetTypeService::class)->getListAssetType());
 });
 
-Route::group([], function (){
+Route::middleware('auth')->group(function (){
     Route::prefix('asset-type-group')
         ->controller(AssetTypeGroupController::class)
         ->group(function (){

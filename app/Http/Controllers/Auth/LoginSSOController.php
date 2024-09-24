@@ -15,11 +15,14 @@ class LoginSSOController extends Controller
 {
     public function login()
     {
-        $redirectUrl = config('sso.url_login').'?redirect_url='.config('app.url');
+        $redirectUrl = config('sso.url_login');
         return redirect($redirectUrl);
     }
     public function loginSSO(): Redirector|Application|RedirectResponse
     {
+        Auth::loginUsingId(Auth::id());
+        return redirect()->route('home');
+
         $secretKey = config('sso.sso-secret-key');
         $token = @$_GET['token'];
         $sig = @$_GET['sig'];

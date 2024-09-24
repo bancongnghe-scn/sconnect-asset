@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\User;
 use App\Repositories\SupplierAssetTypeRepository;
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SupplierAssetTypeService
@@ -23,7 +24,7 @@ class SupplierAssetTypeService
             $dataInsertSupplierAsseType[] = [
                 'supplier_id' => $supplierId,
                 'asset_type_id' => $assetTypeId,
-                'created_by' => User::USER_ID_ADMIN
+                'created_by' => Auth::id()
             ];
         }
 
@@ -56,7 +57,7 @@ class SupplierAssetTypeService
                 $dataCreate[] = [
                     'supplier_id' => $supplierId,
                     'asset_type_id' => $assetTypeId,
-                    'created_by' => User::USER_ID_ADMIN
+                    'created_by' => Auth::id()
                 ];
             }
 

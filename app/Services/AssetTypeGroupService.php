@@ -33,7 +33,7 @@ class AssetTypeGroupService
             ];
         }
 
-        $data['created_by'] = User::USER_ID_ADMIN;
+        $data['created_by'] = Auth::id();
         $createAssetTypeGroup = $this->assetTypeGroupRepository->insert($data);
         if (!$createAssetTypeGroup) {
             return [
@@ -79,7 +79,7 @@ class AssetTypeGroupService
             ];
         }
 
-        $data['updated_by'] = User::USER_ID_ADMIN;
+        $data['updated_by'] = Auth::id();
         $data['updated_at'] = date('Y-m-d H:i:s');
         $assetTypeGroup->fill($data);
         if (!$assetTypeGroup->save()) {

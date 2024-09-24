@@ -6,6 +6,7 @@ use App\Models\Supplier;
 use App\Models\User;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierRepository extends BaseRepository
 {
@@ -84,7 +85,7 @@ class SupplierRepository extends BaseRepository
             'tax_code' => $data['tax_code'] ?? null,
             'meta_data' => $data['meta_data'] ?? null,
             'status' => Supplier::STATUS_PENDING_APPROVAL,
-            'created_by' => User::USER_ID_ADMIN
+            'created_by' => Auth::id()
         ];
         return $this->_model->newQuery()->create($dataCreate);
     }

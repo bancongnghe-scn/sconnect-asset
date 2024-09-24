@@ -6,6 +6,7 @@ use App\Http\Resources\ListAssetTypeResource;
 use App\Models\User;
 use App\Repositories\AssetTypeRepository;
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AssetTypeService
@@ -78,7 +79,7 @@ class AssetTypeService
             ];
         }
 
-        $data['created_by'] = User::USER_ID_ADMIN;
+        $data['created_by'] = Auth::id();
         $createAssetType = $this->assetTypeRepository->insert($data);
         if (!$createAssetType) {
             return [
@@ -102,7 +103,7 @@ class AssetTypeService
             ];
         }
 
-        $data['updated_by'] = User::USER_ID_ADMIN;
+        $data['updated_by'] = Auth::id();
         $assetType->fill($data);
         if (!$assetType->save()) {
             return [
