@@ -7,15 +7,11 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import '@fortawesome/fontawesome-free/css/all.css';
-import 'select2/dist/css/select2.min.css';
-import 'query/dist/jquery.min.js';
-import 'select2/dist/js/select2.min.js';
 import Alpine from 'alpinejs'
-
 window.Alpine = Alpine
-
-Alpine.start()
-
+document.addEventListener('DOMContentLoaded', () => {
+    Alpine.start();
+});
 // If you want Alpine's instance to be available globally
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -82,5 +78,6 @@ const toast = {
 
 // Export để sử dụng ở những nơi khác
 window.toast = toast;
+
 
 

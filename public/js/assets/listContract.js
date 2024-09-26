@@ -2,9 +2,6 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
             $('.select2').select2()
-            $('#datepicker').datepicker({
-                showOtherMonths: true
-            })
             this.onChangeSelect2()
         },
 
