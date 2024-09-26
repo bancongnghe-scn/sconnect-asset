@@ -7,6 +7,9 @@
 import './bootstrap';
 import { createApp } from 'vue';
 import '@fortawesome/fontawesome-free/css/all.css';
+import 'select2/dist/css/select2.min.css';
+import 'query/dist/jquery.min.js';
+import 'select2/dist/js/select2.min.js';
 import Alpine from 'alpinejs'
 
 window.Alpine = Alpine

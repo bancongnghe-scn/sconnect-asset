@@ -57,5 +57,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/listContract.js"></script>
+    <script src="/js/asset/listContract.js"></script>
 @endsection

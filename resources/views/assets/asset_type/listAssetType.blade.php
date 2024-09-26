@@ -57,7 +57,7 @@
 @endsection
 
 @section('js')
-    <script src="/js/api/apiAssetType.js"></script>
-    <script src="/js/api/apiAssetTypeGroup.js"></script>
-    <script src="/js/listAssetType.js"></script>
+    <script src="/js/asset/api/apiAssetType.js"></script>
+    <script src="/js/asset/api/apiAssetTypeGroup.js"></script>
+    <script src="/js/asset/listAssetType.js"></script>
 @endsection
