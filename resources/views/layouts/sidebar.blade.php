@@ -39,6 +39,20 @@
                 </li>
             </ul>
         </li><!-- End Components Nav -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
+                <i class="fa-solid fa-gear"></i>
+                <span>Quản lý tài sản</span>
+                <i class="fa-solid fa-arrow-right tw-ml-2"></i>
+            </a>
+            <ul id="asset-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/contract/list">
+                        <i class="fa-solid fa-whiskey-glass"></i><span>Hợp đồng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
     </ul>
 
 </aside><!-- End Sidebar-->

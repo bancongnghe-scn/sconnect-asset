@@ -49,39 +49,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    .active-link {
-        color: #28a745; /* Màu xanh lá */
-        font-weight: bold;
-        position: relative;
-    }
-    .active-link::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 2px;
-        background-color: #28a745;
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-    }
-    .inactive-link {
-        color: #6c757d; /* Màu xám */
-        position: relative;
-    }
-    .inactive-link:hover {
-        color: #28a745; /* Màu xanh lá khi hover */
-        font-weight: bold;
-    }
-    .inactive-link:hover::after {
-        content: '';
-        display: block;
-        width: 100%;
-        height: 2px;
-        background-color: #28a745;
-        position: absolute;
-        bottom: -3px;
-        left: 0;
-    }
-</style>
