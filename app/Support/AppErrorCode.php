@@ -23,11 +23,18 @@ class AppErrorCode
     public const CODE_2015 = 2015; //  Tạo nhà cung cấp thất bại !
     public const CODE_2016 = 2016; //  Xóa nhà cung cấp thất bại !
     public const CODE_2017 = 2017; //  Cập nhật nhà cung cấp thất bại !
-    public const CODE_2018 = 2018; // Cập nhật loại tài sản cho nhà cung cấp thất bại !
+    public const CODE_2018 = 2018; //  Cập nhật loại tài sản cho nhà cung cấp thất bại !
     public const CODE_2019 = 2019; //  Xóa loại tài sản của nhà cung cấp thất bại !
     public const CODE_2020 = 2020; //  Tạo loại tài sản cho nhà cung cấp thất bại !
     public const CODE_2021 = 2021; //  Xóa ngành hàng của nhà cung cấp thất bại !
     public const CODE_2022 = 2022; //  Tạo ngành hàng cho nhà cung cấp thất bại !
+    public const CODE_2023 = 2023; //  Hợp đồng đã tồn tại !
+    public const CODE_2024 = 2024; //  Tạo hợp đồng thất bại !
+    public const CODE_2025 = 2025; //  Tạo người theo dõi thất bại !
+
+//    public const CODE_2023 = 2023; // Loại tài sản không tồn tại !
+//    public const CODE_2005 = 2005; // Xóa loại tài sản thất bại !
+//    public const CODE_2008 = 2008; //  Cập nhật loai tài sản thất bại !
 
 
 }

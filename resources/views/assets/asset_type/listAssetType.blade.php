@@ -57,7 +57,9 @@
 @endsection
 
 @section('js')
-    <script src="/js/assets/api/apiAssetType.js"></script>
-    <script src="/js/assets/api/apiAssetTypeGroup.js"></script>
-    <script src="/js/assets/listAssetType.js"></script>
+    @vite([
+        'resources/js/assets/listAssetType.js',
+        'resources/js/assets/api/apiAssetType.js',
+        'resources/js/assets/api/apiAssetTypeGroup.js',
+    ])
 @endsection

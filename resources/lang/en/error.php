@@ -27,4 +27,7 @@ return [
     AppErrorCode::CODE_2020 => 'Tạo loại tài sản cho nhà cung cấp thất bại !',
     AppErrorCode::CODE_2021 => 'Xóa ngành hàng của nhà cung cấp thất bại !',
     AppErrorCode::CODE_2022 => 'Tạo ngành hàng cho nhà cung cấp thất bại !',
+    AppErrorCode::CODE_2023 => 'Hợp đồng đã tồn tại !',
+    AppErrorCode::CODE_2024 => 'Tạo hợp đồng thất bại !',
+    AppErrorCode::CODE_2025 => 'Tạo người theo dõi thất bại !',
 ];

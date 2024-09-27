@@ -44,6 +44,8 @@
 @endsection
 
 @section('js')
-    <script src="/js/assets/api/apiIndustry.js"></script>
-    <script src="/js/assets/listIndustry.js"></script>
+    @vite([
+        'resources/js/assets/listIndustry.js',
+        'resources/js/assets/api/apiIndustry.js',
+    ])
 @endsection

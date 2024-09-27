@@ -40,7 +40,8 @@ Route::middleware('auth')->group(function (){
     Route::resources([
         'asset-type' => \App\Http\Controllers\AssetTypeController::class,
         'industry' => \App\Http\Controllers\industryController::class,
-        'supplier' => \App\Http\Controllers\SupplierController::class
+        'supplier' => \App\Http\Controllers\SupplierController::class,
+        'contract' => \App\Http\Controllers\ContractController::class
     ]);
 });
 

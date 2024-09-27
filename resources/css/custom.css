@@ -31,3 +31,6 @@
     bottom: -3px;
     left: 0;
 }
+.form-control {
+    background: white;
+}

@@ -1,9 +1,6 @@
 @extends('layouts.app',[
     'title' => 'Quản lý hợp đồng'
 ])
-@section('js')
-    @vite('public/js/assets/listContract.js')
-@endsection
 
 @section('content')
     <div x-data="contract">
@@ -59,3 +56,9 @@
     </div>
 @endsection
 
+@section('js')
+    @vite([
+        'resources/js/assets/listContract.js',
+        'resources/js/assets/api/apiContract.js',
+    ])
+@endsection

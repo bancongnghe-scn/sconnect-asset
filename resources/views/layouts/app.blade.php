@@ -20,11 +20,7 @@
         'resources/sass/app.scss',
         'resources/css/app.css',
         'resources/css/custom.css',
-        'node_modules/select2/dist/css/select2.min.css',
-        'resources/js/app.js',
-        'node_modules/jquery/dist/jquery.min.js',
-        'node_modules/select2/dist/js/select2.min.js'
-    ],'defer')
+    ])
 
     @yield('css')
 </head>
@@ -61,6 +57,12 @@
 {{--@include('layouts.footer')--}}
 
 <div class="toast-container position-fixed top-0 tw-right-2"></div>
+
+@vite([
+    'node_modules/jquery/dist/jquery.min.js',
+    'node_modules/select2/dist/js/select2.min.js',
+    'resources/js/app.js'
+])
 
 @yield('js')
 </body>
