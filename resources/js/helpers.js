@@ -7,18 +7,23 @@ window.generateShortCode = async function () {
 window.formData = function (data) {
     const formData = new FormData();
 
-    for (const [key, value] of Object.entries(data)) {
-        // Handle the array or file values differently if needed
-        if (Array.isArray(value)) {
+    Object.entries(data).forEach(([key, value]) => {
+        if (Array.isArray(value) && value !== []) {
             value.forEach((item, index) => {
-                formData.append(`${key}[${index}]`, item);
+                if (typeof item === 'object' && !(item instanceof File)) {
+                    Object.entries(item).forEach(([keyChild, valueChild]) => {
+                        formData.append(`${key}[${index}][${keyChild}]`, valueChild);
+                    })
+                } else {
+                    formData.append(`${key}[${index}]`, item);
+                }
             });
-        } else if (value instanceof File || value instanceof Blob) {
-            formData.append(key, value);
-        } else if (value !== null) {
-            formData.append(key, value);
+        } else {
+            if (value !== null) {
+                formData.append(key, value);
+            }
         }
-    }
+    });
 
     return formData
 }

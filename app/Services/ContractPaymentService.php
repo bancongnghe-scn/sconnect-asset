@@ -14,7 +14,7 @@ class ContractPaymentService
 
     }
 
-    public function createMultipleContractPayment($payments, $contractId)
+    public function createContractPayment(array $payments, $contractId)
     {
         $contractPayments = [];
         $order = 1;

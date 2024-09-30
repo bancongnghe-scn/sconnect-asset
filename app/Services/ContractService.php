@@ -76,7 +76,7 @@ class ContractService
 
             $payments = $data['payments'] ?? [];
             if (!empty($payments)) {
-                $insertContractPayments = resolve(ContractPaymentService::class)->createMultipleContractPayment($payments, $contract->id);
+                $insertContractPayments = resolve(ContractPaymentService::class)->createContractPayment($payments, $contract->id);
                 if (!$insertContractPayments) {
                     DB::rollBack();
                     return [
@@ -89,7 +89,6 @@ class ContractService
             DB::commit();
 
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
             return [
                 'success' => false,
