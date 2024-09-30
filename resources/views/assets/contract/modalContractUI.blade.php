@@ -107,7 +107,7 @@
                                     <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index">
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
+                                    <input type="number" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" x-model="payment.description">

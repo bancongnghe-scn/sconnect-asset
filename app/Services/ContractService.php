@@ -100,4 +100,11 @@ class ContractService
            'success' => true,
         ];
     }
+
+    public function getListContract(array $filters)
+    {
+        $data = $this->contractRepository->getListing($filters);
+
+        return $data;
+    }
 }

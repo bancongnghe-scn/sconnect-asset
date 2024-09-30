@@ -29,4 +29,27 @@ class ContractController extends Controller
             return response_error();
         }
     }
+
+    public function index(Request $request)
+    {
+        $request->validate([
+            'name_code' => 'nullable|string',
+            'type' => 'nullable|array',
+            'type.*' => 'integer',
+            'status' => 'nullable|array',
+            'status.*' => 'integer',
+            'signing_date' => 'nullable|date|date_format:Y-m-d',
+            'from' => 'nullable|date|date_format:Y-m-d',
+            'page' => 'nullable|integer',
+            'limit' => 'nullable|integer|max:200',
+        ]);
+
+        try {
+            $result = $this->contractService->getListContract($request->all());
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

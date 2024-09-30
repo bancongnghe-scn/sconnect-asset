@@ -38,7 +38,7 @@ document.addEventListener('alpine:init', () => {
             type: [],
             status: [],
             signing_date: null,
-            from: null,
+            from : null,
             limit: 10,
             page: 1
         },
@@ -149,6 +149,7 @@ document.addEventListener('alpine:init', () => {
             $('#modalContractUI').modal('hide');
             this.loading = false
             this.reloadPage()
+            this.resetDataContract()
         },
 
         async deleteMultiple() {
@@ -208,7 +209,20 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetDataContract() {
-            this.contract.name = null
+            this.contract = {
+                code: null,
+                type: null,
+                name: null,
+                supplier_id: null,
+                signing_date: null,
+                from: null,
+                to: null,
+                user_ids: [],
+                contract_value: null,
+                description: null,
+                files: [],
+                payments: []
+            }
         },
 
         reloadPage() {
