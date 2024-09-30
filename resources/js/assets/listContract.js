@@ -7,17 +7,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             $('.select2').select2()
             this.onChangeSelect2()
-            const datepicker = document.querySelectorAll('.datepicker');
-            datepicker.forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
-            });
+            this.initDatePicker()
         },
 
         //dataTable
@@ -62,8 +52,9 @@ document.addEventListener('alpine:init', () => {
             to: null,
             user_ids: [],
             contract_value: null,
-            files: [],
             description: null,
+            files: [],
+            payments: []
         },
         listTypeContract: {
             1: 'Hợp đồng mua bán',
@@ -85,8 +76,20 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-
         //methods
+        initDatePicker() {
+            document.querySelectorAll('.datepicker').forEach(el => {
+                new AirDatepicker(el, {
+                    autoClose: true,
+                    locale: localeEn,
+                    dateFormat: 'dd/MM/yyyy',
+                    onSelect: ({date}) => {
+                        this.onChangeDatePicker(el, date)
+                    }
+                });
+            });
+        },
+
         async getListContract(filters) {
             this.loading = true
             const response = await window.apiGetContract(filters)
@@ -264,7 +267,25 @@ document.addEventListener('alpine:init', () => {
                 this.contract.from = storageFormat
             } else if (el.id === 'selectTo') {
                 this.contract.to = storageFormat
+            } else if (el.name === 'selectPaymentDate') {
+                this.contract.payments[el.id].payment_date = storageFormat
             }
-        }
+        },
+
+        handleFiles() {
+            this.contract.files = Array.from(this.$refs.fileInput.files)
+        },
+
+        addRowPayment() {
+            this.contract.payments.push({
+                payment_date: null,
+                money: null,
+                description: null
+            })
+
+            this.$nextTick(() => {
+                this.initDatePicker()
+            });
+        },
     }));
 });

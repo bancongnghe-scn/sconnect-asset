@@ -75,7 +75,9 @@ window.apiShowContract = async function (id) {
 
 window.apiCreateContract = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/contract",dataCreate)
+        const formData = window.formData(dataCreate)
+
+        const response = await axios.post("/api/contract",formData)
 
         const data = response.data;
         if (!data.success) {

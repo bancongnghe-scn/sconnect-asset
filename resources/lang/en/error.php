@@ -30,4 +30,6 @@ return [
     AppErrorCode::CODE_2023 => 'Hợp đồng đã tồn tại !',
     AppErrorCode::CODE_2024 => 'Tạo hợp đồng thất bại !',
     AppErrorCode::CODE_2025 => 'Tạo người theo dõi thất bại !',
+    AppErrorCode::CODE_2026 => 'Lưu file hợp đồng thất bại !',
+    AppErrorCode::CODE_2027 => 'Lưu thông tin thanh toán thất bại !',
 ];

@@ -29,7 +29,6 @@
         {{-- modal--}}
         <div>
             <div
-                @save="handleContractUI">
                 @include('assets.contract.modalContractUI')
             </div>
 

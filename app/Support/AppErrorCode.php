@@ -31,6 +31,8 @@ class AppErrorCode
     public const CODE_2023 = 2023; //  Hợp đồng đã tồn tại !
     public const CODE_2024 = 2024; //  Tạo hợp đồng thất bại !
     public const CODE_2025 = 2025; //  Tạo người theo dõi thất bại !
+    public const CODE_2026 = 2026; //  Lưu file hợp đồng thất bại !
+    public const CODE_2027 = 2027; //  Lưu thông tin thanh toán thất bại !
 
 //    public const CODE_2023 = 2023; // Loại tài sản không tồn tại !
 //    public const CODE_2005 = 2005; // Xóa loại tài sản thất bại !

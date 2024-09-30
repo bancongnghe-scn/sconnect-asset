@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container">
+                <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                     <div class="row mb-3">
                         <div class="col-3">
@@ -63,24 +63,76 @@
                             <label class="form-label">Tổng giá trị hợp đồng</label>
                             <input type="number" class="form-control" placeholder="Nhập ..." x-model="contract.contract_value">
                         </div>
-                        <div class="col-4">
-                            <label for="formFileMultiple" class="form-label">Tệp đính kèm (Dung lượng tối đa 5MB)<label class="tw-text-red-600">*</label></label>
-                            <input class="form-control" type="file" id="formFileMultiple" multiple x-model="contract.files">
-                        </div>
-                    </div>
-                    <div class="row">
                         <div class="col-5">
                             <label for="formFileMultiple" class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="contract.description"></textarea>
                         </div>
                     </div>
+                    <div class="row">
+                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
+                        <div class="col-5">
+                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles">
+                            <label type="button" class="btn btn-primary" for="fileInput">Chọn tệp</label>
+
+                            <div class="d-flex mt-2 tw-gap-x-2">
+                                <template x-for="(file, index) in contract.files" :key="index">
+                                    <div class="tw-flex gap-x-1">
+                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="contract.files.splice(index, 1)"></i>
+                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit"></a>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="container"></div>
+                <div class="container mb-3">
+                    <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
+                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                           aria-describedby="example2_info">
+                        <thead>
+                        <tr>
+                            <th rowspan="1" colspan="1">Lần thanh toán</th>
+                            <th rowspan="1" colspan="1">Ngày thanh toán</th>
+                            <th rowspan="1" colspan="1">Số tiền</th>
+                            <th rowspan="1" colspan="1">Nội dung thanh toán</th>
+                            <th rowspan="1" colspan="1" class="col-2 text-center"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template x-for="(payment, index) in contract.payments">
+                            <tr>
+                                <td x-text="'Lần ' + (index + 1)"></td>
+                                <td>
+                                    <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" x-model="payment.description">
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button class="border-0 bg-body" @click="contract.payments.splice(index, 1)">
+                                        <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                    </table>
+                    <button @click="addRowPayment" type="button" class="btn btn-primary tw-w-fit">Thêm hàng</button>
+                </div>
+
+                <template x-if="contract.appendix">
+                    <div class="container">
+                        <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
+                    </div>
+                </template>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="$dispatch('save')" type="button" class="btn btn-primary">Lưu</button>
+                <button @click="handleContractUI" type="button" class="btn btn-primary">Lưu</button>
             </div>
         </div>
     </div>
@@ -91,3 +143,4 @@
         z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
     }
 </style>
+

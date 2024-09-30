@@ -49,7 +49,6 @@
         'resources/js/assets/api/apiIndustry.js',
         'resources/js/assets/api/apiSupplier.js',
         'resources/js/assets/api/apiAssetType.js',
-        'resources/js/helpers.js',
     ])
 @endsection
 
