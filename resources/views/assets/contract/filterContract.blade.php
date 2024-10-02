@@ -28,14 +28,14 @@
                     <div class="d-flex tw-gap-x-3 align-items-end">
                         <div class="form-group col-3">
                             <label class="tw-font-bold">Ngày ký</label>
-                            <input type="text" class="form-control datepicker" x-model="filters.name_code" placeholder="Ngày ký">
+                            <input type="text" class="form-control datepicker" id="filterSigningDate" placeholder="Ngày ký" autocomplete="off">
                         </div>
                         <div class="form-group col-3">
                             <label class="tw-font-bold">Ngày hiệu lực</label>
-                            <input type="text" class="form-control datepicker" x-model="filters.name_code" placeholder="Ngày hiệu lực">
+                            <input type="text" class="form-control datepicker" id="filterFrom" placeholder="Ngày hiệu lực" autocomplete="off">
                         </div>
                         <div>
-                            <button @click="searchContract" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
+                            <button @click="getListContract(filters)" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
                         </div>
                     </div>
                 </div>

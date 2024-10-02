@@ -33,10 +33,7 @@ class AppErrorCode
     public const CODE_2025 = 2025; //  Tạo người theo dõi thất bại !
     public const CODE_2026 = 2026; //  Lưu file hợp đồng thất bại !
     public const CODE_2027 = 2027; //  Lưu thông tin thanh toán thất bại !
-
-//    public const CODE_2023 = 2023; // Loại tài sản không tồn tại !
-//    public const CODE_2005 = 2005; // Xóa loại tài sản thất bại !
-//    public const CODE_2008 = 2008; //  Cập nhật loai tài sản thất bại !
-
-
+    public const CODE_2028 = 2028; //  Hợp đồng không tồn tại !
+    public const CODE_2029 = 2029; //  Xóa người theo dõi hợp đồng thất bại !
+    public const CODE_2030 = 2030; //  Xóa hợp đồng thất bại !
 }

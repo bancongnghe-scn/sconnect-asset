@@ -31,8 +31,12 @@ class Supplier extends Model
     ];
 
     public const STATUS_PENDING_APPROVAL = 1;
+    public const STATUS_APPROVED = 2;
+    public const STATUS_CANCEL = 3;
     public const STATUS_NAME = [
-      self::STATUS_PENDING_APPROVAL => 'Chờ phê duyệt'
+      self::STATUS_PENDING_APPROVAL => 'Chờ duyệt',
+      self::STATUS_APPROVED => 'Đã duyệt',
+      self::STATUS_CANCEL => 'Hủy',
     ];
     public function supplierAssetIndustries(): HasMany
     {

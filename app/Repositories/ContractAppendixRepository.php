@@ -2,16 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\ContractPayment;
+use App\Models\ContractAppendix;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class ContractPaymentRepository extends BaseRepository
+class ContractAppendixRepository extends BaseRepository
 {
     public function getModelClass(): string
     {
-        return ContractPayment::class;
+        return ContractAppendix::class;
     }
 
     public function deleteByContractIds($contractIds)

@@ -25,7 +25,10 @@ class ContractRepository extends BaseRepository
 
     public function getListing(array $filters, array $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with);
+        $query = $this->_model->newQuery()
+            ->select($columns)
+            ->with($with)
+            ->orderBy('created_at', 'desc');
 
         if (!empty($filters['name_code'])) {
             $query->where('code', $filters['name_code'])

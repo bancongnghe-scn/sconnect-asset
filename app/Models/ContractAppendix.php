@@ -4,11 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ContractFile extends Model
+class ContractAppendix extends Model
 {
     use HasFactory;
-    use SoftDeletes;
-    protected $table = 'contract_file';
+    protected $table = 'contract_appendix';
 }

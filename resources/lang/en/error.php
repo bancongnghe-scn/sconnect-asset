@@ -32,4 +32,7 @@ return [
     AppErrorCode::CODE_2025 => 'Tạo người theo dõi thất bại !',
     AppErrorCode::CODE_2026 => 'Lưu file hợp đồng thất bại !',
     AppErrorCode::CODE_2027 => 'Lưu thông tin thanh toán thất bại !',
+    AppErrorCode::CODE_2028 => 'Hợp đồng không tồn tại !',
+    AppErrorCode::CODE_2029 => 'Xóa người theo dõi hợp đồng thất bại !',
+    AppErrorCode::CODE_2030 => 'Xóa hợp đồng thất bại !',
 ];

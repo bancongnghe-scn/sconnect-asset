@@ -8,16 +8,23 @@ document.addEventListener('alpine:init', () => {
             $('.select2').select2()
             this.onChangeSelect2()
             this.initDatePicker()
+            this.getListContract({
+                page: 1,
+                limit: 10
+            })
         },
 
         //dataTable
         dataTable: [],
         columns: {
+            code: 'Mã hợp đồng',
+            type: 'Loại hợp đồng',
             name: 'Tên hợp đồng',
-            asset_type_group: 'Nhóm loại',
-            maintenance_months: 'Thời gian bảo dưỡng(Tháng)',
-            measure: 'Đơn vị tính',
-            description: 'Ghi chú'
+            supplier_name: 'Tên nhà cung cấp',
+            signing_date: 'Ngày ký',
+            contract_value: 'Tổng giá trị',
+            validity: 'Hiệu lực',
+            status: 'Trạng thái',
         },
         showAction: {
             view: true,
@@ -26,6 +33,7 @@ document.addEventListener('alpine:init', () => {
         },
         selectedRow: [],
         showChecked: true,
+
         //pagination
         totalPages: null,
         currentPage: 1,
@@ -63,6 +71,7 @@ document.addEventListener('alpine:init', () => {
         listStatusContract: {
             1: 'Chờ duyệt',
             2: 'Đã duyệt',
+            3: 'Hủy'
         },
         listSupplier: [
             {id:1, name: 'NCC1'}
@@ -81,6 +90,7 @@ document.addEventListener('alpine:init', () => {
             document.querySelectorAll('.datepicker').forEach(el => {
                 new AirDatepicker(el, {
                     autoClose: true,
+                    clearButton: true,
                     locale: localeEn,
                     dateFormat: 'dd/MM/yyyy',
                     onSelect: ({date}) => {
@@ -131,8 +141,7 @@ document.addEventListener('alpine:init', () => {
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
             toast.success('Xóa hợp đồng thành công !')
-
-            this.getListContract(this.filters)
+            await this.getListContract(this.filters)
 
             this.loading = false
         },
@@ -248,11 +257,6 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
         },
 
-        searchContract() {
-            this.filters.asset_type_group_id = $('select[name="asset_type_group"]').val()
-            this.getListContract(this.filters)
-        },
-
         onChangeSelect2() {
             $('#modalContractUI').on('shown.bs.modal', function () {
                 $('.select2').select2({
@@ -283,6 +287,10 @@ document.addEventListener('alpine:init', () => {
                 this.contract.to = storageFormat
             } else if (el.name === 'selectPaymentDate') {
                 this.contract.payments[el.id].payment_date = storageFormat
+            } else if (el.id === 'filterSigningDate') {
+                this.filters.signing_date = storageFormat
+            } else if (el.id === 'filterFrom') {
+                this.filters.from = storageFormat
             }
         },
 

@@ -27,3 +27,7 @@ window.formData = function (data) {
 
     return formData
 }
+
+window.formatCurrencyVND = function formatCurrencyVND(number) {
+    return number.toLocaleString('vi-VN') + ' vnđ';
+}

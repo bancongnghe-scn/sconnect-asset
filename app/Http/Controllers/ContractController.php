@@ -52,4 +52,19 @@ class ContractController extends Controller
             return response_error();
         }
     }
+
+    public function destroy(string $id)
+    {
+        try {
+            $result = $this->contractService->deleteContractById($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            dd($exception);
+            return response_error();
+        }
+    }
 }

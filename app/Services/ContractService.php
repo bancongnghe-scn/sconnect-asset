@@ -2,11 +2,15 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ListContractResource;
 use App\Models\Contract;
+use App\Models\ContractAppendix;
+use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
 use App\Repositories\ContractMonitorRepository;
 use App\Repositories\ContractPaymentRepository;
 use App\Repositories\ContractRepository;
+use App\Repositories\SupplierRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +21,9 @@ class ContractService
         protected ContractRepository $contractRepository,
         protected ContractMonitorRepository $contractMonitorRepository,
         protected ContractFileRepository $contractFileRepository,
-        protected ContractPaymentRepository $contractPaymentRepository
+        protected ContractPaymentRepository $contractPaymentRepository,
+        protected SupplierRepository $supplierRepository,
+        protected ContractAppendixRepository $contractAppendixRepository
     )
     {
 
@@ -105,6 +111,66 @@ class ContractService
     {
         $data = $this->contractRepository->getListing($filters);
 
-        return $data;
+        $supplierIds = $data->pluck('supplier_id')->toArray();
+        $suppliers = [];
+        if (!empty($supplierIds)) {
+            $suppliers = $this->supplierRepository->getListing(['ids' => $supplierIds], ['id', 'name'])->keyBy('id');
+        }
+
+        return ListContractResource::make($data)
+            ->additional([
+                'suppliers' => $suppliers,
+            ])->resolve();
+    }
+
+    public function deleteContractById($id)
+    {
+        $contract = $this->contractRepository->find($id);
+        if (empty($contract)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2028,
+            ];
+        }
+
+        $deleteContract = $contract->update([
+            'deleted_by' => Auth::id(),
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ]);
+        if (!$deleteContract) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2030,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($id);
+            if (!$deleteContractMonitor) {
+                DB::rollBack();
+                return [
+                  'success' => false,
+                  'error_code' => AppErrorCode::CODE_2029,
+                ];
+            }
+
+            $this->contractFileRepository->deleteByContractIds($id);
+            $this->contractPaymentRepository->deleteByContractIds($id);
+            $this->contractAppendixRepository->deleteByContractIds($id);
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            dd($exception);
+            DB::rollBack();
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

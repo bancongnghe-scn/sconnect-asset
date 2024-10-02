@@ -39,15 +39,15 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
@@ -88,39 +88,41 @@
 
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
-                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
-                           aria-describedby="example2_info">
-                        <thead>
-                        <tr>
-                            <th rowspan="1" colspan="1">Lần thanh toán</th>
-                            <th rowspan="1" colspan="1">Ngày thanh toán</th>
-                            <th rowspan="1" colspan="1">Số tiền</th>
-                            <th rowspan="1" colspan="1">Nội dung thanh toán</th>
-                            <th rowspan="1" colspan="1" class="col-2 text-center"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <template x-for="(payment, index) in contract.payments">
-                            <tr>
-                                <td x-text="'Lần ' + (index + 1)"></td>
-                                <td>
-                                    <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index">
-                                </td>
-                                <td>
-                                    <input type="number" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
-                                </td>
-                                <td>
-                                    <input type="text" class="form-control" x-model="payment.description">
-                                </td>
-                                <td class="text-center align-middle">
-                                    <button class="border-0 bg-body" @click="contract.payments.splice(index, 1)">
-                                        <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </template>
-                        </tbody>
-                    </table>
+                    <div class="mb-3 tw-max-h-60 overflow-y-scroll">
+                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                               aria-describedby="example2_info">
+                            <thead>
+                                <tr>
+                                    <th rowspan="1" colspan="1">Lần thanh toán</th>
+                                    <th rowspan="1" colspan="1">Ngày thanh toán</th>
+                                    <th rowspan="1" colspan="1">Số tiền</th>
+                                    <th rowspan="1" colspan="1">Nội dung thanh toán</th>
+                                    <th rowspan="1" colspan="1" class="col-2 text-center"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template x-for="(payment, index) in contract.payments">
+                                    <tr>
+                                        <td x-text="'Lần ' + (index + 1)"></td>
+                                        <td>
+                                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index">
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" x-model="payment.description">
+                                        </td>
+                                        <td class="text-center align-middle">
+                                            <button class="border-0 bg-body" @click="contract.payments.splice(index, 1)">
+                                                <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
                     <button @click="addRowPayment" type="button" class="btn btn-primary tw-w-fit">Thêm hàng</button>
                 </div>
 
@@ -137,7 +139,6 @@
         </div>
     </div>
 </div>
-
 <style>
     .air-datepicker {
         z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
