@@ -34,7 +34,6 @@ class StoreContractRequest extends FormRequest
             'contract_value' => 'nullable|integer',
             'description' => 'nullable|string',
             'files' => 'nullable|array',
-            'files.*' => 'mimes:pdf|max:500000',
             'payments' => 'nullable|array',
             'payments.*.payment_date' => 'date|date_format:Y-m-d',
             'payments.*.money' => 'integer',

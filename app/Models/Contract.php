@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contract extends Model
@@ -44,4 +45,24 @@ class Contract extends Model
         self::STATUS_APPROVED => 'Đã duyệt',
         self::STATUS_CANCEL => 'Hủy'
     ];
+
+    public function contractFiles() :HasMany
+    {
+        return $this->hasMany(ContractFile::class, 'contract_id');
+    }
+
+    public function contractPayments() :HasMany
+    {
+        return $this->hasMany(ContractPayment::class, 'contract_id')->orderBy('order');
+    }
+
+    public function contractMonitors() :HasMany
+    {
+        return $this->hasMany(ContractMonitor::class, 'contract_id');
+    }
+
+    public function contractAppendix() :HasMany
+    {
+        return $this->hasMany(ContractAppendix::class, 'contract_id');
+    }
 }

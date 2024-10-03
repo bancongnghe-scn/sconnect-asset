@@ -13,11 +13,18 @@ class ContractRepository extends BaseRepository
         return Contract::class;
     }
 
-    public function getFirst(array $filters, array $columns = ['*'])
+    public function getFirst(array $filters, array $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()
+            ->select($columns)
+            ->with($with);
+
         if (!empty($filters['code'])) {
             $query->where('code', $filters['code']);
+        }
+
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
         }
 
         return $query->first();

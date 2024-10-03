@@ -15,8 +15,9 @@
         </div>
 
         <div
-            @edit="handShowModalContractUI('update', $event.detail.id)"
+            @edit="handleShowModalContractUI('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
+            @view="handleShowModalContractInfo($event.detail.id)"
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
         >
@@ -38,6 +39,10 @@
             >
                 @include('common.modal-confirm')
             </div>
+
+            <div>
+                @include('assets.contract.modalContractInfo')
+            </div>
         </div>
 @endsection
 
@@ -45,5 +50,6 @@
     @vite([
         'resources/js/assets/listContract.js',
         'resources/js/assets/api/apiContract.js',
+        'resources/js/assets/api/apiSupplier.js',
     ])
 @endsection

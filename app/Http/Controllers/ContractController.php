@@ -63,7 +63,32 @@ class ContractController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+            return response_error();
+        }
+    }
+
+    public function updateContract(StoreContractRequest $request, string $id)
+    {
+        try {
+            $result = $this->contractService->updateContract($request->validated(), $id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function show(string $id)
+    {
+        try {
+            $result = $this->contractService->findContract($id);
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
             return response_error();
         }
     }

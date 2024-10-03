@@ -1,5 +1,10 @@
+import {format} from "date-fns";
+
 window.apiGetContract = async function (filters) {
     try {
+        filters.signing_date = filters.signing_date ? format(filters.signing_date, 'yyyy-MM-dd') : null
+        filters.from = filters.from ? format(filters.from, 'yyyy-MM-dd') : null
+
         const response = await axios.get("/api/contract", {
             params: filters
         })
@@ -75,7 +80,7 @@ window.apiShowContract = async function (id) {
 
 window.apiCreateContract = async function (dataCreate) {
     try {
-        const formData = window.formData(dataCreate)
+        const formData = window.formData(formatContract(dataCreate))
 
         const response = await axios.post("/api/contract",formData)
 
@@ -101,7 +106,9 @@ window.apiCreateContract = async function (dataCreate) {
 
 window.apiUpdateContract = async function (dataUpdate, id) {
     try {
-        const response = await axios.put("/api/contract/"+id,dataUpdate)
+        const formData = window.formData(formatContract(dataUpdate))
+
+        const response = await axios.post("/api/contract/update/"+id,formData)
 
         const data = response.data;
         if (!data.success) {
@@ -121,4 +128,16 @@ window.apiUpdateContract = async function (dataUpdate, id) {
             message: error?.response?.data?.message || error?.message
         }
     }
+}
+
+function formatContract(contract) {
+    let contractFormat = contract
+    contractFormat.signing_date = contract.signing_date ? format(contract.signing_date, 'yyyy-MM-dd') : null
+    contractFormat.from = contract.from ? format(contract.from, 'yyyy-MM-dd') : null
+    contractFormat.to = contract.to ? format(contract.to, 'yyyy-MM-dd') : null
+    contractFormat.payments = contract.payments.map(payment => ({
+        ...payment,
+        payment_date: format(payment.payment_date, 'yyyy-MM-dd')
+    }))
+    return contractFormat
 }

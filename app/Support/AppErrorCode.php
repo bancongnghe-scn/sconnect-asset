@@ -36,4 +36,7 @@ class AppErrorCode
     public const CODE_2028 = 2028; //  Hợp đồng không tồn tại !
     public const CODE_2029 = 2029; //  Xóa người theo dõi hợp đồng thất bại !
     public const CODE_2030 = 2030; //  Xóa hợp đồng thất bại !
+    public const CODE_2031 = 2031; //  Cập nhật hợp đồng thất bại !
+    public const CODE_2032 = 2032; //  Cập nhật người theo dõi hợp đồng thất bại !
+
 }

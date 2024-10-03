@@ -35,4 +35,6 @@ return [
     AppErrorCode::CODE_2028 => 'Hợp đồng không tồn tại !',
     AppErrorCode::CODE_2029 => 'Xóa người theo dõi hợp đồng thất bại !',
     AppErrorCode::CODE_2030 => 'Xóa hợp đồng thất bại !',
+    AppErrorCode::CODE_2031 => 'Cập nhật hợp đồng thất bại !',
+    AppErrorCode::CODE_2032 => 'Cập nhật người theo dõi hợp đồng thất bại !',
 ];

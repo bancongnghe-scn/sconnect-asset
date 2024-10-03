@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ContractInfoResource;
 use App\Http\Resources\ListContractResource;
 use App\Models\Contract;
 use App\Models\ContractAppendix;
@@ -41,17 +42,11 @@ class ContractService
 
         $data['created_by'] = Auth::id();
         $data['status'] = Contract::STATUS_PENDING;
+        $contract = $this->contractRepository->create($data);
+
         DB::beginTransaction();
         try {
-            $contract = $this->contractRepository->create($data);
-            $dataCreateContractMonitor = [];
-            foreach ($data['user_ids'] as $userId) {
-                $dataCreateContractMonitor[] = [
-                    'contract_id' => $contract->id,
-                    'user_id' => $userId,
-                ];
-            }
-            $insertContractMonitor = $this->contractMonitorRepository->insert($dataCreateContractMonitor);
+            $insertContractMonitor = resolve(ContractMonitorService::class)->insertContractMonitors($data['user_ids'], $contract->id);
             if (!$insertContractMonitor) {
                 DB::rollBack();
                 return [
@@ -62,15 +57,7 @@ class ContractService
 
             $files = $data['files'] ?? [];
             if (!empty($files)) {
-                $contractFiles = [];
-                foreach ($files as $file) {
-                    $path = $file->store('uploads');
-                    $contractFiles[] = [
-                        'contract_id' => $contract->id,
-                        'file_url' => $path
-                    ];
-                }
-                $insertContractFiles = $this->contractFileRepository->insert($contractFiles);
+                $insertContractFiles = resolve(ContractFileService::class)->insertContractFiles($files, $contract->id);
                 if (!$insertContractFiles) {
                     DB::rollBack();
                     return [
@@ -161,6 +148,76 @@ class ContractService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            DB::rollBack();
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function updateContract($data, $id)
+    {
+        $contract = $this->contractRepository->find($id);
+        if (empty($contract)) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2028,
+            ];
+        }
+
+        $contract->fill($data);
+        if (!$contract->save()) {
+            return [
+                'success' => false,
+                'error_code' => AppErrorCode::CODE_2031,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $updateContractMonitor = resolve(ContractMonitorService::class)->updateFollowersOfContract($id, $data['user_ids']);
+            if (!$updateContractMonitor) {
+                DB::rollBack();
+                return [
+                    'success' => false,
+                    'error_code' => AppErrorCode::CODE_2032
+                ];
+            }
+
+            $payments = $data['payments'] ?? [];
+            if (!empty($payments)) {
+                $order = 1;
+                foreach ($payments as $payment) {
+                    $payment['order'] = $order ++;
+                    $updateContractPayment = $this->contractPaymentRepository->updateOrInsertContractPayment($payment, $id);
+                    if (!$updateContractPayment) {
+                        DB::rollBack();
+                        return [
+                            'success' => false,
+                            'error_code' => AppErrorCode::CODE_2027
+                        ];
+                    }
+                }
+            }
+
+            $files = $data['files'] ?? [];
+            if (!empty($files)) {
+                $updateContractFile = resolve(ContractFileService::class)->updateContractFiles($files, $id);
+                if (!$updateContractFile) {
+                    DB::rollBack();
+                    return [
+                       'success' => false,
+                       'error_code' => AppErrorCode::CODE_2026,
+                    ];
+                }
+            }
+            DB::commit();
+        } catch (\Throwable $exception) {
             dd($exception);
             DB::rollBack();
             return [
@@ -172,5 +229,23 @@ class ContractService
         return [
             'success' => true,
         ];
+    }
+
+    public function findContract($id)
+    {
+        $contract = $this->contractRepository->getFirst(
+            ['id'=> $id],
+            with: [
+                'contractFiles:id,contract_id,file_url,file_name',
+                'contractPayments:id,contract_id,order,payment_date,money,description',
+                'contractMonitors','contractAppendix'
+            ]
+        );
+
+        if (empty($contract)) {
+            return [];
+        }
+
+        return ContractInfoResource::make($contract)->resolve();
     }
 }

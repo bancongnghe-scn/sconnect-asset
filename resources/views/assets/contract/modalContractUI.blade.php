@@ -39,19 +39,19 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off" x-model="contract.signing_date">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off" x-model="contract.from">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off">
+                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off" x-model="contract.to">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn ...">
+                            <select class="form-control select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn ..." x-model="contract.user_ids">
                                 <template x-for="user in listUser" :key="user.id">
                                     <option :value="user.id" x-text="user.name"></option>
                                 </template>
@@ -70,15 +70,15 @@
                     </div>
                     <div class="row">
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
-                        <div class="col-5">
-                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles">
+                        <div>
+                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
                             <label type="button" class="btn btn-primary" for="fileInput">Chọn tệp</label>
 
-                            <div class="d-flex mt-2 tw-gap-x-2">
+                            <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
                                 <template x-for="(file, index) in contract.files" :key="index">
                                     <div class="tw-flex gap-x-1">
                                         <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="contract.files.splice(index, 1)"></i>
-                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit"></a>
+                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
                                 </template>
                             </div>
@@ -105,7 +105,7 @@
                                     <tr>
                                         <td x-text="'Lần ' + (index + 1)"></td>
                                         <td>
-                                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index">
+                                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index" x-model="payment.payment_date">
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
@@ -134,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="handleContractUI" type="button" class="btn btn-primary">Lưu</button>
+                <button @click="action === 'create' ? createContract() : editContract()" type="button" class="btn btn-primary">Lưu</button>
             </div>
         </div>
     </div>

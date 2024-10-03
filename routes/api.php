@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AssetTypeGroupController;
+use App\Http\Controllers\ContractController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,11 @@ Route::middleware('auth')->group(function (){
         'supplier' => \App\Http\Controllers\SupplierController::class,
         'contract' => \App\Http\Controllers\ContractController::class
     ]);
+
+    Route::prefix('contract')->controller(ContractController::class)
+        ->group(function () {
+           Route::post('/update/{id}','updateContract');
+        });
 });
 
 

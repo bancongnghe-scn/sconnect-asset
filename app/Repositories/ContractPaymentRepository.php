@@ -21,4 +21,17 @@ class ContractPaymentRepository extends BaseRepository
             'deleted_at' => date('Y-m-d H:i:s')
         ]);
     }
+
+    public function updateOrInsertContractPayment($payment, $contractId)
+    {
+        return $this->_model->updateOrInsert([
+            'order' => $payment['order'],
+            'contract_id' => $contractId
+        ], [
+           'order' => $payment['order'],
+           'payment_date' => $payment['payment_date'],
+           'money' => $payment['money'],
+           'description' => $payment['description'],
+        ]);
+    }
 }

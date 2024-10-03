@@ -6,12 +6,15 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
             $('.select2').select2()
+            this.initSelect2('modalContractUI');
+            this.initSelect2('modalContractInfo');
             this.onChangeSelect2()
             this.initDatePicker()
             this.getListContract({
                 page: 1,
                 limit: 10
             })
+            this.getListSupplier({})
         },
 
         //dataTable
@@ -31,14 +34,14 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
-        selectedRow: [],
-        showChecked: true,
 
         //pagination
         totalPages: null,
         currentPage: 1,
         total: null,
         limit: 10,
+        showChecked: false,
+
 
         //data
         filters: {
@@ -73,9 +76,7 @@ document.addEventListener('alpine:init', () => {
             2: 'Đã duyệt',
             3: 'Hủy'
         },
-        listSupplier: [
-            {id:1, name: 'NCC1'}
-        ],
+        listSupplier: [],
         listUser: [
             {id:1, name: 'User1'},
             {id:2, name: 'User2'},
@@ -86,22 +87,14 @@ document.addEventListener('alpine:init', () => {
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         //methods
-        initDatePicker() {
-            document.querySelectorAll('.datepicker').forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    clearButton: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
-            });
-        },
-
         async getListContract(filters) {
             this.loading = true
+            if (filters.signing_date) {
+                filters.signing_date = format(filters.signing_date, 'yyyy-MM-dd')
+            }
+            if (filters.from) {
+                filters.from = format(filters.from, 'yyyy-MM-dd')
+            }
             const response = await window.apiGetContract(filters)
             if (response.success) {
                 const data = response.data
@@ -161,30 +154,12 @@ document.addEventListener('alpine:init', () => {
             this.resetDataContract()
         },
 
-        async deleteMultiple() {
-            this.loading = true
-            const ids = Object.keys(this.selectedRow)
-            const response = await window.apiDeleteMultipleByIds(ids)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-
-                return;
-            }
-
-            $("#"+this.idModalConfirmDeleteMultiple).modal('hide');
-
-            toast.success('Xóa danh sách hợp đồng thành công !')
-
-            this.getListContract(this.filters)
-
-            this.loading = false
-        },
-
         async handleShowModalContractUI(action, id = null) {
+            this.loading = true
             this.action = action
             if (action === 'create') {
                 this.titleModal = 'Thêm mới'
+                this.resetDataContract()
             } else {
                 this.titleModal = 'Cập nhật'
                 this.id = id
@@ -193,18 +168,34 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                const data = response.data.data
+                this.contract = this.formatDataContract(response.data.data)
             }
 
             $('#modalContractUI').modal('show');
+            this.loading = false
         },
 
-        handleContractUI() {
-            if (this.action === 'create') {
-                this.createContract()
-            } else {
-                this.editContract()
+        async handleShowModalContractInfo(id) {
+            this.loading = true
+            const response = await window.apiShowContract(id)
+            if (!response.success) {
+                toast.error(response.message)
+                return
             }
+            this.contract = this.formatDataContract(response.data.data)
+            $('#modalContractInfo').modal('show');
+            this.loading = false
+        },
+
+        async getListSupplier(filters) {
+            this.loading = true
+            const response = await window.apiGetSupplier(filters)
+            if (response.success) {
+                this.listSupplier = response.data.data.data
+            } else {
+                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+            }
+            this.loading = false
         },
 
         changePage(page) {
@@ -230,7 +221,8 @@ document.addEventListener('alpine:init', () => {
                 contract_value: null,
                 description: null,
                 files: [],
-                payments: []
+                payments: [],
+                filesUpdated: []
             }
         },
 
@@ -253,17 +245,7 @@ document.addEventListener('alpine:init', () => {
             this.id = id
         },
 
-        confirmDeleteMultiple() {
-            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
-        },
-
         onChangeSelect2() {
-            $('#modalContractUI').on('shown.bs.modal', function () {
-                $('.select2').select2({
-                    dropdownParent: $('#modalContractUI') // Gán dropdown vào modal
-                });
-            });
-
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
                 if (event.target.id === 'filterTypeContract') {
@@ -277,7 +259,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         onChangeDatePicker(el, date) {
-            const storageFormat = format(date, 'yyyy-MM-dd');
+            const storageFormat = format(date, 'dd/MM/yyyy');
 
             if(el.id === 'selectSigningDate') {
                 this.contract.signing_date = storageFormat
@@ -295,7 +277,17 @@ document.addEventListener('alpine:init', () => {
         },
 
         handleFiles() {
-            this.contract.files = Array.from(this.$refs.fileInput.files)
+            const files = Array.from(this.$refs.fileInput.files)
+            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > maxSize) {
+                    toast.error("File " + files[i].name + " vượt quá kích thước tối đa 5MB.")
+                    return;
+                }
+            }
+
+            this.contract.files = this.contract.files.concat(Array.from(this.$refs.fileInput.files))
         },
 
         addRowPayment() {
@@ -308,6 +300,37 @@ document.addEventListener('alpine:init', () => {
             this.$nextTick(() => {
                 this.initDatePicker()
             });
+        },
+
+        formatDataContract(contract) {
+            contract.signing_date = contract.signing_date !== null ? format(contract.signing_date, 'dd/MM/yyyy') : null
+            contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
+            contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
+            const payments = contract.payments
+            payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
+            return contract
+        },
+
+        initDatePicker() {
+            document.querySelectorAll('.datepicker').forEach(el => {
+                new AirDatepicker(el, {
+                    autoClose: true,
+                    clearButton: true,
+                    locale: localeEn,
+                    dateFormat: 'dd/MM/yyyy',
+                    onSelect: ({date}) => {
+                        this.onChangeDatePicker(el, date)
+                    }
+                });
+            });
+        },
+
+        initSelect2(modalId) {
+            $(`#${modalId}`).on('shown.bs.modal', function () {
+                $('.select2').select2({
+                    dropdownParent: $(`#${modalId}`)
+                })
+            })
         },
     }));
 });

@@ -18,4 +18,19 @@ class ContractMonitorRepository extends BaseRepository
     {
         return $this->_model->whereIn('contract_id', Arr::wrap($contractIds))->delete();
     }
+
+    public function getListing($filters)
+    {
+        $query = $this->_model->newQuery();
+        if (isset($filters['contract_id'])) {
+            $query->whereIn('contract_id', Arr::wrap($filters['contract_id']));
+        }
+
+        return $query->get();
+    }
+
+    public function deleteFlowersContract($contractId, $userIds)
+    {
+        return $this->_model->where('contract_id', $contractId)->whereIn('user_id', Arr::wrap($userIds))->delete();
+    }
 }
