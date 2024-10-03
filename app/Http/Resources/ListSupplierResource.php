@@ -12,14 +12,14 @@ class ListSupplierResource extends JsonResource
         $data = [];
         foreach ($this->resource as $supplier) {
             $data[$supplier->id] = [
-                'id' => $supplier->id,
-                'code' => $supplier->code,
-                'name' => $supplier->name,
-                'contact' => $supplier->contact,
-                'address' => $supplier->address,
-                'website' => $supplier->website,
-                'status' => Supplier::STATUS_NAME[$supplier->status] ?? '',
-                'industries' => []
+                'id'         => $supplier->id,
+                'code'       => $supplier->code,
+                'name'       => $supplier->name,
+                'contact'    => $supplier->contact,
+                'address'    => $supplier->address,
+                'website'    => $supplier->website,
+                'status'     => Supplier::STATUS_NAME[$supplier->status] ?? '',
+                'industries' => [],
             ];
 
             $supplierAssetIndustries = $supplier->supplierAssetIndustries ?? [];
@@ -31,10 +31,11 @@ class ListSupplierResource extends JsonResource
         }
 
         $listSupplier = $this->resource->toArray();
+
         return [
-            'data' => $data,
-            'total' => $listSupplier['total'] ?? 0,
-            'last_page' => $listSupplier['last_page'] ?? 1,
+            'data'         => $data,
+            'total'        => $listSupplier['total'] ?? 0,
+            'last_page'    => $listSupplier['last_page'] ?? 1,
             'current_page' => $listSupplier['current_page'] ?? 1,
         ];
     }

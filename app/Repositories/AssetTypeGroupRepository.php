@@ -17,7 +17,7 @@ class AssetTypeGroupRepository extends BaseRepository
         $query = $this->_model->newQuery()->select($columns)->orderBy('created_at', 'desc');
 
         if (!empty($filters['name'])) {
-            $query->where('name', 'like',$filters['name'] . '%');
+            $query->where('name', 'like', $filters['name'] . '%');
         }
 
         if (!empty($filters['id'])) {

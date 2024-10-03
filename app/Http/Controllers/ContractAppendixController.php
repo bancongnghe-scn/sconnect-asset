@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Services\ContractAppendixService;
 
 class ContractAppendixController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        protected ContractAppendixService $contractAppendixService,
+    ) {
+
+    }
+
+    public function index()
     {
 
     }

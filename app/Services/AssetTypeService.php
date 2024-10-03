@@ -3,18 +3,15 @@
 namespace App\Services;
 
 use App\Http\Resources\ListAssetTypeResource;
-use App\Models\User;
 use App\Repositories\AssetTypeRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AssetTypeService
 {
     public function __construct(
-        protected AssetTypeRepository $assetTypeRepository
-    )
-    {
+        protected AssetTypeRepository $assetTypeRepository,
+    ) {
 
     }
 
@@ -37,15 +34,15 @@ class AssetTypeService
         $assetType = $this->assetTypeRepository->find($id);
         if (is_null($assetType)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2004
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2004,
             ];
         }
 
         if (!$assetType->delete()) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2005
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2005,
             ];
         }
 
@@ -59,14 +56,14 @@ class AssetTypeService
         $assetType = $this->assetTypeRepository->find($id);
         if (is_null($assetType)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2004
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2004,
             ];
         }
 
         return [
             'success' => true,
-            'data' => $assetType->toArray()
+            'data'    => $assetType->toArray(),
         ];
     }
 
@@ -75,17 +72,17 @@ class AssetTypeService
         $assetType = $this->assetTypeRepository->findAssetTypeByName($data['name']);
         if (!empty($assetType)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2007
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2007,
             ];
         }
 
         $data['created_by'] = Auth::id();
-        $createAssetType = $this->assetTypeRepository->insert($data);
+        $createAssetType    = $this->assetTypeRepository->insert($data);
         if (!$createAssetType) {
             return [
-              'success' => false,
-              'error_code' => AppErrorCode::CODE_2006
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2006,
             ];
         }
 
@@ -99,8 +96,8 @@ class AssetTypeService
         $assetType = $this->assetTypeRepository->find($id);
         if (is_null($assetType)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2004
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2004,
             ];
         }
 
@@ -108,8 +105,8 @@ class AssetTypeService
         $assetType->fill($data);
         if (!$assetType->save()) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2008
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2008,
             ];
         }
 
@@ -123,8 +120,8 @@ class AssetTypeService
         $result = $this->assetTypeRepository->deleteMultipleByIds($ids);
         if (!$result) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2005
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2005,
             ];
         }
 

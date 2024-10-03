@@ -14,8 +14,7 @@ class SupplierService
     public function __construct(
         protected SupplierRepository $supplierRepository,
         protected IndustryRepository $industryRepository,
-    )
-    {
+    ) {
 
     }
 
@@ -24,43 +23,46 @@ class SupplierService
         $listSupplier = $this->supplierRepository->getListSupplierByFilters($filters, ['supplier.id']);
         if ($listSupplier->isEmpty()) {
             return [
-                'data' => [],
-                'total' => 0,
-                'last_page' => 1,
+                'data'         => [],
+                'total'        => 0,
+                'last_page'    => 1,
                 'current_page' => 1,
             ];
         }
 
-        $supplierIds = $listSupplier->pluck('id')->toArray();
-        $listSupplier = $this->supplierRepository->getListing([
-            'ids' => $supplierIds,
-            'page' => $filters['page'] ?? 1,
-            'limit' => $filters['limit'] ?? 10
-        ], [
-            'id','code','name','contact','address','website','status'
-        ],
-        [
-            'supplierAssetIndustries:id,supplier_id,industries_id' => [
-                'industry:id,name'
+        $supplierIds  = $listSupplier->pluck('id')->toArray();
+        $listSupplier = $this->supplierRepository->getListing(
+            [
+                'ids'   => $supplierIds,
+                'page'  => $filters['page'] ?? 1,
+                'limit' => $filters['limit'] ?? 10,
+            ],
+            [
+                'id', 'code', 'name', 'contact', 'address', 'website', 'status',
+            ],
+            [
+                'supplierAssetIndustries:id,supplier_id,industries_id' => [
+                    'industry:id,name',
+                ],
             ]
-        ]);
+        );
 
         return ListSupplierResource::make($listSupplier)->resolve();
     }
 
     public function findSupplier($id)
     {
-        $supplier = $this->supplierRepository->getFirst(['id' => $id], with: ['supplierAssetIndustries','supplierAssetType']);
+        $supplier = $this->supplierRepository->getFirst(['id' => $id], with: ['supplierAssetIndustries', 'supplierAssetType']);
         if (empty($supplier)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2013
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2013,
             ];
         }
 
         return [
             'success' => true,
-            'data' => SupplierInfoResource::make($supplier)->resolve()
+            'data'    => SupplierInfoResource::make($supplier)->resolve(),
         ];
     }
 
@@ -69,8 +71,8 @@ class SupplierService
         $supplier = $this->supplierRepository->getFirst(['code' => $data['code']]);
         if (!empty($supplier)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2014
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2014,
             ];
         }
 
@@ -79,11 +81,13 @@ class SupplierService
             $supplier = $this->supplierRepository->createSupplier($data);
 
             resolve(SupplierAssetTypeService::class)->insertByAssetTypeIdsAndSupplierId(
-                $data['asset_type_ids'], $supplier['id']
+                $data['asset_type_ids'],
+                $supplier['id']
             );
 
             resolve(SupplierAssetIndustryService::class)->insertByIndustryIdsAndSupplierId(
-                $data['industry_ids'], $supplier['id']
+                $data['industry_ids'],
+                $supplier['id']
             );
             DB::commit();
 
@@ -91,8 +95,8 @@ class SupplierService
             DB::rollBack();
 
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2015
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2015,
             ];
         }
 
@@ -106,15 +110,15 @@ class SupplierService
         $supplier = $this->supplierRepository->find($id);
         if (is_null($supplier)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2013
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2013,
             ];
         }
 
         if (!$supplier->delete()) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2016
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2016,
             ];
         }
 
@@ -128,8 +132,8 @@ class SupplierService
         $supplier = $this->supplierRepository->find($id);
         if (is_null($supplier)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2013
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2013,
             ];
         }
 
@@ -138,25 +142,30 @@ class SupplierService
             $supplier->fill($data);
             if (!$supplier->save()) {
                 DB::rollBack();
+
                 return [
-                    'success' => false,
-                    'error_code' => AppErrorCode::CODE_2017
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2017,
                 ];
             }
 
             $updateSupplierAssetType = resolve(SupplierAssetTypeService::class)->updateSupplierAssetType(
-                $data['asset_type_ids'], $id
+                $data['asset_type_ids'],
+                $id
             );
             if (!$updateSupplierAssetType['success']) {
                 DB::rollBack();
+
                 return $updateSupplierAssetType;
             }
 
             $updateSupplierAssetIndustry = resolve(SupplierAssetIndustryService::class)->updateSupplierAssetIndustry(
-                $data['industry_ids'], $id
+                $data['industry_ids'],
+                $id
             );
             if (!$updateSupplierAssetIndustry['success']) {
                 DB::rollBack();
+
                 return $updateSupplierAssetIndustry;
             }
 
@@ -164,14 +173,15 @@ class SupplierService
         } catch (\Throwable $exception) {
             dd($exception);
             DB::rollBack();
+
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2017
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2017,
             ];
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

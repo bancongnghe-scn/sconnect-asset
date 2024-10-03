@@ -3,15 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\ContractFileRepository;
-use App\Support\AppErrorCode;
-use Illuminate\Support\Facades\DB;
 
 class ContractFileService
 {
     public function __construct(
-        protected ContractFileRepository $contractFileRepository
-    )
-    {
+        protected ContractFileRepository $contractFileRepository,
+    ) {
 
     }
 
@@ -19,28 +16,29 @@ class ContractFileService
     {
         $contractFiles = [];
         foreach ($files as $file) {
-            $path = $file->store('uploads','public');
+            $path            = $file->store('uploads', 'public');
             $contractFiles[] = [
                 'contract_id' => $contractId,
-                'file_url' => $path,
-                'file_name' => $file->getClientOriginalName()
+                'file_url'    => $path,
+                'file_name'   => $file->getClientOriginalName(),
             ];
         }
+
         return $this->contractFileRepository->insert($contractFiles);
     }
 
     public function updateContractFiles($filesUpload, $contractId)
     {
         $contractFile = $this->contractFileRepository->getListing([
-           'contract_id' => $contractId,
+            'contract_id' => $contractId,
         ]);
 
-        $oldFileNames = $contractFile->pluck('file_name')->toArray();
+        $oldFileNames    = $contractFile->pluck('file_name')->toArray();
         $uploadFileNames = [];
-        $newFiles = [];
+        $newFiles        = [];
         foreach ($filesUpload as $file) {
             $fileName = is_array($file) ? $file['name'] : $file->getClientOriginalName();
-            if (!in_array($fileName,$oldFileNames)) {
+            if (!in_array($fileName, $oldFileNames)) {
                 $newFiles[] = $file;
             }
             $uploadFileNames[] = $fileName;

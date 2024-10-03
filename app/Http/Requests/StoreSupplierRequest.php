@@ -17,23 +17,23 @@ class StoreSupplierRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, array<mixed>|\Illuminate\Contracts\Validation\ValidationRule|string>
      */
     public function rules(): array
     {
         return [
-            'code' => 'required|string',
-            'name' => 'required|string',
-            'contact' => 'nullable|string',
-            'tax_code' => 'nullable|string',
-            'address' => 'nullable|string',
-            'website' => 'nullable|string',
-            'industry_ids' => 'required|array',
-            'industry_ids.*' => 'integer',
-            'asset_type_ids' => 'required|array',
+            'code'             => 'required|string',
+            'name'             => 'required|string',
+            'contact'          => 'nullable|string',
+            'tax_code'         => 'nullable|string',
+            'address'          => 'nullable|string',
+            'website'          => 'nullable|string',
+            'industry_ids'     => 'required|array',
+            'industry_ids.*'   => 'integer',
+            'asset_type_ids'   => 'required|array',
             'asset_type_ids.*' => 'integer',
-            'description' => 'nullable|string',
-            'meta_data' => 'nullable|array',
+            'description'      => 'nullable|string',
+            'meta_data'        => 'nullable|array',
         ];
     }
 }

@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetTypeGroup;
 use App\Services\AssetTypeGroupService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
 class AssetTypeGroupController extends Controller
 {
     public function __construct(
-        protected AssetTypeGroupService $assetTypeGroupService
-    )
-    {
+        protected AssetTypeGroupService $assetTypeGroupService,
+    ) {
 
     }
-    public function getListAssetTypeGroup(Request $request) {
+
+    public function getListAssetTypeGroup(Request $request)
+    {
         $request->validate([
-            'id' => 'integer',
-            'name' => 'string|min:2|nullable',
-            'page' => 'integer',
+            'id'    => 'integer',
+            'name'  => 'string|min:2|nullable',
+            'page'  => 'integer',
             'limit' => 'integer|max:200',
         ]);
 
@@ -35,14 +33,15 @@ class AssetTypeGroupController extends Controller
 
     public function createAssetTypeGroup(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'string',
-        ],
+        $request->validate(
             [
-                'name.required' => 'Tên nhóm tài sản là bắt buộc.',
-                'name.string' => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
-                'description.string' => 'Mô tả phải là một chuỗi ký tự.'
+                'name'        => 'required|string',
+                'description' => 'string',
+            ],
+            [
+                'name.required'      => 'Tên nhóm tài sản là bắt buộc.',
+                'name.string'        => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
+                'description.string' => 'Mô tả phải là một chuỗi ký tự.',
             ]
         );
 
@@ -81,15 +80,16 @@ class AssetTypeGroupController extends Controller
 
     public function updateAssetTypeGroup(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'description' => 'string',
-            'id' => 'required|integer',
-        ],
+        $request->validate(
             [
-                'name.required' => 'Tên nhóm tài sản là bắt buộc.',
-                'name.string' => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
-                'description.string' => 'Mô tả phải là một chuỗi ký tự.'
+                'name'        => 'required|string',
+                'description' => 'string',
+                'id'          => 'required|integer',
+            ],
+            [
+                'name.required'      => 'Tên nhóm tài sản là bắt buộc.',
+                'name.string'        => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
+                'description.string' => 'Mô tả phải là một chuỗi ký tự.',
             ]
         );
 

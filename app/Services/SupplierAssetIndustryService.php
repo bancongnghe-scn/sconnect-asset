@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Repositories\SupplierAssetIndustryRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 class SupplierAssetIndustryService
 {
     public function __construct(
-        protected SupplierAssetIndustryRepository $supplierAssetIndustryRepository
-    )
-    {
+        protected SupplierAssetIndustryRepository $supplierAssetIndustryRepository,
+    ) {
 
     }
 
@@ -21,9 +19,9 @@ class SupplierAssetIndustryService
         $dataInsertSupplierAssetIndustries = [];
         foreach ($industryIds as $industryId) {
             $dataInsertSupplierAssetIndustries[] = [
-                'supplier_id' => $supplierId,
+                'supplier_id'   => $supplierId,
                 'industries_id' => $industryId,
-                'created_by' => Auth::id()
+                'created_by'    => Auth::id(),
             ];
         }
 
@@ -33,18 +31,18 @@ class SupplierAssetIndustryService
     public function updateSupplierAssetIndustry($industriesIds, $supplierId)
     {
         $supplierAssetIndustry = $this->supplierAssetIndustryRepository->getListing([
-            'supplier_id' => $supplierId
+            'supplier_id' => $supplierId,
         ]);
 
         $industriesIdsCreated = $supplierAssetIndustry->pluck('industries_id')->toArray();
-        $industriesIdsNew = array_diff($industriesIds, $industriesIdsCreated);
-        $industriesIdsRemove = array_diff($industriesIdsCreated, $industriesIds);
+        $industriesIdsNew     = array_diff($industriesIds, $industriesIdsCreated);
+        $industriesIdsRemove  = array_diff($industriesIdsCreated, $industriesIds);
 
         if (!empty($industriesIdsRemove)) {
             $removeAssetTypeIndustry = $this->supplierAssetIndustryRepository->removeIndustriesOfSupplier($industriesIdsRemove, $supplierId);
             if (!$removeAssetTypeIndustry) {
                 return [
-                    'success' => false,
+                    'success'    => false,
                     'error_code' => AppErrorCode::CODE_2021,
                 ];
             }
@@ -54,23 +52,23 @@ class SupplierAssetIndustryService
             $dataCreate = [];
             foreach ($industriesIdsNew as $industryId) {
                 $dataCreate[] = [
-                    'supplier_id' => $supplierId,
+                    'supplier_id'   => $supplierId,
                     'industries_id' => $industryId,
-                    'created_by' => Auth::id()
+                    'created_by'    => Auth::id(),
                 ];
             }
 
             $insertSupplierAssetIndustry = $this->supplierAssetIndustryRepository->insert($dataCreate);
             if (!$insertSupplierAssetIndustry) {
                 return [
-                    'success' => false,
+                    'success'    => false,
                     'error_code' => AppErrorCode::CODE_2022,
                 ];
             }
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

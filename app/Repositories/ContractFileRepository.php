@@ -2,7 +2,6 @@
 
 namespace App\Repositories;
 
-use App\Models\Contract;
 use App\Models\ContractFile;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
@@ -19,7 +18,7 @@ class ContractFileRepository extends BaseRepository
     {
         return $this->_model->whereIn('contract_id', Arr::wrap($contractIds))->update([
             'deleted_by' => Auth::id(),
-            'deleted_at' => date('Y-m-d H:i:s')
+            'deleted_at' => date('Y-m-d H:i:s'),
         ]);
     }
 
@@ -43,7 +42,7 @@ class ContractFileRepository extends BaseRepository
         return $this->_model->whereIn('file_name', Arr::wrap($fileNames))
             ->where('contract_id', $contractId)->update([
                 'deleted_by' => Auth::id(),
-                'deleted_at' => date('Y-m-d H:i:s')
+                'deleted_at' => date('Y-m-d H:i:s'),
             ]);
     }
 }

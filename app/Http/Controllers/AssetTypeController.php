@@ -8,9 +8,8 @@ use Illuminate\Http\Request;
 class AssetTypeController extends Controller
 {
     public function __construct(
-        protected AssetTypeService $assetTypeService
-    )
-    {
+        protected AssetTypeService $assetTypeService,
+    ) {
     }
 
     /**
@@ -19,11 +18,11 @@ class AssetTypeController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'asset_type_group_id' => 'nullable|array',
+            'name'                  => 'nullable|string',
+            'asset_type_group_id'   => 'nullable|array',
             'asset_type_group_id.*' => 'integer',
-            'page' => 'integer',
-            'limit' => 'integer|max:200',
+            'page'                  => 'integer',
+            'limit'                 => 'integer|max:200',
         ]);
 
         try {
@@ -41,11 +40,11 @@ class AssetTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'                => 'required|string',
             'asset_type_group_id' => 'required|integer',
-            'maintenance_months' => 'required|integer',
-            'measure' => 'required|integer',
-            'description' => 'nullable|string',
+            'maintenance_months'  => 'required|integer',
+            'measure'             => 'required|integer',
+            'description'         => 'nullable|string',
         ]);
 
         try {
@@ -79,18 +78,17 @@ class AssetTypeController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'                => 'required|string',
             'asset_type_group_id' => 'required|integer',
-            'maintenance_months' => 'required|integer',
-            'measure' => 'required|integer',
-            'description' => 'nullable|string',
+            'maintenance_months'  => 'required|integer',
+            'measure'             => 'required|integer',
+            'description'         => 'nullable|string',
         ]);
 
         try {
@@ -126,7 +124,7 @@ class AssetTypeController extends Controller
     public function deleteMultiple(Request $request)
     {
         $request->validate([
-            'ids' => 'required|array',
+            'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
 

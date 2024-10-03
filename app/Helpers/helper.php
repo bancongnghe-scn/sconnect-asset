@@ -43,7 +43,7 @@ if (!function_exists('response_error')) {
             $body['data']  = $data;
         }
 
-        $body = array_merge($body, \Illuminate\Support\Arr::except($extraData, ['errors']));
+        $body = array_merge($body, Illuminate\Support\Arr::except($extraData, ['errors']));
 
         return response()->json($body, $statusCode);
     }

@@ -9,9 +9,8 @@ use Illuminate\Http\Request;
 class ContractController extends Controller
 {
     public function __construct(
-        protected ContractService $contractService
-    )
-    {
+        protected ContractService $contractService,
+    ) {
 
     }
 
@@ -33,15 +32,15 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name_code' => 'nullable|string',
-            'type' => 'nullable|array',
-            'type.*' => 'integer',
-            'status' => 'nullable|array',
-            'status.*' => 'integer',
+            'name_code'    => 'nullable|string',
+            'type'         => 'nullable|array',
+            'type.*'       => 'integer',
+            'status'       => 'nullable|array',
+            'status.*'     => 'integer',
             'signing_date' => 'nullable|date|date_format:Y-m-d',
-            'from' => 'nullable|date|date_format:Y-m-d',
-            'page' => 'nullable|integer',
-            'limit' => 'nullable|integer|max:200',
+            'from'         => 'nullable|date|date_format:Y-m-d',
+            'page'         => 'nullable|integer',
+            'limit'        => 'nullable|integer|max:200',
         ]);
 
         try {

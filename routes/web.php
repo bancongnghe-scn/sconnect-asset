@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,17 +12,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::controller(\App\Http\Controllers\Auth\LoginSSOController::class)->group(function () {
+Route::controller(App\Http\Controllers\Auth\LoginSSOController::class)->group(function () {
     Route::get('/', 'loginSSO');
     Route::get('/login', 'login')->name('login');
 });
 
-Route::middleware('auth')->group(function (){
+Route::middleware('auth')->group(function () {
     Route::view('/home', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
     Route::view('asset-type/list', 'assets.asset_type.listAssetType');
     Route::view('industry/list', 'assets.industry.listIndustry');
     Route::view('supplier/list', 'assets.supplier.listSupplier');
     Route::view('contract/list', 'assets.contract.listContract');
+    Route::view('contract-appendix/list', 'assets.contract.listContractAppendix');
 });
-

@@ -10,6 +10,6 @@ class ContractFile extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    protected $table = 'contract_file';
+    protected $table   = 'contract_file';
     public $timestamps = false;
 }

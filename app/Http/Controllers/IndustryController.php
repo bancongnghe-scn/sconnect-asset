@@ -8,17 +8,16 @@ use Illuminate\Http\Request;
 class IndustryController extends Controller
 {
     public function __construct(
-        protected industryService $industryService
-    )
-    {
+        protected industryService $industryService,
+    ) {
 
     }
 
     public function index(Request $request)
     {
         $request->validate([
-            'name' => 'nullable|string',
-            'page' => 'integer',
+            'name'  => 'nullable|string',
+            'page'  => 'integer',
             'limit' => 'integer|max:200',
         ]);
 
@@ -37,7 +36,7 @@ class IndustryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'        => 'required|string',
             'description' => 'nullable|string',
         ]);
 
@@ -72,14 +71,13 @@ class IndustryController extends Controller
         }
     }
 
-
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name'        => 'required|string',
             'description' => 'nullable|string',
         ]);
 

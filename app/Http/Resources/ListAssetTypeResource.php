@@ -7,25 +7,26 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListAssetTypeResource extends JsonResource
 {
-    public function toArray($request) {
+    public function toArray($request)
+    {
         $data = [];
         foreach ($this->resource as $assetType) {
             $data[] = [
-                'id' => $assetType->id,
-                'name' => $assetType->name,
-                'description' => $assetType->description,
+                'id'                 => $assetType->id,
+                'name'               => $assetType->name,
+                'description'        => $assetType->description,
                 'maintenance_months' => $assetType->maintenance_months,
-                'measure' => AssetType::MEASURE_NAME[$assetType->measure] ?? "",
-                'asset_type_group' => $assetType->assetTypeGroup?->name
+                'measure'            => AssetType::MEASURE_NAME[$assetType->measure] ?? '',
+                'asset_type_group'   => $assetType->assetTypeGroup?->name,
             ];
         }
 
         $listAssetType = $this->resource->toArray();
         if (isset($listAssetType['total'])) {
             return [
-                'data' => $data,
-                'total' => $listAssetType['total'],
-                'last_page' => $listAssetType['last_page'],
+                'data'         => $data,
+                'total'        => $listAssetType['total'],
+                'last_page'    => $listAssetType['last_page'],
                 'current_page' => $listAssetType['current_page'],
             ];
         }

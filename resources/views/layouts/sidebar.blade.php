@@ -51,6 +51,11 @@
                         <i class="fa-solid fa-whiskey-glass"></i><span>Hợp đồng</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/contract-appendix/list">
+                        <i class="fa-solid fa-whiskey-glass"></i><span>Phụ lục hợp đồng</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Components Nav -->
     </ul>

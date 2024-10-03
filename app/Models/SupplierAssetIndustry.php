@@ -13,6 +13,6 @@ class SupplierAssetIndustry extends Model
 
     public function industry(): HasOne
     {
-        return $this->hasOne(Industry::class,'id','industries_id');
+        return $this->hasOne(Industry::class, 'id', 'industries_id');
     }
 }

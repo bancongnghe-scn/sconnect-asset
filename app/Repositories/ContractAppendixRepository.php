@@ -18,7 +18,7 @@ class ContractAppendixRepository extends BaseRepository
     {
         return $this->_model->whereIn('contract_id', Arr::wrap($contractIds))->update([
             'deleted_by' => Auth::id(),
-            'deleted_at' => date('Y-m-d H:i:s')
+            'deleted_at' => date('Y-m-d H:i:s'),
         ]);
     }
 }

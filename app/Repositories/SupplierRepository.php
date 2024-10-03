@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\Supplier;
-use App\Models\User;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +25,7 @@ class SupplierRepository extends BaseRepository
         }
 
         if (!empty($filters['industry_ids'])) {
-            $query->leftJoin('supplier_asset_industries','supplier_asset_industries.supplier_id', 'supplier.id');
+            $query->leftJoin('supplier_asset_industries', 'supplier_asset_industries.supplier_id', 'supplier.id');
 
             $query->whereIn('supplier_asset_industries.industries_id', Arr::wrap($filters['industry_ids']));
         }
@@ -76,17 +75,18 @@ class SupplierRepository extends BaseRepository
     public function createSupplier($data)
     {
         $dataCreate = [
-            'name' => $data['name'],
-            'code' => $data['code'],
-            'contact' => $data['contact'] ?? null,
-            'address' => $data['address'] ?? null,
-            'website' => $data['website'] ?? null,
+            'name'        => $data['name'],
+            'code'        => $data['code'],
+            'contact'     => $data['contact'] ?? null,
+            'address'     => $data['address'] ?? null,
+            'website'     => $data['website'] ?? null,
             'description' => $data['description'] ?? null,
-            'tax_code' => $data['tax_code'] ?? null,
-            'meta_data' => $data['meta_data'] ?? null,
-            'status' => Supplier::STATUS_PENDING_APPROVAL,
-            'created_by' => Auth::id()
+            'tax_code'    => $data['tax_code'] ?? null,
+            'meta_data'   => $data['meta_data'] ?? null,
+            'status'      => Supplier::STATUS_PENDING_APPROVAL,
+            'created_by'  => Auth::id(),
         ];
+
         return $this->_model->newQuery()->create($dataCreate);
     }
 }

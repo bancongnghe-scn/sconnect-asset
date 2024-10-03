@@ -3,11 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class AssetTypeGroup extends Model
 {
-    protected $table = 'asset_type_groups';
+    protected $table    = 'asset_type_groups';
     protected $fillable = [
         'name',
         'description',

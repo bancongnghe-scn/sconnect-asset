@@ -17,14 +17,16 @@ class Authenticate extends Middleware
     public function handle($request, \Closure $next, ...$guards): mixed
     {
         Auth::loginUsingId(1);
+
         return $next($request);
         if (config('sso.login-local')) {
             $this->authenticate($request, $guards);
+
             return $next($request);
         }
-        $secretKey = config('sso.sso-secret-key');
-        $token = @$_GET['token'];
-        $sig = @$_GET['sig'];
+        $secretKey     = config('sso.sso-secret-key');
+        $token         = @$_GET['token'];
+        $sig           = @$_GET['sig'];
         $sessionCookie = @$_COOKIE['scn_session'];
 
         if ($token && $sig) {
@@ -32,23 +34,27 @@ class Authenticate extends Middleware
                 $url = config('sso.logout-sso');
                 $this->callApiWithSession($url, $sessionCookie, $secretKey);
                 Auth::logout();
+
                 return redirect()->route('login');
             }
             $data = $this->callApiWithSession(config('sso.get-session-sso'), $sessionCookie, $secretKey);
             // Kiểm tra phản hồi từ API đầu tiên
-            if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
+            if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 $user = @$data['data']['user'];
                 resolve(UserService::class)->checkUserExistLogin($user);
                 Auth::loginUsingId($user['id']);
-                $time = Carbon::now()->format('Y-m');
+                $time   = Carbon::now()->format('Y-m');
                 $userId = auth()->user()->id;
+
                 return redirect()->route('home.tkp-side-bar', ['month' => $time, 'id' => $userId]);
             }
             $url = config('sso.logout-sso');
             $this->callApiWithSession($url, $sessionCookie, $secretKey);
             Auth::logout();
+
             return redirect()->route('login');
         }
+
         return $this->storeSession($sessionCookie, $secretKey, $next($request));
     }
 
@@ -58,17 +64,19 @@ class Authenticate extends Middleware
         $data = $this->callApiWithSession(config('sso.get-session-sso'), $sessionCookie, $secretKey);
 
         // Kiểm tra phản hồi từ API đầu tiên
-        if (isset($data['code']) && $data['code'] === Response::HTTP_OK) {
+        if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
             $user = @$data['data']['user'];
             resolve(UserService::class)->checkUserExistLogin($user);
             if (!Auth::check()) {
                 Auth::loginUsingId($user['id']);
             }
+
             return $next;
         }
         $url = config('sso.logout-sso');
         $this->callApiWithSession($url, $sessionCookie, $secretKey);
         Auth::logout();
+
         return redirect()->route('login');
     }
 
@@ -79,8 +87,8 @@ class Authenticate extends Middleware
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_COOKIE, 'scn_session=' . $sessionCookie);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Origin:" . config('app.url'),
-            "Site-Access:" . hash_hmac('sha256', config('app.url'), $secretKey),
+            'Origin:' . config('app.url'),
+            'Site-Access:' . hash_hmac('sha256', config('app.url'), $secretKey),
         ]);
         // Thực thi cURL và lấy phản hồi
         $response = curl_exec($ch);

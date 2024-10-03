@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Http\Resources\ContractInfoResource;
 use App\Http\Resources\ListContractResource;
 use App\Models\Contract;
-use App\Models\ContractAppendix;
 use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
 use App\Repositories\ContractMonitorRepository;
@@ -24,9 +23,8 @@ class ContractService
         protected ContractFileRepository $contractFileRepository,
         protected ContractPaymentRepository $contractPaymentRepository,
         protected SupplierRepository $supplierRepository,
-        protected ContractAppendixRepository $contractAppendixRepository
-    )
-    {
+        protected ContractAppendixRepository $contractAppendixRepository,
+    ) {
 
     }
 
@@ -35,22 +33,23 @@ class ContractService
         $contract = $this->contractRepository->getFirst(['code' => $data['code']]);
         if (!empty($contract)) {
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2023,
             ];
         }
 
         $data['created_by'] = Auth::id();
-        $data['status'] = Contract::STATUS_PENDING;
-        $contract = $this->contractRepository->create($data);
+        $data['status']     = Contract::STATUS_PENDING;
+        $contract           = $this->contractRepository->create($data);
 
         DB::beginTransaction();
         try {
             $insertContractMonitor = resolve(ContractMonitorService::class)->insertContractMonitors($data['user_ids'], $contract->id);
             if (!$insertContractMonitor) {
                 DB::rollBack();
+
                 return [
-                    'success' => false,
+                    'success'    => false,
                     'error_code' => AppErrorCode::CODE_2025,
                 ];
             }
@@ -60,8 +59,9 @@ class ContractService
                 $insertContractFiles = resolve(ContractFileService::class)->insertContractFiles($files, $contract->id);
                 if (!$insertContractFiles) {
                     DB::rollBack();
+
                     return [
-                        'success' => false,
+                        'success'    => false,
                         'error_code' => AppErrorCode::CODE_2026,
                     ];
                 }
@@ -72,8 +72,9 @@ class ContractService
                 $insertContractPayments = resolve(ContractPaymentService::class)->createContractPayment($payments, $contract->id);
                 if (!$insertContractPayments) {
                     DB::rollBack();
+
                     return [
-                        'success' => false,
+                        'success'    => false,
                         'error_code' => AppErrorCode::CODE_2027,
                     ];
                 }
@@ -83,14 +84,15 @@ class ContractService
 
         } catch (\Throwable $exception) {
             DB::rollBack();
+
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2024,
             ];
         }
 
         return [
-           'success' => true,
+            'success' => true,
         ];
     }
 
@@ -99,7 +101,7 @@ class ContractService
         $data = $this->contractRepository->getListing($filters);
 
         $supplierIds = $data->pluck('supplier_id')->toArray();
-        $suppliers = [];
+        $suppliers   = [];
         if (!empty($supplierIds)) {
             $suppliers = $this->supplierRepository->getListing(['ids' => $supplierIds], ['id', 'name'])->keyBy('id');
         }
@@ -115,7 +117,7 @@ class ContractService
         $contract = $this->contractRepository->find($id);
         if (empty($contract)) {
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2028,
             ];
         }
@@ -126,7 +128,7 @@ class ContractService
         ]);
         if (!$deleteContract) {
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2030,
             ];
         }
@@ -136,9 +138,10 @@ class ContractService
             $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($id);
             if (!$deleteContractMonitor) {
                 DB::rollBack();
+
                 return [
-                  'success' => false,
-                  'error_code' => AppErrorCode::CODE_2029,
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2029,
                 ];
             }
 
@@ -149,8 +152,9 @@ class ContractService
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
+
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
@@ -165,7 +169,7 @@ class ContractService
         $contract = $this->contractRepository->find($id);
         if (empty($contract)) {
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2028,
             ];
         }
@@ -173,7 +177,7 @@ class ContractService
         $contract->fill($data);
         if (!$contract->save()) {
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_2031,
             ];
         }
@@ -183,9 +187,10 @@ class ContractService
             $updateContractMonitor = resolve(ContractMonitorService::class)->updateFollowersOfContract($id, $data['user_ids']);
             if (!$updateContractMonitor) {
                 DB::rollBack();
+
                 return [
-                    'success' => false,
-                    'error_code' => AppErrorCode::CODE_2032
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2032,
                 ];
             }
 
@@ -193,13 +198,14 @@ class ContractService
             if (!empty($payments)) {
                 $order = 1;
                 foreach ($payments as $payment) {
-                    $payment['order'] = $order ++;
+                    $payment['order']      = $order++;
                     $updateContractPayment = $this->contractPaymentRepository->updateOrInsertContractPayment($payment, $id);
                     if (!$updateContractPayment) {
                         DB::rollBack();
+
                         return [
-                            'success' => false,
-                            'error_code' => AppErrorCode::CODE_2027
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2027,
                         ];
                     }
                 }
@@ -210,9 +216,10 @@ class ContractService
                 $updateContractFile = resolve(ContractFileService::class)->updateContractFiles($files, $id);
                 if (!$updateContractFile) {
                     DB::rollBack();
+
                     return [
-                       'success' => false,
-                       'error_code' => AppErrorCode::CODE_2026,
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2026,
                     ];
                 }
             }
@@ -220,8 +227,9 @@ class ContractService
         } catch (\Throwable $exception) {
             dd($exception);
             DB::rollBack();
+
             return [
-                'success' => false,
+                'success'    => false,
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
@@ -234,11 +242,11 @@ class ContractService
     public function findContract($id)
     {
         $contract = $this->contractRepository->getFirst(
-            ['id'=> $id],
+            ['id' => $id],
             with: [
                 'contractFiles:id,contract_id,file_url,file_name',
                 'contractPayments:id,contract_id,order,payment_date,money,description',
-                'contractMonitors','contractAppendix'
+                'contractMonitors', 'contractAppendix',
             ]
         );
 

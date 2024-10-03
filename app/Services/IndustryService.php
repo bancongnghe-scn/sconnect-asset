@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\User;
 use App\Repositories\industryRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
@@ -10,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 class IndustryService
 {
     public function __construct(
-        protected IndustryRepository $industryRepository
-    )
-    {
+        protected industryRepository $industryRepository,
+    ) {
 
     }
 
@@ -32,15 +30,15 @@ class IndustryService
         $industry = $this->industryRepository->find($id);
         if (is_null($industry)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2004
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2004,
             ];
         }
 
         if (!$industry->delete()) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2005
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2005,
             ];
         }
 
@@ -54,14 +52,14 @@ class IndustryService
         $industry = $this->industryRepository->find($id);
         if (is_null($industry)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2011
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2011,
             ];
         }
 
         return [
             'success' => true,
-            'data' => $industry->toArray()
+            'data'    => $industry->toArray(),
         ];
     }
 
@@ -70,17 +68,17 @@ class IndustryService
         $industry = $this->industryRepository->findIndustryByName($data['name']);
         if (!empty($industry)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2009
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2009,
             ];
         }
 
         $data['created_by'] = Auth::id();
-        $createIndustry = $this->industryRepository->insert($data);
+        $createIndustry     = $this->industryRepository->insert($data);
         if (!$createIndustry) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2010
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2010,
             ];
         }
 
@@ -94,8 +92,8 @@ class IndustryService
         $industry = $this->industryRepository->find($id);
         if (is_null($industry)) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2011
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2011,
             ];
         }
 
@@ -103,8 +101,8 @@ class IndustryService
         $industry->fill($data);
         if (!$industry->save()) {
             return [
-                'success' => false,
-                'error_code' => AppErrorCode::CODE_2012
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2012,
             ];
         }
 

@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\ContractMonitor;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 
 class ContractMonitorRepository extends BaseRepository
 {

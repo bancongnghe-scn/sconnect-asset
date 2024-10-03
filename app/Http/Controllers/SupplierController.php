@@ -9,22 +9,21 @@ use Illuminate\Http\Request;
 class SupplierController extends Controller
 {
     public function __construct(
-        protected SupplierService $supplierService
-    )
-    {
+        protected SupplierService $supplierService,
+    ) {
 
     }
 
     public function index(Request $request)
     {
         $request->validate([
-            'code_name' => 'nullable|string',
-            'industry_ids' => 'nullable|array',
+            'code_name'      => 'nullable|string',
+            'industry_ids'   => 'nullable|array',
             'industry_ids.*' => 'integer',
-            'status' => 'nullable|array',
-            'status.*' => 'integer',
-            'page' => 'integer',
-            'limit' => 'integer|max:200',
+            'status'         => 'nullable|array',
+            'status.*'       => 'integer',
+            'page'           => 'integer',
+            'limit'          => 'integer|max:200',
         ]);
 
         try {
@@ -71,7 +70,6 @@ class SupplierController extends Controller
             return response_error();
         }
     }
-
 
     /**
      * Update the specified resource in storage.
