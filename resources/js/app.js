@@ -12,6 +12,7 @@ import Alpine from 'alpinejs'
 
 window.Alpine = Alpine
 document.addEventListener('DOMContentLoaded', () => {
+    $('.select2').select2()
     Alpine.start();
 });
 

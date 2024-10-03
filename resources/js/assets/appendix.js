@@ -3,30 +3,29 @@ import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('contract', () => ({
+    Alpine.data('appendix', () => ({
         init() {
-            this.initSelect2('modalContractUI');
-            this.initSelect2('modalContractInfo');
-            this.onChangeSelect2()
-            this.initDatePicker()
             this.getListContract({
-                page: 1,
-                limit: 10
+                status: [2]
             })
-            this.getListSupplier({})
+            this.getList({
+                page: this.filters.page,
+                limit: this.filters.limit,
+            })
+            this.initDatePicker()
+            this.onChangeSelect2()
         },
 
         //dataTable
         dataTable: [],
         columns: {
-            code: 'Mã hợp đồng',
-            type: 'Loại hợp đồng',
-            name: 'Tên hợp đồng',
-            supplier_name: 'Tên nhà cung cấp',
+            code: 'Mã phụ lục',
+            name: 'Tên phụ lục',
+            contract_name: 'Tên hợp đồng',
+            contract_code: 'Mã hợp đồng',
             signing_date: 'Ngày ký',
-            contract_value: 'Tổng giá trị',
-            validity: 'Hiệu lực',
             status: 'Trạng thái',
+            validity: 'Hiệu lực',
         },
         showAction: {
             view: true,
@@ -41,20 +40,18 @@ document.addEventListener('alpine:init', () => {
         limit: 10,
         showChecked: false,
 
-
         //data
         filters: {
             name_code: null,
-            type: [],
+            contract_ids: [],
             status: [],
             signing_date: null,
             from : null,
             limit: 10,
             page: 1
         },
-        contract: {
+        appendix: {
             code: null,
-            type: null,
             name: null,
             supplier_id: null,
             signing_date: null,
@@ -66,16 +63,12 @@ document.addEventListener('alpine:init', () => {
             files: [],
             payments: []
         },
-        listTypeContract: {
-            1: 'Hợp đồng mua bán',
-            2: 'Hợp đồng nguyên tắc',
-        },
-        listStatusContract: {
+        listContract: [],
+        listStatus: {
             1: 'Chờ duyệt',
             2: 'Đã duyệt',
             3: 'Hủy'
         },
-        listSupplier: [],
         listUser: [
             {id:1, name: 'User1'},
             {id:2, name: 'User2'},
@@ -84,26 +77,30 @@ document.addEventListener('alpine:init', () => {
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
-        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+
         //methods
         async getListContract(filters) {
             this.loading = true
-            if (filters.signing_date) {
-                filters.signing_date = format(filters.signing_date, 'yyyy-MM-dd')
-            }
-            if (filters.from) {
-                filters.from = format(filters.from, 'yyyy-MM-dd')
-            }
             const response = await window.apiGetContract(filters)
+            if (response.success) {
+                this.listContract = response.data.data
+            } else {
+                toast.error('Lấy danh sách hợp đồng thất bại !')
+            }
+            this.loading = false
+        },
+
+        async getList(filters){
+            this.loading = true
+            const response = await window.apiGetContractAppendix(filters)
             if (response.success) {
                 const data = response.data
                 this.dataTable = data.data.data
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
-                toast.success('Lấy danh sách hợp đồng thành công !')
             } else {
-                toast.error('Lấy danh sách hợp đồng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -247,12 +244,10 @@ document.addEventListener('alpine:init', () => {
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
-                if (event.target.id === 'filterTypeContract') {
-                    this.filters.type = value
+                if (event.target.id === 'filterContract') {
+                    this.filters.contract_ids = value
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.contract.user_ids = value
                 }
             });
         },
@@ -260,17 +255,9 @@ document.addEventListener('alpine:init', () => {
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
 
-            if(el.id === 'selectSigningDate') {
-                this.contract.signing_date = storageFormat
-            } else if (el.id === 'selectFrom') {
-                this.contract.from = storageFormat
-            } else if (el.id === 'selectTo') {
-                this.contract.to = storageFormat
-            } else if (el.name === 'selectPaymentDate') {
-                this.contract.payments[el.id].payment_date = storageFormat
-            } else if (el.id === 'filterSigningDate') {
+            if(el.id === 'filterSigningDate') {
                 this.filters.signing_date = storageFormat
-            } else if (el.id === 'filterFrom') {
+            } else if(el.id === 'filterFrom') {
                 this.filters.from = storageFormat
             }
         },

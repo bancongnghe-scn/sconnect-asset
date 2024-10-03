@@ -24,5 +24,5 @@ Route::middleware('auth')->group(function () {
     Route::view('industry/list', 'assets.industry.listIndustry');
     Route::view('supplier/list', 'assets.supplier.listSupplier');
     Route::view('contract/list', 'assets.contract.listContract');
-    Route::view('contract-appendix/list', 'assets.contract.listContractAppendix');
+    Route::view('contract-appendix/list', 'assets.contract_appendix.list');
 });

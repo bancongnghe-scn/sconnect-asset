@@ -1,7 +1,6 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('assetType', () => ({
         init() {
-            $('.select2').select2()
             this.getListAssetType({
                 page: 1,
                 limit: 10

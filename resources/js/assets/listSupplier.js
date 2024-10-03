@@ -257,7 +257,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         initSelect2InModal() {
-            $('.select2').select2();
             $('#modalSupplierUI').on('shown.bs.modal', function () {
                 $('.select2').select2({
                     dropdownParent: $('#modalSupplierUI') // Gán dropdown vào modal

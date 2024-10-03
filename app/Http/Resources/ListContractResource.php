@@ -23,7 +23,7 @@ class ListContractResource extends JsonResource
                 'type'           => Contract::TYPE_NAME[$contract->type],
                 'name'           => $contract->name,
                 'supplier_name'  => $supplier['name'] ?? null,
-                'signing_date'   => $contract->signing_date,
+                'signing_date'   => date('d/m/Y', strtotime($contract->signing_date)),
                 'contract_value' => $contract->contract_value,
                 'validity'       => $now->between($from, $to),
                 'status'         => Contract::STATUS_NAME[$contract->status],

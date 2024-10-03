@@ -21,4 +21,36 @@ class ContractAppendixRepository extends BaseRepository
             'deleted_at' => date('Y-m-d H:i:s'),
         ]);
     }
+
+    public function getListing($filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+
+        if (!empty($filters['name_code'])) {
+            $query->where('code', $filters['name_code'])
+                ->orWhere('name', 'LIKE', $filters['name_code'] . '%');
+        }
+
+        if (!empty($filters['contract_ids'])) {
+            $query->whereIn('contract_id', Arr::wrap($filters['contract_ids']));
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        if (!empty($filters['signing_date'])) {
+            $query->whereDate('signing_date', $filters['signing_date']);
+        }
+
+        if (!empty($filters['from'])) {
+            $query->whereDate('from', $filters['from']);
+        }
+
+        if (!empty($filters['limit'])) {
+            return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
+        }
+
+        return $query->get();
+    }
 }
