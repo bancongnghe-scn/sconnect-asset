@@ -108,7 +108,7 @@ window.apiUpdateContract = async function (dataUpdate, id) {
     try {
         const formData = window.formData(formatContract(dataUpdate))
 
-        const response = await axios.post("/api/contract/update/"+id,formData)
+        const response = await axios.post("/api/contract/"+id,formData)
 
         const data = response.data;
         if (!data.success) {

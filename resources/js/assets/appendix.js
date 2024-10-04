@@ -13,6 +13,8 @@ document.addEventListener('alpine:init', () => {
                 limit: this.filters.limit,
             })
             this.initDatePicker()
+            this.initSelect2(this.idModalUI);
+            this.initSelect2(this.idModalInfo);
             this.onChangeSelect2()
         },
 
@@ -51,17 +53,15 @@ document.addEventListener('alpine:init', () => {
             page: 1
         },
         appendix: {
+            contract_id: null,
             code: null,
             name: null,
-            supplier_id: null,
             signing_date: null,
             from: null,
             to: null,
             user_ids: [],
-            contract_value: null,
             description: null,
             files: [],
-            payments: []
         },
         listContract: [],
         listStatus: {
@@ -77,6 +77,8 @@ document.addEventListener('alpine:init', () => {
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
+        idModalUI: "idModalUI",
+        idModalInfo: "idModalInfo",
 
         //methods
         async getListContract(filters) {
@@ -92,7 +94,7 @@ document.addEventListener('alpine:init', () => {
 
         async getList(filters){
             this.loading = true
-            const response = await window.apiGetContractAppendix(filters)
+            const response = await window.apiGetAppendix(filters)
             if (response.success) {
                 const data = response.data
                 this.dataTable = data.data.data
@@ -105,23 +107,23 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async editContract() {
+        async edit() {
             this.loading = true
-            const response = await window.apiUpdateContract(this.contract, this.id)
+            const response = await window.apiUpdateAppendix(this.appendix, this.id)
             if (!response.success) {
                 toast.error(response.message)
                 return
             }
-            toast.success('Cập nhập hợp đồng thành công !')
-            $('#modalContractUI').modal('hide');
-            this.resetDataContract()
-            await this.getListContract(this.filters)
+            toast.success('Cập nhập phụ lục hợp đồng thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetDataAppendix()
+            await this.getList(this.filters)
             this.loading = false
         },
 
-        async removeContract() {
+        async remove() {
             this.loading = true
-            const response = await window.apiRemoveContract(this.id)
+            const response = await window.apiRemoveAppendix(this.id)
             if (!response.success) {
                 toast.error(response.message)
                 this.loading = false
@@ -130,56 +132,56 @@ document.addEventListener('alpine:init', () => {
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
             toast.success('Xóa hợp đồng thành công !')
-            await this.getListContract(this.filters)
+            await this.getList(this.filters)
 
             this.loading = false
         },
 
-        async createContract() {
+        async create() {
             this.loading = true
-            const response = await window.apiCreateContract(this.contract)
+            const response = await window.apiCreateAppendix(this.appendix)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
-            toast.success('Tạo hợp đồng thành công !')
-            $('#modalContractUI').modal('hide');
+            toast.success('Tạo phụ lục hợp đồng thành công !')
+            $('#'+this.idModalUI).modal('hide');
             this.loading = false
             this.reloadPage()
             this.resetDataContract()
         },
 
-        async handleShowModalContractUI(action, id = null) {
+        async handleShowModalUI(action, id = null) {
             this.loading = true
             this.action = action
             if (action === 'create') {
                 this.titleModal = 'Thêm mới'
-                this.resetDataContract()
+                this.resetDataAppendix()
             } else {
                 this.titleModal = 'Cập nhật'
                 this.id = id
-                const response = await window.apiShowContract(id)
+                const response = await window.apiShowAppendix(id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                this.contract = this.formatDataContract(response.data.data)
+                this.appendix = this.formatDateAppendix(response.data.data)
             }
 
-            $('#modalContractUI').modal('show');
+            $('#'+this.idModalUI).modal('show');
             this.loading = false
         },
 
-        async handleShowModalContractInfo(id) {
+        async handleShowModalInfo(id) {
             this.loading = true
             const response = await window.apiShowContract(id)
             if (!response.success) {
                 toast.error(response.message)
                 return
             }
-            this.contract = this.formatDataContract(response.data.data)
-            $('#modalContractInfo').modal('show');
+            this.appendix = this.formatDateAppendix(response.data.data)
+            $('#'+this.idModalInfo).modal('show');
             this.loading = false
         },
 
@@ -204,36 +206,32 @@ document.addEventListener('alpine:init', () => {
             this.getListContract(this.filters)
         },
 
-        resetDataContract() {
-            this.contract = {
+        resetDataAppendix() {
+            this.appendix = {
+                contract_id: null,
                 code: null,
-                type: null,
                 name: null,
-                supplier_id: null,
                 signing_date: null,
                 from: null,
                 to: null,
                 user_ids: [],
-                contract_value: null,
                 description: null,
                 files: [],
-                payments: [],
-                filesUpdated: []
             }
         },
 
         reloadPage() {
             this.filters = {
                 name_code: null,
-                type: [],
+                contract_ids: [],
                 status: [],
                 signing_date: null,
-                from: null,
+                from : null,
                 limit: 10,
                 page: 1
             }
 
-            this.getListContract(this.filters)
+            this.getList(this.filters)
         },
 
         confirmRemove(id) {
@@ -248,6 +246,8 @@ document.addEventListener('alpine:init', () => {
                     this.filters.contract_ids = value
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
+                } else if (event.target.id === 'selectUserId') {
+                    this.appendix.user_ids = value
                 }
             });
         },
@@ -259,6 +259,12 @@ document.addEventListener('alpine:init', () => {
                 this.filters.signing_date = storageFormat
             } else if(el.id === 'filterFrom') {
                 this.filters.from = storageFormat
+            } else if(el.id === 'selectSigningDate') {
+                this.appendix.signing_date = storageFormat
+            } else if(el.id === 'selectFrom') {
+                this.appendix.from = storageFormat
+            } else if(el.id === 'selectTo') {
+                this.appendix.to = storageFormat
             }
         },
 
@@ -273,7 +279,7 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            this.contract.files = this.contract.files.concat(Array.from(this.$refs.fileInput.files))
+            this.appendix.files = this.appendix.files.concat(files)
         },
 
         addRowPayment() {
@@ -288,13 +294,11 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
-        formatDataContract(contract) {
-            contract.signing_date = contract.signing_date !== null ? format(contract.signing_date, 'dd/MM/yyyy') : null
-            contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
-            contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
-            const payments = contract.payments
-            payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
-            return contract
+        formatDateAppendix(appendix) {
+            appendix.signing_date = appendix.signing_date !== null ? format(appendix.signing_date, 'dd/MM/yyyy') : null
+            appendix.from = appendix.from !== null ? format(appendix.from, 'dd/MM/yyyy') : null
+            appendix.to = appendix.to !== null ? format(appendix.to, 'dd/MM/yyyy') : null
+            return appendix
         },
 
         initDatePicker() {

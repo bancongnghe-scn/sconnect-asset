@@ -221,7 +221,6 @@ document.addEventListener('alpine:init', () => {
                 description: null,
                 files: [],
                 payments: [],
-                filesUpdated: []
             }
         },
 

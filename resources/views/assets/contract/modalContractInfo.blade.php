@@ -68,14 +68,13 @@
                     </div>
                     <div class="row">
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
-                        <div>
-                            <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
-                                <template x-for="(file, index) in contract.files" :key="index">
-                                    <div class="tw-flex gap-x-1">
-                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
-                                    </div>
-                                </template>
-                            </div>
+                        <div class="mt-2 d-flex flex-column tw-gap-y-2">
+                            <template x-for="(file, index) in contract.files" :key="index">
+                                <div>
+                                    <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
+                                    <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>

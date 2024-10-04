@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('ping', function () {
-    dd(resolve(App\Services\AssetTypeService::class)->getListAssetType());
+    return 'pong';
 });
 
 Route::middleware('auth')->group(function () {
@@ -46,8 +46,6 @@ Route::middleware('auth')->group(function () {
             Route::post('/delete-multiple', 'deleteMultiple');
         });
 
-    Route::prefix('contract')->controller(ContractController::class)
-        ->group(function () {
-            Route::post('/update/{id}', 'updateContract');
-        });
+    Route::post('contract/{id}', [ContractController::class, 'update']);
+    Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
 });

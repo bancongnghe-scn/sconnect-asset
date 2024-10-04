@@ -37,4 +37,8 @@ return [
     AppErrorCode::CODE_2030 => 'Xóa hợp đồng thất bại !',
     AppErrorCode::CODE_2031 => 'Cập nhật hợp đồng thất bại !',
     AppErrorCode::CODE_2032 => 'Cập nhật người theo dõi hợp đồng thất bại !',
+    AppErrorCode::CODE_2033 => 'Phụ lục hợp đồng đã tồn tại !',
+    AppErrorCode::CODE_2034 => 'Phụ lục hợp đồng không tồn tại !',
+    AppErrorCode::CODE_2035 => 'Lưu phụ lục hợp đồng không thất bại !',
+    AppErrorCode::CODE_2036 => 'Xóa phụ lục hợp đồng không thất bại !',
 ];

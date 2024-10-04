@@ -53,4 +53,19 @@ class ContractAppendixRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function getFirst($filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+
+        if (!empty($filters['code'])) {
+            $query->where('code', $filters['code']);
+        }
+
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
+        return $query->first();
+    }
 }

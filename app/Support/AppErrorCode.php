@@ -38,5 +38,8 @@ class AppErrorCode
     public const CODE_2030 = 2030; //  Xóa hợp đồng thất bại !
     public const CODE_2031 = 2031; //  Cập nhật hợp đồng thất bại !
     public const CODE_2032 = 2032; //  Cập nhật người theo dõi hợp đồng thất bại !
-
+    public const CODE_2033 = 2033; //  Phụ lục hợp đồng đã tồn tại !
+    public const CODE_2034 = 2034; //  Phụ lục hợp đồng không tồn tại !
+    public const CODE_2035 = 2035; //  Lưu phụ lục hợp đồng không thất bại !
+    public const CODE_2036 = 2036; //  Xóa phụ lục hợp đồng không thất bại !
 }

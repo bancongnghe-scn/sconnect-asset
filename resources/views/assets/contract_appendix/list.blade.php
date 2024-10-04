@@ -24,25 +24,25 @@
             @include('assets.contract_appendix.table')
         </div>
 
-{{--        --}}{{-- modal--}}
-{{--        <div>--}}
-{{--            <div--}}
-{{--            @include('assets.contract_appendix.modalUI')--}}
-{{--        </div>--}}
+        {{--  modal--}}
+        <div>
+            <div
+            @include('assets.contract_appendix.modalUI')
+        </div>
 
-{{--        <div--}}
-{{--            x-data="{--}}
-{{--                modalId: idModalConfirmDelete,--}}
-{{--                contentBody: 'Bạn có chắc chắn muốn xóa phụ lục hợp đồng này không ?'--}}
-{{--            }"--}}
-{{--            @ok="remove"--}}
-{{--        >--}}
-{{--            @include('common.modal-confirm')--}}
-{{--        </div>--}}
+        <div
+            x-data="{
+                modalId: idModalConfirmDelete,
+                contentBody: 'Bạn có chắc chắn muốn xóa phụ lục hợp đồng này không ?'
+            }"
+            @ok="remove"
+        >
+            @include('common.modal-confirm')
+        </div>
 
-{{--        <div>--}}
-{{--            @include('assets.contract_appendix.modalInfo')--}}
-{{--        </div>--}}
+        <div>
+            @include('assets.contract_appendix.modalInfo')
+        </div>
     </div>
 
 @endsection

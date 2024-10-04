@@ -66,7 +66,7 @@ class ContractController extends Controller
         }
     }
 
-    public function updateContract(StoreContractRequest $request, string $id)
+    public function update(StoreContractRequest $request, string $id)
     {
         try {
             $result = $this->contractService->updateContract($request->validated(), $id);
