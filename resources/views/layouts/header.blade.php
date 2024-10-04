@@ -1,13 +1,13 @@
 <!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center">
-
-    <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-            <img src="/assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">{{ config('app.name', 'Laravel') }}</span>
+<header id="header" class="header fixed-top d-flex align-items-center bg-sc">
+    <div class="d-flex align-items-center justify-content-between tw-gap-x-4">
+        <a href="{{route('home')}}" class="align-items-center tw-hidden lg:tw-flex">
+            <img src="/storage/app/logo-s.png" alt="" class="tw-max-h-12">
+            <img src="/storage/app/logo-text.png" alt="" class="tw-max-h-14">
         </a>
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div><!-- End Logo -->
+
+        <i class="fa-solid fa-bars btn-menu" @click="activeSidebarSm = !activeSidebarSm"></i>
+    </div>
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -153,3 +153,11 @@
     </nav><!-- End Icons Navigation -->
 
 </header><!-- End Header -->
+
+<style>
+    @media screen and (min-width: 1200px){
+        .btn-menu {
+            display: none !important;
+        }
+    }
+</style>

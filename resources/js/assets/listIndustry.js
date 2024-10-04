@@ -22,6 +22,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
+        showChecked: false,
 
         //data
         filters: {

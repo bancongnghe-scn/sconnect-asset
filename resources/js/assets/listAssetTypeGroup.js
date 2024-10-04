@@ -1,6 +1,6 @@
-function typeGroup() {
-    return {
-        //created
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('typeGroup', () => ({
         init() {
             this.getListTypeGroup({
                 page: 1,
@@ -23,6 +23,7 @@ function typeGroup() {
             edit: true,
             remove: true
         },
+        showChecked: false,
 
         //data
         filters: {
@@ -202,5 +203,6 @@ function typeGroup() {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
         }
-    }
-}
+    }));
+})
+

@@ -25,9 +25,11 @@
     @yield('css')
 </head>
 <body>
-@include('layouts.header')
+<div x-data="{activeSidebarSm: false}">
+    @include('layouts.header')
 
-@include('layouts.sidebar')
+    @include('layouts.sidebar')
+</div>
 
 <main id="main" class="main" x-data="{loading: false}">
     <div class="pagetitle">

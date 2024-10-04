@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body d-flex flex-row align-items-end tw-gap-x-4">
+                    <div class="card-body d-flex align-items-end tw-gap-x-4">
                         <div class="form-group col-4">
                             <label class="tw-font-bold">Tên nhóm tài sản</label>
                             <input type="text" class="form-control" x-model="filters.name">

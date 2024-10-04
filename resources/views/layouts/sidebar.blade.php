@@ -1,63 +1,71 @@
-<!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+<<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar bg-sc" :class="activeSidebarSm ? 'tw-left-0' : 'menu'">
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
         <li class="nav-item">
-            <a class="nav-link " href="{{route('home')}}">
-                <i class="fa-solid fa-house"></i>
+            <a class="nav-link bg-sc text-white" href="{{route('home')}}">
+                <i class="fa-solid fa-house text-white"></i>
                 <span>Trang chủ</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-                <i class="fa-solid fa-gear"></i>
+            <a class="nav-link bg-sc text-white" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#" >
+                <i class="fa-solid fa-gear text-white" ></i>
                 <span>Cài đặt</span>
-                <i class="fa-solid fa-arrow-right tw-ml-2"></i>
+                <i class="fa-solid fa-arrow-right tw-ml-2 text-white" ></i>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{{route('asset.type-group.list')}}">
+                    <a href="{{route('asset.type-group.list')}}" class="text-white">
                         <i class="fa-solid fa-whiskey-glass"></i><span>Nhóm tài sản</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/asset-type/list">
+                    <a href="/asset-type/list" class="text-white">
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Loại tài sản</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/industry/list">
+                    <a href="/industry/list" class="text-white">
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Ngành hàng</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/supplier/list">
+                    <a href="/supplier/list" class="text-white">
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Nhà cung cấp</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Components Nav -->
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
-                <i class="fa-solid fa-gear"></i>
+            <a class="nav-link bg-sc text-white" data-bs-target="#asset-nav" data-bs-toggle="collapse" href="#">
+                <i class="fa-solid fa-gear text-white"></i>
                 <span>Quản lý tài sản</span>
-                <i class="fa-solid fa-arrow-right tw-ml-2"></i>
+                <i class="fa-solid fa-arrow-right tw-ml-2 text-white"></i>
             </a>
             <ul id="asset-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="/contract/list">
+                    <a href="/contract/list" class="text-white">
                         <i class="fa-solid fa-whiskey-glass"></i><span>Hợp đồng</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/contract-appendix/list">
+                    <a href="/contract-appendix/list" class="text-white">
                         <i class="fa-solid fa-whiskey-glass"></i><span>Phụ lục hợp đồng</span>
                     </a>
                 </li>
             </ul>
         </li><!-- End Components Nav -->
     </ul>
-
 </aside><!-- End Sidebar-->
+
+<style>
+    @media screen and (max-width: 1199px){
+        .menu {
+            left: -300px;
+        }
+    }
+</style>
+>
