@@ -43,3 +43,11 @@
     background: #379237;
     color: white;
 }
+
+.btn-sc:hover {
+    background: #379237;
+    color: white;
+    opacity: 0.9;
+}
+
+
