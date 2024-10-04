@@ -7,7 +7,7 @@
                     <input type="text" class="form-control" x-model="filters.name">
                 </div>
                 <div class="">
-                    <button @click="getListIndustry(filters)" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
+                    <button @click="getListIndustry(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
                 </div>
             </div>
         </div>

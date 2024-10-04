@@ -24,7 +24,7 @@
                 </div>
 
                 <div class="">
-                    <button @click="getListSupplier(filters)" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
+                    <button @click="getListSupplier(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
                 </div>
             </div>
         </div>

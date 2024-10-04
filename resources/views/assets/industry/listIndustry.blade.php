@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="industry">
         <div class="tw-mb-3 d-flex tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handShowModalIndustryUI('create')">
+            <button type="button" class="btn btn-sc" @click="handShowModalIndustryUI('create')">
                 Thêm mới
             </button>
         </div>

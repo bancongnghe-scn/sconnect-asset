@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="assetType">
         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handShowModalAssetTypeUI('create')">
+            <button type="button" class="btn btn-sc" @click="handShowModalAssetTypeUI('create')">
                 Thêm mới
             </button>
             <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple">

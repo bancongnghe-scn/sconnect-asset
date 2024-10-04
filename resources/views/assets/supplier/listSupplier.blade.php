@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="supplier">
         <div class="tw-mb-3 d-flex tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handShowModalSupplierUI('create')">
+            <button type="button" class="btn btn-sc" @click="handShowModalSupplierUI('create')">
                 Thêm mới
             </button>
         </div>

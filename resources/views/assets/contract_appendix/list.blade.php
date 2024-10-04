@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="appendix">
         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handleShowModalUI('create')">
+            <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
         </div>

@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="typeGroup">
         <div class="tw-mb-3 d-flex tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handleShowModalCreateOrUpdate('create')">
+            <button type="button" class="btn btn-sc" @click="handleShowModalCreateOrUpdate('create')">
                 Thêm mới
             </button>
         </div>
@@ -19,7 +19,7 @@
                             <input type="text" class="form-control" x-model="filters.name">
                         </div>
                         <div class="">
-                            <button @click="searchTypeGroup" type="button" class="btn btn-block btn-primary">Tìm kiếm
+                            <button @click="searchTypeGroup" type="button" class="btn btn-block btn-sc">Tìm kiếm
                             </button>
                         </div>
                     </div>

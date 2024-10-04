@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="contract">
         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-            <button type="button" class="btn btn-primary" @click="handleShowModalContractUI('create')">
+            <button type="button" class="btn btn-sc" @click="handleShowModalContractUI('create')">
                 Thêm mới
             </button>
         </div>

@@ -45,7 +45,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="$dispatch('save-asset-type')" type="button" class="btn btn-primary">Lưu</button>
+                <button @click="$dispatch('save-asset-type')" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

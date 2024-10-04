@@ -59,7 +59,7 @@
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+appendix.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
                             <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
-                            <label type="button" class="btn btn-primary" for="fileInput">Chọn tệp</label>
+                            <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
                             <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
                                 <template x-for="(file, index) in appendix.files" :key="index">
@@ -75,7 +75,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-primary">Lưu</button>
+                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

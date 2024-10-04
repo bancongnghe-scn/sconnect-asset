@@ -15,7 +15,7 @@
                     </select>
                 </div>
                 <div class="">
-                    <button @click="searchAssetType" type="button" class="btn btn-block btn-primary">Tìm kiếm
+                    <button @click="searchAssetType" type="button" class="btn btn-block btn-sc">Tìm kiếm
                     </button>
                 </div>
             </div>

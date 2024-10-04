@@ -72,7 +72,7 @@
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
                             <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
-                            <label type="button" class="btn btn-primary" for="fileInput">Chọn tệp</label>
+                            <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
                             <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
                                 <template x-for="(file, index) in contract.files" :key="index">
@@ -123,7 +123,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button @click="addRowPayment" type="button" class="btn btn-primary tw-w-fit">Thêm hàng</button>
+                    <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
                 </div>
 
                 <template x-if="contract.appendix">
@@ -134,7 +134,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="action === 'create' ? createContract() : editContract()" type="button" class="btn btn-primary">Lưu</button>
+                <button @click="action === 'create' ? createContract() : editContract()" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

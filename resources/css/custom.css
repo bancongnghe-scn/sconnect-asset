@@ -38,3 +38,8 @@
 .bg-sc {
     background: #379237 !important;
 }
+
+.btn-sc {
+    background: #379237;
+    color: white;
+}

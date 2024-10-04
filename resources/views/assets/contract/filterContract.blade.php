@@ -35,7 +35,7 @@
                             <input type="text" class="form-control datepicker" id="filterFrom" placeholder="Ngày hiệu lực" autocomplete="off">
                         </div>
                         <div>
-                            <button @click="getListContract(filters)" type="button" class="btn btn-block btn-primary">Tìm kiếm</button>
+                            <button @click="getListContract(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
                         </div>
                     </div>
                 </div>
