@@ -56,6 +56,11 @@
                         <i class="fa-solid fa-whiskey-glass"></i><span>Phụ lục hợp đồng</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/shopping_plan/list" class="text-white">
+                        <i class="fa-solid fa-whiskey-glass"></i><span>Kế hoạch mua sắm</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Components Nav -->
     </ul>
