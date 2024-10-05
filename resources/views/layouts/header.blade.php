@@ -2,8 +2,8 @@
 <header id="header" class="header fixed-top d-flex align-items-center bg-sc">
     <div class="d-flex align-items-center justify-content-between tw-gap-x-4">
         <a href="{{route('home')}}" class="align-items-center tw-hidden lg:tw-flex">
-            <img src="/storage/app/logo-s.png" alt="" class="tw-max-h-12">
-            <img src="/storage/app/logo-text.png" alt="" class="tw-max-h-14">
+            <img src="/assets/img/logo-s.png" alt="" class="tw-max-h-12">
+            <img src="/assets/img/logo-text.png" alt="" class="tw-max-h-14">
         </a>
 
         <i class="fa-solid fa-bars btn-menu" @click="activeSidebarSm = !activeSidebarSm"></i>

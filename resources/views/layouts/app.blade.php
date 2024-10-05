@@ -33,7 +33,7 @@
 
 <main id="main" class="main" x-data="{loading: false}">
     <div class="pagetitle">
-        <h1>{{$title}}</h1>
+        <h1 class="color-sc">{{$title}}</h1>
         @if($title !== "Trang chủ")
             <nav>
                 <ol class="breadcrumb">
