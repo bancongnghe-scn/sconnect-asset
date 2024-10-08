@@ -37,6 +37,16 @@
                         <i class="fa-solid fa-glass-water-droplet"></i><span>Nhà cung cấp</span>
                     </a>
                 </li>
+                <li>
+                    <a href="/rbac/role/list" class="text-white">
+                        <i class="fa-solid fa-glass-water-droplet"></i><span>Vai trò</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/rbac/permission/list" class="text-white">
+                        <i class="fa-solid fa-glass-water-droplet"></i><span>Quyền ứng dụng</span>
+                    </a>
+                </li>
             </ul>
         </li><!-- End Components Nav -->
         <li class="nav-item">

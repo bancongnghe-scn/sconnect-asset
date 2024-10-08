@@ -15,6 +15,10 @@
                     <label class="form-label">Ghi chú</label>
                     <textarea class="form-control tw-h-40" x-model="role.description"></textarea>
                 </div>
+
+                <div class="mb-3" x-if="action === 'update'">
+                    <div>1111111</div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
