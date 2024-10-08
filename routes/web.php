@@ -18,6 +18,10 @@ Route::controller(App\Http\Controllers\Auth\LoginSSOController::class)->group(fu
 });
 
 Route::middleware('auth')->group(function () {
+    Route::prefix('permission')->group(function () {
+        Route::view('role/list', 'permission.role.list');
+    });
+
     Route::view('/home', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
     Route::view('asset-type/list', 'assets.asset_type.listAssetType');

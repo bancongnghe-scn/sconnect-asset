@@ -42,4 +42,11 @@ class AppErrorCode
     public const CODE_2034 = 2034; //  Phụ lục hợp đồng không tồn tại !
     public const CODE_2035 = 2035; //  Lưu phụ lục hợp đồng không thất bại !
     public const CODE_2036 = 2036; //  Xóa phụ lục hợp đồng không thất bại !
+    public const CODE_2037 = 2037; //  Vai trò đã tồn tại !
+    public const CODE_2038 = 2038; //  Tạo vai trò thất bại !
+    public const CODE_2039 = 2039; //  Xóa vai trò thất bại !
+    public const CODE_2040 = 2040; //  Vai trò không tồn tại !
+    public const CODE_2041 = 2041; //  Xóa vai trò của người dùng thất bại !
+    public const CODE_2042 = 2042; //  Xóa quyền của vai trò thất bại !
+    public const CODE_2043 = 2043; //  Cập nhật vai trò thất bại !
 }

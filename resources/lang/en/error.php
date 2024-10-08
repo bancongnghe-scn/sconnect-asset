@@ -41,4 +41,11 @@ return [
     AppErrorCode::CODE_2034 => 'Phụ lục hợp đồng không tồn tại !',
     AppErrorCode::CODE_2035 => 'Lưu phụ lục hợp đồng không thất bại !',
     AppErrorCode::CODE_2036 => 'Xóa phụ lục hợp đồng không thất bại !',
+    AppErrorCode::CODE_2037 => 'Vai trò đã tồn tại !',
+    AppErrorCode::CODE_2038 => 'Tạo vai trò thất bại !',
+    AppErrorCode::CODE_2039 => 'Xóa vai trò thất bại !',
+    AppErrorCode::CODE_2040 => 'Vai trò không tồn tại !',
+    AppErrorCode::CODE_2041 => 'Xóa vai trò của người dùng thất bại !',
+    AppErrorCode::CODE_2042 => 'Xóa quyền của vai trò thất bại !',
+    AppErrorCode::CODE_2043 => 'Cập nhật vai trò thất bại !',
 ];
