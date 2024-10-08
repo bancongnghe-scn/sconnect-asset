@@ -65,7 +65,7 @@ document.addEventListener('alpine:init', () => {
 
         async apiGetAssetTypeGroup(filters) {
             try {
-                const response = await axios.get("/api/asset-type-group/list", {
+                const response = await axios.get("/api/asset-type-group", {
                     params: filters
                 })
 
@@ -93,11 +93,10 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const param = {
-                    id: this.id,
                     name: this.createOrUpdateAssetTypeGroup.name,
                     description: this.createOrUpdateAssetTypeGroup.description,
                 }
-                const response = await axios.post("/api/asset-type-group/update", param)
+                const response = await axios.put("/api/asset-type-group/"+this.id, param)
                 const data = response.data;
                 if (!data.success) {
                     toast.error(data.message)
@@ -118,7 +117,7 @@ document.addEventListener('alpine:init', () => {
         async removeTypeGroup() {
             this.loading = true
             try {
-                const response = await axios.post("/api/asset-type-group/delete", {id: this.id})
+                const response = await axios.delete("/api/asset-type-group/"+this.id)
                 const data = response.data;
                 if (!data.success) {
                     toast.error(data.message)
@@ -137,7 +136,7 @@ document.addEventListener('alpine:init', () => {
         async createTypeGroup() {
             this.loading = true
             try {
-                const response = await axios.post("/api/asset-type-group/create", this.createOrUpdateAssetTypeGroup)
+                const response = await axios.post("/api/asset-type-group", this.createOrUpdateAssetTypeGroup)
                 const data = response.data;
                 if (!data.success) {
                     toast.error(data.message)

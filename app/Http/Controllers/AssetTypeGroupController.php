@@ -13,7 +13,7 @@ class AssetTypeGroupController extends Controller
 
     }
 
-    public function getListAssetTypeGroup(Request $request)
+    public function index(Request $request)
     {
         $request->validate([
             'id'    => 'integer',
@@ -31,7 +31,7 @@ class AssetTypeGroupController extends Controller
         }
     }
 
-    public function createAssetTypeGroup(Request $request)
+    public function store(Request $request)
     {
         $request->validate(
             [
@@ -58,15 +58,10 @@ class AssetTypeGroupController extends Controller
         }
     }
 
-    public function deleteAssetTypeGroup(Request $request)
+    public function destroy(string $id)
     {
-        $request->validate([
-            'id' => 'required|integer',
-        ], [
-            'id.required' => 'ID nhóm tài sản là bắt buộc.',
-        ]);
         try {
-            $result = $this->assetTypeGroupService->deleteAssetTypeGroup($request->integer('id'));
+            $result = $this->assetTypeGroupService->deleteAssetTypeGroup($id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -78,13 +73,12 @@ class AssetTypeGroupController extends Controller
         }
     }
 
-    public function updateAssetTypeGroup(Request $request)
+    public function update(Request $request, string $id)
     {
         $request->validate(
             [
                 'name'        => 'required|string',
                 'description' => 'string',
-                'id'          => 'required|integer',
             ],
             [
                 'name.required'      => 'Tên nhóm tài sản là bắt buộc.',
@@ -94,7 +88,7 @@ class AssetTypeGroupController extends Controller
         );
 
         try {
-            $result = $this->assetTypeGroupService->updateAssetTypeGroup($request->all());
+            $result = $this->assetTypeGroupService->updateAssetTypeGroup($request->all(), $id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

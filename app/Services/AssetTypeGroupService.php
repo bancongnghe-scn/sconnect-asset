@@ -67,9 +67,9 @@ class AssetTypeGroupService
         ];
     }
 
-    public function updateAssetTypeGroup($data)
+    public function updateAssetTypeGroup($data, $id)
     {
-        $assetTypeGroup = $this->assetTypeGroupRepository->find($data['id']);
+        $assetTypeGroup = $this->assetTypeGroupRepository->find($id);
         if (is_null($assetTypeGroup)) {
             return [
                 'success'    => false,

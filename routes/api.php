@@ -26,20 +26,12 @@ Route::get('ping', function () {
 Route::middleware('auth')->group(function () {
     Route::resources([
         'asset-type'        => App\Http\Controllers\AssetTypeController::class,
+        'asset-type-group'  => AssetTypeGroupController::class,
         'industry'          => App\Http\Controllers\industryController::class,
         'supplier'          => App\Http\Controllers\SupplierController::class,
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
     ]);
-
-    Route::prefix('asset-type-group')
-        ->controller(AssetTypeGroupController::class)
-        ->group(function () {
-            Route::get('/list', 'getListAssetTypeGroup')->name('asset.type_group.list');
-            Route::post('/create', 'createAssetTypeGroup')->name('asset.type_group.create');
-            Route::post('/delete', 'deleteAssetTypeGroup')->name('asset.type_group.delete');
-            Route::post('/update', 'updateAssetTypeGroup')->name('asset.type_group.update');
-        });
 
     Route::prefix('asset-type')->controller(App\Http\Controllers\AssetTypeController::class)
         ->group(function () {
