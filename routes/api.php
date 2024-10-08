@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,13 @@ Route::middleware('auth')->group(function () {
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
     ]);
+
+    Route::prefix('rbac')->group(function () {
+        Route::resources([
+            'role'       => RoleController::class,
+            'permission' => App\Http\Controllers\PermissionController::class,
+        ]);
+    });
 
     Route::prefix('asset-type')->controller(App\Http\Controllers\AssetTypeController::class)
         ->group(function () {

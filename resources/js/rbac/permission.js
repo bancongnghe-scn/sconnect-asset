@@ -3,9 +3,12 @@ import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('role', () => ({
+    Alpine.data('permission', () => ({
         init() {
-
+            this.getList({
+                page: 1,
+                limit: 10
+            })
         },
 
         //dataTable
@@ -33,7 +36,7 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-        role: {
+        permission: {
             name: null,
             description: null,
         },
@@ -46,7 +49,7 @@ document.addEventListener('alpine:init', () => {
         //methods
         async getList(filters){
             this.loading = true
-            const response = await window.apiGetAppendix(filters)
+            const response = await window.apiGetPermission(filters)
             if (response.success) {
                 const data = response.data
                 this.dataTable = data.data.data
@@ -61,12 +64,12 @@ document.addEventListener('alpine:init', () => {
 
         async edit() {
             this.loading = true
-            const response = await window.apiUpdateAppendix(this.appendix, this.id)
+            const response = await window.apiUpdatePermission(this.permission, this.id)
             if (!response.success) {
                 toast.error(response.message)
                 return
             }
-            toast.success('Cập nhập phụ lục hợp đồng thành công !')
+            toast.success('Cập nhập vai trò thành công !')
             $('#'+this.idModalUI).modal('hide');
             this.resetData()
             await this.getList(this.filters)
@@ -75,7 +78,7 @@ document.addEventListener('alpine:init', () => {
 
         async remove() {
             this.loading = true
-            const response = await window.apiRemoveAppendix(this.id)
+            const response = await window.apiRemovePermission(this.id)
             if (!response.success) {
                 toast.error(response.message)
                 this.loading = false
@@ -83,7 +86,7 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa hợp đồng thành công !')
+            toast.success('Xóa vai trò thành công !')
             await this.getList(this.filters)
 
             this.loading = false
@@ -91,17 +94,17 @@ document.addEventListener('alpine:init', () => {
 
         async create() {
             this.loading = true
-            const response = await window.apiCreateAppendix(this.appendix)
+            const response = await window.apiCreatePermission(this.permission)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
-            toast.success('Tạo phụ lục hợp đồng thành công !')
+            toast.success('Tạo vai trò thành công !')
             $('#'+this.idModalUI).modal('hide');
             this.loading = false
             this.reloadPage()
-            this.resetDataContract()
+            this.resetData()
         },
 
         async handleShowModalUI(action, id = null) {
@@ -113,12 +116,12 @@ document.addEventListener('alpine:init', () => {
             } else {
                 this.titleModal = 'Cập nhật'
                 this.id = id
-                const response = await window.apiShowAppendix(id)
+                const response = await window.apiShowPermission(id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                this.appendix = this.formatDateAppendix(response.data.data)
+                this.permission = response.data.data
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -127,12 +130,12 @@ document.addEventListener('alpine:init', () => {
 
         changePage(page) {
             this.filters.page = page
-            this.getListContract(this.filters)
+            this.getList(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListContract(this.filters)
+            this.getList(this.filters)
         },
 
         resetData() {
@@ -144,11 +147,7 @@ document.addEventListener('alpine:init', () => {
 
         reloadPage() {
             this.filters = {
-                name_code: null,
-                contract_ids: [],
-                status: [],
-                signing_date: null,
-                from : null,
+                name: null,
                 limit: 10,
                 page: 1
             }

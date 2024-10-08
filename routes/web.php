@@ -18,8 +18,9 @@ Route::controller(App\Http\Controllers\Auth\LoginSSOController::class)->group(fu
 });
 
 Route::middleware('auth')->group(function () {
-    Route::prefix('permission')->group(function () {
-        Route::view('role/list', 'permission.role.list');
+    Route::prefix('rbac')->group(function () {
+        Route::view('role/list', 'rbac.role.list');
+        Route::view('permission/list', 'rbac.permission.list');
     });
 
     Route::view('/home', 'home')->name('home');

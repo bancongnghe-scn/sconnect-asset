@@ -45,7 +45,7 @@ class RoleService
 
     public function getListRole($filters)
     {
-        $data = $this->roleRepository->getListing($filters);
+        $data = $this->roleRepository->getListing($filters, ['id', 'name', 'description']);
 
         return $data->toArray();
     }
@@ -69,25 +69,9 @@ class RoleService
                 ];
             }
 
-            $deleteRoleUser = $this->roleUserRepository->deleteByRoleId($id);
-            if (!$deleteRoleUser) {
-                DB::rollBack();
+            $this->roleUserRepository->deleteByRoleId($id);
+            $this->rolePermissionRepository->deleteByRoleId($id);
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2041,
-                ];
-            }
-
-            $deleteRolePermission = $this->rolePermissionRepository->deleteByRoleId($id);
-            if (!$deleteRolePermission) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2042,
-                ];
-            }
             DB::commit();
         } catch (\Throwable $throwable) {
             DB::rollBack();

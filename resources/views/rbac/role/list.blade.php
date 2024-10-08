@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            @include('permission.role.filter')
+            @include('rbac.role.filter')
         </div>
 
         <div
@@ -27,7 +27,7 @@
         {{--  modal--}}
         <div>
             <div
-            @include('permission.role.modalUI')
+            @include('rbac.role.modalUI')
         </div>
 
         <div
@@ -45,6 +45,7 @@
 
 @section('js')
     @vite([
-        'resources/js/permission/role.js',
+        'resources/js/rbac/role.js',
+        'resources/js/rbac/api/apiRole.js',
     ])
 @endsection

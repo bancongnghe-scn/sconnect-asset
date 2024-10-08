@@ -16,4 +16,9 @@ class RolePermissionRepository extends BaseRepository
     {
         return $this->_model->where('role_id', $roleId)->delete();
     }
+
+    public function deleteByPermissionId($permissionId)
+    {
+        return $this->_model->where('permission_id', $permissionId)->delete();
+    }
 }
