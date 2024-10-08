@@ -12,13 +12,15 @@
     <!-- Favicons -->
     <link href='/assets/img/favicon.png' rel="icon">
     <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-    <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
+
     <!-- Scripts -->
+    <script src="{{asset('assets/js/jquery.js')}}"></script>
+    <script src="{{asset('assets/js/select2.full.js')}}"></script>
+
     @vite([
+        'resources/js/app.js',
         'resources/sass/app.scss',
-        'resources/css/app.css',
         'resources/css/custom.css',
     ])
 
@@ -60,13 +62,8 @@
 
 <div class="toast-container position-fixed top-0 tw-right-2"></div>
 
-@vite([
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/select2/dist/js/select2.min.js',
-    'resources/js/app.js'
-])
-
 @yield('js')
+
 </body>
 </html>
 
