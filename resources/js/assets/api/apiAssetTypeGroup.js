@@ -1,6 +1,6 @@
 window.apiGetAssetTypeGroup = async function (filters) {
     try {
-        const response = await axios.get("/api/asset-type-group/list", {
+        const response = await axios.get("/api/asset-type-group", {
             params: filters
         })
 

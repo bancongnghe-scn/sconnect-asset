@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\RoleInfoResource;
 use App\Repositories\RolePermissionRepository;
 use App\Repositories\RoleRepository;
 use App\Repositories\RoleUserRepository;
@@ -30,11 +31,45 @@ class RoleService
         }
 
         $data['created_by'] = Auth::id();
-        $role               = $this->roleRepository->insert($data);
-        if (!$role) {
+
+        DB::beginTransaction();
+        try {
+            $role = $this->roleRepository->create($data);
+
+            $userIds = $data['user_ids'] ?? [];
+            if (!empty($userIds)) {
+                $insertRoleUsers = resolve(RoleUserService::class)->insertRoleUsers($userIds, $role->id);
+                if (!$insertRoleUsers) {
+                    DB::rollBack();
+
+                    return  [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2049,
+                    ];
+                }
+            }
+
+            $permissionIds = $data['permission_ids'] ?? [];
+            if (!empty($permissionIds)) {
+                $insertRolePermissions = resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role->id);
+                if (!$insertRolePermissions) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2050,
+                    ];
+                }
+            }
+
+            DB::commit();
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2038,
+                'error_code' => AppErrorCode::CODE_1000,
             ];
         }
 
@@ -99,20 +134,61 @@ class RoleService
 
         $data['updated_by'] = Auth::id();
         $role->fill($data);
-        if (!$role->save()) {
+        DB::beginTransaction();
+        try {
+            if (!$role->save()) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2043,
+                ];
+            }
+
+            $userIds = $data['user_ids'] ?? [];
+            if (!empty($userIds)) {
+                $updateRoleUsers = resolve(RoleUserService::class)->updateRoleUsers($userIds, $id);
+                if (!$updateRoleUsers) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2041,
+                    ];
+                }
+            }
+
+            $permissionIds = $data['permission_ids'] ?? [];
+            if (!empty($permissionIds)) {
+                $updateRolePermissions = resolve(RolePermissionService::class)->updateRolePermissions($permissionIds, $id);
+                if (!$updateRolePermissions) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2042,
+                    ];
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2043,
+                'error_code' => AppErrorCode::CODE_1000,
             ];
         }
 
-        return ['success' => true];
     }
 
     public function findRole($id)
     {
-        $role = $this->roleRepository->find($id);
+        $role = $this->roleRepository->getFirst(['id' => $id], with: ['roleUsers', 'rolePermissions']);
 
-        return $role->toArray();
+        return RoleInfoResource::make($role)->resolve();
     }
 }

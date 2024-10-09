@@ -53,4 +53,7 @@ return [
     AppErrorCode::CODE_2046 => 'Xóa quyền thất bại !',
     AppErrorCode::CODE_2047 => 'Quyền không tồn tại !',
     AppErrorCode::CODE_2048 => 'Cập nhật quyền thất bại !',
+    AppErrorCode::CODE_2049 => 'Tạo vai trò của người dùng thất bại !',
+    AppErrorCode::CODE_2050 => 'Tạo quyền cho vai trò thất bại !',
+    AppErrorCode::CODE_2051 => 'Tạo quyền cho người dùng thất bại !',
 ];

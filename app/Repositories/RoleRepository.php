@@ -16,6 +16,10 @@ class RoleRepository extends BaseRepository
     {
         $query = $this->_model->newQuery()->select($columns)->with($with);
 
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
         if (!empty($filters['name'])) {
             $query->where('name', $filters['name']);
         }
@@ -25,7 +29,7 @@ class RoleRepository extends BaseRepository
 
     public function getListing(array $filters, array $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with);
+        $query = $this->_model->newQuery()->select($columns)->with($with)->orderBy('created_at', 'DESC');
 
         if (!empty($filters['name'])) {
             $query->where('name', 'like', $filters['name'] . '%');

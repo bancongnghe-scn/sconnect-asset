@@ -18,6 +18,10 @@ class PermissionController extends Controller
         $request->validate([
             'name'        => 'required|string',
             'description' => 'nullable|string',
+            'role_ids'    => 'required|array',
+            'role_ids.*'  => 'integer',
+            'user_ids'    => 'required|array',
+            'user_ids.*'  => 'integer',
         ]);
 
         try {

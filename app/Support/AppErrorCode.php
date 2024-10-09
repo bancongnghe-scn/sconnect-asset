@@ -54,5 +54,9 @@ class AppErrorCode
     public const CODE_2046 = 2046; //  Xóa quyền thất bại !
     public const CODE_2047 = 2047; //  Quyền không tồn tại !
     public const CODE_2048 = 2048; //  Cập nhật quyền thất bại !
+    public const CODE_2049 = 2049; //  Tạo vai trò của người dùng thất bại !
+    public const CODE_2050 = 2050; //  Tạo quyền cho vai trò thất bại !
+    public const CODE_2051 = 2051; //  Tạo quyền cho người dùng thất bại !
+
 
 }

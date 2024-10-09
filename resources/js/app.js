@@ -9,6 +9,7 @@ import 'select2/dist/css/select2.min.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'air-datepicker/air-datepicker.css';
 import Alpine from 'alpinejs'
+import './helpers.js'
 
 window.Alpine = Alpine
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,8 +48,6 @@ const toast = {
 };
 window.toast = toast;
 
-import './helpers.js'
-import AirDatepicker from "air-datepicker";
 
 
 

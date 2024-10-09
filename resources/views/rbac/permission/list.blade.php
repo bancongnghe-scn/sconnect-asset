@@ -47,5 +47,6 @@
     @vite([
         'resources/js/rbac/permission.js',
         'resources/js/rbac/api/apiPermission.js',
+        'resources/js/rbac/api/apiRole.js',
     ])
 @endsection

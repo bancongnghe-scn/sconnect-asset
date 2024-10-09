@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\RolePermission;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class RolePermissionRepository extends BaseRepository
 {
@@ -20,5 +21,21 @@ class RolePermissionRepository extends BaseRepository
     public function deleteByPermissionId($permissionId)
     {
         return $this->_model->where('permission_id', $permissionId)->delete();
+    }
+
+    public function deleteRolePermissions($permissionIds, $roleId)
+    {
+        return $this->_model->whereIn('permission_id', Arr::wrap($permissionIds))->where('role_id', $roleId)->delete();
+    }
+
+    public function getListing(array $filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+
+        if (!empty($filters['role_id'])) {
+            $query->whereIn('role_id', Arr::wrap($filters['role_id']));
+        }
+
+        return $query->get();
     }
 }

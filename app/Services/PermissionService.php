@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\PermissionInfoResource;
 use App\Repositories\PermissionRepository;
 use App\Repositories\RolePermissionRepository;
 use App\Repositories\UserPermissionRepository;
@@ -30,11 +31,43 @@ class PermissionService
         }
 
         $data['created_by'] = Auth::id();
-        $permission         = $this->permissionRepository->insert($data);
-        if (!$permission) {
+        DB::beginTransaction();
+        try {
+            $permission = $this->permissionRepository->create($data);
+
+            $userIds = $data['user_ids'] ?? [];
+            if (!empty($userIds)) {
+                $insertUsersPermission = resolve(UserPermissionService::class)->insertUsersPermission($userIds, $permission->id);
+                if (!$insertUsersPermission) {
+                    DB::rollBack();
+
+                    return  [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2051,
+                    ];
+                }
+            }
+
+            $roleIds = $data['role_ids'] ?? [];
+            if (!empty($roleIds)) {
+                $insertRolePermissions = resolve(RolePermissionService::class)->insertRolesPermission($roleIds, $permission->id);
+                if (!$insertRolePermissions) {
+                    DB::rollBack();
+
+                    return  [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2050,
+                    ];
+                }
+            }
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2045,
+                'error_code' => AppErrorCode::CODE_1000,
             ];
         }
 
@@ -111,8 +144,8 @@ class PermissionService
 
     public function findPermission($id)
     {
-        $permission = $this->permissionRepository->find($id);
+        $permission = $this->permissionRepository->getFirst(['id' => $id], with: ['usersPermission', 'rolesPermission']);
 
-        return $permission->toArray();
+        return PermissionInfoResource::make($permission)->resolve();
     }
 }

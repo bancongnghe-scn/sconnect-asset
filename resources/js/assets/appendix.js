@@ -13,8 +13,8 @@ document.addEventListener('alpine:init', () => {
                 limit: this.filters.limit,
             })
             this.initDatePicker()
-            this.initSelect2(this.idModalUI);
-            this.initSelect2(this.idModalInfo);
+            window.initSelect2Modal(this.idModalUI);
+            window.initSelect2Modal(this.idModalInfo);
             this.onChangeSelect2()
         },
 
@@ -323,14 +323,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 });
             });
-        },
-
-        initSelect2(modalId) {
-            $(`#${modalId}`).on('shown.bs.modal', function () {
-                $('.select2').select2({
-                    dropdownParent: $(`#${modalId}`)
-                })
-            })
         },
     }));
 });

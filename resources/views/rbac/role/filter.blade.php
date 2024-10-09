@@ -8,7 +8,7 @@
                         <input type="text" class="form-control" x-model="filters.name" placeholder="Nhập tên">
                     </div>
                     <div>
-                        <button @click="getList(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                        <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
                     </div>
                 </div>
             </div>

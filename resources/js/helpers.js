@@ -31,3 +31,11 @@ window.formData = function (data) {
 window.formatCurrencyVND = function formatCurrencyVND(number) {
     return number.toLocaleString('vi-VN') + ' vnđ';
 }
+
+window.initSelect2Modal = function initSelect2Modal(modalId) {
+    $(`#${modalId}`).on('shown.bs.modal', function () {
+        $('.select2').select2({
+            dropdownParent: $(`#${modalId}`)
+        })
+    })
+}

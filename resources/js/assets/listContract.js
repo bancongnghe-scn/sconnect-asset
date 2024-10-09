@@ -5,8 +5,8 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
-            this.initSelect2('modalContractUI');
-            this.initSelect2('modalContractInfo');
+            window.initSelect2Modal('modalContractUI');
+            window.initSelect2Modal('modalContractInfo');
             this.onChangeSelect2()
             this.initDatePicker()
             this.getListContract({
@@ -331,14 +331,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 });
             });
-        },
-
-        initSelect2(modalId) {
-            $(`#${modalId}`).on('shown.bs.modal', function () {
-                $('.select2').select2({
-                    dropdownParent: $(`#${modalId}`)
-                })
-            })
         },
     }));
 });

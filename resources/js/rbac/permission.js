@@ -5,10 +5,13 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('permission', () => ({
         init() {
-            this.getList({
+            this.list({
                 page: 1,
                 limit: 10
             })
+            this.getRole()
+            window.initSelect2Modal(this.idModalUI);
+            this.onChangeSelect2()
         },
 
         //dataTable
@@ -39,7 +42,14 @@ document.addEventListener('alpine:init', () => {
         permission: {
             name: null,
             description: null,
+            permission_ids: [],
+            user_ids: []
         },
+        listUser: [
+            {id:1, name: 'User1'},
+            {id:2, name: 'User2'},
+        ],
+        listRole: [],
         titleModal: null,
         action: null,
         id: null,
@@ -47,7 +57,7 @@ document.addEventListener('alpine:init', () => {
         idModalUI: "idModalUI",
 
         //methods
-        async getList(filters){
+        async list(filters){
             this.loading = true
             const response = await window.apiGetPermission(filters)
             if (response.success) {
@@ -72,7 +82,7 @@ document.addEventListener('alpine:init', () => {
             toast.success('Cập nhập vai trò thành công !')
             $('#'+this.idModalUI).modal('hide');
             this.resetData()
-            await this.getList(this.filters)
+            await this.list(this.filters)
             this.loading = false
         },
 
@@ -87,7 +97,7 @@ document.addEventListener('alpine:init', () => {
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
             toast.success('Xóa vai trò thành công !')
-            await this.getList(this.filters)
+            await this.list(this.filters)
 
             this.loading = false
         },
@@ -105,6 +115,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
             this.reloadPage()
             this.resetData()
+        },
+
+        async getRole(){
+            this.loading = true
+            const response = await window.apiGetRole({})
+            if (response.success) {
+                this.listRole = response.data.data
+            } else {
+                toast.error(response.message)
+            }
+            this.loading = false
         },
 
         async handleShowModalUI(action, id = null) {
@@ -130,16 +151,16 @@ document.addEventListener('alpine:init', () => {
 
         changePage(page) {
             this.filters.page = page
-            this.getList(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getList(this.filters)
+            this.list(this.filters)
         },
 
         resetData() {
-            this.role = {
+            this.permission = {
                 name: null,
                 description: null
             }
@@ -152,12 +173,23 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
 
-            this.getList(this.filters)
+            this.list(this.filters)
         },
 
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        onChangeSelect2() {
+            $('.select2').on('select2:select select2:unselect', (event) => {
+                const value = $(event.target).val()
+                if (event.target.id === 'selectUsers') {
+                    this.permission.user_ids = value
+                } else if (event.target.id === 'selectRoles') {
+                    this.permission.role_ids = value
+                }
+            });
         },
     }));
 });

@@ -16,8 +16,12 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string',
-            'description' => 'nullable|string',
+            'name'             => 'required|string',
+            'description'      => 'nullable|string',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
+            'permission_ids'   => 'nullable|array',
+            'permission_ids.*' => 'integer',
         ]);
 
         try {
@@ -67,8 +71,12 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'        => 'required|string',
-            'description' => 'nullable|string',
+            'name'             => 'required|string',
+            'description'      => 'nullable|string',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
+            'permission_ids'   => 'nullable|array',
+            'permission_ids.*' => 'integer',
         ]);
 
         try {
@@ -91,6 +99,8 @@ class RoleController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            dd($exception);
+
             return response_error();
         }
     }
