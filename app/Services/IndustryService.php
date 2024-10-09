@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Repositories\industryRepository;
+use App\Repositories\IndustryRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 
 class IndustryService
 {
     public function __construct(
-        protected industryRepository $industryRepository,
+        protected IndustryRepository $industryRepository,
     ) {
 
     }
