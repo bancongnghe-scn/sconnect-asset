@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\IndustryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class IndustryController extends Controller
 {
@@ -49,6 +50,8 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            Log::error($exception);
+
             return response_error();
         }
     }
