@@ -25,7 +25,7 @@ class RolePermissionRepository extends BaseRepository
 
     public function deleteRolePermissions($permissionIds, $roleId)
     {
-        return $this->_model->whereIn('permission_id', Arr::wrap($permissionIds))->where('role_id', $roleId)->delete();
+        return $this->_model->whereIn('permission_id', Arr::wrap($permissionIds))->whereIn('role_id', Arr::wrap($roleId))->delete();
     }
 
     public function getListing(array $filters, $columns = ['*'], $with = [])
@@ -34,6 +34,10 @@ class RolePermissionRepository extends BaseRepository
 
         if (!empty($filters['role_id'])) {
             $query->whereIn('role_id', Arr::wrap($filters['role_id']));
+        }
+
+        if (!empty($filters['permission_id'])) {
+            $query->whereIn('permission_id', Arr::wrap($filters['permission_id']));
         }
 
         return $query->get();
