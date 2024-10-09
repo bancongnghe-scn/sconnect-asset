@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\industryService;
+use App\Services\IndustryService;
 use Illuminate\Http\Request;
 
 class IndustryController extends Controller
 {
     public function __construct(
-        protected industryService $industryService,
+        protected IndustryService $industryService,
     ) {
 
     }
