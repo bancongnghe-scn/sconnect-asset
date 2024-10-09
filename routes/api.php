@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::resources([
         'asset-type'        => App\Http\Controllers\AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
-        'industry'          => App\Http\Controllers\industryController::class,
+        'industry'          => App\Http\Controllers\IndustryController::class,
         'supplier'          => App\Http\Controllers\SupplierController::class,
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
