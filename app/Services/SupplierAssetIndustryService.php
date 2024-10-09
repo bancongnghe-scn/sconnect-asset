@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Repositories\SupplierAssetIndustryRepository;
 use App\Support\AppErrorCode;
-use Illuminate\Support\Facades\Auth;
 
 class SupplierAssetIndustryService
 {
@@ -21,7 +20,6 @@ class SupplierAssetIndustryService
             $dataInsertSupplierAssetIndustries[] = [
                 'supplier_id'   => $supplierId,
                 'industries_id' => $industryId,
-                'created_by'    => Auth::id(),
             ];
         }
 
@@ -54,7 +52,6 @@ class SupplierAssetIndustryService
                 $dataCreate[] = [
                     'supplier_id'   => $supplierId,
                     'industries_id' => $industryId,
-                    'created_by'    => Auth::id(),
                 ];
             }
 
