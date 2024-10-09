@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/css/custom.css',
                 'resources/js/app.js',
-                ...sync('resources/js/assets/**/*.js')
+                ...sync('resources/js/assets/**/*.js'),
+                ...sync('resources/js/rbac/**/*.js')
             ],
             refresh: true,
         }),
