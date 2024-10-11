@@ -8,8 +8,10 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/sass/app.scss',
+                'resources/css/app.css',
                 'resources/css/custom.css',
                 'resources/js/app.js',
+                'resources/js/bootstrap.js',
                 ...sync('resources/js/assets/**/*.js'),
                 ...sync('resources/js/rbac/**/*.js')
             ],
