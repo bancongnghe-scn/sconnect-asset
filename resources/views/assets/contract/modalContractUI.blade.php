@@ -39,15 +39,27 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off" x-model="contract.signing_date">
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="selectSigningDate"
+                                       placeholder="Chọn ngày ký" autocomplete="off" x-model="contract.signing_date">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off" x-model="contract.from">
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="selectFrom"
+                                       placeholder="Chọn ngày bắt đầu" autocomplete="off" x-model="contract.from">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off" x-model="contract.to">
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="selectTo"
+                                       placeholder="Chọn ngày kết thúc" autocomplete="off" x-model="contract.to">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>

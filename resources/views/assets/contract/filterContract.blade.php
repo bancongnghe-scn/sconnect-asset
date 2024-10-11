@@ -25,11 +25,23 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
-                        <input type="text" class="form-control datepicker" id="filterSigningDate" placeholder="Ngày ký" autocomplete="off">
+                        <div class="input-group">
+                            <input type="text" class="form-control datepicker" id="filterSigningDate"
+                                   placeholder="Ngày ký" autocomplete="off">
+                            <span class="input-group-text">
+                                <i class="fa-regular fa-calendar-days"></i>
+                            </span>
+                        </div>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày hiệu lực</label>
-                        <input type="text" class="form-control datepicker" id="filterFrom" placeholder="Ngày hiệu lực" autocomplete="off">
+                        <div class="input-group">
+                            <input type="text" class="form-control datepicker" id="filterFrom"
+                                   placeholder="Ngày hiệu lực" autocomplete="off">
+                            <span class="input-group-text">
+                                <i class="fa-regular fa-calendar-days"></i>
+                            </span>
+                        </div>
                     </div>
                     <div>
                         <button @click="getListContract(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
