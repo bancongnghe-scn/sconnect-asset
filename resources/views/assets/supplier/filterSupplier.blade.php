@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-body d-flex flex-row align-items-end tw-gap-x-4">
-                <div class="form-group col-3">
+            <div class="card-body d-flex flex-row align-items-end tw-gap-x-4 form-group">
+                <div class="col-3">
                     <label class="tw-font-bold">Tên mã/nhà cung cấp</label>
-                    <input type="text" class="form-control" x-model="filters.code_name">
+                    <input type="text" class="form-control" x-model="filters.code_name" placeholder="Nhập tên mã/nhà cung cấp">
                 </div>
-                <div class="form-group col-3">
+                <div class="col-3">
                     <label class="tw-font-bold">Ngành hàng</label>
                     <select class="form-control select2" multiple="multiple" id="industriesFilter" data-placeholder="Chọn ngành hàng ...">
                         <template x-for="industry in listIndustry" :key="industry.id">
@@ -14,7 +14,7 @@
                         </template>
                     </select>
                 </div>
-                <div class="form-group col-3">
+                <div class="col-3">
                     <label class="tw-font-bold">Đánh giá</label>
                     <select class="form-control select2" multiple="multiple" id="statusFilter" data-placeholder="Chọn đánh giá ...">
                         <template x-for="(value, index) in status" :key="index">

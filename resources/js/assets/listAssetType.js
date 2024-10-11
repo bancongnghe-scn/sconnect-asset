@@ -103,6 +103,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiUpdateAssetType(this.assetType, this.id)
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
             toast.success('Cập nhập loại tài sản thành công !')

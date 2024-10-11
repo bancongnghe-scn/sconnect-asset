@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Nhóm tài sản</label>
-                    <select class="form-control select2" multiple="multiple" id="filterAssetTypeGroup" data-placeholder="Chọn nhóm tài sản ...">
+                    <select class="form-select select2" multiple="multiple" id="filterAssetTypeGroup" data-placeholder="Chọn nhóm tài sản ...">
                         <template x-for="assetTypeGroup in listAssetTypeGroup">
                             <option :value="assetTypeGroup.id" x-text="assetTypeGroup.name"></option>
                         </template>

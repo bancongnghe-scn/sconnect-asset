@@ -8,17 +8,17 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label class="form-label">Tên quyền<label class="tw-text-red-600">*</label></label>
-                    <input type="text" class="form-control" x-model="permission.name">
+                    <input type="text" class="form-control" x-model="permission.name" placeholder="Nhập tên quyền">
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Ghi chú</label>
-                    <textarea class="form-control tw-h-40" x-model="permission.description"></textarea>
+                    <textarea class="form-control tw-h-40" x-model="permission.description" placeholder="Nhập ghi chú"></textarea>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Danh sách nhân viên</label>
-                    <select class="form-control select2" multiple="multiple" id="selectUsers" data-placeholder="Chọn ..." x-model="permission.user_ids">
+                    <select class="form-select select2" multiple="multiple" id="selectUsers" data-placeholder="Chọn danh sách nhân viên..." x-model="permission.user_ids">
                         <template x-for="user in listUser" :key="user.id">
                             <option :value="user.id" x-text="user.name"></option>
                         </template>
@@ -27,7 +27,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Danh sách vai trò</label>
-                    <select class="form-control select2" multiple="multiple" id="selectRoles" data-placeholder="Chọn ..." x-model="permission.role_ids">
+                    <select class="form-select select2" multiple="multiple" id="selectRoles" data-placeholder="Chọn danh sách vai trò..." x-model="permission.role_ids">
                         <template x-for="role in listRole" :key="role.id">
                             <option :value="role.id" x-text="role.name"></option>
                         </template>

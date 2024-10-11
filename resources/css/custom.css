@@ -82,8 +82,19 @@ textarea.form-control {
 .select2-container--default .select2-selection--single {
     border: 1px solid #dee2e6;
 }
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #dee2e6;
+}
+
+.select2-container--default {
+    width: 100% !important;
+}
 
 .form-select {
+    background-color: white;
+}
+
+.card-body {
     background-color: white;
 }
 

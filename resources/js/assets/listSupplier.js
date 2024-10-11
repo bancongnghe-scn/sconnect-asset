@@ -5,9 +5,10 @@ document.addEventListener('alpine:init', () => {
                 page: 1,
                 limit: 10
             })
-            this.getListIndustry({})
+            this.getListIndustry()
             this.getListAssetType({})
-            this.initSelect2InModal()
+            window.initSelect2Modal('modalSupplierUI')
+            this.onChangeSelect2()
         },
 
         //dataTable
@@ -24,6 +25,8 @@ document.addEventListener('alpine:init', () => {
         totalPages: null,
         currentPage: 1,
         total: null,
+        from: null,
+        to: null,
         limit: 10,
         showAction: {
             view: false,
@@ -90,15 +93,17 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page ?? 1
                 this.currentPage = data.data.current_page ?? 1
                 this.total = data.data.total ?? 0
+                this.from = data.data.from ?? 0
+                this.to = data.data.to ?? 0
             } else {
                 toast.error('Lấy danh sách nhà cung cấp thất bại !')
             }
             this.loading = false
         },
 
-        async getListIndustry(filters) {
+        async getListIndustry() {
             this.loading = true
-            const response = await window.apiGetIndustry(filters)
+            const response = await window.apiGetIndustry()
             if (response.success) {
                 this.listIndustry = response.data.data
             } else {
@@ -111,7 +116,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             const response = await window.apiGetAssetType(filters)
             if (response.success) {
-                this.listAssetType = response.data.data.data
+                this.listAssetType = response.data.data
             } else {
                 toast.error('Lấy danh sách loại tài sản thất bại !')
             }
@@ -256,12 +261,7 @@ document.addEventListener('alpine:init', () => {
             this.getListSupplier(filters)
         },
 
-        initSelect2InModal() {
-            $('#modalSupplierUI').on('shown.bs.modal', function () {
-                $('.select2').select2({
-                    dropdownParent: $('#modalSupplierUI') // Gán dropdown vào modal
-                });
-            });
+        onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
                 if (event.target.id === 'industrySelect2') {

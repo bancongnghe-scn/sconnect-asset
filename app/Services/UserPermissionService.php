@@ -24,4 +24,24 @@ class UserPermissionService
 
         return $this->userPermissionRepository->insert($dataInsertUsersPermission);
     }
+
+    public function updateUsersPermission(array $userIds, $permissionId)
+    {
+        $userPermission = $this->userPermissionRepository->getListing(['permission_id' => $permissionId]);
+        $userIdsOld     = $userPermission->pluck('user_id')->toArray();
+        $newUserIds     = array_diff($userIds, $userIdsOld);
+        $removeUserIds  = array_diff($userIdsOld, $userIds);
+        if (!empty($newUserIds)) {
+            $insertUsersPermission = $this->insertUsersPermission($newUserIds, $permissionId);
+            if (!$insertUsersPermission) {
+                return false;
+            }
+        }
+
+        if (!empty($removeUserIds)) {
+            $this->userPermissionRepository->deleteUserPermission($removeUserIds, $permissionId);
+        }
+
+        return true;
+    }
 }

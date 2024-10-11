@@ -59,4 +59,25 @@ class RolePermissionService
 
         return true;
     }
+
+    public function updateRolesPermission(array $roleIds, $permissionId)
+    {
+        $rolePermissions  = $this->rolePermissionRepository->getListing(['permission_id' => $permissionId]);
+        $roleIdsOld       = $rolePermissions->pluck('role_id')->toArray();
+        $newRoleIds       = array_diff($roleIds, $roleIdsOld);
+        $removeRoleIds    = array_diff($roleIdsOld, $roleIds);
+
+        if (!empty($newRoleIds)) {
+            $insertRolePermissions = $this->insertRolesPermission($newRoleIds, $permissionId);
+            if (!$insertRolePermissions) {
+                return false;
+            }
+        }
+
+        if (!empty($removeRoleIds)) {
+            $this->rolePermissionRepository->deleteRolePermissions($permissionId, $removeRoleIds);
+        }
+
+        return true;
+    }
 }
