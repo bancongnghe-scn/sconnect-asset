@@ -14,7 +14,11 @@
                         <p>Home</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item  {{ request()->is('asset-type-group/*')
+                        || request()->is('asset-type/*')
+                        || request()->is('industry/*')
+                        || request()->is('supplier/*')
+                        || request()->is('rbac/*') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="#" class="nav-link text-white">
                         <i class="fa-solid fa-gear"></i>
                         <p>Cài đặt<i class="right fas fa-angle-left"></i></p>
@@ -23,7 +27,7 @@
                         || request()->is('asset-type/*')
                         || request()->is('industry/*')
                         || request()->is('supplier/*')
-                        || request()->is('rbac/*') ? 'show' : '' }}">
+                        || request()->is('rbac/*') ? 'tw-block' : '' }}">
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('asset-type-group/*') ? 'tw-bg-white/10' : ''}}">
                             <a href="/asset-type-group/list" class="nav-link text-white"><p>Nhóm tài sản</p></a>
                         </li>
@@ -49,22 +53,22 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item {{ request()->is('contract/*') || request()->is('contract-appendix/*') || request()->is('shopping_plan/*') ? 'menu-is-opening menu-open' : '' }}">
                     <a href="#" class="nav-link text-white">
                         <i class="fa-solid fa-gear"></i>
                         <p>Quản lý tài sản<i class="right fas fa-angle-left"></i></p>
                     </a>
-                    <ul class="nav nav-treeview tw-list-disc {{ request()->is('contract/*') || request()->is('contract-appendix/*') || request()->is('shopping_plan/*') ? 'show' : '' }}">
+                    <ul class="nav nav-treeview tw-list-disc {{ request()->is('contract/*') || request()->is('contract-appendix/*') || request()->is('shopping_plan/*') ? 'tw-block' : '' }}">
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('contract/*') ? 'tw-bg-white/10' : ''}}">
-                            <a href="/asset-type-group/list" class="nav-link text-white"><p>Hợp đồng</p></a>
+                            <a href="/contract/list" class="nav-link text-white"><p>Hợp đồng</p></a>
                         </li>
 
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('contract-appendix/*') ? 'tw-bg-white/10' : ''}}">
-                            <a href="/industry/list" class="nav-link text-white"><p>Phụ lục hợp đồng</p></a>
+                            <a href="/contract-appendix/list" class="nav-link text-white"><p>Phụ lục hợp đồng</p></a>
                         </li>
 
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('shopping_plan/*') ? 'tw-bg-white/10' : ''}}">
-                            <a href="/supplier/list" class="nav-link text-white"><p>Kế hoạch mua sắm</p></a>
+                            <a href="/shopping_plan/list" class="nav-link text-white"><p>Kế hoạch mua sắm</p></a>
                         </li>
                     </ul>
                 </li>

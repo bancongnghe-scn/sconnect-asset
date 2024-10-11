@@ -6,6 +6,8 @@ document.addEventListener('alpine:init', () => {
                 limit: 10
             })
             this.getListTypeGroup({})
+            window.initSelect2Modal('modalAssetTypeUI');
+            this.onChangeSelect2()
         },
 
         //dataTable
@@ -162,6 +164,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         async handShowModalAssetTypeUI(action, id = null) {
+            this.loading = true
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
@@ -179,7 +182,7 @@ document.addEventListener('alpine:init', () => {
                 this.assetType.asset_type_group_id = data.asset_type_group_id
                 this.assetType.maintenance_months = data.maintenance_months
             }
-
+            this.loading = false
             $('#modalAssetTypeUI').modal('show');
         },
 
@@ -217,9 +220,17 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
         },
 
-        searchAssetType() {
-            this.filters.asset_type_group_id = $('select[name="asset_type_group"]').val()
-            this.getListAssetType(this.filters)
-        }
+        onChangeSelect2() {
+            $('.select2').on('select2:select select2:unselect', (event) => {
+                const value = $(event.target).val()
+                if (event.target.id === 'filterAssetTypeGroup') {
+                    this.filters.asset_type_group_id = value
+                } else if (event.target.id === 'filterStatusContract') {
+                    this.filters.status = value
+                } else if (event.target.id === 'selectAssetTypeGroup') {
+                    this.assetType.asset_type_group_id = value
+                }
+            });
+        },
     }));
 });

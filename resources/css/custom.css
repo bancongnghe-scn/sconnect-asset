@@ -75,5 +75,16 @@ textarea.form-control {
     pointer-events: none;
 }
 
+.select2-container .select2-selection--single {
+    height: calc(2.25rem + 2px);
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #dee2e6;
+}
+
+.form-select {
+    background-color: white;
+}
 
 

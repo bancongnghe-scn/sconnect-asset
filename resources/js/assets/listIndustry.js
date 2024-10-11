@@ -13,9 +13,13 @@ document.addEventListener('alpine:init', () => {
             name: 'Tên ngành hàng',
             description: 'Ghi chú'
         },
+
+        // pagination
         totalPages: null,
         currentPage: 1,
         total: null,
+        from: null,
+        to: null,
         limit: 10,
         showAction: {
             view: false,
@@ -49,6 +53,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
                 toast.success('Lấy danh sách ngành hàng thành công !')
             } else {
                 toast.error('Lấy danh sách ngành hàng thất bại !')
@@ -61,6 +67,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiUpdateIndustry(this.industry, this.id)
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
             toast.success('Cập nhập ngành hàng thành công !')
