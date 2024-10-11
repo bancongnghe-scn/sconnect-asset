@@ -1,5 +1,4 @@
-@import "../css/adminlte.min.css";
-@import "../css/OverlayScrollbars.min.css";
+
 
 // Variables
 @import 'variables';
@@ -9,6 +8,10 @@
 
 @tailwind components;
 @tailwind utilities;
+
+@import "../css/fonts/font-Inter.css";
+@import "../css/adminlte.min.css";
+@import "../css/OverlayScrollbars.min.css";
 
 @import 'select2/dist/css/select2.min.css';
 @import '@fortawesome/fontawesome-free/css/all.css';

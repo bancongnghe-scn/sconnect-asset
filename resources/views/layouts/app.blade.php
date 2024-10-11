@@ -16,9 +16,11 @@
     <script src='/js/adminlte.js'></script>
 
     @vite([
-        'resources/js/app.js',
+        'resources/css/app.css',
         'resources/sass/app.scss',
         'resources/css/custom.css',
+        'resources/js/bootstrap.js',
+        'resources/js/app.js',
     ])
 
     @yield('css')

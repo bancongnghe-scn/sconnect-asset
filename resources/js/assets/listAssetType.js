@@ -27,6 +27,8 @@ document.addEventListener('alpine:init', () => {
         //pagination
         totalPages: null,
         currentPage: 1,
+        from: null,
+        to: null,
         total: null,
         limit: 10,
 
@@ -73,6 +75,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
                 toast.success('Lấy danh sách loại tài sản thành công !')
             } else {
                 toast.error('Lấy danh sách loại tài sản thất bại !')

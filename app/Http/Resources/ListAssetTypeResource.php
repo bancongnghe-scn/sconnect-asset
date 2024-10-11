@@ -23,16 +23,11 @@ class ListAssetTypeResource extends JsonResource
 
         $listAssetType = $this->resource->toArray();
         if (isset($listAssetType['total'])) {
-            return [
-                'data'         => $data,
-                'total'        => $listAssetType['total'],
-                'last_page'    => $listAssetType['last_page'],
-                'current_page' => $listAssetType['current_page'],
-            ];
+            $listAssetType['data'] = $data;
+
+            return $listAssetType;
         }
 
-        return [
-            'data' => $data,
-        ];
+        return $data;
     }
 }

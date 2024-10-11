@@ -13,10 +13,10 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-body d-flex align-items-end tw-gap-x-4">
-                        <div class="form-group col-4">
+                    <div class="card-body d-flex align-items-end tw-gap-x-4 form-group">
+                        <div class="col-4">
                             <label class="tw-font-bold">Tên nhóm tài sản</label>
-                            <input type="text" class="form-control" x-model="filters.name">
+                            <input type="text" class="form-control" x-model="filters.name" placeholder="Nhập tên nhóm tài sản">
                         </div>
                         <div class="">
                             <button @click="searchTypeGroup" type="button" class="btn btn-block btn-sc">Tìm kiếm

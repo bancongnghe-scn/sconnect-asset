@@ -1,24 +1,30 @@
-<div x-data="pagination" class="tw-flex">
-    <div class="tw-flex col-5 tw-gap-x-4 align-items-center">
-        <div class="tw-w-fit">
-            <select class="form-select" x-model="limit" @change="$dispatch('change-limit')">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-        </div>
+<div x-data="pagination" class="tw-flex tw-justify-between">
+{{--    <div class="tw-flex col-5 tw-gap-x-4 align-items-center">--}}
+{{--        <div class="d-flex justify-content-between">--}}
+{{--            <span x-text="'Hiển thị tổng ' + total + ' bản ghi'"></span>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 
-        <div class="d-flex justify-content-between">
-            <span x-text="'Hiển thị tổng ' + total + ' bản ghi'"></span>
-        </div>
+    <div>
+        <span x-text="'Hiển thị ' + from + ' đến ' + to + ' trong ' + total + ' bản ghi'"></span>
     </div>
 
-    <nav class="d-flex col-7" aria-label="Page navigation">
+    <nav class="col-7 d-flex justify-content-center" aria-label="Page navigation">
         <ul class="pagination tw-mb-0" x-html="renderPagination()">
             <!-- Pagination links will be inserted here by JavaScript -->
         </ul>
     </nav>
+
+    <div class="d-flex tw-gap-x-2 align-items-center">
+        <span>Hiển thị</span>
+        <select class="form-select tw-w-fit" x-model="limit" @change="$dispatch('change-limit')">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+        <span>bản ghi</span>
+    </div>
 </div>
 
 <script>

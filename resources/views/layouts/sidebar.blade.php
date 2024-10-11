@@ -29,7 +29,7 @@
                         </li>
 
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('asset-type/*') ? 'tw-bg-white/10' : ''}}">
-                            <a href="/asset-type-group/list" class="nav-link text-white"><p>Loại tài sản</p></a>
+                            <a href="/asset-type/list" class="nav-link text-white"><p>Loại tài sản</p></a>
                         </li>
 
                         <li class="nav-item rounded hover:tw-bg-white/10 {{request()->is('industry/*') ? 'tw-bg-white/10' : ''}}">
