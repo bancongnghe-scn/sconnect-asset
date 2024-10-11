@@ -36,4 +36,11 @@ class StoreSupplierRequest extends FormRequest
             'meta_data'        => 'nullable|array',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'code' => __('attributes.supplier.code'),
+        ];
+    }
 }

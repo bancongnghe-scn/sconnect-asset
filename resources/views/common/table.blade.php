@@ -22,14 +22,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <template x-for="(data,index) in dataTable" x-data="{line: 1}">
+                                <template x-for="(data,index) in dataTable">
                                     <tr>
                                         <template x-if="showChecked">
                                             <td class="text-center align-middle">
                                                 <input type="checkbox" x-model="selectedRow[data.id]">
                                             </td>
                                         </template>
-                                        <td x-text="index + 1"></td>
+                                        <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td x-text="data[key]"></td>
                                         </template>

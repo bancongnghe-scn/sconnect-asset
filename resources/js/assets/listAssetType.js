@@ -6,6 +6,8 @@ document.addEventListener('alpine:init', () => {
                 limit: 10
             })
             this.getListTypeGroup({})
+            window.initSelect2Modal('modalAssetTypeUI');
+            this.onChangeSelect2()
         },
 
         //dataTable
@@ -27,6 +29,8 @@ document.addEventListener('alpine:init', () => {
         //pagination
         totalPages: null,
         currentPage: 1,
+        from: null,
+        to: null,
         total: null,
         limit: 10,
 
@@ -73,6 +77,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
                 toast.success('Lấy danh sách loại tài sản thành công !')
             } else {
                 toast.error('Lấy danh sách loại tài sản thất bại !')
@@ -97,6 +103,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiUpdateAssetType(this.assetType, this.id)
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
             toast.success('Cập nhập loại tài sản thành công !')
@@ -158,6 +165,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         async handShowModalAssetTypeUI(action, id = null) {
+            this.loading = true
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
@@ -175,7 +183,7 @@ document.addEventListener('alpine:init', () => {
                 this.assetType.asset_type_group_id = data.asset_type_group_id
                 this.assetType.maintenance_months = data.maintenance_months
             }
-
+            this.loading = false
             $('#modalAssetTypeUI').modal('show');
         },
 
@@ -213,9 +221,17 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
         },
 
-        searchAssetType() {
-            this.filters.asset_type_group_id = $('select[name="asset_type_group"]').val()
-            this.getListAssetType(this.filters)
-        }
+        onChangeSelect2() {
+            $('.select2').on('select2:select select2:unselect', (event) => {
+                const value = $(event.target).val()
+                if (event.target.id === 'filterAssetTypeGroup') {
+                    this.filters.asset_type_group_id = value
+                } else if (event.target.id === 'filterStatusContract') {
+                    this.filters.status = value
+                } else if (event.target.id === 'selectAssetTypeGroup') {
+                    this.assetType.asset_type_group_id = value
+                }
+            });
+        },
     }));
 });

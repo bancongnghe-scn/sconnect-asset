@@ -26,6 +26,8 @@ document.addEventListener('alpine:init', () => {
         totalPages: null,
         currentPage: 1,
         total: null,
+        from: null,
+        to: null,
         limit: 10,
         showChecked: false,
 
@@ -62,6 +64,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
             } else {
                 toast.error(response.message)
             }
@@ -73,6 +77,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiUpdateRole(this.role, this.id)
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
             toast.success('Cập nhập phụ lục hợp đồng thành công !')

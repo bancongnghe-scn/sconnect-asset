@@ -14,16 +14,20 @@ document.addEventListener('alpine:init', () => {
             name: 'Tên loại',
             description: 'Mô tả'
         },
-        totalPages: null,
-        currentPage: null,
-        total: null,
-        limit: 10,
         showAction: {
             view: false,
             edit: true,
             remove: true
         },
         showChecked: false,
+
+        //pagination
+        totalPages: null,
+        currentPage: null,
+        total: null,
+        from: null,
+        to: null,
+        limit: 10,
 
         //data
         filters: {
@@ -58,6 +62,8 @@ document.addEventListener('alpine:init', () => {
             this.dataTable = data.data.data
             this.totalPages = data.data.last_page
             this.currentPage = data.data.current_page
+            this.from = data.data.from
+            this.to = data.data.to
             this.total = data.data.total
             toast.success('Lấy danh sách nhóm tài sản thành công !')
             this.loading = false
@@ -108,7 +114,6 @@ document.addEventListener('alpine:init', () => {
                 await this.getListTypeGroup(this.filters)
             } catch (error) {
                 toast.error(error?.response?.data?.message || error?.message)
-                $('#modalCreateTypeGroup').modal('hide');
             } finally {
                 this.loading = false
             }
@@ -146,7 +151,6 @@ document.addEventListener('alpine:init', () => {
                 $('#modalCreateTypeGroup').modal('hide');
                 window.location.reload();
             } catch (error) {
-                $('#modalCreateTypeGroup').modal('hide');
                 toast.error(error?.response?.data?.message || error?.message)
             } finally {
                 this.loading = false
@@ -154,6 +158,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         async handleShowModalCreateOrUpdate(action, id = null) {
+            this.loading = true
             this.action = action
             if (action === 'create') {
                 this.titleAction = 'Thêm mới'
@@ -172,6 +177,7 @@ document.addEventListener('alpine:init', () => {
                     this.createOrUpdateAssetTypeGroup.description = data[0].description
                 }
             }
+            this.loading = false
             $('#modalCreateTypeGroup').modal('show');
         },
 

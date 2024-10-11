@@ -7,12 +7,12 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Tên ngành hàng</label>
-                    <input type="text" class="form-control" x-model="industry.name">
+                    <label class="form-label">Tên ngành hàng<label class="tw-text-red-600">*</label></label>
+                    <input type="text" class="form-control" x-model="industry.name" placeholder="Nhập tên ngành hàng">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Ghi chú</label>
-                    <textarea class="form-control tw-h-40" x-model="industry.description"></textarea>
+                    <textarea class="form-control tw-h-40" x-model="industry.description" placeholder="Nhập ghi chú"></textarea>
                 </div>
             </div>
             <div class="modal-footer">

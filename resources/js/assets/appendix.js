@@ -112,6 +112,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiUpdateAppendix(this.appendix, this.id)
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
             toast.success('Cập nhập phụ lục hợp đồng thành công !')

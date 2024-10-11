@@ -54,4 +54,48 @@
     color: #379237 !important;
 }
 
+textarea.form-control {
+    min-height: 10rem;
+}
+
+/* Icon dropdown cho select2 */
+.select2-container--default .select2-selection--multiple {
+    position: relative;
+    padding-right: 30px; /* Tạo khoảng trống cho icon */
+}
+
+.select2-container--default .select2-selection--multiple::after {
+    content: "\25BC"; /* Ký tự mũi tên xuống */
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa; /* Màu mũi tên */
+    pointer-events: none;
+}
+
+.select2-container .select2-selection--single {
+    height: calc(2.25rem + 2px);
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #dee2e6;
+}
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #dee2e6;
+}
+
+.select2-container--default {
+    width: 100% !important;
+}
+
+.form-select {
+    background-color: white;
+}
+
+.card-body {
+    background-color: white;
+}
+
 

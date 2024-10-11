@@ -32,11 +32,12 @@ class ListSupplierResource extends JsonResource
 
         $listSupplier = $this->resource->toArray();
 
-        return [
-            'data'         => $data,
-            'total'        => $listSupplier['total'] ?? 0,
-            'last_page'    => $listSupplier['last_page'] ?? 1,
-            'current_page' => $listSupplier['current_page'] ?? 1,
-        ];
+        if (!empty($listSupplier['total'])) {
+            $listSupplier['data'] = $data;
+
+            return $listSupplier;
+        }
+
+        return $data;
     }
 }

@@ -22,12 +22,7 @@ class SupplierService
     {
         $listSupplier = $this->supplierRepository->getListSupplierByFilters($filters, ['supplier.id']);
         if ($listSupplier->isEmpty()) {
-            return [
-                'data'         => [],
-                'total'        => 0,
-                'last_page'    => 1,
-                'current_page' => 1,
-            ];
+            return [];
         }
 
         $supplierIds  = $listSupplier->pluck('id')->toArray();

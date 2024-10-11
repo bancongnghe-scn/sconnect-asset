@@ -37,11 +37,6 @@ class AssetTypeGroupController extends Controller
             [
                 'name'        => 'required|string',
                 'description' => 'string',
-            ],
-            [
-                'name.required'      => 'Tên nhóm tài sản là bắt buộc.',
-                'name.string'        => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
-                'description.string' => 'Mô tả phải là một chuỗi ký tự.',
             ]
         );
 
