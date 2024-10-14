@@ -8,11 +8,11 @@
             <div class="modal-body">
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Tên nhóm tài sản</label>
-                    <input type="text" class="form-control" x-model="createOrUpdateAssetTypeGroup.name">
+                    <input type="text" class="form-control" x-model="createOrUpdateAssetTypeGroup.name" placeholder="Nhập tên nhóm tài sản">
                 </div>
                 <div class="mb-3">
                     <label for="floatingTextarea2">Mô tả</label>
-                    <textarea class="form-control tw-h-40" x-model="createOrUpdateAssetTypeGroup.description"></textarea>
+                    <textarea class="form-control tw-h-40" x-model="createOrUpdateAssetTypeGroup.description" placeholder="Nhập mô tả"></textarea>
                 </div>
             </div>
             <div class="modal-footer">
