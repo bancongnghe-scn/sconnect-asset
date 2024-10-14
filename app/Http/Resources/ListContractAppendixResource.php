@@ -29,12 +29,9 @@ class ListContractAppendixResource extends JsonResource
 
         $appendix = $this->resource->toArray();
         if (isset($appendix['total'])) {
-            return [
-                'data'         => $data,
-                'total'        => $appendix['total'],
-                'last_page'    => $appendix['last_page'],
-                'current_page' => $appendix['current_page'],
-            ];
+            $appendix['data'] = $data;
+
+            return $appendix;
         }
 
         return $data;

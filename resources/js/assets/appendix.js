@@ -103,6 +103,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
             } else {
                 toast.error(response.message)
             }

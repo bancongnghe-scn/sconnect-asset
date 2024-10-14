@@ -27,13 +27,8 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp</label>
-                            <select class="form-control" x-model="contract.supplier_id" disabled>
-                                <template x-for="supplier in listSupplier" :key="supplier.id">
-                                    <option :value="supplier.id" x-text="supplier.name"></option>
-                                </template>
-                            </select>
                             <div x-data="{data: []}" x-init="data = listSupplier; $watch('listSupplier', value => data = value)">
-                                @include('common.select2' , ['multiple' => true, 'id' => 'filterContract', 'placeholder' => 'Chọn hợp đồng'])
+                                @include('common.select2' , ['disabled' => true])
                             </div>
                         </div>
                     </div>
