@@ -52,5 +52,6 @@
         'resources/js/assets/appendix.js',
         'resources/js/assets/api/apiContract.js',
         'resources/js/assets/api/apiAppendix.js',
+        'resources/js/assets/api/apiUser.js',
     ])
 @endsection

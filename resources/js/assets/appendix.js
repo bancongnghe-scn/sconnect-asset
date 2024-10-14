@@ -12,6 +12,10 @@ document.addEventListener('alpine:init', () => {
                 page: this.filters.page,
                 limit: this.filters.limit,
             })
+            this.getListUser({
+                page: 1,
+                limit:20
+            })
             this.initDatePicker()
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
@@ -71,10 +75,7 @@ document.addEventListener('alpine:init', () => {
             2: 'Đã duyệt',
             3: 'Hủy'
         },
-        listUser: [
-            {id:1, name: 'User1'},
-            {id:2, name: 'User2'},
-        ],
+        listUser: [],
         titleModal: null,
         action: null,
         id: null,
@@ -90,6 +91,17 @@ document.addEventListener('alpine:init', () => {
                 this.listContract = response.data.data
             } else {
                 toast.error('Lấy danh sách hợp đồng thất bại !')
+            }
+            this.loading = false
+        },
+
+        async getListUser(filters){
+            this.loading = true
+            const response = await window.apiGetUser(filters)
+            if (response.success) {
+                this.listUser = response.data.data
+            } else {
+                toast.error('Lấy danh sách nhân viên thất bại !')
             }
             this.loading = false
         },

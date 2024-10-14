@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         'supplier'          => App\Http\Controllers\SupplierController::class,
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
+        'user'              => App\Http\Controllers\UserController::class,
     ]);
 
     Route::prefix('rbac')->group(function () {

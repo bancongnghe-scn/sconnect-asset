@@ -12,23 +12,10 @@ class UserService
 
     }
 
-    public function checkUserExistLogin($userLogin)
+    public function getListUser(array $filters)
     {
-        $user = $this->userRepository->find($userLogin['id']);
-        if (empty($user)) {
-            try {
-                $this->userRepository->create([
-                    'id'    => $userLogin['id'],
-                    'name'  => $userLogin['name'],
-                    'email' => $userLogin['email'],
-                ]);
-            } catch (\Exception $e) {
-                dd($e->getMessage());
+        $users = $this->userRepository->getListing($filters);
 
-                return false;
-            }
-        }
-
-        return true;
+        return $users->toArray();
     }
 }

@@ -51,5 +51,6 @@
         'resources/js/assets/listContract.js',
         'resources/js/assets/api/apiContract.js',
         'resources/js/assets/api/apiSupplier.js',
+        'resources/js/assets/api/apiUser.js',
     ])
 @endsection

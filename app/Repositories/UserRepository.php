@@ -11,4 +11,19 @@ class UserRepository extends BaseRepository
     {
         return User::class;
     }
+
+    public function getListing(array $filers, array $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+
+        if (!empty($filers['name'])) {
+            $query->where('name', 'like', $filers['name'] . '%');
+        }
+
+        if (!empty($filers['limit'])) {
+            $query->paginate($filers['limit'], page: $filers['page'] ?? 1);
+        }
+
+        return $query->get();
+    }
 }

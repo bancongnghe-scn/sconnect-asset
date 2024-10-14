@@ -14,6 +14,10 @@ document.addEventListener('alpine:init', () => {
                 limit: 10
             })
             this.getListSupplier({})
+            this.getListUser({
+                page: 1,
+                limit:20
+            })
         },
 
         //dataTable
@@ -78,10 +82,7 @@ document.addEventListener('alpine:init', () => {
             3: 'Hủy'
         },
         listSupplier: [],
-        listUser: [
-            {id:1, name: 'User1'},
-            {id:2, name: 'User2'},
-        ],
+        listUser: [],
         titleModal: null,
         action: null,
         id: null,
@@ -197,6 +198,17 @@ document.addEventListener('alpine:init', () => {
                 this.listSupplier = response.data.data.data
             } else {
                 toast.error('Lấy danh sách nhà cung cấp thất bại !')
+            }
+            this.loading = false
+        },
+
+        async getListUser(filters){
+            this.loading = true
+            const response = await window.apiGetUser(filters)
+            if (response.success) {
+                this.listUser = response.data.data
+            } else {
+                toast.error('Lấy danh sách nhân viên thất bại !')
             }
             this.loading = false
         },
