@@ -32,6 +32,9 @@
                                     <option :value="supplier.id" x-text="supplier.name"></option>
                                 </template>
                             </select>
+                            <div x-data="{data: []}" x-init="data = listSupplier; $watch('listSupplier', value => data = value)">
+                                @include('common.select2' , ['multiple' => true, 'id' => 'filterContract', 'placeholder' => 'Chọn hợp đồng'])
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -49,11 +52,9 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
-                            <select class="form-control select2" multiple="multiple" x-model="contract.user_ids" disabled>
-                                <template x-for="user in listUser" :key="user.id">
-                                    <option :value="user.id" x-text="user.name"></option>
-                                </template>
-                            </select>
+                            <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
+                                @include('common.select2' , ['multiple' => true, 'model' => 'contract.user_ids', 'disabled' => true])
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

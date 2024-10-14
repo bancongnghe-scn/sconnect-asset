@@ -42,11 +42,9 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn ..." x-model="appendix.user_ids">
-                                <template x-for="user in listUser" :key="user.id">
-                                    <option :value="user.id" x-text="user.name"></option>
-                                </template>
-                            </select>
+                            <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
+                                @include('common.select2' , ['multiple' => true, 'id' => 'selectUserId', 'placeholder' => 'Chọn người theo dõi ...', 'model' => 'appendix.user_ids'])
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

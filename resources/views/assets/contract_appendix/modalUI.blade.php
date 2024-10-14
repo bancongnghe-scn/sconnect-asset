@@ -30,23 +30,21 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off" x-model="appendix.signing_date">
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "appendix.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off" x-model="appendix.from">
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "appendix.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off" x-model="appendix.to">
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "appendix.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn ..." x-model="appendix.user_ids">
-                                <template x-for="user in listUser" :key="user.id">
-                                    <option :value="user.id" x-text="user.name"></option>
-                                </template>
-                            </select>
+                            <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
+                                @include('common.select2' , ['multiple' => true, 'id' => 'selectUserId', 'placeholder' => 'Chọn người theo dõi ...', 'model' => 'appendix.user_ids'])
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

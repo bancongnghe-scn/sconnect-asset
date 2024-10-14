@@ -39,27 +39,15 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepicker" id="selectSigningDate"
-                                       placeholder="Chọn ngày ký" autocomplete="off" x-model="contract.signing_date">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "contract.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepicker" id="selectFrom"
-                                       placeholder="Chọn ngày bắt đầu" autocomplete="off" x-model="contract.from">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "contract.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepicker" id="selectTo"
-                                       placeholder="Chọn ngày kết thúc" autocomplete="off" x-model="contract.to">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "contract.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>

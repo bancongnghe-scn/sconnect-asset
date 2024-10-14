@@ -8,19 +8,15 @@
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Ngành hàng</label>
-                    <select class="form-control select2" multiple="multiple" id="industriesFilter" data-placeholder="Chọn ngành hàng ...">
-                        <template x-for="industry in listIndustry" :key="industry.id">
-                            <option :value="industry.id" x-text="industry.name"></option>
-                        </template>
-                    </select>
+                    <div x-data="{data: []}" x-init="data = listIndustry; $watch('listIndustry', value => data = value)">
+                        @include('common.select2' , ['multiple' => true, 'id' => 'industriesFilter', 'placeholder' => 'Chọn ngành hàng ...'])
+                    </div>
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Đánh giá</label>
-                    <select class="form-control select2" multiple="multiple" id="statusFilter" data-placeholder="Chọn đánh giá ...">
-                        <template x-for="(value, index) in status" :key="index">
-                            <option :value="index" x-text="value"></option>
-                        </template>
-                    </select>
+                    <div x-data="{data: status}">
+                        @include('common.select2-simple', ['multiple' => true, 'id' => 'statusFilter', 'placeholder' => 'Chọn đánh giá ...'])
+                    </div>
                 </div>
 
                 <div class="">
