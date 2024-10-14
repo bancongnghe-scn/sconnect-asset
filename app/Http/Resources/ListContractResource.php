@@ -32,12 +32,9 @@ class ListContractResource extends JsonResource
 
         $contracts = $this->resource->toArray();
         if (isset($contracts['total'])) {
-            return [
-                'data'         => $data,
-                'total'        => $contracts['total'],
-                'last_page'    => $contracts['last_page'],
-                'current_page' => $contracts['current_page'],
-            ];
+            $contracts['data'] = $data;
+
+            return $contracts;
         }
 
         return $data;

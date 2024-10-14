@@ -1,10 +1,4 @@
 <div x-data="pagination" class="tw-flex tw-justify-between">
-{{--    <div class="tw-flex col-5 tw-gap-x-4 align-items-center">--}}
-{{--        <div class="d-flex justify-content-between">--}}
-{{--            <span x-text="'Hiển thị tổng ' + total + ' bản ghi'"></span>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-
     <div>
         <span x-text="'Hiển thị ' + from + ' đến ' + to + ' trong ' + total + ' bản ghi'"></span>
     </div>

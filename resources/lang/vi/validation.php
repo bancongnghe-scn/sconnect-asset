@@ -103,5 +103,6 @@ return [
         'terms'          => 'điều khoản',
         'industry_ids'   => 'ngành hàng',
         'asset_type_ids' => 'loại tài sản',
+        'supplier_id'    => 'nhà cung cấp',
     ],
 ];

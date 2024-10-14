@@ -37,7 +37,9 @@ document.addEventListener('alpine:init', () => {
         //pagination
         totalPages: null,
         currentPage: 1,
-        total: null,
+        total: 0,
+        from: 0,
+        to: 0,
         limit: 10,
         showChecked: false,
 
@@ -101,6 +103,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
+                this.from = data.data.from
+                this.to = data.data.to
                 toast.success('Lấy danh sách hợp đồng thành công !')
             } else {
                 toast.error('Lấy danh sách hợp đồng thất bại !')
@@ -252,13 +256,14 @@ document.addEventListener('alpine:init', () => {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
                     this.contract.user_ids = value
+                } else if (event.target.id === 'selectSupplier') {
+                    this.contract.supplier_id = value
                 }
             });
         },
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-
             if(el.id === 'selectSigningDate') {
                 this.contract.signing_date = storageFormat
             } else if (el.id === 'selectFrom') {
@@ -304,8 +309,10 @@ document.addEventListener('alpine:init', () => {
             contract.signing_date = contract.signing_date !== null ? format(contract.signing_date, 'dd/MM/yyyy') : null
             contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
             contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
-            const payments = contract.payments
+            contract.files = contract.files ?? []
+            const payments = contract.payments ?? []
             payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
+            console.log(contract)
             return contract
         },
 

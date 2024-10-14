@@ -11,11 +11,11 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Mã hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control" x-model="contract.code">
+                            <input type="text" class="form-control" x-model="contract.code" placeholder="Nhập mã hợp đồng">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control" x-model="contract.type">
+                            <select class="form-select" x-model="contract.type">
                                 <option value="">Chọn loại hợp đồng ...</option>
                                 <template x-for="(value, key) in listTypeContract" :key="key">
                                     <option :value="key" x-text="value"></option>
@@ -24,11 +24,11 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control" x-model="contract.name">
+                            <input type="text" class="form-control" x-model="contract.name" placeholder="Nhập tên hợp đồng">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control" x-model="contract.supplier_id">
+                            <select class="form-select select2" x-model="contract.supplier_id" id="selectSupplier">
                                 <option value="">Chọn nhà cung cấp ...</option>
                                 <template x-for="supplier in listSupplier" :key="supplier.id">
                                     <option :value="supplier.id" x-text="supplier.name"></option>
@@ -63,7 +63,7 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <select class="form-control select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn ..." x-model="contract.user_ids">
+                            <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi ..." x-model="contract.user_ids">
                                 <template x-for="user in listUser" :key="user.id">
                                     <option :value="user.id" x-text="user.name"></option>
                                 </template>
@@ -73,11 +73,11 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Tổng giá trị hợp đồng</label>
-                            <input type="number" class="form-control" placeholder="Nhập ..." x-model="contract.contract_value">
+                            <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="contract.contract_value">
                         </div>
                         <div class="col-5">
                             <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="contract.description"></textarea>
+                            <textarea class="form-control tw-h-40" x-model="contract.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                     <div class="row">
@@ -105,11 +105,11 @@
                                aria-describedby="example2_info">
                             <thead>
                                 <tr>
-                                    <th rowspan="1" colspan="1">Lần thanh toán</th>
-                                    <th rowspan="1" colspan="1">Ngày thanh toán</th>
-                                    <th rowspan="1" colspan="1">Số tiền</th>
-                                    <th rowspan="1" colspan="1">Nội dung thanh toán</th>
-                                    <th rowspan="1" colspan="1" class="col-2 text-center"></th>
+                                    <th>Lần thanh toán</th>
+                                    <th>Ngày thanh toán</th>
+                                    <th>Số tiền</th>
+                                    <th>Nội dung thanh toán</th>
+                                    <th class="col-2 text-center"></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,13 +117,17 @@
                                     <tr>
                                         <td x-text="'Lần ' + (index + 1)"></td>
                                         <td>
-                                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" name="selectPaymentDate" :id="index" x-model="payment.payment_date">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control datepicker" name="selectPaymentDate"
+                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="contract.payment_date" :id="index">
+                                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                                            </div>
                                         </td>
                                         <td>
-                                            <input type="number" class="form-control" placeholder="Số tiền thanh toán" x-model="payment.money">
+                                            <input type="number" class="form-control" placeholder="Nhập số tiền thanh toán" x-model="payment.money">
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" x-model="payment.description">
+                                            <input type="text" class="form-control" x-model="payment.description" placeholder="Nhập nội dung thanh toán">
                                         </td>
                                         <td class="text-center align-middle">
                                             <button class="border-0 bg-body" @click="contract.payments.splice(index, 1)">

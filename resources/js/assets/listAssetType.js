@@ -29,9 +29,9 @@ document.addEventListener('alpine:init', () => {
         //pagination
         totalPages: null,
         currentPage: 1,
-        from: null,
-        to: null,
-        total: null,
+        from: 0,
+        to: 0,
+        total: 0,
         limit: 10,
 
         //data

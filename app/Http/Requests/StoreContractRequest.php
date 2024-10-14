@@ -40,4 +40,14 @@ class StoreContractRequest extends FormRequest
             'payments.*.description'  => 'string',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'code'         => __('attributes.contract.code'),
+            'type'         => __('attributes.contract.type'),
+            'signing_date' => __('attributes.contract.signing_date'),
+            'user_ids'     => __('attributes.contract.user_ids'),
+        ];
+    }
 }

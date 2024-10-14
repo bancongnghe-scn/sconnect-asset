@@ -24,9 +24,9 @@ document.addEventListener('alpine:init', () => {
         },
         totalPages: null,
         currentPage: 1,
-        total: null,
-        from: null,
-        to: null,
+        total: 0,
+        from: 0,
+        to: 0,
         limit: 10,
         showAction: {
             view: false,
