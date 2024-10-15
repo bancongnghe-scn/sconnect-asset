@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
         'user'              => App\Http\Controllers\UserController::class,
+        'shopping-plan'     => App\Http\Controllers\ShoppingPlanCompanyController::class,
     ]);
 
     Route::prefix('rbac')->group(function () {

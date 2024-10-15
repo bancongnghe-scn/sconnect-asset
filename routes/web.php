@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');
+        Route::view('menu/list', 'rbac.menu.list');
     });
 
     Route::view('/home', 'home')->name('home');
@@ -30,5 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::view('supplier/list', 'assets.supplier.listSupplier');
     Route::view('contract/list', 'assets.contract.listContract');
     Route::view('contract-appendix/list', 'assets.contract_appendix.list');
-    Route::view('shopping_plan/list', 'assets.shopping_plan.list');
+    Route::view('plan-company/list', 'assets.plan-company.list');
 });

@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            @include('assets.shopping_plan.filter')
+            @include('assets.plan-company.filter')
         </div>
 
         <div
@@ -30,19 +30,19 @@
             @include('assets.shopping_plan.modalUI')
         </div>
 
-{{--        <div--}}
-{{--            x-data="{--}}
-{{--                modalId: idModalConfirmDelete,--}}
-{{--                contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'--}}
-{{--            }"--}}
-{{--            @ok="remove"--}}
-{{--        >--}}
-{{--            @include('common.modal-confirm')--}}
-{{--        </div>--}}
+        {{--        <div--}}
+        {{--            x-data="{--}}
+        {{--                modalId: idModalConfirmDelete,--}}
+        {{--                contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'--}}
+        {{--            }"--}}
+        {{--            @ok="remove"--}}
+        {{--        >--}}
+        {{--            @include('common.modal-confirm')--}}
+        {{--        </div>--}}
 
-{{--        <div>--}}
-{{--            @include('assets.shopping_plan.modalInfo')--}}
-{{--        </div>--}}
+        {{--        <div>--}}
+        {{--            @include('assets.shopping_plan.modalInfo')--}}
+        {{--        </div>--}}
     </div>
 
 @endsection
