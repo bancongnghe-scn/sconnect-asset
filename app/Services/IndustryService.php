@@ -38,7 +38,7 @@ class IndustryService
         if (!$industry->delete()) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2005,
+                'error_code' => AppErrorCode::CODE_2054,
             ];
         }
 
@@ -103,6 +103,21 @@ class IndustryService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2012,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deleteIndustryMultiple($ids)
+    {
+        $result = $this->industryRepository->deleteMultipleByIds($ids);
+        if (!$result) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2054,
             ];
         }
 

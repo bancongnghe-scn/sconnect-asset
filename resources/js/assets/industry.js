@@ -1,10 +1,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('industry', () => ({
         init() {
-            this.getListIndustry({
-                page: 1,
-                limit: 10
-            })
+            this.list({page: 1, limit: 10})
         },
 
         //dataTable
@@ -26,7 +23,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
-        showChecked: false,
+        selectedRow: [],
 
         //data
         filters: {
@@ -34,17 +31,19 @@ document.addEventListener('alpine:init', () => {
             page: 1,
             limit: 10
         },
-        industry: {
+        data: {
             name: null,
             description: null,
         },
-        titleAction: null,
+        title: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteIndustry",
+        idModalConfirmDelete: "idModalConfirmDelete",
+        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        idModalUI: "idModalUI",
 
         //methods
-        async getListIndustry(filters) {
+        async list(filters) {
             this.loading = true
             const response = await window.apiGetIndustry(filters)
             if (response.success) {
@@ -62,98 +61,133 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async editIndustry() {
+        async edit() {
             this.loading = true
-            const response = await window.apiUpdateIndustry(this.industry, this.id)
+            const response = await window.apiUpdateIndustry(this.data, this.id)
             if (!response.success) {
-                toast.error(response.message)
                 this.loading = false
+                toast.error(response.message)
                 return
             }
+
             toast.success('Cập nhập ngành hàng thành công !')
-            $('#modalIndustryUI').modal('hide');
-            this.resetDataIndustry()
-            await this.getListIndustry(this.filters)
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            await this.list(this.filters)
+            this.loading = false
+
+        },
+
+        async create() {
+            this.loading = true
+            const response = await window.apiCreateIndustry(this.data)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            toast.success('Tạo hàng thành thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            this.reloadPage()
             this.loading = false
         },
 
-        async removeIndustry() {
+        async remove() {
             this.loading = true
             const response = await window.apiRemoveIndustry(this.id)
             if (!response.success) {
-                toast.error(response.message)
                 this.loading = false
-
-                return;
+                toast.error(response.message)
+                return
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
+            await this.list(this.filters)
             toast.success('Xóa ngành hàng thành công !')
-
-            this.getListIndustry(this.filters)
-
             this.loading = false
         },
 
-        async createIndustry() {
+        async removeMultiple() {
             this.loading = true
-            const response = await window.apiCreateIndustry(this.industry)
+            const response = await window.apiRemoveMultiple(this.id)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
-            toast.success('Tạo ngành hàng thành công !')
-            $('#modalIndustryUI').modal('hide');
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            this.selectedRow = []
+            toast.success('Xóa danh sách ngành hàng thành công !')
             this.loading = false
-            window.location.reload();
         },
 
-        async handShowModalIndustryUI(action, id = null) {
+        async handleShowModalUI(action, id = null) {
+            this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleAction = 'Thêm mới'
+                this.title = 'Thêm mới'
             } else {
-                this.titleAction = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiShowIndustry(id)
                 if (!response.success) {
+                    this.loading = false
                     toast.error(response.message)
                     return
                 }
                 const data = response.data.data
-                this.industry.name = data.name
-                this.industry.description = data.description
+                this.data.name = data.name
+                this.data.description = data.description
             }
-
-            $('#modalIndustryUI').modal('show');
-        },
-
-        handleIndustryUI() {
-            if (this.action === 'create') {
-                this.createIndustry()
-            } else {
-                this.editIndustry()
-            }
+            this.loading = false
+            $('#'+this.idModalUI).modal('show');
         },
 
         changePage(page) {
             this.filters.page = page
-            this.getListIndustry(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListIndustry(this.filters)
+            this.list(this.filters)
         },
 
-        resetDataIndustry() {
-            this.industry.name = null
-            this.industry.description = null
+        resetData() {
+            this.data = {
+                name: null,
+                description: null,
+            }
+        },
+
+        reloadPage() {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
+            this.filters = {
+                name: null,
+                page: 1,
+                limit: 10
+            }
         },
 
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn ngành hàng cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
         },
     }));
 });

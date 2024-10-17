@@ -59,6 +59,7 @@ class AppErrorCode
     public const CODE_2051 = 2051; //  Tạo quyền cho người dùng thất bại !
     public const CODE_2052 = 2052; //  Xóa vai trò của quyền thất bại !
     public const CODE_2053 = 2053; //  Xóa quyền của người dùng thất bại !
+    public const CODE_2054 = 2054; //  Xóa ngành hàng thất bại !
 
 
 }

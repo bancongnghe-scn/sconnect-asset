@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Industry;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class IndustryRepository extends BaseRepository
 {
@@ -37,5 +38,10 @@ class IndustryRepository extends BaseRepository
     public function findIndustryByName($name)
     {
         return $this->_model->where('name', $name)->first();
+    }
+
+    public function deleteMultipleByIds($ids)
+    {
+        return $this->_model->whereIn('id', Arr::wrap($ids))->delete();
     }
 }
