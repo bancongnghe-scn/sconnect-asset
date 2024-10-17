@@ -4,9 +4,12 @@
 
 @section('content')
     <div x-data="supplier">
-        <div class="tw-mb-3 d-flex tw-justify-end">
+        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
+            </button>
+            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple">
+                Xóa chọn
             </button>
         </div>
 

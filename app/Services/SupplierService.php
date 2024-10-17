@@ -178,4 +178,19 @@ class SupplierService
             'success' => true,
         ];
     }
+
+    public function deleteSupplierMultiple($ids)
+    {
+        $result = $this->supplierRepository->deleteMultipleByIds($ids);
+        if (!$result) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2054,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

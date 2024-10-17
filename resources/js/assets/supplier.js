@@ -258,6 +258,17 @@ document.addEventListener('alpine:init', () => {
             this.id = id
         },
 
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn ngành hàng cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
+        },
+
         reloadPage() {
             this.resetFilters()
             this.list(this.filters)

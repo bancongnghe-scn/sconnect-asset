@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" x-data="table">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -9,6 +9,9 @@
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
+                                    <th class="text-center">
+                                        <input type="checkbox" @click="selectedAll">
+                                    </th>
                                     <th rowspan="1" colspan="1">STT</th>
                                     <template x-for="(columnName, key) in columns">
                                         <th rowspan="1" colspan="1" x-text="columnName"></th>
@@ -19,7 +22,10 @@
                                 <tbody>
                                 <template x-for="(data,index) in dataTable" x-data="{line: 1}">
                                     <tr>
-                                        <td x-text="index + 1"></td>
+                                        <td class="text-center align-middle">
+                                            <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                        </td>
+                                        <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
                                                 <template x-if="key === 'website'">
@@ -57,3 +63,16 @@
         @include('common.pagination')
     </div>
 </div>
+
+<script>
+    function table() {
+        return {
+            checkedAll: false,
+
+            selectedAll() {
+                this.checkedAll = !this.checkedAll
+                this.dataTable.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
+            }
+        }
+    }
+</script>
