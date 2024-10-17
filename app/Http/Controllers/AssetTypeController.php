@@ -18,11 +18,11 @@ class AssetTypeController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name'                  => 'nullable|string',
-            'asset_type_group_id'   => 'nullable|array',
-            'asset_type_group_id.*' => 'integer',
-            'page'                  => 'integer',
-            'limit'                 => 'integer|max:200',
+            'name'                   => 'nullable|string',
+            'asset_type_group_id'    => 'nullable|array',
+            'asset_type_group_id.*'  => 'integer',
+            'page'                   => 'integer',
+            'limit'                  => 'integer|max:200',
         ]);
 
         try {
