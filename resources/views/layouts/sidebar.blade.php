@@ -1,5 +1,5 @@
 <aside class="main-sidebar bg-sc">
-    <a href="/home" class="brand-link">
+    <a href="/home" class="brand-link text-decoration-none">
         <img src="/images/logo-s.png" alt="S-Office" style="height: 50px; margin-top: -6px; margin-left: 12px;">
         <span class="brand-text"><img src="/images/logo-text.png" alt="S-Office"
                                       style="height: 60px; margin-top: -6px; margin-left: -12px;"></span>
