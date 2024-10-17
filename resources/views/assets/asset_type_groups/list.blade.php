@@ -8,7 +8,7 @@
             <button type="button" class="btn btn-sc" @click="handleShowModal('create')">
                 Thêm mới
             </button>
-            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple">
+            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple">
                 Xóa chọn
             </button>
         </div>
@@ -29,12 +29,23 @@
 
         <div>
             @include('assets.asset_type_groups.modalUI')
+
             <div
                 x-data="{
-                modalId: idModalConfirmDelete,
-                contentBody: 'Bạn có chắc chắn muốn xóa nhóm tài sản này không ?'
-            }"
+                    modalId: idModalConfirmDelete,
+                    contentBody: 'Bạn có chắc chắn muốn xóa nhóm tài sản này không ?'
+                }"
                 @ok="remove"
+            >
+                @include('common.modal-confirm')
+            </div>
+
+            <div
+                x-data="{
+                    modalId: idModalConfirmDeleteMultiple,
+                    contentBody: 'Bạn có chắc chắn muốn xóa danh sách nhóm tài sản này không ?'
+                }"
+                @ok="removeMultiple"
             >
                 @include('common.modal-confirm')
             </div>

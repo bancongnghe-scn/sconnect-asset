@@ -107,4 +107,19 @@ class AssetTypeGroupService
             'data'    => $assetTypeGroup->toArray(),
         ];
     }
+
+    public function deleteAssetTypeGroupMultiple(array $ids)
+    {
+        $delete = $this->assetTypeGroupRepository->deleteAssetTypeGroupByIds($ids);
+        if (is_null($delete)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2003,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

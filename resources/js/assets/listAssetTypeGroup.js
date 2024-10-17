@@ -40,6 +40,7 @@ document.addEventListener('alpine:init', () => {
         action: null,
         id: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
+        idModalConfirmDeleteMultiple: 'idModalConfirmDeleteMultiple',
 
         //methods
         async list(filters) {
@@ -88,6 +89,20 @@ document.addEventListener('alpine:init', () => {
             $("#"+this.idModalConfirmDelete).modal('hide')
             await this.list(this.filters)
             toast.success('Xóa nhóm tài sản thành công !')
+            this.loading = false
+        },
+
+        async removeMultiple() {
+            this.loading = true
+            const response = await window.apiDeleteAssetTypeGroupMultiple(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            toast.success('Xóa danh sách nhóm tài sản thành công !')
             this.loading = false
         },
 
@@ -151,6 +166,17 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn nhóm tài sản cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
         },
 
         changePage(page) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\RoleController;
@@ -26,7 +27,7 @@ Route::get('ping', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resources([
-        'asset-type'        => App\Http\Controllers\AssetTypeController::class,
+        'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
         'industry'          => App\Http\Controllers\IndustryController::class,
         'supplier'          => App\Http\Controllers\SupplierController::class,
@@ -50,10 +51,10 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
-    Route::prefix('asset-type')->controller(App\Http\Controllers\AssetTypeController::class)
-        ->group(function () {
-            Route::post('/delete-multiple', 'deleteMultiple');
-        });
+    Route::prefix('/delete-multiple')->group(function () {
+        Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
+        Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);
+    });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);

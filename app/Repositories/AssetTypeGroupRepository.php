@@ -35,4 +35,9 @@ class AssetTypeGroupRepository extends BaseRepository
     {
         return $this->_model->where('name', $name)->first();
     }
+
+    public function deleteAssetTypeGroupByIds($ids)
+    {
+        return $this->_model->whereIn('id', $ids)->delete();
+    }
 }
