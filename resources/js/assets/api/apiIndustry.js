@@ -49,7 +49,7 @@ window.apiRemoveIndustry = async function (id) {
     }
 }
 
-window.apiRemoveMultiple = async function (ids) {
+window.apiRemoveIndustryMultiple = async function (ids) {
     try {
         const response = await axios.post("/api/delete-multiple/industry",{ids: ids})
 

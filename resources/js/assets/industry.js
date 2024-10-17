@@ -109,7 +109,7 @@ document.addEventListener('alpine:init', () => {
 
         async removeMultiple() {
             this.loading = true
-            const response = await window.apiRemoveMultiple(this.id)
+            const response = await window.apiRemoveIndustryMultiple(this.id)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)

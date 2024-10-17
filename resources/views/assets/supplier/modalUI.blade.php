@@ -1,8 +1,8 @@
-<div class="modal fade" id="modalSupplierUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="titleAction + ' nhà cung cấp'"></h4>
+                <h4 class="modal-title" x-text="title + ' nhà cung cấp'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -44,7 +44,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="$dispatch('save-supplier')" type="button" class="btn btn-sc">Lưu</button>
+                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

@@ -5,17 +5,17 @@
 @section('content')
     <div x-data="supplier">
         <div class="tw-mb-3 d-flex tw-justify-end">
-            <button type="button" class="btn btn-sc" @click="handShowModalSupplierUI('create')">
+            <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
         </div>
 
         <div>
-            @include('assets.supplier.filterSupplier')
+            @include('assets.supplier.filters')
         </div>
 
         <div
-            @edit="handShowModalSupplierUI('update', $event.detail.id)"
+            @edit="handleShowModalUI('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
@@ -25,9 +25,8 @@
 
         {{-- modal--}}
         <div>
-            <div
-                @save-supplier="handleSupplierUI">
-                @include('assets.supplier.modalSupplierUI')
+            <div>
+                @include('assets.supplier.modalUI')
             </div>
 
             <div
@@ -35,7 +34,17 @@
                         modalId: idModalConfirmDelete,
                         contentBody: 'Bạn có chắc chắn muốn xóa nhà cung cấp này không ?'
                     }"
-                @ok="removeSupplier"
+                @ok="remove"
+            >
+                @include('common.modal-confirm')
+            </div>
+
+            <div
+                x-data="{
+                modalId: idModalConfirmDeleteMultiple,
+                contentBody: 'Bạn có chắc chắn muốn xóa danh sách nhà cung cấp này không ?'
+            }"
+                @ok="removeMultiple"
             >
                 @include('common.modal-confirm')
             </div>
@@ -45,7 +54,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/listSupplier.js',
+        'resources/js/assets/supplier.js',
         'resources/js/assets/api/apiIndustry.js',
         'resources/js/assets/api/apiSupplier.js',
         'resources/js/assets/api/apiAssetType.js',

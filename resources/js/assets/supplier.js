@@ -1,13 +1,10 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('supplier', () => ({
         init() {
-            this.getListSupplier({
-                page: 1,
-                limit: 10
-            })
+            this.list({page: 1, limit: 10})
             this.getListIndustry()
             this.getListAssetType({})
-            window.initSelect2Modal('modalSupplierUI')
+            window.initSelect2Modal(this.idModalUI)
             this.onChangeSelect2()
         },
 
@@ -33,6 +30,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
+        selectedRow: [],
 
         //data
         filters: {
@@ -42,7 +40,7 @@ document.addEventListener('alpine:init', () => {
             page: 1,
             limit: 10
         },
-        supplier: {
+        data: {
             name: null,
             code: null,
             website: null,
@@ -71,10 +69,12 @@ document.addEventListener('alpine:init', () => {
         },
         listIndustry : [],
         listAssetType : [],
-        titleAction: null,
+        title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "deleteSupplier",
+        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        idModalUI: "idModalUI",
         activeLink: {
             payment_terms : true,
             payment_account : false
@@ -84,20 +84,82 @@ document.addEventListener('alpine:init', () => {
         },
 
         //methods
-        async getListSupplier(filters) {
+        async list(filters) {
             this.loading = true
             const response = await window.apiGetSupplier(filters)
             if (response.success) {
                 const data = response.data
-                this.dataTable = data.data.data ?? []
-                this.totalPages = data.data.last_page ?? 1
-                this.currentPage = data.data.current_page ?? 1
+                this.dataTable = data.data.data
+                this.totalPages = data.data.last_page
+                this.currentPage = data.data.current_page
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
             } else {
                 toast.error('Lấy danh sách nhà cung cấp thất bại !')
             }
+            this.loading = false
+        },
+
+        async create() {
+            this.loading = true
+            const response = await window.apiCreateSupplier(this.data)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            toast.success('Tạo nhà cung cấp thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            this.reloadPage()
+            this.loading = false
+        },
+
+
+        async edit() {
+            this.loading = true
+            const response = await window.apiUpdateSupplier(this.data, this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+
+            toast.success('Cập nhập nhà cung cấp thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            await this.list(this.filters)
+            this.loading = false
+
+        },
+
+        async remove() {
+            this.loading = true
+            const response = await window.apiRemoveSupplier(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDelete).modal('hide')
+            await this.list(this.filters)
+            toast.success('Xóa nhà cung cấp thành công !')
+            this.loading = false
+        },
+
+        async removeMultiple() {
+            this.loading = true
+            const response = await window.apiRemoveSupplierMultiple(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            this.selectedRow = []
+            toast.success('Xóa danh sách nhà cung cấp thành công !')
             this.loading = false
         },
 
@@ -123,95 +185,42 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async createSupplier() {
-            this.loading = true
-            const response = await window.apiCreateSupplier(this.supplier)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-            toast.success('Tạo nhà cung cấp thành công !')
-            $('#modalSupplierUI').modal('hide');
-            this.reloadPage()
-            this.loading = false
-        },
-
-        async editSupplier() {
-            this.loading = true
-            const response = await window.apiUpdateSupplier(this.supplier, this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                return
-            }
-            toast.success('Cập nhập nhà cung cấp thành công !')
-            $('#modalSupplierUI').modal('hide');
-            this.resetDataSupplier()
-            await this.getListSupplier(this.filters)
-            this.loading = false
-        },
-
-        async removeSupplier() {
-            this.loading = true
-            const response = await window.apiRemoveSupplier(this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-
-                return;
-            }
-            $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa nhà cung cấp thành công !')
-
-            this.getListSupplier(this.filters)
-
-            this.loading = false
-        },
-
-        async handShowModalSupplierUI(action, id = null) {
+        async handleShowModalUI(action, id = null) {
             this.action = action
             if (action === 'create') {
-                this.titleAction = 'Thêm mới'
-                this.resetDataSupplier()
+                this.title = 'Thêm mới'
                 window.generateShortCode().then(code => {
-                    this.supplier.code = code
+                    this.data.code = code
                 })
             } else {
-                this.titleAction = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiShowSupplier(id)
                 if (!response.success) {
+                    this.loading = false
                     toast.error(response.message)
                     return
                 }
                 const data = response.data.data
-                this.supplier = data
+                this.data = data
                 $('#industrySelect2').val(data.industry_ids).change()
                 $('#assetTypeSelect2').val(data.asset_type_ids).change()
             }
 
-            $('#modalSupplierUI').modal('show');
-        },
-
-        handleSupplierUI() {
-            if (this.action === 'create') {
-                this.createSupplier()
-            } else {
-                this.editSupplier()
-            }
+            $('#'+this.idModalUI).modal('show');
         },
 
         changePage(page) {
             this.filters.page = page
-            this.getListSupplier(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListSupplier(this.filters)
+            this.list(this.filters)
         },
 
-        resetDataSupplier() {
+        resetData() {
             this.supplier = {
                 name: null,
                 code: null,
@@ -250,24 +259,29 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            const filters = {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
+            this.filters = {
                 code_name: null,
                 status: [],
-                industries_id: [],
+                industry_ids: [],
                 page: 1,
-                limit: this.limit
+                limit: 10
             }
-
-            this.getListSupplier(filters)
+            $('#industriesFilter').val([]).change()
+            $('#statusFilter').val([]).change()
         },
 
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
                 if (event.target.id === 'industrySelect2') {
-                    this.supplier.industry_ids = value
+                    this.data.industry_ids = value
                 } else if (event.target.id === 'assetTypeSelect2') {
-                    this.supplier.asset_type_ids = value
+                    this.data.asset_type_ids = value
                 } else if (event.target.id === 'industriesFilter') {
                     this.filters.industry_ids = value
                 } else if (event.target.id === 'statusFilter') {
