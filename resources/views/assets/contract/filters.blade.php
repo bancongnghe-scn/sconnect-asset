@@ -28,7 +28,10 @@
                         @include('common.datepicker', ['placeholder' => "Ngày hiệu lực", 'id' => "filterFrom"])
                     </div>
                     <div class="col-auto">
-                        <button @click="getListContract(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                        <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                    </div>
+                    <div class="col-auto">
+                        <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
                     </div>
                 </div>
             </div>

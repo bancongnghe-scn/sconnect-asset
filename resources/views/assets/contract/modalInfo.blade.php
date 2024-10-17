@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalContractInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -11,11 +11,11 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Mã hợp đồng</label>
-                            <input type="text" class="form-control" x-model="contract.code" disabled>
+                            <input type="text" class="form-control" x-model="data.code" disabled>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng</label>
-                            <select class="form-control" x-model="contract.type" disabled>
+                            <select class="form-control" x-model="data.type" disabled>
                                 <template x-for="(value, key) in listTypeContract" :key="key">
                                     <option :value="key" x-text="value"></option>
                                 </template>
@@ -23,7 +23,7 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng</label>
-                            <input type="text" class="form-control" x-model="contract.name" disabled>
+                            <input type="text" class="form-control" x-model="data.name" disabled>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp</label>
@@ -35,37 +35,37 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký</label>
-                            <input type="text" class="form-control" x-model="contract.signing_date" disabled>
+                            <input type="text" class="form-control" x-model="data.signing_date" disabled>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày</label>
-                            <input type="text" class="form-control" x-model="contract.from" disabled>
+                            <input type="text" class="form-control" x-model="data.from" disabled>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control" x-model="contract.to" disabled>
+                            <input type="text" class="form-control" x-model="data.to" disabled>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
                             <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
-                                @include('common.select2' , ['multiple' => true, 'model' => 'contract.user_ids', 'disabled' => true])
+                                @include('common.select2' , ['multiple' => true, 'model' => 'data.user_ids', 'disabled' => true])
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Tổng giá trị hợp đồng</label>
-                            <input type="number" class="form-control" x-model="contract.contract_value" disabled>
+                            <input type="number" class="form-control" x-model="data.contract_value" disabled>
                         </div>
                         <div class="col-5">
                             <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="contract.description" disabled></textarea>
+                            <textarea class="form-control tw-h-40" x-model="data.description" disabled></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
+                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div class="mt-2 d-flex flex-column tw-gap-y-2">
-                            <template x-for="(file, index) in contract.files" :key="index">
+                            <template x-for="(file, index) in data.files" :key="index">
                                 <div>
                                     <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
                                     <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
@@ -89,7 +89,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <template x-for="(payment, index) in contract.payments">
+                                <template x-for="(payment, index) in data.payments">
                                     <tr>
                                         <td x-text="'Lần ' + (index + 1)"></td>
                                         <td>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
 
-                <template x-if="contract.appendix">
+                <template x-if="data.appendix">
                     <div class="container">
                         <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
                     </div>

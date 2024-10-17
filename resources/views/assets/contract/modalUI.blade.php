@@ -1,8 +1,8 @@
-<div class="modal fade" id="modalContractUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="titleModal + ' hợp đồng'"></h4>
+                <h4 class="modal-title" x-text="title + ' hợp đồng'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,11 +11,11 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Mã hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control" x-model="contract.code" placeholder="Nhập mã hợp đồng">
+                            <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã hợp đồng">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <select class="form-select" x-model="contract.type">
+                            <select class="form-select" x-model="data.type">
                                 <option value="">Chọn loại hợp đồng ...</option>
                                 <template x-for="(value, key) in listTypeContract" :key="key">
                                     <option :value="key" x-text="value"></option>
@@ -24,34 +24,41 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <input type="text" class="form-control" x-model="contract.name" placeholder="Nhập tên hợp đồng">
+                            <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên hợp đồng">
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600">*</label></label>
-                            <select class="form-select select2" x-model="contract.supplier_id" id="selectSupplier">
-                                <option value="">Chọn nhà cung cấp ...</option>
-                                <template x-for="supplier in listSupplier" :key="supplier.id">
-                                    <option :value="supplier.id" x-text="supplier.name"></option>
-                                </template>
-                            </select>
+{{--                            <select class="form-select select2" x-model="data.supplier_id" id="selectSupplier">--}}
+{{--                                <option value="">Chọn nhà cung cấp ...</option>--}}
+{{--                                <template x-for="supplier in listSupplier" :key="supplier.id">--}}
+{{--                                    <option :value="supplier.id" x-text="supplier.name"></option>--}}
+{{--                                </template>--}}
+{{--                            </select>--}}
+                                <div x-data="{data: []}" x-init="data = listSupplier; $watch('listSupplier', value => data = value)">
+                                    @include('common.select2', [
+                                        'model' => 'data.supplier_id',
+                                        'id' => 'selectSupplier',
+                                        'placeholder' => 'Chọn nhà cung cấp ...'
+                                    ])
+                                </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "contract.signing_date"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "contract.from"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "contract.to"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi ..." x-model="contract.user_ids">
+                            <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi ..." x-model="data.user_ids">
                                 <template x-for="user in listUser" :key="user.id">
                                     <option :value="user.id" x-text="user.name"></option>
                                 </template>
@@ -61,23 +68,23 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Tổng giá trị hợp đồng</label>
-                            <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="contract.contract_value">
+                            <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="data.contract_value">
                         </div>
                         <div class="col-5">
                             <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="contract.description" placeholder="Nhập ghi chú"></textarea>
+                            <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+contract.files.length+') dung lượng tối đa 5MB'"></span>
+                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
                             <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
                             <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
                             <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
-                                <template x-for="(file, index) in contract.files" :key="index">
+                                <template x-for="(file, index) in data.files" :key="index">
                                     <div class="tw-flex gap-x-1">
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="contract.files.splice(index, 1)"></i>
+                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
                                         <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
                                 </template>
@@ -101,13 +108,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <template x-for="(payment, index) in contract.payments">
+                                <template x-for="(payment, index) in data.payments">
                                     <tr>
                                         <td x-text="'Lần ' + (index + 1)"></td>
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker" name="selectPaymentDate"
-                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="contract.payment_date" :id="index">
+                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="data.payment_date" :id="index">
                                                 <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
                                             </div>
                                         </td>
@@ -118,7 +125,7 @@
                                             <input type="text" class="form-control" x-model="payment.description" placeholder="Nhập nội dung thanh toán">
                                         </td>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" @click="contract.payments.splice(index, 1)">
+                                            <button class="border-0 bg-body" @click="data.payments.splice(index, 1)">
                                                 <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
                                             </button>
                                         </td>
@@ -130,7 +137,7 @@
                     <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
                 </div>
 
-                <template x-if="contract.appendix">
+                <template x-if="data.appendix">
                     <div class="container">
                         <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
                     </div>
@@ -138,7 +145,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="action === 'create' ? createContract() : editContract()" type="button" class="btn btn-sc">Lưu</button>
+                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

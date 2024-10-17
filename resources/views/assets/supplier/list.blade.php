@@ -23,7 +23,7 @@
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
         >
-            @include('assets.supplier.tableSupplier')
+            @include('assets.supplier.table')
         </div>
 
         {{-- modal--}}

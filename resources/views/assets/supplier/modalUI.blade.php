@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="card">
                     <div class="card-body">
-                        @include('assets.supplier.mainInfoSupplier')
+                        @include('assets.supplier.mainInfo')
                     </div>
                 </div>
 

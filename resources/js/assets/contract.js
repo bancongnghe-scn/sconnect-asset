@@ -5,19 +5,13 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
-            window.initSelect2Modal('modalContractUI');
-            window.initSelect2Modal('modalContractInfo');
+            window.initSelect2Modal(this.idModalUI);
+            window.initSelect2Modal(this.idModalInfo);
             this.onChangeSelect2()
             this.initDatePicker()
-            this.getListContract({
-                page: 1,
-                limit: 10
-            })
+            this.list({page: 1, limit: 10})
             this.getListSupplier({})
-            this.getListUser({
-                page: 1,
-                limit:20
-            })
+            this.getListUser({page: 1, limit:20})
         },
 
         //dataTable
@@ -37,6 +31,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
+        selectedRow: [],
 
         //pagination
         totalPages: null,
@@ -45,8 +40,6 @@ document.addEventListener('alpine:init', () => {
         from: 0,
         to: 0,
         limit: 10,
-        showChecked: false,
-
 
         //data
         filters: {
@@ -58,7 +51,7 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-        contract: {
+        data: {
             code: null,
             type: null,
             name: null,
@@ -83,13 +76,16 @@ document.addEventListener('alpine:init', () => {
         },
         listSupplier: [],
         listUser: [],
-        titleModal: null,
+        title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        idModalUI: "idModalUI",
+        idModalInfo: "idModalInfo",
+
         //methods
-        async getListContract(filters) {
+        async list(filters) {
             this.loading = true
             if (filters.signing_date) {
                 filters.signing_date = format(filters.signing_date, 'yyyy-MM-dd')
@@ -106,88 +102,70 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                toast.success('Lấy danh sách hợp đồng thành công !')
             } else {
                 toast.error('Lấy danh sách hợp đồng thất bại !')
             }
             this.loading = false
         },
 
-        async editContract() {
+        async edit() {
             this.loading = true
-            const response = await window.apiUpdateContract(this.contract, this.id)
+            const response = await window.apiUpdateContract(this.data, this.id)
             if (!response.success) {
+                this.loading = false
                 toast.error(response.message)
                 return
             }
+
             toast.success('Cập nhập hợp đồng thành công !')
-            $('#modalContractUI').modal('hide');
-            this.resetDataContract()
-            await this.getListContract(this.filters)
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            await this.list(this.filters)
             this.loading = false
+
         },
 
-        async removeContract() {
+        async remove() {
             this.loading = true
             const response = await window.apiRemoveContract(this.id)
             if (!response.success) {
-                toast.error(response.message)
                 this.loading = false
-
-                return;
+                toast.error(response.message)
+                return
             }
             $("#"+this.idModalConfirmDelete).modal('hide')
+            await this.list(this.filters)
             toast.success('Xóa hợp đồng thành công !')
-            await this.getListContract(this.filters)
-
             this.loading = false
         },
 
-        async createContract() {
+        async removeMultiple() {
             this.loading = true
-            const response = await window.apiCreateContract(this.contract)
+            const response = await window.apiRemoveContractMultiple(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            this.selectedRow = []
+            toast.success('Xóa danh sách hợp đồng thành công !')
+            this.loading = false
+        },
+
+        async create() {
+            this.loading = true
+            const response = await window.apiCreateContract(this.data)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
             toast.success('Tạo hợp đồng thành công !')
-            $('#modalContractUI').modal('hide');
-            this.loading = false
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
             this.reloadPage()
-            this.resetDataContract()
-        },
-
-        async handleShowModalContractUI(action, id = null) {
-            this.loading = true
-            this.action = action
-            if (action === 'create') {
-                this.titleModal = 'Thêm mới'
-                this.resetDataContract()
-            } else {
-                this.titleModal = 'Cập nhật'
-                this.id = id
-                const response = await window.apiShowContract(id)
-                if (!response.success) {
-                    toast.error(response.message)
-                    return
-                }
-                this.contract = this.formatDataContract(response.data.data)
-            }
-
-            $('#modalContractUI').modal('show');
-            this.loading = false
-        },
-
-        async handleShowModalContractInfo(id) {
-            this.loading = true
-            const response = await window.apiShowContract(id)
-            if (!response.success) {
-                toast.error(response.message)
-                return
-            }
-            this.contract = this.formatDataContract(response.data.data)
-            $('#modalContractInfo').modal('show');
             this.loading = false
         },
 
@@ -213,18 +191,50 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async handleShowModalUI(action, id = null) {
+            this.loading = true
+            this.action = action
+            if (action === 'create') {
+                this.title = 'Thêm mới'
+            } else {
+                this.title = 'Cập nhật'
+                this.id = id
+                const response = await window.apiShowContract(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data = this.formatDataContract(response.data.data)
+            }
+
+            $('#'+this.idModalUI).modal('show');
+            this.loading = false
+        },
+
+        async handleShowModalInfo(id) {
+            this.loading = true
+            const response = await window.apiShowContract(id)
+            if (!response.success) {
+                toast.error(response.message)
+                return
+            }
+            this.data = this.formatDataContract(response.data.data)
+            $('#'+this.idModalInfo).modal('show');
+            this.loading = false
+        },
+
         changePage(page) {
             this.filters.page = page
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
-        resetDataContract() {
-            this.contract = {
+        resetData() {
+            this.data = {
                 code: null,
                 type: null,
                 name: null,
@@ -241,22 +251,40 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
             this.filters = {
                 name_code: null,
                 type: [],
                 status: [],
                 signing_date: null,
-                from: null,
+                from : null,
                 limit: 10,
                 page: 1
             }
-
-            this.getListContract(this.filters)
+            $('#filterTypeContract').val([]).change()
+            $('#filterStatusContract').val([]).change()
+            $('#filterSigningDate').val(null).change()
+            $('#filterFrom').val(null).change()
         },
 
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn ngành hàng cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
         },
 
         onChangeSelect2() {
@@ -267,9 +295,9 @@ document.addEventListener('alpine:init', () => {
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
-                    this.contract.user_ids = value
+                    this.data.user_ids = value
                 } else if (event.target.id === 'selectSupplier') {
-                    this.contract.supplier_id = value
+                    this.data.supplier_id = value
                 }
             });
         },
@@ -277,13 +305,13 @@ document.addEventListener('alpine:init', () => {
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
             if(el.id === 'selectSigningDate') {
-                this.contract.signing_date = storageFormat
+                this.data.signing_date = storageFormat
             } else if (el.id === 'selectFrom') {
-                this.contract.from = storageFormat
+                this.data.from = storageFormat
             } else if (el.id === 'selectTo') {
-                this.contract.to = storageFormat
+                this.data.to = storageFormat
             } else if (el.name === 'selectPaymentDate') {
-                this.contract.payments[el.id].payment_date = storageFormat
+                this.data.payments[el.id].payment_date = storageFormat
             } else if (el.id === 'filterSigningDate') {
                 this.filters.signing_date = storageFormat
             } else if (el.id === 'filterFrom') {
@@ -302,11 +330,11 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            this.contract.files = this.contract.files.concat(Array.from(this.$refs.fileInput.files))
+            this.data.files = this.data.files.concat(Array.from(this.$refs.fileInput.files))
         },
 
         addRowPayment() {
-            this.contract.payments.push({
+            this.data.payments.push({
                 payment_date: null,
                 money: null,
                 description: null
@@ -324,7 +352,6 @@ document.addEventListener('alpine:init', () => {
             contract.files = contract.files ?? []
             const payments = contract.payments ?? []
             payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
-            console.log(contract)
             return contract
         },
 
