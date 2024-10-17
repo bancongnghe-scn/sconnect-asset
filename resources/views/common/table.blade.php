@@ -26,7 +26,7 @@
                                     <tr>
                                         <template x-if="typeof showChecked !== 'undefined' ? showChecked : true">
                                             <td class="text-center align-middle">
-                                                <input type="checkbox" x-model="selectedRow[data.id]">
+                                                <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
                                             </td>
                                         </template>
                                         <td x-text="from + index"></td>

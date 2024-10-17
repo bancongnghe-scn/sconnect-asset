@@ -102,6 +102,7 @@ document.addEventListener('alpine:init', () => {
             }
             $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
             await this.list(this.filters)
+            this.selectedRow = []
             toast.success('Xóa danh sách nhóm tài sản thành công !')
             this.loading = false
         },
@@ -181,12 +182,12 @@ document.addEventListener('alpine:init', () => {
 
         changePage(page) {
             this.filters.page = page
-            this.getListTypeGroup(this.filters)
+            this.list(this.filters)
         },
 
         changLimit() {
             this.filters.limit = this.limit
-            this.getListTypeGroup(this.filters)
+            this.list(this.filters)
         },
     }));
 })
