@@ -2,10 +2,8 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('role', () => ({
         init() {
             window.initSelect2Modal(this.idModalUI);
-            this.list({
-                page: 1,
-                limit: 10
-            })
+            this.getListUser()
+            this.list({page: 1, limit: 10})
             this.getListPermission({})
             this.onChangeSelect2()
         },
@@ -48,10 +46,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalUI: "idModalUI",
-        listUser: [
-            {id:1, name: 'User1'},
-            {id:2, name: 'User2'},
-        ],
+        listUser: [],
         listPermission: [],
 
         //methods
@@ -64,8 +59,8 @@ document.addEventListener('alpine:init', () => {
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total
-                this.from = data.data.from
-                this.to = data.data.to
+                this.from = data.data.from ?? 0
+                this.to = data.data.to ?? 0
             } else {
                 toast.error(response.message)
             }
@@ -150,6 +145,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async getListUser(filters){
+            this.loading = true
+            const response = await window.apiGetUser(filters)
+            if (response.success) {
+                this.listUser = response.data.data
+            } else {
+                toast.error('Lấy danh sách nhân viên thất bại !')
+            }
+            this.loading = false
+        },
+
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
@@ -174,7 +180,9 @@ document.addEventListener('alpine:init', () => {
         resetData() {
             this.role = {
                 name: null,
-                description: null
+                description: null,
+                user_ids: [],
+                permission_ids: []
             }
         },
 

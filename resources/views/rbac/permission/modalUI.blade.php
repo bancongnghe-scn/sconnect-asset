@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Tên quyền<label class="tw-text-red-600">*</label></label>
+                    <label class="form-label">Tên quyền<label class="color-red">*</label></label>
                     <input type="text" class="form-control" x-model="permission.name" placeholder="Nhập tên quyền">
                 </div>
 

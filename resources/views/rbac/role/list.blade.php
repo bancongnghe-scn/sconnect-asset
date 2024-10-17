@@ -4,7 +4,7 @@
 
 @section('content')
     <div x-data="role">
-        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+        <div class="mb-3 d-flex gap-2 justify-content-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
@@ -46,6 +46,7 @@
 @section('js')
     @vite([
         'resources/js/rbac/role.js',
+        'resources/js/app/api/apiUser.js',
         'resources/js/rbac/api/apiRole.js',
         'resources/js/rbac/api/apiPermission.js',
     ])

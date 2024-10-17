@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Rbac;
 
-use App\Models\UserPermission;
+use App\Models\Rbac\UserPermission;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
@@ -20,7 +20,7 @@ class UserPermissionRepository extends BaseRepository
 
     public function deleteByUserIdsAndPermissionId($userIds, $permissionId)
     {
-        return $this->_model->whereIn('user_id', Arr::wrap($userIds))->where('permission_id', $permissionId)->delete();
+        return $this->_model->whereIn('model_id', Arr::wrap($userIds))->where('permission_id', $permissionId)->delete();
     }
 
     public function getListing(array $filters, $columns = ['*'], $with = [])

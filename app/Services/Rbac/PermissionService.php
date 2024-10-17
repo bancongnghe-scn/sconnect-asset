@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Rbac;
 
 use App\Http\Resources\PermissionInfoResource;
-use App\Repositories\PermissionRepository;
-use App\Repositories\RolePermissionRepository;
-use App\Repositories\UserPermissionRepository;
+use App\Repositories\Rbac\PermissionRepository;
+use App\Repositories\Rbac\RolePermissionRepository;
+use App\Repositories\Rbac\UserPermissionRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 
 class PermissionService
 {
@@ -33,19 +34,11 @@ class PermissionService
         $data['created_by'] = Auth::id();
         DB::beginTransaction();
         try {
-            $permission = $this->permissionRepository->create($data);
+            $permission = Permission::create($data);
 
             $userIds = $data['user_ids'] ?? [];
             if (!empty($userIds)) {
-                $insertUsersPermission = resolve(UserPermissionService::class)->insertUsersPermission($userIds, $permission->id);
-                if (!$insertUsersPermission) {
-                    DB::rollBack();
-
-                    return  [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2051,
-                    ];
-                }
+                resolve(UserPermissionService::class)->createUsersPermission($userIds, $permission);
             }
 
             $roleIds = $data['role_ids'] ?? [];
@@ -122,14 +115,7 @@ class PermissionService
 
     public function updatePermission($data, $id)
     {
-        $permission = $this->permissionRepository->find($id);
-        if (empty($permission)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2047,
-            ];
-        }
-
+        $permission         = Permission::findById($id);
         $data['updated_by'] = Auth::id();
         $permission->fill($data);
         DB::beginTransaction();
@@ -145,15 +131,7 @@ class PermissionService
 
             $userIds = $data['user_ids'] ?? [];
             if (!empty($userIds)) {
-                $updateUsersPermission = resolve(UserPermissionService::class)->updateUsersPermission($userIds, $id);
-                if (!$updateUsersPermission) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2051,
-                    ];
-                }
+                resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
             }
 
             $roleIds = $data['role_ids'] ?? [];

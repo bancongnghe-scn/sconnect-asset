@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Rbac;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -9,13 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Role extends Model
 {
     use HasFactory;
-    protected $table    = 'roles';
-    protected $fillable = [
-        'name',
-        'description',
-        'created_by',
-        'updated_by',
-    ];
+    protected $table = 'roles';
 
     public function roleUsers(): HasMany
     {

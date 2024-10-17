@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Rbac;
 
-use App\Repositories\RolePermissionRepository;
+use App\Repositories\Rbac\PermissionRepository;
+use App\Repositories\Rbac\RolePermissionRepository;
 
 class RolePermissionService
 {
     public function __construct(
         protected RolePermissionRepository $rolePermissionRepository,
+        protected PermissionRepository $permissionRepository,
     ) {
 
     }
@@ -66,9 +68,8 @@ class RolePermissionService
         $roleIdsOld       = $rolePermissions->pluck('role_id')->toArray();
         $newRoleIds       = array_diff($roleIds, $roleIdsOld);
         $removeRoleIds    = array_diff($roleIdsOld, $roleIds);
-
         if (!empty($newRoleIds)) {
-            $insertRolePermissions = $this->insertRolePermissions($newRoleIds, $permissionId);
+            $insertRolePermissions = $this->insertRolesPermission($newRoleIds, $permissionId);
             if (!$insertRolePermissions) {
                 return false;
             }

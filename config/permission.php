@@ -45,6 +45,8 @@ return [
          */
 
         'permissions' => 'permissions',
+        'menus'       => 'menus',
+        'menu_roles'  => 'menu_roles',
 
         /*
          * When using the "HasPermissions" trait from this package, we need to know which
@@ -77,7 +79,6 @@ return [
          */
         'role_pivot_key'       => null, //default 'role_id',
         'permission_pivot_key' => null, //default 'permission_id',
-
         /*
          * Change this if you want to name the related model primary key other than
          * `model_id`.

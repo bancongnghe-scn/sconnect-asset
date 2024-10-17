@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Rbac;
 
-use App\Models\Role;
+use App\Models\Rbac\Role;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class RoleRepository extends BaseRepository
 {
@@ -33,6 +34,10 @@ class RoleRepository extends BaseRepository
 
         if (!empty($filters['name'])) {
             $query->where('name', 'like', $filters['name'] . '%');
+        }
+
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
         }
 
         if (!empty($filters['limit'])) {

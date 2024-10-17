@@ -11,7 +11,7 @@ class PermissionInfoResource extends JsonResource
         return [
             'name'           => $this->resource->name,
             'description'    => $this->resource->description,
-            'user_ids'       => $this->resource->usersPermission?->pluck('user_id')->toArray(),
+            'user_ids'       => $this->resource->usersPermission?->pluck('model_id')->toArray(),
             'role_ids'       => $this->resource->rolesPermission?->pluck('role_id')->toArray(),
         ];
     }

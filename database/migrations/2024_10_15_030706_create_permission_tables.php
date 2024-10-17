@@ -27,10 +27,33 @@ return new class () extends Migration {
             //$table->engine('InnoDB');
             $table->bigIncrements('id'); // permission id
             $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
+            $table->text('description')->nullable();       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
             $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);
+        });
+
+        Schema::create($tableNames['menus'], function (Blueprint $table) {
+            //$table->engine('InnoDB');
+            $table->bigIncrements('id'); // permission id
+            $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
+            $table->text('description')->nullable();       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
+            $table->string('icon'); // For MyISAM use string('guard_name', 25);
+            $table->string('url')->nullable(); // For MyISAM use string('guard_name', 25);
+            $table->integer('order'); // For MyISAM use string('guard_name', 25);
+            $table->integer('parent_id')->nullable(); // For MyISAM use string('guard_name', 25);
+            $table->timestamps();
+
+            $table->unique(['name', 'url']);
+        });
+
+        Schema::create($tableNames['menu_roles'], function (Blueprint $table) {
+            //$table->engine('InnoDB');
+            $table->bigIncrements('id'); // permission id
+            $table->integer('role_id');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
+            $table->integer('menu_id'); // For MyISAM use string('guard_name', 25);
+            $table->timestamps();
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) use ($teams, $columnNames) {
@@ -40,7 +63,8 @@ return new class () extends Migration {
                 $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
-            $table->string('name');       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
+            $table->string('name');
+            $table->text('description')->nullable();       // For MyISAM use string('name', 225); // (or 166 for InnoDB with Redundant/Compact row format)
             $table->string('guard_name'); // For MyISAM use string('guard_name', 25);
             $table->timestamps();
             if ($teams || config('permission.testing')) {

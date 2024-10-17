@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\RoleService;
+use App\Services\Rbac\RoleService;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -33,6 +33,8 @@ class RoleController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            dd($exception);
+
             return response_error();
         }
     }
@@ -99,8 +101,6 @@ class RoleController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
-
             return response_error();
         }
     }

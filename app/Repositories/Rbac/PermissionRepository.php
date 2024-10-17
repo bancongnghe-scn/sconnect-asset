@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Rbac;
 
-use App\Models\Permission;
+use App\Models\Rbac\Permission;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 

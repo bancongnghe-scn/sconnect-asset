@@ -1,9 +1,9 @@
 @extends('layouts.app',[
-    'title' => 'Quyền ứng dụng'
+    'title' => 'Menu'
 ])
 
 @section('content')
-    <div x-data="permission">
+    <div x-data="menu">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
@@ -11,7 +11,7 @@
         </div>
 
         <div>
-            @include('rbac.permission.filter')
+            @include('rbac.menu.filter')
         </div>
 
         <div
@@ -26,14 +26,13 @@
 
         {{--  modal--}}
         <div>
-            <div
-            @include('rbac.permission.modalUI')
+            @include('rbac.menu.modalUI')
         </div>
 
         <div
             x-data="{
                 modalId: idModalConfirmDelete,
-                contentBody: 'Bạn có chắc chắn muốn xóa quyền này không ?'
+                contentBody: 'Bạn có chắc chắn muốn menu này không ?'
             }"
             @ok="remove"
         >
@@ -45,9 +44,8 @@
 
 @section('js')
     @vite([
-        'resources/js/rbac/permission.js',
-        'resources/js/rbac/api/apiPermission.js',
+        'resources/js/rbac/menu.js',
         'resources/js/rbac/api/apiRole.js',
-        'resources/js/app/api/apiUser.js',
+        'resources/js/rbac/api/apiMenu.js',
     ])
 @endsection

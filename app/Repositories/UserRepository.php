@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class UserRepository extends BaseRepository
 {
@@ -18,6 +19,10 @@ class UserRepository extends BaseRepository
 
         if (!empty($filers['name'])) {
             $query->where('name', 'like', $filers['name'] . '%');
+        }
+
+        if (!empty($filers['id'])) {
+            $query->whereIn('id', Arr::wrap($filers['id']));
         }
 
         if (!empty($filers['limit'])) {

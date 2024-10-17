@@ -36,10 +36,17 @@ Route::middleware('auth')->group(function () {
         'shopping-plan'     => App\Http\Controllers\ShoppingPlanCompanyController::class,
     ]);
 
+
     Route::prefix('rbac')->group(function () {
+        Route::prefix('menu')->controller(App\Http\Controllers\MenuController::class)->group(function () {
+            Route::get('user', 'getMenuUserLogin');
+            Route::get('parent', 'getMenuParent');
+        });
+
         Route::resources([
             'role'       => RoleController::class,
             'permission' => App\Http\Controllers\PermissionController::class,
+            'menu'       => App\Http\Controllers\MenuController::class,
         ]);
     });
 

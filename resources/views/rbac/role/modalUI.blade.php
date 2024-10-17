@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Tên vai trò<label class="tw-text-red-600">*</label></label>
+                    <label class="form-label">Tên vai trò<label class="color-red">*</label></label>
                     <input type="text" class="form-control" x-model="role.name" placeholder="Nhập tên vai trò">
                 </div>
 

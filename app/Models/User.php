@@ -3,20 +3,47 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    // Tắt tính năng auto-increment
-    public $incrementing = false;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use HasRoles;
 
-    // Đặt kiểu khóa chính nếu ID là chuỗi
-    protected $keyType         = 'int'; // 'string' nếu ID là chuỗi
-    public const STATUS_ACTIVE = 1;
-    public const USER_ID_ADMIN = 1;
-    protected $fillable        = [
-        'id',
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
         'name',
         'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password'          => 'hashed',
     ];
 }

@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Rbac;
 
 use App\Http\Resources\RoleInfoResource;
-use App\Repositories\RolePermissionRepository;
-use App\Repositories\RoleRepository;
-use App\Repositories\RoleUserRepository;
+use App\Repositories\Rbac\RolePermissionRepository;
+use App\Repositories\Rbac\RoleRepository;
+use App\Repositories\Rbac\RoleUserRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
 
 class RoleService
 {
@@ -29,42 +30,22 @@ class RoleService
                 'error_code' => AppErrorCode::CODE_2037,
             ];
         }
-
-        $data['created_by'] = Auth::id();
-
         DB::beginTransaction();
         try {
-            $role = $this->roleRepository->create($data);
+            $role = Role::create($data);
 
             $userIds = $data['user_ids'] ?? [];
             if (!empty($userIds)) {
-                $insertRoleUsers = resolve(RoleUserService::class)->insertRoleUsers($userIds, $role->id);
-                if (!$insertRoleUsers) {
-                    DB::rollBack();
-
-                    return  [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2049,
-                    ];
-                }
+                resolve(RoleUserService::class)->createRoleUsers($userIds, $role);
             }
 
             $permissionIds = $data['permission_ids'] ?? [];
             if (!empty($permissionIds)) {
-                $insertRolePermissions = resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role->id);
-                if (!$insertRolePermissions) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2050,
-                    ];
-                }
+                resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role);
             }
-
             DB::commit();
-
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
 
             return [
@@ -124,13 +105,7 @@ class RoleService
 
     public function updateRole($data, $id)
     {
-        $role = $this->roleRepository->find($id);
-        if (empty($role)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2040,
-            ];
-        }
+        $role = Role::findById($id);
 
         $data['updated_by'] = Auth::id();
         $role->fill($data);
@@ -145,15 +120,7 @@ class RoleService
 
             $userIds = $data['user_ids'] ?? [];
             if (!empty($userIds)) {
-                $updateRoleUsers = resolve(RoleUserService::class)->updateRoleUsers($userIds, $id);
-                if (!$updateRoleUsers) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2041,
-                    ];
-                }
+                resolve(RoleUserService::class)->updateRoleUsers($userIds, $role);
             }
 
             $permissionIds = $data['permission_ids'] ?? [];

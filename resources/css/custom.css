@@ -106,3 +106,25 @@ label {
     background-color: #0c84ff;
 }
 
+
+.disc {
+    list-style-type: disc !important;
+}
+
+
+.bg-white-opacity-10-hover:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-white-opacity-10 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pl-10 {
+    padding-left: 2.5rem !important;
+}
+
+.color-red {
+    color: red;
+}
+
