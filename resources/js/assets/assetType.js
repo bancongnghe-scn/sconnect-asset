@@ -1,12 +1,9 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('assetType', () => ({
         init() {
-            this.getListAssetType({
-                page: 1,
-                limit: 10
-            })
+            this.list({page: 1, limit: 10})
             this.getListTypeGroup({})
-            window.initSelect2Modal('modalAssetTypeUI');
+            window.initSelect2Modal(this.idModalUI);
             this.onChangeSelect2()
         },
 
@@ -25,7 +22,7 @@ document.addEventListener('alpine:init', () => {
             remove: true
         },
         selectedRow: [],
-        showChecked: true,
+
         //pagination
         totalPages: null,
         currentPage: 1,
@@ -41,7 +38,7 @@ document.addEventListener('alpine:init', () => {
             page: 1,
             limit: 10
         },
-        assetType: {
+        data: {
             name: null,
             asset_type_group_id: null,
             maintenance_months: null,
@@ -60,15 +57,16 @@ document.addEventListener('alpine:init', () => {
             9: 'Thùng',
             10: 'Đôi',
         },
-        titleAction: null,
+        listAssetTypeGroup: [],
+        title: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteAssetTypeGroup",
+        idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        listAssetTypeGroup: [],
+        idModalUI: "modalUI",
 
         //methods
-        async getListAssetType(filters) {
+        async list(filters) {
             this.loading = true
             const response = await window.apiGetAssetType(filters)
             if (response.success) {
@@ -86,6 +84,51 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async edit() {
+            this.loading = true
+            const response = await window.apiUpdateAssetType(this.data, this.id)
+            if (!response.success) {
+                toast.error(response.message)
+                this.loading = false
+                return
+            }
+            toast.success('Cập nhập loại tài sản thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            await this.list(this.filters)
+            this.loading = false
+        },
+
+        async remove() {
+            this.loading = true
+            const response = await window.apiRemoveAssetType(this.id)
+            if (!response.success) {
+                toast.error(response.message)
+                this.loading = false
+
+                return;
+            }
+            $("#"+this.idModalConfirmDelete).modal('hide')
+            toast.success('Xóa loại tài sản thành công !')
+            this.list(this.filters)
+            this.loading = false
+        },
+
+        async create() {
+            this.loading = true
+            const response = await window.apiCreateAssetType(this.data)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            toast.success('Tạo loại tài sản thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            this.reloadPage()
+            this.loading = false
+        },
+
         async getListTypeGroup(filters) {
             this.loading = true
             const response = await window.apiGetAssetTypeGroup(filters)
@@ -98,56 +141,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async editAssetType() {
-            this.loading = true
-            const response = await window.apiUpdateAssetType(this.assetType, this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-                return
-            }
-            toast.success('Cập nhập loại tài sản thành công !')
-            $('#modalAssetTypeUI').modal('hide');
-            this.resetDataAssetType()
-            await this.getListAssetType(this.filters)
-            this.loading = false
-        },
-
-        async removeAssetType() {
-            this.loading = true
-            const response = await window.apiRemoveAssetType(this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-
-                return;
-            }
-            $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa loại tài sản thành công !')
-
-            this.getListAssetType(this.filters)
-
-            this.loading = false
-        },
-
-        async createAssetType() {
-            this.loading = true
-            const response = await window.apiCreateAssetType(this.assetType)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-            toast.success('Tạo loại tài sản thành công !')
-            $('#modalAssetTypeUI').modal('hide');
-            this.loading = false
-            window.location.reload();
-        },
-
         async deleteMultiple() {
             this.loading = true
-            const ids = Object.keys(this.selectedRow)
-            const response = await window.apiDeleteMultipleByIds(ids)
+            const response = await window.apiDeleteMultipleByIds(this.id)
             if (!response.success) {
                 toast.error(response.message)
                 this.loading = false
@@ -155,22 +151,20 @@ document.addEventListener('alpine:init', () => {
                 return;
             }
 
-            $("#"+this.idModalConfirmDeleteMultiple).modal('hide');
-
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            this.selectedRow = []
             toast.success('Xóa danh sách loại tài sản thành công !')
-
-            this.getListAssetType(this.filters)
-
             this.loading = false
         },
 
-        async handShowModalAssetTypeUI(action, id = null) {
+        async handShowModalUI(action, id = null) {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleAction = 'Thêm mới'
+                this.title = 'Thêm mới'
             } else {
-                this.titleAction = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiShowAssetType(id)
                 if (!response.success) {
@@ -178,38 +172,47 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 const data = response.data.data
-                this.assetType.name = data.name
-                this.assetType.description = data.description
-                this.assetType.asset_type_group_id = data.asset_type_group_id
-                this.assetType.maintenance_months = data.maintenance_months
+                this.data.name = data.name
+                this.data.description = data.description
+                this.data.asset_type_group_id = data.asset_type_group_id
+                this.data.maintenance_months = data.maintenance_months
             }
             this.loading = false
-            $('#modalAssetTypeUI').modal('show');
-        },
-
-        handleAssetTypeUI() {
-            if (this.action === 'create') {
-                this.createAssetType()
-            } else {
-                this.editAssetType()
-            }
+            $('#'+this.idModalUI).modal('show');
         },
 
         changePage(page) {
             this.filters.page = page
-            this.getListAssetType(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListAssetType(this.filters)
+            this.list(this.filters)
         },
 
-        resetDataAssetType() {
-            this.assetType.name = null
-            this.assetType.asset_type_group_id = null
-            this.assetType.maintenance_months = null
-            this.assetType.description = null
+        resetData() {
+            this.data = {
+                name: null,
+                asset_type_group_id: null,
+                maintenance_months: null,
+                description: null,
+                measure: null,
+            }
+        },
+
+        reloadPage() {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
+            this.filters = {
+                name: null,
+                asset_type_group_id: [],
+                page: 1,
+                limit: 10
+            }
         },
 
         confirmRemove(id) {
@@ -218,7 +221,14 @@ document.addEventListener('alpine:init', () => {
         },
 
         confirmDeleteMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn loại tài sản cần xóa !')
+                return
+            }
+
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
         },
 
         onChangeSelect2() {
@@ -229,7 +239,9 @@ document.addEventListener('alpine:init', () => {
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
                 } else if (event.target.id === 'selectAssetTypeGroup') {
-                    this.assetType.asset_type_group_id = value
+                    this.data.asset_type_group_id = value
+                } else if (event.target.id === 'selectMeasure') {
+                    this.data.measure = value
                 }
             });
         },

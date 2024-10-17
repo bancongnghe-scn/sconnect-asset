@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="assetType">
         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-            <button type="button" class="btn btn-sc" @click="handShowModalAssetTypeUI('create')">
+            <button type="button" class="btn btn-sc" @click="handShowModalUI('create')">
                 Thêm mới
             </button>
             <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple">
@@ -14,11 +14,11 @@
         </div>
 
         <div>
-            @include('assets.asset_type.filterAssetType')
+            @include('assets.asset_type.filters')
         </div>
 
         <div
-            @edit="handShowModalAssetTypeUI('update', $event.detail.id)"
+            @edit="handShowModalUI('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
@@ -28,9 +28,8 @@
 
         {{-- modal--}}
         <div>
-            <div
-                @save-asset-type="handleAssetTypeUI">
-                @include('assets.asset_type.modalAssetTypeUI')
+            <div>
+                @include('assets.asset_type.modalUI')
             </div>
 
             <div
@@ -38,7 +37,7 @@
                 modalId: idModalConfirmDelete,
                 contentBody: 'Bạn có chắc chắn muốn xóa loại tài sản này không ?'
             }"
-                @ok="removeAssetType"
+                @ok="remove"
             >
                 @include('common.modal-confirm')
             </div>
@@ -58,7 +57,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/listAssetType.js',
+        'resources/js/assets/assetType.js',
         'resources/js/assets/api/apiAssetType.js',
         'resources/js/assets/api/apiAssetTypeGroup.js',
     ])

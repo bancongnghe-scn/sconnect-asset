@@ -26,10 +26,10 @@ Route::middleware('auth')->group(function () {
 
     Route::view('/home', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
-    Route::view('asset-type/list', 'assets.asset_type.listAssetType');
-    Route::view('industry/list', 'assets.industry.listIndustry');
-    Route::view('supplier/list', 'assets.supplier.listSupplier');
-    Route::view('contract/list', 'assets.contract.listContract');
+    Route::view('asset-type/list', 'assets.asset_type.list');
+    Route::view('industry/list', 'assets.industry.list');
+    Route::view('supplier/list', 'assets.supplier.list');
+    Route::view('contract/list', 'assets.contract.list');
     Route::view('contract-appendix/list', 'assets.contract_appendix.list');
     Route::view('plan-company/list', 'assets.plan-company.list');
 });

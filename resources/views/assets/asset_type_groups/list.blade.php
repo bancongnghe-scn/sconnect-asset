@@ -55,7 +55,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/listAssetTypeGroup.js',
+        'resources/js/assets/assetTypeGroup.js',
         'resources/js/assets/api/apiAssetTypeGroup.js',
     ])
 @endsection
