@@ -1,17 +1,17 @@
-<div x-data="pagination" class="tw-flex tw-justify-between">
+<div x-data="pagination" class="d-flex justify-content-between">
     <div>
         <span x-text="'Hiển thị ' + from + ' đến ' + to + ' trong ' + total + ' bản ghi'"></span>
     </div>
 
     <nav class="col-7 d-flex justify-content-center" aria-label="Page navigation">
-        <ul class="pagination tw-mb-0" x-html="renderPagination()">
+        <ul class="pagination mb-0" x-html="renderPagination()">
             <!-- Pagination links will be inserted here by JavaScript -->
         </ul>
     </nav>
 
-    <div class="d-flex tw-gap-x-2 align-items-center">
+    <div class="d-flex gap-2 align-items-center">
         <span>Hiển thị</span>
-        <select class="form-select tw-w-fit" x-model="limit" @change="$dispatch('change-limit')">
+        <select class="form-select w-auto" x-model="limit" @change="$dispatch('change-limit')">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>

@@ -94,4 +94,19 @@ class AssetTypeGroupController extends Controller
             return response_error();
         }
     }
+
+    public function show(string $id)
+    {
+        try {
+            $result = $this->assetTypeGroupService->findAssetTypeGroup($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

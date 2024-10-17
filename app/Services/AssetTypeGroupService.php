@@ -91,4 +91,20 @@ class AssetTypeGroupService
             'success' => true,
         ];
     }
+
+    public function findAssetTypeGroup($id)
+    {
+        $assetTypeGroup = $this->assetTypeGroupRepository->find($id);
+        if (is_null($assetTypeGroup)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2002,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => $assetTypeGroup->toArray(),
+        ];
+    }
 }

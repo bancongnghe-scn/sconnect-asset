@@ -2,10 +2,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('typeGroup', () => ({
         init() {
-            this.getListTypeGroup({
-                page: 1,
-                limit: 10
-            })
+            this.list({page: 1, limit: 10})
         },
 
         //dataTable
@@ -19,7 +16,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
-        showChecked: false,
+        selectedRow: [],
 
         //pagination
         totalPages: null,
@@ -35,24 +32,19 @@ document.addEventListener('alpine:init', () => {
             page: 1,
             limit: 10
         },
-        createOrUpdateAssetTypeGroup: {
+        data: {
             name: null,
             description: null,
         },
-        titleAction: null,
+        title: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteAssetTypeGroup",
+        idModalConfirmDelete: 'idModalConfirmDelete',
 
         //methods
-        searchTypeGroup() {
-            this.filters.page = 1
-            this.getListTypeGroup(this.filters)
-        },
-
-        async getListTypeGroup(filters) {
+        async list(filters) {
             this.loading = true
-            const response = await this.apiGetAssetTypeGroup(filters)
+            const response = await window.apiGetAssetTypeGroup(filters)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
@@ -62,131 +54,103 @@ document.addEventListener('alpine:init', () => {
             this.dataTable = data.data.data
             this.totalPages = data.data.last_page
             this.currentPage = data.data.current_page
-            this.from = data.data.from
-            this.to = data.data.to
-            this.total = data.data.total
-            toast.success('Lấy danh sách nhóm tài sản thành công !')
+            this.from = data.data.from ?? 0
+            this.to = data.data.to ?? 0
+            this.total = data.data.total ?? 0
             this.loading = false
         },
 
-        async apiGetAssetTypeGroup(filters) {
-            try {
-                const response = await axios.get("/api/asset-type-group", {
-                    params: filters
-                })
-
-                const data = response.data;
-                if (!data.success) {
-                    return {
-                        success: false,
-                        message: data.message
-                    }
-                }
-
-                return {
-                    success: true,
-                    data: data
-                }
-            } catch (error) {
-                return {
-                    success: false,
-                    message: error?.response?.data?.message || error?.message
-                }
-            }
-        },
-
-        async editTypeGroup() {
+        async edit() {
             this.loading = true
-            try {
-                const param = {
-                    name: this.createOrUpdateAssetTypeGroup.name,
-                    description: this.createOrUpdateAssetTypeGroup.description,
-                }
-                const response = await axios.put("/api/asset-type-group/"+this.id, param)
-                const data = response.data;
-                if (!data.success) {
-                    toast.error(data.message)
-                    return
-                }
-                toast.success('Cập nhập nhóm tài sản thành công !')
-                $('#modalCreateTypeGroup').modal('hide');
-                this.resetDataCreateOrUpdateAssetTypeGroup()
-                await this.getListTypeGroup(this.filters)
-            } catch (error) {
-                toast.error(error?.response?.data?.message || error?.message)
-            } finally {
+            const response = await window.apiUpdateAssetTypeGroup(this.data, this.id)
+            if (!response.success) {
                 this.loading = false
+                toast.error(response.message)
+                return
             }
+
+            toast.success('Cập nhập nhóm tài sản thành công !')
+            $('#modalUI').modal('hide');
+            this.resetData()
+            await this.list(this.filters)
+            this.loading = false
+
         },
 
-        async removeTypeGroup() {
+        async remove() {
             this.loading = true
-            try {
-                const response = await axios.delete("/api/asset-type-group/"+this.id)
-                const data = response.data;
-                if (!data.success) {
-                    toast.error(data.message)
-                    return
-                }
-                $("#"+this.idModalConfirmDelete).modal('hide')
-                await this.getListTypeGroup(this.filters)
-                toast.success('Xóa nhóm tài sản thành công !')
-            } catch (error) {
-                toast.error(error?.response?.data?.message || error?.message)
-            } finally {
+            const response = await window.apiRemoveAssetTypeGroup(this.id)
+            if (!response.success) {
                 this.loading = false
+                toast.error(response.message)
+                return
             }
+            $("#"+this.idModalConfirmDelete).modal('hide')
+            await this.list(this.filters)
+            toast.success('Xóa nhóm tài sản thành công !')
+            this.loading = false
         },
 
-        async createTypeGroup() {
+        async create() {
             this.loading = true
-            try {
-                const response = await axios.post("/api/asset-type-group", this.createOrUpdateAssetTypeGroup)
-                const data = response.data;
-                if (!data.success) {
-                    toast.error(data.message)
-                    return
-                }
-                toast.success('Tạo nhóm tài sản thành công !')
-                $('#modalCreateTypeGroup').modal('hide');
-                window.location.reload();
-            } catch (error) {
-                toast.error(error?.response?.data?.message || error?.message)
-            } finally {
+            const response = await window.apiCreateAssetTypeGroup(this.data)
+            if (!response.success) {
                 this.loading = false
+                toast.error(response.message)
+                return
             }
+            toast.success('Tạo nhóm tài sản thành công !')
+            $('#modalUI').modal('hide');
+            this.resetData()
+            this.reloadPage()
+            this.loading = false
         },
 
-        async handleShowModalCreateOrUpdate(action, id = null) {
+        async handleShowModal(action, id = null) {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleAction = 'Thêm mới'
+                this.title = 'Thêm mới'
             } else {
-                this.titleAction = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
-                const filters = {
-                    id: id,
-                    page: 1,
-                    limit: 1
+                const response = await window.apiShowAssetTypeGroup(id)
+                if (!response.success) {
+                    this.loading = false
+                    toast.error(response.message)
+                    return
                 }
-                const response = await this.apiGetAssetTypeGroup(filters)
-                if (response.success) {
-                    const data = response.data.data.data
-                    this.createOrUpdateAssetTypeGroup.name = data[0].name
-                    this.createOrUpdateAssetTypeGroup.description = data[0].description
-                }
+                const data = response.data.data
+                this.data.name = data.name
+                this.data.description = data.description
             }
             this.loading = false
-            $('#modalCreateTypeGroup').modal('show');
+            $('#modalUI').modal('show');
         },
 
-        handleCreateOrUpdate() {
-            if (this.action === 'create') {
-                this.createTypeGroup()
-            } else {
-                this.editTypeGroup()
+        resetData() {
+            this.data = {
+                name: null,
+                description: null,
             }
+        },
+
+        reloadPage() {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
+            this.filters = {
+                name: null,
+                page: 1,
+                limit: 10
+            }
+        },
+
+        confirmRemove(id) {
+            $("#"+this.idModalConfirmDelete).modal('show');
+            this.id = id
         },
 
         changePage(page) {
@@ -198,16 +162,6 @@ document.addEventListener('alpine:init', () => {
             this.filters.limit = this.limit
             this.getListTypeGroup(this.filters)
         },
-
-        resetDataCreateOrUpdateAssetTypeGroup() {
-            this.createOrUpdateAssetTypeGroup.name = null
-            this.createOrUpdateAssetTypeGroup.description = null
-        },
-
-        confirmRemove(id) {
-            $("#"+this.idModalConfirmDelete).modal('show');
-            this.id = id
-        }
     }));
 })
 

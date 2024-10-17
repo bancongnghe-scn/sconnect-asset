@@ -98,10 +98,6 @@ textarea.form-control {
     background-color: white;
 }
 
-label {
-    margin-bottom: 0;
-}
-
 .select2-selection__choice {
     background-color: #0c84ff;
 }

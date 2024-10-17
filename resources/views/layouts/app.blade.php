@@ -19,7 +19,6 @@
         'resources/css/app.css',
         'resources/sass/app.scss',
         'resources/css/custom.css',
-//        'resources/js/bootstrap.js',
         'resources/js/app.js',
     ])
 

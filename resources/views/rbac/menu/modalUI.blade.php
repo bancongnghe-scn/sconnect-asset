@@ -42,7 +42,11 @@
                     <div class="col-6">
                         <label class="form-label">Menu cha</label>
                         <div x-data="{data: []}" x-init="data = listMenuParent; $watch('listMenuParent', value => data = value)">
-                            @include('common.select2', ['placeholder' => 'Chọn menu cha ...', 'model' => 'menu.parent_id'])
+                            @include('common.select2', [
+                                'placeholder' => 'Chọn menu cha ...',
+                                'model' => 'menu.parent_id',
+                                'id' => 'selectMenuParent',
+                            ])
                         </div>
                     </div>
 

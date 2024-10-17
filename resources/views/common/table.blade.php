@@ -9,7 +9,7 @@
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
-                                    <template x-if="showChecked">
+                                    <template x-if="typeof showChecked !== 'undefined' ? showChecked : true">
                                         <th class="text-center">
                                             <input type="checkbox" @click="selectedAll">
                                         </th>
@@ -24,7 +24,7 @@
                                 <tbody>
                                 <template x-for="(data,index) in dataTable">
                                     <tr>
-                                        <template x-if="showChecked">
+                                        <template x-if="typeof showChecked !== 'undefined' ? showChecked : true">
                                             <td class="text-center align-middle">
                                                 <input type="checkbox" x-model="selectedRow[data.id]">
                                             </td>

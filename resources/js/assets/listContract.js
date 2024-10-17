@@ -103,9 +103,9 @@ document.addEventListener('alpine:init', () => {
                 this.dataTable = data.data.data
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
-                this.total = data.data.total
-                this.from = data.data.from
-                this.to = data.data.to
+                this.total = data.data.total ?? 0
+                this.from = data.data.from ?? 0
+                this.to = data.data.to ?? 0
                 toast.success('Lấy danh sách hợp đồng thành công !')
             } else {
                 toast.error('Lấy danh sách hợp đồng thất bại !')

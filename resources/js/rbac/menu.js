@@ -209,6 +209,8 @@ document.addEventListener('alpine:init', () => {
                     this.menu.role_ids = value
                 } else if (event.target.id === 'selectIcon') {
                     this.menu.icon = value
+                } else if (event.target.id === 'selectMenuParent') {
+                    this.menu.parent_id = value
                 }
             });
         },

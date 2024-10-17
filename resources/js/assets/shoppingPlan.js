@@ -87,7 +87,7 @@ document.addEventListener('alpine:init', () => {
                 this.dataTable = data.data.data
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
-                this.total = data.data.total
+                this.total = data.data.total ?? 0
             } else {
                 toast.error(response.message)
             }
