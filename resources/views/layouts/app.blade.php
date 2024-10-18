@@ -69,7 +69,7 @@
                 <!-- Control sidebar content goes here -->
             </aside>
 
-            <div class="toast-container position-fixed top-0 tw-right-2"></div>
+            <div class="toast-container position-fixed tw-top-14 tw-right-2"></div>
         </div>
 
         @yield('js')
