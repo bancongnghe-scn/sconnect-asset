@@ -16,9 +16,13 @@ class ShoppingPlanCompanyController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'time'   => 'nullable|integer',
-            'type'   => 'nullable|integer',
-            'status' => 'nullable|integer',
+            'name'         => 'nullable|string',
+            'plan_year_id' => 'nullable|integer',
+            'time'         => 'nullable|integer',
+            'type'         => 'nullable|integer',
+            'status'       => 'nullable|integer',
+            'start_time'   => 'nullable|date|date_format:Y-m-d',
+            'end_time'     => 'nullable|date|date_format:Y-m-d',
         ]);
 
         try {

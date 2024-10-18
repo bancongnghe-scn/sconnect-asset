@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ShoppingPlanCompany;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class ShoppingPlanCompanyRepository extends BaseRepository
 {
@@ -17,15 +18,31 @@ class ShoppingPlanCompanyRepository extends BaseRepository
         $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filters['time'])) {
-            $query->where('time', $filters['time']);
+            $query->whereIn('time', Arr::wrap($filters['time']));
         }
 
         if (!empty($filters['type'])) {
-            $query->where('type', $filters['type']);
+            $query->whereIn('type', Arr::wrap($filters['type']));
+        }
+
+        if (!empty($filters['plan_year_id'])) {
+            $query->whereIn('plan_year_id', Arr::wrap($filters['plan_year_id']));
         }
 
         if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'like', $filters['name'].'%');
+        }
+
+        if (!empty($filters['from'])) {
+            $query->where('start_time', '>=', $filters['from']);
+        }
+
+        if (!empty($filters['to'])) {
+            $query->where('end_time', '<=', $filters['to']);
         }
 
         if (!empty($filters['limit'])) {

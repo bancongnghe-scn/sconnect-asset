@@ -14,7 +14,11 @@ class ShoppingPlanCompanyService
 
     public function getListPlanCompany(array $filters)
     {
-        $planCompany = $this->planCompanyRepository->getListing($filters, ['id', 'name', 'created_by', 'created_at', 'status']);
+        $planCompany = $this->planCompanyRepository->getListing($filters, [
+            'id', 'name', 'time',
+            'start_time', 'end_time', 'plan_year_id',
+            'status', 'created_by', 'created_at',
+        ]);
 
         return $planCompany->toArray();
     }
