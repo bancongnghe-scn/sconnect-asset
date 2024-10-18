@@ -58,7 +58,7 @@ class Contract extends Model
 
     public function contractMonitors(): HasMany
     {
-        return $this->hasMany(ContractMonitor::class, 'contract_id');
+        return $this->hasMany(Monitor::class, 'target_id');
     }
 
     public function contractAppendix(): HasMany

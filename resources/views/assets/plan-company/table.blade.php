@@ -29,7 +29,7 @@
                                                 <input type="checkbox" x-model="selectedRow[data.id]">
                                             </td>
                                         </template>
-                                        <td x-text="index + 1"></td>
+                                        <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
                                                 <template x-if="key !== 'validity' && key !== 'status'">

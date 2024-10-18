@@ -5,9 +5,10 @@ namespace App\Services;
 use App\Http\Resources\AppendixInfoResource;
 use App\Http\Resources\ListContractAppendixResource;
 use App\Models\ContractAppendix;
+use App\Models\Monitor;
 use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
-use App\Repositories\ContractMonitorRepository;
+use App\Repositories\MonitorRepository;
 use App\Support\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class ContractAppendixService
 {
     public function __construct(
         protected ContractAppendixRepository $contractAppendixRepository,
-        protected ContractMonitorRepository $contractMonitorRepository,
+        protected MonitorRepository $contractMonitorRepository,
         protected ContractFileRepository $contractFileRepository,
     ) {
 
@@ -47,7 +48,7 @@ class ContractAppendixService
         $appendix           = $this->contractAppendixRepository->create($data);
         DB::beginTransaction();
         try {
-            $insertContractMonitor = resolve(ContractMonitorService::class)->insertContractMonitors($data['user_ids'], $appendix->id);
+            $insertContractMonitor = resolve(MonitorService::class)->insertMonitors($data['user_ids'], $appendix->id, Monitor::TYPE_CONTRACT_APPENDIX);
             if (!$insertContractMonitor) {
                 DB::rollBack();
 
@@ -117,7 +118,7 @@ class ContractAppendixService
 
         DB::beginTransaction();
         try {
-            $updateContractMonitor = resolve(ContractMonitorService::class)->updateFollowersOfContract($id, $data['user_ids']);
+            $updateContractMonitor = resolve(MonitorService::class)->updateMonitor($id, $data['user_ids'], Monitor::TYPE_CONTRACT_APPENDIX);
             if (!$updateContractMonitor) {
                 DB::rollBack();
 
@@ -178,7 +179,10 @@ class ContractAppendixService
 
         DB::beginTransaction();
         try {
-            $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($id);
+            $deleteContractMonitor = $this->contractMonitorRepository->deleteMonitor([
+                'target_id' => $id,
+                'type'      => Monitor::TYPE_CONTRACT_APPENDIX,
+            ]);
             if (!$deleteContractMonitor) {
                 DB::rollBack();
 
@@ -209,7 +213,10 @@ class ContractAppendixService
         DB::beginTransaction();
         try {
             $this->contractAppendixRepository->deleteMultipleByIds($ids);
-            $this->contractMonitorRepository->deleteByContractIds($ids);
+            $this->contractMonitorRepository->deleteMonitor([
+                'target_id' => $ids,
+                'type'      => Monitor::TYPE_CONTRACT_APPENDIX,
+            ]);
             $this->contractFileRepository->deleteByContractIds($ids);
             DB::commit();
         } catch (\Throwable $exception) {

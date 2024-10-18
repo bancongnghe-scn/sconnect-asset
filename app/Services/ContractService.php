@@ -5,9 +5,10 @@ namespace App\Services;
 use App\Http\Resources\ContractInfoResource;
 use App\Http\Resources\ListContractResource;
 use App\Models\Contract;
+use App\Models\Monitor;
 use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
-use App\Repositories\ContractMonitorRepository;
+use App\Repositories\MonitorRepository;
 use App\Repositories\ContractPaymentRepository;
 use App\Repositories\ContractRepository;
 use App\Repositories\SupplierRepository;
@@ -19,7 +20,7 @@ class ContractService
 {
     public function __construct(
         protected ContractRepository $contractRepository,
-        protected ContractMonitorRepository $contractMonitorRepository,
+        protected MonitorRepository $contractMonitorRepository,
         protected ContractFileRepository $contractFileRepository,
         protected ContractPaymentRepository $contractPaymentRepository,
         protected SupplierRepository $supplierRepository,
@@ -44,7 +45,7 @@ class ContractService
 
         DB::beginTransaction();
         try {
-            $insertContractMonitor = resolve(ContractMonitorService::class)->insertContractMonitors($data['user_ids'], $contract->id);
+            $insertContractMonitor = resolve(MonitorService::class)->insertMonitors($data['user_ids'], $contract->id);
             if (!$insertContractMonitor) {
                 DB::rollBack();
 
@@ -135,7 +136,10 @@ class ContractService
 
         DB::beginTransaction();
         try {
-            $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($id);
+            $deleteContractMonitor = $this->contractMonitorRepository->deleteMonitor([
+                'target_id' => $id,
+                'type'      => Monitor::TYPE_CONTRACT,
+            ]);
             if (!$deleteContractMonitor) {
                 DB::rollBack();
 
@@ -184,7 +188,7 @@ class ContractService
 
         DB::beginTransaction();
         try {
-            $updateContractMonitor = resolve(ContractMonitorService::class)->updateFollowersOfContract($id, $data['user_ids']);
+            $updateContractMonitor = resolve(MonitorService::class)->updateMonitor($id, $data['user_ids']);
             if (!$updateContractMonitor) {
                 DB::rollBack();
 
@@ -262,15 +266,10 @@ class ContractService
         try {
             $this->contractRepository->deleteMultipleByIds($ids);
 
-            $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($ids);
-            if (!$deleteContractMonitor) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2029,
-                ];
-            }
+            $this->contractMonitorRepository->deleteMonitor([
+                'target_id' => $ids,
+                'type'      => Monitor::TYPE_CONTRACT,
+            ]);
 
             $this->contractFileRepository->deleteByContractIds($ids);
             $this->contractPaymentRepository->deleteByContractIds($ids);
