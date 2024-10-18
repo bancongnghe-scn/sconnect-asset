@@ -38,7 +38,7 @@
                                                 <i class="fa-regular fa-eye" style="color: #63E6BE;"></i>
                                             </button>
                                             <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #1ec258;"></i>
+                                                <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                             </button>
                                             <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
                                                 <i class="fa-solid fa-trash" style="color: #cd1326;"></i>

@@ -15,7 +15,8 @@ class ListMenuUserResource extends JsonResource
         foreach ($menuMain as $menu) {
             $data[$menu->id]             = $menu;
             $menuChild                   = $menus[$menu->id] ?? collect();
-            $data[$menu->id]['children'] = $menuChild->sortBy('order');
+            $data[$menu->id]['children'] = array_values($menuChild->sortBy('order')->toArray());
+
         }
 
         return $data;
