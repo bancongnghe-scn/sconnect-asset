@@ -48,13 +48,13 @@ class MonitorService
         return true;
     }
 
-    public function insertMonitors(array $userIds, $contractId, $type = Monitor::TYPE_CONTRACT)
+    public function insertMonitors(array $userIds, $targetId, $type = Monitor::TYPE_CONTRACT)
     {
         $dataCreateContractMonitor = [];
         foreach ($userIds as $userId) {
             $dataCreateContractMonitor[] = [
                 'type'      => $type,
-                'target_id' => $contractId,
+                'target_id' => $targetId,
                 'user_id'   => $userId,
             ];
         }

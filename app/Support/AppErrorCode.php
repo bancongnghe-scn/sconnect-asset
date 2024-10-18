@@ -60,6 +60,6 @@ class AppErrorCode
     public const CODE_2052 = 2052; //  Xóa vai trò của quyền thất bại !
     public const CODE_2053 = 2053; //  Xóa quyền của người dùng thất bại !
     public const CODE_2054 = 2054; //  Xóa ngành hàng thất bại !
-
-
+    public const CODE_2055 = 2055; //  Kế hoạch năm :year đã tồn tại !
+    public const CODE_2056 = 2056; //  Tạo người theo dõi kế hoạch mua sắm năm thất bại !
 }

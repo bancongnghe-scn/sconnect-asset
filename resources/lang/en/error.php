@@ -59,4 +59,6 @@ return [
     AppErrorCode::CODE_2052 => 'Xóa vai trò của quyền thất bại !',
     AppErrorCode::CODE_2053 => 'Xóa quyền của người dùng thất bại !',
     AppErrorCode::CODE_2054 => 'Xóa ngành hàng thất bại !',
+    AppErrorCode::CODE_2055 => 'Kế hoạch năm :year đã tồn tại !',
+    AppErrorCode::CODE_2056 => 'Tạo người theo dõi kế hoạch mua sắm năm thất bại !',
 ];

@@ -51,4 +51,14 @@ class ShoppingPlanCompanyRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function getFirst($filters, $columns = ['*'])
+    {
+        $query = $this->_model->newQuery()->select($columns);
+        if (!empty($filters['time'])) {
+            $query->where('time', $filters['time']);
+        }
+
+        return $query->first();
+    }
 }
