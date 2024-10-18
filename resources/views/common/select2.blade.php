@@ -6,7 +6,7 @@
         @if(isset($disabled)) disabled @endif
 >
     @if(!isset($multiple))
-        <option value="">{{$placeholder ?? 'Chọn ...'}}</option>
+        <option disabled>{{$placeholder ?? 'Chọn ...'}}</option>
     @endif
     <template x-for="value in data" :key="value.id">
         <option :value="value.id" x-text="value.name"></option>

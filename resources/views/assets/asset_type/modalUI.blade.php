@@ -27,9 +27,10 @@
                         <label class="form-label">Đơn vị tính<label class="tw-text-red-600">*</label></label>
                         <div x-data="{data: listMeasure}">
                             @include('common.select2-simple', [
-                                'id' => 'selectMeasure',
                                 'model' => 'data.measure',
-                                'placeholder' => 'Chọn đơn vị ...'])
+                                'id' => 'selectMeasure',
+                                'placeholder' => 'Chọn đơn vị ...'
+                            ])
                         </div>
                     </div>
                     <div class="col-6">

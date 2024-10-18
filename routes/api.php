@@ -54,8 +54,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/delete-multiple')->group(function () {
         Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
         Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);
-        Route::post('industry', [\App\Http\Controllers\IndustryController::class, 'deleteMultiple']);
-        Route::post('supplier', [\App\Http\Controllers\SupplierController::class, 'deleteMultiple']);
+        Route::post('industry', [App\Http\Controllers\IndustryController::class, 'deleteMultiple']);
+        Route::post('supplier', [App\Http\Controllers\SupplierController::class, 'deleteMultiple']);
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);

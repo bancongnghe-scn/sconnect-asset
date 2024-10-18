@@ -171,11 +171,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                const data = response.data.data
-                this.data.name = data.name
-                this.data.description = data.description
-                this.data.asset_type_group_id = data.asset_type_group_id
-                this.data.maintenance_months = data.maintenance_months
+                this.data = response.data.data
             }
             this.loading = false
             $('#'+this.idModalUI).modal('show');
