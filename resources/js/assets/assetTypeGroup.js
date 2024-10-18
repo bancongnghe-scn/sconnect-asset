@@ -41,6 +41,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         idModalConfirmDeleteMultiple: 'idModalConfirmDeleteMultiple',
+        idModalUI: 'modalUI',
 
         //methods
         async list(filters) {
@@ -127,6 +128,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.title = 'Thêm mới'
+                this.resetData()
             } else {
                 this.title = 'Cập nhật'
                 this.id = id

@@ -196,6 +196,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.title = 'Thêm mới'
+                this.resetData()
             } else {
                 this.title = 'Cập nhật'
                 this.id = id
@@ -298,6 +299,8 @@ document.addEventListener('alpine:init', () => {
                     this.data.user_ids = value
                 } else if (event.target.id === 'selectSupplier') {
                     this.data.supplier_id = value
+                } else if (event.target.id === 'selectContractType') {
+                    this.data.type = value
                 }
             });
         },

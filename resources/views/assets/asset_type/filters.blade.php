@@ -8,13 +8,11 @@
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Nhóm tài sản</label>
-                    <div x-data="{data: []}" x-init="data = listAssetTypeGroup; $watch('listAssetTypeGroup', value => data = value)">
-                        @include('common.select2', [
-                            'multiple' => true,
-                            'id' => 'filterAssetTypeGroup',
-                            'placeholder' => 'Chọn nhóm tài sản ...'
-                        ])
-                    </div>
+                    <select class="form-select select2" x-model="data.asset_type_group_id" id="filterAssetTypeGroup" multiple="multiple" data-placeholder="Chọn nhóm tài sản ...">
+                        <template x-for="value in listAssetTypeGroup" :key="value.id">
+                            <option :value="value.id" x-text="value.name"></option>
+                        </template>
+                    </select>
                 </div>
                 <div class="col-auto">
                     <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

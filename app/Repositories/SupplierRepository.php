@@ -89,4 +89,9 @@ class SupplierRepository extends BaseRepository
 
         return $this->_model->newQuery()->create($dataCreate);
     }
+
+    public function deleteMultipleByIds($ids)
+    {
+        return $this->_model->whereIn('id', $ids)->delete();
+    }
 }

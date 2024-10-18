@@ -8,33 +8,31 @@
             <div class="modal-body">
                 <div class="row mb-3">
                     <div class="col-6">
-                        <label class="form-label">Tên loại tài sản<label class="tw-text-red-600">*</label></label>
+                        <label class="form-label">Tên loại tài sản<label class="tw-text-red-600 mb-0">*</label></label>
                         <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên loại tài sản">
                     </div>
                     <div class="col-6">
-                        <label class="form-label">Nhóm tài sản<label class="tw-text-red-600">*</label></label>
-                        <div x-data="{data: []}" x-init="data = listAssetTypeGroup; $watch('listAssetTypeGroup', value => data = value)">
-                            @include('common.select2', [
-                                'model' => 'data.asset_type_group_id',
-                                'id' => 'selectAssetTypeGroup',
-                                'placeholder' => 'Chọn nhóm tài sản ...'
-                            ])
-                        </div>
+                        <label class="form-label">Nhóm tài sản<label class="tw-text-red-600 mb-0">*</label></label>
+                        <select class="form-select select2" x-model="data.asset_type_group_id" id="selectAssetTypeGroup">
+                            <option value="">Chọn nhóm tài sản...</option>
+                            <template x-for="value in listAssetTypeGroup" :key="value.id">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">
-                        <label class="form-label">Đơn vị tính<label class="tw-text-red-600">*</label></label>
-                        <div x-data="{data: listMeasure}">
-                            @include('common.select2-simple', [
-                                'model' => 'data.measure',
-                                'id' => 'selectMeasure',
-                                'placeholder' => 'Chọn đơn vị ...'
-                            ])
-                        </div>
+                        <label class="form-label">Đơn vị tính<label class="tw-text-red-600 mb-0">*</label></label>
+                        <select class="form-control select2" x-model="data.measure" id="selectMeasure">
+                            <option value="">Chọn đơn vị ...</option>
+                            <template x-for="(value, key) in listMeasure">
+                                <option :value="key" x-text="value"></option>
+                            </template>
+                        </select>
                     </div>
                     <div class="col-6">
-                        <label class="form-label">Thời gian bảo dưỡng(tháng)<label class="tw-text-red-600">*</label></label>
+                        <label class="form-label">Thời gian bảo dưỡng(tháng)<label class="tw-text-red-600 mb-0">*</label></label>
                         <input type="number" class="form-control" x-model="data.maintenance_months" placeholder="Nhập thời gian bảo dưỡng">
                     </div>
                 </div>

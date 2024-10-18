@@ -9,15 +9,19 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Loại hợp đồng</label>
-                        <div x-data="{data: listTypeContract}">
-                            @include('common.select2-simple', ['multiple' => true, 'id' => 'filterTypeContract', 'placeholder' => 'Chọn loại hợp đồng'])
-                        </div>
+                        <select class="form-control select2" id="filterTypeContract" multiple="multiple" data-placeholder="Chọn loại hợp đồng ...">
+                            <template x-for="(value, key) in listTypeContract">
+                                <option :value="key" x-text="value"></option>
+                            </template>
+                        </select>
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <div x-data="{data: listStatusContract}">
-                            @include('common.select2-simple', ['multiple' => true, 'id' => 'filterStatusContract', 'placeholder' => 'Chọn trạng thái'])
-                        </div>
+                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái ...">
+                            <template x-for="(value, key) in listStatusContract">
+                                <option :value="key" x-text="value"></option>
+                            </template>
+                        </select>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>

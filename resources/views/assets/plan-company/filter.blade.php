@@ -9,9 +9,11 @@
                     </div>
                     <div class="form-group col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <div x-data="{data: listStatus}">
-                            @include('common.select2-simple', ['multiple' => true, 'id' => 'filterStatus', 'placeholder' => 'Chọn trạng thái'])
-                        </div>
+                        <select class="form-control select2" id="filterStatus" multiple="multiple" data-placeholder="Chọn trạng thái ...">
+                            <template x-for="(value, key) in listStatus">
+                                <option :value="key" x-text="value"></option>
+                            </template>
+                        </select>
                     </div>
                     <div>
                         <button @click="getList(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

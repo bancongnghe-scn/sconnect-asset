@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <div class="mb-3">
-                    <label class="form-label">Tên ngành hàng<label class="tw-text-red-600">*</label></label>
+                    <label class="form-label">Tên ngành hàng<label class="tw-text-red-600 mb-0">*</label></label>
                     <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên ngành hàng">
                 </div>
                 <div class="mb-3">

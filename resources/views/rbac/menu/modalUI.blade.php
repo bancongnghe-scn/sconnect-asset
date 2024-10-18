@@ -41,23 +41,21 @@
                 <div class="mb-3 d-flex gap-2">
                     <div class="col-6">
                         <label class="form-label">Menu cha</label>
-                        <div x-data="{data: []}" x-init="data = listMenuParent; $watch('listMenuParent', value => data = value)">
-                            @include('common.select2', [
-                                'placeholder' => 'Chọn menu cha ...',
-                                'model' => 'menu.parent_id',
-                                'id' => 'selectMenuParent',
-                            ])
-                        </div>
+                        <select class="form-select select2" x-model="menu.parent_id" id="selectMenuParent">
+                            <option value="">Chọn menu cha ...</option>
+                            <template x-for="value in listMenuParent" :key="value.id">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </select>
                     </div>
 
                     <div class="col-6">
                         <label class="form-label">Danh sách vai trò</label>
-                        <div x-data="{data: []}" x-init="data = listRole; $watch('listRole', value => data = value)">
-                            @include('common.select2', [
-                                'multiple' => true,
-                                'id' => 'selectRoles',
-                                'placeholder' => 'Chọn danh sách vai trò ...', 'model' => 'menu.role_ids'])
-                        </div>
+                        <select class="form-select select2" x-model="menu.role_ids" id="selectRoles" multiple="multiple" data-placeholder="Chọn danh sách vai trò ...">
+                            <template x-for="value in listRole" :key="value.id">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
 

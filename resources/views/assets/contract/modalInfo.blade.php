@@ -27,9 +27,11 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp</label>
-                            <div x-data="{data: []}" x-init="data = listSupplier; $watch('listSupplier', value => data = value)">
-                                @include('common.select2' , ['disabled' => true])
-                            </div>
+                            <select class="form-select select2" disabled>
+                                <template x-for="value in listSupplier" :key="value.id">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -47,9 +49,11 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
-                            <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
-                                @include('common.select2' , ['multiple' => true, 'model' => 'data.user_ids', 'disabled' => true])
-                            </div>
+                            <select class="form-select select2" x-model="data.user_ids" multiple="multiple" disabled>
+                                <template x-for="value in listUser" :key="value.id">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">

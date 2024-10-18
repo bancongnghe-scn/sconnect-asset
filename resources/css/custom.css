@@ -99,7 +99,7 @@ textarea.form-control {
 }
 
 .select2-selection__choice {
-    background-color: #0c84ff;
+    color: black!important;
 }
 
 

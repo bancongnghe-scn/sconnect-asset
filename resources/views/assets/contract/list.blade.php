@@ -37,7 +37,7 @@
                 modalId: idModalConfirmDelete,
                 contentBody: 'Bạn có chắc chắn muốn xóa hợp đồng này không ?'
             }"
-            @ok="removeContract"
+            @ok="remove"
         >
             @include('common.modal-confirm')
         </div>

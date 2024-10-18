@@ -189,6 +189,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.title = 'Thêm mới'
+                this.resetData()
                 window.generateShortCode().then(code => {
                     this.data.code = code
                 })
@@ -201,10 +202,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                const data = response.data.data
-                this.data = data
-                $('#industrySelect2').val(data.industry_ids).change()
-                $('#assetTypeSelect2').val(data.asset_type_ids).change()
+                this.data = response.data.data
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -221,7 +219,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetData() {
-            this.supplier = {
+            this.data = {
                 name: null,
                 code: null,
                 website: null,
@@ -248,9 +246,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 }
             }
-
-            $('#industrySelect2').val([]).change()
-            $('#assetTypeSelect2').val([]).change()
         },
 
         confirmRemove(id) {

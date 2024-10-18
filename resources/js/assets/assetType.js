@@ -163,6 +163,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.title = 'Thêm mới'
+                this.resetData()
             } else {
                 this.title = 'Cập nhật'
                 this.id = id
@@ -209,6 +210,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1,
                 limit: 10
             }
+            $('#filterAssetTypeGroup').val([]).change()
         },
 
         confirmRemove(id) {
@@ -234,10 +236,10 @@ document.addEventListener('alpine:init', () => {
                     this.filters.asset_type_group_id = value
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
+                }  else if (event.target.id === 'selectMeasure') {
+                    this.data.measure = value
                 } else if (event.target.id === 'selectAssetTypeGroup') {
                     this.data.asset_type_group_id = value
-                } else if (event.target.id === 'selectMeasure') {
-                    this.data.measure = value
                 }
             });
         },

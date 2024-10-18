@@ -10,7 +10,7 @@
                     <div class="mb-3 active-link tw-w-fit">Thông tin phụ lục</div>
                     <div class="row mb-3">
                         <div class="col-3">
-                            <label class="form-label">Hợp đồng<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
                             <select class="form-control" x-model="appendix.contract_id">
                                 <option value="">Chọn hợp đồng ...</option>
                                 <template x-for="contract in listContract" :key="contract.id">
@@ -19,21 +19,21 @@
                             </select>
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Mã phụ lục<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="appendix.code">
                         </div>
                         <div class="col-6">
-                            <label class="form-label">Tên phụ lục<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Tên phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="appendix.name">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
-                            <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "appendix.signing_date"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "appendix.from"])
                         </div>
                         <div class="col-3">
@@ -41,10 +41,12 @@
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "appendix.to"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
-                            <div x-data="{data: []}" x-init="data = listUser; $watch('listUser', value => data = value)">
-                                @include('common.select2' , ['multiple' => true, 'id' => 'selectUserId', 'placeholder' => 'Chọn người theo dõi ...', 'model' => 'appendix.user_ids'])
-                            </div>
+                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
+                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId" multiple="multiple" data-placeholder="Chọn người theo dõi ...">
+                                <template x-for="value in listUser" :key="value.id">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">

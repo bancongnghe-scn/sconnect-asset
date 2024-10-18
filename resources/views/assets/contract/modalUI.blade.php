@@ -10,46 +10,39 @@
                     <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                     <div class="row mb-3">
                         <div class="col-3">
-                            <label class="form-label">Mã hợp đồng<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Mã hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã hợp đồng">
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Loại hợp đồng<label class="tw-text-red-600">*</label></label>
-                            <select class="form-select" x-model="data.type">
+                            <label class="form-label">Loại hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
+                            <select class="form-control select2" x-model="data.type" id="selectContractType">
                                 <option value="">Chọn loại hợp đồng ...</option>
-                                <template x-for="(value, key) in listTypeContract" :key="key">
+                                <template x-for="(value, key) in listTypeContract">
                                     <option :value="key" x-text="value"></option>
                                 </template>
                             </select>
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Tên hợp đồng<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Tên hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên hợp đồng">
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Nhà cung cấp<label class="tw-text-red-600">*</label></label>
-{{--                            <select class="form-select select2" x-model="data.supplier_id" id="selectSupplier">--}}
-{{--                                <option value="">Chọn nhà cung cấp ...</option>--}}
-{{--                                <template x-for="supplier in listSupplier" :key="supplier.id">--}}
-{{--                                    <option :value="supplier.id" x-text="supplier.name"></option>--}}
-{{--                                </template>--}}
-{{--                            </select>--}}
-                                <div x-data="{data: []}" x-init="data = listSupplier; $watch('listSupplier', value => data = value)">
-                                    @include('common.select2', [
-                                        'model' => 'data.supplier_id',
-                                        'id' => 'selectSupplier',
-                                        'placeholder' => 'Chọn nhà cung cấp ...'
-                                    ])
-                                </div>
+                            <label class="form-label">Nhà cung cấp<label class="tw-text-red-600 mb-0">*</label></label>
+                            <select class="form-select select2" x-model="data.supplier_id" id="selectSupplier">
+                                <option value="">Chọn nhà cung cấp ...</option>
+                                <template x-for="value in listSupplier" :key="value.id">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
-                            <label class="form-label">Ngày ký<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
@@ -57,7 +50,7 @@
                             @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Người theo dõi<label class="tw-text-red-600">*</label></label>
+                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
                             <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi ..." x-model="data.user_ids">
                                 <template x-for="user in listUser" :key="user.id">
                                     <option :value="user.id" x-text="user.name"></option>
@@ -81,10 +74,11 @@
                             <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
                             <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
-                            <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
+                            <div class="mt-2 d-flex flex-column tw-gap-y-2">
                                 <template x-for="(file, index) in data.files" :key="index">
-                                    <div class="tw-flex gap-x-1">
+                                    <div>
                                         <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
+                                        <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
                                         <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
                                 </template>

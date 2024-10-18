@@ -9,15 +9,19 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Hợp đồng</label>
-                        <div x-data="{data: []}" x-init="data = listContract; $watch('listContract', value => data = value)">
-                            @include('common.select2' , ['multiple' => true, 'id' => 'filterContract', 'placeholder' => 'Chọn hợp đồng'])
-                        </div>
+                        <select class="form-select select2" id="filterContract" multiple="multiple" data-placeholder="Chọn hợp đồng ...">
+                            <template x-for="value in listContract" :key="value.id">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </select>
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <div x-data="{data: listStatus}">
-                            @include('common.select2-simple', ['multiple' => true, 'id' => 'filterStatusContract', 'placeholder' => 'Chọn trạng thái'])
-                        </div>
+                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái ...">
+                            <template x-for="(value, key) in listStatusContract">
+                                <option :value="key" x-text="value"></option>
+                            </template>
+                        </select>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
