@@ -18,7 +18,7 @@
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
                         <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái ...">
-                            <template x-for="(value, key) in listStatusContract">
+                            <template x-for="(value, key) in listStatus">
                                 <option :value="key" x-text="value"></option>
                             </template>
                         </select>
@@ -32,7 +32,10 @@
                         @include('common.datepicker', ['placeholder' => "Ngày hiệu lực", 'id' => "filterFrom"])
                     </div>
                     <div class="col-auto">
-                        <button @click="getList(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                        <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                    </div>
+                    <div class="col-auto">
+                        <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
                     </div>
                 </div>
             </div>

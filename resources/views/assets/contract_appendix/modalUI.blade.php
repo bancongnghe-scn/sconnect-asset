@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="titleModal + ' phụ lục'"></h4>
+                <h4 class="modal-title" x-text="title + ' phụ lục'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -11,7 +11,7 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control" x-model="appendix.contract_id">
+                            <select class="form-control" x-model="data.contract_id">
                                 <option value="">Chọn hợp đồng ...</option>
                                 <template x-for="contract in listContract" :key="contract.id">
                                     <option :value="contract.id" x-text="contract.name"></option>
@@ -20,25 +20,25 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control" x-model="appendix.code">
+                            <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã phụ lục">
                         </div>
                         <div class="col-6">
                             <label class="form-label">Tên phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control" x-model="appendix.name">
+                            <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên phụ lục">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "appendix.signing_date"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "appendix.from"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "appendix.to"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
@@ -52,19 +52,20 @@
                     <div class="row mb-3">
                         <div class="col-12">
                             <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="appendix.description"></textarea>
+                            <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+appendix.files.length+') dung lượng tối đa 5MB'"></span>
+                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
                             <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
                             <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
-                            <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
-                                <template x-for="(file, index) in appendix.files" :key="index">
-                                    <div class="tw-flex gap-x-1">
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="appendix.files.splice(index, 1)"></i>
+                            <div class="mt-2 d-flex flex-column tw-gap-y-2">
+                                <template x-for="(file, index) in data.files" :key="index">
+                                    <div>
+                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
+                                        <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
                                         <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
                                 </template>

@@ -255,4 +255,40 @@ class ContractService
 
         return ContractInfoResource::make($contract)->resolve();
     }
+
+    public function deleteContractMultiple($ids)
+    {
+        DB::beginTransaction();
+        try {
+            $this->contractRepository->deleteMultipleByIds($ids);
+
+            $deleteContractMonitor = $this->contractMonitorRepository->deleteByContractIds($ids);
+            if (!$deleteContractMonitor) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2029,
+                ];
+            }
+
+            $this->contractFileRepository->deleteByContractIds($ids);
+            $this->contractPaymentRepository->deleteByContractIds($ids);
+            $this->contractAppendixRepository->deleteByContractIds($ids);
+
+            DB::commit();
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

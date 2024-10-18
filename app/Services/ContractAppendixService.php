@@ -189,6 +189,29 @@ class ContractAppendixService
             }
 
             $this->contractFileRepository->deleteByContractIds($id);
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deleteAppendixMultiple($ids)
+    {
+        DB::beginTransaction();
+        try {
+            $this->contractAppendixRepository->deleteMultipleByIds($ids);
+            $this->contractMonitorRepository->deleteByContractIds($ids);
+            $this->contractFileRepository->deleteByContractIds($ids);
+            DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
 

@@ -91,4 +91,24 @@ class ContractController extends Controller
             return response_error();
         }
     }
+
+    public function deleteMultiple(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer',
+        ]);
+
+        try {
+            $result = $this->contractService->deleteContractMultiple($request->get('ids'));
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

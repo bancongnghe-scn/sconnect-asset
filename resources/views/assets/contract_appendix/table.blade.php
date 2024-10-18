@@ -9,11 +9,9 @@
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
-                                    <template x-if="showChecked">
-                                        <th class="text-center">
-                                            <input type="checkbox" @click="selectedAll">
-                                        </th>
-                                    </template>
+                                    <th class="text-center">
+                                        <input type="checkbox" @click="selectedAll">
+                                    </th>
                                     <th rowspan="1" colspan="1">STT</th>
                                     <template x-for="(columnName, key) in columns">
                                         <th rowspan="1" colspan="1" x-text="columnName"></th>
@@ -24,11 +22,9 @@
                                 <tbody>
                                 <template x-for="(data,index) in dataTable" x-data="{line: 1}">
                                     <tr>
-                                        <template x-if="showChecked">
-                                            <td class="text-center align-middle">
-                                                <input type="checkbox" x-model="selectedRow[data.id]">
-                                            </td>
-                                        </template>
+                                        <td class="text-center align-middle">
+                                            <input type="checkbox" x-model="selectedRow[data.id]">
+                                        </td>
                                         <td x-text="index + 1"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>

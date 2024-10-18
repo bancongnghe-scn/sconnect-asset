@@ -5,17 +5,9 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('appendix', () => ({
         init() {
-            this.getListContract({
-                status: [2]
-            })
-            this.getList({
-                page: this.filters.page,
-                limit: this.filters.limit,
-            })
-            this.getListUser({
-                page: 1,
-                limit:20
-            })
+            this.list({page: 1, limit: 10})
+            this.getListContract({status: [2]})
+            this.getListUser({page: 1, limit:20})
             this.initDatePicker()
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
@@ -46,7 +38,7 @@ document.addEventListener('alpine:init', () => {
         from: 0,
         to: 0,
         limit: 10,
-        showChecked: false,
+        selectedRow: [],
 
         //data
         filters: {
@@ -58,7 +50,7 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-        appendix: {
+        data: {
             contract_id: null,
             code: null,
             name: null,
@@ -76,14 +68,92 @@ document.addEventListener('alpine:init', () => {
             3: 'Hủy'
         },
         listUser: [],
-        titleModal: null,
+        title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
+        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         idModalUI: "idModalUI",
         idModalInfo: "idModalInfo",
 
         //methods
+        async list(filters){
+            this.loading = true
+            const response = await window.apiGetAppendix(filters)
+            if (response.success) {
+                const data = response.data
+                this.dataTable = data.data.data
+                this.totalPages = data.data.last_page
+                this.currentPage = data.data.current_page
+                this.total = data.data.total ?? 0
+                this.from = data.data.from ?? 0
+                this.to = data.data.to ?? 0
+            } else {
+                toast.error(response.message)
+            }
+            this.loading = false
+        },
+
+        async create() {
+            this.loading = true
+            const response = await window.apiCreateAppendix(this.data)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            toast.success('Tạo phụ lục hợp đồng thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            this.reloadPage()
+            this.loading = false
+        },
+
+        async edit() {
+            this.loading = true
+            const response = await window.apiUpdateAppendix(this.data, this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+
+            toast.success('Cập nhập phụ lục hợp đồng thành công !')
+            $('#'+this.idModalUI).modal('hide');
+            this.resetData()
+            await this.list(this.filters)
+            this.loading = false
+        },
+
+        async remove() {
+            this.loading = true
+            const response = await window.apiRemoveAppendix(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDelete).modal('hide')
+            await this.list(this.filters)
+            toast.success('Xóa phụ lục hợp đồng thành công !')
+            this.loading = false
+        },
+
+        async removeMultiple() {
+            this.loading = true
+            const response = await window.apiRemoveAppendixMultiple(this.id)
+            if (!response.success) {
+                this.loading = false
+                toast.error(response.message)
+                return
+            }
+            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            await this.list(this.filters)
+            this.selectedRow = []
+            toast.success('Xóa danh sách phụ lục hợp đồng thành công !')
+            this.loading = false
+        },
+
         async getListContract(filters) {
             this.loading = true
             const response = await window.apiGetContract(filters)
@@ -106,67 +176,15 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getList(filters){
+        async getListSupplier(filters) {
             this.loading = true
-            const response = await window.apiGetAppendix(filters)
+            const response = await window.apiGetSupplier(filters)
             if (response.success) {
-                const data = response.data
-                this.dataTable = data.data.data
-                this.totalPages = data.data.last_page
-                this.currentPage = data.data.current_page
-                this.total = data.data.total ?? 0
-                this.from = data.data.from ?? 0
-                this.to = data.data.to ?? 0
+                this.listSupplier = response.data.data.data
             } else {
-                toast.error(response.message)
+                toast.error('Lấy danh sách nhà cung cấp thất bại !')
             }
             this.loading = false
-        },
-
-        async edit() {
-            this.loading = true
-            const response = await window.apiUpdateAppendix(this.appendix, this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-                return
-            }
-            toast.success('Cập nhập phụ lục hợp đồng thành công !')
-            $('#'+this.idModalUI).modal('hide');
-            this.resetDataAppendix()
-            await this.getList(this.filters)
-            this.loading = false
-        },
-
-        async remove() {
-            this.loading = true
-            const response = await window.apiRemoveAppendix(this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-
-                return;
-            }
-            $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa hợp đồng thành công !')
-            await this.getList(this.filters)
-
-            this.loading = false
-        },
-
-        async create() {
-            this.loading = true
-            const response = await window.apiCreateAppendix(this.appendix)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-            toast.success('Tạo phụ lục hợp đồng thành công !')
-            $('#'+this.idModalUI).modal('hide');
-            this.loading = false
-            this.reloadPage()
-            this.resetDataContract()
         },
 
         async handleShowModalUI(action, id = null) {
@@ -174,7 +192,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.titleModal = 'Thêm mới'
-                this.resetDataAppendix()
+                this.resetData()
             } else {
                 this.titleModal = 'Cập nhật'
                 this.id = id
@@ -183,7 +201,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.appendix = this.formatDateAppendix(response.data.data)
+                this.data = this.formatDateAppendix(response.data.data)
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -197,34 +215,23 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
                 return
             }
-            this.appendix = this.formatDateAppendix(response.data.data)
+            this.data = this.formatDateAppendix(response.data.data)
             $('#'+this.idModalInfo).modal('show');
-            this.loading = false
-        },
-
-        async getListSupplier(filters) {
-            this.loading = true
-            const response = await window.apiGetSupplier(filters)
-            if (response.success) {
-                this.listSupplier = response.data.data.data
-            } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
-            }
             this.loading = false
         },
 
         changePage(page) {
             this.filters.page = page
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
-        resetDataAppendix() {
-            this.appendix = {
+        resetData() {
+            this.data = {
                 contract_id: null,
                 code: null,
                 name: null,
@@ -238,6 +245,11 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
+            this.resetFilters()
+            this.list(this.filters)
+        },
+
+        resetFilters() {
             this.filters = {
                 name_code: null,
                 contract_ids: [],
@@ -247,13 +259,26 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-
-            this.getList(this.filters)
+            $('#filterContract').val([]).change()
+            $('#filterStatusContract').val([]).change()
+            $('#filterSigningDate').val(null).change()
+            $('#filterFrom').val(null).change()
         },
 
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
+        },
+
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn phụ lục hợp đồng cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
         },
 
         onChangeSelect2() {
@@ -264,7 +289,7 @@ document.addEventListener('alpine:init', () => {
                 } else if (event.target.id === 'filterStatusContract') {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
-                    this.appendix.user_ids = value
+                    this.data.user_ids = value
                 }
             });
         },
@@ -277,11 +302,11 @@ document.addEventListener('alpine:init', () => {
             } else if(el.id === 'filterFrom') {
                 this.filters.from = storageFormat
             } else if(el.id === 'selectSigningDate') {
-                this.appendix.signing_date = storageFormat
+                this.data.signing_date = storageFormat
             } else if(el.id === 'selectFrom') {
-                this.appendix.from = storageFormat
+                this.data.from = storageFormat
             } else if(el.id === 'selectTo') {
-                this.appendix.to = storageFormat
+                this.data.to = storageFormat
             }
         },
 
@@ -296,11 +321,11 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            this.appendix.files = this.appendix.files.concat(files)
+            this.data.files = this.data.files.concat(files)
         },
 
         addRowPayment() {
-            this.contract.payments.push({
+            this.data.payments.push({
                 payment_date: null,
                 money: null,
                 description: null

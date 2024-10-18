@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Contract;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class ContractRepository extends BaseRepository
 {
@@ -63,5 +64,13 @@ class ContractRepository extends BaseRepository
         }
 
         return $query->get();
+    }
+
+    public function deleteMultipleByIds($ids)
+    {
+        return $this->_model->whereIn('id', $ids)->update([
+            'deleted_by' => Auth::id(),
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ]);
     }
 }

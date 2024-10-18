@@ -24,7 +24,7 @@ class ContractAppendixRepository extends BaseRepository
 
     public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with);
+        $query = $this->_model->newQuery()->select($columns)->with($with)->orderBy('created_at', 'DESC');
 
         if (!empty($filters['name_code'])) {
             $query->where('code', $filters['name_code'])
@@ -67,5 +67,13 @@ class ContractAppendixRepository extends BaseRepository
         }
 
         return $query->first();
+    }
+
+    public function deleteMultipleByIds($ids)
+    {
+        return $this->_model->whereIn('id', Arr::wrap($ids))->update([
+            'deleted_by' => Auth::id(),
+            'deleted_at' => date('Y-m-d H:i:s'),
+        ]);
     }
 }

@@ -8,6 +8,9 @@
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
+            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple">
+                Xóa chọn
+            </button>
         </div>
 
         <div>
@@ -25,10 +28,9 @@
         </div>
 
         {{--  modal--}}
-        <div>
-            <div
-            @include('assets.contract_appendix.modalUI')
-        </div>
+
+        @include('assets.contract_appendix.modalUI')
+        @include('assets.contract_appendix.modalInfo')
 
         <div
             x-data="{
@@ -40,8 +42,14 @@
             @include('common.modal-confirm')
         </div>
 
-        <div>
-            @include('assets.contract_appendix.modalInfo')
+        <div
+            x-data="{
+                modalId: idModalConfirmDeleteMultiple,
+                contentBody: 'Bạn có chắc chắn muốn xóa danh sách phụ lục hợp đồng này không ?'
+            }"
+            @ok="removeMultiple"
+        >
+            @include('common.modal-confirm')
         </div>
     </div>
 

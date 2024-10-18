@@ -54,6 +54,30 @@ window.apiRemoveAppendix = async function (id) {
     }
 }
 
+window.apiRemoveAppendixMultiple = async function (ids) {
+    try {
+        const response = await axios.post("/api/delete-multiple/appendix",{ids: ids})
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
 window.apiShowAppendix = async function (id) {
     try {
         const response = await axios.get("/api/contract-appendix/"+id)
@@ -123,6 +147,7 @@ window.apiUpdateAppendix = async function (dataUpdate, id) {
             data: data
         }
     } catch (error) {
+        console.log(error)
         return {
             success: false,
             message: error?.response?.data?.message || error?.message
