@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateShoppingPlanCompanyYear;
+use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 
@@ -14,7 +14,7 @@ class ShoppingPlanCompanyController extends Controller
 
     }
 
-    public function index(Request $request)
+    public function getListShoppingPlanCompany(Request $request)
     {
         $request->validate([
             'name'         => 'nullable|string',
@@ -35,13 +35,42 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
-    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYear $request)
+    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
         try {
             $result = $this->planCompanyService->createShoppingPlanCompanyYear($request->validated());
 
             if (!$result['success']) {
                 return response_error($result['error_code'], extraData: $result['extra_data']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
+    {
+        try {
+            $result = $this->planCompanyService->updateShoppingPlanCompanyYear($request->validated(), $id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function deleteShoppingPlanCompanyYear(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->deleteShoppingPlanCompanyYear($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
             }
 
             return response_success();

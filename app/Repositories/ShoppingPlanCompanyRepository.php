@@ -59,6 +59,10 @@ class ShoppingPlanCompanyRepository extends BaseRepository
             $query->where('time', $filters['time']);
         }
 
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+
         return $query->first();
     }
 }

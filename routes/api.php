@@ -34,7 +34,6 @@ Route::middleware('auth')->group(function () {
         'contract'          => ContractController::class,
         'contract-appendix' => App\Http\Controllers\ContractAppendixController::class,
         'user'              => App\Http\Controllers\UserController::class,
-        'shopping-plan-company'  => App\Http\Controllers\ShoppingPlanCompanyController::class,
     ]);
 
 
@@ -49,6 +48,15 @@ Route::middleware('auth')->group(function () {
             'permission' => App\Http\Controllers\PermissionController::class,
             'menu'       => App\Http\Controllers\MenuController::class,
         ]);
+    });
+
+    Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
+        Route::get('list', 'getListShoppingPlanCompany');
+        Route::prefix('year')->group(function () {
+            Route::get('create', 'createShoppingPlanCompanyYear');
+            Route::get('update', 'updateShoppingPlanCompanyYear');
+            Route::get('delete', 'deleteShoppingPlanCompanyYear');
+        });
     });
 
     Route::prefix('/delete-multiple')->group(function () {

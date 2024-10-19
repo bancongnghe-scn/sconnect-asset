@@ -60,5 +60,9 @@ return [
     AppErrorCode::CODE_2053 => 'Xóa quyền của người dùng thất bại !',
     AppErrorCode::CODE_2054 => 'Xóa ngành hàng thất bại !',
     AppErrorCode::CODE_2055 => 'Kế hoạch năm :year đã tồn tại !',
-    AppErrorCode::CODE_2056 => 'Tạo người theo dõi kế hoạch mua sắm năm thất bại !',
+    AppErrorCode::CODE_2057 => 'Tạo kế hoạch mua sắm năm của đơn vị thất bại !',
+    AppErrorCode::CODE_2058 => 'Kế hoạch năm không tồn tại !',
+    AppErrorCode::CODE_2059 => 'Kế hoạch đã được gửi duyệt, không thể cập nhật !',
+    AppErrorCode::CODE_2060 => 'Kế hoạch đã được gửi duyệt, không thể xóa !',
+    AppErrorCode::CODE_2061 => 'Xóa kế hoạch mua sắm thất bại !',
 ];

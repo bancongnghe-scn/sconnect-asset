@@ -7,9 +7,22 @@ use App\Repositories\Base\BaseRepository;
 
 class ShoppingPlanOrganizationRepository extends BaseRepository
 {
-
     public function getModelClass(): string
     {
         return ShoppingPlanOrganization::class;
+    }
+
+    public function deleteShoppingPlanOrganization($filters)
+    {
+        $query = $this->_model->newQuery();
+
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        return $query->update([
+            'deleted_at' => date('Y-m-d H:i:s'),
+            'deleted_by' => $filters['user_id'],
+        ]);
     }
 }

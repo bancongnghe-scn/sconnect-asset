@@ -34,10 +34,10 @@ class AppErrorCode
     public const CODE_2026 = 2026; //  Lưu file hợp đồng thất bại !
     public const CODE_2027 = 2027; //  Lưu thông tin thanh toán thất bại !
     public const CODE_2028 = 2028; //  Hợp đồng không tồn tại !
-    public const CODE_2029 = 2029; //  Xóa người theo dõi hợp đồng thất bại !
+    public const CODE_2029 = 2029; //  Xóa người theo dõi thất bại !
     public const CODE_2030 = 2030; //  Xóa hợp đồng thất bại !
     public const CODE_2031 = 2031; //  Cập nhật hợp đồng thất bại !
-    public const CODE_2032 = 2032; //  Cập nhật người theo dõi hợp đồng thất bại !
+    public const CODE_2032 = 2032; //  Cập nhật người theo dõi thất bại !
     public const CODE_2033 = 2033; //  Phụ lục hợp đồng đã tồn tại !
     public const CODE_2034 = 2034; //  Phụ lục hợp đồng không tồn tại !
     public const CODE_2035 = 2035; //  Lưu phụ lục hợp đồng không thất bại !
@@ -61,5 +61,9 @@ class AppErrorCode
     public const CODE_2053 = 2053; //  Xóa quyền của người dùng thất bại !
     public const CODE_2054 = 2054; //  Xóa ngành hàng thất bại !
     public const CODE_2055 = 2055; //  Kế hoạch năm :year đã tồn tại !
-    public const CODE_2056 = 2056; //  Tạo người theo dõi kế hoạch mua sắm năm thất bại !
+    public const CODE_2057 = 2057; //  Tạo kế hoạch mua sắm năm của đơn vị thất bại !
+    public const CODE_2058 = 2058; //  Kế hoạch năm không tồn tại !
+    public const CODE_2059 = 2059; //  Kế hoạch đã được gửi duyệt, không thể cập nhật !
+    public const CODE_2060 = 2060; //  Kế hoạch đã được gửi duyệt, không thể xóa !
+    public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
 }

@@ -8,29 +8,29 @@ use App\Repositories\MonitorRepository;
 class MonitorService
 {
     public function __construct(
-        protected MonitorRepository $contractMonitorRepository,
+        protected MonitorRepository $monitorRepository,
     ) {
 
     }
 
-    public function updateMonitor($contractId, array $userIds, $type = Monitor::TYPE_CONTRACT)
+    public function updateMonitor($targetId, array $userIds, $type = Monitor::TYPE_CONTRACT)
     {
-        $contractMonitor = $this->contractMonitorRepository->getListing([
-            'target_id' => $contractId,
+        $monitors = $this->monitorRepository->getListing([
+            'target_id' => $targetId,
             'type'      => $type,
         ]);
-        $oldUserIds      = $contractMonitor->pluck('user_id')->toArray();
+        $oldUserIds      = $monitors->pluck('user_id')->toArray();
         $addUserIds      = array_diff($userIds, $oldUserIds);
         if (!empty($addUserIds)) {
             foreach ($addUserIds as $userId) {
                 $dataSave[] = [
                     'type'      => $type,
-                    'target_id' => $contractId,
+                    'target_id' => $targetId,
                     'user_id'   => $userId,
                 ];
             }
 
-            $save = $this->contractMonitorRepository->insert($dataSave);
+            $save = $this->monitorRepository->insert($dataSave);
             if (!$save) {
                 return false;
             }
@@ -38,8 +38,8 @@ class MonitorService
 
         $removeUserIds = array_diff($oldUserIds, $userIds);
         if (!empty($removeUserIds)) {
-            $this->contractMonitorRepository->deleteMonitor([
-                'target_id' => $contractId,
+            $this->monitorRepository->deleteMonitor([
+                'target_id' => $targetId,
                 'user_id'   => $removeUserIds,
                 'type'      => $type,
             ]);
@@ -59,6 +59,6 @@ class MonitorService
             ];
         }
 
-        return $this->contractMonitorRepository->insert($dataCreateContractMonitor);
+        return $this->monitorRepository->insert($dataCreateContractMonitor);
     }
 }
