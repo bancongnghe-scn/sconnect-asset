@@ -3,15 +3,16 @@ import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shoppingPlan', () => ({
+    Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
-            this.initYearpicker()
+            this.initYearPicker()
         },
 
         //dataTable
         dataTable: [],
         columns: {
             name: 'Kế hoạch',
+            register_time: 'Thời gian đăng ký',
             created_by: 'Người tạo',
             created_at: 'Ngày tạo',
             status: 'Trạng thái',
@@ -27,19 +28,17 @@ document.addEventListener('alpine:init', () => {
         currentPage: 1,
         total: 0,
         limit: 10,
-        showChecked: false,
 
         //data
         filters: {
-            name_code: null,
-            contract_ids: [],
-            status: [],
-            signing_date: null,
-            from : null,
+            time: null,
+            status: null,
+            type: 'year',
             limit: 10,
             page: 1
         },
-        dataInsert: {
+
+        data: {
             contract_id: null,
             code: null,
             name: null,
@@ -50,17 +49,12 @@ document.addEventListener('alpine:init', () => {
             description: null,
             files: [],
         },
-        listContract: [],
         listStatus: {
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Hủy'
+            1: 'Đăng ký',
+            2: 'Chờ kế toán duyệt',
+            3: 'Chờ giám đốc duyệt'
         },
-        listUser: [
-            {id:1, name: 'User1'},
-            {id:2, name: 'User2'},
-        ],
-        titleModal: null,
+        title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
@@ -239,56 +233,17 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
-        onChangeDatePicker(el, date) {
+        onChangeYearPicker(el, year) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
 
-            if(el.id === 'filterSigningDate') {
+            if(el.id === 'filterYear') {
                 this.filters.signing_date = storageFormat
             } else if(el.id === 'filterFrom') {
                 this.filters.from = storageFormat
-            } else if(el.id === 'selectSigningDate') {
-                this.dataInsert.signing_date = storageFormat
-            } else if(el.id === 'selectFrom') {
-                this.dataInsert.from = storageFormat
-            } else if(el.id === 'selectTo') {
-                this.dataInsert.to = storageFormat
             }
         },
 
-        handleFiles() {
-            const files = Array.from(this.$refs.fileInput.files)
-            const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].size > maxSize) {
-                    toast.error("File " + files[i].name + " vượt quá kích thước tối đa 5MB.")
-                    return;
-                }
-            }
-
-            this.dataInsert.files = this.dataInsert.files.concat(files)
-        },
-
-        addRowPayment() {
-            this.contract.payments.push({
-                payment_date: null,
-                money: null,
-                description: null
-            })
-
-            this.$nextTick(() => {
-                this.initDatePicker()
-            });
-        },
-
-        formatDateAppendix(appendix) {
-            appendix.signing_date = appendix.signing_date !== null ? format(appendix.signing_date, 'dd/MM/yyyy') : null
-            appendix.from = appendix.from !== null ? format(appendix.from, 'dd/MM/yyyy') : null
-            appendix.to = appendix.to !== null ? format(appendix.to, 'dd/MM/yyyy') : null
-            return appendix
-        },
-
-        initYearpicker() {
+        initYearPicker() {
             document.querySelectorAll('.yearpicker').forEach(el => {
                 new AirDatepicker(el, {
                     view: 'years', // Hiển thị danh sách năm khi mở
@@ -296,15 +251,15 @@ document.addEventListener('alpine:init', () => {
                     dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
                     autoClose: true, // Tự động đóng sau khi chọn năm
                     clearButton: true, // Nút xóa để bỏ chọn
-                    onSelect({date}) {
-                        console.log("Năm đã chọn:", date.getFullYear());
+                    onSelect({year}) {
+                        this.onChangeYearPicker(el, year)
                     },
                 });
                 el.addEventListener('keydown', (e) => {
                     if (e.key === 'Backspace' || e.key === 'Delete') {
                         setTimeout(() => {
                             if (!el.value) {
-
+                                this.onChangeYearPicker(el, null)
                             }
                         }, 0);
                     }

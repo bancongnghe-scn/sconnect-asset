@@ -31,5 +31,5 @@ Route::middleware('auth')->group(function () {
     Route::view('supplier/list', 'assets.supplier.list');
     Route::view('contract/list', 'assets.contract.list');
     Route::view('contract-appendix/list', 'assets.contract_appendix.list');
-    Route::view('plan-company/list', 'assets.plan-company.list');
+    Route::view('shopping-plan-company/year/list', 'assets.shopping-plan-company.year.list');
 });
