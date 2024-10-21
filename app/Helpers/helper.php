@@ -1,6 +1,7 @@
 <?php
 
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\Log;
 
 if (!function_exists('response_success')) {
     /**
@@ -46,5 +47,28 @@ if (!function_exists('response_error')) {
         $body = array_merge($body, Illuminate\Support\Arr::except($extraData, ['errors']));
 
         return response()->json($body, $statusCode);
+    }
+}
+
+if (!function_exists('callApiSSO')) {
+    function callApiSSO($url, $sessionCookie, $secretKey)
+    {
+        try {
+            $response = Illuminate\Support\Facades\Http::withHeaders([
+                'Origin'      => env('URL_CLIENT_SSO'),
+                'Site-Access' => hash_hmac('sha256', env('URL_CLIENT_SSO'), $secretKey),
+            ])->timeout(30)
+                ->retry(2, 1000, throw: false)
+                ->get($url, [
+                    'scn_session' => $sessionCookie,
+                ]);
+
+            return json_decode($response, true);
+        } catch (Exception $e) {
+            Log::info('======================== Helper:: callApiWithSession ============================');
+            Log::info($e->getMessage());
+            Log::info('======================== End Helper:: callApiWithSession ============================');
+            throw $e;
+        }
     }
 }

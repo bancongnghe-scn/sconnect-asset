@@ -12,19 +12,18 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::controller(App\Http\Controllers\Auth\LoginSSOController::class)->group(function () {
-    Route::get('/', 'loginSSO');
-    Route::get('/login', 'login')->name('login');
+Route::middleware(['authenSSO'])->group(function () {
+    Route::get('authen', function () {});
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['checkAuth'])->group(function () {
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');
         Route::view('menu/list', 'rbac.menu.list');
     });
 
-    Route::view('/home', 'home')->name('home');
+    Route::view('/', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
     Route::view('asset-type/list', 'assets.asset_type.list');
     Route::view('industry/list', 'assets.industry.list');
