@@ -296,7 +296,6 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            console.log(storageFormat)
             if(el.id === 'filterSigningDate') {
                 this.filters.signing_date = storageFormat
             } else if(el.id === 'filterFrom') {

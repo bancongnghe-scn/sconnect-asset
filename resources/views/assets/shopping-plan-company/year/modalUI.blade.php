@@ -2,74 +2,28 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="titleModal + ' kế hoạch'"></h4>
+                <h4 class="modal-title" x-text="title + ' kế hoạch'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="container mb-3">
-                    <div class="mb-3 active-link tw-w-fit">Thông tin phụ lục</div>
-                    <div class="row mb-3">
-                        <div class="col-3">
-                            <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control" x-model="appendix.contract_id">
-                                <option value="">Chọn hợp đồng</option>
-                                <template x-for="contract in listContract" :key="contract.id">
-                                    <option :value="contract.id" x-text="contract.name"></option>
-                                </template>
-                            </select>
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control" x-model="appendix.code">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label">Tên phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control" x-model="appendix.name">
-                        </div>
+                <div class="tw-grid tw-grid-cols-2 tw-gap-x-4">
+                    <div>
+                        <label class="tw-font-bold">Năm</label>
+                        <input type="text" class="form-control yearPicker" x-model="data.time" id="selectYear" placeholder="Chọn năm" autocomplete="off">
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-3">
-                            <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectSigningDate" autocomplete="off" x-model="appendix.signing_date">
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectFrom" autocomplete="off" x-model="appendix.from">
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">Hiệu lực đến ngày</label>
-                            <input type="text" class="form-control datepicker" placeholder="Chọn ngày" id="selectTo" autocomplete="off" x-model="appendix.to">
-                        </div>
-                        <div class="col-3">
-                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId" multiple="multiple" data-placeholder="Chọn người theo dõi">
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-12">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="appendix.description"></textarea>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+appendix.files.length+') dung lượng tối đa 5MB'"></span>
-                        <div>
-                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
-                            <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
-                            <div class="d-flex flex-wrap mt-2 tw-gap-x-2">
-                                <template x-for="(file, index) in appendix.files" :key="index">
-                                    <div class="tw-flex gap-x-1">
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="appendix.files.splice(index, 1)"></i>
-                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
+                    <div>
+                        <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                        <input type="text" class="form-control dateRange" id="selectDateRegister" placeholder="Chọn thời gian đăng ký" autocomplete="off">
+                    </div>
+
+                    <div>
+                        <label class="form-label">Người quan sát</label>
+                        <select class="form-select select2" x-model="data.monitor_ids" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát">
+                            <template x-for="value in listUser" :key="value.id">
+                                <option :value="value.id" x-text="value.name"></option>
+                            </template>
+                        </select>
                     </div>
                 </div>
             </div>

@@ -43,5 +43,7 @@
 @section('js')
     @vite([
         'resources/js/assets/shoppingPlanCompanyYear.js',
+        'resources/js/assets/api/apiShoppingPlanCompanyYear.js',
+        'resources/js/app/api/apiUser.js',
     ])
 @endsection

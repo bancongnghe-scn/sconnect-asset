@@ -5,7 +5,12 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
+            this.list({page:1, limit:10})
+            this.getListUser()
             this.initYearPicker()
+            this.initDateRangePicker()
+            window.initSelect2Modal(this.idModalUI)
+            this.onChangeSelect2()
         },
 
         //dataTable
@@ -27,6 +32,8 @@ document.addEventListener('alpine:init', () => {
         totalPages: null,
         currentPage: 1,
         total: 0,
+        from: 0,
+        to: 0,
         limit: 10,
 
         //data
@@ -39,21 +46,18 @@ document.addEventListener('alpine:init', () => {
         },
 
         data: {
-            contract_id: null,
-            code: null,
-            name: null,
-            signing_date: null,
-            from: null,
-            to: null,
-            user_ids: [],
-            description: null,
-            files: [],
+            time: null,
+            type: null,
+            start_time: null,
+            end_time: null,
+            monitor_ids: [],
         },
         listStatus: {
             1: 'Đăng ký',
             2: 'Chờ kế toán duyệt',
             3: 'Chờ giám đốc duyệt'
         },
+        listUser: [],
         title: null,
         action: null,
         id: null,
@@ -62,26 +66,17 @@ document.addEventListener('alpine:init', () => {
         idModalInfo: "idModalInfo",
 
         //methods
-        async getListContract(filters) {
+        async list(filters){
             this.loading = true
-            const response = await window.apiGetContract(filters)
-            if (response.success) {
-                this.listContract = response.data.data
-            } else {
-                toast.error('Lấy danh sách hợp đồng thất bại !')
-            }
-            this.loading = false
-        },
-
-        async getList(filters){
-            this.loading = true
-            const response = await window.apiGetAppendix(filters)
+            const response = await window.apiGetShoppingPlanCompany(filters)
             if (response.success) {
                 const data = response.data
                 this.dataTable = data.data.data
                 this.totalPages = data.data.last_page
                 this.currentPage = data.data.current_page
                 this.total = data.data.total ?? 0
+                this.from = data.data.from ?? 0
+                this.to = data.data.to ?? 0
             } else {
                 toast.error(response.message)
             }
@@ -119,6 +114,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         async create() {
+            console.log(this.data)
+            return
             this.loading = true
             const response = await window.apiCreateAppendix(this.dataInsert)
             if (!response.success) {
@@ -166,13 +163,13 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListSupplier(filters) {
+        async getListUser(filters){
             this.loading = true
-            const response = await window.apiGetSupplier(filters)
+            const response = await window.apiGetUser(filters)
             if (response.success) {
-                this.listSupplier = response.data.data.data
+                this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error('Lấy danh sách nhân viên thất bại !')
             }
             this.loading = false
         },
@@ -223,37 +220,35 @@ document.addEventListener('alpine:init', () => {
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
-                if (event.target.id === 'filterContract') {
-                    this.filters.contract_ids = value
-                } else if (event.target.id === 'filterStatusContract') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.dataInsert.user_ids = value
+                if (event.target.id === 'selectUser') {
+                    this.data.monitor_ids = value
                 }
             });
         },
 
         onChangeYearPicker(el, year) {
-            const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-
+            const storageFormat = year != null ? year : null
+            console.log(storageFormat)
+            console.log(el.id)
             if(el.id === 'filterYear') {
                 this.filters.signing_date = storageFormat
-            } else if(el.id === 'filterFrom') {
-                this.filters.from = storageFormat
+            } else if(el.id === 'selectYear') {
+                this.data.time = storageFormat
             }
         },
 
         initYearPicker() {
-            document.querySelectorAll('.yearpicker').forEach(el => {
+            document.querySelectorAll('.yearPicker').forEach(el => {
                 new AirDatepicker(el, {
                     view: 'years', // Hiển thị danh sách năm khi mở
                     minView: 'years', // Giới hạn chỉ cho phép chọn năm
                     dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
                     autoClose: true, // Tự động đóng sau khi chọn năm
                     clearButton: true, // Nút xóa để bỏ chọn
-                    onSelect({year}) {
+                    onSelect: ({date}) => {
+                        const year = date.getFullYear();
                         this.onChangeYearPicker(el, year)
-                    },
+                    }
                 });
                 el.addEventListener('keydown', (e) => {
                     if (e.key === 'Backspace' || e.key === 'Delete') {
@@ -266,6 +261,31 @@ document.addEventListener('alpine:init', () => {
                 });
             });
 
+        },
+
+        onChangeDateRangePicker(el, selectedDates) {
+            // const startDate = format(selectedDates.date[0], 'dd/MM/yyyy')
+            // const endDate = format(selectedDates.date[1], 'dd/MM/yyyy')
+            if (el.id === 'selectDateRegister') {
+                console.log(selectedDates)
+                this.data.start_time = format(selectedDates.date[0], 'dd/MM/yyyy')
+                this.data.end_time = format(selectedDates.date[1], 'dd/MM/yyyy')
+            }
+        },
+
+        initDateRangePicker() {
+            document.querySelectorAll('.dateRange').forEach(el => {
+                new AirDatepicker(el, {
+                range: true,
+                multipleDatesSeparator: ' - ',
+                autoClose: true,
+                clearButton: true,
+                locale: localeEn,
+                dateFormat: 'dd/MM/yyyy',
+                onSelect: (selectedDates) => {
+                    this.onChangeDateRangePicker(el, selectedDates)
+                }
+            })})
         },
     }));
 });
