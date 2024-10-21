@@ -18,7 +18,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Danh sách nhân viên</label>
-                    <select class="form-select select2" multiple="multiple" id="selectUsers" data-placeholder="Chọn danh sách nhân viên ..." x-model="role.user_ids">
+                    <select class="form-select select2" multiple="multiple" id="selectUsers" data-placeholder="Chọn danh sách nhân viên" x-model="role.user_ids">
                         <template x-for="user in listUser" :key="user.id">
                             <option :value="user.id" x-text="user.name"></option>
                         </template>
@@ -27,7 +27,7 @@
 
                 <div class="mb-3">
                     <label class="form-label">Danh sách quyền</label>
-                    <select class="form-select select2" multiple="multiple" id="selectPermissions" data-placeholder="Chọn danh sách quyền ..." x-model="role.permission_ids">
+                    <select class="form-select select2" multiple="multiple" id="selectPermissions" data-placeholder="Chọn danh sách quyền" x-model="role.permission_ids">
                         <template x-for="permission in listPermission" :key="permission.id">
                             <option :value="permission.id" x-text="permission.name"></option>
                         </template>

@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/ping', function () {
+    return 'pong';
+});
+
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });

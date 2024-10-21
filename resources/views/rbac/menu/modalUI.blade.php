@@ -17,7 +17,7 @@
 
                     <div class="col-6">
                         <label class="form-label">Icon<label class="color-red">*</label></label>
-                        <select class="form-select select2 icon-select2" id="selectIcon" data-placeholder="Chọn icon ..." x-model="menu.icon">
+                        <select class="form-select select2 icon-select2" id="selectIcon" data-placeholder="Chọn icon" x-model="menu.icon">
                             <option value=""></option>
                             @foreach($fontAwesomeIcons as $key => $value)
                                 <option value="{{ $value }}">{{$key}}</option>
@@ -42,7 +42,7 @@
                     <div class="col-6">
                         <label class="form-label">Menu cha</label>
                         <select class="form-select select2" x-model="menu.parent_id" id="selectMenuParent">
-                            <option value="">Chọn menu cha ...</option>
+                            <option value="">Chọn menu cha</option>
                             <template x-for="value in listMenuParent" :key="value.id">
                                 <option :value="value.id" x-text="value.name"></option>
                             </template>
@@ -51,7 +51,7 @@
 
                     <div class="col-6">
                         <label class="form-label">Danh sách vai trò</label>
-                        <select class="form-select select2" x-model="menu.role_ids" id="selectRoles" multiple="multiple" data-placeholder="Chọn danh sách vai trò ...">
+                        <select class="form-select select2" x-model="menu.role_ids" id="selectRoles" multiple="multiple" data-placeholder="Chọn danh sách vai trò">
                             <template x-for="value in listRole" :key="value.id">
                                 <option :value="value.id" x-text="value.name"></option>
                             </template>

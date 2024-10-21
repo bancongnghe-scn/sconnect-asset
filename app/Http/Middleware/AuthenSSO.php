@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
@@ -40,7 +41,8 @@ class AuthenSSO
             $user = @$data['data']['user'];
             Session::put('auth_user', $user);
 
-            // Auth::loginUsingId($user['id']);
+            Auth::loginUsingId($user['id']);
+
             return true;
         }
 

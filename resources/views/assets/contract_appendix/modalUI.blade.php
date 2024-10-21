@@ -12,7 +12,7 @@
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
                             <select class="form-control" x-model="data.contract_id">
-                                <option value="">Chọn hợp đồng ...</option>
+                                <option value="">Chọn hợp đồng</option>
                                 <template x-for="contract in listContract" :key="contract.id">
                                     <option :value="contract.id" x-text="contract.name"></option>
                                 </template>
@@ -42,7 +42,7 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId" multiple="multiple" data-placeholder="Chọn người theo dõi ...">
+                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId" multiple="multiple" data-placeholder="Chọn người theo dõi">
                                 <template x-for="value in listUser" :key="value.id">
                                     <option :value="value.id" x-text="value.name"></option>
                                 </template>

@@ -30,7 +30,7 @@
     <div class="row mb-3">
         <div class="col-4">
             <label class="form-label tw-font-bold">Ngành hàng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-            <select class="form-select select2" x-model="data.industry_ids" id="industrySelect2" multiple="multiple" data-placeholder="Chọn ngành hàng ...">
+            <select class="form-select select2" x-model="data.industry_ids" id="industrySelect2" multiple="multiple" data-placeholder="Chọn ngành hàng">
                 <template x-for="value in listIndustry" :key="value.id">
                     <option :value="value.id" x-text="value.name"></option>
                 </template>
@@ -38,7 +38,7 @@
         </div>
         <div class="col-4">
             <label class="form-label tw-font-bold">Loại tài sản cung ứng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-            <select class="form-select select2" x-model="data.asset_type_ids" id="assetTypeSelect2" multiple="multiple" data-placeholder="Chọn loại tài sản ...">
+            <select class="form-select select2" x-model="data.asset_type_ids" id="assetTypeSelect2" multiple="multiple" data-placeholder="Chọn loại tài sản">
                 <template x-for="value in listAssetType" :key="value.id">
                     <option :value="value.id" x-text="value.name"></option>
                 </template>

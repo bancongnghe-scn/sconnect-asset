@@ -39,3 +39,8 @@ window.initSelect2Modal = function initSelect2Modal(modalId) {
         })
     })
 }
+
+window.checkDisableSelectRow = function checkDisableSelectRow() {
+    const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+    return ids.length === 0
+}

@@ -16,7 +16,7 @@
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
                             <select class="form-control select2" x-model="data.type" id="selectContractType">
-                                <option value="">Chọn loại hợp đồng ...</option>
+                                <option value="">Chọn loại hợp đồng</option>
                                 <template x-for="(value, key) in listTypeContract">
                                     <option :value="key" x-text="value"></option>
                                 </template>
@@ -29,7 +29,7 @@
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600 mb-0">*</label></label>
                             <select class="form-select select2" x-model="data.supplier_id" id="selectSupplier">
-                                <option value="">Chọn nhà cung cấp ...</option>
+                                <option value="">Chọn nhà cung cấp</option>
                                 <template x-for="value in listSupplier" :key="value.id">
                                     <option :value="value.id" x-text="value.name"></option>
                                 </template>
@@ -51,7 +51,7 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi ..." x-model="data.user_ids">
+                            <select class="form-select select2" multiple="multiple" id="selectUserId" data-placeholder="Chọn người theo dõi" x-model="data.user_ids">
                                 <template x-for="user in listUser" :key="user.id">
                                     <option :value="user.id" x-text="user.name"></option>
                                 </template>

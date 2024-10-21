@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Ngành hàng</label>
-                    <select class="form-select select2" x-model="filters.industry_ids" id="industriesFilter" multiple="multiple" data-placeholder="Chọn ngành hàng ...">
+                    <select class="form-select select2" x-model="filters.industry_ids" id="industriesFilter" multiple="multiple" data-placeholder="Chọn ngành hàng">
                         <template x-for="value in listIndustry" :key="value.id">
                             <option :value="value.id" x-text="value.name"></option>
                         </template>
@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-3">
                     <label class="tw-font-bold">Đánh giá</label>
-                    <select class="form-control select2" x-model="filters.status" id="statusFilter" multiple="multiple" data-placeholder="Chọn đánh giá ...">
+                    <select class="form-control select2" x-model="filters.status" id="statusFilter" multiple="multiple" data-placeholder="Chọn đánh giá">
                         <template x-for="(value, key) in status">
                             <option :value="key" x-text="value"></option>
                         </template>

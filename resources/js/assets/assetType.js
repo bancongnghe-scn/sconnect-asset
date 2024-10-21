@@ -219,7 +219,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         confirmDeleteMultiple() {
-            const ids = Object.keys(this.selectedRow)
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             if (ids.length === 0) {
                 toast.error('Vui lòng chọn loại tài sản cần xóa !')
                 return

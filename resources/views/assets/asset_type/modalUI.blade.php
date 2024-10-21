@@ -14,7 +14,7 @@
                     <div class="col-6">
                         <label class="form-label">Nhóm tài sản<label class="tw-text-red-600 mb-0">*</label></label>
                         <select class="form-select select2" x-model="data.asset_type_group_id" id="selectAssetTypeGroup">
-                            <option value="">Chọn nhóm tài sản...</option>
+                            <option value="">Chọn nhóm tài sản</option>
                             <template x-for="value in listAssetTypeGroup" :key="value.id">
                                 <option :value="value.id" x-text="value.name"></option>
                             </template>
@@ -25,7 +25,7 @@
                     <div class="col-6">
                         <label class="form-label">Đơn vị tính<label class="tw-text-red-600 mb-0">*</label></label>
                         <select class="form-control select2" x-model="data.measure" id="selectMeasure">
-                            <option value="">Chọn đơn vị ...</option>
+                            <option value="">Chọn đơn vị</option>
                             <template x-for="(value, key) in listMeasure">
                                 <option :value="key" x-text="value"></option>
                             </template>

@@ -8,7 +8,7 @@
             <button type="button" class="btn btn-sc" @click="handleShowModal('create')">
                 Thêm mới
             </button>
-            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple">
+            <button type="button" class="btn tw-bg-red-600 tw-text-white"  @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
                 Xóa chọn
             </button>
         </div>

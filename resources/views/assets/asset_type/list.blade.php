@@ -8,7 +8,7 @@
             <button type="button" class="btn btn-sc" @click="handShowModalUI('create')">
                 Thêm mới
             </button>
-            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple">
+            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmDeleteMultiple" :disabled="window.checkDisableSelectRow">
                 Xóa chọn
             </button>
         </div>

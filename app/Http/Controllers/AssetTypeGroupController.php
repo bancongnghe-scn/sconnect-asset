@@ -36,7 +36,7 @@ class AssetTypeGroupController extends Controller
         $request->validate(
             [
                 'name'        => 'required|string',
-                'description' => 'string',
+                'description' => 'nullable|string',
             ]
         );
 

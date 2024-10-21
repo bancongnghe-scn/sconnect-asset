@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Hợp đồng</label>
-                        <select class="form-select select2" id="filterContract" multiple="multiple" data-placeholder="Chọn hợp đồng ...">
+                        <select class="form-select select2" id="filterContract" multiple="multiple" data-placeholder="Chọn hợp đồng">
                             <template x-for="value in listContract" :key="value.id">
                                 <option :value="value.id" x-text="value.name"></option>
                             </template>
@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái ...">
+                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái">
                             <template x-for="(value, key) in listStatus">
                                 <option :value="key" x-text="value"></option>
                             </template>
