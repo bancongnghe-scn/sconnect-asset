@@ -13,7 +13,9 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 ...sync('resources/js/assets/**/*.js'),
-                ...sync('resources/js/rbac/**/*.js')
+                ...sync('resources/js/rbac/**/*.js'),
+                ...sync('resources/js/app/**/*.js'),
+                ...sync('resources/js/layouts/**/*.js'),
             ],
             refresh: true,
         }),
