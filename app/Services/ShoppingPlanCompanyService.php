@@ -46,25 +46,16 @@ class ShoppingPlanCompanyService
             ->resolve();
     }
 
-    public function createShoppingPlanCompanyYear(array $data)
+    public function createShoppingPlanCompany(array $data)
     {
-        $shoppingPlanCompany = $this->planCompanyRepository->getFirst([
-            'time' => $data['time'],
-            'type' => $data['type'],
-        ]);
-
-        if (!empty($shoppingPlanCompany)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2055,
-                'extra_data' => [
-                    'year' => $data['time'],
-                ],
-            ];
+        $checkExist = $this->checkExistShoppingPlanCompany($data);
+        if (!$checkExist['success']) {
+            return $checkExist;
         }
 
-        $data['name']   = __('asset.shopping_plan_company.year.name', ['year' => $data['time']]);
-        $data['status'] = ShoppingPlanCompany::STATUS_REGISTER;
+        $data['name']       = $this->getNameShoppingPlanCompany($data);
+        $data['status']     = ShoppingPlanCompany::STATUS_NEW;
+        $data['created_by'] = Auth::id();
         DB::beginTransaction();
         try {
             $shoppingPlanCompany = $this->planCompanyRepository->create($data);
@@ -73,7 +64,7 @@ class ShoppingPlanCompanyService
                 $insertMonitors = resolve(MonitorService::class)->insertMonitors(
                     $data['monitor_ids'],
                     $shoppingPlanCompany->id,
-                    Monitor::TYPE_SHOPPING_PLAN_COMPANY_YEAR
+                    Monitor::TYPE_SHOPPING_PLAN_COMPANY[$data['type']]
                 );
 
                 if (!$insertMonitors) {
@@ -216,5 +207,80 @@ class ShoppingPlanCompanyService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function checkExistShoppingPlanCompany($data)
+    {
+        $shoppingPlanCompany = match ($data['type']) {
+            ShoppingPlanCompany::TYPE_YEAR => $this->planCompanyRepository->getFirst([
+                'time' => $data['time'],
+                'type' => ShoppingPlanCompany::TYPE_YEAR,
+            ]),
+            ShoppingPlanCompany::TYPE_QUARTER => $this->planCompanyRepository->getFirst([
+                'time'         => $data['time'],
+                'type'         => ShoppingPlanCompany::TYPE_QUARTER,
+                'plan_year_id' => $data['plan_year_id'],
+            ]),
+            ShoppingPlanCompany::TYPE_WEEK => $this->planCompanyRepository->getFirst([
+                'time'            => $data['time'],
+                'type'            => ShoppingPlanCompany::TYPE_WEEK,
+                'month'           => $data['month'],
+                'plan_year_id'    => $data['plan_year_id'],
+                'plan_quarter_id' => $data['plan_quarter_id'],
+            ]),
+            default => [],
+        };
+
+        if (!empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2055,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function getNameShoppingPlanCompany($data)
+    {
+        switch ($data['type']) {
+            case ShoppingPlanCompany::TYPE_YEAR:
+                $name = __('asset.shopping_plan_company.year.name', ['time' => $data['time']]);
+                break;
+            case ShoppingPlanCompany::TYPE_QUARTER:
+                $shoppingPlanCompanyYear = $this->planCompanyRepository->find($data['plan_year_id']);
+                $name                    = __('asset.shopping_plan_company.quarter.name', [
+                    'time' => $data['time'],
+                    'year' => $shoppingPlanCompanyYear->time,
+                ]);
+                break;
+            case ShoppingPlanCompany::TYPE_WEEK:
+                $shoppingPlanCompanyYear = $this->planCompanyRepository->find($data['plan_year_id']);
+                $name                    = __('asset.shopping_plan_company.week.name', [
+                    'time'  => $data['time'],
+                    'month' => $data['month'],
+                    'year'  => $shoppingPlanCompanyYear->time,
+                ]);
+                break;
+            default:
+                $name = '';
+        }
+
+        return $name;
+    }
+
+    public function findShoppingPlanCompany($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [];
+        }
+
+        $data                = $shoppingPlanCompany->toArray();
+        $data['monitor_ids'] = $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();
+
+        return $data;
     }
 }

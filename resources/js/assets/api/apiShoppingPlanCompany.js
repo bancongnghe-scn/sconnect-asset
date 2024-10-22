@@ -1,3 +1,5 @@
+import {format} from "date-fns";
+
 window.apiGetShoppingPlanCompany = async function (filters) {
     try {
         const response = await axios.get("/api/shopping-plan-company/list", {
@@ -75,7 +77,7 @@ window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
 
 window.apiShowShoppingPlanCompany = async function (id) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/"+id)
+        const response = await axios.get("/api/shopping-plan-company/show/"+id)
 
         const data = response.data;
         if (!data.success) {
@@ -99,7 +101,9 @@ window.apiShowShoppingPlanCompany = async function (id) {
 
 window.apiCreateShoppingPlanCompany = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/shopping-plan-company",dataCreate)
+        dataCreate.start_time = dataCreate.start_time ? format(dataCreate.start_time, 'yyyy-MM-dd') : null
+        dataCreate.end_time = dataCreate.end_time ? format(dataCreate.end_time, 'yyyy-MM-dd') : null
+        const response = await axios.post("/api/shopping-plan-company/year/create",dataCreate)
 
         const data = response.data;
         if (!data.success) {

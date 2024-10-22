@@ -19,6 +19,7 @@ return [
     'confirmed'      => 'Xác nhận :attribute không khớp.',
     'date'           => ':attribute không phải là ngày hợp lệ.',
     'date_format'    => ':attribute không khớp với định dạng :format.',
+    'after_or_equal' => ':attribute phải sau hoặc bằng :date.',
     'different'      => ':attribute và :other phải khác nhau.',
     'digits'         => ':attribute phải có :digits chữ số.',
     'digits_between' => ':attribute phải có từ :min đến :max chữ số.',
@@ -69,9 +70,7 @@ return [
     'url'      => 'Định dạng :attribute không hợp lệ.',
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
-        ],
+
     ],
     'attributes' => [
         'name'           => 'tên',

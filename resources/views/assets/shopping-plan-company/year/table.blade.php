@@ -20,7 +20,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <template x-for="(data,index) in dataTable" x-data="{line: 1}">
+                                <template x-for="(data,index) in dataTable">
                                     <tr>
                                         <td class="text-center align-middle">
                                             <input type="checkbox" x-model="selectedRow[data.id]">
@@ -28,19 +28,24 @@
                                         <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
-                                                <template x-if="key !== 'validity' && key !== 'status'">
+                                                <template x-if="key !== 'register_time' && key !== 'status'">
                                                     <span x-text="data[key]"></span>
                                                 </template>
-                                                <template x-if="key === 'validity'">
-                                                    <div class="text-white d-flex justify-content-center">
-                                                        <span class="tw-px-4 tw-py-1 tw-rounded-full"
-                                                              :class="data[key] ? 'tw-bg-[#54B435]' : 'tw-bg-slate-300'"
-                                                              x-text="data[key] ? 'On' : 'Off'">
-                                                        </span>
-                                                    </div>
+                                                <template x-if="key === 'register_time'">
+                                                    <span :class="!data.status_register ? 'tw-text-red-500': ''" x-text="data.start_time + ' - ' + data.end_time"></span>
                                                 </template>
                                                 <template x-if="key === 'status'">
-                                                    @include('common.table-status')
+                                                    <div class="d-flex justify-content-center">
+                                                        <span x-text="listStatus[data[key]]" class="p-1 border rounded"
+                                                              :class="{
+                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
+                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
+                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 3,
+                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 4,
+                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 5
+                                                                 }"
+                                                        ></span>
+                                                    </div>
                                                 </template>
                                             </td>
                                         </template>

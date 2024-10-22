@@ -15,7 +15,7 @@ class ShoppingPlanCompanyRepository extends BaseRepository
 
     public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with);
+        $query = $this->_model->newQuery()->select($columns)->with($with)->orderBy('created_at', 'desc');
 
         if (!empty($filters['time'])) {
             $query->whereIn('time', Arr::wrap($filters['time']));
@@ -52,15 +52,31 @@ class ShoppingPlanCompanyRepository extends BaseRepository
         return $query->get();
     }
 
-    public function getFirst($filters, $columns = ['*'])
+    public function getFirst($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
         if (!empty($filters['time'])) {
             $query->where('time', $filters['time']);
         }
 
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
+        }
+
+        if (!empty($filters['plan_year_id'])) {
+            $query->where('plan_year_id', $filters['plan_year_id']);
+        }
+
+        if (!empty($filters['plan_quarter_id'])) {
+            $query->where('plan_quarter_id', $filters['plan_quarter_id']);
+        }
+
+        if (!empty($filters['month'])) {
+            $query->where('month', $filters['month']);
         }
 
         return $query->first();

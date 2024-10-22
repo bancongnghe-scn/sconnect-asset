@@ -27,6 +27,7 @@ document.addEventListener('alpine:init', () => {
             edit: true,
             remove: true
         },
+        selectedRow: [],
 
         //pagination
         totalPages: null,
@@ -39,23 +40,24 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             time: null,
-            status: null,
-            type: 'year',
+            status: [],
+            type: 1,
             limit: 10,
             page: 1
         },
 
         data: {
             time: null,
-            type: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
         },
         listStatus: {
-            1: 'Đăng ký',
-            2: 'Chờ kế toán duyệt',
-            3: 'Chờ giám đốc duyệt'
+            1: 'Mới tạo',
+            2: 'Đăng ký',
+            3: 'Chờ kế toán duyệt',
+            4: 'Chờ giám đốc duyệt',
+            5: 'Hủy'
         },
         listUser: [],
         title: null,
@@ -85,7 +87,7 @@ document.addEventListener('alpine:init', () => {
 
         async edit() {
             this.loading = true
-            const response = await window.apiUpdateAppendix(this.dataInsert, this.id)
+            const response = await window.apiUpdateShoppingPlanCompany(this.data, this.id)
             if (!response.success) {
                 toast.error(response.message)
                 return
@@ -114,37 +116,34 @@ document.addEventListener('alpine:init', () => {
         },
 
         async create() {
-            console.log(this.data)
-            return
             this.loading = true
-            const response = await window.apiCreateAppendix(this.dataInsert)
+            const response = await window.apiCreateShoppingPlanCompany(this.data)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
                 return
             }
-            toast.success('Tạo phụ lục hợp đồng thành công !')
+            toast.success('Tạo kế hoạch mua sắm năm thành công !')
             $('#'+this.idModalUI).modal('hide');
-            this.loading = false
+            this.resetData()
             this.reloadPage()
-            this.resetDataContract()
+            this.loading = false
         },
 
         async handleShowModalUI(action, id = null) {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleModal = 'Thêm mới'
+                this.title = 'Thêm mới'
                 this.resetData()
             } else {
-                this.titleModal = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
-                const response = await window.apiShowAppendix(id)
+                const response = await window.apiShowShoppingPlanCompany(id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                this.dataInsert = this.formatDateAppendix(response.data.data)
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -185,31 +184,24 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetData() {
-            this.dataInsert = {
-                contract_id: null,
-                code: null,
-                name: null,
-                signing_date: null,
-                from: 0,
-                to: null,
-                user_ids: [],
-                description: null,
-                files: [],
+            this.data = {
+                time: null,
+                start_time: null,
+                end_time: null,
+                monitor_ids: [],
             }
         },
 
         reloadPage() {
             this.filters = {
-                name_code: null,
-                contract_ids: [],
-                status: [],
-                signing_date: null,
-                from : null,
+                time: null,
+                status: null,
+                type: 1,
                 limit: 10,
                 page: 1
             }
 
-            this.getList(this.filters)
+            this.list(this.filters)
         },
 
         confirmRemove(id) {
@@ -222,16 +214,16 @@ document.addEventListener('alpine:init', () => {
                 const value = $(event.target).val()
                 if (event.target.id === 'selectUser') {
                     this.data.monitor_ids = value
+                } else if (event.target.id === 'filterStatus') {
+                    this.filters.status = value
                 }
             });
         },
 
         onChangeYearPicker(el, year) {
             const storageFormat = year != null ? year : null
-            console.log(storageFormat)
-            console.log(el.id)
             if(el.id === 'filterYear') {
-                this.filters.signing_date = storageFormat
+                this.filters.time = storageFormat
             } else if(el.id === 'selectYear') {
                 this.data.time = storageFormat
             }
@@ -264,12 +256,11 @@ document.addEventListener('alpine:init', () => {
         },
 
         onChangeDateRangePicker(el, selectedDates) {
-            // const startDate = format(selectedDates.date[0], 'dd/MM/yyyy')
-            // const endDate = format(selectedDates.date[1], 'dd/MM/yyyy')
+            const startDate = selectedDates.date[0] ?? null
+            const endDate = selectedDates.date[1] ?? null
             if (el.id === 'selectDateRegister') {
-                console.log(selectedDates)
-                this.data.start_time = format(selectedDates.date[0], 'dd/MM/yyyy')
-                this.data.end_time = format(selectedDates.date[1], 'dd/MM/yyyy')
+                this.data.start_time = startDate
+                this.data.end_time = endDate
             }
         },
 

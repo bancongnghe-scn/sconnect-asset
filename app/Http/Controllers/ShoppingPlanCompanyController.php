@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
+use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,8 @@ class ShoppingPlanCompanyController extends Controller
             'plan_year_id' => 'nullable|integer',
             'time'         => 'nullable|integer',
             'type'         => 'nullable|integer',
-            'status'       => 'nullable|integer',
+            'status'       => 'nullable|array',
+            'status.*'     => 'integer',
             'start_time'   => 'nullable|date|date_format:Y-m-d',
             'end_time'     => 'nullable|date|date_format:Y-m-d',
         ]);
@@ -31,7 +33,6 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
             return response_error();
         }
     }
@@ -39,10 +40,13 @@ class ShoppingPlanCompanyController extends Controller
     public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
         try {
-            $result = $this->planCompanyService->createShoppingPlanCompanyYear($request->validated());
+            $data         = $request->validated();
+            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
+
+            $result = $this->planCompanyService->createShoppingPlanCompany($data);
 
             if (!$result['success']) {
-                return response_error($result['error_code'], extraData: $result['extra_data']);
+                return response_error($result['error_code']);
             }
 
             return response_success();
@@ -75,6 +79,17 @@ class ShoppingPlanCompanyController extends Controller
             }
 
             return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function findShoppingPlanCompany(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->findShoppingPlanCompany($id);
+
+            return response_success($result);
         } catch (\Throwable $exception) {
             return response_error();
         }

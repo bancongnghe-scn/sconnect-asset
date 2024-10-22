@@ -8,6 +8,9 @@
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
+            <button type="button" class="btn tw-bg-red-600 tw-text-white"  @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+                Xóa chọn
+            </button>
         </div>
 
         <div>
@@ -43,7 +46,7 @@
 @section('js')
     @vite([
         'resources/js/assets/shoppingPlanCompanyYear.js',
-        'resources/js/assets/api/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/api/apiShoppingPlanCompany.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection

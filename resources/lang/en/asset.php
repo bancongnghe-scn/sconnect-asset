@@ -1,15 +1,16 @@
 <?php
 
+
 return [
     'shopping_plan_company' => [
-        App\Models\ShoppingPlanCompany::TYPE_YEAR => [
+        'year' => [
             'name' => 'Kế hoạch mua sắm năm :time',
         ],
-        App\Models\ShoppingPlanCompany::TYPE_QUARTER => [
-            'name' => 'Kế hoạch mua sắm quý :time năm :time_other',
+        'quarter' => [
+            'name' => 'Kế hoạch mua sắm quý :time năm :year',
         ],
-        App\Models\ShoppingPlanCompany::TYPE_WEEK => [
-            'name' => 'Kế hoạch mua sắm tuần :time tháng :time_other',
+        'week' => [
+            'name' => 'Kế hoạch mua sắm tuần :time tháng :month năm :year',
         ],
     ],
 ];

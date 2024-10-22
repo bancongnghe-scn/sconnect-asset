@@ -10,4 +10,11 @@ return [
         'signing_date' => 'ngày ký hợp đồng',
         'user_ids'     => 'người theo dõi',
     ],
+    'shopping_plan_company' => [
+        'year' => [
+            'time' => 'năm',
+        ],
+        'start_time' => 'thời gian bắt đầu đăng ký',
+        'end_time'   => 'thời gian kết thúc đăng ký',
+    ],
 ];
