@@ -55,7 +55,7 @@ Route::middleware('auth')->group(function () {
         Route::get('show/{id}', 'findShoppingPlanCompany');
         Route::prefix('year')->group(function () {
             Route::post('create', 'createShoppingPlanCompanyYear');
-            Route::put('update', 'updateShoppingPlanCompanyYear');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
             Route::delete('delete', 'deleteShoppingPlanCompanyYear');
         });
     });

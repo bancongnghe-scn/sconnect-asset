@@ -78,7 +78,8 @@ class ShoppingPlanCompanyService
             }
 
             $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-                $shoppingPlanCompany->id
+                $shoppingPlanCompany->id,
+                $data['organization_ids'] ?? []
             );
 
             if (!$insertShoppingPlanOrganizations) {
@@ -105,7 +106,7 @@ class ShoppingPlanCompanyService
         }
     }
 
-    public function updateShoppingPlanCompanyYear($data, $id)
+    public function updateShoppingPlanCompany($data, $id)
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
         if (empty($shoppingPlanCompany)) {
@@ -115,25 +116,28 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        if (ShoppingPlanCompany::STATUS_REGISTER != $shoppingPlanCompany->status) {
+        if (!in_array($shoppingPlanCompany->status, [ShoppingPlanCompany::STATUS_NEW, ShoppingPlanCompany::STATUS_REGISTER])) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2059,
             ];
         }
 
-        $data['name']       = __('asset.shopping_plan_company.year.name', ['year' => $data['time']]);
+        if (ShoppingPlanCompany::STATUS_NEW === (int) $shoppingPlanCompany->status) {
+            $data['name'] = $this->getNameShoppingPlanCompany($data);
+        }
+
         $data['updated_by'] = Auth::id();
         try {
             $this->planCompanyRepository->update($shoppingPlanCompany, $data);
             $monitorIds     =  $data['monitor_ids'] ?? [];
-            $updateMonitors = resolve(MonitorService::class)->updateMonitor($id, $monitorIds, Monitor::TYPE_SHOPPING_PLAN_COMPANY_YEAR);
+            $updateMonitors = resolve(MonitorService::class)->updateMonitor($id, $monitorIds, Monitor::TYPE_SHOPPING_PLAN_COMPANY[$data['type']]);
             if (!$updateMonitors) {
                 DB::rollBack();
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2057,
+                    'error_code' => AppErrorCode::CODE_2032,
                 ];
             }
 

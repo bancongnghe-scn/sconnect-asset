@@ -58,7 +58,9 @@ class ShoppingPlanCompanyController extends Controller
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
         try {
-            $result = $this->planCompanyService->updateShoppingPlanCompanyYear($request->validated(), $id);
+            $data         = $request->validated();
+            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
+            $result       = $this->planCompanyService->updateShoppingPlanCompany($data, $id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

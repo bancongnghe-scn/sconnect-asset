@@ -48,10 +48,10 @@ document.addEventListener('alpine:init', () => {
 
         data: {
             time: null,
+            status: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
-            register_time: []
         },
         listStatus: {
             1: 'Mới tạo',
@@ -73,8 +73,13 @@ document.addEventListener('alpine:init', () => {
         //methods
         async list(filters){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany(filters)
-            if (response.success) {
+            try {
+                const response = await window.apiGetShoppingPlanCompany(filters)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
                 const data = response.data
                 this.dataTable = data.data.data
                 this.totalPages = data.data.last_page
@@ -82,83 +87,103 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-            } else {
-                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
             }
-            this.loading = false
         },
 
         async edit() {
             this.loading = true
-            const response = await window.apiUpdateShoppingPlanCompany(this.data, this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                return
-            }
-            toast.success('Cập nhập phụ lục hợp đồng thành công !')
-            $('#'+this.idModalUI).modal('hide');
-            this.resetData()
-            await this.getList(this.filters)
-            this.loading = false
-        },
-
-        async remove() {
-            this.loading = true
-            const response = await window.apiRemoveAppendix(this.id)
-            if (!response.success) {
-                toast.error(response.message)
-                this.loading = false
-
-                return;
-            }
-            $("#"+this.idModalConfirmDelete).modal('hide')
-            toast.success('Xóa hợp đồng thành công !')
-            await this.getList(this.filters)
-
-            this.loading = false
-        },
-
-        async create() {
-            this.loading = true
-            const response = await window.apiCreateShoppingPlanCompany(this.data)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-            toast.success('Tạo kế hoạch mua sắm năm thành công !')
-            $('#'+this.idModalUI).modal('hide');
-            this.resetData()
-            this.reloadPage()
-            this.loading = false
-        },
-
-        async handleShowModalUI(action, id = null) {
-            this.loading = true
-            this.action = action
-            if (action === 'create') {
-                this.title = 'Thêm mới'
-                this.resetData()
-            } else {
-                this.title = 'Cập nhật'
-                this.id = id
-                const response = await window.apiShowShoppingPlanCompany(id)
+            try {
+                const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                this.data = response.data.data
-
-                this.dateRangePicker.selectDate([this.convertDateString(this.data.start_time), this.convertDateString(this.data.end_time)]);
+                toast.success('Cập nhập kế hoạch năm thành công !')
+                $('#'+this.idModalUI).modal('hide');
+                this.resetData()
+                this.list(this.filters)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
             }
+        },
 
-            $('#'+this.idModalUI).modal('show');
-            this.loading = false
+        async remove() {
+            this.loading = true
+            try {
+                const response = await window.apiRemoveAppendix(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return;
+                }
+                $("#"+this.idModalConfirmDelete).modal('hide')
+                toast.success('Xóa hợp đồng thành công !')
+                await this.list(this.filters)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async create() {
+            this.loading = true
+            try {
+                const response = await window.apiCreateShoppingPlanCompanyYear(this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Tạo kế hoạch mua sắm năm thành công !')
+                $('#'+this.idModalUI).modal('hide');
+                this.resetData()
+                this.reloadPage()
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShowModalUI(action, id = null) {
+            this.loading = true
+            try {
+                this.action = action
+                if (action === 'create') {
+                    this.title = 'Thêm mới'
+                    this.resetData()
+                } else {
+                    this.title = 'Cập nhật'
+                    this.id = id
+                    const response = await window.apiShowShoppingPlanCompany(id)
+                    if (!response.success) {
+                        toast.error(response.message)
+                        return
+                    }
+                    const data = response.data.data
+                    this.data.time = data.time
+                    this.data.status = data.status
+                    this.data.start_time = data.start_time
+                    this.data.end_time = data.end_time
+                    this.data.monitor_ids = data.monitor_ids
+                    this.dateRangePicker.selectDate([this.convertDateString(this.data.start_time), this.convertDateString(this.data.end_time)]);
+                }
+                $('#'+this.idModalUI).modal('show');
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
         },
 
         convertDateString(dateString) {
-            const [day, month, year] = dateString.split('/');
-            return new Date(year, month - 1, day); // JavaScript sử dụng 0-index cho tháng
+            const [year, month, day] = dateString.split('-')
+            return new Date(year, month - 1, day)
         },
 
         async handleShowModalInfo(id) {
@@ -168,7 +193,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
                 return
             }
-            this.dataInsert = this.formatDateAppendix(response.data.data)
+            this.data = this.formatDateAppendix(response.data.data)
             $('#'+this.idModalInfo).modal('show');
             this.loading = false
         },
@@ -197,6 +222,7 @@ document.addEventListener('alpine:init', () => {
         resetData() {
             this.data = {
                 time: null,
+                status: null,
                 start_time: null,
                 end_time: null,
                 monitor_ids: [],
@@ -267,7 +293,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         initDateRangePicker() {
-            this.dateRangePicker = new AirDatepicker('.datePicker', {
+            this.dateRangePicker = new AirDatepicker('.dateRange', {
                 range: true,
                 multipleDatesSeparator: ' - ',
                 autoClose: true,
