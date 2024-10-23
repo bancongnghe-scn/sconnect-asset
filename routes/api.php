@@ -52,11 +52,11 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
         Route::get('list', 'getListShoppingPlanCompany');
+        Route::get('show/{id}', 'findShoppingPlanCompany');
         Route::prefix('year')->group(function () {
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update', 'updateShoppingPlanCompanyYear');
             Route::delete('delete', 'deleteShoppingPlanCompanyYear');
-            Route::get('show', 'findShoppingPlanCompany/{id}');
         });
     });
 

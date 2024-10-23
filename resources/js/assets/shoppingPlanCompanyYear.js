@@ -51,6 +51,7 @@ document.addEventListener('alpine:init', () => {
             start_time: null,
             end_time: null,
             monitor_ids: [],
+            register_time: []
         },
         listStatus: {
             1: 'Mới tạo',
@@ -60,6 +61,8 @@ document.addEventListener('alpine:init', () => {
             5: 'Hủy'
         },
         listUser: [],
+        dateRangePicker: null,
+
         title: null,
         action: null,
         id: null,
@@ -144,10 +147,18 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
+                this.data = response.data.data
+
+                this.dateRangePicker.selectDate([this.convertDateString(this.data.start_time), this.convertDateString(this.data.end_time)]);
             }
 
             $('#'+this.idModalUI).modal('show');
             this.loading = false
+        },
+
+        convertDateString(dateString) {
+            const [day, month, year] = dateString.split('/');
+            return new Date(year, month - 1, day); // JavaScript sử dụng 0-index cho tháng
         },
 
         async handleShowModalInfo(id) {
@@ -255,18 +266,8 @@ document.addEventListener('alpine:init', () => {
 
         },
 
-        onChangeDateRangePicker(el, selectedDates) {
-            const startDate = selectedDates.date[0] ?? null
-            const endDate = selectedDates.date[1] ?? null
-            if (el.id === 'selectDateRegister') {
-                this.data.start_time = startDate
-                this.data.end_time = endDate
-            }
-        },
-
         initDateRangePicker() {
-            document.querySelectorAll('.dateRange').forEach(el => {
-                new AirDatepicker(el, {
+            this.dateRangePicker = new AirDatepicker('.datePicker', {
                 range: true,
                 multipleDatesSeparator: ' - ',
                 autoClose: true,
@@ -274,9 +275,10 @@ document.addEventListener('alpine:init', () => {
                 locale: localeEn,
                 dateFormat: 'dd/MM/yyyy',
                 onSelect: (selectedDates) => {
-                    this.onChangeDateRangePicker(el, selectedDates)
+                    this.data.start_time = selectedDates.date[0] ?? null
+                    this.data.end_time = selectedDates.date[1] ?? null
                 }
-            })})
-        },
+            })
+        }
     }));
 });
