@@ -53,11 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
         Route::get('list', 'getListShoppingPlanCompany');
         Route::get('show/{id}', 'findShoppingPlanCompany');
-        Route::prefix('year')->group(function () {
-            Route::post('create', 'createShoppingPlanCompanyYear');
-            Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
-            Route::delete('delete', 'deleteShoppingPlanCompanyYear');
-        });
+        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+    });
+
+    Route::prefix('shopping-plan-company/year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+        Route::post('create', 'createShoppingPlanCompanyYear');
+        Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
     });
 
     Route::prefix('/delete-multiple')->group(function () {
@@ -67,6 +69,7 @@ Route::middleware('auth')->group(function () {
         Route::post('supplier', [App\Http\Controllers\SupplierController::class, 'deleteMultiple']);
         Route::post('contract', [ContractController::class, 'deleteMultiple']);
         Route::post('appendix', [App\Http\Controllers\ContractAppendixController::class, 'deleteMultiple']);
+        Route::post('shopping-plan-company', [App\Http\Controllers\ShoppingPlanCompanyController::class, 'deleteMultiple']);
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);

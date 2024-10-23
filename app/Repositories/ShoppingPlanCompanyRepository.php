@@ -21,6 +21,10 @@ class ShoppingPlanCompanyRepository extends BaseRepository
             $query->whereIn('time', Arr::wrap($filters['time']));
         }
 
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
         if (!empty($filters['type'])) {
             $query->whereIn('type', Arr::wrap($filters['type']));
         }
@@ -80,5 +84,10 @@ class ShoppingPlanCompanyRepository extends BaseRepository
         }
 
         return $query->first();
+    }
+
+    public function deleteShoppingPlanCompanyByIds(array $ids)
+    {
+        return $this->_model->whereIn('id', $ids)->delete();
     }
 }

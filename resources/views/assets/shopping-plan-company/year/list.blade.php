@@ -39,6 +39,16 @@
         >
             @include('common.modal-confirm')
         </div>
+
+        <div
+            x-data="{
+                modalId: idModalConfirmDeleteMultiple,
+                contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
+            }"
+            @ok="removeMultiple"
+        >
+            @include('common.modal-confirm')
+        </div>
     </div>
 
 @endsection

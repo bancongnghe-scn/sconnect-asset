@@ -23,7 +23,7 @@
                                 <template x-for="(data,index) in dataTable">
                                     <tr>
                                         <td class="text-center align-middle">
-                                            <input type="checkbox" x-model="selectedRow[data.id]">
+                                            <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
                                         </td>
                                         <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">

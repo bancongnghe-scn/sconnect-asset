@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanOrganizationRepository extends BaseRepository
 {
@@ -22,7 +23,7 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
 
         return $query->update([
             'deleted_at' => date('Y-m-d H:i:s'),
-            'deleted_by' => $filters['user_id'],
+            'deleted_by' => Auth::id(),
         ]);
     }
 }

@@ -62,8 +62,8 @@ class AppErrorCode
     public const CODE_2054 = 2054; //  Xóa ngành hàng thất bại !
     public const CODE_2055 = 2055; //  Kế hoạch mua sắm đã tồn tại !
     public const CODE_2057 = 2057; //  Tạo kế hoạch mua sắm năm của đơn vị thất bại !
-    public const CODE_2058 = 2058; //  Kế hoạch không tồn tại !
-    public const CODE_2059 = 2059; //  Kế hoạch đã được gửi, không thể cập nhật !
-    public const CODE_2060 = 2060; //  Kế hoạch đã được gửi duyệt, không thể xóa !
+    public const CODE_2058 = 2058; //  Kế hoạch mua sắm không tồn tại !
+    public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi, không thể cập nhật !
+    public const CODE_2060 = 2060; //  Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !
     public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
 }

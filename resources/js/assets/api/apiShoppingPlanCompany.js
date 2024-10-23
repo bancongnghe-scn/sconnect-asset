@@ -27,7 +27,7 @@ window.apiGetShoppingPlanCompany = async function (filters) {
 
 window.apiRemoveShoppingPlanCompany = async function (id) {
     try {
-        const response = await axios.delete("/api/shopping-plan-company/"+id)
+        const response = await axios.delete("/api/shopping-plan-company/delete/"+id)
 
         const data = response.data;
         if (!data.success) {

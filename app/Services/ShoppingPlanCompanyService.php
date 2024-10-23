@@ -156,7 +156,7 @@ class ShoppingPlanCompanyService
         }
     }
 
-    public function deleteShoppingPlanCompanyYear($id)
+    public function deleteShoppingPlanCompany($id)
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
         if (empty($shoppingPlanCompany)) {
@@ -166,7 +166,7 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        if (ShoppingPlanCompany::STATUS_REGISTER != $shoppingPlanCompany->status) {
+        if (ShoppingPlanCompany::STATUS_NEW != $shoppingPlanCompany->status) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2060,
@@ -175,6 +175,12 @@ class ShoppingPlanCompanyService
 
         DB::beginTransaction();
         try {
+            $this->monitorRepository->deleteMonitor([
+                'target_id' => $id,
+                'type'      => Monitor::TYPE_SHOPPING_PLAN_COMPANY[$shoppingPlanCompany->type],
+            ]);
+
+
             $delete = $shoppingPlanCompany->update([
                 'deleted_at' => date('Y-m-d H:i:s'),
                 'deleted_by' => Auth::id(),
@@ -187,12 +193,6 @@ class ShoppingPlanCompanyService
                     'error_code' => AppErrorCode::CODE_2061,
                 ];
             }
-
-            $this->monitorRepository->deleteMonitor([
-                'target_id' => $id,
-                'type'      => Monitor::TYPE_SHOPPING_PLAN_COMPANY_YEAR,
-            ]);
-
 
             $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
                 'shopping_plan_company_id' => $id,
@@ -286,5 +286,31 @@ class ShoppingPlanCompanyService
         $data['monitor_ids'] = $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();
 
         return $data;
+    }
+
+    public function deleteShoppingPlanCompanyMultiple(array $ids)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->getListing([
+            'id'     => $ids,
+            'status' => [
+                ShoppingPlanCompany::STATUS_REGISTER,
+                ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+                ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
+                ShoppingPlanCompany::STATUS_DISAPPROVAL,
+            ],
+        ]);
+
+        if ($shoppingPlanCompany->isNotEmpty()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2060,
+            ];
+        }
+
+        $this->planCompanyRepository->deleteShoppingPlanCompanyByIds($ids);
+
+        return [
+            'success' => true,
+        ];
     }
 }

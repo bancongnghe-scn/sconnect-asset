@@ -67,6 +67,7 @@ document.addEventListener('alpine:init', () => {
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
+        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         idModalUI: "idModalUI",
         idModalInfo: "idModalInfo",
 
@@ -116,14 +117,14 @@ document.addEventListener('alpine:init', () => {
         async remove() {
             this.loading = true
             try {
-                const response = await window.apiRemoveAppendix(this.id)
+                const response = await window.apiRemoveShoppingPlanCompany(this.id)
                 if (!response.success) {
                     toast.error(response.message)
                     return;
                 }
                 $("#"+this.idModalConfirmDelete).modal('hide')
-                toast.success('Xóa hợp đồng thành công !')
-                await this.list(this.filters)
+                toast.success('Xóa kế hoạch mua sắm năm thành công !')
+                this.list(this.filters)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -181,11 +182,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        convertDateString(dateString) {
-            const [year, month, day] = dateString.split('-')
-            return new Date(year, month - 1, day)
-        },
-
         async handleShowModalInfo(id) {
             this.loading = true
             const response = await window.apiShowContract(id)
@@ -209,14 +205,44 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async removeMultiple() {
+            this.loading = true
+            try {
+                const response = await window.apiRemoveShoppingPlanCompanyMultiple(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+                this.list(this.filters)
+                this.selectedRow = []
+                toast.success('Xóa danh sách kế hoạch mua sắm thành công !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        confirmRemoveMultiple() {
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+            if (ids.length === 0) {
+                toast.error('Vui lòng chọn kế hoạch mua sắm cần xóa !')
+                return
+            }
+
+            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            this.id = ids
+        },
+
         changePage(page) {
             this.filters.page = page
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.getListContract(this.filters)
+            this.list(this.filters)
         },
 
         resetData() {
@@ -305,6 +331,11 @@ document.addEventListener('alpine:init', () => {
                     this.data.end_time = selectedDates.date[1] ?? null
                 }
             })
-        }
+        },
+
+        convertDateString(dateString) {
+            const [year, month, day] = dateString.split('-')
+            return new Date(year, month - 1, day)
+        },
     }));
 });

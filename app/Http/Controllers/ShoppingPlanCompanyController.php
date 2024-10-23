@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
-use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 
@@ -37,14 +35,10 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
-    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
+    public function deleteShoppingPlanCompany(string $id)
     {
         try {
-            $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
-
-            $result = $this->planCompanyService->createShoppingPlanCompany($data);
-
+            $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }
@@ -55,27 +49,16 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
-    public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
+    public function deleteMultiple(Request $request)
     {
+        $request->validate([
+            'ids'   => 'required|array',
+            'ids.*' => 'integer',
+        ]);
+
         try {
-            $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
-            $result       = $this->planCompanyService->updateShoppingPlanCompany($data, $id);
+            $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'));
 
-            if (!$result['success']) {
-                return response_error($result['error_code']);
-            }
-
-            return response_success();
-        } catch (\Throwable $exception) {
-            return response_error();
-        }
-    }
-
-    public function deleteShoppingPlanCompanyYear(string $id)
-    {
-        try {
-            $result = $this->planCompanyService->deleteShoppingPlanCompanyYear($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }
