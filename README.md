@@ -6,6 +6,7 @@
 - vim .git/hooks/pre-commit
 - Thêm đoạn mã sau vào file  (#!/bin/sh ./vendor/bin/php-cs-fixer fix git add .
   )
+  <!-- git commit -am "build" -->
 ## Using
 - Check quyền Auth::user()->can('permission_name')
 
