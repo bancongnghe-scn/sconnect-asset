@@ -41,11 +41,10 @@ class RoleService
 
             $permissionIds = $data['permission_ids'] ?? [];
             if (!empty($permissionIds)) {
-                resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role);
+                resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role->id);
             }
             DB::commit();
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
 
             return [

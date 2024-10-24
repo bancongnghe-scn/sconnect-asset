@@ -26,25 +26,38 @@ class ShoppingPlanCompanyService
 
     public function getListPlanCompany(array $filters)
     {
+        $planCompany        = [];
+        $user               = Auth::user();
+        $isRoleOrganization = $user->hasRole('Giám đốc đơn vị');
+        if (!$isRoleOrganization) {
+            $planCompany = $this->planCompanyRepository->getListing($filters, [
+                'id', 'name', 'time',
+                'start_time', 'end_time', 'plan_year_id',
+                'status', 'created_by', 'created_at',
+            ]);
+        }
 
-        $planCompany = $this->planCompanyRepository->getListing($filters, [
-            'id', 'name', 'time',
-            'start_time', 'end_time', 'plan_year_id',
-            'status', 'created_by', 'created_at',
-        ]);
+        if ($isRoleOrganization) {
+            $planCompany = $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']);
+        }
 
         if (empty($planCompany)) {
             return [];
         }
 
         $userIds = $planCompany->pluck('created_by')->toArray();
-        $users   = $this->userRepository->getListing(['id' => $userIds]);
+        $users   = $this->userRepository->getListing(['id' => $userIds], ['id', 'name', 'code']);
 
-        return ListShoppingPlanCompanyResource::make($planCompany)
-            ->additional([
-                'users' => $users->keyBy('id'),
-            ])
-            ->resolve();
+        return [
+            'data' => ListShoppingPlanCompanyResource::make($planCompany)
+                ->additional([
+                    'users' => $users->keyBy('id'),
+                ])
+                ->resolve(),
+            'extra_data' => [
+                'is_personnel' => Auth::user()->hasRole('Chuyên viên nhân sư'),
+            ],
+        ];
     }
 
     public function createShoppingPlanCompany(array $data)
@@ -98,6 +111,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
 
             return [

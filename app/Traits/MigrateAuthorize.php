@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use Spatie\Permission\Exceptions\UnauthorizedException;
+
 trait MigrateAuthorize
 {
     public function canPer($abilities, $throwException = true)
@@ -15,7 +17,7 @@ trait MigrateAuthorize
             return false;
         }
 
-        throw new static(403, 'Bạn không có quyền thực hiện thao tác này', null, []);
+        throw new UnauthorizedException(403, 'Bạn không có quyền thực hiện thao tác này');
     }
 
     public function canAnyPer(array $abilities, $throwException = false): bool
@@ -27,7 +29,7 @@ trait MigrateAuthorize
         }
 
         if ($throwException) {
-            throw new static(403, 'Bạn không có quyền thực hiện thao tác này', null, []);
+            throw new UnauthorizedException(403, 'Bạn không có quyền thực hiện thao tác này');
         }
 
         return false;

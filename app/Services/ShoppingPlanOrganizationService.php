@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Organization;
+use App\Models\ShoppingPlanOrganization;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use Illuminate\Support\Facades\Auth;
@@ -21,16 +21,12 @@ class ShoppingPlanOrganizationService
             $organizationIds = $this->organizationRepository->all()->pluck('id')->toArray();
         }
 
-        // lấy danh sách quản lý của đơn vị
-        $managerIds  = $organizationIds;
-
         $dataInsert  = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
-                'status'                   => Organization::STATUS_REGISTER,
+                'status'                   => ShoppingPlanOrganization::STATUS_NEW,
                 'organization_id'          => $organizationId,
                 'shopping_plan_company_id' => $shoppingPlanCompanyId,
-                'manager_id'               => $organizationId,
                 'created_by'               => Auth::id(),
             ];
         }

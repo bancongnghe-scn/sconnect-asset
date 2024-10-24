@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanCompanyYearController extends Controller
 {
@@ -16,6 +17,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
+        Auth::user()->canPer('insert.list_shopping_plan');
+
         try {
             $data         = $request->validated();
             $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
@@ -34,6 +37,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
+        Auth::user()->canPer('update.list_shopping_plan');
+
         try {
             $data         = $request->validated();
             $data['type'] = ShoppingPlanCompany::TYPE_YEAR;

@@ -16,9 +16,6 @@ class Authenticate extends Middleware
      */
     public function handle($request, \Closure $next, ...$guards): mixed
     {
-        Auth::loginUsingId(1);
-
-        return $next($request);
         if (config('sso.login-local')) {
             $this->authenticate($request, $guards);
 

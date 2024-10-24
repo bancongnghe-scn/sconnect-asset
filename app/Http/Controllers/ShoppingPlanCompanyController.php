@@ -27,11 +27,12 @@ class ShoppingPlanCompanyController extends Controller
             'end_time'     => 'nullable|date|date_format:Y-m-d',
         ]);
 
-        Auth::user()->canPer('test');
+        Auth::user()->canPer('view.list_shopping_plan');
+
         try {
             $result = $this->planCompanyService->getListPlanCompany($request->all());
 
-            return response_success($result);
+            return response_success($result['data'], extraData: $result['extra_data']);
         } catch (\Throwable $exception) {
             return response_error();
         }

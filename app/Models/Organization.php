@@ -9,6 +9,4 @@ class Organization extends Model
 {
     use HasFactory;
     protected $table = 'organizations';
-
-    public const STATUS_REGISTER = 1;
 }

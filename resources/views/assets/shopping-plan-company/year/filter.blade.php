@@ -5,7 +5,7 @@
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Năm</label>
-                        <input type="text" class="form-control yearPicker" id="filterYear" placeholder="Chọn năm" autocomplete="off">
+                        <input type="text" class="form-control yearPicker" id="filterYear" x-model="filters.time" placeholder="Chọn năm" autocomplete="off">
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
@@ -17,6 +17,9 @@
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
+                    </div>
+                    <div class="col-auto">
+                        <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
                     </div>
                 </div>
             </div>

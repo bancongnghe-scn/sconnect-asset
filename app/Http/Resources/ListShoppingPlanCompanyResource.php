@@ -21,7 +21,7 @@ class ListShoppingPlanCompanyResource extends JsonResource
                 'start_time'      => date('d/m/Y', strtotime($shoppingPlan->start_time)),
                 'end_time'        => date('d/m/Y', strtotime($shoppingPlan->end_time)),
                 'created_at'      => date('d/m/Y', strtotime($shoppingPlan->created_at)),
-                'user_name'       => $user['name'] ?? null,
+                'user'            => $user,
                 'status_register' => !$now->isAfter($shoppingPlan->end_time),
             ];
         }

@@ -18,14 +18,9 @@ document.addEventListener('alpine:init', () => {
         columns: {
             name: 'Kế hoạch',
             register_time: 'Thời gian đăng ký',
-            created_by: 'Người tạo',
+            user: 'Người tạo',
             created_at: 'Ngày tạo',
             status: 'Trạng thái',
-        },
-        showAction: {
-            view: false,
-            edit: true,
-            remove: true
         },
         selectedRow: [],
 
@@ -62,6 +57,7 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         dateRangePicker: null,
+        isPersonnel: false,
 
         title: null,
         action: null,
@@ -88,6 +84,7 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
+                this.isPersonnel = data.is_personnel
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -258,11 +255,12 @@ document.addEventListener('alpine:init', () => {
         reloadPage() {
             this.filters = {
                 time: null,
-                status: null,
+                status: [],
                 type: 1,
                 limit: 10,
                 page: 1
             }
+            $('#filterStatus').val([]).change()
 
             this.list(this.filters)
         },
