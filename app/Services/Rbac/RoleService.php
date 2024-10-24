@@ -119,21 +119,17 @@ class RoleService
             }
 
             $userIds = $data['user_ids'] ?? [];
-            if (!empty($userIds)) {
-                resolve(RoleUserService::class)->updateRoleUsers($userIds, $role);
-            }
+            resolve(RoleUserService::class)->updateRoleUsers($userIds, $role);
 
-            $permissionIds = $data['permission_ids'] ?? [];
-            if (!empty($permissionIds)) {
-                $updateRolePermissions = resolve(RolePermissionService::class)->updateRolePermissions($permissionIds, $id);
-                if (!$updateRolePermissions) {
-                    DB::rollBack();
+            $permissionIds         = $data['permission_ids'] ?? [];
+            $updateRolePermissions = resolve(RolePermissionService::class)->updateRolePermissions($permissionIds, $id);
+            if (!$updateRolePermissions) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2042,
-                    ];
-                }
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2042,
+                ];
             }
 
             DB::commit();

@@ -165,16 +165,14 @@ class MenuService
                 ];
             }
 
-            $roleIds = $data['role_ids'] ?? [];
-            if (!empty($roleIds)) {
-                $updateMenuRoles = resolve(MenuRoleService::class)->updateMenuRoles($roleIds, $menu->id);
+            $roleIds         = $data['role_ids'] ?? [];
+            $updateMenuRoles = resolve(MenuRoleService::class)->updateMenuRoles($roleIds, $menu->id);
 
-                if (!$updateMenuRoles) {
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2055,
-                    ];
-                }
+            if (!$updateMenuRoles) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2055,
+                ];
             }
 
             Cache::tags('menu_tag')->clear();

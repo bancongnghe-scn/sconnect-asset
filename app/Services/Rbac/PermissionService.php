@@ -130,21 +130,17 @@ class PermissionService
             }
 
             $userIds = $data['user_ids'] ?? [];
-            if (!empty($userIds)) {
-                resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
-            }
+            resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
 
-            $roleIds = $data['role_ids'] ?? [];
-            if (!empty($roleIds)) {
-                $updateRolesPermission = resolve(RolePermissionService::class)->updateRolesPermission($roleIds, $id);
-                if (!$updateRolesPermission) {
-                    DB::rollBack();
+            $roleIds               = $data['role_ids'] ?? [];
+            $updateRolesPermission = resolve(RolePermissionService::class)->updateRolesPermission($roleIds, $id);
+            if (!$updateRolesPermission) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2050,
-                    ];
-                }
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2050,
+                ];
             }
 
             DB::commit();
