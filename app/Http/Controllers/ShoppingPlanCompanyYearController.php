@@ -37,7 +37,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
-        Auth::user()->canPer('update.list_shopping_plan');
+        Auth::user()->canPer('insert.list_shopping_plan');
 
         try {
             $data         = $request->validated();

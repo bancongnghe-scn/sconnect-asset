@@ -1,17 +1,15 @@
-<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalInsert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="title + ' kế hoạch'"></h4>
+                <h4 class="modal-title">Thêm mới kế hoạch</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                     <div>
                         <label class="tw-font-bold">Năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <input type="text" class="form-control yearPicker" x-model="data.time" id="selectYear" placeholder="Chọn năm" autocomplete="off"
-                            :disabled="data.status !== null && +data.status !== 1"
-                        >
+                        <input type="text" class="form-control yearPicker" x-model="data.time" id="selectYear" placeholder="Chọn năm" autocomplete="off">
                     </div>
 
                     <div>
@@ -31,7 +29,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
+                <button @click="create" type="button" class="btn btn-sc">Lưu</button>
             </div>
         </div>
     </div>

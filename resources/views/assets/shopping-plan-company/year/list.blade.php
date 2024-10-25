@@ -4,34 +4,37 @@
 
 @section('content')
     <div x-data="shoppingPlanCompanyYear">
-        <template x-if="isPersonnel">
-            <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+            <template x-if="permission.create">
                 <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                     Thêm mới
                 </button>
-                <button type="button" class="btn tw-bg-red-600 tw-text-white"  @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+            </template>
+            <template x-if="permission.remove">
+                <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple"
+                        :disabled="window.checkDisableSelectRow">
                     Xóa chọn
                 </button>
-            </div>
-        </template>
+            </template>
+        </div>
 
         <div>
             @include('assets.shopping-plan-company.year.filter')
         </div>
 
         <div
-                @edit="handleShowModalUI('update', $event.detail.id)"
-                @remove="confirmRemove($event.detail.id)"
-                @view="handleShowModalInfo($event.detail.id)"
-                @change-page.window="changePage($event.detail.page)"
-                @change-limit.window="changeLimit"
+            @edit="handleShowModalUI('update', $event.detail.id)"
+            @remove="confirmRemove($event.detail.id)"
+            @view="handleShowModalInfo($event.detail.id)"
+            @change-page.window="changePage($event.detail.page)"
+            @change-limit.window="changeLimit"
         >
             @include('assets.shopping-plan-company.year.table')
         </div>
 
         {{--  modal--}}
-        @include('assets.shopping-plan-company.year.modalUI')
-{{--        @include('assets.shopping-plan-company.year.modalInfo')--}}
+        @include('assets.shopping-plan-company.year.modalInsert')
+        {{--        @include('assets.shopping-plan-company.year.modalInfo')--}}
         <div
             x-data="{
                         modalId: idModalConfirmDelete,

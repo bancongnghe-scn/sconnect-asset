@@ -9,7 +9,7 @@ document.addEventListener('alpine:init', () => {
             this.getListUser()
             this.initYearPicker()
             this.initDateRangePicker()
-            window.initSelect2Modal(this.idModalUI)
+            window.initSelect2Modal('idModalInsert')
             this.onChangeSelect2()
         },
 
@@ -57,14 +57,12 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         dateRangePicker: null,
-        isPersonnel: false,
+        permission: [],
 
-        title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalUI: "idModalUI",
         idModalInfo: "idModalInfo",
 
         //methods
@@ -84,7 +82,7 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                this.isPersonnel = data.is_personnel
+                this.permission = data.permission
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -101,7 +99,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 toast.success('Cập nhập kế hoạch năm thành công !')
-                $('#'+this.idModalUI).modal('hide');
+                $('#idModalUpdate').modal('hide');
                 this.resetData()
                 this.list(this.filters)
             } catch (e) {
@@ -138,7 +136,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 toast.success('Tạo kế hoạch mua sắm năm thành công !')
-                $('#'+this.idModalUI).modal('hide');
+                $('#idModalInsert').modal('hide');
                 this.resetData()
                 this.reloadPage()
             } catch (e) {
@@ -153,10 +151,9 @@ document.addEventListener('alpine:init', () => {
             try {
                 this.action = action
                 if (action === 'create') {
-                    this.title = 'Thêm mới'
                     this.resetData()
+                    $('#idModalInsert').modal('show');
                 } else {
-                    this.title = 'Cập nhật'
                     this.id = id
                     const response = await window.apiShowShoppingPlanCompany(id)
                     if (!response.success) {
@@ -170,8 +167,8 @@ document.addEventListener('alpine:init', () => {
                     this.data.end_time = data.end_time
                     this.data.monitor_ids = data.monitor_ids
                     this.dateRangePicker.selectDate([this.convertDateString(this.data.start_time), this.convertDateString(this.data.end_time)]);
+                    $('#idModalUpdate').modal('show');
                 }
-                $('#'+this.idModalUI).modal('show');
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -250,6 +247,7 @@ document.addEventListener('alpine:init', () => {
                 end_time: null,
                 monitor_ids: [],
             }
+            this.dateRangePicker.clear()
         },
 
         reloadPage() {

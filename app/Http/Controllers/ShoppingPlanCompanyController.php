@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanCompanyController extends Controller
 {
@@ -27,12 +26,10 @@ class ShoppingPlanCompanyController extends Controller
             'end_time'     => 'nullable|date|date_format:Y-m-d',
         ]);
 
-        Auth::user()->canPer('view.list_shopping_plan');
-
         try {
             $result = $this->planCompanyService->getListPlanCompany($request->all());
 
-            return response_success($result['data'], extraData: $result['extra_data']);
+            return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
             return response_error();
         }
@@ -76,6 +73,17 @@ class ShoppingPlanCompanyController extends Controller
     {
         try {
             $result = $this->planCompanyService->findShoppingPlanCompany($id);
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function sentNotificationRegister(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->sentNotificationRegister($id);
 
             return response_success($result);
         } catch (\Throwable $exception) {

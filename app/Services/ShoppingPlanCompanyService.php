@@ -26,19 +26,31 @@ class ShoppingPlanCompanyService
 
     public function getListPlanCompany(array $filters)
     {
-        $planCompany        = [];
-        $user               = Auth::user();
-        $isRoleOrganization = $user->hasRole('Giám đốc đơn vị');
-        if (!$isRoleOrganization) {
-            $planCompany = $this->planCompanyRepository->getListing($filters, [
-                'id', 'name', 'time',
-                'start_time', 'end_time', 'plan_year_id',
-                'status', 'created_by', 'created_at',
-            ]);
-        }
+        $user = Auth::user();
+        if ($user->canPer('view.list_shopping_plan', throwException: false)) {
+            $planCompany = $user->hasRole('Giám đốc đơn vị') ? $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']) :
+                $this->planCompanyRepository->getListing($filters, [
+                    'id', 'name', 'time',
+                    'start_time', 'end_time', 'plan_year_id',
+                    'status', 'created_by', 'created_at',
+                ]);
 
-        if ($isRoleOrganization) {
-            $planCompany = $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']);
+            $permissionCD   = 2 == $user['id'] || $user->hasRole('Chuyên viên nhân sự');
+            $permissionEdit = $permissionCD || $user->hasRole('Giám đốc đơn vị');
+            $permissions    = [
+                'create'  => $permissionCD,
+                'update'  => $permissionEdit,
+                'remove'  => $permissionCD,
+                'approve' => 2 == $user['id'] || 3 == $user['id'] || 8 == $user['id'],
+            ];
+        } else {
+            $planCompany = $this->getShoppingPlanCompanyOfMonitor($filters, $user->id);
+            $permissions = [
+                'create'  => false,
+                'update'  => false,
+                'remove'  => false,
+                'approve' => false,
+            ];
         }
 
         if (empty($planCompany)) {
@@ -55,7 +67,7 @@ class ShoppingPlanCompanyService
                 ])
                 ->resolve(),
             'extra_data' => [
-                'is_personnel' => Auth::user()->hasRole('Chuyên viên nhân sư'),
+                'permission' => $permissions,
             ],
         ];
     }
@@ -111,7 +123,6 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
 
             return [
@@ -327,5 +338,25 @@ class ShoppingPlanCompanyService
         return [
             'success' => true,
         ];
+    }
+
+    public function getShoppingPlanCompanyOfMonitor(array $filters, $userId = null)
+    {
+        if (is_null($userId)) {
+            $userId = Auth::id();
+        }
+        $monitors = $this->monitorRepository->getListing([
+            'type'    => Monitor::TYPE_SHOPPING_PLAN_COMPANY[$filters['type']],
+            'user_id' => $userId,
+        ]);
+
+        if ($monitors->isEmpty()) {
+            return [];
+        }
+
+        $planCompanyIds = $monitors->pluck('target_id')->toArray();
+        $filters['id']  = $planCompanyIds;
+
+        return $this->planCompanyRepository->getListing($filters);
     }
 }
