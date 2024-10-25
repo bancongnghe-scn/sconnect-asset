@@ -65,15 +65,8 @@ document.addEventListener('alpine:init', () => {
             files: [],
             payments: []
         },
-        listTypeContract: {
-            1: 'Hợp đồng mua bán',
-            2: 'Hợp đồng nguyên tắc',
-        },
-        listStatusContract: {
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Hủy'
-        },
+        listTypeContract: typeContract,
+        listStatusContract: statusContract,
         listSupplier: [],
         listUser: [],
         title: null,
@@ -87,12 +80,6 @@ document.addEventListener('alpine:init', () => {
         //methods
         async list(filters) {
             this.loading = true
-            if (filters.signing_date) {
-                filters.signing_date = format(filters.signing_date, 'yyyy-MM-dd')
-            }
-            if (filters.from) {
-                filters.from = format(filters.from, 'yyyy-MM-dd')
-            }
             const response = await window.apiGetContract(filters)
             if (response.success) {
                 const data = response.data
@@ -353,8 +340,9 @@ document.addEventListener('alpine:init', () => {
             contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
             contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
             contract.files = contract.files ?? []
-            const payments = contract.payments ?? []
-            payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
+            contract.payments = contract.payments ?? []
+            contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
+            console.log(contract)
             return contract
         },
 

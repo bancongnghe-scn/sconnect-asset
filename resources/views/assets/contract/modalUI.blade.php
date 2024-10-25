@@ -77,7 +77,7 @@
                             <div class="mt-2 d-flex flex-column tw-gap-y-2">
                                 <template x-for="(file, index) in data.files" :key="index">
                                     <div>
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
+                                        <button @click="data.files.splice(index, 1)" class="border-0 bg-white"><i class="fa-solid fa-circle-xmark tw-cursor-pointer"></i></button>
                                         <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
                                         <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
@@ -108,7 +108,7 @@
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker" name="selectPaymentDate"
-                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="data.payment_date" :id="index">
+                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="payment.payment_date" :id="index">
                                                 <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
                                             </div>
                                         </td>

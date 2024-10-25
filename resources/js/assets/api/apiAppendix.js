@@ -147,7 +147,6 @@ window.apiUpdateAppendix = async function (dataUpdate, id) {
             data: data
         }
     } catch (error) {
-        console.log(error)
         return {
             success: false,
             message: error?.response?.data?.message || error?.message

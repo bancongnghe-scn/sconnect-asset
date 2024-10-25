@@ -62,11 +62,7 @@ document.addEventListener('alpine:init', () => {
             files: [],
         },
         listContract: [],
-        listStatus: {
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Hủy'
-        },
+        listStatus: statusAppendix,
         listUser: [],
         title: null,
         action: null,

@@ -54,7 +54,6 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                toast.success('Lấy danh sách ngành hàng thành công !')
             } else {
                 toast.error('Lấy danh sách ngành hàng thất bại !')
             }

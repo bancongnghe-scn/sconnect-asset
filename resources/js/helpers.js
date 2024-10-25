@@ -1,3 +1,5 @@
+import {format} from "date-fns";
+
 window.generateShortCode = async function () {
     const now = Date.now();
     const shortCode = now.toString(36);
@@ -43,4 +45,10 @@ window.initSelect2Modal = function initSelect2Modal(modalId) {
 window.checkDisableSelectRow = function checkDisableSelectRow() {
     const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
     return ids.length === 0
+}
+
+window.formatDate = function formatDate(date) {
+    const [day, month, year] = date.split('/').map(Number); // Tách chuỗi và chuyển đổi thành số
+    date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
+    return format(date, 'yyyy-MM-dd')
 }
