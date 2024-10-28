@@ -342,7 +342,6 @@ document.addEventListener('alpine:init', () => {
             contract.files = contract.files ?? []
             contract.payments = contract.payments ?? []
             contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
-            console.log(contract)
             return contract
         },
 

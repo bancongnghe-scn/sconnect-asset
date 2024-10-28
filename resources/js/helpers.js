@@ -35,11 +35,28 @@ window.formatCurrencyVND = function formatCurrencyVND(number) {
 }
 
 window.initSelect2Modal = function initSelect2Modal(modalId) {
-    $(`#${modalId}`).on('shown.bs.modal', function () {
-        $('.select2').select2({
-            dropdownParent: $(`#${modalId}`)
-        })
-    })
+    const modalElement = $(`#${modalId}`);
+
+    modalElement.on('shown.bs.modal', function () {
+        // Khởi tạo select2 khi mở modal
+        $('.select2', modalElement).select2({
+            language: {
+                noResults: function() {
+                    return "Không tìm thấy kết quả";
+                }
+            },
+            dropdownParent: modalElement
+        });
+    });
+
+    modalElement.on('hidden.bs.modal', function () {
+        // Kiểm tra nếu select2 đã được khởi tạo trước khi gọi destroy
+        $('.select2', modalElement).each(function() {
+            if ($(this).hasClass('select2-hidden-accessible')) {
+                $(this).select2('destroy');
+            }
+        });
+    });
 }
 
 window.checkDisableSelectRow = function checkDisableSelectRow() {
