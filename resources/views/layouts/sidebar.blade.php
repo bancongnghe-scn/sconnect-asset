@@ -23,15 +23,13 @@
                                 <i x-show="menu.children.length > 0" class="right fas fa-angle-left"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview disc pl-10">
+                        <ul class="nav nav-treeview">
                             <template x-for="child in menu.children">
                                 <li class="nav-item rounded text-white bg-white-opacity-10-hover"
                                     :class="window.location.pathname === child.url ? 'bg-white-opacity-10' : 'bg-white-opacity-10-hover'">
-                                    <a :href="child.url" class="text-decoration-none text-white">
-                                        <p class="p-1">
-                                            <i :class="child.icon"></i>
-                                            <span class="pl-1" x-text="child.name"></span>
-                                        </p>
+                                    <a :href="child.url" class="nav-link text-decoration-none text-white d-flex align-items-center tw-pl-7">
+                                        <i class="fa-solid fa-circle" style="font-size: 7px"></i>
+                                        <p class="tw-pl-2.5" x-text="child.name"></p>
                                     </a>
                                 </li>
                             </template>
