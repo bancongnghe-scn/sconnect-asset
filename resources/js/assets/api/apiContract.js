@@ -105,7 +105,6 @@ window.apiShowContract = async function (id) {
 window.apiCreateContract = async function (dataCreate) {
     try {
         const formData = window.formData(formatContract(dataCreate))
-
         const response = await axios.post("/api/contract",formData)
 
         const data = response.data;
@@ -155,12 +154,13 @@ window.apiUpdateContract = async function (dataUpdate, id) {
 }
 
 function formatContract(contract) {
-    contract.signing_date = contract.signing_date ? window.formatDate(contract.signing_date) : null
-    contract.from = contract.from ? window.formatDate(contract.from) : null
-    contract.to = contract.to ? window.formatDate(contract.to) : null
-    contract.payments = contract.payments.map(payment => ({
+    let dataFormat = JSON.parse(JSON.stringify(contract))
+    dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
+    dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
+    dataFormat.to = dataFormat.to ? window.formatDate(dataFormat.to) : null
+    dataFormat.payments = dataFormat.payments.map(payment => ({
         ...payment,
         payment_date: payment.payment_date ? window.formatDate(payment.payment_date) : null
     }))
-    return contract
+    return dataFormat
 }
