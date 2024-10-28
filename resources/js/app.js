@@ -11,7 +11,13 @@ import './helpers.js'
 
 window.Alpine = Alpine
 document.addEventListener('DOMContentLoaded', () => {
-    $('.select2').select2()
+    $('.select2').select2({
+        language: {
+            noResults: function() {
+                return "Không tìm thấy kết quả";
+            }
+        }
+    })
     Alpine.start();
 });
 

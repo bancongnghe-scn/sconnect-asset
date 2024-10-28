@@ -17,7 +17,7 @@ class SupplierController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'code_name'      => 'nullable|string',
+            'code_name'      => 'nullable|string|max:255',
             'industry_ids'   => 'nullable|array',
             'industry_ids.*' => 'integer',
             'status'         => 'nullable|array',

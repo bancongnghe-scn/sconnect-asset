@@ -8,7 +8,7 @@ document.addEventListener('alpine:init', () => {
         //dataTable
         dataTable: [],
         columns: {
-            name: 'Tên loại',
+            name: 'Tên nhóm tài sản',
             description: 'Mô tả'
         },
         showAction: {

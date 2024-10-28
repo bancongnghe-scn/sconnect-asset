@@ -32,7 +32,7 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name_code'    => 'nullable|string',
+            'name_code'    => 'nullable|string|max:255',
             'type'         => 'nullable|array',
             'type.*'       => 'integer',
             'status'       => 'nullable|array',

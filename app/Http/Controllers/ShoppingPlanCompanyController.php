@@ -16,7 +16,7 @@ class ShoppingPlanCompanyController extends Controller
     public function getListShoppingPlanCompany(Request $request)
     {
         $request->validate([
-            'name'         => 'nullable|string',
+            'name'         => 'nullable|string|max:255',
             'plan_year_id' => 'nullable|integer',
             'time'         => 'nullable|integer',
             'type'         => 'nullable|integer',

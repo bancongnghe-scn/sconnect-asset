@@ -22,8 +22,8 @@ class StoreContractRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'                    => 'required|string',
-            'name'                    => 'required|string',
+            'code'                    => 'required|string|max:255',
+            'name'                    => 'required|string|max:255',
             'type'                    => 'required|integer',
             'supplier_id'             => 'required|integer',
             'signing_date'            => 'required|date|date_format:Y-m-d',

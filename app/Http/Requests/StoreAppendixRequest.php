@@ -23,8 +23,8 @@ class StoreAppendixRequest extends FormRequest
     {
         return [
             'contract_id'             => 'required|integer',
-            'code'                    => 'required|string',
-            'name'                    => 'required|string',
+            'code'                    => 'required|string|max:255',
+            'name'                    => 'required|string|max:255',
             'signing_date'            => 'required|date|date_format:Y-m-d',
             'from'                    => 'required|date|date_format:Y-m-d',
             'to'                      => 'nullable|date_format:Y-m-d|after:from',

@@ -14,7 +14,7 @@ class IndexAppendixRequest extends FormRequest
     public function rules()
     {
         return [
-            'name_code'       => 'nullable|string',
+            'name_code'       => 'nullable|string|max:255',
             'contract_ids'    => 'nullable|array',
             'contract_ids.*'  => 'integer',
             'status'          => 'nullable|array',
