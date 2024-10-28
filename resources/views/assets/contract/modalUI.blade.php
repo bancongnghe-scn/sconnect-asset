@@ -1,4 +1,4 @@
-<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalUIContract" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -39,15 +39,15 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDateContract", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "data.from"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFromContract", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "data.to"])
+                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectToContract", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
@@ -64,7 +64,7 @@
                             <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="data.contract_value">
                         </div>
                         <div class="col-5">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
+                            <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>

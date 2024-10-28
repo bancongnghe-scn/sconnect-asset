@@ -25,11 +25,11 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
-                        @include('common.datepicker',['placeholder' => "Ngày ký", 'id' => 'filterSigningDate'])
+                        @include('common.datepicker',['placeholder' => "Ngày ký", 'id' => 'filterSigningDateContract'])
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày hiệu lực</label>
-                        @include('common.datepicker', ['placeholder' => "Ngày hiệu lực", 'id' => "filterFrom"])
+                        @include('common.datepicker', ['placeholder' => "Ngày hiệu lực", 'id' => "filterFromContract"])
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

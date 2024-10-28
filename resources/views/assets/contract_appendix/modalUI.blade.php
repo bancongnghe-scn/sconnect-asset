@@ -1,4 +1,4 @@
-<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalUIAppendix" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -51,7 +51,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
+                            <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>

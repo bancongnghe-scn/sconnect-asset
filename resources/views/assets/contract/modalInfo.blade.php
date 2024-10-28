@@ -62,7 +62,7 @@
                             <input type="number" class="form-control" x-model="data.contract_value" disabled>
                         </div>
                         <div class="col-5">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
+                            <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" disabled></textarea>
                         </div>
                     </div>

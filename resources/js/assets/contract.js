@@ -74,7 +74,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalUI: "idModalUI",
+        idModalUI: "idModalUIContract",
         idModalInfo: "idModalInfo",
 
         //methods
@@ -255,8 +255,8 @@ document.addEventListener('alpine:init', () => {
             }
             $('#filterTypeContract').val([]).change()
             $('#filterStatusContract').val([]).change()
-            $('#filterSigningDate').val(null).change()
-            $('#filterFrom').val(null).change()
+            $('#filterSigningDateContract').val(null).change()
+            $('#filterFromContract').val(null).change()
         },
 
         confirmRemove(id) {
@@ -294,17 +294,17 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'selectSigningDate') {
+            if(el.id === 'selectSigningDateContract') {
                 this.data.signing_date = storageFormat
-            } else if (el.id === 'selectFrom') {
+            } else if (el.id === 'selectFromContract') {
                 this.data.from = storageFormat
-            } else if (el.id === 'selectTo') {
+            } else if (el.id === 'selectToContract') {
                 this.data.to = storageFormat
             } else if (el.name === 'selectPaymentDate') {
                 this.data.payments[el.id].payment_date = storageFormat
-            } else if (el.id === 'filterSigningDate') {
+            } else if (el.id === 'filterSigningDateContract') {
                 this.filters.signing_date = storageFormat
-            } else if (el.id === 'filterFrom') {
+            } else if (el.id === 'filterFromContract') {
                 this.filters.from = storageFormat
             }
         },

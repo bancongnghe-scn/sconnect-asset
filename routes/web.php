@@ -27,12 +27,11 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::view('menu/list', 'rbac.menu.list');
     });
 
-    Route::view('/', 'home')->name('home');
+    Route::view('/home', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
     Route::view('asset-type/list', 'assets.asset_type.list');
     Route::view('industry/list', 'assets.industry.list');
     Route::view('supplier/list', 'assets.supplier.list');
-    Route::view('contract/list', 'assets.contract.list');
-    Route::view('contract-appendix/list', 'assets.contract_appendix.list');
+    Route::view('contract/list', 'assets.contract.listContractAndAppendix');
     Route::view('shopping-plan-company/year/list', 'assets.shopping-plan-company.year.list');
 });

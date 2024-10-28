@@ -69,7 +69,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalUI: "idModalUI",
+        idModalUI: "idModalUIAppendix",
         idModalInfo: "idModalInfo",
 
         //methods

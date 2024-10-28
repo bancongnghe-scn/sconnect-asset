@@ -50,7 +50,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
+                            <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" disabled></textarea>
                         </div>
                     </div>
