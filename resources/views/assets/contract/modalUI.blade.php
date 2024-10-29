@@ -39,15 +39,30 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDateContract", 'model' => "data.signing_date"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectSigningDateContract"
+                                       placeholder="Chọn ngày ký" autocomplete="off"
+                                       x-model="data.signing_date">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFromContract", 'model' => "data.from"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectFromContract"
+                                       placeholder="Chọn ngày bắt đầu" autocomplete="off"
+                                       x-model="data.from">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectToContract", 'model' => "data.to"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectToContract"
+                                       placeholder="Chọn ngày kết thúc" autocomplete="off"
+                                       x-model="data.to">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
@@ -63,9 +78,15 @@
                             <label class="form-label">Tổng giá trị hợp đồng</label>
                             <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="data.contract_value">
                         </div>
-                        <div class="col-5">
+                        <div class="col-9">
                             <label class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
+                            <input type="text" class="form-control"  x-model="data.description" placeholder="Nhập ghi chú"></input>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Link đính kèm</label>
+                            <textarea class="form-control tw-h-40" x-model="data.contract_link" placeholder="Nhập link đính kèm"></textarea>
                         </div>
                     </div>
                     <div class="row">

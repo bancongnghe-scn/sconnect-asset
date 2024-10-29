@@ -50,7 +50,12 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-12">
+                        <div class="col-6">
+                            <label class="form-label">Link đính kèm</label>
+                            <textarea class="form-control tw-h-40" x-model="data.link" placeholder="Nhập link đính kèm"></textarea>
+                        </div>
+
+                        <div class="col-6">
                             <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>

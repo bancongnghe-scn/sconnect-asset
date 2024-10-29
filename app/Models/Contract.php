@@ -21,6 +21,7 @@ class Contract extends Model
         'from',
         'to',
         'description',
+        'contract_link',
         'status',
         'type',
         'created_by',

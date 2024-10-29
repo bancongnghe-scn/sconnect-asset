@@ -20,6 +20,7 @@ class ContractAppendix extends Model
         'from',
         'to',
         'description',
+        'link',
         'contract_id',
         'status',
         'created_by',

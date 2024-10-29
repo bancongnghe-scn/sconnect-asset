@@ -61,9 +61,15 @@
                             <label class="form-label">Tổng giá trị hợp đồng</label>
                             <input type="number" class="form-control" x-model="data.contract_value" disabled>
                         </div>
-                        <div class="col-5">
+                        <div class="col-9">
                             <label class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="data.description" disabled></textarea>
+                            <input type="text" class="form-control" x-model="data.description" disabled>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label">Link đính kèm</label>
+                            <textarea class="form-control tw-h-40" x-model="data.contract_link" disabled></textarea>
                         </div>
                     </div>
                     <div class="row">

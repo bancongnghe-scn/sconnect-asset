@@ -32,6 +32,7 @@ class StoreContractRequest extends FormRequest
             'user_ids'                => 'required|array',
             'user_ids.*'              => 'integer',
             'contract_value'          => 'nullable|integer',
+            'contract_link'           => 'nullable|string',
             'description'             => 'nullable|string',
             'files'                   => 'nullable|array',
             'payments'                => 'nullable|array',

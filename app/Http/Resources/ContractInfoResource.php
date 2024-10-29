@@ -19,6 +19,7 @@ class ContractInfoResource extends JsonResource
             'from'           => $this->resource->from,
             'to'             => $this->resource->to,
             'contract_value' => $this->resource->contract_value,
+            'contract_link'  => $this->resource->contract_link,
             'description'    => $this->resource->description,
         ];
 

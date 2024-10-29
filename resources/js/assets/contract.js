@@ -59,9 +59,10 @@ document.addEventListener('alpine:init', () => {
             signing_date: null,
             from: null,
             to: null,
-            user_ids: [],
             contract_value: null,
             description: null,
+            contract_link: null,
+            user_ids: [],
             files: [],
             payments: [],
             appendixes: [],
@@ -348,7 +349,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         initDatePicker() {
-            document.querySelectorAll('.datepicker').forEach(el => {
+            document.querySelectorAll('.datepickerContract').forEach(el => {
                 new AirDatepicker(el, {
                     autoClose: true,
                     clearButton: true,

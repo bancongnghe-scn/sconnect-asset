@@ -57,8 +57,9 @@ document.addEventListener('alpine:init', () => {
             signing_date: null,
             from: null,
             to: null,
-            user_ids: [],
             description: null,
+            link: null,
+            user_ids: [],
             files: [],
         },
         listContract: [],
@@ -206,7 +207,7 @@ document.addEventListener('alpine:init', () => {
 
         async handleShowModalInfo(id) {
             this.loading = true
-            const response = await window.apiShowContract(id)
+            const response = await window.apiShowAppendix(id)
             if (!response.success) {
                 toast.error(response.message)
                 return

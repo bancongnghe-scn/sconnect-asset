@@ -25,11 +25,19 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
-                        @include('common.datepicker',['placeholder' => "Ngày ký", 'id' => 'filterSigningDateContract'])
+                        <div class="input-group">
+                            <input type="text" class="form-control datepickerContract" id="filterSigningDateContract"
+                                   placeholder="Ngày ký" autocomplete="off">
+                            <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                        </div>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày hiệu lực</label>
-                        @include('common.datepicker', ['placeholder' => "Ngày hiệu lực", 'id' => "filterFromContract"])
+                        <div class="input-group">
+                            <input type="text" class="form-control datepickerContract" id="filterFromContract"
+                                   placeholder="Ngày hiệu lực" autocomplete="off">
+                            <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
