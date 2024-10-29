@@ -22,7 +22,7 @@ class Supplier extends Model
         'code',
         'contact',
         'address',
-        'website',
+        'contract_user',
         'description',
         'tax_code',
         'meta_data',

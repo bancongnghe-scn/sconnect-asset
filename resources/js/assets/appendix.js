@@ -187,10 +187,10 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleModal = 'Thêm mới'
+                this.title = 'Thêm mới'
                 this.resetData()
             } else {
-                this.titleModal = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiShowAppendix(id)
                 if (!response.success) {
@@ -256,7 +256,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
             $('#filterContract').val([]).change()
-            $('#filterStatusContract').val([]).change()
+            $('#filterStatusAppendix').val([]).change()
             $('#filterSigningDate').val(null).change()
             $('#filterFrom').val(null).change()
         },
@@ -282,7 +282,7 @@ document.addEventListener('alpine:init', () => {
                 const value = $(event.target).val()
                 if (event.target.id === 'filterContract') {
                     this.filters.contract_ids = value
-                } else if (event.target.id === 'filterStatusContract') {
+                } else if (event.target.id === 'filterStatusAppendix') {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
                     this.data.user_ids = value

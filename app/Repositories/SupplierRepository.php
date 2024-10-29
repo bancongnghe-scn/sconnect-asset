@@ -75,16 +75,16 @@ class SupplierRepository extends BaseRepository
     public function createSupplier($data)
     {
         $dataCreate = [
-            'name'        => $data['name'],
-            'code'        => $data['code'],
-            'contact'     => $data['contact'] ?? null,
-            'address'     => $data['address'] ?? null,
-            'website'     => $data['website'] ?? null,
-            'description' => $data['description'] ?? null,
-            'tax_code'    => $data['tax_code'] ?? null,
-            'meta_data'   => $data['meta_data'] ?? null,
-            'status'      => Supplier::STATUS_PENDING_APPROVAL,
-            'created_by'  => Auth::id(),
+            'name'              => $data['name'],
+            'code'              => $data['code'],
+            'contact'           => $data['contact'] ?? null,
+            'address'           => $data['address'] ?? null,
+            'contract_user'     => $data['contract_user'] ?? null,
+            'description'       => $data['description'] ?? null,
+            'tax_code'          => $data['tax_code'] ?? null,
+            'meta_data'         => $data['meta_data'] ?? null,
+            'status'            => Supplier::STATUS_PENDING_APPROVAL,
+            'created_by'        => Auth::id(),
         ];
 
         return $this->_model->newQuery()->create($dataCreate);

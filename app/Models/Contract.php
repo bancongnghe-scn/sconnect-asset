@@ -65,4 +65,9 @@ class Contract extends Model
     {
         return $this->hasMany(ContractAppendix::class, 'contract_id');
     }
+
+    public function contractAppendixApproval(): HasMany
+    {
+        return $this->hasMany(ContractAppendix::class, 'contract_id')->where('status', ContractAppendix::STATUS_APPROVED);
+    }
 }

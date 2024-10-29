@@ -1,4 +1,4 @@
-<div class="modal fade" id="idModalInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalInfoContract" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -112,11 +112,34 @@
                     </div>
                 </div>
 
-                <template x-if="data.appendix">
-                    <div class="container">
-                        <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
+                <div class="container">
+                    <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
+                    <div class="tw-max-h-60 overflow-y-scroll">
+                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                               aria-describedby="example2_info">
+                            <thead>
+                            <tr>
+                                <th>Mã phụ lục</th>
+                                <th>Tên phụ lục</th>
+                                <th>Ngày ký</th>
+                                <th>Ngày hiệu lực</th>
+                                <th>Nội dung thay đổi</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <template x-for="(appendix, index) in data.appendixes">
+                                <tr>
+                                    <td x-text="appendix.code"></td>
+                                    <td x-text="appendix.name"></td>
+                                    <td x-text="appendix.signing_date"></td>
+                                    <td x-text="appendix.from"></td>
+                                    <td x-text="appendix.description"></td>
+                                </tr>
+                            </template>
+                            </tbody>
+                        </table>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
     </div>

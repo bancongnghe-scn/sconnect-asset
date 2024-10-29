@@ -33,7 +33,7 @@ class SupplierService
                 'limit' => $filters['limit'] ?? 10,
             ],
             [
-                'id', 'code', 'name', 'contact', 'address', 'website', 'status',
+                'id', 'code', 'name', 'contact', 'address', 'contract_user', 'status',
             ],
             [
                 'supplierAssetIndustries:id,supplier_id,industries_id' => [

@@ -19,12 +19,12 @@
             <input type="text" class="form-control" x-model="data.contact" placeholder="Nhập số điện thoại">
         </div>
         <div class="col-4">
-            <label class="form-label tw-font-bold">Địa chỉ</label>
-            <input type="text" class="form-control" x-model="data.address" placeholder="Nhập địa chỉ">
+            <label class="form-label tw-font-bold">Người liên hệ</label>
+            <input type="text" class="form-control" x-model="data.contract_user" placeholder="Nhập người liên hệ">
         </div>
         <div class="col-4">
-            <label class="form-label tw-font-bold">Website</label>
-            <input type="text" class="form-control" x-model="data.website" placeholder="Nhập địa chỉ website">
+            <label class="form-label tw-font-bold">Địa chỉ/Website</label>
+            <input type="text" class="form-control" x-model="data.address" placeholder="Nhập địa chỉ/Website">
         </div>
     </div>
     <div class="row mb-3">

@@ -63,7 +63,8 @@ document.addEventListener('alpine:init', () => {
             contract_value: null,
             description: null,
             files: [],
-            payments: []
+            payments: [],
+            appendixes: [],
         },
         listTypeContract: typeContract,
         listStatusContract: statusContract,
@@ -75,7 +76,7 @@ document.addEventListener('alpine:init', () => {
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         idModalUI: "idModalUIContract",
-        idModalInfo: "idModalInfo",
+        idModalInfo: "idModalInfoContract",
 
         //methods
         async list(filters) {
@@ -309,8 +310,8 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        handleFiles() {
-            const files = Array.from(this.$refs.fileInput.files)
+        handleFilesContract() {
+            const files = Array.from(this.$refs.fileInputContract.files)
             const maxSize = 5 * 1024 * 1024; // 5MB in bytes
 
             for (let i = 0; i < files.length; i++) {
@@ -320,7 +321,7 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            this.data.files = this.data.files.concat(Array.from(this.$refs.fileInput.files))
+            this.data.files = this.data.files.concat(Array.from(this.$refs.fileInputContract.files))
         },
 
         addRowPayment() {
@@ -340,6 +341,7 @@ document.addEventListener('alpine:init', () => {
             contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
             contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
             contract.files = contract.files ?? []
+            contract.appendixes = contract.appendixes ?? []
             contract.payments = contract.payments ?? []
             contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract

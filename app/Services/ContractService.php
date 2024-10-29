@@ -249,7 +249,8 @@ class ContractService
             with: [
                 'contractFiles:id,contract_id,file_url,file_name',
                 'contractPayments:id,contract_id,order,payment_date,money,description',
-                'contractMonitors', 'contractAppendix',
+                'contractAppendixApproval:id,code,name,signing_date,from,description,contract_id',
+                'contractMonitors',
             ]
         );
 

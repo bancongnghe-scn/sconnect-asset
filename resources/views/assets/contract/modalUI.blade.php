@@ -71,8 +71,8 @@
                     <div class="row">
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
-                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
-                            <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
+                            <input class="form-control d-none" type="file" id="fileInputContract" multiple x-ref="fileInputContract" @change="handleFilesContract" accept=".pdf">
+                            <label type="button" class="btn btn-sc" for="fileInputContract">Chọn tệp</label>
 
                             <div class="mt-2 d-flex flex-column tw-gap-y-2">
                                 <template x-for="(file, index) in data.files" :key="index">
@@ -89,12 +89,12 @@
 
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
-                    <div class="mb-3 tw-max-h-60 overflow-y-scroll">
+                    <div class="tw-max-h-60 overflow-y-scroll">
                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
                                 <tr>
-                                    <th>Lần thanh toán</th>
+                                    <th class="tw-w-32">Lần thanh toán</th>
                                     <th>Ngày thanh toán</th>
                                     <th>Số tiền</th>
                                     <th>Nội dung thanh toán</th>
@@ -131,9 +131,34 @@
                     <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
                 </div>
 
-                <template x-if="data.appendix">
+                <template x-if="action === 'update'">
                     <div class="container">
                         <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
+                        <div class="tw-max-h-60 overflow-y-scroll">
+                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                                   aria-describedby="example2_info">
+                                <thead>
+                                <tr>
+                                    <th>Mã phụ lục</th>
+                                    <th>Tên phụ lục</th>
+                                    <th>Ngày ký</th>
+                                    <th>Ngày hiệu lực</th>
+                                    <th>Nội dung thay đổi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <template x-for="(appendix, index) in data.appendixes">
+                                    <tr>
+                                        <td x-text="appendix.code"></td>
+                                        <td x-text="appendix.name"></td>
+                                        <td x-text="appendix.signing_date"></td>
+                                        <td x-text="appendix.from"></td>
+                                        <td x-text="appendix.description"></td>
+                                    </tr>
+                                </template>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </template>
             </div>
