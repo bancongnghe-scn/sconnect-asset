@@ -94,7 +94,7 @@ textarea.form-control {
     background-color: white;
 }
 
-.card-body {
+.card {
     background-color: white;
 }
 
@@ -124,3 +124,12 @@ textarea.form-control {
     color: red;
 }
 
+.modal-body {
+    background-color: white;
+}
+
+.modal-title {
+    color: #2B850B;
+    font-weight: 700 !important;
+    font-size: 1.5rem;
+}

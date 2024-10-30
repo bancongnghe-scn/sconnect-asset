@@ -287,6 +287,8 @@ document.addEventListener('alpine:init', () => {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
                     this.data.user_ids = value
+                } else if (event.target.id === 'selectContract') {
+                    this.data.contract_id = value
                 }
             });
         },

@@ -37,7 +37,6 @@ class ShoppingPlanCompanyService
                     'status', 'created_by', 'created_at',
                 ]);
 
-
             $permissionCD   = 2 == $user['id'] || $user->hasRole(config('role.hr_specialist'));
             $permissionEdit = $permissionCD || $user->hasRole(config('role.manager_organization'));
             $permissions    = [

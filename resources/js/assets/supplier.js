@@ -46,10 +46,11 @@ document.addEventListener('alpine:init', () => {
             contract_user: null,
             contact: null,
             address: null,
+            tax_code: null,
+            email: null,
+            description: null,
             industry_ids: [],
             asset_type_ids: [],
-            tax_code: null,
-            description: null,
             meta_data: {
                 payment_terms: {
                     debt_day: null,
@@ -72,7 +73,7 @@ document.addEventListener('alpine:init', () => {
         title: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteSupplier",
+        idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         idModalUI: "idModalUI",
         activeLink: {
@@ -225,10 +226,11 @@ document.addEventListener('alpine:init', () => {
                 contract_user: null,
                 contact: null,
                 address: null,
-                industry_ids: [],
-                asset_type_ids: [],
                 tax_code: null,
                 description: null,
+                email: null,
+                industry_ids: [],
+                asset_type_ids: [],
                 meta_data: {
                     payment_terms: {
                         debt_day: null,

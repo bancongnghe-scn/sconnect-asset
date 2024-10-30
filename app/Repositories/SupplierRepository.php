@@ -83,6 +83,7 @@ class SupplierRepository extends BaseRepository
             'description'       => $data['description'] ?? null,
             'tax_code'          => $data['tax_code'] ?? null,
             'meta_data'         => $data['meta_data'] ?? null,
+            'email'             => $data['email'] ?? null,
             'status'            => Supplier::STATUS_PENDING_APPROVAL,
             'created_by'        => Auth::id(),
         ];

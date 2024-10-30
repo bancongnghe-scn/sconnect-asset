@@ -21,9 +21,13 @@
                             <label class="form-label">Mã phụ lục</label>
                             <input type="text" class="form-control" x-model="data.code" disabled>
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <label class="form-label">Tên phụ lục</label>
                             <input type="text" class="form-control" x-model="data.name" disabled>
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label">Link đính kèm</label>
+                            <input type="text" class="form-control" x-model="data.link" disabled>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -49,10 +53,6 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="form-label">Link đính kèm</label>
-                            <textarea class="form-control tw-h-40" x-model="data.link" disabled></textarea>
-                        </div>
                         <div class="col-6">
                             <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" disabled></textarea>

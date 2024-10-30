@@ -1,11 +1,10 @@
-import {format} from "date-fns";
-
 window.apiGetContract = async function (filters) {
     try {
-        filters.signing_date = filters.signing_date ? window.formatDate(filters.signing_date) : null
-        filters.from = filters.from ? window.formatDate(filters.from) : null
+        let dataFormat = JSON.parse(JSON.stringify(filters))
+        dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
+        dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
         const response = await axios.get("/api/contract", {
-            params: filters
+            params: dataFormat
         })
 
         const data = response.data;

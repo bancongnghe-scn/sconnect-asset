@@ -78,15 +78,13 @@
                             <label class="form-label">Tổng giá trị hợp đồng</label>
                             <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="data.contract_value">
                         </div>
-                        <div class="col-9">
-                            <label class="form-label">Ghi chú</label>
-                            <input type="text" class="form-control"  x-model="data.description" placeholder="Nhập ghi chú"></input>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-6">
+                        <div class="col-3">
                             <label class="form-label">Link đính kèm</label>
-                            <textarea class="form-control tw-h-40" x-model="data.contract_link" placeholder="Nhập link đính kèm"></textarea>
+                            <input type="text" class="form-control" x-model="data.contract_link" placeholder="Nhập link đính kèm">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Ghi chú</label>
+                            <input type="text" class="form-control"  x-model="data.description" placeholder="Nhập ghi chú">
                         </div>
                     </div>
                     <div class="row">

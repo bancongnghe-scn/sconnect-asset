@@ -17,6 +17,7 @@ class SupplierInfoResource extends JsonResource
             'contract_user'        => $this->resource->contract_user,
             'description'          => $this->resource->description,
             'meta_data'            => $this->resource->meta_data,
+            'email'                => $this->resource->email,
             'industry_ids'         => $this->resource->supplierAssetIndustries?->pluck('industries_id')->toArray(),
             'asset_type_ids'       => $this->resource->supplierAssetType?->pluck('asset_type_id')->toArray(),
         ];

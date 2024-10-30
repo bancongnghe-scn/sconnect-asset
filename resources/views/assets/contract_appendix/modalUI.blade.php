@@ -11,7 +11,7 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control" x-model="data.contract_id">
+                            <select class="form-control select2" id="selectContract" x-model="data.contract_id">
                                 <option value="">Chọn hợp đồng</option>
                                 <template x-for="contract in listContract" :key="contract.id">
                                     <option :value="contract.id" x-text="contract.name"></option>
@@ -22,9 +22,13 @@
                             <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã phụ lục">
                         </div>
-                        <div class="col-6">
+                        <div class="col-3">
                             <label class="form-label">Tên phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
                             <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên phụ lục">
+                        </div>
+                        <div class="col-3">
+                            <label class="form-label">Link đính kèm</label>
+                            <input type="text" class="form-control" x-model="data.link" placeholder="Nhập link đính kèm"></input>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -50,11 +54,6 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="form-label">Link đính kèm</label>
-                            <textarea class="form-control tw-h-40" x-model="data.link" placeholder="Nhập link đính kèm"></textarea>
-                        </div>
-
                         <div class="col-6">
                             <label class="form-label">Ghi chú</label>
                             <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>

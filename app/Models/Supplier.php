@@ -26,6 +26,7 @@ class Supplier extends Model
         'description',
         'tax_code',
         'meta_data',
+        'email',
         'status',
         'created_by',
     ];

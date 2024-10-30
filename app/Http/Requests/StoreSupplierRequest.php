@@ -27,6 +27,7 @@ class StoreSupplierRequest extends FormRequest
             'contact'                => 'nullable|string|max:255',
             'tax_code'               => 'nullable|string|max:255',
             'address'                => 'nullable|string|max:255',
+            'email'                  => 'nullable|email',
             'contract_user'          => 'nullable|string|max:255',
             'industry_ids'           => 'required|array',
             'industry_ids.*'         => 'integer',

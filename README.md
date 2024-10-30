@@ -12,6 +12,7 @@
 ## Server
 ssh ubuntu@18.141.181.19
 ubuntu/abc@@123
+cd /var/www/html/sconnect-asset/
 docker ps
 docker exec -it asset /bin/bash
 docker logs container_name_or_id

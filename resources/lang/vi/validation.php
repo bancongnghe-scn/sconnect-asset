@@ -93,7 +93,7 @@ return [
         'status'              => 'trạng thái',
         'file'                => 'tệp',
         'image'               => 'hình ảnh',
-        'link'                => 'liên kết',
+        'link'                => 'link đính kèm',
         'role'                => 'vai trò',
         'permissions'         => 'quyền hạn',
         'start_date'          => 'ngày bắt đầu',

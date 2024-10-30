@@ -31,7 +31,7 @@ class StoreAppendixRequest extends FormRequest
             'user_ids'                => 'required|array',
             'user_ids.*'              => 'integer',
             'description'             => 'nullable|string',
-            'link'                    => 'nullable|string',
+            'link'                    => 'nullable|url',
             'files'                   => 'nullable|array',
         ];
     }

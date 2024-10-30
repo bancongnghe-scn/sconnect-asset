@@ -1,12 +1,7 @@
-import {format} from "date-fns";
-
 window.apiGetAppendix = async function (filters) {
     try {
-        filters.signing_date = filters.signing_date ? format(filters.signing_date, 'yyyy-MM-dd') : null
-        filters.from = filters.from ? format(filters.from, 'yyyy-MM-dd') : null
-
         const response = await axios.get("/api/contract-appendix", {
-            params: filters
+            params: formatDateAppendix(filters)
         })
 
         const data = response.data;
@@ -155,10 +150,10 @@ window.apiUpdateAppendix = async function (dataUpdate, id) {
 }
 
 function formatDateAppendix(appendix) {
-    let appendixFormat = appendix
-    appendixFormat.signing_date = appendix.signing_date ? format(appendix.signing_date, 'yyyy-MM-dd') : null
-    appendixFormat.from = appendix.from ? format(appendix.from, 'yyyy-MM-dd') : null
-    appendixFormat.to = appendix.to ? format(appendix.to, 'yyyy-MM-dd') : null
+    let dataFormat = JSON.parse(JSON.stringify(appendix))
+    dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
+    dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
+    dataFormat.to = dataFormat.to ? window.formatDate(dataFormat.to) : null
 
-    return appendixFormat
+    return dataFormat
 }
