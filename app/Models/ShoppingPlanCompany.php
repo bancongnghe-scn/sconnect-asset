@@ -32,7 +32,8 @@ class ShoppingPlanCompany extends Model
     public const STATUS_REGISTER                    = 2;
     public const STATUS_PENDING_ACCOUNTANT_APPROVAL = 3;
     public const STATUS_PENDING_MANAGER_APPROVAL    = 4;
-    public const STATUS_DISAPPROVAL                 = 5;
+    public const STATUS_APPROVAL                    = 5;
+    public const STATUS_DISAPPROVAL                 = 6;
 
     public const TYPE_YEAR    = 1;
     public const TYPE_QUARTER = 2;

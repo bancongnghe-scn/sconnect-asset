@@ -27,16 +27,19 @@ class ShoppingPlanCompanyService
     public function getListPlanCompany(array $filters)
     {
         $user = Auth::user();
-        if ($user->canPer('view.list_shopping_plan', throwException: false)) {
-            $planCompany = $user->hasRole('Giám đốc đơn vị') ? $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']) :
+
+        if ($user->canPer('shopping_plan_company.view', throwException: false)) {
+            $planCompany = $user->hasRole(config('role.manager_organization')) ?
+                $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']) :
                 $this->planCompanyRepository->getListing($filters, [
                     'id', 'name', 'time',
                     'start_time', 'end_time', 'plan_year_id',
                     'status', 'created_by', 'created_at',
                 ]);
 
-            $permissionCD   = 2 == $user['id'] || $user->hasRole('Chuyên viên nhân sự');
-            $permissionEdit = $permissionCD || $user->hasRole('Giám đốc đơn vị');
+
+            $permissionCD   = 2 == $user['id'] || $user->hasRole(config('role.hr_specialist'));
+            $permissionEdit = $permissionCD || $user->hasRole(config('role.manager_organization'));
             $permissions    = [
                 'create'  => $permissionCD,
                 'update'  => $permissionEdit,
