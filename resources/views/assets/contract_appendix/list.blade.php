@@ -49,11 +49,3 @@
     </div>
 </div>
 
-
-{{--<script src="{{ asset('js/const.js') }}"></script>--}}
-{{--@vite([--}}
-{{--    'resources/js/assets/appendix.js',--}}
-{{--    'resources/js/assets/api/apiContract.js',--}}
-{{--    'resources/js/assets/api/apiAppendix.js',--}}
-{{--    'resources/js/app/api/apiUser.js',--}}
-{{--])--}}

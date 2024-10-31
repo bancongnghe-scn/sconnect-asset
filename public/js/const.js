@@ -1,4 +1,4 @@
-const listMeasure = {
+const LIST_MEASURE = {
     1: 'Chiếc',
     2: 'Cái',
     3: 'Bộ',
@@ -11,19 +11,30 @@ const listMeasure = {
     10: 'Đôi',
 }
 
-const statusAppendix = {
+const STATUS_APPENDIX = {
     1: 'Chờ duyệt',
     2: 'Đã duyệt',
     3: 'Hủy'
 }
 
-const typeContract = {
+const TYPE_CONTRACT = {
     1: 'Hợp đồng mua bán',
     2: 'Hợp đồng nguyên tắc',
 }
 
-const statusContract = {
+const STATUS_CONTRACT = {
     1: 'Chờ duyệt',
     2: 'Đã duyệt',
     3: 'Hủy'
+}
+
+const ID_ORGANIZATION_TCKT = 3
+const ID_ORGANIZATION_NSHC = 36
+const STATUS_SHOPPING_PLAN_COMPANY = {
+    1: 'Mới tạo',
+    2: 'Đăng ký',
+    3: 'Chờ kế toán duyệt',
+    4: 'Chờ giám đốc duyệt',
+    5: 'Đã duyệt',
+    6: 'Hủy'
 }

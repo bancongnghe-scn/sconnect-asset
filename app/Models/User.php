@@ -18,7 +18,7 @@ class User extends Authenticatable
     use HasRoles;
     use MigrateAuthorize;
 
-    public const GDNS = 1;
+    public const STATUS_ACTIVE = 1;
 
     /**
      * The attributes that are mass assignable.

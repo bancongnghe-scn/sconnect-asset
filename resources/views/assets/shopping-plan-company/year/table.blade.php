@@ -45,7 +45,8 @@
                                                                  'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
                                                                  'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
                                                                  'tw-text-green-600 tw-bg-green-100': +data[key] === 3 || +data[key] === 4,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 5
+                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5,
+                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 6
                                                                  }"
                                                         ></span>
                                                     </div>

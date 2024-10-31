@@ -18,9 +18,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name'  => 'nullable|string|max:255',
-            'page'  => 'nullable|integer',
-            'limit' => 'nullable|integer',
+            'name'      => 'nullable|string|max:255',
+            'dept_id'   => 'nullable|array',
+            'dept_id.*' => 'integer',
+            'page'      => 'nullable|integer',
+            'limit'     => 'nullable|integer',
         ]);
 
         try {

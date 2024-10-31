@@ -63,7 +63,7 @@ document.addEventListener('alpine:init', () => {
             files: [],
         },
         listContract: [],
-        listStatus: statusAppendix,
+        listStatus: STATUS_APPENDIX,
         listUser: [],
         title: null,
         action: null,

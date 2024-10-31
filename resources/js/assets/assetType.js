@@ -45,7 +45,7 @@ document.addEventListener('alpine:init', () => {
             description: null,
             measure: null,
         },
-        listMeasure: listMeasure,
+        listMeasure: LIST_MEASURE,
         listAssetTypeGroup: [],
         title: null,
         action: null,

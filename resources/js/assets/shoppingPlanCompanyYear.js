@@ -1,12 +1,15 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
-import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
             this.list({page:1, limit:10})
-            this.getListUser()
+            this.getListUser({
+                'dept_id' : [
+                    ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
+                ]
+            })
             this.initYearPicker()
             this.initDateRangePicker()
             window.initSelect2Modal('idModalInsert')
@@ -48,13 +51,7 @@ document.addEventListener('alpine:init', () => {
             end_time: null,
             monitor_ids: [],
         },
-        listStatus: {
-            1: 'Mới tạo',
-            2: 'Đăng ký',
-            3: 'Chờ kế toán duyệt',
-            4: 'Chờ giám đốc duyệt',
-            5: 'Hủy'
-        },
+        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
         dateRangePicker: null,
         permission: [],

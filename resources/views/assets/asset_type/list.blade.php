@@ -56,7 +56,7 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('js/const.js') }}"></script>
+
     @vite([
         'resources/js/assets/assetType.js',
         'resources/js/assets/api/apiAssetType.js',
