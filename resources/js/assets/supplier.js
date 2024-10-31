@@ -14,7 +14,7 @@ document.addEventListener('alpine:init', () => {
             code: 'Mã',
             name: 'Tên nhà cung cấp',
             industries: 'Ngành hàng',
-            contact: 'Liên hệ',
+            contact: 'Số điện thoại',
             address: 'Địa chỉ/Website',
             status: 'Đánh giá',
             contract_user: 'Người liên hệ',
