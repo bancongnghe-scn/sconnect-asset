@@ -105,19 +105,19 @@ class ShoppingPlanCompanyService
                 }
             }
 
-            $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-                $shoppingPlanCompany->id,
-                $data['organization_ids'] ?? []
-            );
-
-            if (!$insertShoppingPlanOrganizations) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2057,
-                ];
-            }
+            //            $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
+            //                $shoppingPlanCompany->id,
+            //                $data['organization_ids'] ?? []
+            //            );
+            //
+            //            if (!$insertShoppingPlanOrganizations) {
+            //                DB::rollBack();
+            //
+            //                return [
+            //                    'success'    => false,
+            //                    'error_code' => AppErrorCode::CODE_2057,
+            //                ];
+            //            }
 
             DB::commit();
 
@@ -222,9 +222,9 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
-                'shopping_plan_company_id' => $id,
-            ]);
+            //            $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
+            //                'shopping_plan_company_id' => $id,
+            //            ]);
 
             DB::commit();
 
@@ -307,7 +307,10 @@ class ShoppingPlanCompanyService
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
         if (empty($shoppingPlanCompany)) {
-            return [];
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
         }
 
         $data                = $shoppingPlanCompany->toArray();

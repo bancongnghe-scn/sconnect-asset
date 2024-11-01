@@ -73,6 +73,9 @@ class ShoppingPlanCompanyController extends Controller
     {
         try {
             $result = $this->planCompanyService->findShoppingPlanCompany($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
 
             return response_success($result);
         } catch (\Throwable $exception) {
