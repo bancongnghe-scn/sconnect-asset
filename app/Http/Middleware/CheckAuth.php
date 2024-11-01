@@ -14,7 +14,7 @@ class CheckAuth
         $secretKey     = env('SECRET_KEY');
         $sessionCookie = @$_COOKIE['scn_session'];
         if (!Auth::check()) {
-            $data = callApiSSO(env('API_GET_SESSION_DOCKER'), $sessionCookie, $secretKey);
+            $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 $user = @$data['data']['user'];
 
@@ -28,7 +28,7 @@ class CheckAuth
         }
 
         if (!Cookie::get('sso-authen')) {
-            $data = callApiSSO(env('API_GET_SESSION_DOCKER'), $sessionCookie, $secretKey);
+            $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 Cookie::queue('sso-authen', true, 5);
 

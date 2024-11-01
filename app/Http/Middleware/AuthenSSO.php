@@ -35,7 +35,7 @@ class AuthenSSO
      */
     private function handleLoginSSO($sessionCookie, $secretKey): bool
     {
-        $data = callApiSSO(env('API_GET_SESSION_DOCKER'), $sessionCookie, $secretKey);
+        $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
         if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
             $user = @$data['data']['user'];
 
