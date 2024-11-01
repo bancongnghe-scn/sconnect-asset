@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'sc-api' => [
+        'domain' => env('SC_API_DOMAIN', 'https://sc-api.sconnect.com.vn'),
+    ],
+
 ];
