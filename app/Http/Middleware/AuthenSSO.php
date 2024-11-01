@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Session;
 
 class AuthenSSO
 {
@@ -39,7 +38,6 @@ class AuthenSSO
         $data = callApiSSO(env('API_GET_SESSION_DOCKER'), $sessionCookie, $secretKey);
         if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
             $user = @$data['data']['user'];
-            Session::put('auth_user', $user);
 
             Auth::loginUsingId($user['id']);
 

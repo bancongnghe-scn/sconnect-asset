@@ -22,9 +22,6 @@ class LoginSSOController extends Controller
 
     public function loginSSO(): Redirector|Application|RedirectResponse
     {
-        Auth::loginUsingId(1);
-
-        return redirect()->route('home');
         $secretKey     = config('sso.sso-secret-key');
         $token         = @$_GET['token'];
         $sig           = @$_GET['sig'];

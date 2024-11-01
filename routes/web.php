@@ -33,5 +33,10 @@ Route::middleware(['checkAuth'])->group(function () {
     Route::view('industry/list', 'assets.industry.list');
     Route::view('supplier/list', 'assets.supplier.list');
     Route::view('contract/list', 'assets.contract.listContractAndAppendix');
-    Route::view('shopping-plan-company/year/list', 'assets.shopping-plan-company.year.list');
+    Route::prefix('shopping-plan-company')->group(function () {
+        Route::prefix('year')->group(function () {
+            Route::view('list', 'assets.shopping-plan-company.year.list');
+            Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
+        });
+    });
 });
