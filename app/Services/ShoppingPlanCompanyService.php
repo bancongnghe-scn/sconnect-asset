@@ -9,7 +9,10 @@ use App\Repositories\MonitorRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
+use App\Support\Constants\SOffice;
+use App\Support\GraphqlQueries\OrganizationQueries;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -28,31 +31,45 @@ class ShoppingPlanCompanyService
     {
         $user = Auth::user();
 
+        $permissions    = [
+            'create'   => false,
+            'update'   => false,
+            'remove'   => false,
+            'approve'  => false,
+            'register' => false,
+        ];
+
         if ($user->canPer('shopping_plan_company.view', throwException: false)) {
-            $planCompany = $user->hasRole(config('role.manager_organization')) ?
-                $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']) :
-                $this->planCompanyRepository->getListing($filters, [
+            if ($user->hasRole(config('role.manager_organization'))) {
+                $planCompany             = $this->planCompanyRepository->getListingOfOrganization($filters, $user['dept_id']);
+                $permissions['register'] = true;
+            } else {
+                $planCompany = $this->planCompanyRepository->getListing($filters, [
                     'id', 'name', 'time',
                     'start_time', 'end_time', 'plan_year_id',
                     'status', 'created_by', 'created_at',
                 ]);
 
-            $permissionCD   = 2 == $user['id'] || $user->hasRole(config('role.hr_specialist'));
-            $permissionEdit = $permissionCD || $user->hasRole(config('role.manager_organization'));
-            $permissions    = [
-                'create'  => $permissionCD,
-                'update'  => $permissionEdit,
-                'remove'  => $permissionCD,
-                'approve' => 2 == $user['id'] || 3 == $user['id'] || 8 == $user['id'],
-            ];
+                $response = ScApiService::graphQl(OrganizationQueries::getOrganizationList([
+                    'ids' => [SOffice::ORGANIZATION_ACCOUNTING_FINANCE_ID, SOffice::ORGANIZATION_ADMINISTRATIVE_STAFF_ID],
+                ]));
+
+                $organizations                            = Arr::get($response, 'data.OrganizationListing.data', []);
+                $organizations                            = collect($organizations)->keyBy('id');
+                $managerOrganizationAccountingFinanceId   = $organizations[SOffice::ORGANIZATION_ACCOUNTING_FINANCE_ID]['manager_id'] ?? null;
+                $managerOrganizationAdministrativeStaffId = $organizations[SOffice::ORGANIZATION_ADMINISTRATIVE_STAFF_ID]['manager_id'] ?? null;
+
+                $permissionCD           = $managerOrganizationAdministrativeStaffId == $user['id'] || $user->hasRole(config('role.hr_specialist'));
+                $permissionEdit         = $permissionCD || $user->hasRole(config('role.manager_organization'));
+                $permissions['create']  = $permissionCD;
+                $permissions['update']  = $permissionEdit;
+                $permissions['remove']  = $permissionCD;
+                $permissions['approve'] = $managerOrganizationAdministrativeStaffId == $user['id']
+                    || $managerOrganizationAccountingFinanceId == $user['id']
+                    || SOffice::GENERAL_MANAGER_ID == $user['id'];
+            }
         } else {
             $planCompany = $this->getShoppingPlanCompanyOfMonitor($filters, $user->id);
-            $permissions = [
-                'create'  => false,
-                'update'  => false,
-                'remove'  => false,
-                'approve' => false,
-            ];
         }
 
         if (empty($planCompany)) {

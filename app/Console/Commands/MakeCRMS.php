@@ -43,9 +43,9 @@ class MakeCRMS extends Command
         // Nội dung mẫu của repository (chỉ chứa class trống)
         $template = "<?php
 
-namespace App\Repositories;
+namespace SOffice\Repositories;
 
-use App\Repositories\Base\BaseRepository;
+use SOffice\Repositories\Base\BaseRepository;
 
 class " . $name . 'Repository extends BaseRepository
 {
@@ -80,7 +80,7 @@ class " . $name . 'Repository extends BaseRepository
         $filePath = $servicePath . '/' . $name . 'Service.php';
         $template = "<?php
 
-namespace App\Services;
+namespace SOffice\Services;
 
 class " . $name . 'Service
 {
@@ -112,7 +112,7 @@ class " . $name . 'Service
         $filePath = $controllerPath . '/' . $name . 'Controller.php';
         $template = "<?php
 
-namespace App\Http\Controllers;
+namespace SOffice\Http\Controllers;
 
 use Illuminate\Http\Request;
 
@@ -145,7 +145,7 @@ class " . $name . 'Controller extends Controller
         $filePath = $modelPath . '/' . $name . '.php';
         $template = "<?php
 
-namespace App\Models;
+namespace SOffice\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

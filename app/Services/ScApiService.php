@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class ScApiService
 {
@@ -43,14 +42,14 @@ class ScApiService
                 'query' => $query,
             ];
 
-            $response = Http::withToken()
+            $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)
                 ->asJson()
                 ->post($url, $data);
 
             return $response->json();
         } catch (\Throwable $e) {
-            Log::error($e->getMessage());
+            return null;
         }
     }
 }

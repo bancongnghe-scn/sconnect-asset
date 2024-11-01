@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Log;
 
 if (!function_exists('response_success')) {

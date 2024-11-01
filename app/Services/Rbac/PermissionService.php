@@ -6,7 +6,7 @@ use App\Http\Resources\PermissionInfoResource;
 use App\Repositories\Rbac\PermissionRepository;
 use App\Repositories\Rbac\RolePermissionRepository;
 use App\Repositories\Rbac\UserPermissionRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
