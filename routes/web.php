@@ -27,7 +27,7 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::view('menu/list', 'rbac.menu.list');
     });
 
-    Route::view('/home', 'home')->name('home');
+    Route::view('/', 'home')->name('home');
     Route::view('asset-type-group/list', 'assets.asset_type_groups.list')->name('asset.type-group.list');
     Route::view('asset-type/list', 'assets.asset_type.list');
     Route::view('industry/list', 'assets.industry.list');
