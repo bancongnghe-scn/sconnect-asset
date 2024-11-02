@@ -53,17 +53,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getListUser(filters){
-            this.loading = true
-            const response = await window.apiGetUser(filters)
-            if (response.success) {
-                this.listUser = response.data.data
-            } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
-            }
-            this.loading = false
-        },
-
         async updatePlanYear() {
             this.loading = true
             try {
@@ -79,6 +68,17 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        async getListUser(filters){
+            this.loading = true
+            const response = await window.apiGetUser(filters)
+            if (response.success) {
+                this.listUser = response.data.data
+            } else {
+                toast.error('Lấy danh sách nhân viên thất bại !')
+            }
+            this.loading = false
         },
 
         initDateRangePicker() {
