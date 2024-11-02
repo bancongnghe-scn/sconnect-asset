@@ -66,7 +66,7 @@
                                             || permission.approve && [3,4].includes(+data.status)">
                                                 <button class="border-0 bg-body"
                                                         x-show="typeof showAction === 'undefined' || showAction.edit"
-                                                        @click="$dispatch('edit', { id: data.id })">
+                                                        @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                     <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                                 </button>
                                             </template>

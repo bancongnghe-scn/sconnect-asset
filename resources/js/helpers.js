@@ -69,3 +69,8 @@ window.formatDate = function formatDate(date) {
     date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
     return format(date, 'yyyy-MM-dd')
 }
+
+window.convertDateString = function convertDateString(dateString) {
+    const [year, month, day] = dateString.split('-')
+    return new Date(year, month - 1, day)
+}

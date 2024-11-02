@@ -51,13 +51,13 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
-        Route::get('list', 'getListShoppingPlanCompany');
         Route::get('show/{id}', 'findShoppingPlanCompany');
         Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
         Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
     });
 
     Route::prefix('shopping-plan-company/year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+        Route::get('list', 'getListShoppingPlanCompanyYear');
         Route::post('create', 'createShoppingPlanCompanyYear');
         Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
     });

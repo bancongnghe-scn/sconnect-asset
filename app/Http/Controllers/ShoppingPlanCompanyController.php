@@ -31,7 +31,6 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
-            dd($exception);
 
             return response_error();
         }
@@ -73,13 +72,14 @@ class ShoppingPlanCompanyController extends Controller
 
     public function findShoppingPlanCompany(string $id)
     {
+
         try {
             $result = $this->planCompanyService->findShoppingPlanCompany($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }
 
-            return response_success($result);
+            return response_success($result['data']);
         } catch (\Throwable $exception) {
             return response_error();
         }

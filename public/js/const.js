@@ -1,3 +1,4 @@
+// ASSET TYPE
 const LIST_MEASURE = {
     1: 'Chiếc',
     2: 'Cái',
@@ -11,7 +12,15 @@ const LIST_MEASURE = {
     10: 'Đôi',
 }
 
+//APPENDIX
 const STATUS_APPENDIX = {
+    1: 'Chờ duyệt',
+    2: 'Đã duyệt',
+    3: 'Hủy'
+}
+
+//CONTRACT
+const STATUS_CONTRACT = {
     1: 'Chờ duyệt',
     2: 'Đã duyệt',
     3: 'Hủy'
@@ -22,14 +31,12 @@ const TYPE_CONTRACT = {
     2: 'Hợp đồng nguyên tắc',
 }
 
-const STATUS_CONTRACT = {
-    1: 'Chờ duyệt',
-    2: 'Đã duyệt',
-    3: 'Hủy'
-}
-
+// ORGANIZATION
 const ID_ORGANIZATION_TCKT = 3
 const ID_ORGANIZATION_NSHC = 36
+
+// SHOPPING_PLAN_COMPANY
+const STATUS_SHOPPING_PLAN_COMPANY_NEW = 1
 const STATUS_SHOPPING_PLAN_COMPANY = {
     1: 'Mới tạo',
     2: 'Đăng ký',

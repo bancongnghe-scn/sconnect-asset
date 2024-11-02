@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
+use App\Http\Resources\ShoppingPlanCompanyInfoWeekResource;
+use App\Http\Resources\ShoppingPlanCompanyYearInfoResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
 use App\Repositories\MonitorRepository;
@@ -10,7 +12,7 @@ use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
-use App\Support\Constants\SOffice;
+use App\Support\Constants\SOfficeConstant;
 use App\Support\GraphqlQueries\OrganizationQueries;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
@@ -51,13 +53,13 @@ class ShoppingPlanCompanyService
                 ]);
 
                 $response = ScApiService::graphQl(OrganizationQueries::getOrganizationList([
-                    'ids' => [SOffice::ORGANIZATION_ACCOUNTING_FINANCE_ID, SOffice::ORGANIZATION_ADMINISTRATIVE_STAFF_ID],
+                    'ids' => [SOfficeConstant::ORGANIZATION_ACCOUNTING_FINANCE_ID, SOfficeConstant::ORGANIZATION_ADMINISTRATIVE_STAFF_ID],
                 ]));
 
-                $organizations                            = Arr::get($response, 'data.OrganizationListing.data', []);
+                $organizations                            = Arr::get($response, 'data.OrganizationListing', []);
                 $organizations                            = collect($organizations)->keyBy('id');
-                $managerOrganizationAccountingFinanceId   = $organizations[SOffice::ORGANIZATION_ACCOUNTING_FINANCE_ID]['manager_id'] ?? null;
-                $managerOrganizationAdministrativeStaffId = $organizations[SOffice::ORGANIZATION_ADMINISTRATIVE_STAFF_ID]['manager_id'] ?? null;
+                $managerOrganizationAccountingFinanceId   = $organizations[SOfficeConstant::ORGANIZATION_ACCOUNTING_FINANCE_ID]['manager_id'] ?? null;
+                $managerOrganizationAdministrativeStaffId = $organizations[SOfficeConstant::ORGANIZATION_ADMINISTRATIVE_STAFF_ID]['manager_id'] ?? null;
 
                 $permissionCD           = $managerOrganizationAdministrativeStaffId == $user['id'] || $user->hasRole(config('role.hr_specialist'));
                 $permissionEdit         = $permissionCD || $user->hasRole(config('role.manager_organization'));
@@ -66,7 +68,7 @@ class ShoppingPlanCompanyService
                 $permissions['remove']  = $permissionCD;
                 $permissions['approve'] = $managerOrganizationAdministrativeStaffId == $user['id']
                     || $managerOrganizationAccountingFinanceId == $user['id']
-                    || SOffice::GENERAL_MANAGER_ID == $user['id'];
+                    || SOfficeConstant::GENERAL_MANAGER_ID == $user['id'];
             }
         } else {
             $planCompany = $this->getShoppingPlanCompanyOfMonitor($filters, $user->id);
@@ -122,19 +124,22 @@ class ShoppingPlanCompanyService
                 }
             }
 
-            //            $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-            //                $shoppingPlanCompany->id,
-            //                $data['organization_ids'] ?? []
-            //            );
-            //
-            //            if (!$insertShoppingPlanOrganizations) {
-            //                DB::rollBack();
-            //
-            //                return [
-            //                    'success'    => false,
-            //                    'error_code' => AppErrorCode::CODE_2057,
-            //                ];
-            //            }
+            // Chi voi ke hoach tuan thi tao ra ke hoach don vi luon, con kh nam va quy thi khi gui thong bao dang ky moi tao
+            if (ShoppingPlanCompany::TYPE_WEEK === $data['type']) {
+                $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
+                    $shoppingPlanCompany->id,
+                    $data['organization_ids']
+                );
+
+                if (!$insertShoppingPlanOrganizations) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2057,
+                    ];
+                }
+            }
 
             DB::commit();
 
@@ -330,10 +335,17 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        $data                = $shoppingPlanCompany->toArray();
-        $data['monitor_ids'] = $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();
+        if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
+            return [
+                'success' => true,
+                'data'    => ShoppingPlanCompanyYearInfoResource::make($shoppingPlanCompany)->resolve(),
+            ];
+        }
 
-        return $data;
+        return [
+            'success' => true,
+            'data'    => ShoppingPlanCompanyInfoWeekResource::make($shoppingPlanCompany)->resolve(),
+        ];
     }
 
     public function deleteShoppingPlanCompanyMultiple(array $ids)

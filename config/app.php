@@ -165,7 +165,7 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // SOffice\Providers\BroadcastServiceProvider::class,
+        // SOfficeConstant\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
     ])->toArray(),
@@ -182,7 +182,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => SOffice\Facades\Example::class,
+        // 'Example' => SOfficeConstant\Facades\Example::class,
     ])->toArray(),
 
 ];

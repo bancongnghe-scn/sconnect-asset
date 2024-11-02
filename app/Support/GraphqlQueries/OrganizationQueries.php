@@ -6,27 +6,19 @@ class OrganizationQueries
 {
     public static function getOrganizationList(array $filters): string
     {
-        $ids   = implode(',', $filters['ids'] ?? []);
-        $page  = $filters['page'] ?? 1;
-        $limit = $filters['limit'] ?? 10;
+        $ids      = implode(',', $filters['ids'] ?? []);
+        $status   = implode(',', $filters['status'] ?? []);
 
         return "{
             OrganizationListing(
                 ids: \"$ids\",
-                page: $page,
-                limit: $limit
+                status: \"$status\",
             ) {
-                data {
-                  id
-                  name
-                  manager_id
-                }
-                total
-                from
-                to
-                per_page
-                current_page
-                last_page
+                id
+                name
+                manager_id
+                status
+                parent_id
           }
         }";
     }

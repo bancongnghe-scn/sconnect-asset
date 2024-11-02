@@ -1,6 +1,8 @@
-window.apiGetShoppingPlanCompany = async function (filters) {
+import {format} from "date-fns";
+
+window.apiGetShoppingPlanCompanyYear = async function (filters) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/list", {
+        const response = await axios.get("/api/shopping-plan-company/year/list", {
             params: filters
         })
 
@@ -24,10 +26,9 @@ window.apiGetShoppingPlanCompany = async function (filters) {
     }
 }
 
-
-window.apiRemoveShoppingPlanCompany = async function (id) {
+window.apiCreateShoppingPlanCompanyYear = async function (dataCreate) {
     try {
-        const response = await axios.delete("/api/shopping-plan-company/delete/"+id)
+        const response = await axios.post("/api/shopping-plan-company/year/create",formatDateShoppingPlanCompanyYear(dataCreate))
 
         const data = response.data;
         if (!data.success) {
@@ -49,9 +50,9 @@ window.apiRemoveShoppingPlanCompany = async function (id) {
     }
 }
 
-window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
+window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
     try {
-        const response = await axios.post("/api/delete-multiple/shopping-plan-company",{ids: ids})
+        const response = await axios.put("/api/shopping-plan-company/year/update/"+id,formatDateShoppingPlanCompanyYear(dataUpdate))
 
         const data = response.data;
         if (!data.success) {
@@ -73,29 +74,10 @@ window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
     }
 }
 
-window.apiShowShoppingPlanCompany = async function (id) {
-    try {
-        const response = await axios.get("/api/shopping-plan-company/show/"+id)
+function formatDateShoppingPlanCompanyYear(data) {
+    let dataFormat = JSON.parse(JSON.stringify(data))
+    dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
+    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.start_time) : null
 
-        const data = response.data;
-        if (!data.success) {
-            return {
-                success: false,
-                message: data.message
-            }
-        }
-
-        return {
-            success: true,
-            data: data
-        }
-    } catch (error) {
-        return {
-            success: false,
-            message: error?.response?.data?.message || error?.message
-        }
-    }
+    return dataFormat
 }
-
-
-

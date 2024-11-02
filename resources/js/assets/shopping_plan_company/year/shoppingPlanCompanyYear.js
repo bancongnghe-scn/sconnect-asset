@@ -39,7 +39,6 @@ document.addEventListener('alpine:init', () => {
         filters: {
             time: null,
             status: [],
-            type: 1,
             limit: 10,
             page: 1
         },
@@ -66,7 +65,7 @@ document.addEventListener('alpine:init', () => {
         async list(filters){
             this.loading = true
             try {
-                const response = await window.apiGetShoppingPlanCompany(filters)
+                const response = await window.apiGetShoppingPlanCompanyYear(filters)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -163,7 +162,7 @@ document.addEventListener('alpine:init', () => {
                     this.data.start_time = data.start_time
                     this.data.end_time = data.end_time
                     this.data.monitor_ids = data.monitor_ids
-                    this.dateRangePicker.selectDate([this.convertDateString(this.data.start_time), this.convertDateString(this.data.end_time)]);
+                    this.dateRangePicker.selectDate([window.convertDateString(this.data.start_time), window.convertDateString(this.data.end_time)]);
                     $('#idModalUpdate').modal('show');
                 }
             } catch (e) {
@@ -324,11 +323,6 @@ document.addEventListener('alpine:init', () => {
                     this.data.end_time = selectedDates.date[1] ?? null
                 }
             })
-        },
-
-        convertDateString(dateString) {
-            const [year, month, day] = dateString.split('-')
-            return new Date(year, month - 1, day)
         },
     }));
 });

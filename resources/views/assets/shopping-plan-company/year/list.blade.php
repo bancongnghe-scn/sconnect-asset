@@ -60,9 +60,9 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/shoppingPlanCompanyYear.js',
-        'resources/js/assets/api/apiShoppingPlanCompany.js',
-        'resources/js/assets/api/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/shopping_plan_company/year/shoppingPlanCompanyYear.js',
+        'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
+        'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection
