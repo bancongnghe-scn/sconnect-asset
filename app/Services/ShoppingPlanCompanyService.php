@@ -63,9 +63,8 @@ class ShoppingPlanCompanyService
 
                 $permissionCD           = $managerOrganizationAdministrativeStaffId == $user['id'] || $user->hasRole(config('role.hr_specialist'));
                 $permissionEdit         = $permissionCD || $user->hasRole(config('role.manager_organization'));
-                $permissions['create']  = $permissionCD;
+                $permissions['create']  = $permissions['remove'] = $permissionCD;
                 $permissions['update']  = $permissionEdit;
-                $permissions['remove']  = $permissionCD;
                 $permissions['approve'] = $managerOrganizationAdministrativeStaffId == $user['id']
                     || $managerOrganizationAccountingFinanceId == $user['id']
                     || SOfficeConstant::GENERAL_MANAGER_ID == $user['id'];
@@ -327,7 +326,12 @@ class ShoppingPlanCompanyService
 
     public function findShoppingPlanCompany($id)
     {
-        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        $shoppingPlanCompany = $this->planCompanyRepository->getFirst([
+            'id' => $id
+        ], with:[
+            'shoppingPlanOrganizations' => ['ShoppingAssetsYear']
+        ]);
+
         if (empty($shoppingPlanCompany)) {
             return [
                 'success'    => false,

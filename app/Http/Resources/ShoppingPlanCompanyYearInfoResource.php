@@ -8,6 +8,7 @@ use App\Support\Constants\SOfficeConstant;
 use App\Support\GraphqlQueries\OrganizationQueries;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class ShoppingPlanCompanyYearInfoResource extends JsonResource
 {
@@ -23,6 +24,19 @@ class ShoppingPlanCompanyYearInfoResource extends JsonResource
             $data['organizations'] = Arr::pluck($organizations, 'name');
 
             return $data;
+        } else {
+            $data['organizations'] = [];
+            foreach ($this->resource->shoppingPlanOrganizations as $shoppingPlanOrganization) {
+                $assetRegister = [];
+                $totalPrice = 0;
+                foreach ($shoppingPlanOrganization->ShoppingAssetsYear as $shoppingAsset) {
+                    if (empty($assetRegister[$shoppingAsset->asset_type_id])) {
+                        $assetRegister[$shoppingAsset->asset_type_id]['total_asset'] = $shoppingAsset->quantity_registered;
+                        $assetRegister[$shoppingAsset->asset_type_id][$shoppingAsset->month] = [$shoppingAsset]
+                    }
+                    $assetRegister[$shoppingAsset->asset_type_id][$shoppingAsset->month][] = []
+                }
+            }
         }
 
         return [];

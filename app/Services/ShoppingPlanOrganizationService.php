@@ -24,7 +24,7 @@ class ShoppingPlanOrganizationService
         $dataInsert  = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
-                'status'                   => ShoppingPlanOrganization::STATUS_NEW,
+                'status'                   => ShoppingPlanOrganization::STATUS_REGISTER,
                 'organization_id'          => $organizationId,
                 'shopping_plan_company_id' => $shoppingPlanCompanyId,
                 'created_by'               => Auth::id(),
