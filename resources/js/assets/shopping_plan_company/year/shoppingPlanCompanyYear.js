@@ -1,5 +1,6 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
+import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
@@ -319,8 +320,8 @@ document.addEventListener('alpine:init', () => {
                 locale: localeEn,
                 dateFormat: 'dd/MM/yyyy',
                 onSelect: (selectedDates) => {
-                    this.data.start_time = selectedDates.date[0] ?? null
-                    this.data.end_time = selectedDates.date[1] ?? null
+                    this.data.start_time = selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
+                    this.data.end_time = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
                 }
             })
         },

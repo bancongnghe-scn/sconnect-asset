@@ -81,6 +81,8 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            dd($exception);
+
             return response_error();
         }
     }
@@ -90,7 +92,11 @@ class ShoppingPlanCompanyController extends Controller
         try {
             $result = $this->planCompanyService->sentNotificationRegister($id);
 
-            return response_success($result);
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
         } catch (\Throwable $exception) {
             return response_error();
         }

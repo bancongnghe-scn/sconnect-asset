@@ -1,5 +1,6 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
+import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('updateShoppingPlanCompanyYear', () => ({
@@ -12,6 +13,7 @@ document.addEventListener('alpine:init', () => {
                 ]
             })
             this.initDateRangePicker()
+            this.initYearPicker()
             this.onChangeSelect2()
         },
 
@@ -34,14 +36,14 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiShowShoppingPlanCompany(this.id)
                 if (response.success) {
                     const data = response.data.data
+                    this.dateRangePicker.selectDate([window.convertDateString(data.start_time), window.convertDateString(data.end_time)]);
                     this.data.time = data.time
                     this.data.status = data.status
-                    this.data.start_time = data.start_time
-                    this.data.end_time = data.end_time
+                    this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
+                    this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
                     this.data.monitor_ids = data.monitor_ids
                     this.data.organizations = data.organizations
-                    this.dateRangePicker.selectDate([window.convertDateString(this.data.start_time), window.convertDateString(this.data.end_time)]);
-                    $('#selectUser').val(this.data.monitor_ids).change()
+                    $('#selectUser').val(data.monitor_ids).change()
                     return
                 }
 
@@ -59,6 +61,23 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
                 if (response.success) {
                     toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sentNotificationRegister() {
+            this.loading = true
+            try {
+                const response = await window.apiSentNotificationRegister(this.id)
+                if (response.success) {
+                    toast.success('Gửi thông báo thành công !')
                     return
                 }
 
@@ -90,18 +109,38 @@ document.addEventListener('alpine:init', () => {
                 locale: localeEn,
                 dateFormat: 'dd/MM/yyyy',
                 onSelect: (selectedDates) => {
-                    this.data.start_time = selectedDates.date[0] ?? null
-                    this.data.end_time = selectedDates.date[1] ?? null
+                    this.data.start_time = selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
+                    this.data.end_time = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
                 }
             })
         },
 
+        initYearPicker() {
+            new AirDatepicker('.yearPicker', {
+                view: 'years', // Hiển thị danh sách năm khi mở
+                minView: 'years', // Giới hạn chỉ cho phép chọn năm
+                dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
+                autoClose: true, // Tự động đóng sau khi chọn năm
+                clearButton: true, // Nút xóa để bỏ chọn
+                onSelect: ({date}) => {
+                    const year = date.getFullYear();
+                    this.data.time = year != null ? year : null
+                }
+            });
+            $('.yearPicker').on('keydown', (e) => {
+                if (e.key === 'Backspace' || e.key === 'Delete') {
+                    setTimeout(() => {
+                        if (!$('.yearPicker').value) {
+                            this.data.time = null
+                        }
+                    }, 0);
+                }
+            });
+        },
+
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'selectUser') {
-                    this.data.monitor_ids = value
-                }
+                this.data.monitor_ids = $(event.target).val()
             });
         },
     }))

@@ -65,4 +65,5 @@ return [
     AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi, không thể cập nhật !',
     AppErrorCode::CODE_2060 => 'Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !',
     AppErrorCode::CODE_2061 => 'Xóa kế hoạch mua sắm thất bại !',
+    AppErrorCode::CODE_2062 => 'Cập nhật trạng thái kế hoạch mua sắm năm thất bại !',
 ];

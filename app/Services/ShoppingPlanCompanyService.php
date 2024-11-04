@@ -7,6 +7,7 @@ use App\Http\Resources\ShoppingPlanCompanyInfoWeekResource;
 use App\Http\Resources\ShoppingPlanCompanyYearInfoResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
+use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
@@ -127,7 +128,8 @@ class ShoppingPlanCompanyService
             if (ShoppingPlanCompany::TYPE_WEEK === $data['type']) {
                 $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
                     $shoppingPlanCompany->id,
-                    $data['organization_ids']
+                    $data['organization_ids'],
+                    ShoppingPlanOrganization::STATUS_NEW
                 );
 
                 if (!$insertShoppingPlanOrganizations) {
@@ -392,5 +394,55 @@ class ShoppingPlanCompanyService
         $filters['id']  = $planCompanyIds;
 
         return $this->planCompanyRepository->getListing($filters);
+    }
+
+    public function sentNotificationRegister($shoppingPlanCompanyId)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_REGISTER;
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
+                $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
+                    $shoppingPlanCompany->id
+                );
+
+                if (!$insertShoppingPlanOrganizations) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2057,
+                    ];
+                }
+            }
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

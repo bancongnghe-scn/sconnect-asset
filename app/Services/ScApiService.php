@@ -88,11 +88,11 @@ class ScApiService
         return $result;
     }
 
-    public static function getAllOrganization()
+    public static function getAllOrganizationParent()
     {
         return Cache::tags(config('cache_keys.tags.organization'))
             ->remember(config('cache_keys.keys.organization_all'), now()->addHours(2), function () {
-                $response = self::getOrganizationsApi([], SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
+                $response = self::getOrganizationsApi(status: SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
                 if (!is_null($response) && $response['success']) {
                     foreach ($response['data'] as $organization) {
                         $cacheKey = config('cache_keys.keys.organization') . '_' . $organization['id'];
@@ -106,15 +106,26 @@ class ScApiService
             });
     }
 
-    public static function getOrganizationsApi($ids = [], $status = [])
+    public static function getOrganizationsApi($ids = [], $status = [], $parentId = SOfficeConstant::ORGANIZATION_PARENT_MAIN)
     {
         $host     = config('services.sc-api.domain');
         $endpoint = '/api/organization/getOrganizations';
         $url      = $host . $endpoint;
-        $params   = [
-            'ids'    => Arr::wrap($ids),
-            'status' => Arr::wrap($status),
-        ];
+
+        $params = [];
+
+        if (!empty($ids)) {
+            $params['ids'] = Arr::wrap($ids);
+        }
+
+        if (!empty($status)) {
+            $params['status'] = Arr::wrap($status);
+        }
+
+        if (!empty($parentId)) {
+            $params['parent_id'] = $parentId;
+        }
+
         try {
             $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)

@@ -26,13 +26,13 @@ class ShoppingPlanCompanyYearInfoResource extends JsonResource
             $this->resource->monitorShoppingPlanQuarter?->pluck('user_id')->toArray();
 
         if (ShoppingPlanCompany::STATUS_NEW === +$data['status']) {
-            $organizations         = ScApiService::getAllOrganization();
+            $organizations         = ScApiService::getAllOrganizationParent();
             $data['organizations'] = Arr::pluck($organizations, 'name');
         } else {
             $data['organizations']   = [];
             $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->getFirst([
                 'id' => $this->resource->id,
-            ], [
+            ], with: [
                 'shoppingPlanOrganizations' => ['shoppingAssetsYear'],
             ]);
             $organizationIds       = $shoppingPlanCompanyYear->shoppingPlanOrganizations->pluck('organization_id')->toArray();
@@ -42,11 +42,17 @@ class ShoppingPlanCompanyYearInfoResource extends JsonResource
                 $assetRegister = [];
                 $totalPrice    = 0;
                 foreach ($shoppingPlanOrganization->shoppingAssetsYear as $shoppingAsset) {
+                    if (!isset($assetRegister[$shoppingAsset->asset_type_id])) {
+                        $assetRegister[$shoppingAsset->asset_type_id]['total_register']  = 0;
+                        $assetRegister[$shoppingAsset->asset_type_id]['asset_type_name'] = 'test';
+                    }
+
                     $assetRegister[$shoppingAsset->asset_type_id]['register'][] = $shoppingAsset->quantity_registered;
                     $assetRegister[$shoppingAsset->asset_type_id]['total_register']
-                                = $shoppingAsset->quantity_registered + $assetRegister[$shoppingAsset->asset_type_id]['total_register'] ?? 0;
+                                = $shoppingAsset->quantity_registered + $assetRegister[$shoppingAsset->asset_type_id]['total_register'];
                     $totalPrice = $totalPrice + $shoppingAsset->quantity_registered * $shoppingAsset->price;
                 }
+
                 $data['organizations'][] = [
                     'id'             => $shoppingPlanOrganization->id,
                     'name'           => $organizations[$shoppingPlanOrganization->organization_id]['name'] ?? '',

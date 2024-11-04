@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 window.apiGetShoppingPlanCompanyYear = async function (filters) {
     try {
         const response = await axios.get("/api/shopping-plan-company/year/list", {
@@ -75,9 +73,9 @@ window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
 }
 
 function formatDateShoppingPlanCompanyYear(data) {
-    let dataFormat = JSON.parse(JSON.stringify(data))
+    let dataFormat = data
     dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
-    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.start_time) : null
-
+    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.end_time) : null
+    console.log(data)
     return dataFormat
 }

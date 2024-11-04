@@ -52,6 +52,7 @@ Route::middleware('checkAuth')->group(function () {
 
     Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
         Route::get('show/{id}', 'findShoppingPlanCompany');
+        Route::get('sent-notification-register/{id}', 'sentNotificationRegister');
         Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
         Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
     });

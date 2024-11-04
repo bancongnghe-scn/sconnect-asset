@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\ShoppingPlanCompany;
+use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
@@ -99,7 +100,8 @@ class ShoppingPlanCompanyRepository extends BaseRepository
     {
         $query = $this->_model->newQuery()->select($columns)
             ->join('shopping_plan_organization', 'shopping_plan_organization.shopping_plan_company_id', 'shopping_plan_company.id')
-            ->where('shopping_plan_organization.organization_id', $organizationId);
+            ->where('shopping_plan_organization.organization_id', $organizationId)
+            ->where('shopping_plan_organization.status', '<>', ShoppingPlanOrganization::STATUS_NEW);
 
         if (!empty($filters['time'])) {
             $query->where('shopping_plan_company.time', $filters['time']);
