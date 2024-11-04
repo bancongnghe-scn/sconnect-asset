@@ -56,7 +56,7 @@ class ShoppingPlanCompanyYearInfoResource extends JsonResource
                 $data['organizations'][] = [
                     'id'             => $shoppingPlanOrganization->id,
                     'name'           => $organizations[$shoppingPlanOrganization->organization_id]['name'] ?? '',
-                    'asset_register' => $assetRegister,
+                    'asset_register' => empty($assetRegister) ? [[]] : $assetRegister,
                     'total_price'    => $totalPrice,
                 ];
             }
