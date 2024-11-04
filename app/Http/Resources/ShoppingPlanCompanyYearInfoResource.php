@@ -3,15 +3,22 @@
 namespace App\Http\Resources;
 
 use App\Models\ShoppingPlanCompany;
+use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Services\ScApiService;
-use App\Support\Constants\SOfficeConstant;
-use App\Support\GraphqlQueries\OrganizationQueries;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 
 class ShoppingPlanCompanyYearInfoResource extends JsonResource
 {
+    protected $shoppingPlanCompanyRepository;
+
+    public function __construct(
+        $resource,
+    ) {
+        parent::__construct($resource);
+        $this->shoppingPlanCompanyRepository = new ShoppingPlanCompanyRepository();
+    }
+
     public function toArray($request)
     {
         $data                = $this->resource->toArray();
@@ -19,26 +26,36 @@ class ShoppingPlanCompanyYearInfoResource extends JsonResource
             $this->resource->monitorShoppingPlanQuarter?->pluck('user_id')->toArray();
 
         if (ShoppingPlanCompany::STATUS_NEW === +$data['status']) {
-            $response              = ScApiService::graphQl(OrganizationQueries::getOrganizationList(['status' => [SOfficeConstant::ORGANIZATION_STATUS_ACTIVE]]));
-            $organizations         = Arr::get($response, 'data.OrganizationListing', []);
+            $organizations         = ScApiService::getAllOrganization();
             $data['organizations'] = Arr::pluck($organizations, 'name');
-
-            return $data;
         } else {
-            $data['organizations'] = [];
-            foreach ($this->resource->shoppingPlanOrganizations as $shoppingPlanOrganization) {
+            $data['organizations']   = [];
+            $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->getFirst([
+                'id' => $this->resource->id,
+            ], [
+                'shoppingPlanOrganizations' => ['shoppingAssetsYear'],
+            ]);
+            $organizationIds       = $shoppingPlanCompanyYear->shoppingPlanOrganizations->pluck('organization_id')->toArray();
+            $organizations         = ScApiService::getOrganizationByIds($organizationIds);
+            $organizations         = $organizations->keyBy('id')->toArray();
+            foreach ($shoppingPlanCompanyYear->shoppingPlanOrganizations as $shoppingPlanOrganization) {
                 $assetRegister = [];
-                $totalPrice = 0;
-                foreach ($shoppingPlanOrganization->ShoppingAssetsYear as $shoppingAsset) {
-                    if (empty($assetRegister[$shoppingAsset->asset_type_id])) {
-                        $assetRegister[$shoppingAsset->asset_type_id]['total_asset'] = $shoppingAsset->quantity_registered;
-                        $assetRegister[$shoppingAsset->asset_type_id][$shoppingAsset->month] = [$shoppingAsset]
-                    }
-                    $assetRegister[$shoppingAsset->asset_type_id][$shoppingAsset->month][] = []
+                $totalPrice    = 0;
+                foreach ($shoppingPlanOrganization->shoppingAssetsYear as $shoppingAsset) {
+                    $assetRegister[$shoppingAsset->asset_type_id]['register'][] = $shoppingAsset->quantity_registered;
+                    $assetRegister[$shoppingAsset->asset_type_id]['total_register']
+                                = $shoppingAsset->quantity_registered + $assetRegister[$shoppingAsset->asset_type_id]['total_register'] ?? 0;
+                    $totalPrice = $totalPrice + $shoppingAsset->quantity_registered * $shoppingAsset->price;
                 }
+                $data['organizations'][] = [
+                    'id'             => $shoppingPlanOrganization->id,
+                    'name'           => $organizations[$shoppingPlanOrganization->organization_id]['name'] ?? '',
+                    'asset_register' => $assetRegister,
+                    'total_price'    => $totalPrice,
+                ];
             }
         }
 
-        return [];
+        return $data;
     }
 }

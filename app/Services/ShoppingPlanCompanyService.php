@@ -326,11 +326,7 @@ class ShoppingPlanCompanyService
 
     public function findShoppingPlanCompany($id)
     {
-        $shoppingPlanCompany = $this->planCompanyRepository->getFirst([
-            'id' => $id
-        ], with:[
-            'shoppingPlanOrganizations' => ['ShoppingAssetsYear']
-        ]);
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
 
         if (empty($shoppingPlanCompany)) {
             return [

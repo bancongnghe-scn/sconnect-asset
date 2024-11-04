@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
+    dd(App\Services\ScApiService::getOrganizationByIds([1, 2]));
+
     return 'pong';
 });
 

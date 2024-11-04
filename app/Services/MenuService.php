@@ -30,9 +30,9 @@ class MenuService
         if (is_null($userId)) {
             $userId = Auth::id();
         }
-        $cacheKey = config('cache_keys.menu_key').$userId;
+        $cacheKey = config('cache_keys.keys.menu_key').$userId;
 
-        return Cache::tags(config('cache_tags.menu_tag'))->remember($cacheKey, now()->addHours(2), function () use ($userId) {
+        return Cache::tags(config('cache_keys.tags.menu_tag'))->remember($cacheKey, now()->addHours(2), function () use ($userId) {
             $rolesUser = $this->roleUserRepository->getListing(['user_id' => $userId]);
             if ($rolesUser->isEmpty()) {
                 return [];
@@ -93,7 +93,7 @@ class MenuService
                 }
             }
 
-            Cache::tags('menu_tag')->clear();
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -122,7 +122,7 @@ class MenuService
             }
 
             $this->menuRoleRepository->deleteByMenuId($id);
-            Cache::tags('menu_tag')->clear();
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -175,7 +175,7 @@ class MenuService
                 ];
             }
 
-            Cache::tags('menu_tag')->clear();
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();

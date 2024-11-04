@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\ShoppingPlanCompany;
-use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
