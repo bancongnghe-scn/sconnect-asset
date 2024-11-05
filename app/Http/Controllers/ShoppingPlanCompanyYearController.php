@@ -16,6 +16,22 @@ class ShoppingPlanCompanyYearController extends Controller
 
     }
 
+    public function index()
+    {
+        $user = Auth::user();
+
+        $user->canAnyPer(['shopping_plan_organization.view', 'shopping_plan_company.view']);
+
+        if ($user->hasAnyRole(['accounting_director', 'hr_director'])) {
+            return view('assets.shopping_plan_company.year.list');
+        }
+        if ($user->hasRole('manager_organization')) {
+            return view('assets.shopping_plan_organization.year.list');
+        } else {
+            return view('assets.shopping-plan-company.year.listShoppingPlanCompany');
+        }
+    }
+
     public function getListShoppingPlanCompanyYear(Request $request)
     {
         $request->validate([
@@ -24,14 +40,15 @@ class ShoppingPlanCompanyYearController extends Controller
             'status.*'     => 'integer',
         ]);
 
-        $filters         = $request->all();
-        $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
+        Auth::user()->canPer(['shopping_plan_company.view']);
+
         try {
-            $result = $this->planCompanyService->getListPlanCompany($filters);
+            $filters         = $request->all();
+            $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
+            $result          = $this->planCompanyService->getListShoppingPlanCompany($filters);
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
-
             return response_error();
         }
     }

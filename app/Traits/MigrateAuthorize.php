@@ -20,7 +20,7 @@ trait MigrateAuthorize
         throw new UnauthorizedException(403, 'Bạn không có quyền thực hiện thao tác này');
     }
 
-    public function canAnyPer(array $abilities, $throwException = false): bool
+    public function canAnyPer(array $abilities, $throwException = true): bool
     {
         foreach ($abilities as $ability) {
             if ($this->canPer($ability, false)) {

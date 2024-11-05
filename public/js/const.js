@@ -45,3 +45,13 @@ const STATUS_SHOPPING_PLAN_COMPANY = {
     5: 'Đã duyệt',
     6: 'Hủy'
 }
+
+const STATUS_SHOPPING_PLAN_ORGANIZATION = {
+    1: 'Mới tạo',
+    2: 'Mở đăng ký',
+    3: 'Chờ kế toán duyệt',
+    4: 'Kế toán đang duyệt',
+    5: 'Chờ giám đốc duyệt',
+    6: 'Đã duyệt',
+    7: 'Hủy'
+}

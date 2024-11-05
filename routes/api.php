@@ -4,6 +4,7 @@ use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -54,13 +55,20 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('show/{id}', 'findShoppingPlanCompany');
         Route::get('sent-notification-register/{id}', 'sentNotificationRegister');
         Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
-        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
     });
 
-    Route::prefix('shopping-plan-company/year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
-        Route::get('list', 'getListShoppingPlanCompanyYear');
-        Route::post('create', 'createShoppingPlanCompanyYear');
-        Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
+    Route::prefix('shopping-plan-company')->group(function () {
+        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyYear');
+            Route::post('create', 'createShoppingPlanCompanyYear');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
+        });
+    });
+
+    Route::prefix('shopping-plan-organization')->group(function () {
+        Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationYear');
+        });
     });
 
     Route::prefix('/delete-multiple')->group(function () {

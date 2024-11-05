@@ -37,7 +37,7 @@ Route::middleware(['checkAuth'])->group(function () {
     Route::view('contract/list', 'assets.contract.listContractAndAppendix');
     Route::prefix('shopping-plan-company')->group(function () {
         Route::prefix('year')->group(function () {
-            Route::view('list', 'assets.shopping-plan-company.year.list');
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyYearController::class, 'index']);
             Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
         });
     });

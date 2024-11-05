@@ -13,29 +13,6 @@ class ShoppingPlanCompanyController extends Controller
 
     }
 
-    public function getListShoppingPlanCompany(Request $request)
-    {
-        $request->validate([
-            'name'         => 'nullable|string|max:255',
-            'plan_year_id' => 'nullable|integer',
-            'time'         => 'nullable|integer',
-            'type'         => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
-            'start_time'   => 'nullable|date|date_format:Y-m-d',
-            'end_time'     => 'nullable|date|date_format:Y-m-d',
-        ]);
-
-        try {
-            $result = $this->planCompanyService->getListPlanCompany($request->all());
-
-            return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
-        } catch (\Throwable $exception) {
-
-            return response_error();
-        }
-    }
-
     public function deleteShoppingPlanCompany(string $id)
     {
         try {
@@ -81,7 +58,6 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
-            dd($exception);
 
             return response_error();
         }
