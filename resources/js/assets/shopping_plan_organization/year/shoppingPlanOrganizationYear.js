@@ -92,7 +92,7 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterStatus').val([]).change()
+            $('#filterStatusOrganization').val([]).change()
 
             this.list(this.filters)
         },

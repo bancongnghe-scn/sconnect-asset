@@ -23,7 +23,7 @@ class ShoppingPlanCompanyYearController extends Controller
         $user->canAnyPer(['shopping_plan_organization.view', 'shopping_plan_company.view']);
 
         if ($user->hasAnyRole(['accounting_director', 'hr_director'])) {
-            return view('assets.shopping_plan_company.year.list');
+            return view('assets.shopping-plan-company.year.listPersonnelDirector');
         }
         if ($user->hasRole('manager_organization')) {
             return view('assets.shopping_plan_organization.year.list');

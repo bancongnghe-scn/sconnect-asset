@@ -11,7 +11,7 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        Auth::loginUsingId(4);
+        Auth::loginUsingId(2);
 
         return $next($request);
         $secretKey     = env('SECRET_KEY');

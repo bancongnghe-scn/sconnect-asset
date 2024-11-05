@@ -59,7 +59,7 @@
                             @include('common.shopping_plan_company.table_synthetic_organization_register')
                         </template>
                         <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                            @include('common.shopping_plan_company.table_synthetic_asset_organization_register')
+                            @include('common.shopping_plan_company.year.table_synthetic_asset_organization_register')
                         </template>
                     </div>
                 </div>

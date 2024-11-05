@@ -56,7 +56,6 @@
 @endsection
 
 @section('js')
-
     @vite([
         'resources/js/assets/assetType.js',
         'resources/js/assets/api/apiAssetType.js',
