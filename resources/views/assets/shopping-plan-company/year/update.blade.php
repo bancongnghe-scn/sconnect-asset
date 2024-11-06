@@ -10,7 +10,7 @@
                 <button class="btn btn-danger">Xóa</button>
             </template>
             <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
-            <button class="btn btn-warning">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">

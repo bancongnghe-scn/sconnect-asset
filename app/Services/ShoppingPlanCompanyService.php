@@ -381,6 +381,14 @@ class ShoppingPlanCompanyService
                 'error_code' => AppErrorCode::CODE_2058,
             ];
         }
+
+        if (ShoppingPlanCompany::STATUS_NEW !== +$shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2063,
+            ];
+        }
+
         DB::beginTransaction();
         try {
             $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_REGISTER;
