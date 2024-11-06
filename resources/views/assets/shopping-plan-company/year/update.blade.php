@@ -5,7 +5,7 @@
 @section('content')
     <div x-data="updateShoppingPlanCompanyYear">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="+status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                 <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
                 <button class="btn btn-danger">Xóa</button>
             </template>
@@ -56,7 +56,7 @@
                     <div>
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                            @include('component.shopping_plan_company.table_synthetic_organization_register')
+                            @include('component.shopping_plan_company.year.table_synthetic_organization_register')
                         </template>
                         <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                             @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')

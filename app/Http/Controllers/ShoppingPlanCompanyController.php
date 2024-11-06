@@ -13,6 +13,37 @@ class ShoppingPlanCompanyController extends Controller
 
     }
 
+    public function findShoppingPlanCompany(string $id)
+    {
+
+        try {
+            $result = $this->planCompanyService->findShoppingPlanCompany($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
+    public function sentNotificationRegister(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->sentNotificationRegister($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
     public function deleteShoppingPlanCompany(string $id)
     {
         try {
@@ -42,37 +73,6 @@ class ShoppingPlanCompanyController extends Controller
             }
 
             return response_success();
-        } catch (\Throwable $exception) {
-            return response_error();
-        }
-    }
-
-    public function findShoppingPlanCompany(string $id)
-    {
-
-        try {
-            $result = $this->planCompanyService->findShoppingPlanCompany($id);
-            if (!$result['success']) {
-                return response_error($result['error_code']);
-            }
-
-            return response_success($result['data']);
-        } catch (\Throwable $exception) {
-
-            return response_error();
-        }
-    }
-
-    public function sentNotificationRegister(string $id)
-    {
-        try {
-            $result = $this->planCompanyService->sentNotificationRegister($id);
-
-            if ($result['success']) {
-                return response_success();
-            }
-
-            return response_error($result['error_code']);
         } catch (\Throwable $exception) {
             return response_error();
         }

@@ -58,25 +58,39 @@
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" x-show="typeof showAction === 'undefined' || showAction.view"
+                                            <button class="border-0 bg-body"
                                                     @click="$dispatch('view', { id: data.id })">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
                                             @can('shopping_plan_company.crud')
-                                                <template x-if="[1,2].includes(+data.status)">
+                                                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status)">
                                                     <button class="border-0 bg-body"
-                                                            x-show="typeof showAction === 'undefined' || showAction.edit"
                                                             @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                         <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                                     </button>
                                                 </template>
                                             @endcan
                                             @can('shopping_plan_company.crud')
-                                                <template x-if="+data.status === 1">
+                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                                     <button class="border-0 bg-body"
-                                                            x-show="typeof showAction === 'undefined' || showAction.remove"
                                                             @click="$dispatch('remove', { id: data.id })">
                                                         <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                                    </button>
+                                                </template>
+                                            @endcan
+                                            @can('shopping_plan_company.accounting_approval')
+                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                                    <button class="border-0 bg-body"
+                                                            @click="$dispatch('remove', { id: data.id })">
+                                                        <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                    </button>
+                                                </template>
+                                            @endcan
+                                            @can('shopping_plan_company.general_approval')
+                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                                    <button class="border-0 bg-body"
+                                                            @click="$dispatch('remove', { id: data.id })">
+                                                        <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
                                                 </template>
                                             @endcan
