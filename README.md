@@ -8,7 +8,7 @@
   )
 ## Using
 - Check quyền Auth::user()->can('permission_name')
-
+- Tạo controller, service, repository, model : php artisan make:crms {name}
 ## Server
 ssh ubuntu@18.141.181.19
 ubuntu/abc@@123

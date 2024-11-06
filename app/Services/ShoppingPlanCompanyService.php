@@ -6,9 +6,11 @@ use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\OrganizationRegisterYearResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
+use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
+use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
@@ -22,6 +24,7 @@ class ShoppingPlanCompanyService
         protected UserRepository $userRepository,
         protected MonitorRepository $monitorRepository,
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
+        protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
     ) {
 
     }
@@ -103,6 +106,14 @@ class ShoppingPlanCompanyService
                     ];
                 }
             }
+
+            // Tao log
+            $this->shoppingPlanLogRepository->create([
+                'action'      => ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
+                'record_id'   => $shoppingPlanCompany->id,
+                'description' => __('shopping_plan_company.'.ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY),
+                'created_by'  => Auth::id(),
+            ]);
 
             DB::commit();
 
