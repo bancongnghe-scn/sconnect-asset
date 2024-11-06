@@ -35,9 +35,9 @@ class ShoppingPlanCompanyYearController extends Controller
     public function getListShoppingPlanCompanyYear(Request $request)
     {
         $request->validate([
-            'time'         => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'time'     => 'nullable|integer',
+            'status'   => 'nullable|array',
+            'status.*' => 'integer',
         ]);
 
         Auth::user()->canPer(['shopping_plan_company.view']);
@@ -49,6 +49,22 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function getOrganizationRegisterYear(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->getOrganizationRegisterYear($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            dd($exception);
+
             return response_error();
         }
     }
@@ -75,7 +91,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
-        //        Auth::user()->canPer('shopping_plan_company.insert');
+        Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();

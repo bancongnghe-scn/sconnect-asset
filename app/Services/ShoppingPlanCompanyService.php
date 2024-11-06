@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
-use App\Http\Resources\ShoppingPlanCompanyInfoWeekResource;
-use App\Http\Resources\ShoppingPlanCompanyYearInfoResource;
+use App\Http\Resources\OrganizationRegisterYearResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanOrganization;
@@ -300,16 +299,30 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
+        $data                = $shoppingPlanCompany->toArray();
+        $data['monitor_ids'] = ShoppingPlanCompany::TYPE_YEAR === +$shoppingPlanCompany->type ? $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray() :
+            $shoppingPlanCompany->monitorShoppingPlanQuarter?->pluck('user_id')->toArray();
+
+        return [
+            'success' => true,
+            'data'    => $data,
+        ];
+    }
+
+    public function getOrganizationRegisterYear($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+
+        if (empty($shoppingPlanCompany)) {
             return [
-                'success' => true,
-                'data'    => ShoppingPlanCompanyYearInfoResource::make($shoppingPlanCompany)->resolve(),
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
             ];
         }
 
         return [
             'success' => true,
-            'data'    => ShoppingPlanCompanyInfoWeekResource::make($shoppingPlanCompany)->resolve(),
+            'data'    => OrganizationRegisterYearResource::make($shoppingPlanCompany)->resolve(),
         ];
     }
 

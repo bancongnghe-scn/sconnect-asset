@@ -7,6 +7,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.id = window.location.href.match(/update\/(\d+)/)?.[1];
             this.getInfoShoppingPlanCompanyYear()
+            this.getOrganizationRegisterYear()
             this.getListUser({
                 'dept_id' : [
                     ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
@@ -25,9 +26,9 @@ document.addEventListener('alpine:init', () => {
             start_time: null,
             end_time: null,
             monitor_ids: [],
-            organizations: [],
         },
         listUser: [],
+        organizations: [],
         dateRangePicker: null,
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -42,7 +43,6 @@ document.addEventListener('alpine:init', () => {
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
                     this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
                     this.data.monitor_ids = data.monitor_ids
-                    this.data.organizations = data.organizations
                     $('#selectUser').val(data.monitor_ids).change()
                     return
                 }
@@ -78,6 +78,23 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentNotificationRegister(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getOrganizationRegisterYear() {
+            this.loading = true
+            try {
+                const response = await window.getOrganizationRegisterYear(this.id)
+                if (response.success) {
+                    this.organizations = response.data.data
                     return
                 }
 
@@ -139,7 +156,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
+            $('#selectUser').on('change', (event) => {
                 this.data.monitor_ids = $(event.target).val()
             });
         },

@@ -44,8 +44,7 @@
 
                             <div>
                                 <label class="form-label">Người quan sát</label>
-                                <select class="form-select select2" id="selectUser" x-model="data.monitor_ids"
-                                        multiple="multiple" data-placeholder="Chọn người quan sát">
+                                <select class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát">
                                     <template x-for="value in listUser" :key="value.id">
                                         <option :value="value.id" x-text="value.name"></option>
                                     </template>
