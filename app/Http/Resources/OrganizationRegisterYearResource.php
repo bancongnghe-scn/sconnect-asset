@@ -30,8 +30,8 @@ class OrganizationRegisterYearResource extends JsonResource
         $data                    = [];
         $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->getFirst([
             'id' => $this->resource->id,
-        ], with: [
-            'shoppingPlanOrganizations' => ['shoppingAssetsYear'],
+        ], ['id'], with: [
+            'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id' => ['shoppingAssetsYear:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id'],
         ]);
         $organizationIds       = $shoppingPlanCompanyYear->shoppingPlanOrganizations->pluck('organization_id')->toArray();
         $organizations         = ScApiService::getOrganizationByIds($organizationIds);
