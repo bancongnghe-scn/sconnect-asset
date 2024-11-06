@@ -30,7 +30,7 @@ class UserRepository extends BaseRepository
         }
 
         if (!empty($filers['limit'])) {
-            $query->paginate($filers['limit'], page: $filers['page'] ?? 1);
+            return $query->paginate($filers['limit'], page: $filers['page'] ?? 1);
         }
 
         return $query->get();

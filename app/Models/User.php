@@ -17,7 +17,6 @@ class User extends Authenticatable
     use Notifiable;
     use HasRoles;
     use MigrateAuthorize;
-
     public const STATUS_ACTIVE = 1;
 
     /**

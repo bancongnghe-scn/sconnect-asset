@@ -64,7 +64,31 @@
                 </div>
             </div>
             <div class="card tw-w-[20%]">
-                <div class="card-body">22222222</div>
+                <div class="container d-flex tw-gap-x-4 mt-3">
+                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                       :class="activeLink.history ? 'active-link' : 'inactive-link'"
+                       @click="handleShowActive('history')"
+                    >
+                        Lịch sử
+                    </a>
+                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                       :class="activeLink.comment ? 'active-link' : 'inactive-link'"
+                       @click="handleShowActive('comment')"
+                    >
+                        Bình luận
+                    </a>
+                </div>
+                <div class="mt-3" style="border-top: 1px solid">
+                    <div class="container mt-3">
+                        <template x-for="log in logs">
+                            <div>
+                                <p x-text="log.created_at"></p>
+                                <p class="tw-inline tw-font-bold" x-text="log.created_by + ': '"></p>
+                                <span x-text="log.desc"></span>
+                            </div>
+                        </template>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -76,5 +100,6 @@
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',
+        'resources/js/assets/api/apiShoppingPlanLog.js',
     ])
 @endsection

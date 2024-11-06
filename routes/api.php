@@ -72,6 +72,10 @@ Route::middleware('checkAuth')->group(function () {
         });
     });
 
+    Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {
+        Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
+    });
+
     Route::prefix('/delete-multiple')->group(function () {
         Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
         Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);

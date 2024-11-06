@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
             this.id = window.location.href.match(/update\/(\d+)/)?.[1];
             this.getInfoShoppingPlanCompanyYear()
             this.getOrganizationRegisterYear()
+            this.getShoppingPlanLogByRecordId()
             this.getListUser({
                 'dept_id' : [
                     ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
@@ -29,7 +30,12 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         organizations: [],
+        logs: [],
         dateRangePicker: null,
+        activeLink: {
+            history: true,
+            comment: false
+        },
         //methods
         async getInfoShoppingPlanCompanyYear() {
             this.loading = true
@@ -111,10 +117,20 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetUser(filters)
             if (response.success) {
                 this.listUser = response.data.data
-            } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                return
             }
+            toast.error('Lấy danh sách nhân viên thất bại !')
             this.loading = false
+        },
+
+        async getShoppingPlanLogByRecordId(){
+            const response = await window.getShoppingPlanLogByRecordId(this.id)
+            if (response.success) {
+                this.logs = response.data.data
+                return
+            }
+
+            toast.error('Lấy lịch sử của kế hoạch thất bại !')
         },
 
         initDateRangePicker() {
@@ -160,5 +176,13 @@ document.addEventListener('alpine:init', () => {
                 this.data.monitor_ids = $(event.target).val()
             });
         },
+
+        handleShowActive(active) {
+            for (const activeKey in this.activeLink) {
+                this.activeLink[activeKey] = false
+            }
+
+            this.activeLink[active] = true
+        }
     }))
 })
