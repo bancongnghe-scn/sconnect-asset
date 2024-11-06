@@ -46,7 +46,6 @@ document.addEventListener('alpine:init', () => {
 
         data: {
             time: null,
-            status: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
@@ -159,7 +158,6 @@ document.addEventListener('alpine:init', () => {
                     }
                     const data = response.data.data
                     this.data.time = data.time
-                    this.data.status = data.status
                     this.data.start_time = data.start_time
                     this.data.end_time = data.end_time
                     this.data.monitor_ids = data.monitor_ids
@@ -239,7 +237,6 @@ document.addEventListener('alpine:init', () => {
         resetData() {
             this.data = {
                 time: null,
-                status: null,
                 start_time: null,
                 end_time: null,
                 monitor_ids: [],
