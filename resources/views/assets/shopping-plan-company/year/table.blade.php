@@ -22,11 +22,14 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <template x-for="(data,index) in dataTable">
+                                <template x-for="(data,index) in dataTable" :key="index">
                                     <tr>
                                         @can('shopping_plan_company.crud')
-                                            <td class="text-center align-middle">
+                                            <td class="text-center align-middle" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                                 <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                            </td>
+                                            <td class="text-center align-middle" x-show="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                                <input type="checkbox" disabled>
                                             </td>
                                         @endcan
                                         <td x-text="from + index"></td>
@@ -115,7 +118,11 @@
 
             selectedAll() {
                 this.checkedAll = !this.checkedAll
-                this.dataTable.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
+                this.dataTable.forEach((item) => {
+                    if(+item.status === STATUS_SHOPPING_PLAN_COMPANY_NEW) {
+                        this.selectedRow[item.id] = this.checkedAll
+                    }
+                })
             }
         }
     }

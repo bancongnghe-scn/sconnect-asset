@@ -1,4 +1,4 @@
-<div class="row" x-data="table">
+<div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
@@ -74,16 +74,3 @@
         @include('common.pagination')
     </div>
 </div>
-
-<script>
-    function table() {
-        return {
-            checkedAll: false,
-
-            selectedAll() {
-                this.checkedAll = !this.checkedAll
-                this.dataTable.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
-            }
-        }
-    }
-</script>

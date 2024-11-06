@@ -63,10 +63,10 @@ class ShoppingPlanCompanyController extends Controller
         $request->validate([
             'ids'   => 'required|array',
             'ids.*' => 'integer',
+            'type'  => 'required|integer',
         ]);
-
         try {
-            $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'));
+            $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'), $request->integer('type'));
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -74,6 +74,8 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            dd($exception);
+
             return response_error();
         }
     }

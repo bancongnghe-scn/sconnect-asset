@@ -197,7 +197,7 @@ document.addEventListener('alpine:init', () => {
         async removeMultiple() {
             this.loading = true
             try {
-                const response = await window.apiRemoveShoppingPlanCompanyMultiple(this.id)
+                const response = await window.apiRemoveShoppingPlanCompanyMultiple(this.id, TYPE_SHOPPING_PLAN_COMPANY_YEAR)
                 if (!response.success) {
                     toast.error(response.message)
                     return

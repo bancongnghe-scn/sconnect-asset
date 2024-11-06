@@ -22,9 +22,9 @@ window.apiRemoveShoppingPlanCompany = async function (id) {
     }
 }
 
-window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
+window.apiRemoveShoppingPlanCompanyMultiple = async function (ids, type) {
     try {
-        const response = await axios.post("/api/delete-multiple/shopping-plan-company",{ids: ids})
+        const response = await axios.post("/api/delete-multiple/shopping-plan-company",{ids: ids, type: type})
 
         const data = response.data;
         if (!data.success) {

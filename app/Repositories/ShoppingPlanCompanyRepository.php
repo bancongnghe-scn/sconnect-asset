@@ -6,6 +6,7 @@ use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanCompanyRepository extends BaseRepository
 {
@@ -64,8 +65,16 @@ class ShoppingPlanCompanyRepository extends BaseRepository
             $query->where('id', $filters['id']);
         }
 
+        if (!empty($filters['ids'])) {
+            $query->whereIn('id', Arr::wrap($filters['ids']));
+        }
+
         if (!empty($filters['time'])) {
             $query->where('time', $filters['time']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
         }
 
         if (!empty($filters['type'])) {
@@ -89,7 +98,10 @@ class ShoppingPlanCompanyRepository extends BaseRepository
 
     public function deleteShoppingPlanCompanyByIds(array $ids)
     {
-        return $this->_model->whereIn('id', $ids)->delete();
+        return $this->_model->whereIn('id', $ids)->update([
+            'deleted_at' => date('Y-m-d H:i:s'),
+            'deleted_by' => Auth::id(),
+        ]);
     }
 
     public function getListingOfOrganization($filters, $organizationId, $columns = [

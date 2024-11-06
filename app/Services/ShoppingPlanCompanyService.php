@@ -143,7 +143,7 @@ class ShoppingPlanCompanyService
         $data['updated_by'] = Auth::id();
         try {
             $this->planCompanyRepository->update($shoppingPlanCompany, $data);
-            $monitorIds     =  $data['monitor_ids'] ?? [];
+            $monitorIds     = $data['monitor_ids'] ?? [];
             $updateMonitors = resolve(MonitorService::class)->updateMonitor($id, $monitorIds, Monitor::TYPE_SHOPPING_PLAN_COMPANY[$data['type']]);
             if (!$updateMonitors) {
                 DB::rollBack();
@@ -153,63 +153,6 @@ class ShoppingPlanCompanyService
                     'error_code' => AppErrorCode::CODE_2032,
                 ];
             }
-
-            DB::commit();
-
-            return [
-                'success' => true,
-            ];
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_1000,
-            ];
-        }
-    }
-
-    public function deleteShoppingPlanCompany($id)
-    {
-        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
-        if (empty($shoppingPlanCompany)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2058,
-            ];
-        }
-
-        if (ShoppingPlanCompany::STATUS_NEW != $shoppingPlanCompany->status) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2060,
-            ];
-        }
-
-        DB::beginTransaction();
-        try {
-            $this->monitorRepository->deleteMonitor([
-                'target_id' => $id,
-                'type'      => Monitor::TYPE_SHOPPING_PLAN_COMPANY[$shoppingPlanCompany->type],
-            ]);
-
-
-            $delete = $shoppingPlanCompany->update([
-                'deleted_at' => date('Y-m-d H:i:s'),
-                'deleted_by' => Auth::id(),
-            ]);
-            if (!$delete) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2061,
-                ];
-            }
-
-            //            $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
-            //                'shopping_plan_company_id' => $id,
-            //            ]);
 
             DB::commit();
 
@@ -326,30 +269,111 @@ class ShoppingPlanCompanyService
         ];
     }
 
-    public function deleteShoppingPlanCompanyMultiple(array $ids)
+    public function deleteShoppingPlanCompany($id)
     {
-        $shoppingPlanCompany = $this->planCompanyRepository->getListing([
-            'id'     => $ids,
-            'status' => [
-                ShoppingPlanCompany::STATUS_REGISTER,
-                ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL,
-                ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
-                ShoppingPlanCompany::STATUS_DISAPPROVAL,
-            ],
-        ]);
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
 
-        if ($shoppingPlanCompany->isNotEmpty()) {
+        if (ShoppingPlanCompany::STATUS_NEW != $shoppingPlanCompany->status) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2060,
             ];
         }
 
-        $this->planCompanyRepository->deleteShoppingPlanCompanyByIds($ids);
+        DB::beginTransaction();
+        try {
+            $this->monitorRepository->deleteMonitor([
+                'target_id' => $id,
+                'type'      => Monitor::TYPE_SHOPPING_PLAN_COMPANY[$shoppingPlanCompany->type],
+            ]);
 
-        return [
-            'success' => true,
-        ];
+
+            $delete = $shoppingPlanCompany->update([
+                'deleted_at' => date('Y-m-d H:i:s'),
+                'deleted_by' => Auth::id(),
+            ]);
+            if (!$delete) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2061,
+                ];
+            }
+
+            if (ShoppingPlanCompany::TYPE_WEEK === $shoppingPlanCompany->type) {
+                $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
+                    'shopping_plan_company_id' => $id,
+                ]);
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function deleteShoppingPlanCompanyMultiple(array $ids, int $type)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->getFirst([
+            'ids'     => $ids,
+            'status'  => [
+                ShoppingPlanCompany::STATUS_REGISTER,
+                ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+                ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
+                ShoppingPlanCompany::STATUS_APPROVAL,
+                ShoppingPlanCompany::STATUS_DISAPPROVAL,
+            ],
+        ]);
+
+        if (!empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2060,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $this->planCompanyRepository->deleteShoppingPlanCompanyByIds($ids);
+            $this->monitorRepository->deleteMonitor([
+                'target_id' => $ids,
+                'type'      => Monitor::TYPE_SHOPPING_PLAN_COMPANY[$type],
+            ]);
+
+            if (ShoppingPlanCompany::TYPE_WEEK === $type) {
+                $this->shoppingPlanOrganizationRepository->deleteShoppingPlanOrganization([
+                    'shopping_plan_company_id' => $ids,
+                ]);
+            }
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 
     public function getShoppingPlanCompanyOfMonitor(array $filters, $userId = null)

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanOrganizationRepository extends BaseRepository
@@ -18,7 +19,7 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
         $query = $this->_model->newQuery();
 
         if (!empty($filters['shopping_plan_company_id'])) {
-            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+            $query->whereIn('shopping_plan_company_id', Arr::wrap($filters['shopping_plan_company_id']));
         }
 
         return $query->update([
