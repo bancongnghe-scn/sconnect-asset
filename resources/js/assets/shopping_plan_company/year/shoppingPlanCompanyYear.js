@@ -286,7 +286,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         initYearPicker() {
-            document.querySelectorAll('.yearPicker').forEach(el => {
+            document.querySelectorAll('.yearPickerCompany').forEach(el => {
                 new AirDatepicker(el, {
                     view: 'years', // Hiển thị danh sách năm khi mở
                     minView: 'years', // Giới hạn chỉ cho phép chọn năm

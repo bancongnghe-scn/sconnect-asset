@@ -21,7 +21,7 @@ class ShoppingPlanOrganizationService
     ) {
     }
 
-    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_REGISTER)
+    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
     {
         if (empty($organizationIds)) {
             $organizations   = ScApiService::getAllOrganizationParent();

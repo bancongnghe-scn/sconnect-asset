@@ -99,7 +99,9 @@ document.addEventListener('alpine:init', () => {
 
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
-                this.filters.status = $(event.target).val()
+                if (event.target.id === 'filterStatusOrganization') {
+                    this.filters.status = $(event.target).val()
+                }
             });
         },
 

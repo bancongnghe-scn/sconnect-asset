@@ -9,7 +9,7 @@
                 <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                     <div>
                         <label class="tw-font-bold">Năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <input type="text" class="form-control yearPicker" x-model="data.time" id="selectYear" placeholder="Chọn năm" autocomplete="off">
+                        <input type="text" class="form-control yearPickerCompany" x-model="data.time" id="selectYear" placeholder="Chọn năm" autocomplete="off">
                     </div>
 
                     <div>

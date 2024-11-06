@@ -9,14 +9,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class ShoppingPlanOrganization extends Model
 {
     use SoftDeletes;
-    protected $table                                = 'shopping_plan_organization';
-    public const STATUS_NEW                         = 1;
-    public const STATUS_REGISTER                    = 2;
-    public const STATUS_PENDING_ACCOUNTANT_APPROVAL = 3;
-    public const STATUS_ACCOUNTANT_REVIEW           = 4;
-    public const STATUS_PENDING_MANAGER_APPROVAL    = 5;
-    public const STATUS_APPROVAL                    = 6;
-    public const STATUS_DISAPPROVAL                 = 7;
+    protected $table                                     = 'shopping_plan_organization';
+    public const STATUS_NEW                              = 1;
+    public const STATUS_OPEN_REGISTER                    = 2;
+    public const STATUS_REGISTERED                       = 3;
+    public const STATUS_PENDING_ACCOUNTANT_APPROVAL      = 4;
+    public const STATUS_ACCOUNTANT_REVIEWING             = 5;
+    public const STATUS_PENDING_MANAGER_APPROVAL         = 6;
+    public const STATUS_APPROVAL                         = 7;
+    public const STATUS_DISAPPROVAL                      = 8;
 
     public function shoppingAssetsYear(): HasMany
     {

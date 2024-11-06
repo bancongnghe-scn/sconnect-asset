@@ -11,7 +11,8 @@
     <link rel="icon" type="image/png" href="/images/fav-sc-icon.png" />
 
     <!-- Scripts -->
-    <script src="/js/const.js"></script>
+    <script  src="/js/const.js"></script>
+{{--    <script src='{{ asset('/js/const.js') }}'></script>--}}
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>

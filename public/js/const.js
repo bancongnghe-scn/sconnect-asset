@@ -46,12 +46,16 @@ const STATUS_SHOPPING_PLAN_COMPANY = {
     6: 'Hủy'
 }
 
+// SHOPPING_PLAN_ORGANIZATION
+const STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER = 2
+const STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED = 3
 const STATUS_SHOPPING_PLAN_ORGANIZATION = {
     1: 'Mới tạo',
     2: 'Mở đăng ký',
-    3: 'Chờ kế toán duyệt',
-    4: 'Kế toán đang duyệt',
-    5: 'Chờ giám đốc duyệt',
-    6: 'Đã duyệt',
-    7: 'Hủy'
+    3: 'Đã đăng ký',
+    4: 'Chờ kế toán duyệt',
+    5: 'Kế toán đang đánh giá',
+    6: 'Chờ giám đốc duyệt',
+    7: 'Đã duyệt',
+    8: 'Hủy'
 }

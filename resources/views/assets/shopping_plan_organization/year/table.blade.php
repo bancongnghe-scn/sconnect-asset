@@ -33,10 +33,10 @@
                                                         <span x-text="listStatus[data[key]]" class="p-1 border rounded"
                                                               :class="{
                                                                  'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
-                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 3 || +data[key] === 4,
-                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 6
+                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
+                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED || +data[key] === 4,
+                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5 || +data[key] === 6 || +data[key] === 7,
+                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 8
                                                                  }"
                                                         ></span>
                                                     </div>
@@ -51,9 +51,16 @@
                                             <button class="border-0 bg-body" @click="$dispatch('view', { id: data.id })">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
-                                            <button class="border-0 bg-body" @click="$dispatch('remove', { id: data.id })">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
-                                            </button>
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER">
+                                                <button class="border-0 bg-body" @click="$dispatch('remove', { id: data.id })">
+                                                    <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                </button>
+                                            </template>
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED">
+                                                <button class="border-0 bg-body" @click="$dispatch('remove', { id: data.id })">
+                                                    <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                </button>
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>
