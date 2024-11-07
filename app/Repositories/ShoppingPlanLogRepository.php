@@ -15,7 +15,7 @@ class ShoppingPlanLogRepository extends BaseRepository
 
     public function getListing($filters, $columns = ['*'])
     {
-        $query = $this->_model->select($columns)->newQuery();
+        $query = $this->_model->select($columns)->newQuery()->orderBy('created_at', 'desc');
 
         if (!empty($filters['record_id'])) {
             $query->whereIn('record_id', Arr::wrap($filters['record_id']));

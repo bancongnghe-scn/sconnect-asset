@@ -465,6 +465,13 @@ class ShoppingPlanCompanyService
                     ];
                 }
             }
+
+            $this->shoppingPlanLogRepository->create([
+                'record_id'   => $shoppingPlanCompanyId,
+                'action'      => ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY),
+                'created_by'  => Auth::id(),
+            ]);
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
