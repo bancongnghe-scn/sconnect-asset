@@ -8,6 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ShoppingPlanLog extends Model
 {
     use HasFactory;
-    protected $table                                 = 'shopping_plan_logs';
-    public const ACTION_CREATE_SHOPPING_PLAN_COMPANY = 1;
+    public $timestamps  = false;
+    protected $table    = 'shopping_plan_logs';
+    protected $fillable = [
+        'action',
+        'record_id',
+        'new_value',
+        'old_value',
+        'desc',
+        'created_by',
+    ];
+    public const ACTION_CREATE_SHOPPING_PLAN_COMPANY = 'shopping_plan_create';
+    public const ACTION_UPDATE_SHOPPING_PLAN_COMPANY = 'shopping_plan_update';
 }

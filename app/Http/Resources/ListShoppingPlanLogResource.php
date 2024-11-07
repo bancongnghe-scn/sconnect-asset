@@ -17,7 +17,7 @@ class ListShoppingPlanLogResource extends JsonResource
                 'action'     => $log->action,
                 'desc'       => $log->desc,
                 'created_by' => $users[$log->created_by]['name'] ?? null,
-                'created_at' => $log->created_at->format('H:i d/m/Y'),
+                'created_at' => date('H:i d/m/Y', strtotime($log->created_at)),
             ];
         }
 

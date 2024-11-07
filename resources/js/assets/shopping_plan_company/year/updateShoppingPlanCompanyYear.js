@@ -67,6 +67,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
                 if (response.success) {
                     toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
+                    this.getShoppingPlanLogByRecordId()
                     return
                 }
 
@@ -84,6 +85,9 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentNotificationRegister(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
+                    this.getInfoShoppingPlanCompanyYear()
+                    this.getOrganizationRegisterYear()
+                    this.getShoppingPlanLogByRecordId()
                     return
                 }
 

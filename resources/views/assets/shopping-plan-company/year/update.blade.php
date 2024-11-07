@@ -81,10 +81,12 @@
                 <div class="mt-3" style="border-top: 1px solid">
                     <div class="container mt-3">
                         <template x-for="log in logs">
-                            <div>
-                                <p x-text="log.created_at"></p>
-                                <p class="tw-inline tw-font-bold" x-text="log.created_by + ': '"></p>
-                                <span x-text="log.desc"></span>
+                            <div class="card">
+                                <p class="mb-0" x-text="log.created_at"></p>
+                                <div>
+                                    <p class="tw-inline tw-font-bold" x-text="log.created_by + ': '"></p>
+                                    <span x-text="log.desc"></span>
+                                </div>
                             </div>
                         </template>
                     </div>

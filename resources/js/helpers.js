@@ -65,9 +65,14 @@ window.checkDisableSelectRow = function checkDisableSelectRow() {
 }
 
 window.formatDate = function formatDate(date) {
-    const [day, month, year] = date.split('/').map(Number); // Tách chuỗi và chuyển đổi thành số
-    date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
-    return format(date, 'yyyy-MM-dd')
+    const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (regex.test(date)) {
+        const [day, month, year] = date.split('/').map(Number); // Tách chuỗi và chuyển đổi thành số
+        date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
+        return format(date, 'yyyy-MM-dd')
+    }
+
+    return date
 }
 
 window.convertDateString = function convertDateString(dateString) {

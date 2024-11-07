@@ -111,7 +111,7 @@ class ShoppingPlanCompanyService
             $this->shoppingPlanLogRepository->create([
                 'action'      => ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
                 'record_id'   => $shoppingPlanCompany->id,
-                'description' => __('shopping_plan_company.'.ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY),
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY),
                 'created_by'  => Auth::id(),
             ]);
 
@@ -148,6 +148,12 @@ class ShoppingPlanCompanyService
         }
 
         if (ShoppingPlanCompany::STATUS_NEW === (int) $shoppingPlanCompany->status) {
+            $data['id'] = $shoppingPlanCompany->id;
+            $checkExist = $this->checkExistShoppingPlanCompany($data, 'update');
+            if (!$checkExist['success']) {
+                return $checkExist;
+            }
+
             $data['name'] = $this->getNameShoppingPlanCompany($data);
         }
 
@@ -165,6 +171,13 @@ class ShoppingPlanCompanyService
                 ];
             }
 
+            $this->shoppingPlanLogRepository->create([
+                'record_id'   => $id,
+                'action'      => ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY,
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY),
+                'created_by'  => Auth::id(),
+            ]);
+
             DB::commit();
 
             return [
@@ -180,7 +193,7 @@ class ShoppingPlanCompanyService
         }
     }
 
-    public function checkExistShoppingPlanCompany($data)
+    public function checkExistShoppingPlanCompany($data, $action = 'create')
     {
         $shoppingPlanCompany = match ($data['type']) {
             ShoppingPlanCompany::TYPE_YEAR => $this->planCompanyRepository->getFirst([
@@ -202,7 +215,9 @@ class ShoppingPlanCompanyService
             default => [],
         };
 
-        if (!empty($shoppingPlanCompany)) {
+        $check = 'create' === $action ? !empty($shoppingPlanCompany) : $shoppingPlanCompany->id !== $data['id'];
+
+        if ($check) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2055,

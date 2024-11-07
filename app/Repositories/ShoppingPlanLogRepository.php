@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ShoppingPlanLog;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class ShoppingPlanLogRepository extends BaseRepository
 {
@@ -17,7 +18,7 @@ class ShoppingPlanLogRepository extends BaseRepository
         $query = $this->_model->select($columns)->newQuery();
 
         if (!empty($filters['record_id'])) {
-            $query->whereIn('record_id', $filters['record_id']);
+            $query->whereIn('record_id', Arr::wrap($filters['record_id']));
         }
 
         if (!empty($filters['limit'])) {

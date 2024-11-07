@@ -100,5 +100,6 @@ function formatDateShoppingPlanCompanyYear(data) {
     let dataFormat = data
     dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
     dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.end_time) : null
+    console.log(dataFormat)
     return dataFormat
 }

@@ -18,7 +18,7 @@ class ShoppingPlanLogService
     public function getShoppingPlanLogByRecordId($id)
     {
         $logs = $this->shoppingPlanLogRepository->getListing([
-            'id' => $id,
+            'record_id' => $id,
         ]);
 
         if (empty($logs)) {
