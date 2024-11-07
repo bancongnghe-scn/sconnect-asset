@@ -29,7 +29,7 @@ document.addEventListener('alpine:init', () => {
             monitor_ids: [],
         },
         listUser: [],
-        organizationsRegister: [],
+        register: [],
         logs: [],
         dateRangePicker: null,
         activeLink: {
@@ -141,7 +141,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.getOrganizationRegisterYear(this.id)
                 if (response.success) {
-                    this.organizationsRegister = response.data.data
+                    this.register = response.data.data
                     return
                 }
 

@@ -55,7 +55,6 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
 
             return response_error();
         }

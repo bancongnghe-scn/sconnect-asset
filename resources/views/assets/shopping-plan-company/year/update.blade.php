@@ -72,7 +72,7 @@
                                 <thead>
                                 <tr>
                                     <th colspan="12" class="text-center"
-                                        x-text="`Tổng tiền theo tháng toàn công ty( ${window.formatCurrencyVND(organizationsRegister.total_price_company)})`"
+                                        x-text="`Tổng tiền theo tháng toàn công ty(${window.formatCurrencyVND(register.total_price_company)})`"
                                     >
                                     </th>
                                 </tr>
@@ -84,8 +84,11 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <template x-for="price in organizationsRegister.total_price_months">
+                                    <template x-for="price in register.total_price_months">
                                         <td x-text="window.formatCurrencyVND(price)"></td>
+                                    </template>
+                                    <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                        <td x-text="register.total_price_months?.number ?? 0"></td>
                                     </template>
                                 </tr>
                                 </tbody>

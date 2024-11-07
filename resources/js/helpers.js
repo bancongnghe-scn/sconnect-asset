@@ -31,6 +31,10 @@ window.formData = function (data) {
 }
 
 window.formatCurrencyVND = function formatCurrencyVND(number) {
+    if (+number === 0 || typeof number === 'undefined') {
+        return 0
+    }
+
     return number.toLocaleString('vi-VN');
 }
 

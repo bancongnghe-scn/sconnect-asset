@@ -18,10 +18,10 @@
         </tr>
         </thead>
         <tbody>
-        <template x-for="(organization, index) in organizationsRegister.organizations" :key="index">
+        <template x-for="(organization, index) in register.organizations" :key="index">
             <template x-for="(assetRegister, stt) in organization.asset_register" :key="index + '_' + stt">
                 <tr>
-                    <td x-text="organizations.length - index" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1"></td>
+                    <td x-text="register.organizations.length - index" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1"></td>
                     <td x-text="organization.name" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold"></td>
                     <td x-text="assetRegister.asset_type_name ?? '-'" class="text-center"></td>
                     <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
