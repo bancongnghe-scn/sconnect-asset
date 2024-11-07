@@ -12,22 +12,13 @@
             <th rowspan="2" class="text-center">Thao tác</th>
         </tr>
         <tr>
-            <th>T1</th>
-            <th>T2</th>
-            <th>T3</th>
-            <th>T4</th>
-            <th>T5</th>
-            <th>T6</th>
-            <th>T7</th>
-            <th>T8</th>
-            <th>T9</th>
-            <th>T10</th>
-            <th>T11</th>
-            <th>T12</th>
+            <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                <th x-text="`T` + number" class="text-center"></th>
+            </template>
         </tr>
         </thead>
         <tbody>
-        <template x-for="(organization, index) in organizations" :key="index">
+        <template x-for="(organization, index) in organizationsRegister.organizations" :key="index">
             <template x-for="(assetRegister, stt) in organization.asset_register" :key="index + '_' + stt">
                 <tr>
                     <td x-text="organizations.length - index" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1"></td>
@@ -37,7 +28,7 @@
                         <td x-text="assetRegister.register?.[number - 1] ?? '-'" class="text-center"></td>
                     </template>
                     <td x-text="assetRegister.total_register ?? '-'" class="text-center"></td>
-                    <td x-text="organization.total_price" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
+                    <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">...</td>
                 </tr>
             </template>

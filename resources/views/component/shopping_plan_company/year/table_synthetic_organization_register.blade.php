@@ -8,7 +8,7 @@
         </tr>
         </thead>
         <tbody>
-        <template x-for="(organization,index) in organizations">
+        <template x-for="(organization,index) in organizationsRegister">
             <tr>
                 <td x-text="index+1"></td>
                 <td x-text="organization" class="tw-font-bold"></td>

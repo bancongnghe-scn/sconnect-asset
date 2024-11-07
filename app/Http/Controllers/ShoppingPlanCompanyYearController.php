@@ -63,7 +63,6 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
-
             return response_error();
         }
     }

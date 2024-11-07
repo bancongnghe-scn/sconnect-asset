@@ -63,8 +63,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="mb-3 active-link tw-w-fit">Thống kê</div>
+
+                    <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                        <div class="mt-3">
+                            <table id="example2" class="table table-bordered dataTable dtr-inline"
+                                   aria-describedby="example2_info">
+                                <thead>
+                                <tr>
+                                    <th colspan="12" class="text-center"
+                                        x-text="`Tổng tiền theo tháng toàn công ty( ${window.formatCurrencyVND(organizationsRegister.total_price_company)})`"
+                                    >
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                        <th x-text="`T` + number" class="text-center"></th>
+                                    </template>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <template x-for="price in organizationsRegister.total_price_months">
+                                        <td x-text="window.formatCurrencyVND(price)"></td>
+                                    </template>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                    <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+
                     <div>
-                        <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                             @include('component.shopping_plan_company.year.table_synthetic_organization_register')
                         </template>
@@ -104,7 +134,6 @@
                 </div>
             </div>
         </div>
-
         <div
             x-data="{
                         modalId: idModalConfirmDelete,

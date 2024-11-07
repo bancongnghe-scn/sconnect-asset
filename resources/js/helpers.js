@@ -31,7 +31,7 @@ window.formData = function (data) {
 }
 
 window.formatCurrencyVND = function formatCurrencyVND(number) {
-    return number.toLocaleString('vi-VN') + ' vnđ';
+    return number.toLocaleString('vi-VN');
 }
 
 window.initSelect2Modal = function initSelect2Modal(modalId) {
