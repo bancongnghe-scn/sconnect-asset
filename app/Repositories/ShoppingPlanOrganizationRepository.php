@@ -27,4 +27,14 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
             'deleted_by' => Auth::id(),
         ]);
     }
+
+    public function updateShoppingPlanOrganization(array $filters, array $dataUpdate)
+    {
+        $query = $this->_model->newQuery();
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        return $query->update($dataUpdate);
+    }
 }

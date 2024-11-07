@@ -18,7 +18,8 @@ class ShoppingPlanLog extends Model
         'desc',
         'created_by',
     ];
-    public const ACTION_CREATE_SHOPPING_PLAN_COMPANY            = 'shopping_plan_create';
-    public const ACTION_UPDATE_SHOPPING_PLAN_COMPANY            = 'shopping_plan_update';
-    public const ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY = 'shopping_plan_sent_notification';
+    public const ACTION_CREATE_SHOPPING_PLAN_COMPANY                   = 'shopping_plan_create';
+    public const ACTION_UPDATE_SHOPPING_PLAN_COMPANY                   = 'shopping_plan_update';
+    public const ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY        = 'shopping_plan_sent_notification';
+    public const ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY = 'shopping_plan_send_account_approval';
 }

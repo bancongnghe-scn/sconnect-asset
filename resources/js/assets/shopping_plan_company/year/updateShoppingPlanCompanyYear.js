@@ -36,6 +36,7 @@ document.addEventListener('alpine:init', () => {
             history: true,
             comment: false
         },
+        idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
             this.loading = true
@@ -85,13 +86,49 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentNotificationRegister(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
-                    this.getInfoShoppingPlanCompanyYear()
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
                     this.getOrganizationRegisterYear()
                     this.getShoppingPlanLogByRecordId()
                     return
                 }
 
                 toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sendAccountantApproval() {
+            this.loading = true
+            try {
+                const response = await window.apiSendAccountantApproval(this.id)
+                if (response.success) {
+                    toast.success('Gửi duyệt thành công !')
+                    window.location.href = `/shopping-plan-company/year/list`
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async remove() {
+            this.loading = true
+            try {
+                const response = await window.apiRemoveShoppingPlanCompany(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return;
+                }
+                $("#"+this.idModalConfirmDelete).modal('hide')
+                toast.success('Xóa kế hoạch mua sắm năm thành công !')
+                window.location.href = `/shopping-plan-company/year/list`
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -187,6 +224,10 @@ document.addEventListener('alpine:init', () => {
             }
 
             this.activeLink[active] = true
-        }
+        },
+
+        confirmRemove() {
+            $("#"+this.idModalConfirmDelete).modal('show');
+        },
     }))
 })

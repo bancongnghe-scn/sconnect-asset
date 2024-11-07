@@ -44,6 +44,23 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
+    public function sendAccountantApproval(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->sendAccountantApproval($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            dd($exception);
+
+            return response_error();
+        }
+    }
+
     public function deleteShoppingPlanCompany(string $id)
     {
         try {

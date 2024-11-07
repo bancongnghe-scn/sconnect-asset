@@ -6,10 +6,17 @@
     <div x-data="updateShoppingPlanCompanyYear">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
-                <button class="btn btn-danger">Xóa</button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
+                    <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
+                </div>
             </template>
-            <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+            </template>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(data.end_time)">
+                <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+            </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
         <div class="d-flex justify-content-between">
@@ -33,18 +40,22 @@
                                         class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 <input type="text" class="form-control yearPicker" id="selectYear" x-model="data.time"
                                        autocomplete="off"
-                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW"
+                                >
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 <input type="text" class="form-control dateRange" id="selectDateRegister"
-                                       placeholder="Chọn thời gian đăng ký" autocomplete="off">
+                                       placeholder="Chọn thời gian đăng ký" autocomplete="off"
+                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER"
+                                >
                             </div>
 
                             <div>
                                 <label class="form-label">Người quan sát</label>
-                                <select class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát">
+                                <select class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
+                                        :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                                     <template x-for="value in listUser" :key="value.id">
                                         <option :value="value.id" x-text="value.name"></option>
                                     </template>
@@ -92,6 +103,16 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div
+            x-data="{
+                        modalId: idModalConfirmDelete,
+                        contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
+                    }"
+            @ok="remove"
+        >
+            @include('common.modal-confirm')
         </div>
     </div>
 @endsection

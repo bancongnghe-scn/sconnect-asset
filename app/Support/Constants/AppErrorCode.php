@@ -68,4 +68,7 @@ class AppErrorCode
     public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
     public const CODE_2062 = 2062; //  Cập nhật trạng thái kế hoạch mua sắm năm thất bại !
     public const CODE_2063 = 2063; //  Kế hoạch đã được gửi thông báo đến các đơn vị !
+    public const CODE_2064 = 2064; //  Chưa thể gửi duyệt do trạng thái khác với đăng ký!
+    public const CODE_2065 = 2065; //  Chưa thể gửi duyệt do chưa hết thời gian đăng ký!
+    public const CODE_2066 = 2066; //  Gửi duyệt thất bại!
 }
