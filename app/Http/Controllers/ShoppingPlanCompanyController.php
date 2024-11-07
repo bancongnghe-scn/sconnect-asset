@@ -74,7 +74,6 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
 
             return response_error();
         }

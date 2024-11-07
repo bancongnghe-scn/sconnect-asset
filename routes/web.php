@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
-    dd(App\Services\ScApiService::getAllOrganizationParent());
-
     return 'pong';
 });
 
