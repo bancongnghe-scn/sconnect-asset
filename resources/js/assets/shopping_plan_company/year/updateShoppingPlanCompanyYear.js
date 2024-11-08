@@ -17,6 +17,13 @@ document.addEventListener('alpine:init', () => {
             this.initDateRangePicker()
             this.initYearPicker()
             this.onChangeSelect2()
+            window.Echo.channel('channel_test')
+                .listen('NewMessageEvent', (e) => {
+                    console.log('Message received: ' + e.message); // Thử alert thay vì console.log
+                }).error((error) => {
+                console.error('Error receiving event: ', error); // Xử lý lỗi nếu có
+            });
+
         },
 
         //data
