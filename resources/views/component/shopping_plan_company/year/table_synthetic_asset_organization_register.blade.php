@@ -29,7 +29,22 @@
                     </template>
                     <td x-text="assetRegister.total_register ?? '-'" class="text-center"></td>
                     <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
-                    <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">...</td>
+                    <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
+                        <button
+                            type="button"
+                            class="btn btn-secondary"
+                            data-bs-toggle="popover"
+                            data-bs-html="true"
+                            data-bs-content='
+        <a href="#" id="popover-link">Option 2</a><br>
+    '
+                            x-init="new bootstrap.Popover($el);"
+                        >
+                            Show Popover
+                        </button>
+
+
+                    </td>
                 </tr>
             </template>
         </template>

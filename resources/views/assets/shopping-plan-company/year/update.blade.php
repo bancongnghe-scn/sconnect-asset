@@ -87,9 +87,6 @@
                                     <template x-for="price in register.total_price_months">
                                         <td x-text="window.formatCurrencyVND(price)"></td>
                                     </template>
-                                    <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
-                                        <td x-text="register.total_price_months?.number ?? 0"></td>
-                                    </template>
                                 </tr>
                                 </tbody>
                             </table>

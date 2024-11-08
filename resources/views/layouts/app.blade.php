@@ -12,7 +12,6 @@
 
     <!-- Scripts -->
     <script  src="/js/const.js"></script>
-{{--    <script src='{{ asset('/js/const.js') }}'></script>--}}
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
