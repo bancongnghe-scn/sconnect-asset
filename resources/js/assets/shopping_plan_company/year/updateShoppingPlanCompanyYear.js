@@ -18,12 +18,11 @@ document.addEventListener('alpine:init', () => {
             this.initYearPicker()
             this.onChangeSelect2()
             window.Echo.channel('channel_test')
-                .listen('NewMessageEvent', (e) => {
-                    console.log('Message received: ' + e.message); // Thử alert thay vì console.log
+                .listen('.NewMessageEvent', (e) => {
+                   alert(e.message)
                 }).error((error) => {
-                console.error('Error receiving event: ', error); // Xử lý lỗi nếu có
+                alert(error)
             });
-
         },
 
         //data
