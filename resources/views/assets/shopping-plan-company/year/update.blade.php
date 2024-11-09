@@ -120,7 +120,7 @@
                     </a>
                 </div>
                 <div class="mt-3" style="border-top: 1px solid">
-                    <div class="container mt-3">
+                    <div class="container mt-3" x-show="activeLink.history">
                         <template x-for="log in logs">
                             <div class="card">
                                 <p class="mb-0" x-text="log.created_at"></p>
@@ -130,6 +130,18 @@
                                 </div>
                             </div>
                         </template>
+                    </div>
+                    <div class="container mt-3" id="comment" x-show="activeLink.comment">
+                        <template x-for="log in logs">
+                            <div class="card">
+                                <p class="mb-0" x-text="log.created_at"></p>
+                                <div>
+                                    <p class="tw-inline tw-font-bold" x-text="log.created_by + ': '"></p>
+                                    <span x-text="log.desc"></span>
+                                </div>
+                            </div>
+                        </template>
+                        <button @click="sentComment">Gửi tin nhắn</button>
                     </div>
                 </div>
             </div>

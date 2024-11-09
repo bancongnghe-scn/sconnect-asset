@@ -17,12 +17,7 @@ document.addEventListener('alpine:init', () => {
             this.initDateRangePicker()
             this.initYearPicker()
             this.onChangeSelect2()
-            window.Echo.channel('channel_test')
-                .listen('.NewMessageEvent', (e) => {
-                   alert(e.message)
-                }).error((error) => {
-                alert(error)
-            });
+            this.handleComment()
         },
 
         //data
@@ -235,5 +230,14 @@ document.addEventListener('alpine:init', () => {
         confirmRemove() {
             $("#"+this.idModalConfirmDelete).modal('show');
         },
+
+        handleComment() {
+            window.Echo.channel('channel_shopping_plan_'+this.id)
+                .listen('.ShoppingPlanCommentEvent', (e) => {
+                    alert(e.message)
+                }).error((error) => {
+                alert(error)
+            });
+        }
     }))
 })

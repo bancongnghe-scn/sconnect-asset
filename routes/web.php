@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
-    event(new App\Events\NewMessageEvent('Hello WebSockets!'));
+    event(new App\Events\ShoppingPlanCommentEvent(35, 'Nguyen Van Hoang', 'Xin chao', '11/09/2024 14:36'));
 
     return 'pong';
 });
