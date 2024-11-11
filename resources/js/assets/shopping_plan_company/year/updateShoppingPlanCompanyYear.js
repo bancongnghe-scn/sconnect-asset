@@ -5,15 +5,17 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('updateShoppingPlanCompanyYear', () => ({
         init() {
-            this.id = window.location.href.match(/update\/(\d+)/)?.[1];
-            this.getInfoShoppingPlanCompanyYear()
-            this.getOrganizationRegisterYear()
-            this.getShoppingPlanLogByRecordId()
+            const split = window.location.href.split('/')
+            this.id = split.pop();
+            this.action = split.at(5);
             this.getListUser({
                 'dept_id' : [
                     ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
                 ]
             })
+            this.getInfoShoppingPlanCompanyYear()
+            this.getOrganizationRegisterYear()
+            this.getShoppingPlanLogByRecordId()
             this.initDateRangePicker()
             this.initYearPicker()
             this.onChangeSelect2()
@@ -22,6 +24,7 @@ document.addEventListener('alpine:init', () => {
 
         //data
         id: null,
+        action: null,
         data: {
             time: null,
             status: null,
@@ -37,6 +40,7 @@ document.addEventListener('alpine:init', () => {
             history: true,
             comment: false
         },
+        comments: [],
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -234,7 +238,7 @@ document.addEventListener('alpine:init', () => {
         handleComment() {
             window.Echo.channel('channel_shopping_plan_'+this.id)
                 .listen('.ShoppingPlanCommentEvent', (e) => {
-                    alert(e.message)
+                    this.comments.push(e)
                 }).error((error) => {
                 alert(error)
             });

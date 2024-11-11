@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
-    event(new App\Events\ShoppingPlanCommentEvent(35, 'Nguyen Van Hoang', 'Xin chao', '11/09/2024 14:36'));
+    event(new App\Events\ShoppingPlanCommentEvent(36, 'Nguyen Van Hoang', 'Xin chao', '11/09/2024 14:36'));
 
     return 'pong';
 });
@@ -39,6 +39,7 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::prefix('year')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyYearController::class, 'index']);
             Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
     });
 });

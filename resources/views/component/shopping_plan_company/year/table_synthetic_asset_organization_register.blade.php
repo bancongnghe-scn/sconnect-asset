@@ -9,7 +9,9 @@
             <th colspan="12" class="text-center">Số lượng đăng ký theo tháng</th>
             <th rowspan="2" class="text-center">Tổng Số lượng</th>
             <th rowspan="2" class="text-center">Tổng Thành tiền</th>
-            <th rowspan="2" class="text-center">Thao tác</th>
+            <template x-if="action === 'update'">
+                <th rowspan="2" class="text-center">Thao tác</th>
+            </template>
         </tr>
         <tr>
             <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
@@ -29,22 +31,20 @@
                     </template>
                     <td x-text="assetRegister.total_register ?? '-'" class="text-center"></td>
                     <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
-                    <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-toggle="popover"
-                            data-bs-html="true"
-                            data-bs-content='
-        <a href="#" id="popover-link">Option 2</a><br>
-    '
-                            x-init="new bootstrap.Popover($el);"
-                        >
-                            Show Popover
-                        </button>
-
-
-                    </td>
+                    <template x-if="action === 'update'">
+                        <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-toggle="popover"
+                                data-bs-html="true"
+                                data-bs-content='<a href="#" id="popover-link">Option 2</a><br>'
+                                x-init="new bootstrap.Popover($el);"
+                            >
+                                ...
+                            </button>
+                        </td>
+                    </template>
                 </tr>
             </template>
         </template>

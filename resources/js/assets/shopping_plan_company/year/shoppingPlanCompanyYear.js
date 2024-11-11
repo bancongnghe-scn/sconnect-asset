@@ -253,6 +253,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
             $('#filterStatus').val([]).change()
+            $('#filterYear').val(null).change()
 
             this.list(this.filters)
         },

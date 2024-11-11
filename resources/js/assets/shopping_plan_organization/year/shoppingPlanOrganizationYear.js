@@ -93,6 +93,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
             $('#filterStatusOrganization').val([]).change()
+            $('#filterYearOrganization').val(null).change()
 
             this.list(this.filters)
         },
@@ -128,7 +129,6 @@ document.addEventListener('alpine:init', () => {
                     }
                 });
             });
-
         },
     }));
 });

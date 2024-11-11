@@ -32,11 +32,14 @@
                                                     <div class="d-flex justify-content-center">
                                                         <span x-text="listStatus[data[key]]" class="p-1 border rounded"
                                                               :class="{
-                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
+                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_NEW,
                                                                  'tw-text-purple-600 tw-bg-purple-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED || +data[key] === 4,
-                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5 || +data[key] === 6 || +data[key] === 7,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 8
+                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
+                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                                                                  }"
                                                         ></span>
                                                     </div>

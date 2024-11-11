@@ -45,13 +45,14 @@
                                                     <div class="d-flex justify-content-center">
                                                         <span x-text="listStatus[data[key]]" class="p-1 border rounded"
                                                               :class="{
-                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
-                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 3 || +data[key] === 4,
-                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 6
-                                                                 }"
-                                                        ></span>
+                                                                  'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                                                                  'tw-text-purple-600 tw-bg-purple-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                                                  'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                                                                                                        || +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                                                                  'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                                                                  'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                                                              }">
+                                                        </span>
                                                     </div>
                                                 </template>
                                                 <template x-if="key === 'user'">
@@ -62,7 +63,7 @@
                                         </template>
                                         <td class="text-center align-middle">
                                             <button class="border-0 bg-body"
-                                                    @click="$dispatch('view', { id: data.id })">
+                                                    @click="window.location.href = `/shopping-plan-company/year/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
                                             @can('shopping_plan_company.crud')
