@@ -35,4 +35,7 @@ Route::middleware(['checkAuth'])->group(function () {
     Route::view('contract/list', 'assets.contract.list');
     Route::view('contract-appendix/list', 'assets.contract_appendix.list');
     Route::view('shopping-plan-company/year/list', 'assets.shopping-plan-company.year.list');
+
+
+    Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
 });

@@ -74,4 +74,11 @@ Route::middleware('auth')->group(function () {
 
     Route::post('contract/{id}', [ContractController::class, 'update']);
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
+
+    Route::prefix('/asset/manage')->group(function () {
+        Route::get('asset-lost', [App\Http\Controllers\Manage\AssetLostController::class, 'getListAssetLost']);
+        Route::get('asset-lost/{id}', [App\Http\Controllers\Manage\AssetLostController::class, 'findAssetLost']);
+        Route::post('asset-lost', [App\Http\Controllers\Manage\AssetLostController::class, 'updateAssetLost']);
+        Route::get('asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
+    });
 });
