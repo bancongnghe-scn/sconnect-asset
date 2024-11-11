@@ -42,4 +42,10 @@ Route::middleware(['checkAuth'])->group(function () {
             Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
     });
+    Route::prefix('shopping-plan-organization')->group(function () {
+        Route::prefix('year')->group(function () {
+            Route::view('register/{id}', 'assets.shopping-plan-organization.year.register');
+            Route::view('view/{id}', 'assets.shopping-plan-organization.year.detail');
+        });
+    });
 });

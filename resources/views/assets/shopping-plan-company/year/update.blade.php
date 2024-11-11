@@ -109,45 +109,7 @@
                 </div>
             </div>
             <div class="card tw-w-[20%]">
-                <div class="container d-flex tw-gap-x-4 mt-3">
-                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                       :class="activeLink.history ? 'active-link' : 'inactive-link'"
-                       @click="handleShowActive('history')"
-                    >
-                        Lịch sử
-                    </a>
-                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                       :class="activeLink.comment ? 'active-link' : 'inactive-link'"
-                       @click="handleShowActive('comment')"
-                    >
-                        Bình luận
-                    </a>
-                </div>
-                <div class="mt-3" style="border-top: 1px solid">
-                    <div class="container mt-3" x-show="activeLink.history">
-                        <template x-for="log in logs">
-                            <div class="card">
-                                <p class="mb-0" x-text="log.created_at"></p>
-                                <div>
-                                    <p class="tw-inline tw-font-bold" x-text="log.created_by + ': '"></p>
-                                    <span x-text="log.desc"></span>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                    <div class="container mt-3" id="comment" x-show="activeLink.comment">
-                        <template x-for="comment in comments">
-                            <div class="card">
-                                <p class="mb-0" x-text="comment.created_at"></p>
-                                <div>
-                                    <p class="tw-inline tw-font-bold" x-text="comment.user_name + ': '"></p>
-                                    <span x-text="comment.message"></span>
-                                </div>
-                            </div>
-                        </template>
-                        <button @click="sentComment">Gửi tin nhắn</button>
-                    </div>
-                </div>
+                @include('component.shopping_plan_company.history_comment')
             </div>
         </div>
         <div
