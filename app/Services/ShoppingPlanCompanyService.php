@@ -270,8 +270,19 @@ class ShoppingPlanCompanyService
         }
 
         $data                = $shoppingPlanCompany->toArray();
-        $data['monitor_ids'] = ShoppingPlanCompany::TYPE_YEAR === +$shoppingPlanCompany->type ? $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray() :
-            $shoppingPlanCompany->monitorShoppingPlanQuarter?->pluck('user_id')->toArray();
+        switch ($shoppingPlanCompany->type) {
+            case ShoppingPlanCompany::TYPE_YEAR:
+                $data['monitor_ids'] =  $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();
+                break;
+            case ShoppingPlanCompany::TYPE_QUARTER:
+                $data['monitor_ids'] = $shoppingPlanCompany->monitorShoppingPlanQuarter?->pluck('user_id')->toArray();
+                break;
+            case ShoppingPlanCompany::TYPE_WEEK:
+                $data['monitor_ids'] = $shoppingPlanCompany->monitorShoppingPlanWeek?->pluck('user_id')->toArray();
+                break;
+            default:
+                $data['monitor_ids'] = [];
+        }
 
         return [
             'success' => true,
@@ -423,9 +434,9 @@ class ShoppingPlanCompanyService
         return $this->planCompanyRepository->getListing($filters);
     }
 
-    public function sentNotificationRegister($shoppingPlanCompanyId)
+    public function sentNotificationRegister(array $data)
     {
-        $shoppingPlanCompany = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        $shoppingPlanCompany = $this->planCompanyRepository->find($data['id']);
         if (empty($shoppingPlanCompany)) {
             return [
                 'success'    => false,
@@ -452,23 +463,22 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
-                $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-                    $shoppingPlanCompany->id
-                );
+            $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
+                $shoppingPlanCompany->id,
+                $data['organizations'] ?? []
+            );
 
-                if (!$insertShoppingPlanOrganizations) {
-                    DB::rollBack();
+            if (!$insertShoppingPlanOrganizations) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2057,
-                    ];
-                }
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2057,
+                ];
             }
 
             $this->shoppingPlanLogRepository->create([
-                'record_id'   => $shoppingPlanCompanyId,
+                'record_id'   => $data['id'],
                 'action'      => ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
                 'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY),
                 'created_by'  => Auth::id(),

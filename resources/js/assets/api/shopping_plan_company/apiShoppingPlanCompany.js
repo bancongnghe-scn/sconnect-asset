@@ -70,9 +70,11 @@ window.apiShowShoppingPlanCompany = async function (id) {
     }
 }
 
-window.apiSentNotificationRegister = async function (id) {
+window.apiSentNotificationRegister = async function (id, organization = []) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/sent-notification-register/"+id)
+        const response = await axios.post("/api/shopping-plan-company/sent-notification-register/", {
+            id: id, organization: organization
+        })
 
         const data = response.data;
         if (!data.success) {

@@ -55,6 +55,11 @@ class ShoppingPlanCompany extends Model
         return $this->hasMany(Monitor::class, 'target_id')->where('type', Monitor::TYPE_SHOPPING_PLAN_COMPANY[ShoppingPlanCompany::TYPE_QUARTER]);
     }
 
+    public function monitorShoppingPlanWeek(): HasMany
+    {
+        return $this->hasMany(Monitor::class, 'target_id')->where('type', Monitor::TYPE_SHOPPING_PLAN_COMPANY[ShoppingPlanCompany::TYPE_WEEK]);
+    }
+
     public function shoppingPlanOrganizations(): HasMany
     {
         return $this->hasMany(ShoppingPlanOrganization::class, 'shopping_plan_company_id')->orderBy('status');

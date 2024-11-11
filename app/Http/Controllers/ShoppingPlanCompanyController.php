@@ -29,10 +29,16 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
-    public function sentNotificationRegister(string $id)
+    public function sentNotificationRegister(Request $request)
     {
+        $request->validate([
+            'id'              => 'required|integer',
+            'organizations'   => 'nullable|array',
+            'organizations.*' => 'integer',
+        ]);
+
         try {
-            $result = $this->planCompanyService->sentNotificationRegister($id);
+            $result = $this->planCompanyService->sentNotificationRegister($request->all());
 
             if ($result['success']) {
                 return response_success();
