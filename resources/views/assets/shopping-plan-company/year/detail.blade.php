@@ -79,7 +79,7 @@
 
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <div class="tw-max-h-dvh overflow-y-scroll">
+                        <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.year.table_synthetic_organization_register')
                             </template>
@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card tw-w-[20%]">
+            <div class="card tw-w-[20%] tw-h-[80dvh]">
                 @include('component.shopping_plan_company.history_comment')
             </div>
         </div>

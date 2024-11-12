@@ -85,7 +85,7 @@
 
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
-                    <div class="mb-3 tw-max-h-60 overflow-y-scroll">
+                    <div class="mb-3 tw-max-h-60 overflow-y-scroll custom-scroll">
                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
@@ -118,7 +118,7 @@
 
                 <div class="container">
                     <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
-                    <div class="tw-max-h-60 overflow-y-scroll">
+                    <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
