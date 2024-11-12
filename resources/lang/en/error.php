@@ -70,4 +70,5 @@ return [
     AppErrorCode::CODE_2064 => 'Chưa thể gửi duyệt do trạng thái khác với đăng ký hoặc chưa hết thời gian đăng ký!',
     AppErrorCode::CODE_2065 => 'Chưa thể gửi duyệt do chưa hết thời gian đăng ký!',
     AppErrorCode::CODE_2066 => 'Gửi duyệt thất bại!',
+    AppErrorCode::CODE_2067 => 'Gửi bình luận thất bại !',
 ];

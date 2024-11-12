@@ -70,3 +70,6 @@ const STATUS_SHOPPING_PLAN_ORGANIZATION = {
     7: 'Đã duyệt',
     8: 'Hủy'
 }
+
+//COMMENT
+const TYPE_COMMENT_SHOPPING_PLAN = 1;

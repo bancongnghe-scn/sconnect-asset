@@ -77,6 +77,11 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
     });
 
+    Route::prefix('comment')->controller(App\Http\Controllers\CommentController::class)->group(function () {
+        Route::get('list', 'getListComment');
+        Route::post('sent', 'sentComment');
+    });
+
     Route::prefix('/delete-multiple')->group(function () {
         Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
         Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);

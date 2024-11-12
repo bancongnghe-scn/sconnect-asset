@@ -79,7 +79,7 @@
 
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <div>
+                        <div class="tw-max-h-dvh overflow-y-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.year.table_synthetic_organization_register')
                             </template>
@@ -104,5 +104,6 @@
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/assets/api/apiShoppingPlanLog.js',
+        'resources/js/assets/api/apiComment.js',
     ])
 @endsection

@@ -16,6 +16,7 @@ document.addEventListener('alpine:init', () => {
             this.getInfoShoppingPlanCompanyYear()
             this.getOrganizationRegisterYear()
             this.getShoppingPlanLogByRecordId()
+            this.listComment()
             this.initDateRangePicker()
             this.initYearPicker()
             this.onChangeSelect2()
@@ -41,6 +42,7 @@ document.addEventListener('alpine:init', () => {
             comment: false
         },
         comments: [],
+        comment_message: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -179,6 +181,35 @@ document.addEventListener('alpine:init', () => {
             toast.error('Lấy lịch sử của kế hoạch thất bại !')
         },
 
+
+        async sentComment(reply = null) {
+            const param = {
+                type: TYPE_COMMENT_SHOPPING_PLAN,
+                target_id: this.id,
+                message: this.comment_message,
+                reply: reply
+            }
+            const response = await window.apiSentComment(param)
+            if (response.success) {
+                this.comment_message = null
+                return
+            }
+            toast.error(response.message)
+        },
+
+        async listComment(reply = null) {
+            const param = {
+                type: TYPE_COMMENT_SHOPPING_PLAN,
+                target_id: this.id,
+            }
+            const response = await window.apiGetComment(param)
+            if (response.success) {
+                this.comments = response.data.data
+                return
+            }
+            toast.error(response.message)
+        },
+
         initDateRangePicker() {
             this.dateRangePicker = new AirDatepicker('.dateRange', {
                 range: true,
@@ -242,6 +273,6 @@ document.addEventListener('alpine:init', () => {
                 }).error((error) => {
                 alert(error)
             });
-        }
+        },
     }))
 })

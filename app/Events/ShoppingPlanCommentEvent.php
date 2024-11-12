@@ -14,8 +14,10 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
 
     public function __construct(
         protected $shoppingPlanId,
-        protected $username,
+        protected $id,
         protected $message,
+        protected $replyUser,
+        protected $createdBy,
         protected $createdAt,
     ) {
     }
@@ -33,9 +35,11 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'user_name'  => $this->username,
-            'message'    => $this->message,
-            'created_at' => $this->createdAt,
+            'id'            => $this->id,
+            'message'       => $this->message,
+            'reply_user'    => $this->replyUser,
+            'created_by'    => $this->createdBy,
+            'created_at'    => $this->createdAt,
         ];
     }
 }

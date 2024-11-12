@@ -71,4 +71,5 @@ class AppErrorCode
     public const CODE_2064 = 2064; //  Chưa thể gửi duyệt do trạng thái khác với đăng ký!
     public const CODE_2065 = 2065; //  Chưa thể gửi duyệt do chưa hết thời gian đăng ký!
     public const CODE_2066 = 2066; //  Gửi duyệt thất bại!
+    public const CODE_2067 = 2067; //  Gửi bình luận thất bại !
 }
