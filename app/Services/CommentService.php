@@ -7,6 +7,7 @@ use App\Http\Resources\ListCommentResource;
 use App\Models\Comment;
 use App\Repositories\CommentRepository;
 use App\Repositories\UserRepository;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 
 class CommentService
@@ -61,5 +62,57 @@ class CommentService
                 break;
             default:
         }
+    }
+
+    public function deleteComment($id)
+    {
+        $comment = $this->commentRepository->find($id);
+        if (empty($comment)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2068,
+            ];
+        }
+
+        if ($comment->created_by !== Auth::id()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2069,
+            ];
+        }
+
+        if (!$comment->delete()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2070,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function editComment($data)
+    {
+        $comment = $this->commentRepository->find($data['id']);
+        if (empty($comment)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2068,
+            ];
+        }
+
+        $comment->message = $data['message'];
+        if (!$comment->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2071,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

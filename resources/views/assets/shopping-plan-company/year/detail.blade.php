@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card tw-w-[20%] tw-h-[80dvh]">
+            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="history_comment_shopping_plan">
                 @include('component.shopping_plan_company.history_comment')
             </div>
         </div>
@@ -100,6 +100,7 @@
 @section('js')
     @vite([
         'resources/js/assets/shopping_plan_company/year/updateShoppingPlanCompanyYear.js',
+        'resources/js/assets/shopping_plan_company/history_comment_shopping_plan.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',

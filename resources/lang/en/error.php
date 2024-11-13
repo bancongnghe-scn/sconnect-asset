@@ -71,4 +71,8 @@ return [
     AppErrorCode::CODE_2065 => 'Chưa thể gửi duyệt do chưa hết thời gian đăng ký!',
     AppErrorCode::CODE_2066 => 'Gửi duyệt thất bại!',
     AppErrorCode::CODE_2067 => 'Gửi bình luận thất bại !',
+    AppErrorCode::CODE_2068 => 'Bình luận không tồn tại !',
+    AppErrorCode::CODE_2069 => 'Bạn không có quyền xóa bình luận này !',
+    AppErrorCode::CODE_2070 => 'Xóa bình luận thất bại !',
+    AppErrorCode::CODE_2071 => 'Sửa bình luận thất bại !',
 ];

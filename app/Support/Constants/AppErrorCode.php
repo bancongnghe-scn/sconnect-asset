@@ -72,4 +72,8 @@ class AppErrorCode
     public const CODE_2065 = 2065; //  Chưa thể gửi duyệt do chưa hết thời gian đăng ký!
     public const CODE_2066 = 2066; //  Gửi duyệt thất bại!
     public const CODE_2067 = 2067; //  Gửi bình luận thất bại !
+    public const CODE_2068 = 2068; //  Bình luận không tồn tại !
+    public const CODE_2069 = 2069; //   Bạn không có quyền xóa bình luận này !,
+    public const CODE_2070 = 2070; //   Xóa bình luận thất bại !
+    public const CODE_2071 = 2071; //   Sửa bình luận thất bại !
 }

@@ -25,8 +25,6 @@ class CommentController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
-
             return response_error();
         }
     }
@@ -42,6 +40,39 @@ class CommentController extends Controller
 
         try {
             $this->commentService->sentComment($request->all());
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function deleteComment(string $id)
+    {
+        try {
+            $result = $this->commentService->deleteComment($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function editComment(Request $request)
+    {
+        $request->validate([
+            'id'      => 'required|integer',
+            'message' => 'required|string',
+        ]);
+
+        try {
+            $result = $this->commentService->editComment($request->all());
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
 
             return response_success();
         } catch (\Throwable $exception) {

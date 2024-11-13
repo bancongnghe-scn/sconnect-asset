@@ -15,12 +15,9 @@ document.addEventListener('alpine:init', () => {
             })
             this.getInfoShoppingPlanCompanyYear()
             this.getOrganizationRegisterYear()
-            this.getShoppingPlanLogByRecordId()
-            this.listComment()
             this.initDateRangePicker()
             this.initYearPicker()
             this.onChangeSelect2()
-            this.handleComment()
         },
 
         //data
@@ -35,14 +32,7 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         register: [],
-        logs: [],
         dateRangePicker: null,
-        activeLink: {
-            history: true,
-            comment: false
-        },
-        comments: [],
-        comment_message: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -171,45 +161,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getShoppingPlanLogByRecordId(){
-            const response = await window.getShoppingPlanLogByRecordId(this.id)
-            if (response.success) {
-                this.logs = response.data.data
-                return
-            }
-
-            toast.error('Lấy lịch sử của kế hoạch thất bại !')
-        },
-
-
-        async sentComment(reply = null) {
-            const param = {
-                type: TYPE_COMMENT_SHOPPING_PLAN,
-                target_id: this.id,
-                message: this.comment_message,
-                reply: reply
-            }
-            const response = await window.apiSentComment(param)
-            if (response.success) {
-                this.comment_message = null
-                return
-            }
-            toast.error(response.message)
-        },
-
-        async listComment(reply = null) {
-            const param = {
-                type: TYPE_COMMENT_SHOPPING_PLAN,
-                target_id: this.id,
-            }
-            const response = await window.apiGetComment(param)
-            if (response.success) {
-                this.comments = response.data.data
-                return
-            }
-            toast.error(response.message)
-        },
-
         initDateRangePicker() {
             this.dateRangePicker = new AirDatepicker('.dateRange', {
                 range: true,
@@ -254,25 +205,8 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
-        handleShowActive(active) {
-            for (const activeKey in this.activeLink) {
-                this.activeLink[activeKey] = false
-            }
-
-            this.activeLink[active] = true
-        },
-
         confirmRemove() {
             $("#"+this.idModalConfirmDelete).modal('show');
-        },
-
-        handleComment() {
-            window.Echo.channel('channel_shopping_plan_'+this.id)
-                .listen('.ShoppingPlanCommentEvent', (e) => {
-                    this.comments.push(e)
-                }).error((error) => {
-                alert(error)
-            });
         },
     }))
 })

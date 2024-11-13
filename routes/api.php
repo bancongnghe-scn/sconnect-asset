@@ -80,6 +80,8 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('comment')->controller(App\Http\Controllers\CommentController::class)->group(function () {
         Route::get('list', 'getListComment');
         Route::post('sent', 'sentComment');
+        Route::post('delete/{id}', 'deleteComment');
+        Route::post('edit', 'editComment');
     });
 
     Route::prefix('/delete-multiple')->group(function () {
