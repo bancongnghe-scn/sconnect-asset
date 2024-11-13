@@ -41,23 +41,15 @@ class CommentService
 
         $comment = $this->commentRepository->create($data);
 
-        $replyUser = null;
-        if (!empty($data['reply'])) {
-            $reply = $this->commentRepository->find($data['reply']);
-            if (!empty($reply)) {
-                $replyUser = $this->userRepository->find($reply->created_by)?->name;
-            }
-        }
-
         switch ($data['type']) {
             case Comment::TYPE_SHOPPING_PLAN:
                 ShoppingPlanCommentEvent::dispatch(
                     $data['target_id'],
                     $comment->id,
                     $data['message'],
-                    $replyUser,
-                    $user['name'],
-                    date('H:i d/m/Y', strtotime($data['created_at']))
+                    $user['id'],
+                    date('H:i d/m/Y', strtotime($data['created_at'])),
+                    $user['name']
                 );
                 break;
             default:

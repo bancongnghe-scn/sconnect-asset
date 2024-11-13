@@ -23,7 +23,7 @@
         </div>
         <div class="mt-3" id="comment" x-show="activeLink.comment">
             <div class="overflow-y-scroll custom-scroll tw-h-[65dvh]">
-                <div class="container">
+                <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
                         <div class="mb-3">
                             <div class="tw-flex tw-gap-x-2 align-items-center ">
@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="tw-ml-12">
-                                <template x-if="+comment.user_login === +comment.created_by">
+                                <template x-if="+user_login === +comment.created_by">
                                     <input type="text" class="form-control"
                                            x-show="+id_comment_edit === +comment.id"
                                            x-model="message_edit"
@@ -46,10 +46,10 @@
                                     >
                                 </template>
                                 <div class="d-flex tw-gap-x-3 opacity-50">
-                                    <template x-if="+comment.user_login !== +comment.created_by">
-                                        <span class="tw-cursor-pointer">Trả lời</span>
+                                    <template x-if="+user_login !== +comment.created_by">
+                                        <span class="tw-cursor-pointer" @click="replyComment(comment.user_created)">Trả lời</span>
                                     </template>
-                                    <template x-if="+comment.user_login === +comment.created_by">
+                                    <template x-if="+user_login === +comment.created_by">
                                         <div class="d-flex tw-gap-x-3">
                                             <span class="tw-cursor-pointer" @click="handleEditComment(comment.id, comment.message)">Sửa</span>
                                             <span class="tw-cursor-pointer" @click="deleteComment(comment.id)">Xóa</span>
@@ -64,7 +64,10 @@
 
             <div class="container">
                 <div class="input-group border rounded mt-3">
-                    <input type="text" class="form-control border-0" placeholder="Thêm bình luận..." x-model="comment_message" @keydown.enter="sentComment()">
+                    <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
+                           x-model="comment_message"
+                           x-ref="input_message"
+                           @keydown.enter="sentComment()">
                     <button class="btn" type="button" @click="sentComment()">
                         <i class="fas fa-paper-plane color-sc"></i>
                     </button>

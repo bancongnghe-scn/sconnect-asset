@@ -9,7 +9,6 @@ document.addEventListener('alpine:init', () => {
         message_edit: null,
         id_comment_edit: null,
 
-
         //methods
         async sentComment(reply = null) {
             const param = {
@@ -62,5 +61,10 @@ document.addEventListener('alpine:init', () => {
 
             this.activeLink[active] = true
         },
+
+        replyComment(username) {
+            this.comment_message = `@${username} `;
+            this.$refs.input_message.focus();
+        }
     })
 )})

@@ -16,9 +16,9 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
         protected $shoppingPlanId,
         protected $id,
         protected $message,
-        protected $replyUser,
         protected $createdBy,
         protected $createdAt,
+        protected $userCreated,
     ) {
     }
 
@@ -37,7 +37,7 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
         return [
             'id'            => $this->id,
             'message'       => $this->message,
-            'reply_user'    => $this->replyUser,
+            'user_created'  => $this->userCreated,
             'created_by'    => $this->createdBy,
             'created_at'    => $this->createdAt,
         ];
