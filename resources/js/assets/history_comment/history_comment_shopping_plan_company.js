@@ -1,28 +1,32 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment_shopping_plan', () => ({
             init() {
-                this.getShoppingPlanLogByRecordId()
                 this.listComment()
                 this.handleComment()
             },
 
             //data
-            logs: [],
             comments: [],
+            comment_message: null,
 
-            async getShoppingPlanLogByRecordId() {
-                const response = await window.getShoppingPlanLogByRecordId(this.id)
+            async sentComment(reply = null) {
+                const param = {
+                    type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
+                    target_id: this.id,
+                    message: this.comment_message,
+                    reply: reply
+                }
+                const response = await window.apiSentComment(param)
+                this.comment_message = null
                 if (response.success) {
-                    this.logs = response.data.data
                     return
                 }
-
-                toast.error('Lấy lịch sử của kế hoạch thất bại !')
+                toast.error(response.message)
             },
 
             async listComment(reply = null) {
                 const param = {
-                    type: TYPE_COMMENT_SHOPPING_PLAN,
+                    type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                     target_id: this.id,
                 }
                 const response = await window.apiGetComment(param)

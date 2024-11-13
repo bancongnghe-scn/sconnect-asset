@@ -51,14 +51,14 @@ Route::middleware('checkAuth')->group(function () {
         ]);
     });
 
-    Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
-        Route::get('show/{id}', 'findShoppingPlanCompany');
-        Route::post('sent-notification-register', 'sentNotificationRegister');
-        Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
-        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
-    });
-
     Route::prefix('shopping-plan-company')->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
+            Route::get('show/{id}', 'findShoppingPlanCompany');
+            Route::post('sent-notification-register', 'sentNotificationRegister');
+            Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
+            Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+        });
+
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyYear');
             Route::post('create', 'createShoppingPlanCompanyYear');
@@ -68,6 +68,10 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::prefix('shopping-plan-organization')->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
+            Route::get('view/{id}', 'findShoppingPlanOrganization');
+        });
+
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationYear');
         });

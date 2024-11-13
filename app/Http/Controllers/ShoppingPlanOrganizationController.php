@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\ShoppingPlanOrganizationService;
+
+class ShoppingPlanOrganizationController
+{
+    public function __construct(
+        protected ShoppingPlanOrganizationService $shoppingPlanOrganizationService,
+    ) {
+    }
+
+    public function findShoppingPlanOrganization(string $id)
+    {
+        try {
+            $result = $this->shoppingPlanOrganizationService->findShoppingPlanOrganization($id);
+            if ($result['success']) {
+                return response_success($result['data']);
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            dd($exception);
+
+            return response_error();
+        }
+    }
+}

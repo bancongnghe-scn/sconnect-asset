@@ -37,4 +37,14 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
 
         return $query->update($dataUpdate);
     }
+
+    public function getInfoShoppingPlanOrganizationById($id, $columns = [
+        'shopping_plan_company.name', 'shopping_plan_company.start_time', 'shopping_plan_company.end_time',
+        'shopping_plan_organization.organization_id', 'shopping_plan_organization.status',
+    ])
+    {
+        return $this->_model->select($columns)
+            ->join('shopping_plan_company', 'shopping_plan_company.id', 'shopping_plan_organization.shopping_plan_company_id')
+            ->where('shopping_plan_organization.id', $id)->first();
+    }
 }

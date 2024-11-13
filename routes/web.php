@@ -44,8 +44,8 @@ Route::middleware(['checkAuth'])->group(function () {
     });
     Route::prefix('shopping-plan-organization')->group(function () {
         Route::prefix('year')->group(function () {
-            Route::view('register/{id}', 'assets.shopping-plan-organization.year.register');
-            Route::view('view/{id}', 'assets.shopping-plan-organization.year.detail');
+            Route::view('register/{id}', 'assets.shopping_plan_organization.year.register');
+            Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
         });
     });
 });

@@ -3,11 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
+use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,6 +62,22 @@ class ShoppingPlanOrganizationService
                 ->additional([
                     'users' => $users->keyBy('id'),
                 ])->resolve(),
+        ];
+    }
+
+    public function findShoppingPlanOrganization($id)
+    {
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getInfoShoppingPlanOrganizationById($id);
+        if (empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => ShoppingPlanOrganizationResource::make($shoppingPlanOrganization)->resolve(),
         ];
     }
 }

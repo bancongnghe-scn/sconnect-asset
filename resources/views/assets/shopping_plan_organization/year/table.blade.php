@@ -32,7 +32,6 @@
                                                     <div class="d-flex justify-content-center">
                                                         <span x-text="listStatus[data[key]]" class="p-1 border rounded"
                                                               :class="{
-                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_NEW,
                                                                  'tw-text-purple-600 tw-bg-purple-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
                                                                  'tw-text-green-600 tw-bg-green-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
                                                                   || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,

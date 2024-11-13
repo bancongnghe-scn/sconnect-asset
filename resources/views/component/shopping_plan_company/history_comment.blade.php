@@ -76,4 +76,8 @@
         </div>
     </div>
 </div>
-@vite('resources/js/assets/history_comment.js')
+@vite([
+    'resources/js/assets/history_comment/history_comment.js',
+    'resources/js/assets/api/apiShoppingPlanLog.js',
+    'resources/js/assets/api/apiComment.js',
+])
