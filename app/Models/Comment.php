@@ -20,5 +20,6 @@ class Comment extends Model
         'created_at',
         'created_by',
     ];
-    public const TYPE_SHOPPING_PLAN = 1;
+    public const TYPE_SHOPPING_PLAN_COMPANY      = 1;
+    public const TYPE_SHOPPING_PLAN_ORGANIZATION = 2;
 }

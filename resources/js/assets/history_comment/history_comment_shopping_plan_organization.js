@@ -38,8 +38,8 @@ document.addEventListener('alpine:init', () => {
             },
 
             handleComment() {
-                window.Echo.channel('channel_shopping_plan_' + this.id)
-                    .listen('.ShoppingPlanCommentEvent', (e) => {
+                window.Echo.channel('channel_shopping_plan_organization' + this.id)
+                    .listen('.ShoppingPlanOrganizationCommentEvent', (e) => {
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)

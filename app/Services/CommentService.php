@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\ShoppingPlanCommentEvent;
+use App\Events\ShoppingPlanOrganizationCommentEvent;
 use App\Http\Resources\ListCommentResource;
 use App\Models\Comment;
 use App\Repositories\CommentRepository;
@@ -42,8 +43,18 @@ class CommentService
         $comment = $this->commentRepository->create($data);
 
         switch ($data['type']) {
-            case Comment::TYPE_SHOPPING_PLAN:
+            case Comment::TYPE_SHOPPING_PLAN_COMPANY:
                 ShoppingPlanCommentEvent::dispatch(
+                    $data['target_id'],
+                    $comment->id,
+                    $data['message'],
+                    $user['id'],
+                    date('H:i d/m/Y', strtotime($data['created_at'])),
+                    $user['name']
+                );
+                break;
+            case Comment::TYPE_SHOPPING_PLAN_ORGANIZATION:
+                ShoppingPlanOrganizationCommentEvent::dispatch(
                     $data['target_id'],
                     $comment->id,
                     $data['message'],

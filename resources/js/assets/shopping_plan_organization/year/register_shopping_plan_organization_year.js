@@ -6,16 +6,21 @@ document.addEventListener('alpine:init', () => {
             const split = window.location.href.split('/')
             this.id = split.pop();
             this.getInfo()
+            this.getListAssetType()
         },
 
         //data
         id: null,
+        table_index: [],
         data: {
             name: null,
             organization_name: null,
-            time_register: null,
-            status: null
+            start_time : null,
+            end_time : null,
+            status: null,
+            register_time: null
         },
+        list_asset_type: [],
 
         //methods
         async getInfo(){
@@ -26,15 +31,32 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.data.name = response.data.name
-                this.data.organization_name = response.data.organization_name
-                this.data.status = response.data.status
-                this.data.time_register = format(response.data.start_time, 'dd/MM/yyyy') + ' - ' + format(response.data.end_time, 'dd/MM/yyyy')
+                this.data = response.data
+                this.data.register_time = format(this.data.start_time, 'dd/MM/yyyy') + ' - ' + format(this.data.end_time, 'dd/MM/yyyy')
             } catch (e) {
                 toast.error(e)
             } finally {
                 this.loading = false
             }
         },
+
+        async getListAssetType() {
+            this.loading = true
+            const response = await window.apiGetAssetType({})
+            if (response.success) {
+                this.list_asset_type = response.data.data
+            } else {
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            }
+            this.loading = false
+        },
+
+        handleShowTable(index) {
+            if (!this.table_index.includes(index)) {
+                this.table_index.push(index)
+            } else {
+                this.table_index = this.table_index.filter(item => item !== index);
+            }
+        }
     }));
 });

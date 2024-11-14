@@ -1,18 +1,19 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm năm 2024'
+    'title' => 'Kế hoạch mua sắm năm'
 ])
 
 @section('content')
     <div x-data="register_shopping_plan_organization_year">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED ">
+            <template x-if="
+                (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
+                && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
                 <button class="btn btn-primary" @click="saveRegister">Đăng ký</button>
             </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
-        <div class="d-flex justify-content-between">
-            <div class="card tw-w-[78%]">
+        <div class="d-flex">
+            <div class="card flex-grow-1 mr-3">
                 <div class="card-body">
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
@@ -32,17 +33,17 @@
                         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                             <div>
                                 <label class="tw-font-bold">Tên</label>
-                                <input type="text" class="form-control" x-model="data.name" disabled>
+                                <div class="form-control" x-text="data.name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Đơn vị</label>
-                                <input type="text" class="form-control" x-model="data.organization_name" disabled>
+                                <div class="form-control" x-text="data.organization_name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký</label>
-                                <input type="text" class="form-control" x-model="data.time_register" disabled>
+                                <div class="form-control" x-text="data.register_time"></div>
                             </div>
                         </div>
                     </div>
@@ -50,7 +51,73 @@
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div>
+                            <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                <div class="p-4 tw-bg-[#E4F0E6] mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
+                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${number}`"></span>
 
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <span class="me-2 flex-shrink-0">Tổng số lượng</span>
+                                                <span class="form-control text-center" x-text="3"></span>
+                                            </div>
+
+                                            <div class="d-flex align-items-center" style="flex: 1;">
+                                                <span class="me-2 flex-shrink-0">Tổng giá trị</span>
+                                                <span class="form-control text-center" x-text="122131233"></span>
+                                            </div>
+                                        </div>
+
+                                        <button class="btn" @click="handleShowTable(number)">
+                                            <i class="fa-solid fa-chevron-down"></i>
+                                        </button>
+                                    </div>
+
+                                    <div class="card card-body mt-3" x-show="table_index.includes(number)">
+                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                            <thead>
+                                                <tr>
+                                                    <th rowspan="1" colspan="1">Loại tài sản</th>
+                                                    <th rowspan="1" colspan="1" >Đơn vị tính</th>
+                                                    <th rowspan="1" colspan="1" >Số lượng</th>
+                                                    <th rowspan="1" colspan="1" >Vị trí chức danh</th>
+                                                    <th rowspan="1" colspan="1" >Đơn giá</th>
+                                                    <th rowspan="1" colspan="1" >Tổng</th>
+                                                    <th rowspan="1" colspan="1" >Mô tả</th>
+                                                    <th rowspan="1" colspan="1"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <select class="form-select select2" x-model="data.asset_type_ids" id="assetTypeSelect2" multiple="multiple" data-placeholder="Chọn loại tài sản">
+                                                            <template x-for="value in listAssetType" :key="value.id">
+                                                                <option :value="value.id" x-text="value.name"></option>
+                                                            </template>
+                                                        </select>
+                                                    </td>
+                                                    <td x-text="333333333"></td>
+                                                    <td>
+                                                        <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                    </td>
+                                                    <td x-text="1111111111"></td>
+                                                    <td>
+                                                        <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                    </td>
+                                                    <td x-text="1111111111"></td>
+                                                    <td x-text="2222222"></td>
+                                                    <td class="text-center align-middle">
+                                                        <button class="border-0 bg-body">
+                                                            <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" class="btn btn-sc tw-w-fit mt-3">Thêm hàng</button>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
@@ -67,5 +134,6 @@
        'resources/js/assets/shopping_plan_organization/year/register_shopping_plan_organization_year.js',
        'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+       'resources/js/assets/api/apiAssetType.js',
     ])
 @endsection
