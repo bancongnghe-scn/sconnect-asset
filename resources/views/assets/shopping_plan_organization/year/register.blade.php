@@ -51,67 +51,74 @@
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div>
-                            <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                            <template x-for="(register, index) in registers" :key="index">
                                 <div class="p-4 tw-bg-[#E4F0E6] mb-3">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
-                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${number}`"></span>
+                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${index + 1}`"></span>
 
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <span class="me-2 flex-shrink-0">Tổng số lượng</span>
-                                                <span class="form-control text-center" x-text="3"></span>
+                                                <span class="form-control text-center" x-text="register.total_asset"></span>
                                             </div>
 
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <span class="me-2 flex-shrink-0">Tổng giá trị</span>
-                                                <span class="form-control text-center" x-text="122131233"></span>
+                                                <span class="form-control text-center" x-text="register.total_price"></span>
                                             </div>
                                         </div>
 
-                                        <button class="btn" @click="handleShowTable(number)">
+                                        <button class="btn" @click="handleShowTable(index)">
                                             <i class="fa-solid fa-chevron-down"></i>
                                         </button>
                                     </div>
 
-                                    <div class="card card-body mt-3" x-show="table_index.includes(number)">
+                                    <div class="card card-body mt-3" x-show="table_index.includes(index)">
                                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
                                                 <tr>
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>
                                                     <th rowspan="1" colspan="1" >Đơn vị tính</th>
-                                                    <th rowspan="1" colspan="1" >Số lượng</th>
                                                     <th rowspan="1" colspan="1" >Vị trí chức danh</th>
                                                     <th rowspan="1" colspan="1" >Đơn giá</th>
+                                                    <th rowspan="1" colspan="1" >Số lượng</th>
+                                                    <th rowspan="1" colspan="1" >Số lượng duyệt</th>
                                                     <th rowspan="1" colspan="1" >Tổng</th>
                                                     <th rowspan="1" colspan="1" >Mô tả</th>
                                                     <th rowspan="1" colspan="1"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>
-                                                        <select class="form-select select2" x-model="data.asset_type_ids" id="assetTypeSelect2" multiple="multiple" data-placeholder="Chọn loại tài sản">
-                                                            <template x-for="value in listAssetType" :key="value.id">
-                                                                <option :value="value.id" x-text="value.name"></option>
-                                                            </template>
-                                                        </select>
-                                                    </td>
-                                                    <td x-text="333333333"></td>
-                                                    <td>
-                                                        <input class="form-control" type="number" @input="calculateMonthTotal()" />
-                                                    </td>
-                                                    <td x-text="1111111111"></td>
-                                                    <td>
-                                                        <input class="form-control" type="number" @input="calculateMonthTotal()" />
-                                                    </td>
-                                                    <td x-text="1111111111"></td>
-                                                    <td x-text="2222222"></td>
-                                                    <td class="text-center align-middle">
-                                                        <button class="border-0 bg-body">
-                                                            <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
+                                                <template x-for="(asset, key) in register.assets" :key="`${index}_${key}`">
+                                                    <tr>
+                                                        <td>
+                                                            <select class="form-select select2"
+                                                                    x-model="registers[index].assets[key].asset_type_id"
+                                                                    :id="`select_asset_type_${index}_${key}`">
+                                                                <option value="">Chọn loại tài sản</option>
+                                                                <template x-for="value in list_asset_type" :key="`asset_type_${index}_${key}_${value.id}`">
+                                                                    <option :value="value.id" x-text="value.name"></option>
+                                                                </template>
+                                                            </select>
+                                                        </td>
+                                                        <td class="text-center" x-text="LIST_MEASURE[asset.measure]"></td>
+                                                        <td>
+                                                            <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                        </td>
+                                                        <td x-text="1111111111"></td>
+                                                        <td>
+                                                            <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                        </td>
+                                                        <td x-text="1111111111"></td>
+                                                        <td x-text="2222222"></td>
+                                                        <td x-text="2222222"></td>
+                                                        <td class="text-center align-middle">
+                                                            <button class="border-0 bg-body">
+                                                                <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </template>
                                             </tbody>
                                         </table>
                                         <button type="button" class="btn btn-sc tw-w-fit mt-3">Thêm hàng</button>

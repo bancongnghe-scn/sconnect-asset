@@ -11,6 +11,8 @@ import './helpers.js'
 
 window.Alpine = Alpine
 document.addEventListener('DOMContentLoaded', () => {
+    Alpine.start();
+
     $('.select2').select2({
         language: {
             noResults: function() {
@@ -18,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
-    Alpine.start();
 });
 
 import { Toast } from 'bootstrap';
