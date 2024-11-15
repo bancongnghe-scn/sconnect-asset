@@ -10,7 +10,8 @@ import Alpine from 'alpinejs'
 import './helpers.js'
 
 window.Alpine = Alpine
-document.addEventListener('DOMContentLoaded', () => {
+
+window.onload = function () {
     Alpine.start();
 
     $('.select2').select2({
@@ -20,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     })
-});
+}
 
 import { Toast } from 'bootstrap';
 const toast = {

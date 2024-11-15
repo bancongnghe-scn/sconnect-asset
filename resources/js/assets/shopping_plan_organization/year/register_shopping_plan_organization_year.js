@@ -7,11 +7,21 @@ document.addEventListener('alpine:init', () => {
             this.id = split.pop();
             this.getInfo()
             this.getListAssetType()
+            this.getJobs()
             this.getRegisterAsset()
+
+            // $('.select2').select2({
+            //     language: {
+            //         noResults: function() {
+            //             return "Không tìm thấy kết quả";
+            //         }
+            //     }
+            // })
         },
 
         //data
         id: null,
+        search: null,
         table_index: [],
         data: {
             name: null,
@@ -22,6 +32,7 @@ document.addEventListener('alpine:init', () => {
             register_time: null
         },
         list_asset_type: [],
+        list_job: [],
         registers : [],
 
         //methods
@@ -42,6 +53,24 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getJobs(){
+            this.loading = true
+            try {
+                const response = await window.apiGetJobs({})
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.list_job = response.data
+                console.log('job')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.getRegisterAsset()
+                this.loading = false
+            }
+        },
+
         async getRegisterAsset(){
             this.loading = true
             try {
@@ -49,7 +78,7 @@ document.addEventListener('alpine:init', () => {
 
                     {
                         assets: [
-                            {id: 1, asset_type_id: 8, measure: 1, position_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
+                            {id: 1, asset_type_id: 8, measure: 1, job_id: 1, price: 1000, description: '111111', quantity_registered: 1, quantity_approved: 1},
                         ],
                         total_price: 1000,
                         total_asset: 1,
@@ -57,7 +86,7 @@ document.addEventListener('alpine:init', () => {
                     },
                     {
                         assets: [
-                            {id: 1, asset_type_id: 1, measure: 1, position_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
+                            {id: 1, asset_type_id: 9, measure: 1, job_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
                         ],
                         total_price: 1000,
                         total_asset: 1,
@@ -118,6 +147,7 @@ document.addEventListener('alpine:init', () => {
                         month: 12
                     },
                 ]
+                console.log('register')
 
                 // this.registers.forEach(function (register, index) {
                 //     register.assets.forEach(function (asset, key) {
@@ -138,6 +168,7 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetAssetType({})
             if (response.success) {
                 this.list_asset_type = response.data.data
+                console.log('asset_type')
             } else {
                 toast.error('Lấy danh sách loại tài sản thất bại !')
             }
@@ -150,6 +181,40 @@ document.addEventListener('alpine:init', () => {
             } else {
                 this.table_index = this.table_index.filter(item => item !== index);
             }
+        },
+
+        addRow(index) {
+            this.registers[index].assets.push({
+                asset_type_id: 8,
+                measure: null,
+                job_id: null,
+                price: null,
+                description: null,
+                quantity_registered: null,
+                quantity_approved: null
+            })
+            const key =  this.registers[index].assets.length - 1
+            setTimeout(function (){
+                $('#select_asset_type_'+index+'_'+key).select2({
+                    language: {
+                        noResults: function() {
+                            return "Không tìm thấy kết quả";
+                        }
+                    }
+                })
+
+                $('#select_job_'+index+'_'+key).select2({
+                    language: {
+                        noResults: function() {
+                            return "Không tìm thấy kết quả";
+                        }
+                    }
+                })
+            }, 10)
+        },
+
+        deleteRow(index, key) {
+            this.registers[index].assets.splice(key,1)
         }
     }));
 });

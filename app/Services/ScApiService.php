@@ -138,4 +138,47 @@ class ScApiService
             return null;
         }
     }
+
+    public static function getAllJob()
+    {
+        return Cache::tags(config('cache_keys.tags.job_title'))
+            ->remember(config('cache_keys.keys.job_title_all'), now()->addMonths(2), function () {
+                $response = self::getJobsApi();
+                if (!is_null($response) && $response['success']) {
+                    foreach ($response['data'] as $job) {
+                        $cacheKey = config('cache_keys.keys.job_title') . '_' . $job['id'];
+                        Cache::tags(config('cache_keys.tags.job_title'))->put($cacheKey, $job, config('cache_keys.ttl.month'));
+                    }
+
+                    return $response['data'];
+                }
+
+                return [];
+            });
+    }
+
+    public static function getJobsApi($ids = [])
+    {
+        $host     = config('services.sc-api.domain');
+        $endpoint = '/api/job/getJobs';
+        $url      = $host . $endpoint;
+
+        $params = [];
+
+        if (!empty($ids)) {
+            $params['id'] = Arr::wrap($ids);
+        }
+
+        try {
+            $response = Http::withToken('123')
+                ->timeout(static::$TIMEOUT_15)
+                ->get($url, $params);
+
+            return $response->json();
+        } catch (\Throwable $exception) {
+            Log::error($exception->getMessage());
+
+            return null;
+        }
+    }
 }

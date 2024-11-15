@@ -78,11 +78,11 @@
                                             <thead>
                                                 <tr>
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>
-                                                    <th rowspan="1" colspan="1" >Đơn vị tính</th>
-                                                    <th rowspan="1" colspan="1" >Vị trí chức danh</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị</th>
+                                                    <th rowspan="1" colspan="1" >Chức danh</th>
                                                     <th rowspan="1" colspan="1" >Đơn giá</th>
-                                                    <th rowspan="1" colspan="1" >Số lượng</th>
-                                                    <th rowspan="1" colspan="1" >Số lượng duyệt</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-24">Duyệt</th>
                                                     <th rowspan="1" colspan="1" >Tổng</th>
                                                     <th rowspan="1" colspan="1" >Mô tả</th>
                                                     <th rowspan="1" colspan="1"></th>
@@ -93,27 +93,44 @@
                                                     <tr>
                                                         <td>
                                                             <select class="form-select select2"
-                                                                    x-model="registers[index].assets[key].asset_type_id"
-                                                                    :id="`select_asset_type_${index}_${key}`">
-                                                                <option value="">Chọn loại tài sản</option>
-                                                                <template x-for="value in list_asset_type" :key="`asset_type_${index}_${key}_${value.id}`">
+                                                                    x-model="asset.asset_type_id"
+                                                                    :id="`select_asset_type_${index}_${key}`"
+                                                            >
+                                                                <option value="">Chọn tài sản</option>
+                                                                <template x-for="value in list_asset_type" :key="value.id">
                                                                     <option :value="value.id" x-text="value.name"></option>
                                                                 </template>
                                                             </select>
                                                         </td>
-                                                        <td class="text-center" x-text="LIST_MEASURE[asset.measure]"></td>
+                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
                                                         <td>
-                                                            <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                            <select class="form-select select2"
+                                                                    x-model="asset.job_id"
+                                                                    :id="`select_job_${index}_${key}`"
+                                                            >
+                                                                <option value="">Chọn chức danh</option>
+                                                                <template x-for="value in list_job" :key="`job_${index}_${key}_${value.id}`">
+                                                                    <option :value="value.id" x-text="value.name"></option>
+                                                                </template>
+                                                            </select>
                                                         </td>
-                                                        <td x-text="1111111111"></td>
+                                                        <td class="align-middle" x-text="asset.price"></td>
                                                         <td>
-                                                            <input class="form-control" type="number" @input="calculateMonthTotal()" />
+                                                            <input class="form-control" type="number"
+                                                                   x-model="asset.quantity_registered"
+                                                                   @input="calculateMonthTotal()">
                                                         </td>
-                                                        <td x-text="1111111111"></td>
-                                                        <td x-text="2222222"></td>
-                                                        <td x-text="2222222"></td>
+                                                        <td>
+                                                            <input class="form-control" type="number"
+                                                                   x-model="asset.quantity_approved"
+                                                                   @input="calculateMonthTotal()">
+                                                        </td>
+                                                        <td class="align-middle" x-text="asset.quantity_approved * asset.price"></td>
+                                                        <td>
+                                                            <input class="form-control" x-model="asset.description" type="text">
+                                                        </td>
                                                         <td class="text-center align-middle">
-                                                            <button class="border-0 bg-body">
+                                                            <button class="border-0 bg-body" @click="deleteRow(index, key)">
                                                                 <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
                                                             </button>
                                                         </td>
@@ -121,7 +138,7 @@
                                                 </template>
                                             </tbody>
                                         </table>
-                                        <button type="button" class="btn btn-sc tw-w-fit mt-3">Thêm hàng</button>
+                                        <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
                                     </div>
                                 </div>
                             </template>
@@ -142,5 +159,6 @@
        'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
+       'resources/js/app/api/apiJob.js',
     ])
 @endsection
