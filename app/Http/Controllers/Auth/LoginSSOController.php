@@ -71,6 +71,7 @@ class LoginSSOController extends Controller
 
     public function logoutSSO(Request $request)
     {
+        Log::error(1111111111111);
         $sessionCookie = @$_COOKIE['scn_session'];
         $url           = config('sso.logout-sso');
         $ch            = curl_init($url);
