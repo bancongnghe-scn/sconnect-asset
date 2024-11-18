@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Redirector;
@@ -84,6 +85,7 @@ class LoginSSOController extends Controller
 
         // Xử lý phản hồi từ server
         $data = json_decode($response, true);
+        Log::error($data);
         if (200 == @$data['code']) {
             $this->performLogout($request);
 
