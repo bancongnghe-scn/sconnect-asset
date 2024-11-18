@@ -6,7 +6,7 @@ use App\Models\Asset;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
 
-class AssetLostRepository extends BaseRepository
+class AssetLiquidationRepository extends BaseRepository
 {
     public function getModelClass(): string
     {

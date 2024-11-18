@@ -25,6 +25,9 @@ class AssetCancelService
                 'code',
                 'status',
                 'user_id',
+                'date',
+                'location',
+                'reason',
             ],
             [
                 'user:id,name',

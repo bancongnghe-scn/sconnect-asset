@@ -2,15 +2,16 @@
 
 namespace App\Repositories\Manage;
 
-use App\Models\Asset;
+use App\Models\PlanMaintain;
 use App\Repositories\Base\BaseRepository;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
-class AssetLostRepository extends BaseRepository
+class PlanMaintainRepository extends BaseRepository
 {
     public function getModelClass(): string
     {
-        return Asset::class;
+        return PlanMaintain::class;
     }
 
     public function getListing($filters, $columns = ['*'], $with = [])
@@ -24,6 +25,10 @@ class AssetLostRepository extends BaseRepository
             });
         }
 
+        if (!empty($filters['created_at'])) {
+            $query->whereDate('created_at', Carbon::createFromFormat('d/m/Y', $filters['created_at'])->format('Y-m-d'));
+        }
+
         if (!empty($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
         }
@@ -33,5 +38,15 @@ class AssetLostRepository extends BaseRepository
         }
 
         return $query->get();
+    }
+
+    public function checkExistPlanMaintain($id)
+    {
+        return $this->_model->where('id', $id)->exists();
+    }
+
+    public function deleteMultipleByIds($ids)
+    {
+        return $this->_model->whereIn('id', Arr::wrap($ids))->delete();
     }
 }

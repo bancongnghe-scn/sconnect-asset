@@ -18,8 +18,10 @@ class AssetCancelRepository extends BaseRepository
         $query = $this->_model->newQuery()->select($columns)->with($with)->orderBy('created_at', 'DESC');
 
         if (!empty($filters['name_code'])) {
-            $query->where('code', $filters['name_code'])
-                ->orWhere('name', 'LIKE', $filters['name_code'] . '%');
+            $query->where(function ($q) use ($filters) {
+                $q->where('code', 'LIKE', '%' . $filters['name_code'] . '%')
+                  ->orWhere('name', 'LIKE', '%' . $filters['name_code'] . '%');
+            });
         }
 
         if (!empty($filters['status'])) {

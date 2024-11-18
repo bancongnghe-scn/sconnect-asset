@@ -14,9 +14,9 @@ document.addEventListener('alpine:init', () => {
             name: 'Tên tài sản',
             user_name: 'Nhân viên sử dụng',
             status: 'Tình trạng',
-            cancel_date: 'Ngày hủy',
-            assets_location: 'Vị trí tài sản',
-            cancel_reason: 'Lý do hủy',
+            date: 'Ngày hủy',
+            location: 'Vị trí tài sản',
+            reason: 'Lý do hủy',
         },
         showAction: {
         },
@@ -41,8 +41,8 @@ document.addEventListener('alpine:init', () => {
             name: null,
             employee: null,
             status: null,
-            lost_date: null,
-            assets_location: null,
+            date: null,
+            location: null,
             reason: null,
         },
         listStatus: {

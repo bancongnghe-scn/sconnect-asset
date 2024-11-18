@@ -1,4 +1,4 @@
-<div class="col-12" x-data="tableLost">
+<div class="col-12" x-data="tablePlanLiquidation">
     <div id="" class="dataTables_wrapper dt-bootstrap4">
         <div class="row">
             <div class="col-sm-12">
@@ -7,9 +7,8 @@
                     <thead>
                     <tr>
                         <th class="text-center">
-                            <input type="checkbox" id="selectedAll" @click="selectedAll" @change="count()">
+                            <input type="checkbox" id="selectedAllLiquidation" @click="selectedAllLiquidation">
                         </th>
-                        <th rowspan="1" colspan="1">STT</th>
                         <template x-for="(columnName, key) in columns">
                             <th rowspan="1" colspan="1" x-text="columnName"></th>
                         </template>
@@ -17,13 +16,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <template x-for="(data,index) in dataTable" x-data="{line: 1}">
+                    <template x-for="(data,index) in dataTable">
                         <tr>
                             <td class="text-center align-middle">
-                                <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]" @change="count()">
+                                <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
                             </td>
-                            <td x-text="from + index"></td>
-                            <template x-for="(columnName, key) in columns">
+                            <template x-for="(columnName, key) in columns" x-data="{line: 1}">
                                 <td>
                                     <template x-if="key !== 'validity' && key !== 'status'">
                                         <span x-text="data[key]"></span>
@@ -41,12 +39,18 @@
                                     </template>
                                 </td>
                             </template>
-                            <td class="text-center align-middle">
+                            <td class="text-center align-middle" x-show="data.status === 'Mới tạo'">
                                 <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                    <i class="fa-solid fa-arrow-rotate-left" style="color: #1ec258;">&#xF117;</i>
+                                    <i class="fa-solid fa-pencil">&#xF117;</i>
                                 </button>
-                                <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })">
-                                    <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                <button class="border-0 bg-body" @click="removeOnePlan(data.id)"
+                                >
+                                    <i class="fa-solid fa-trash" style="color: #db4554;"></i>
+                                </button>
+                            </td>
+                            <td class="text-center align-middle" x-show="data.status !== 'Mới tạo'">
+                                <button class="border-0 bg-body" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
+                                    <i class="fa-solid fa-eye">&#xF117;</i>
                                 </button>
                             </td>
                         </tr>
@@ -60,11 +64,11 @@
 </div>
 
 <script>
-    function tableLost() {
+    function tablePlanLiquidation() {
         return {
             checkedAll: false,
 
-            selectedAll() {
+            selectedAllLiquidation() {
                 
                 this.checkedAll = !this.checkedAll
                 this.dataTable.forEach(

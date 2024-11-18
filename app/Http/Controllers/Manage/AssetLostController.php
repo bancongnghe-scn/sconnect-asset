@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AssetLostRequest;
 use App\Services\Manage\AssetLostService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AssetLostController extends Controller
 {
@@ -29,7 +29,7 @@ class AssetLostController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            DB::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
+            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return response_error();
         }
@@ -42,7 +42,7 @@ class AssetLostController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            DB::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
+            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return response_error();
         }
@@ -55,7 +55,7 @@ class AssetLostController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            DB::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
+            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return response_error();
         }

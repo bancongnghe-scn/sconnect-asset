@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Manage;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AssetCancelRequest;
-use App\Services\Manage\AssetCancelService;
+use App\Http\Requests\AssetLostRequest;
+use App\Services\Manage\AssetLiquidationService;
 use Illuminate\Support\Facades\Log;
 
-class AssetCancelController extends Controller
+class AssetLiquidationController extends Controller
 {
     public function __construct(
-        protected AssetCancelService $assetCancelService,
+        protected AssetLiquidationService $assetLiquidationService,
     ) {
 
     }
@@ -18,13 +18,13 @@ class AssetCancelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getListAssetCancel(AssetCancelRequest $request)
+    public function getListAssetLiquidation(AssetLostRequest $request)
     {
         $request->validated([
             'name_code'    => 'nullable|string',
         ]);
         try {
-            $result = $this->assetCancelService->list($request->all());
+            $result = $this->assetLiquidationService->list($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {

@@ -16,9 +16,9 @@ class AssetLostResource extends JsonResource
                 'name'              => $data->name,
                 'user_name'         => $data->user->name ?? null,
                 'status'            => Asset::STATUS_NAME[$data->status],
-                'lost_date'         => $data->lost_date ?? null,
-                'assets_location'   => $data->assets_location ?? null,
-                'lost_reason'       => $data->reason ?? null,
+                'date'              => $data->date ?? null,
+                'location'          => $data->location ?? null,
+                'reason'            => $data->reason ?? null,
             ];
         });
         $result = $this->resource->toArray();

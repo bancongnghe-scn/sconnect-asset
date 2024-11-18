@@ -19,9 +19,9 @@ document.addEventListener('alpine:init', () => {
             name: 'Tên tài sản',
             user_name: 'Nhân viên sử dụng',
             status: 'Tình trạng',
-            lost_date: 'Ngày mất',
-            assets_location: 'Vị trí tài sản',
-            lost_reason: 'Lý do mất',
+            date: 'Ngày mất',
+            location: 'Vị trí tài sản',
+            reason: 'Lý do mất',
         },
         showAction: {
             edit: true,
@@ -45,8 +45,8 @@ document.addEventListener('alpine:init', () => {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             user_name: 'Nhân viên sử dụng',
-            assets_location: 'Vị trí tài sản',
-            find_reason: 'Ghi chú',
+            location: 'Vị trí tài sản',
+            reason: 'Ghi chú',
         },
 
         // Bảng con multi cancel
@@ -54,7 +54,7 @@ document.addEventListener('alpine:init', () => {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             user_name: 'Nhân viên sử dụng',
-            assets_location: 'Vị trí tài sản',
+            location: 'Vị trí tài sản',
         },
 
         //data
@@ -68,8 +68,8 @@ document.addEventListener('alpine:init', () => {
             name: null,
             employee: null,
             status: null,
-            lost_date: null,
-            assets_location: null,
+            date: null,
+            location: null,
             reason: null,
             signing_date: null
         },
@@ -125,8 +125,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async handleBackModalUI(id) {
-            console.warn('id', id);
-            
             this.loading = true
             this.id = id
             const response = await window.apiShowAssetLost(id)
@@ -320,7 +318,7 @@ document.addEventListener('alpine:init', () => {
                 item.status = 1;
             });
 
-            const response = await window.apiRevertAsset(this.dataSelectMulti)
+            const response = await window.apiRevertAsset()
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
@@ -422,7 +420,7 @@ document.addEventListener('alpine:init', () => {
             $('#'+this.numberShow).text(0);
 
             if ($('.manage_assets #'+this.selectedAll).is(':checked')) {
-                $('.manage_assets #selectedAll').click();
+                $('.manage_assets #'+this.selectedAll).click();
             }
         }
     }))

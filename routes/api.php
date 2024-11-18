@@ -4,6 +4,10 @@ use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Manage\AssetLostController;
+use App\Http\Controllers\Manage\AssetCancelController;
+use App\Http\Controllers\Manage\PlanLiquidationController;
+use App\Http\Controllers\Manage\AssetLiquidationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,9 +80,19 @@ Route::middleware('auth')->group(function () {
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
 
     Route::prefix('/asset/manage')->group(function () {
-        Route::get('asset-lost', [App\Http\Controllers\Manage\AssetLostController::class, 'getListAssetLost']);
-        Route::get('asset-lost/{id}', [App\Http\Controllers\Manage\AssetLostController::class, 'findAssetLost']);
-        Route::post('asset-lost', [App\Http\Controllers\Manage\AssetLostController::class, 'updateAssetLost']);
-        Route::get('asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
+        Route::get('asset-lost', [AssetLostController::class, 'getListAssetLost']);
+        Route::get('asset-lost/{id}', [AssetLostController::class, 'findAssetLost']);
+        Route::post('asset-lost', [AssetLostController::class, 'updateAssetLost']);
+        Route::get('asset-cancel', [AssetCancelController::class, 'getListAssetCancel']);
+        Route::get('asset-liquidation', [AssetLiquidationController::class, 'getListAssetLiquidation']);
+        Route::post('asset-plan-liquidation', [PlanLiquidationController::class, 'create']);
+        Route::get('asset-plan-liquidation', [PlanLiquidationController::class, 'get']);
+        Route::get('asset-plan-liquidation/{id}', [PlanLiquidationController::class, 'detail']);
+        Route::post('asset-plan-liquidation/updateAssetToPlan', [PlanLiquidationController::class, 'updateAssetToPlan']);
+        Route::delete('asset-plan-liquidation/{plan_maintain_asset_id}', [PlanLiquidationController::class, 'deleteAssetFromPlan']);
+        Route::post('asset-plan-liquidation/delete-multi', [PlanLiquidationController::class, 'deleteMultiPlan']);
+        Route::post('asset-plan-liquidation/changeStatusAssetOfPlan', [PlanLiquidationController::class, 'changeStatusAssetOfPlan']);
+        Route::post('asset-plan-liquidation/changeStatusMultiAssetOfPlan', [PlanLiquidationController::class, 'changeStatusMultiAssetOfPlan']);
+        Route::post('asset-plan-liquidation/{id}', [PlanLiquidationController::class, 'update']);
     });
 });

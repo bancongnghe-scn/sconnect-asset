@@ -27,6 +27,10 @@ class AssetLostService
                 'code',
                 'status',
                 'user_id',
+                'date',
+                'location',
+                'reason',
+                'price_liquidation',
             ],
             [
                 'user:id,name',
@@ -91,7 +95,7 @@ class AssetLostService
     private function updateOneAsset($data)
     {
         $assetLost = $this->assetLostRepository->find($data['id']);
-        // dd($assetLost);
+
         if (empty($assetLost)) {
             return [
                 'success'    => false,

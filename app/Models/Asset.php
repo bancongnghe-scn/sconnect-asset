@@ -25,6 +25,9 @@ class Asset extends Model
         'user_id',
         'status',
         'image',
+        'date',             //thêm
+        'location',         //thêm
+        'reason',           //thêm
         'organization_id',
         'import_warehouse_id',
         'created_at',
@@ -35,18 +38,24 @@ class Asset extends Model
         'deleted_by',
     ];
 
-    public const STATUS_ACTIVE           = 1;
-    public const STATUS_PENDING          = 2;
-    public const STATUS_REPAIR           = 3;
-    public const STATUS_LOST             = 4;
-    public const STATUS_CANCEL           = 5;
+    public const STATUS_ACTIVE                  = 1;
+    public const STATUS_PENDING                 = 2;
+    public const STATUS_REPAIR                  = 3;
+    public const STATUS_LOST                    = 4;
+    public const STATUS_CANCEL                  = 5;
+    public const STATUS_PROPOSAL_LIQUIDATION    = 6;
+    public const STATUS_IN_LIQUIDATION          = 7;
+    public const STATUS_LIQUIDATED              = 8;
 
     public const STATUS_NAME = [
-        self::STATUS_ACTIVE     => 'Hoạt động',
-        self::STATUS_PENDING    => 'Tạm dừng',
-        self::STATUS_REPAIR     => 'Sửa chữa',
-        self::STATUS_LOST       => 'Đã mất',
-        self::STATUS_CANCEL     => 'Đã hủy',
+        self::STATUS_ACTIVE                     => 'Hoạt động',
+        self::STATUS_PENDING                    => 'Tạm dừng',
+        self::STATUS_REPAIR                     => 'Sửa chữa',
+        self::STATUS_LOST                       => 'Đã mất',
+        self::STATUS_CANCEL                     => 'Đã hủy',
+        self::STATUS_PROPOSAL_LIQUIDATION       => 'Đề nghị thanh lý',
+        self::STATUS_IN_LIQUIDATION             => 'Đang thanh lý',
+        self::STATUS_LIQUIDATED                 => 'Đã thanh lý',
     ];
 
     public function user(): BelongsTo

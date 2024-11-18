@@ -8,26 +8,18 @@
     <div class="col-2">
         <div class="row align-items-center">
             <div style="max-width: fit-content">
-                <span>Đã chọn (<span id="numberShow"></span>)</span>
+                <span>Đã chọn (<span id="numberLiquidation"></span>)</span>
             </div>
             <div style="max-width: fit-content">
-                <button class="border-0 btn tw-text-red-400" @click="unselectedAll()">Bỏ chọn</button>
+                <button class="border-0 btn tw-text-red-400" @click="unselectedAllLiquidation()">Bỏ chọn</button>
             </div>
         </div>
     </div>
-    <div class="col-1">
-        <button type="button" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.back ?? true" @click="$dispatch('back')" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-arrow-rotate-left">&#xF117;</i>
-            <span>
-                Tìm thấy
-            </span>
-        </button>
-    </div>
     <div class="col-2">
-        <button type="button" class="btn tw-bg-red-500 tw-text-white" x-show="showAction.cancel ?? true" @click="$dispatch('cancel')" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-arrow-rotate-left">&#xF117;</i>
+        <button type="button" style="border:1px solid #ddd;" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.create ?? true" @click="$dispatch('create')" :disabled="window.checkDisableSelectRow">
+            <i class="fa-solid fa-plus" style="">&#xF117;</i>
             <span>
-                Hủy tài sản
+                Tạo kế hoạch đề xuất
             </span>
         </button>
     </div>
