@@ -13,7 +13,7 @@
             <li class="nav-item dropdown user-menu pt-1 pl-2" style="border-radius: 30px; background-color: rgba(255,255,255,0.1)">
                 <a onclick="FirstSt()" data-bs-target="#rightModaSt" data-bs-toggle="modal" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                     <img src="https://lh3.googleusercontent.com/a/ACg8ocJ-NELNG55xGTjMztdZpSLwO6SsJiKCfW1UluF-QjAddVaFSQ=s96-c" class="user-image img-circle elevation-1 user-default-avatar my-sefl-avatar">
-                    <span class="display-name-u text-white">Nguyễn Văn Hoàng <i class="bi-caret-down-fill"></i> </span>
+                    <span class="display-name-u text-white"> {{\Illuminate\Support\Facades\Auth::user()?->name}} <i class="bi-caret-down-fill"></i> </span>
                 </a>
             </li>
         </ul>
