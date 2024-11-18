@@ -129,6 +129,8 @@ class ScApiService
             $params['parent_id'] = $parentId;
         }
 
+        Log::error($url);
+
         try {
             $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)
