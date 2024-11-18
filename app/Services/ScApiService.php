@@ -91,6 +91,7 @@ class ScApiService
     public static function getAllOrganizationParent()
     {
         $response = self::getOrganizationsApi(status: SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
+        Log::error($response);
 
         return Cache::tags(config('cache_keys.tags.organization'))
             ->remember(config('cache_keys.keys.organization_all'), now()->addMonths(2), function () {
