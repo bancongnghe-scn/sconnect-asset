@@ -16,6 +16,9 @@ Route::get('/ping', function () {
     return 'pong';
 });
 
+Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logoutSSO']);
+
+
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
