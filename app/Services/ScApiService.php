@@ -91,7 +91,6 @@ class ScApiService
     public static function getAllOrganizationParent()
     {
         $response = self::getOrganizationsApi(status: SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
-        Log::error($response);
 
         return Cache::tags(config('cache_keys.tags.organization'))
             ->remember(config('cache_keys.keys.organization_all'), now()->addMonths(2), function () {
@@ -129,12 +128,11 @@ class ScApiService
             $params['parent_id'] = $parentId;
         }
 
-        Log::error($url);
-
         try {
             $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)
                 ->get($url, $params);
+            Log::error($response);
 
             return $response->json();
         } catch (\Throwable $exception) {
