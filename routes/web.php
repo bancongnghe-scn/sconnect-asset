@@ -16,14 +16,13 @@ Route::get('/ping', function () {
     return 'pong';
 });
 
-Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logoutSSO']);
-
-
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
 Route::middleware(['checkAuth'])->group(function () {
+    Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
+
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');
