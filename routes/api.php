@@ -70,6 +70,8 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-plan-organization')->group(function () {
         Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
+            Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
+            Route::post('register', 'registerShoppingPlanOrganization');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
@@ -88,7 +90,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('edit', 'editComment');
     });
 
-    Route::prefix('/delete-multiple')->group(function () {
+    Route::prefix('delete-multiple')->group(function () {
         Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
         Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);
         Route::post('industry', [App\Http\Controllers\IndustryController::class, 'deleteMultiple']);
@@ -99,5 +101,8 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);
+
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
+
+    Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
 });

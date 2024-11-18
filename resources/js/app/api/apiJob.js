@@ -1,9 +1,6 @@
-const VITE_SC_API_DOMAIN = import.meta.env.VITE_SC_API_DOMAIN;
-
-window.apiGetJobs = async function (filters) {
+window.apiGetAllJob = async function (filters) {
     try {
-        const url = VITE_SC_API_DOMAIN + '/api/job/getJobs'
-        const response = await axios.get(url, {
+        const response = await axios.get('/api/getAllJob', {
             params: filters
         })
 

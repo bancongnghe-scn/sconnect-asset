@@ -56,7 +56,7 @@ document.addEventListener('alpine:init', () => {
         async getJobs(){
             this.loading = true
             try {
-                const response = await window.apiGetJobs({})
+                const response = await window.apiGetAllJob()
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -66,7 +66,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                this.getRegisterAsset()
                 this.loading = false
             }
         },
@@ -75,7 +74,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 this.registers = [
-
                     {
                         assets: [
                             {id: 1, asset_type_id: 8, measure: 1, job_id: 1, price: 1000, description: '111111', quantity_registered: 1, quantity_approved: 1},

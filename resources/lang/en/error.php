@@ -75,4 +75,5 @@ return [
     AppErrorCode::CODE_2069 => 'Bạn không có quyền xóa bình luận này !',
     AppErrorCode::CODE_2070 => 'Xóa bình luận thất bại !',
     AppErrorCode::CODE_2071 => 'Sửa bình luận thất bại !',
+    AppErrorCode::CODE_2072 => 'Kế hoạch không còn mở đăng ký !',
 ];
