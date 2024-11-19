@@ -55,7 +55,7 @@
                                 <div class="p-4 tw-bg-[#E4F0E6] mb-3">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
-                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${index + 1}`"></span>
+                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${register.month}`"></span>
 
                                             <div class="d-flex align-items-center" style="flex: 1;">
                                                 <span class="me-2 flex-shrink-0">Tổng số lượng</span>
@@ -80,7 +80,7 @@
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị</th>
                                                     <th rowspan="1" colspan="1" >Chức danh</th>
-                                                    <th rowspan="1" colspan="1" >Đơn giá</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-24">Duyệt</th>
                                                     <th rowspan="1" colspan="1" >Tổng</th>
@@ -89,30 +89,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <template x-for="(asset, key) in register.assets" :key="`${index}_${key}`">
+                                                <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || index}_${key}`">
                                                     <tr>
                                                         <td>
-                                                            <select class="form-select select2"
-                                                                    x-model="asset.asset_type_id"
-                                                                    :id="`select_asset_type_${index}_${key}`"
+                                                            <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id}"
+                                                                  @select-change="asset.asset_type_id = $event.detail"
                                                             >
-                                                                <option value="">Chọn tài sản</option>
-                                                                <template x-for="value in list_asset_type" :key="value.id">
-                                                                    <option :value="value.id" x-text="value.name"></option>
-                                                                </template>
-                                                            </select>
+                                                                @include('common.select2')
+                                                            </span>
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
                                                         <td>
-                                                            <select class="form-select select2"
-                                                                    x-model="asset.job_id"
-                                                                    :id="`select_job_${index}_${key}`"
+                                                            <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id}"
+                                                                  @select-change="asset.job_id = $event.detail"
                                                             >
-                                                                <option value="">Chọn chức danh</option>
-                                                                <template x-for="value in list_job" :key="`job_${index}_${key}_${value.id}`">
-                                                                    <option :value="value.id" x-text="value.name"></option>
-                                                                </template>
-                                                            </select>
+                                                                @include('common.select2')
+                                                            </span>
                                                         </td>
                                                         <td class="align-middle" x-text="asset.price"></td>
                                                         <td>

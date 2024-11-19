@@ -6,17 +6,8 @@ document.addEventListener('alpine:init', () => {
             const split = window.location.href.split('/')
             this.id = split.pop();
             this.getInfo()
-            this.getListAssetType()
             this.getJobs()
-            this.getRegisterAsset()
-
-            // $('.select2').select2({
-            //     language: {
-            //         noResults: function() {
-            //             return "Không tìm thấy kết quả";
-            //         }
-            //     }
-            // })
+            // this.getListAssetType()
         },
 
         //data
@@ -62,10 +53,11 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 this.list_job = response.data
-                console.log('job')
             } catch (e) {
                 toast.error(e)
             } finally {
+                console.log('job')
+                this.getListAssetType()
                 this.loading = false
             }
         },
@@ -145,32 +137,30 @@ document.addEventListener('alpine:init', () => {
                         month: 12
                     },
                 ]
-                console.log('register')
-
-                // this.registers.forEach(function (register, index) {
-                //     register.assets.forEach(function (asset, key) {
-                //         console.log('#select_asset_type_'+index+'_'+key)
-                //         console.log(asset.asset_type_id)
-                //          $('#select_asset_type_'+index+'_'+key).val(asset.asset_type_id).change()
-                //     })
-                // })
             } catch (e) {
                 toast.error(e)
             } finally {
+                console.log('register')
                 this.loading = false
             }
         },
 
         async getListAssetType() {
             this.loading = true
-            const response = await window.apiGetAssetType({})
-            if (response.success) {
-                this.list_asset_type = response.data.data
-                console.log('asset_type')
-            } else {
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.list_asset_type = response.data.data
+                    return
+                }
                 toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                console.log('asset_type')
+                this.getRegisterAsset()
+                this.loading = false
             }
-            this.loading = false
         },
 
         handleShowTable(index) {
@@ -183,7 +173,7 @@ document.addEventListener('alpine:init', () => {
 
         addRow(index) {
             this.registers[index].assets.push({
-                asset_type_id: 8,
+                asset_type_id: null,
                 measure: null,
                 job_id: null,
                 price: null,
@@ -191,24 +181,6 @@ document.addEventListener('alpine:init', () => {
                 quantity_registered: null,
                 quantity_approved: null
             })
-            const key =  this.registers[index].assets.length - 1
-            setTimeout(function (){
-                $('#select_asset_type_'+index+'_'+key).select2({
-                    language: {
-                        noResults: function() {
-                            return "Không tìm thấy kết quả";
-                        }
-                    }
-                })
-
-                $('#select_job_'+index+'_'+key).select2({
-                    language: {
-                        noResults: function() {
-                            return "Không tìm thấy kết quả";
-                        }
-                    }
-                })
-            }, 10)
         },
 
         deleteRow(index, key) {
