@@ -16,11 +16,20 @@ Route::get('/ping', function () {
     return 'pong';
 });
 
+
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware(['checkAuth'])->group(function () {
+Route::middleware(['web'])->group(function () {
+    Route::get('/login/{id}', function ($id) {
+        Illuminate\Support\Facades\Auth::loginUsingId($id);
+
+        return redirect('/');
+    })->name('login');
+
+    Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
+
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\MenuService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
@@ -15,11 +16,10 @@ class MenuController extends Controller
     public function getMenuUserLogin()
     {
         try {
-            $result = $this->menuService->getMenuUser();
+            $result = $this->menuService->getMenuUser(Auth::id());
 
             return response_success($result);
         } catch (\Throwable $exception) {
-
             return response_error();
         }
     }

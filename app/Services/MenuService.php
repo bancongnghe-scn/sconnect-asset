@@ -10,7 +10,6 @@ use App\Repositories\MenuRoleRepository;
 use App\Repositories\Rbac\RoleRepository;
 use App\Repositories\Rbac\RoleUserRepository;
 use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -25,11 +24,12 @@ class MenuService
 
     }
 
-    public function getMenuUser($userId = null)
+    public function getMenuUser($userId)
     {
         if (is_null($userId)) {
-            $userId = Auth::id();
+            return [];
         }
+
         $cacheKey = config('cache_keys.keys.menu_key').$userId;
 
         return Cache::tags(config('cache_keys.tags.menu_tag'))->remember($cacheKey, now()->addHours(2), function () use ($userId) {
