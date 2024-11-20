@@ -89,19 +89,26 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || index}_${key}`">
-                                                    <tr :data-key="`asset_${asset.id || index}_${key}`">
+                                                <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
+                                                    <tr>
                                                         <td>
                                                             <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id}"
-                                                                  @select-change="asset.asset_type_id = $event.detail"
+                                                                  @select-change="
+                                                                      asset.asset_type_id = $event.detail
+                                                                      asset.measure = list_asset_type.find(({ id }) => +id === +$event.detail).measure
+                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
+                                                                  "
                                                             >
                                                                 @include('common.select2')
                                                             </span>
                                                         </td>
-                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
+                                                        <td class="align-middle" x-text="asset.measure"></td>
                                                         <td>
                                                             <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id}"
-                                                                  @select-change="asset.job_id = $event.detail"
+                                                                  @select-change="
+                                                                      asset.job_id = $event.detail
+                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
+                                                                  "
                                                             >
                                                                 @include('common.select2')
                                                             </span>

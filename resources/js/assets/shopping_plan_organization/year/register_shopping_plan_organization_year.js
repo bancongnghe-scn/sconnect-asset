@@ -68,7 +68,7 @@ document.addEventListener('alpine:init', () => {
                 this.registers = [
                     {
                         assets: [
-                            {id: 1, asset_type_id: 8, measure: 1, job_id: 1, price: 1000, description: '111111', quantity_registered: 1, quantity_approved: 1},
+                            {id: 1, asset_type_id: 8, measure: 'Cái', job_id: 1, price: 1000, description: '111111', quantity_registered: 1, quantity_approved: 1},
                         ],
                         total_price: 1000,
                         total_asset: 1,
@@ -76,7 +76,7 @@ document.addEventListener('alpine:init', () => {
                     },
                     {
                         assets: [
-                            {id: 1, asset_type_id: 9, measure: 1, job_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
+                            {id: 1, asset_type_id: 9, measure: 'Cái', job_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
                         ],
                         total_price: 1000,
                         total_asset: 1,
@@ -173,6 +173,7 @@ document.addEventListener('alpine:init', () => {
 
         addRow(index) {
             this.registers[index].assets.push({
+                id_fake: Date.now() + Math.random(),
                 asset_type_id: null,
                 measure: null,
                 job_id: null,
@@ -185,6 +186,13 @@ document.addEventListener('alpine:init', () => {
 
         deleteRow(index, key) {
             this.registers[index].assets.splice(key,1)
+        },
+
+        getPrice(asset_type_id, job_id) {
+            if (asset_type_id === null || job_id === null) {
+                return null
+            }
+            return asset_type_id + job_id + 1000
         }
     }));
 });
