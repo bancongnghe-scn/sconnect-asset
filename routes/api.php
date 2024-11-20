@@ -71,11 +71,11 @@ Route::middleware('web')->group(function () {
         Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
-            Route::post('register', 'registerShoppingPlanOrganization');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationYear');
+            Route::post('register', 'registerShoppingPlanOrganizationYear');
         });
     });
 

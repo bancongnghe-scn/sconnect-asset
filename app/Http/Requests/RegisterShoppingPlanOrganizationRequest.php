@@ -16,11 +16,9 @@ class RegisterShoppingPlanOrganizationRequest extends FormRequest
         return [
             'shopping_plan_organization_id'            => 'required|integer',
             'registers'                                => 'required|array',
-            'registers.*.month'                        => 'required|integer',
             'registers.*.assets'                       => 'nullable|array',
             'registers.*.assets.*.id'                  => 'nullable|integer',
             'registers.*.assets.*.asset_type_id'       => 'required|integer',
-            'registers.*.assets.*.measure'             => 'required|integer',
             'registers.*.assets.*.job_id'              => 'required|integer',
             'registers.*.assets.*.price'               => 'required|integer',
             'registers.*.assets.*.quantity_registered' => 'required|integer',

@@ -7,6 +7,7 @@ use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\OrganizationRepository;
+use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
@@ -14,6 +15,7 @@ use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShoppingPlanOrganizationService
 {
@@ -22,6 +24,7 @@ class ShoppingPlanOrganizationService
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
         protected ShoppingPlanCompanyRepository $shoppingPlanCompanyRepository,
         protected UserRepository $userRepository,
+        protected ShoppingAssetRepository $shoppingAssetRepository,
     ) {
     }
 
@@ -88,8 +91,8 @@ class ShoppingPlanOrganizationService
         $id                       = $data['shopping_plan_organization_id'];
         $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getInfoShoppingPlanOrganizationById($id, [
             'shopping_plan_company.time', 'shopping_plan_company.type', 'shopping_plan_company.plan_year_id', 'shopping_plan_company.plan_quarter_id',
-            'shopping_plan_company.start_time', 'shopping_plan_company.end_time', 'shopping_plan_company.month', 'shopping_plan_company.time',
-            'shopping_plan_organization.status',
+            'shopping_plan_company.start_time', 'shopping_plan_company.end_time', 'shopping_plan_company.month',
+            'shopping_plan_organization.status', 'shopping_plan_organization.organization_id', 'shopping_plan_organization.shopping_plan_company_id',
         ]);
         if (empty($shoppingPlanOrganization)) {
             return [
@@ -113,17 +116,50 @@ class ShoppingPlanOrganizationService
         $dataTime = $this->getTimeShoppingAsset($shoppingPlanOrganization);
         $metaData = array_merge($dataTime, [
             'organization_id'               => $shoppingPlanOrganization->organization_id,
-            'shopping_plan_organization_id' => $shoppingPlanOrganization->id,
+            'shopping_plan_organization_id' => $id,
             'shopping_plan_company_id'      => $shoppingPlanOrganization->shopping_plan_company_id,
         ]);
-        foreach ($data['registers'] as $register) {
-            $month = $register['month'];
-            foreach ($register['assets'] as $asset) {
-                if (isset($asset['id'])) {
-                    //                     $this->shoppingA
+
+        DB::beginTransaction();
+        try {
+            foreach ($data['registers'] as $register) {
+                if (in_array($shoppingPlanOrganization->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
+                    $metaData['month'] = $register['month'];
                 }
+
+                foreach ($register['assets'] as $asset) {
+                    if (!isset($asset['id'])) {
+                        $dataNew[] = array_merge($asset, $metaData);
+                        continue;
+                    }
+
+                    $this->shoppingAssetRepository->update($asset['id'], $asset);
+                }
+
+                if (!empty($dataNew)) {
+                    $insert = $this->shoppingAssetRepository->insert($dataNew);
+                    if (!$insert) {
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2073,
+                        ];
+                    }
+                }
+
+                DB::commit();
             }
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
         }
+
+        return [
+            'success' => true,
+        ];
     }
 
     public function getTimeShoppingAsset($shoppingPlanOrganization)
@@ -156,9 +192,6 @@ class ShoppingPlanOrganizationService
                 break;
         }
 
-        return [
-            'success' => true,
-            'data'    => $data,
-        ];
+        return $data;
     }
 }

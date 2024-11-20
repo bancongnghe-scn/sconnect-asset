@@ -8,7 +8,7 @@
             <template x-if="
                 (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
                 && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
-                <button class="btn btn-primary" @click="saveRegister">Đăng ký</button>
+                <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
             </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
@@ -164,5 +164,6 @@
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
        'resources/js/app/api/apiJob.js',
+       'resources/js/app/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
     ])
 @endsection
