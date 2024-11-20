@@ -56,7 +56,6 @@ class ShoppingPlanCompanyYearController extends Controller
     public function getOrganizationRegisterYear(string $id)
     {
         try {
-            dd(1);
             $result = $this->planCompanyService->getOrganizationRegisterYear($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);

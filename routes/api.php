@@ -63,7 +63,7 @@ Route::middleware('web')->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyYear');
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
-            Route::put('get-organization-register/{id}', 'getOrganizationRegisterYear');
+            Route::get('get-organization-register/{id}', 'getOrganizationRegisterYear');
         });
     });
 
