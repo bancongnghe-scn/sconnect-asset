@@ -70,71 +70,23 @@ document.addEventListener('alpine:init', () => {
                         assets: [
                             {id: 1, asset_type_id: 8, measure: 'Cái', job_id: 1, price: 1000, description: '111111', quantity_registered: 1, quantity_approved: 1},
                         ],
-                        total_price: 1000,
-                        total_asset: 1,
+                        register: {price: 1000, total: 1},
+                        approval: {price: 1000, total: 1},
                         month: 1
                     },
                     {
                         assets: [
                             {id: 1, asset_type_id: 9, measure: 'Cái', job_id: 1, price: 1000, description: null, quantity_registered: 1, quantity_approved: 1},
                         ],
-                        total_price: 1000,
-                        total_asset: 1,
+                        register: {price: 1000, total: 1},
+                        approval: {price: 1000, total: 1},
                         month: 2
                     },
                     {
                         assets: [],
-                        total_price: 0,
-                        total_asset: 0,
+                        register: {price: 0, total: 0},
+                        approval: {price: 0, total: 0},
                         month: 3
-                    },
-                    {
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 4
-                    },
-                    {
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 5
-                    },
-                    {
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 6
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 7
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 8
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 9
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 10
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 11
-                    },{
-                        assets: [],
-                        total_price: 0,
-                        total_asset: 0,
-                        month: 12
                     },
                 ]
             } catch (e) {
@@ -189,10 +141,46 @@ document.addEventListener('alpine:init', () => {
         },
 
         getPrice(asset_type_id, job_id) {
-            if (asset_type_id === null || job_id === null) {
-                return null
+            if (!asset_type_id || !job_id) {
+                return 0
             }
-            return asset_type_id + job_id + 1000
-        }
+            return +(asset_type_id + job_id + 1000)
+        },
+
+        calculateRegister(index) {
+            let total = 0
+            let price = 0
+            this.registers[index].assets.forEach((asset) => {
+                total += +asset.quantity_registered
+                price += (asset.quantity_registered * asset.price)
+            })
+
+            this.registers[index].register.total = total
+            this.registers[index].register.price = price
+        },
+
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registers[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
+
+            this.registers[index].approval.total = total
+            this.registers[index].approval.price = price
+        },
+
+        calculatePrice(index) {
+            let price_register = 0
+            let price_approval = 0
+            this.registers[index].assets.forEach((asset) => {
+                price_register += (asset.quantity_registered * asset.price)
+                price_approval += (asset.quantity_approved * asset.price)
+            })
+
+            this.registers[index].approval.price = price_approval
+            this.registers[index].register.price = price_register
+        },
     }));
 });

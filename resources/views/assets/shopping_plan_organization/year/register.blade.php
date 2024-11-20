@@ -58,13 +58,15 @@
                                             <span class="form-control" style="flex: 1;" x-text="`Tháng ${register.month}`"></span>
 
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <span class="me-2 flex-shrink-0">Tổng số lượng</span>
-                                                <span class="form-control text-center" x-text="register.total_asset"></span>
+                                                <span class="me-2 flex-shrink-0 tw-font-bold">Tổng số lượng</span>
+                                                <span class="form-control text-center" x-text="`${register.register.total} / ${register.approval.total}`"></span>
                                             </div>
 
                                             <div class="d-flex align-items-center" style="flex: 1;">
-                                                <span class="me-2 flex-shrink-0">Tổng giá trị</span>
-                                                <span class="form-control text-center" x-text="register.total_price"></span>
+                                                <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
+                                                <span class="form-control text-center"
+                                                      x-text="`${window.formatCurrencyVND(register.register.price)} / ${window.formatCurrencyVND(register.approval.price)}`"
+                                                ></span>
                                             </div>
                                         </div>
 
@@ -90,7 +92,9 @@
                                             </thead>
                                             <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr>
+                                                    <tr
+                                                        x-init="$watch('asset.price', value => calculatePrice(index))"
+                                                    >
                                                         <td>
                                                             <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id}"
                                                                   @select-change="
@@ -113,18 +117,19 @@
                                                                 @include('common.select2')
                                                             </span>
                                                         </td>
-                                                        <td class="align-middle" x-text="asset.price"></td>
+                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                         <td>
                                                             <input class="form-control" type="number"
                                                                    x-model="asset.quantity_registered"
-                                                                   @input="calculateMonthTotal()">
+                                                                   @input="calculateRegister(index)">
                                                         </td>
                                                         <td>
                                                             <input class="form-control" type="number"
                                                                    x-model="asset.quantity_approved"
-                                                                   @input="calculateMonthTotal()">
+                                                                   @input="calculateApproval(index)"
+                                                            >
                                                         </td>
-                                                        <td class="align-middle" x-text="asset.quantity_approved * asset.price"></td>
+                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
                                                         <td>
                                                             <input class="form-control" x-model="asset.description" type="text">
                                                         </td>
