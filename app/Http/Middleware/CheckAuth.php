@@ -11,10 +11,6 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        if (!Auth::check()) {
-            return redirect('/login/1');
-        }
-
         return $next($request);
         $secretKey     = env('SECRET_KEY');
         $sessionCookie = @$_COOKIE['scn_session'];

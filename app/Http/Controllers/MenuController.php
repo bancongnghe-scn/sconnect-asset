@@ -19,7 +19,6 @@ class MenuController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-
             return response_error();
         }
     }
