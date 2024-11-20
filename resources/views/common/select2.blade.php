@@ -1,5 +1,4 @@
 <select class="form-select"
-        :id="id"
         x-init="$nextTick(() => {
                $($el).select2({
                    language: {

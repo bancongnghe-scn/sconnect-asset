@@ -90,7 +90,7 @@
                                             </thead>
                                             <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || index}_${key}`">
-                                                    <tr>
+                                                    <tr :data-key="`asset_${asset.id || index}_${key}`">
                                                         <td>
                                                             <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id}"
                                                                   @select-change="asset.asset_type_id = $event.detail"
