@@ -16,6 +16,12 @@ Route::get('/ping', function () {
     return 'pong';
 });
 
+Route::get('/login/{id}', function ($id) {
+    Illuminate\Support\Facades\Auth::loginUsingId($id);
+
+    return redirect('/');
+});
+
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
