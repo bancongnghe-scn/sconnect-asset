@@ -20,6 +20,10 @@ Route::get('/login/{id}', function ($id) {
     Illuminate\Support\Facades\Auth::loginUsingId($id);
 
     return redirect('/');
+})->name('login');
+
+Route::get('show-user-login', function () {
+    dd(Illuminate\Support\Facades\Auth::user());
 });
 
 Route::middleware(['authenSSO'])->group(function () {
