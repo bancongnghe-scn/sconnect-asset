@@ -74,7 +74,7 @@ window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
 
 window.getOrganizationRegisterYear = async function (id) {
     try {
-        const response = await axios.put("/api/shopping-plan-company/year/get-organization-register/"+id)
+        const response = await axios.get("/api/shopping-plan-company/year/get-organization-register/"+id)
 
         const data = response.data;
         if (!data.success) {
