@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -22,5 +23,10 @@ class ShoppingPlanOrganization extends Model
     public function shoppingAssetsYear(): HasMany
     {
         return $this->hasMany(ShoppingAsset::class, 'shopping_plan_organization_id')->orderBy('month');
+    }
+
+    public function shoppingPlanCompany(): BelongsTo
+    {
+        return $this->belongsTo(ShoppingPlanCompany::class, 'shopping_plan_company_id');
     }
 }

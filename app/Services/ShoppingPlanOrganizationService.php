@@ -89,11 +89,7 @@ class ShoppingPlanOrganizationService
     public function registerShoppingPlanOrganization($data)
     {
         $id                       = $data['shopping_plan_organization_id'];
-        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getInfoShoppingPlanOrganizationById($id, [
-            'shopping_plan_company.time', 'shopping_plan_company.type', 'shopping_plan_company.plan_year_id', 'shopping_plan_company.plan_quarter_id',
-            'shopping_plan_company.start_time', 'shopping_plan_company.end_time', 'shopping_plan_company.month',
-            'shopping_plan_organization.status', 'shopping_plan_organization.organization_id', 'shopping_plan_organization.shopping_plan_company_id',
-        ]);
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
         if (empty($shoppingPlanOrganization)) {
             return [
                 'success'    => false,
@@ -102,9 +98,10 @@ class ShoppingPlanOrganizationService
         }
 
         // Chi dang ky khi trang thai phu hop va con thoi gian dang ky
+        $shoppingPlanCompany = $shoppingPlanOrganization->shoppingPlanCompany;
         if (
             !in_array($shoppingPlanOrganization->status, [ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED])
-            || Carbon::now() > Carbon::parse($shoppingPlanOrganization->end_time)
+            || Carbon::now() > Carbon::parse($shoppingPlanCompany->end_time)
         ) {
             return [
                 'success'    => false,
@@ -112,18 +109,31 @@ class ShoppingPlanOrganizationService
             ];
         }
 
+        $userId   = Auth::id();
         $dataNew  = [];
-        $dataTime = $this->getTimeShoppingAsset($shoppingPlanOrganization);
+        $dataTime = $this->getTimeShoppingAsset($shoppingPlanCompany);
         $metaData = array_merge($dataTime, [
             'organization_id'               => $shoppingPlanOrganization->organization_id,
             'shopping_plan_organization_id' => $id,
             'shopping_plan_company_id'      => $shoppingPlanOrganization->shopping_plan_company_id,
+            'created_by'                    => $userId,
         ]);
+        $isTypeYearOrQuarter = in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER]);
 
         DB::beginTransaction();
         try {
+            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_REGISTERED;
+            if (!$shoppingPlanOrganization->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2073,
+                ];
+            }
+
             foreach ($data['registers'] as $register) {
-                if (in_array($shoppingPlanOrganization->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
+                if ($isTypeYearOrQuarter) {
                     $metaData['month'] = $register['month'];
                 }
 
@@ -133,7 +143,11 @@ class ShoppingPlanOrganizationService
                         continue;
                     }
 
-                    $this->shoppingAssetRepository->update($asset['id'], $asset);
+                    $id = $asset['id'];
+                    unset($asset['id']);
+                    $this->shoppingAssetRepository->update($id, array_merge($asset, [
+                        'updated_by' => $userId,
+                    ]));
                 }
 
                 if (!empty($dataNew)) {
@@ -162,36 +176,41 @@ class ShoppingPlanOrganizationService
         ];
     }
 
-    public function getTimeShoppingAsset($shoppingPlanOrganization)
+    public function getTimeShoppingAsset($shoppingPlanCompany)
     {
         $data = [];
-        switch ($shoppingPlanOrganization->type) {
+        switch ($shoppingPlanCompany->type) {
             case ShoppingPlanCompany::TYPE_YEAR:
                 $data = [
-                    'year' => $shoppingPlanOrganization->time,
+                    'year' => $shoppingPlanCompany->time,
                 ];
                 break;
             case ShoppingPlanCompany::TYPE_QUARTER:
             case ShoppingPlanCompany::TYPE_WEEK:
-                $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->find($shoppingPlanOrganization->plan_year_id);
-                if (ShoppingPlanCompany::TYPE_QUARTER === $shoppingPlanOrganization->type) {
+                $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_year_id);
+                if (ShoppingPlanCompany::TYPE_QUARTER === $shoppingPlanCompany->type) {
                     $data = [
                         'year'    => $shoppingPlanCompanyYear->time,
-                        'quarter' => $shoppingPlanOrganization->time,
+                        'quarter' => $shoppingPlanCompany->time,
                     ];
                     break;
                 }
 
-                $shoppingPlanCompanyQuarter = $this->shoppingPlanCompanyRepository->find($shoppingPlanOrganization->plan_quarter_id);
+                $shoppingPlanCompanyQuarter = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_quarter_id);
                 $data                       = [
                     'year'    => $shoppingPlanCompanyYear->time,
                     'quarter' => $shoppingPlanCompanyQuarter->time,
-                    'month'   => $shoppingPlanOrganization->month,
-                    'week'    => $shoppingPlanOrganization->time,
+                    'month'   => $shoppingPlanCompany->month,
+                    'week'    => $shoppingPlanCompany->time,
                 ];
                 break;
         }
 
         return $data;
+    }
+
+    public function getRegisterShoppingPlanOrganization($id)
+    {
+
     }
 }

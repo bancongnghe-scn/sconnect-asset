@@ -119,9 +119,11 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const response = await window.apiSentRegisterYear(this.id, this.registers)
-                if (!response.success) {
-                    toast.error(response.message)
+                if (response.success) {
+                    toast.success('Đăng ký mua sắm thành công')
+                    return
                 }
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {

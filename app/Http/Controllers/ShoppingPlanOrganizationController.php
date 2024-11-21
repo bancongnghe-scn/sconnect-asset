@@ -25,19 +25,18 @@ class ShoppingPlanOrganizationController
         }
     }
 
-    //    public function getRegisterShoppingPlanOrganization(string $id)
-    //    {
-    //        try {
-    //            $result = $this->shoppingPlanOrganizationService->getRegisterShoppingPlanOrganization($id);
-    //
-    //            if ($result['success']) {
-    //                return response_success($result['data']);
-    //            }
-    //
-    //            return response_error($result['error_code']);
-    //        } catch (\Throwable $exception) {
-    //            return response_error();
-    //        }
-    //    }
+    public function getRegisterShoppingPlanOrganization(string $id)
+    {
+        try {
+            $result = $this->shoppingPlanOrganizationService->getRegisterShoppingPlanOrganization($id);
 
+            if ($result['success']) {
+                return response_success($result['data']);
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

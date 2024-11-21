@@ -164,6 +164,6 @@
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
        'resources/js/app/api/apiJob.js',
-       'resources/js/app/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
+       'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
     ])
 @endsection
