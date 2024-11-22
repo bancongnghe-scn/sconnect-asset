@@ -156,6 +156,40 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async accountApprovalShoppingPlanOrganization(id) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountApprovalShoppingPlanOrganization(id)
+                if (response.success) {
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async accountDisapprovalShoppingPlanOrganization(id) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountDisapprovalShoppingPlanOrganization(id)
+                if (response.success) {
+                    toast.success('Từ chối thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         initDateRangePicker() {
             this.dateRangePicker = new AirDatepicker('.dateRange', {
                 range: true,

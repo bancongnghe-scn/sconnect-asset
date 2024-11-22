@@ -6,10 +6,12 @@ use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\RegisterShoppingYearResource;
 use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanCompany;
+use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\OrganizationRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
+use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
@@ -26,6 +28,7 @@ class ShoppingPlanOrganizationService
         protected ShoppingPlanCompanyRepository $shoppingPlanCompanyRepository,
         protected UserRepository $userRepository,
         protected ShoppingAssetRepository $shoppingAssetRepository,
+        protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
     ) {
     }
 
@@ -244,5 +247,109 @@ class ShoppingPlanOrganizationService
             'success' => true,
             'data'    => $data,
         ];
+    }
+
+    public function accountApprovalShoppingPlanOrganization($id)
+    {
+        // kiem tra ton tai
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
+        if (empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL !== +$shoppingPlanOrganization->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL;
+            if (!$shoppingPlanOrganization->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2075,
+                ];
+            }
+
+            $this->shoppingPlanLogRepository->create([
+                'action'      => ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION,
+                'record_id'   => $shoppingPlanOrganization->id,
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION),
+                'created_by'  => Auth::id(),
+            ]);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function accountDisapprovalShoppingPlanOrganization($id)
+    {
+        // kiem tra ton tai
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
+        if (empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL !== +$shoppingPlanOrganization->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_DISAPPROVAL;
+            if (!$shoppingPlanOrganization->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2075,
+                ];
+            }
+
+            $this->shoppingPlanLogRepository->create([
+                'action'      => ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION,
+                'record_id'   => $shoppingPlanOrganization->id,
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION),
+                'created_by'  => Auth::id(),
+            ]);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 }

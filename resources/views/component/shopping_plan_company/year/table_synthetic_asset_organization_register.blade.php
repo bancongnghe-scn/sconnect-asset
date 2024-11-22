@@ -36,11 +36,11 @@
                             <i class="fa-solid fa-eye"></i>
                         </button>
                         @can('shopping_plan_company.accounting_approval')
-                            <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                                <div>
-                                    <button class="border-0 bg-body"><i class="fa-solid fa-thumbs-up"></i></button>
-                                    <button class="border-0 bg-body"><i class="fa-solid fa-thumbs-down"></i></button>
-                                </div>
+                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                <span>
+                                    <button class="border-0 bg-body" @click="accountApprovalShoppingPlanOrganization(organization.id)"><i class="fa-solid fa-thumbs-up"></i></button>
+                                    <button class="border-0 bg-body" @click="accountDisapprovalShoppingPlanOrganization(organization.id)"><i class="fa-solid fa-thumbs-down"></i></button>
+                                </span>
                             </template>
                         @endcan
                     </td>

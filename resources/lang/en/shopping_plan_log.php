@@ -7,4 +7,6 @@ return [
     ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY                   => 'Cập nhật kế hoạch mua sắm',
     ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY        => 'Gửi thông báo tới đơn vị',
     ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY => 'Gửi giám độc kế toán duyệt',
+    ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION                  => 'Kế toán đã duyệt kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION               => 'Kế toán từ chối kế hoạch mua sắm',
 ];

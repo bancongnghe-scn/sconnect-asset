@@ -77,4 +77,6 @@ return [
     AppErrorCode::CODE_2071 => 'Sửa bình luận thất bại !',
     AppErrorCode::CODE_2072 => 'Kế hoạch không còn mở đăng ký !',
     AppErrorCode::CODE_2073 => 'Đăng ký mua sắm thất bại !',
+    AppErrorCode::CODE_2074 => 'Trạng thái kế hoạch mua sắm không phù hợp !',
+    AppErrorCode::CODE_2075 => 'Duyệt kế hoạch mua sắm thất bại !',
 ];

@@ -78,4 +78,6 @@ class AppErrorCode
     public const CODE_2071 = 2071; //  Sửa bình luận thất bại !
     public const CODE_2072 = 2072; //  Kế hoạch không còn mở đăng ký !
     public const CODE_2073 = 2073; //  Đăng ký mua sắm thất bại !
+    public const CODE_2074 = 2074; //  Trạng thái kế hoạch mua sắm không phù hợp !
+    public const CODE_2075 = 2075; //  Duyệt kế hoạch mua sắm thất bại !
 }

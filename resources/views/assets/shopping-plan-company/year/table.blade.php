@@ -85,7 +85,7 @@
                                             @can('shopping_plan_company.accounting_approval')
                                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                                                     <button class="border-0 bg-body"
-                                                            @click="$dispatch('remove', { id: data.id })">
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
                                                 </template>

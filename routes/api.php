@@ -71,6 +71,8 @@ Route::middleware('web')->group(function () {
         Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
+            Route::get('account-approval/{id}', 'accountApprovalShoppingPlanOrganization');
+            Route::get('account-disapproval/{id}', 'accountDisapprovalShoppingPlanOrganization');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {

@@ -40,8 +40,33 @@ class ShoppingPlanOrganizationController
         }
     }
 
-    public function approvalShoppingPlanOrganization(string $id)
+    public function accountApprovalShoppingPlanOrganization(string $id)
     {
+        try {
+            $result = $this->shoppingPlanOrganizationService->accountApprovalShoppingPlanOrganization($id);
 
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function accountDisapprovalShoppingPlanOrganization(string $id)
+    {
+        try {
+            $result = $this->shoppingPlanOrganizationService->accountDisapprovalShoppingPlanOrganization($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
     }
 }
