@@ -36,10 +36,27 @@
                             <i class="fa-solid fa-eye"></i>
                         </button>
                         @can('shopping_plan_company.accounting_approval')
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                                    && (+organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                                            || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                                    )"
+                            >
                                 <span>
-                                    <button class="border-0 bg-body" @click="accountApprovalShoppingPlanOrganization(organization.id)"><i class="fa-solid fa-thumbs-up"></i></button>
-                                    <button class="border-0 bg-body" @click="accountDisapprovalShoppingPlanOrganization(organization.id)"><i class="fa-solid fa-thumbs-down"></i></button>
+                                    <button class="border-0 bg-body"
+                                            @click="
+                                                accountApprovalShoppingPlanOrganization(organization.id)
+                                                organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                                            ">
+                                        <i class="fa-solid fa-thumbs-up"></i>
+                                    </button>
+                                    <button class="border-0 bg-body"
+                                            @click="
+                                                accountDisapprovalShoppingPlanOrganization(organization.id)
+                                                organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                                            "
+                                    >
+                                        <i class="fa-solid fa-thumbs-down"></i>
+                                    </button>
                                 </span>
                             </template>
                         @endcan
