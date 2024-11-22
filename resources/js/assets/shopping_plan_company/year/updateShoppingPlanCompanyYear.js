@@ -4,17 +4,17 @@ import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.data('updateShoppingPlanCompanyYear', () => ({
-        init() {
+        async init() {
             const split = window.location.href.split('/')
             this.id = split.pop();
             this.action = split.at(5);
-            this.getListUser({
-                'dept_id' : DEPT_IDS_FOLLOWERS
-            })
-            this.getInfoShoppingPlanCompanyYear()
             this.getOrganizationRegisterYear()
             this.initDateRangePicker()
             this.initYearPicker()
+            await this.getListUser({
+                'dept_id' : DEPT_IDS_FOLLOWERS
+            })
+            this.getInfoShoppingPlanCompanyYear()
         },
 
         //data
@@ -147,13 +147,18 @@ document.addEventListener('alpine:init', () => {
 
         async getListUser(filters){
             this.loading = true
-            const response = await window.apiGetUser(filters)
-            if (response.success) {
-                this.listUser = response.data.data
-                return
+            try {
+                const response = await window.apiGetUser(filters)
+                if (response.success) {
+                    this.listUser = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách nhân viên thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
             }
-            toast.error('Lấy danh sách nhân viên thất bại !')
-            this.loading = false
         },
 
         async accountApprovalShoppingPlanOrganization(id) {

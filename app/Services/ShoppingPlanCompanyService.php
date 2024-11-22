@@ -33,15 +33,14 @@ class ShoppingPlanCompanyService
     public function getListShoppingPlanCompany(array $filters)
     {
         $user = Auth::user();
-
-        if ($user->hasAnyRole(['accounting_department', 'personnel_department'])) {
-            $planCompany = $this->getShoppingPlanCompanyOfMonitor($filters, $user->id);
-        } else {
+        if ($user->can('shopping_plan_company.view_all')) {
             $planCompany = $this->planCompanyRepository->getListing($filters, [
                 'id', 'name', 'time',
                 'start_time', 'end_time', 'plan_year_id',
                 'status', 'created_by', 'created_at',
             ]);
+        } else {
+            $planCompany = $this->getShoppingPlanCompanyOfMonitor($filters, $user->id);
         }
 
         if ($planCompany->isEmpty()) {

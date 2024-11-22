@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Rbac;
 
 use App\Models\Rbac\Menu;
 use App\Repositories\Base\BaseRepository;
@@ -46,7 +46,7 @@ class MenuRepository extends BaseRepository
             'menus.description',
             DB::raw('GROUP_CONCAT(menu_roles.role_id ORDER BY menu_roles.role_id ASC) as role_ids')
         )
-            ->join('menu_roles', 'menu_roles.menu_id', 'menus.id')
+            ->leftJoin('menu_roles', 'menu_roles.menu_id', 'menus.id')
             ->orderBy('menus.created_at', 'desc')
             ->groupBy('menus.id', 'menus.name', 'menus.description');
 

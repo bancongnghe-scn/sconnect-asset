@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanCompanyController extends Controller
 {
@@ -15,7 +16,6 @@ class ShoppingPlanCompanyController extends Controller
 
     public function findShoppingPlanCompany(string $id)
     {
-
         try {
             $result = $this->planCompanyService->findShoppingPlanCompany($id);
             if (!$result['success']) {
@@ -37,6 +37,8 @@ class ShoppingPlanCompanyController extends Controller
             'organizations.*' => 'integer',
         ]);
 
+        Auth::user()->canPer('shopping_plan_company.sent_notifi_register');
+
         try {
             $result = $this->planCompanyService->sentNotificationRegister($request->all());
 
@@ -52,6 +54,8 @@ class ShoppingPlanCompanyController extends Controller
 
     public function sendAccountantApproval(string $id)
     {
+        Auth::user()->canPer('shopping_plan_company.sent_account_approval');
+
         try {
             $result = $this->planCompanyService->sendAccountantApproval($id);
 
@@ -68,6 +72,8 @@ class ShoppingPlanCompanyController extends Controller
 
     public function deleteShoppingPlanCompany(string $id)
     {
+        Auth::user()->canPer('shopping_plan_company.crud');
+
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
             if (!$result['success']) {
@@ -87,6 +93,9 @@ class ShoppingPlanCompanyController extends Controller
             'ids.*' => 'integer',
             'type'  => 'required|integer',
         ]);
+
+        Auth::user()->canPer('shopping_plan_company.crud');
+
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'), $request->integer('type'));
 

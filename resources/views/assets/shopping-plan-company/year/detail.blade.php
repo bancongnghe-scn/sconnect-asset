@@ -46,6 +46,7 @@
                             </div>
                         </div>
                     </div>
+
                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                         <div class="mb-3">
                             <div class="active-link tw-w-fit">Thống kê</div>
@@ -90,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="history_comment_shopping_plan">
+            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="comment_shopping_plan">
                 @include('component.shopping_plan_company.history_comment')
             </div>
         </div>

@@ -20,15 +20,13 @@ class ShoppingPlanCompanyYearController extends Controller
     {
         $user = Auth::user();
 
-        $user->canAnyPer(['shopping_plan_organization.view', 'shopping_plan_company.view']);
-
         if ($user->hasAnyRole(['accounting_director', 'hr_director'])) {
-            return view('assets.shopping-plan-company.year.listPersonnelDirector');
+            return view('assets.shopping_plan_master.year.list');
         }
         if ($user->hasRole('manager_organization')) {
             return view('assets.shopping_plan_organization.year.list');
         } else {
-            return view('assets.shopping-plan-company.year.listShoppingPlanCompany');
+            return view('assets.shopping-plan-company.year.list');
         }
     }
 
@@ -39,8 +37,6 @@ class ShoppingPlanCompanyYearController extends Controller
             'status'   => 'nullable|array',
             'status.*' => 'integer',
         ]);
-        Auth::user()->canPer('shopping_plan_company.view');
-
         try {
             $filters         = $request->all();
             $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;

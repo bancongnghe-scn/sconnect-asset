@@ -25,7 +25,6 @@
 
     {{--  modal--}}
     @include('assets.shopping-plan-company.year.modalInsert')
-    {{--        @include('assets.shopping-plan-company.year.modalInfo')--}}
     <div
         x-data="{
                         modalId: idModalConfirmDelete,

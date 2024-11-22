@@ -5,18 +5,20 @@
 @section('content')
     <div x-data="updateShoppingPlanCompanyYear">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                <div class="d-flex gap-2">
-                    <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
-                    <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
-                </div>
-            </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
-                <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
-            </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
-                <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
-            </template>
+            @canany(['shopping_plan_company.sent_notifi_register', 'shopping_plan_company.sent_account_approval'])
+                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
+                        <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
+                    </div>
+                </template>
+                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                    <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+                </template>
+                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+                    <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+                </template>
+            @endcanany
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
         <div class="d-flex justify-content-between">
@@ -62,9 +64,9 @@
                                                data.monitor_ids = $($el).val()
                                                console.log(data.monitor_ids)
                                            });
-                                    })"
+                                        })"
                                     class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
-                                        :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                                    :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                                     <template x-for="value in listUser" :key="value.id">
                                         <option :value="value.id" x-text="value.name"></option>
                                     </template>
@@ -75,7 +77,10 @@
 
                     {{-- button phe duyet--}}
                     @canany(['shopping_plan_company.accounting_approval', 'shopping_plan_company.general_approval'])
-                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                        <template x-if="
+                            +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                        ">
                             <div class="d-flex tw-gap-x-2 justify-content-end">
                                 <button class="btn bg-sc text-white">Duyệt</button>
                                 <button class="btn bg-red">Từ chối</button>

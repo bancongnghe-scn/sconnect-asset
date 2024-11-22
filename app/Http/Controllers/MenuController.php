@@ -46,6 +46,8 @@ class MenuController extends Controller
             'description'       => 'nullable|string',
             'role_ids'          => 'nullable|array',
             'role_ids.*'        => 'integer',
+            'user_ids'          => 'nullable|array',
+            'user_ids.*'        => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
         try {
@@ -105,6 +107,8 @@ class MenuController extends Controller
             'description'      => 'nullable|string',
             'role_ids'         => 'nullable|array',
             'role_ids.*'       => 'integer',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
         try {

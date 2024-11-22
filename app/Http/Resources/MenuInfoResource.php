@@ -17,6 +17,7 @@ class MenuInfoResource extends JsonResource
             'order'       => $this->resource->order,
             'parent_id'   => $this->resource->parent_id,
             'role_ids'    => $this->resource->menuRoles?->pluck('role_id')->toArray(),
+            'user_ids'    => $this->resource->menuUsers?->pluck('user_id')->toArray(),
         ];
     }
 }
