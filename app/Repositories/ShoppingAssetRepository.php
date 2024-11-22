@@ -11,4 +11,9 @@ class ShoppingAssetRepository extends BaseRepository
     {
         return ShoppingAsset::class;
     }
+
+    public function deleteByIds($ids)
+    {
+        return $this->_model->whereIn('id', $ids)->delete();
+    }
 }

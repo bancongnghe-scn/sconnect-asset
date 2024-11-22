@@ -50,47 +50,47 @@
 
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <div>
-                            <template x-for="(register, index) in registers" :key="index">
-                                <div class="p-4 tw-bg-[#E4F0E6] mb-3">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
-                                            <span class="form-control" style="flex: 1;" x-text="`Tháng ${register.month}`"></span>
+                        <template x-if="list_asset_type.length > 0 && list_job.length > 0">
+                            <div>
+                                <template x-for="(register, index) in registers" :key="index">
+                                    <div class="p-4 tw-bg-[#E4F0E6] mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
+                                                <span class="form-control" style="flex: 1;" x-text="`Tháng ${register.month}`"></span>
 
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <span class="me-2 flex-shrink-0 tw-font-bold">Tổng số lượng</span>
-                                                <span class="form-control text-center" x-text="`${register.register.total} / ${register.approval.total}`"></span>
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <span class="me-2 flex-shrink-0 tw-font-bold">Tổng số lượng</span>
+                                                    <span class="form-control text-center" x-text="`${register.register.total}`"></span>
+                                                </div>
+
+                                                <div class="d-flex align-items-center" style="flex: 1;">
+                                                    <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
+                                                    <span class="form-control text-center"
+                                                          x-text="`${window.formatCurrencyVND(register.register.price)}`"
+                                                    ></span>
+                                                </div>
                                             </div>
 
-                                            <div class="d-flex align-items-center" style="flex: 1;">
-                                                <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
-                                                <span class="form-control text-center"
-                                                      x-text="`${window.formatCurrencyVND(register.register.price)} / ${window.formatCurrencyVND(register.approval.price)}`"
-                                                ></span>
-                                            </div>
+                                            <button class="btn" @click="handleShowTable(index)">
+                                                <i class="fa-solid fa-chevron-down"></i>
+                                            </button>
                                         </div>
 
-                                        <button class="btn" @click="handleShowTable(index)">
-                                            <i class="fa-solid fa-chevron-down"></i>
-                                        </button>
-                                    </div>
-
-                                    <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                                            <thead>
+                                        <div class="card card-body mt-3" x-show="table_index.includes(index)">
+                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                                <thead>
                                                 <tr>
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị</th>
                                                     <th rowspan="1" colspan="1" >Chức danh</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-24">Duyệt</th>
                                                     <th rowspan="1" colspan="1" >Tổng</th>
                                                     <th rowspan="1" colspan="1" >Mô tả</th>
                                                     <th rowspan="1" colspan="1"></th>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
+                                                </thead>
+                                                <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                     <tr
                                                         x-init="$watch('asset.price', value => calculatePrice(index))"
@@ -99,14 +99,13 @@
                                                             <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id}"
                                                                   @select-change="
                                                                       asset.asset_type_id = $event.detail
-                                                                      asset.measure = list_asset_type.find(({ id }) => +id === +$event.detail).measure
                                                                       asset.price = getPrice(asset.asset_type_id, asset.job_id)
                                                                   "
                                                             >
                                                                 @include('common.select2')
                                                             </span>
                                                         </td>
-                                                        <td class="align-middle" x-text="asset.measure"></td>
+                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
                                                             <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id}"
                                                                   @select-change="
@@ -121,12 +120,10 @@
                                                         <td>
                                                             <input class="form-control" type="number"
                                                                    x-model="asset.quantity_registered"
-                                                                   @input="calculateRegister(index)">
-                                                        </td>
-                                                        <td>
-                                                            <input class="form-control" type="number"
-                                                                   x-model="asset.quantity_approved"
-                                                                   @input="calculateApproval(index)"
+                                                                   @input="
+                                                                       asset.quantity_approved = asset.quantity_registered
+                                                                       calculateRegister(index)
+                                                                   "
                                                             >
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
@@ -140,13 +137,14 @@
                                                         </td>
                                                     </tr>
                                                 </template>
-                                            </tbody>
-                                        </table>
-                                        <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
+                                                </tbody>
+                                            </table>
+                                            <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </template>
-                        </div>
+                                </template>
+                            </div>
+                        </template>
                     </div>
                 </div>
             </div>

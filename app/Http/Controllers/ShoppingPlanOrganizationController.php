@@ -39,4 +39,9 @@ class ShoppingPlanOrganizationController
             return response_error();
         }
     }
+
+    public function approvalShoppingPlanOrganization(string $id)
+    {
+
+    }
 }

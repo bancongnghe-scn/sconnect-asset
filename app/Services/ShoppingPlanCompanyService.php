@@ -507,6 +507,7 @@ class ShoppingPlanCompanyService
                 'error_code' => AppErrorCode::CODE_2058,
             ];
         }
+
         if (ShoppingPlanCompany::STATUS_REGISTER !== +$shoppingPlanCompany->status) {
             return [
                 'success'    => false,
@@ -548,7 +549,6 @@ class ShoppingPlanCompanyService
 
             DB::commit();
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
 
             return [

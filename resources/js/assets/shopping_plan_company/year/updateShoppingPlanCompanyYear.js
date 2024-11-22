@@ -9,15 +9,12 @@ document.addEventListener('alpine:init', () => {
             this.id = split.pop();
             this.action = split.at(5);
             this.getListUser({
-                'dept_id' : [
-                    ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
-                ]
+                'dept_id' : DEPT_IDS_FOLLOWERS
             })
             this.getInfoShoppingPlanCompanyYear()
             this.getOrganizationRegisterYear()
             this.initDateRangePicker()
             this.initYearPicker()
-            this.onChangeSelect2()
         },
 
         //data
@@ -65,7 +62,6 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
                 if (response.success) {
                     toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
-                    this.getShoppingPlanLogByRecordId()
                     return
                 }
 
@@ -85,7 +81,6 @@ document.addEventListener('alpine:init', () => {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
                     this.getOrganizationRegisterYear()
-                    this.getShoppingPlanLogByRecordId()
                     return
                 }
 
@@ -196,12 +191,6 @@ document.addEventListener('alpine:init', () => {
                         }
                     }, 0);
                 }
-            });
-        },
-
-        onChangeSelect2() {
-            $('#selectUser').on('change', (event) => {
-                this.data.monitor_ids = $(event.target).val()
             });
         },
 

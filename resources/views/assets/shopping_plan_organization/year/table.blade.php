@@ -53,16 +53,6 @@
                                             <button class="border-0 bg-body" @click="window.location.href = `/shopping-plan-organization/year/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
-{{--                                            <template--}}
-{{--                                                x-if="new Date() >= new Date(window.formatDate(data.start_time))--}}
-{{--                                                      && new Date() <= new Date(window.formatDate(data.end_time))"--}}
-{{--                                            >--}}
-{{--                                                    <button class="border-0 bg-body"--}}
-{{--                                                            :style="{'color': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER ? '#74C0FC' : '#1ec258'}"--}}
-{{--                                                            @click="window.location.href = `/shopping-plan-organization/year/register/${data.id}`">--}}
-{{--                                                        <i :class="`fa-solid ${+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER ? 'fa-pen-to-square' : 'fa-pen'}`"></i>--}}
-{{--                                                    </button>--}}
-{{--                                            </template>--}}
                                             <template x-if="new Date() >= new Date(window.formatDate(data.start_time))
                                                       && new Date() <= new Date(window.formatDate(data.end_time))">
                                                 <span>
@@ -82,7 +72,6 @@
                                                     </template>
                                                 </span>
                                             </template>
-
                                         </td>
                                     </tr>
                                 </template>

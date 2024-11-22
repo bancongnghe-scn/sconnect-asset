@@ -39,8 +39,7 @@ class ShoppingPlanCompanyYearController extends Controller
             'status'   => 'nullable|array',
             'status.*' => 'integer',
         ]);
-
-        Auth::user()->canPer(['shopping_plan_company.view']);
+        Auth::user()->canPer('shopping_plan_company.view');
 
         try {
             $filters         = $request->all();

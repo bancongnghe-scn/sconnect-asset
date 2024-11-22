@@ -14,7 +14,7 @@
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(data.end_time)">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
                 <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
             </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
@@ -22,6 +22,7 @@
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">
                 <div class="card-body">
+                    {{--Thong tin chung--}}
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
@@ -55,7 +56,14 @@
 
                             <div>
                                 <label class="form-label">Người quan sát</label>
-                                <select class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
+                                <select
+                                    x-init="$nextTick(() => {
+                                           $($el).on('change', (e) => {
+                                               data.monitor_ids = $($el).val()
+                                               console.log(data.monitor_ids)
+                                           });
+                                    })"
+                                    class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
                                         :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                                     <template x-for="value in listUser" :key="value.id">
                                         <option :value="value.id" x-text="value.name"></option>
@@ -64,6 +72,18 @@
                             </div>
                         </div>
                     </div>
+
+                    {{-- button phe duyet--}}
+                    @canany(['shopping_plan_company.accounting_approval', 'shopping_plan_company.general_approval'])
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                            <div class="d-flex tw-gap-x-2 justify-content-end">
+                                <button class="btn bg-sc text-white">Duyệt</button>
+                                <button class="btn bg-red">Từ chối</button>
+                            </div>
+                        </template>
+                    @endcanany
+
+                    {{--  thong ke--}}
                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                         <div class="mb-3">
                             <div class="active-link tw-w-fit">Thống kê</div>
@@ -95,6 +115,7 @@
                         </div>
                     </template>
 
+                    {{--  chi tiet--}}
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
@@ -108,7 +129,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="history_comment_shopping_plan">
+            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="comment_shopping_plan">
                 @include('component.shopping_plan_company.history_comment')
             </div>
         </div>
@@ -127,7 +148,7 @@
 @section('js')
     @vite([
         'resources/js/assets/shopping_plan_company/year/updateShoppingPlanCompanyYear.js',
-        'resources/js/assets/history_comment/history_comment_shopping_plan_company.js',
+        'resources/js/assets/history_comment/comment_shopping_plan_company.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',

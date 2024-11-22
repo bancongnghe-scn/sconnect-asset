@@ -22,7 +22,7 @@ class RegisterShoppingPlanOrganizationRequest extends FormRequest
             'registers.*.assets.*.job_id'              => 'required|integer',
             'registers.*.assets.*.price'               => 'required|integer',
             'registers.*.assets.*.quantity_registered' => 'required|integer',
-            'registers.*.assets.*.quantity_approved'   => 'required|integer',
+            'registers.*.assets.*.quantity_approved'   => 'nullable|integer',
             'registers.*.assets.*.description'         => 'nullable|string',
         ];
     }

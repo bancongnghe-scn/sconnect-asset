@@ -20,6 +20,11 @@ class ShoppingPlanOrganization extends Model
     public const STATUS_APPROVAL                         = 7;
     public const STATUS_DISAPPROVAL                      = 8;
 
+    public function shoppingAssets(): HasMany
+    {
+        return $this->hasMany(ShoppingAsset::class, 'shopping_plan_organization_id');
+    }
+
     public function shoppingAssetsYear(): HasMany
     {
         return $this->hasMany(ShoppingAsset::class, 'shopping_plan_organization_id')->orderBy('month');

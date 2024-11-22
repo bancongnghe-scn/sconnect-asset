@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
+use App\Http\Resources\RegisterShoppingYearResource;
 use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanOrganization;
@@ -109,10 +110,11 @@ class ShoppingPlanOrganizationService
             ];
         }
 
-        $userId   = Auth::id();
-        $dataNew  = [];
-        $dataTime = $this->getTimeShoppingAsset($shoppingPlanCompany);
-        $metaData = array_merge($dataTime, [
+        $userId            = Auth::id();
+        $dataNew           = [];
+        $shoppingAssetIds  = [];
+        $dataTime          = $this->getTimeShoppingAsset($shoppingPlanCompany);
+        $metaData          = array_merge($dataTime, [
             'organization_id'               => $shoppingPlanOrganization->organization_id,
             'shopping_plan_organization_id' => $id,
             'shopping_plan_company_id'      => $shoppingPlanOrganization->shopping_plan_company_id,
@@ -122,14 +124,16 @@ class ShoppingPlanOrganizationService
 
         DB::beginTransaction();
         try {
-            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_REGISTERED;
-            if (!$shoppingPlanOrganization->save()) {
-                DB::rollBack();
+            if (ShoppingPlanOrganization::STATUS_OPEN_REGISTER === +$shoppingPlanOrganization->status) {
+                $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_REGISTERED;
+                if (!$shoppingPlanOrganization->save()) {
+                    DB::rollBack();
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2073,
-                ];
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2073,
+                    ];
+                }
             }
 
             foreach ($data['registers'] as $register) {
@@ -143,25 +147,34 @@ class ShoppingPlanOrganizationService
                         continue;
                     }
 
-                    $id = $asset['id'];
+                    $id                 = $asset['id'];
+                    $shoppingAssetIds[] = $id;
                     unset($asset['id']);
                     $this->shoppingAssetRepository->update($id, array_merge($asset, [
                         'updated_by' => $userId,
                     ]));
                 }
-
-                if (!empty($dataNew)) {
-                    $insert = $this->shoppingAssetRepository->insert($dataNew);
-                    if (!$insert) {
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_2073,
-                        ];
-                    }
-                }
-
-                DB::commit();
             }
+
+            if (!empty($shoppingAssetIds)) {
+                $shoppingAssetsOldIds = $shoppingPlanOrganization->shoppingAssets->pluck('id')->toArray();
+                $removedIds           = array_diff($shoppingAssetsOldIds, $shoppingAssetIds);
+                if (!empty($removedIds)) {
+                    $this->shoppingAssetRepository->deleteByIds($removedIds);
+                }
+            }
+
+            if (!empty($dataNew)) {
+                $insert = $this->shoppingAssetRepository->insert($dataNew);
+                if (!$insert) {
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2073,
+                    ];
+                }
+            }
+
+            DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -211,6 +224,25 @@ class ShoppingPlanOrganizationService
 
     public function getRegisterShoppingPlanOrganization($id)
     {
+        // kiem tra ton tai
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
+        if (empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+        // kiem tra loai ke hoach de tra ve format phu hop
+        if (ShoppingPlanCompany::TYPE_WEEK === $shoppingPlanOrganization->shoppingPlanCompany->type) {
+            $data = [];
+        } else {
+            // neu la kh nam va quy thi cung 1 format
+            $data = RegisterShoppingYearResource::make($shoppingPlanOrganization)->resolve();
+        }
 
+        return [
+            'success' => true,
+            'data'    => $data,
+        ];
     }
 }

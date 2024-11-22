@@ -6,11 +6,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
             this.list({page:1, limit:10})
-            this.getListUser({
-                'dept_id' : [
-                    ID_ORGANIZATION_NSHC, ID_ORGANIZATION_TCKT
-                ]
-            })
+            this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
             this.initYearPicker()
             this.initDateRangePicker()
             window.initSelect2Modal('idModalInsert')

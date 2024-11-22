@@ -9,7 +9,7 @@
         <th rowspan="2" class="text-center">Tổng Số lượng</th>
         <th rowspan="2" class="text-center">Tổng Thành tiền</th>
         <template x-if="action === 'update'">
-            <th rowspan="2" class="text-center">Thao tác</th>
+            <th rowspan="2" class="text-center tw-w-28">Thao tác</th>
         </template>
     </tr>
     <tr>
@@ -32,21 +32,21 @@
                 <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                 <template x-if="action === 'update'">
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-toggle="popover"
-                            data-bs-html="true"
-                            data-bs-content='<a href="#" id="popover-link">Option 2</a><br>'
-                            x-init="new bootstrap.Popover($el);"
-                        >
-                            ...
+                        <button @click="window.location.href = `/shopping-plan-organization/year/register/${organization.id}`" class="border-0 bg-body">
+                            <i class="fa-solid fa-eye"></i>
                         </button>
+                        @can('shopping_plan_company.accounting_approval')
+                            <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                <div>
+                                    <button class="border-0 bg-body"><i class="fa-solid fa-thumbs-up"></i></button>
+                                    <button class="border-0 bg-body"><i class="fa-solid fa-thumbs-down"></i></button>
+                                </div>
+                            </template>
+                        @endcan
                     </td>
                 </template>
             </tr>
         </template>
     </template>
-
     </tbody>
 </table>

@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('history_comment_shopping_plan', () => ({
+    Alpine.data('comment_shopping_plan', () => ({
             init() {
                 this.listComment()
                 this.handleComment()
