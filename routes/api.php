@@ -56,6 +56,7 @@ Route::middleware('web')->group(function () {
             Route::get('show/{id}', 'findShoppingPlanCompany');
             Route::post('sent-notification-register', 'sentNotificationRegister');
             Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
+            Route::get('send-manager-approval/{id}', 'sendManagerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
         });
 
@@ -71,8 +72,7 @@ Route::middleware('web')->group(function () {
         Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
-            Route::get('account-approval/{id}', 'accountApprovalShoppingPlanOrganization');
-            Route::get('account-disapproval/{id}', 'accountDisapprovalShoppingPlanOrganization');
+            Route::post('account-approval', 'accountApprovalShoppingPlanOrganization');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {

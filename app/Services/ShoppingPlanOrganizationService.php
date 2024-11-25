@@ -249,94 +249,35 @@ class ShoppingPlanOrganizationService
         ];
     }
 
-    public function accountApprovalShoppingPlanOrganization($id)
+    public function accountApprovalShoppingPlanOrganization($data)
     {
-        // kiem tra ton tai
-        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
-        if (empty($shoppingPlanOrganization)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2058,
-            ];
-        }
-
-        if (ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL !== +$shoppingPlanOrganization->status) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2074,
-            ];
-        }
-
         DB::beginTransaction();
         try {
-            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL;
-            if (!$shoppingPlanOrganization->save()) {
+            $status = ShoppingPlanOrganization::TYPE_APPROVAL == $data['type'] ?
+                ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL : ShoppingPlanOrganization::STATUS_DISAPPROVAL;
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(['ids' => $data['ids']], ['status' => $status]);
+
+            $action = ShoppingPlanOrganization::TYPE_APPROVAL == $data['type'] ?
+                ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION : ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION;
+
+            $dataInsertLogs = [];
+            foreach ($data['ids'] as $id) {
+                $dataInsertLogs[] = [
+                    'action'      => $action,
+                    'record_id'   => $id,
+                    'desc'        => __('shopping_plan_log.'.$action),
+                    'created_by'  => Auth::id(),
+                ];
+            }
+            $insert = $this->shoppingPlanLogRepository->insert($dataInsertLogs);
+            if (!$insert) {
                 DB::rollBack();
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2075,
+                    'error_code' => AppErrorCode::CODE_2076,
                 ];
             }
-
-            $this->shoppingPlanLogRepository->create([
-                'action'      => ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION,
-                'record_id'   => $shoppingPlanOrganization->id,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION),
-                'created_by'  => Auth::id(),
-            ]);
-
-            DB::commit();
-
-            return [
-                'success' => true,
-            ];
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_1000,
-            ];
-        }
-    }
-
-    public function accountDisapprovalShoppingPlanOrganization($id)
-    {
-        // kiem tra ton tai
-        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($id);
-        if (empty($shoppingPlanOrganization)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2058,
-            ];
-        }
-
-        if (ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL !== +$shoppingPlanOrganization->status) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2074,
-            ];
-        }
-
-        DB::beginTransaction();
-        try {
-            $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_DISAPPROVAL;
-            if (!$shoppingPlanOrganization->save()) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2075,
-                ];
-            }
-
-            $this->shoppingPlanLogRepository->create([
-                'action'      => ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION,
-                'record_id'   => $shoppingPlanOrganization->id,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION),
-                'created_by'  => Auth::id(),
-            ]);
 
             DB::commit();
 

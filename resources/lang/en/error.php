@@ -79,4 +79,6 @@ return [
     AppErrorCode::CODE_2073 => 'Đăng ký mua sắm thất bại !',
     AppErrorCode::CODE_2074 => 'Trạng thái kế hoạch mua sắm không phù hợp !',
     AppErrorCode::CODE_2075 => 'Duyệt kế hoạch mua sắm thất bại !',
+    AppErrorCode::CODE_2076 => 'Lưu lịch sử thất bại !',
+    AppErrorCode::CODE_2077 => 'Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !',
 ];

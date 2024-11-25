@@ -35,6 +35,10 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
             $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
         }
 
+        if (!empty($filters['ids'])) {
+            $query->whereIn('id', Arr::wrap($filters['ids']));
+        }
+
         return $query->update($dataUpdate);
     }
 
@@ -46,5 +50,19 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
         return $this->_model->select($columns)
             ->join('shopping_plan_company', 'shopping_plan_company.id', 'shopping_plan_organization.shopping_plan_company_id')
             ->where('shopping_plan_organization.id', $id)->first();
+    }
+
+    public function getFirst($filters, $columns = ['*'])
+    {
+        $query = $this->_model->newQuery()->select($columns);
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        return $query->first();
     }
 }

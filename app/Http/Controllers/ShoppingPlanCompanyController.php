@@ -70,6 +70,24 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
+    public function sendManagerApproval(string $id)
+    {
+        Auth::user()->canPer('shopping_plan_company.sent_manager_approval');
+
+        try {
+            $result = $this->planCompanyService->sendManagerApproval($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
     public function deleteShoppingPlanCompany(string $id)
     {
         Auth::user()->canPer('shopping_plan_company.crud');

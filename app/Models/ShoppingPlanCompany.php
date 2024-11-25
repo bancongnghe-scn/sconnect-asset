@@ -38,12 +38,13 @@ class ShoppingPlanCompany extends Model
     public const TYPE_YEAR    = 1;
     public const TYPE_QUARTER = 2;
     public const TYPE_WEEK    = 3;
-
-    public const TYPE_NAME = [
+    public const TYPE_NAME    = [
         self::TYPE_YEAR    => 'năm',
         self::TYPE_QUARTER => 'quý',
         self::TYPE_WEEK    => 'tuần',
     ];
+    public const TYPE_APPROVAL    = 'approval';
+    public const TYPE_DISAPPROVAL = 'disapproval';
 
     public function monitorShoppingPlanYear(): HasMany
     {

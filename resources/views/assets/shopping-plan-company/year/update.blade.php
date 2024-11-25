@@ -4,23 +4,39 @@
 
 @section('content')
     <div x-data="updateShoppingPlanCompanyYear">
+        {{-- danh sách button --}}
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            @canany(['shopping_plan_company.sent_notifi_register', 'shopping_plan_company.sent_account_approval'])
                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                     <div class="d-flex gap-2">
-                        <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
-                        <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
+                        @can('shopping_plan_company.sent_notifi_register')
+                            <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
+                        @endcan
+                        @can('shopping_plan_company.crud')
+                            <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
+                        @endcan
                     </div>
                 </template>
                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
-                    <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+                    @can('shopping_plan_company.crud')
+                        <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+                    @endcan
                 </template>
                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
-                    <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+                    @can('shopping_plan_company.sent_account_approval')
+                        <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+                    @endcan
                 </template>
-            @endcanany
+                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                    && new Date() > new Date(window.formatDate(data.end_time))"
+                >
+                    @can('shopping_plan_company.sent_manager_approval')
+                        <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
+                    @endcan
+                </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
+
+        {{-- content --}}
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">
                 <div class="card-body">
@@ -62,7 +78,6 @@
                                     x-init="$nextTick(() => {
                                            $($el).on('change', (e) => {
                                                data.monitor_ids = $($el).val()
-                                               console.log(data.monitor_ids)
                                            });
                                         })"
                                     class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
@@ -76,17 +91,35 @@
                     </div>
 
                     {{-- button phe duyet--}}
-                    @canany(['shopping_plan_company.accounting_approval', 'shopping_plan_company.general_approval'])
-                        <template x-if="
-                            +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                        ">
-                            <div class="d-flex tw-gap-x-2 justify-content-end">
-                                <button class="btn bg-sc text-white">Duyệt</button>
-                                <button class="btn bg-red">Từ chối</button>
-                            </div>
-                        </template>
-                    @endcanany
+                    <div>
+                        @php
+                            $approvals = [
+                                'shopping_plan_company.accounting_approval' => \App\Models\ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+                                'shopping_plan_company.general_approval' => \App\Models\ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
+                            ];
+                        @endphp
+
+                        @foreach ($approvals as $permission => $status)
+                            @can($permission)
+                                <template x-if="+data.status === {{ $status }}">
+                                    <div class="d-flex tw-gap-x-2 justify-content-end">
+                                        <button class="btn bg-sc text-white"
+                                                @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL)"
+                                                :disabled="window.checkDisableSelectRow"
+                                        >
+                                            Duyệt
+                                        </button>
+                                        <button class="btn bg-red"
+                                                @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)"
+                                                :disabled="window.checkDisableSelectRow"
+                                        >
+                                            Từ chối
+                                        </button>
+                                    </div>
+                                </template>
+                            @endcan
+                        @endforeach
+                    </div>
 
                     {{--  thong ke--}}
                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
@@ -157,7 +190,6 @@
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',
-        'resources/js/assets/api/apiComment.js',
-        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js'
     ])
 @endsection

@@ -20,6 +20,7 @@ document.addEventListener('alpine:init', () => {
         //data
         id: null,
         action: null,
+        checkedAll: false,
         data: {
             time: null,
             status: null,
@@ -29,6 +30,7 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         register: [],
+        selectedRow: [],
         dateRangePicker: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
@@ -110,6 +112,24 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async sendManagerApproval() {
+            this.loading = true
+            try {
+                const response = await window.apiSendManagerApproval(this.id)
+                if (response.success) {
+                    toast.success('Gửi duyệt thành công !')
+                    window.location.href = `/shopping-plan-company/year/list`
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async remove() {
             this.loading = true
             try {
@@ -161,11 +181,14 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async accountApprovalShoppingPlanOrganization(id) {
+        async accountApprovalShoppingPlanOrganization(id, type) {
             this.loading = true
             try {
-                const response = await window.apiAccountApprovalShoppingPlanOrganization(id)
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
                 if (response.success) {
+                    let organization = this.register.organizations.find((item) => +item.id === +id);
+                    organization.status = type === ORGANIZATION_TYPE_APPROVAL
+                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                     toast.success('Duyệt thành công !')
                     return
                 }
@@ -178,12 +201,21 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async accountDisapprovalShoppingPlanOrganization(id) {
+        async accountApprovalMultipleShoppingPlanOrganization(type) {
             this.loading = true
             try {
-                const response = await window.apiAccountDisapprovalShoppingPlanOrganization(id)
+                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+                ids = ids.map(Number);
+                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type)
                 if (response.success) {
-                    toast.success('Từ chối thành công !')
+                    this.register.organizations.filter(function (item) {
+                        if (ids.includes(item.id)) {
+                            item.status = type === ORGANIZATION_TYPE_APPROVAL
+                                ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                        }
+                    });
+                    this.selectedRow = []
+                    toast.success('Duyệt thành công !')
                     return
                 }
 
@@ -236,5 +268,12 @@ document.addEventListener('alpine:init', () => {
         confirmRemove() {
             $("#"+this.idModalConfirmDelete).modal('show');
         },
+
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.register.organizations.forEach((item) => {
+                this.selectedRow[item.id] = this.checkedAll
+            })
+        }
     }))
 })

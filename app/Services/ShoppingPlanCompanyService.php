@@ -560,4 +560,82 @@ class ShoppingPlanCompanyService
             'success' => true,
         ];
     }
+
+    public function sendManagerApproval($shoppingPlanCompanyId)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL !== +$shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2064,
+            ];
+        }
+
+        if (Carbon::now() < Carbon::parse($shoppingPlanCompany->end_time)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2065,
+            ];
+        }
+
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getFirst([
+            'shopping_plan_company_id' => $shoppingPlanCompanyId,
+            'status'                   => [
+                ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+                ShoppingPlanOrganization::STATUS_ACCOUNTANT_REVIEWING,
+            ],
+        ]);
+        if (!empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2077,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL;
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2066,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization([
+                'shopping_plan_company_id' => $shoppingPlanCompanyId,
+            ], [
+                'status' => ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
+            ]);
+
+            $this->shoppingPlanLogRepository->create([
+                'record_id'   => $shoppingPlanCompanyId,
+                'action'      => ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,
+                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY),
+                'created_by'  => Auth::id(),
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }
