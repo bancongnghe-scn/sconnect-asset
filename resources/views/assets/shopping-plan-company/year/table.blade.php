@@ -85,14 +85,22 @@
                                             @endcan
 
                                             {{-- ke toan va giam doc duyet --}}
-                                            @canany(['shopping_plan_company.accounting_approval', 'shopping_plan_company.general_approval'])
-                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                                @can('shopping_plan_company.accounting_approval')
                                                     <button class="border-0 bg-body"
                                                             @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
-                                                </template>
-                                            @endcan
+                                                @endcan
+                                            </template>
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                                @can('shopping_plan_company.general_approval')
+                                                    <button class="border-0 bg-body"
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
+                                                        <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                    </button>
+                                                @endcan
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>

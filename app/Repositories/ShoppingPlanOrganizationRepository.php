@@ -43,7 +43,7 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
     }
 
     public function getInfoShoppingPlanOrganizationById($id, $columns = [
-        'shopping_plan_company.name', 'shopping_plan_company.start_time', 'shopping_plan_company.end_time',
+        'shopping_plan_company.name', 'shopping_plan_company.start_time', 'shopping_plan_company.end_time', 'shopping_plan_company.status as status_company',
         'shopping_plan_organization.organization_id', 'shopping_plan_organization.status',
     ])
     {

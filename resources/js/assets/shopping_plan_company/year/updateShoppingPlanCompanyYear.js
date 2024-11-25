@@ -11,7 +11,7 @@ document.addEventListener('alpine:init', () => {
             this.getOrganizationRegisterYear()
             this.initDateRangePicker()
             this.initYearPicker()
-            await this.getListUser({
+            this.getListUser({
                 'dept_id' : DEPT_IDS_FOLLOWERS
             })
             this.getInfoShoppingPlanCompanyYear()

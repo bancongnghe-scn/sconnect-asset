@@ -13,8 +13,8 @@
             Bình luận
         </a>
     </div>
-    <div class="mt-3 tw-h-[70dvh]" style="border-top: 1px solid">
-        <div class="overflow-y-scroll custom-scroll mt-3" x-show="activeLink.history">
+    <div class="mt-3 tw-h-[70dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid">
+        <div class="mt-3" x-show="activeLink.history">
             <div class="container">
                 <template x-for="log in logs">
                     <p x-text="`${log.created_at} - ${log.created_by} : ${log.desc}`"></p>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="mt-3" id="comment" x-show="activeLink.comment">
-            <div class="overflow-y-scroll custom-scroll tw-h-[65dvh]">
+            <div class="tw-h-[65dvh]">
                 <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
                         <div class="mb-3">

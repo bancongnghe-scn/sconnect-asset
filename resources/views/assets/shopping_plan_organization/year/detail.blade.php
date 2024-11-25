@@ -5,10 +5,23 @@
 @section('content')
     <div x-data="register_shopping_plan_organization_year">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="
-                (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
-                <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
+            <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                @can('shopping_plan_company.accounting_approval')
+                    <div x-data="{status: +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED}"
+                        class="d-flex gap-2"
+                    >
+                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED">
+                            <button class="btn btn-primary" @click="saveReviewRegisterAsset()">Lưu</button>
+                        </template>
+                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL">
+                            <button class="btn bg-sc text-white" @click="updatePlanYear()">Duyệt</button>
+                        </template>
+                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL">
+                            <button class="btn bg-red" @click="updatePlanYear()">Từ chối</button>
+                        </template>
+                    </div>
+                @endcan
             </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
@@ -60,13 +73,13 @@
 
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <span class="me-2 flex-shrink-0 tw-font-bold">Tổng số lượng</span>
-                                                    <span class="form-control text-center" x-text="`${register.register.total}`"></span>
+                                                    <span class="form-control text-center" x-text="`${register.approval.total} / ${register.register.total}`"></span>
                                                 </div>
 
                                                 <div class="d-flex align-items-center" style="flex: 1;">
                                                     <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
                                                     <span class="form-control text-center"
-                                                          x-text="`${window.formatCurrencyVND(register.register.price)}`"
+                                                          x-text="`${window.formatCurrencyVND(register.approval.price)} / ${window.formatCurrencyVND(register.register.price)}`"
                                                     ></span>
                                                 </div>
                                             </div>
@@ -85,61 +98,43 @@
                                                     <th rowspan="1" colspan="1" >Chức danh</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-24">Duyệt</th>
                                                     <th rowspan="1" colspan="1" >Tổng</th>
                                                     <th rowspan="1" colspan="1" >Mô tả</th>
-                                                    <th rowspan="1" colspan="1"></th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr
-                                                        x-init="$watch('asset.price', value => calculatePrice(index))"
-                                                    >
+                                                    <tr>
                                                         <td>
-                                                            <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id, disabled: false}"
-                                                                  @select-change="
-                                                                      asset.asset_type_id = $event.detail
-                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
-                                                                  "
-                                                            >
+                                                            <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id, disabled: true}">
                                                                 @include('common.select2')
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
-                                                            <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id, disabled: false}"
-                                                                  @select-change="
-                                                                      asset.job_id = $event.detail
-                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
-                                                                  "
-                                                            >
+                                                            <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id, disabled: true}">
                                                                 @include('common.select2')
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                         <td>
-                                                            <input class="form-control" type="number"
-                                                                   x-model="asset.quantity_registered"
-                                                                   @input="
-                                                                       asset.quantity_approved = asset.quantity_registered
-                                                                       calculateRegister(index)
-                                                                   "
+                                                            <input class="form-control" type="number" x-model="asset.quantity_registered" disabled>
+                                                        </td>
+                                                        <td>
+                                                            <input
+                                                                class="form-control" type="number" x-model="asset.quantity_approved"
+                                                                @input="calculateApproval(index)"
                                                             >
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
                                                         <td>
-                                                            <input class="form-control" x-model="asset.description" type="text">
-                                                        </td>
-                                                        <td class="text-center align-middle">
-                                                            <button class="border-0 bg-body" @click="deleteRow(index, key)">
-                                                                <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
-                                                            </button>
+                                                            <input class="form-control" x-model="asset.description" type="text" disabled>
                                                         </td>
                                                     </tr>
                                                 </template>
                                                 </tbody>
                                             </table>
-                                            <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
                                         </div>
                                     </div>
                                 </template>

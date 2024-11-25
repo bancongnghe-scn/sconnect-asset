@@ -29,4 +29,5 @@ class ShoppingPlanLog extends Model
     //ORGANIZATION
     public const ACTION_ACCOUNT_APPROVAL_ORGANIZATION    = 'shopping_plan_organization_account_approval';
     public const ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION = 'shopping_plan_organization_account_disapproval';
+    public const ACTION_ACCOUNT_REVIEW_ORGANIZATION      = 'review_organization';
 }

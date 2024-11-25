@@ -33,7 +33,12 @@
                         <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
                     @endcan
                 </template>
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
+                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                    @can('shopping_plan_company.general_approval')
+                        <button class="btn btn-sc" @click="generalApproval()">Xác nhận</button>
+                    @endcan
+                </template>
+                <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
 
         {{-- content --}}
@@ -72,53 +77,53 @@
                                 >
                             </div>
 
-                            <div>
-                                <label class="form-label">Người quan sát</label>
-                                <select
-                                    x-init="$nextTick(() => {
+                            <template x-if="listUser.length > 0">
+                                <div>
+                                    <label class="form-label">Người quan sát</label>
+                                    <select
+                                        x-init="$nextTick(() => {
+                                           $($el).select2({
+                                               language: {
+                                                   noResults: function() {
+                                                         return 'Không tìm thấy kết quả';
+                                                   }
+                                               }
+                                           });
                                            $($el).on('change', (e) => {
                                                data.monitor_ids = $($el).val()
                                            });
                                         })"
-                                    class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
-                                    :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
-                                    <template x-for="value in listUser" :key="value.id">
-                                        <option :value="value.id" x-text="value.name"></option>
-                                    </template>
-                                </select>
-                            </div>
+                                        class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
+                                        :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                                        <template x-for="value in listUser" :key="value.id">
+                                            <option :value="value.id" x-text="value.name"></option>
+                                        </template>
+                                    </select>
+                                </div>
+                            </template>
                         </div>
                     </div>
 
                     {{-- button phe duyet--}}
                     <div>
-                        @php
-                            $approvals = [
-                                'shopping_plan_company.accounting_approval' => \App\Models\ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL,
-                                'shopping_plan_company.general_approval' => \App\Models\ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
-                            ];
-                        @endphp
-
-                        @foreach ($approvals as $permission => $status)
-                            @can($permission)
-                                <template x-if="+data.status === {{ $status }}">
-                                    <div class="d-flex tw-gap-x-2 justify-content-end">
-                                        <button class="btn bg-sc text-white"
-                                                @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Duyệt
-                                        </button>
-                                        <button class="btn bg-red"
-                                                @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Từ chối
-                                        </button>
-                                    </div>
-                                </template>
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                            @can('shopping_plan_company.accounting_approval')
+                                <div class="d-flex tw-gap-x-2 justify-content-end">
+                                    <button class="btn bg-sc text-white"
+                                            @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Duyệt
+                                    </button>
+                                    <button class="btn bg-red"
+                                            @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Từ chối
+                                    </button>
+                                </div>
                             @endcan
-                        @endforeach
+                        </template>
                     </div>
 
                     {{--  thong ke--}}

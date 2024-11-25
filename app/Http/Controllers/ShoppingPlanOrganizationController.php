@@ -64,4 +64,29 @@ class ShoppingPlanOrganizationController
             return response_error();
         }
     }
+
+    public function saveTotalAssetApproval(Request $request)
+    {
+        $request->validate([
+            'id'                                     => 'required|integer',
+            'registers'                              => 'required|array',
+            'registers.*.assets'                     => 'required|array',
+            'registers.*.assets.*.id'                => 'required|integer',
+            'registers.*.assets.*.quantity_approved' => 'required|integer',
+        ]);
+
+        Auth::user()->canPer('shopping_plan_company.accounting_approval');
+
+        try {
+            $result = $this->shoppingPlanOrganizationService->saveTotalAssetApproval($request->all());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

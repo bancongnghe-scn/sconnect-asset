@@ -73,6 +73,7 @@ Route::middleware('web')->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
             Route::post('account-approval', 'accountApprovalShoppingPlanOrganization');
+            Route::post('review', 'saveTotalAssetApproval');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {

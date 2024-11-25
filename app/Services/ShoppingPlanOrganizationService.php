@@ -39,7 +39,7 @@ class ShoppingPlanOrganizationService
             $organizationIds = Arr::pluck($organizations, 'id');
         }
 
-        $dataInsert  = [];
+        $dataInsert = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
                 'status'                   => $status,
@@ -113,11 +113,11 @@ class ShoppingPlanOrganizationService
             ];
         }
 
-        $userId            = Auth::id();
-        $dataNew           = [];
-        $shoppingAssetIds  = [];
-        $dataTime          = $this->getTimeShoppingAsset($shoppingPlanCompany);
-        $metaData          = array_merge($dataTime, [
+        $userId           = Auth::id();
+        $dataNew          = [];
+        $shoppingAssetIds = [];
+        $dataTime         = $this->getTimeShoppingAsset($shoppingPlanCompany);
+        $metaData         = array_merge($dataTime, [
             'organization_id'               => $shoppingPlanOrganization->organization_id,
             'shopping_plan_organization_id' => $id,
             'shopping_plan_company_id'      => $shoppingPlanOrganization->shopping_plan_company_id,
@@ -263,10 +263,10 @@ class ShoppingPlanOrganizationService
             $dataInsertLogs = [];
             foreach ($data['ids'] as $id) {
                 $dataInsertLogs[] = [
-                    'action'      => $action,
-                    'record_id'   => $id,
-                    'desc'        => __('shopping_plan_log.'.$action),
-                    'created_by'  => Auth::id(),
+                    'action'     => $action,
+                    'record_id'  => $id,
+                    'desc'       => __('shopping_plan_log.' . $action),
+                    'created_by' => Auth::id(),
                 ];
             }
             $insert = $this->shoppingPlanLogRepository->insert($dataInsertLogs);
@@ -292,5 +292,70 @@ class ShoppingPlanOrganizationService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function saveTotalAssetApproval($data)
+    {
+        // kiem tra ton tai
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->find($data['id']);
+        if (empty($shoppingPlanOrganization)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (!in_array($shoppingPlanOrganization->status, [
+            ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+            ShoppingPlanOrganization::STATUS_ACCOUNTANT_REVIEWING,
+        ])) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            if (ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL == $shoppingPlanOrganization->status) {
+                $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_ACCOUNTANT_REVIEWING;
+                if (!$shoppingPlanOrganization->save()) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2062,
+                    ];
+                }
+            }
+
+            $this->shoppingPlanLogRepository->create([
+                'action'     => ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION,
+                'record_id'  => $shoppingPlanOrganization->id,
+                'desc'       => __('shopping_plan_log.' . ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION),
+                'created_by' => Auth::id(),
+            ]);
+
+            foreach ($data['registers'] as $register) {
+                foreach ($register['assets'] as $asset) {
+                    $this->shoppingAssetRepository->update($asset['id'], [
+                        'quantity_approved' => $asset['quantity_approved'],
+                    ]);
+                }
+            }
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

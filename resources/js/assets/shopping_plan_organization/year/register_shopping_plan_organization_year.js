@@ -123,6 +123,23 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async saveReviewRegisterAsset() {
+            this.loading = true
+            try {
+                const response = await window.apiSaveReviewRegisterAsset(this.id, this.registers)
+                if (response.success) {
+                    toast.success('Lưu thông tin phê duyệt thành công')
+                    this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         handleShowTable(index) {
             if (!this.table_index.includes(index)) {
                 this.table_index.push(index)
