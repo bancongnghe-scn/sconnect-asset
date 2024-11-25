@@ -76,7 +76,10 @@ class ShoppingPlanOrganizationService
 
     public function findShoppingPlanOrganization($id)
     {
-        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getInfoShoppingPlanOrganizationById($id);
+        $shoppingPlanOrganization = $this->shoppingPlanOrganizationRepository->getInfoShoppingPlanOrganizationById($id, [
+            'shopping_plan_company.name', 'shopping_plan_company.start_time', 'shopping_plan_company.end_time', 'shopping_plan_company.status as status_company',
+            'shopping_plan_organization.organization_id', 'shopping_plan_organization.status', 'shopping_plan_organization.id',
+        ]);
         if (empty($shoppingPlanOrganization)) {
             return [
                 'success'    => false,

@@ -140,6 +140,25 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async accountApprovalShoppingPlanOrganization(id, type) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
+                if (response.success) {
+                    this.data.status = type === ORGANIZATION_TYPE_APPROVAL
+                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         handleShowTable(index) {
             if (!this.table_index.includes(index)) {
                 this.table_index.push(index)

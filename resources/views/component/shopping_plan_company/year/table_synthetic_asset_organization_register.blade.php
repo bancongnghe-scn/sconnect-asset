@@ -56,9 +56,8 @@
                                         ].includes(+organization.status)"
                                     >
                                         <button class="border-0 bg-body"
-                                                @click="
-                                                accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_APPROVAL)
-                                            ">
+                                                @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_APPROVAL)"
+                                        >
                                             <i class="fa-solid fa-thumbs-up" style="color: #125fe2;"></i>
                                         </button>
                                     </template>
@@ -70,9 +69,7 @@
                                         ].includes(+organization.status)"
                                     >
                                         <button class="border-0 bg-body"
-                                                @click="
-                                                accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_DISAPPROVAL)
-                                            "
+                                                @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_DISAPPROVAL)"
                                         >
                                             <i class="fa-solid fa-thumbs-down" style="color: #727479;"></i>
                                         </button>

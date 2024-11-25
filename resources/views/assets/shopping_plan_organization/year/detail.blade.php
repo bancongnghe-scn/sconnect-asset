@@ -15,10 +15,18 @@
                             <button class="btn btn-primary" @click="saveReviewRegisterAsset()">Lưu</button>
                         </template>
                         <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL">
-                            <button class="btn bg-sc text-white" @click="updatePlanYear()">Duyệt</button>
+                            <button class="btn bg-sc text-white"
+                                    @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_APPROVAL)"
+                            >
+                                Duyệt
+                            </button>
                         </template>
                         <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL">
-                            <button class="btn bg-red" @click="updatePlanYear()">Từ chối</button>
+                            <button class="btn bg-red"
+                                    @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_DISAPPROVAL)"
+                            >
+                                Từ chối
+                            </button>
                         </template>
                     </div>
                 @endcan

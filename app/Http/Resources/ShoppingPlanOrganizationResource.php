@@ -13,6 +13,7 @@ class ShoppingPlanOrganizationResource extends JsonResource
         $organization   = ScApiService::getOrganizationByIds($organizationId)->first();
 
         return [
+            'id'                => $this->resource->id,
             'name'              => $this->resource->name,
             'status'            => $this->resource->status,
             'start_time'        => $this->resource->start_time,
