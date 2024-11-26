@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page:1, limit:10})
             this.initYearPicker()
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -92,18 +91,9 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterStatusOrganization').val([]).change()
             $('#filterYearOrganization').val(null).change()
 
             this.list(this.filters)
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                if (event.target.id === 'filterStatusOrganization') {
-                    this.filters.status = $(event.target).val()
-                }
-            });
         },
 
         initYearPicker() {

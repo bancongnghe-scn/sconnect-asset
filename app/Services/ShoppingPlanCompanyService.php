@@ -611,12 +611,6 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization([
-                'shopping_plan_company_id' => $shoppingPlanCompanyId,
-            ], [
-                'status' => ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
-            ]);
-
             $this->shoppingPlanLogRepository->create([
                 'record_id'   => $shoppingPlanCompanyId,
                 'action'      => ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,

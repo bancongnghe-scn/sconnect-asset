@@ -7,21 +7,22 @@
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                 @can('shopping_plan_company.accounting_approval')
-                    <div x-data="{status: +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
-                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED}"
-                        class="d-flex gap-2"
+                    <div class="d-flex gap-2"
                     >
-                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED">
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED">
                             <button class="btn btn-primary" @click="saveReviewRegisterAsset()">Lưu</button>
                         </template>
-                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL">
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL">
                             <button class="btn bg-sc text-white"
                                     @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_APPROVAL)"
                             >
                                 Duyệt
                             </button>
                         </template>
-                        <template x-if="status || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL">
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL">
                             <button class="btn bg-red"
                                     @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_DISAPPROVAL)"
                             >
@@ -137,11 +138,9 @@
                                                             <input
                                                                 class="form-control" type="number" x-model="asset.quantity_approved"
                                                                 @input="calculateApproval(index)"
-                                                                @disabled(!\Illuminate\Support\Facades\Auth::user()->can('shopping_plan_company.accounting_approval'))
-                                                                :disabled="!([
-                                                                    STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                                                    STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                                                                ].includes(+data.status))"
+                                                                @cannot('shopping_plan_company.accounting_approval')
+                                                                    disabled
+                                                                @endcannot
                                                             >
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
