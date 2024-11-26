@@ -180,6 +180,17 @@ class ShoppingPlanOrganizationService
                 }
             }
 
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_REGISTER_SHOPPING,
+                $data['shopping_plan_organization_id']
+            );
+            if (!$insertLog) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();

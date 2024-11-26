@@ -29,7 +29,7 @@
                     }
                 });
         })"
-        @if(!empty($disable) && $disable) disabled @endif
+        x-bind:disabled="disabled"
 >
     <option value="">{{$placeholder ?? 'Chọn ...'}}</option>
     <template x-for="value in values" :key="value.id">

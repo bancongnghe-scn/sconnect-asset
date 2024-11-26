@@ -96,24 +96,25 @@
                                                         x-init="$watch('asset.price', value => calculatePrice(index))"
                                                     >
                                                         <td>
-                                                            <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id, disabled: false}"
+                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id, disabled: false}"
                                                                   @select-change="
                                                                       asset.asset_type_id = $event.detail
                                                                       asset.price = getPrice(asset.asset_type_id, asset.job_id)
                                                                   "
                                                             >
-                                                                @include('common.select2')
+                                                                @include('common.select2.extent.select2', ['placeholder' => 'Chọn tài sản'])
                                                             </span>
+
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
-                                                            <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id, disabled: false}"
+                                                            <span x-data="{values: list_job, model: asset.job_id, disabled: false}"
                                                                   @select-change="
                                                                       asset.job_id = $event.detail
                                                                       asset.price = getPrice(asset.asset_type_id, asset.job_id)
                                                                   "
                                                             >
-                                                                @include('common.select2')
+                                                                @include('common.select2.extent.select2', ['placeholder' => 'Chọn chức danh'])
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>

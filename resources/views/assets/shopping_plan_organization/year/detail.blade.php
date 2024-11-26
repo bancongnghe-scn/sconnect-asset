@@ -115,14 +115,18 @@
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                     <tr>
                                                         <td>
-                                                            <span x-data="{text: 'Chọn tài sản', values: list_asset_type, model: asset.asset_type_id, disabled: true}">
-                                                                @include('common.select2')
+                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id, disabled: true}">
+                                                                @include('common.select2.extent.select2', [
+                                                                    'placeholder' => 'Chọn loại tài sản'
+                                                                ])
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
-                                                            <span x-data="{text: 'Chọn chức danh', values: list_job, model: asset.job_id, disabled: true}">
-                                                                @include('common.select2')
+                                                            <span x-data="{values: list_job, model: asset.job_id, disabled: true}">
+                                                                @include('common.select2.extent.select2', [
+                                                                    'placeholder' => 'Chọn chức danh'
+                                                                ])
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
@@ -133,6 +137,11 @@
                                                             <input
                                                                 class="form-control" type="number" x-model="asset.quantity_approved"
                                                                 @input="calculateApproval(index)"
+                                                                @disabled(!\Illuminate\Support\Facades\Auth::user()->can('shopping_plan_company.accounting_approval'))
+                                                                :disabled="!([
+                                                                    STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                                                                    STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                                                                ].includes(+data.status))"
                                                             >
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>

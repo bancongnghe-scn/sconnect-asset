@@ -13,4 +13,5 @@ return [
     ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION                                  => 'Kế toán đang review kế hoạch mua sắm',
     ShoppingPlanLog::ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY                       => 'Giám đốc đã duyệt kế hoạch mua sắm',
     ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY                    => 'Giám đốc đã từ chối kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_REGISTER_SHOPPING                                            => 'Đăng ký mua sắm',
 ];
