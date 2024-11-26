@@ -53,9 +53,6 @@ if (!function_exists('response_error')) {
 if (!function_exists('callApiSSO')) {
     function callApiSSO($url, $sessionCookie, $secretKey)
     {
-        Log::error($url);
-        Log::error($sessionCookie);
-        Log::error($secretKey);
         try {
             $response = Illuminate\Support\Facades\Http::withHeaders([
                 'Origin'      => env('URL_CLIENT_SSO'),
@@ -65,7 +62,6 @@ if (!function_exists('callApiSSO')) {
                 ->get($url, [
                     'scn_session' => $sessionCookie,
                 ]);
-            Log::error($response->json());
 
             return json_decode($response, true);
         } catch (Exception $e) {
