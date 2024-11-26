@@ -88,6 +88,29 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
+    public function managerApproval(Request $request)
+    {
+        $request->validate([
+            'id'    => 'required|integer',
+            'type'  => 'required|string',
+        ]);
+
+        Auth::user()->canPer('shopping_plan_company.general_approval');
+
+        try {
+            $result = $this->planCompanyService->managerApproval($request->all());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
     public function deleteShoppingPlanCompany(string $id)
     {
         Auth::user()->canPer('shopping_plan_company.crud');

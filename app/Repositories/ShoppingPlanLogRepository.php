@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\ShoppingPlanLog;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanLogRepository extends BaseRepository
 {
@@ -26,5 +27,15 @@ class ShoppingPlanLogRepository extends BaseRepository
         }
 
         return $query->get();
+    }
+
+    public function insertShoppingPlanLog($action, $recordId)
+    {
+        return $this->_model->insert([
+            'action'     => $action,
+            'record_id'  => $recordId,
+            'desc'       => __('shopping_plan_log.' . $action),
+            'created_by' => Auth::id(),
+        ]);
     }
 }

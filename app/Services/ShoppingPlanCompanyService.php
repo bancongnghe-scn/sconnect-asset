@@ -638,4 +638,75 @@ class ShoppingPlanCompanyService
             'success' => true,
         ];
     }
+
+    public function managerApproval($data)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($data['id']);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (!in_array($shoppingPlanCompany->status, [
+            ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL,
+            ShoppingPlanCompany::STATUS_APPROVAL,
+            ShoppingPlanCompany::STATUS_DISAPPROVAL,
+        ])) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        if (ShoppingPlanCompany::TYPE_APPROVAL == $data['type']) {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_APPROVAL;
+            $action                      = ShoppingPlanLog::ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY;
+        } else {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_DISAPPROVAL;
+            $action                      = ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY;
+        }
+        DB::beginTransaction();
+        try {
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization([
+                'shopping_plan_company_id' => $data['id'],
+                'status'                   => ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
+            ], [
+                'status' => ShoppingPlanOrganization::STATUS_APPROVAL,
+            ]);
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog($action, $shoppingPlanCompany->id);
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

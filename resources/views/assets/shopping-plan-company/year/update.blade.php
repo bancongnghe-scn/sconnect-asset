@@ -34,10 +34,16 @@
                     @endcan
                 </template>
                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                    @can('shopping_plan_company.general_approval')
-                        <button class="btn btn-sc" @click="generalApproval()">Xác nhận</button>
-                    @endcan
                 </template>
+                @can('shopping_plan_company.general_approval')
+                    <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
+                        <button class="btn btn-sc" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt</button>
+                    </template>
+
+                    <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
+                        <button class="btn bg-red" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chôi</button>
+                    </template>
+                @endcan
                 <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
 
@@ -80,25 +86,12 @@
                             <template x-if="listUser.length > 0">
                                 <div>
                                     <label class="form-label">Người quan sát</label>
-                                    <select
-                                        x-init="$nextTick(() => {
-                                           $($el).select2({
-                                               language: {
-                                                   noResults: function() {
-                                                         return 'Không tìm thấy kết quả';
-                                                   }
-                                               }
-                                           });
-                                           $($el).on('change', (e) => {
-                                               data.monitor_ids = $($el).val()
-                                           });
-                                        })"
-                                        class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát"
-                                        :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
-                                        <template x-for="value in listUser" :key="value.id">
-                                            <option :value="value.id" x-text="value.name"></option>
-                                        </template>
-                                    </select>
+                                    <div x-data="{
+                                                text: 'Chọn người quan sát', values: listUser, model: data.monitor_ids,
+                                                disabled: +data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                            }" @select-change="data.monitor_ids = $event.detail">
+                                        @include('common.select2_multiple')
+                                    </div>
                                 </div>
                             </template>
                         </div>

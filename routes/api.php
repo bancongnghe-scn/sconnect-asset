@@ -57,6 +57,7 @@ Route::middleware('web')->group(function () {
             Route::post('sent-notification-register', 'sentNotificationRegister');
             Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
             Route::get('send-manager-approval/{id}', 'sendManagerApproval');
+            Route::post('manager-approval', 'managerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
         });
 

@@ -11,10 +11,8 @@ document.addEventListener('alpine:init', () => {
             this.getOrganizationRegisterYear()
             this.initDateRangePicker()
             this.initYearPicker()
-            this.getListUser({
-                'dept_id' : DEPT_IDS_FOLLOWERS
-            })
             this.getInfoShoppingPlanCompanyYear()
+            this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
         },
 
         //data
@@ -46,7 +44,6 @@ document.addEventListener('alpine:init', () => {
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
                     this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
                     this.data.monitor_ids = data.monitor_ids
-                    $('#selectUser').val(data.monitor_ids).change()
                     return
                 }
 
@@ -54,6 +51,7 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
+                console.log('info')
                 this.loading = false
             }
         },
@@ -177,6 +175,7 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
+                console.log('users')
                 this.loading = false
             }
         },
@@ -216,6 +215,24 @@ document.addEventListener('alpine:init', () => {
                     });
                     this.selectedRow = []
                     toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async generalApprovalShoppingPlanCompany(type) {
+            this.loading = true
+            try {
+                const response = await window.apiGeneralApprovalShoppingPlanCompany(this.id, type)
+                if (response.success) {
+                    toast.success('Bạn đã duyệt thành công !')
+                    this.data.status = type === GENERAL_TYPE_APPROVAL_COMPANY ? STATUS_SHOPPING_PLAN_COMPANY_APPROVAL : STATUS_SHOPPING_PLAN_COMPANY_CANCEL
                     return
                 }
 

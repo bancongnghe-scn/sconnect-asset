@@ -12,7 +12,7 @@
                    $dispatch('select-change', $($el).val());
                });
         })"
-        multiple="multiple" :data-placeholder="text"
+        multiple="multiple" :data-placeholder="text" :disabled="disabled"
 >
     <template x-for="value in values" :key="value.id">
         <option :value="value.id" x-text="value.name"></option>

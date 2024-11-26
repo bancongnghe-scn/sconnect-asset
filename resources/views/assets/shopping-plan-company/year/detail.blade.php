@@ -36,14 +36,16 @@
                                        placeholder="Chọn thời gian đăng ký" autocomplete="off" disabled>
                             </div>
 
-                            <div>
-                                <label class="form-label">Người quan sát</label>
-                                <select class="form-select select2" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát" disabled>
-                                    <template x-for="value in listUser" :key="value.id">
-                                        <option :value="value.id" x-text="value.name"></option>
-                                    </template>
-                                </select>
-                            </div>
+                            <template x-if="listUser.length > 0">
+                                <div>
+                                    <label class="form-label">Người quan sát</label>
+                                    <div x-data="{
+                                        text: 'Chọn người quan sát', values: listUser, model: data.monitor_ids, disabled: true
+                                    }">
+                                        @include('common.select2_multiple')
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
 

@@ -25,6 +25,8 @@ class ShoppingPlanLog extends Model
     public const ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY        = 'shopping_plan_sent_notification';
     public const ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY = 'shopping_plan_send_account_approval';
     public const ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY    = 'shopping_plan_send_manager_approval';
+    public const ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY         = 'manager_approval_company';
+    public const ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY      = 'manager_disapproval_company';
 
     //ORGANIZATION
     public const ACTION_ACCOUNT_APPROVAL_ORGANIZATION    = 'shopping_plan_organization_account_approval';

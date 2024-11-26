@@ -144,5 +144,29 @@ window.apiSendManagerApproval = async function (id) {
     }
 }
 
+window.apiGeneralApprovalShoppingPlanCompany = async function (id, type) {
+    try {
+        const response = await axios.post("/api/shopping-plan-company/manager-approval", {id: id, type: type})
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
 
 

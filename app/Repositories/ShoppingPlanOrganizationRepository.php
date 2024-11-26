@@ -39,6 +39,10 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
             $query->whereIn('id', Arr::wrap($filters['ids']));
         }
 
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
         return $query->update($dataUpdate);
     }
 
