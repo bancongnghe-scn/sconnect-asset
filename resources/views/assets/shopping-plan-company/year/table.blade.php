@@ -93,7 +93,7 @@
                                                     </button>
                                                 @endcan
                                             </template>
-                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                            <template x-if="data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
                                                 @can('shopping_plan_company.general_approval')
                                                     <button class="border-0 bg-body"
                                                             @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">

@@ -9,11 +9,17 @@
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <select class="form-control select2" id="filterStatus" multiple="multiple" data-placeholder="Chọn trạng thái">
-                            <template x-for="(value, key) in listStatus">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
+                        <span x-data="{
+                                values: listStatus, model: filters.status, disabled: false,
+                                init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                            }"
+                            @select-change="filters.status = $event.detail"
+                        >
+                            @include('common.select2.simple.select2_multiple', [
+                                'placeholder' => 'Chọn trạng thái'
+                            ])
+                        </span>
+
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

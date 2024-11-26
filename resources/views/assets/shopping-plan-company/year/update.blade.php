@@ -6,45 +6,55 @@
     <div x-data="updateShoppingPlanCompanyYear">
         {{-- danh sách button --}}
         <div class="mb-3 d-flex gap-2 justify-content-end">
-                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                    <div class="d-flex gap-2">
-                        @can('shopping_plan_company.sent_notifi_register')
-                            <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
-                        @endcan
-                        @can('shopping_plan_company.crud')
-                            <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
-                        @endcan
-                    </div>
-                </template>
-                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                <div class="d-flex gap-2">
+                    @can('shopping_plan_company.sent_notifi_register')
+                        <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
+                    @endcan
                     @can('shopping_plan_company.crud')
-                        <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+                        <button class="btn btn-danger" @click="confirmRemove()">Xóa</button>
                     @endcan
-                </template>
-                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
-                    @can('shopping_plan_company.sent_account_approval')
-                        <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
-                    @endcan
-                </template>
-                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                    && new Date() > new Date(window.formatDate(data.end_time))"
-                >
-                    @can('shopping_plan_company.sent_manager_approval')
-                        <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
-                    @endcan
-                </template>
-                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                </template>
-                @can('shopping_plan_company.general_approval')
-                    <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
-                        <button class="btn btn-sc" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt</button>
-                    </template>
-
-                    <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
-                        <button class="btn bg-red" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chôi</button>
-                    </template>
+                </div>
+            </template>
+            <template
+                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                @can('shopping_plan_company.crud')
+                    <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
                 @endcan
-                <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
+            </template>
+            <template
+                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+                @can('shopping_plan_company.sent_account_approval')
+                    <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+                @endcan
+            </template>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                    && new Date() > new Date(window.formatDate(data.end_time))"
+            >
+                @can('shopping_plan_company.sent_manager_approval')
+                    <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
+                @endcan
+            </template>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+            </template>
+            @can('shopping_plan_company.general_approval')
+                <template
+                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
+                    <button class="btn btn-sc"
+                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt
+                    </button>
+                </template>
+
+                <template
+                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
+                    <button class="btn bg-red"
+                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chôi
+                    </button>
+                </template>
+            @endcan
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay
+                lại
+            </button>
         </div>
 
         {{-- content --}}
@@ -68,7 +78,7 @@
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
                                 <label class="tw-font-bold">Năm<span
-                                        class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 <input type="text" class="form-control yearPicker" id="selectYear" x-model="data.time"
                                        autocomplete="off"
                                        :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW"
@@ -87,10 +97,15 @@
                                 <div>
                                     <label class="form-label">Người quan sát</label>
                                     <div x-data="{
-                                                text: 'Chọn người quan sát', values: listUser, model: data.monitor_ids,
-                                                disabled: +data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                            }" @select-change="data.monitor_ids = $event.detail">
-                                        @include('common.select2_multiple')
+                                        values: listUser,
+                                        model: data.monitor_ids,
+                                        disabled: !([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))
+                                    }"
+                                        @select-change="data.monitor_ids = $event.detail"
+                                    >
+                                        @include('common.select2.extent.select2_multiple', [
+                                            'placeholder' => 'Chọn người quan sát',
+                                        ])
                                     </div>
                                 </div>
                             </template>
@@ -134,7 +149,8 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                        <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)"
+                                                  :key="number">
                                             <th x-text="`T` + number" class="text-center"></th>
                                         </template>
                                     </tr>
@@ -170,11 +186,11 @@
             </div>
         </div>
         <div
-            x-data="{
+                x-data="{
                         modalId: idModalConfirmDelete,
                         contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
                     }"
-            @ok="remove"
+                @ok="remove"
         >
             @include('common.modal-confirm')
         </div>

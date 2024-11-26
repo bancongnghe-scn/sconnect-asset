@@ -17,14 +17,21 @@
                         <input type="text" class="form-control dateRange" id="selectDateRegister" placeholder="Chọn thời gian đăng ký" autocomplete="off">
                     </div>
 
-                    <div>
-                        <label class="form-label">Người quan sát</label>
-                        <select class="form-select select2" x-model="data.monitor_ids" id="selectUser" multiple="multiple" data-placeholder="Chọn người quan sát">
-                            <template x-for="value in listUser" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
-                    </div>
+                    <template x-if="listUser.length > 0">
+                        <div>
+                            <label class="form-label">Người quan sát</label>
+                            <select class="form-select select2" x-model="data.monitor_ids"
+                                    multiple="multiple" data-placeholder="Chọn người quan sát"
+                                    x-init="$nextTick(() => {
+                                        $($el).on('change', () => {data.monitor_ids = $($el).val(); console.log(11111)});
+                                    })"
+                            >
+                                <template x-for="value in listUser" :key="value.id">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
+                        </div>
+                    </template>
                 </div>
             </div>
             <div class="modal-footer">

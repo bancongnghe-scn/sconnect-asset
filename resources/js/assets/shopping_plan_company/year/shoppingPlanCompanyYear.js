@@ -10,7 +10,6 @@ document.addEventListener('alpine:init', () => {
             this.initYearPicker()
             this.initDateRangePicker()
             window.initSelect2Modal('idModalInsert')
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -248,7 +247,6 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterStatus').val([]).change()
             $('#filterYear').val(null).change()
 
             this.list(this.filters)
@@ -257,17 +255,6 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'selectUser') {
-                    this.data.monitor_ids = value
-                } else if (event.target.id === 'filterStatus') {
-                    this.filters.status = value
-                }
-            });
         },
 
         onChangeYearPicker(el, year) {
