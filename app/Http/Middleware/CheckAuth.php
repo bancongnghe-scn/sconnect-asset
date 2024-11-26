@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 
 class CheckAuth
 {
@@ -15,6 +16,7 @@ class CheckAuth
         $sessionCookie = @$_COOKIE['scn_session'];
         if (!Auth::check()) {
             $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
+            Log::error($data);
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 $user = @$data['data']['user'];
                 Auth::loginUsingId($user['id']);
