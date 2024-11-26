@@ -65,7 +65,7 @@ if (!function_exists('callApiSSO')) {
                 ->get($url, [
                     'scn_session' => $sessionCookie,
                 ]);
-            Log::error($response);
+            Log::error($response->json());
 
             return json_decode($response, true);
         } catch (Exception $e) {
