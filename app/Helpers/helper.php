@@ -65,9 +65,6 @@ if (!function_exists('callApiSSO')) {
                 ->get($url, [
                     env('SESSION_NAME') => $sessionCookie,
                 ]);
-            Log::error('RESPONSE callApiSSO', [
-                'response' => $response,
-            ]);
 
             return json_decode($response, true);
         } catch (Exception $e) {

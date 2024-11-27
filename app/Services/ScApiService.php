@@ -133,6 +133,7 @@ class ScApiService
             $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)
                 ->get($url, $params);
+            dd($response);
 
             return $response->json();
         } catch (\Throwable $exception) {
