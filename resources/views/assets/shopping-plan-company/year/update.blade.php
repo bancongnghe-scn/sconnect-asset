@@ -48,7 +48,7 @@
                 <template
                         x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
                     <button class="btn bg-red"
-                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chôi
+                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chối
                     </button>
                 </template>
             @endcan
