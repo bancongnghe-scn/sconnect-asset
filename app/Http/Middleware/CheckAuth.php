@@ -6,14 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Log;
 
 class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
+        return $next($request);
         $secretKey     = env('SECRET_KEY');
-        Log::error('session_name =======>' . env('SESSION_NAME'));
         $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
         if (!Auth::check()) {
             $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
