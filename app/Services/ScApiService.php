@@ -90,9 +90,6 @@ class ScApiService
 
     public static function getAllOrganizationParent()
     {
-        $response = self::getOrganizationsApi(status: SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
-        dd($response);
-
         return Cache::tags(config('cache_keys.tags.organization'))
             ->remember(config('cache_keys.keys.organization_all'), now()->addMonths(2), function () {
                 $response = self::getOrganizationsApi(status: SOfficeConstant::ORGANIZATION_STATUS_ACTIVE);
@@ -114,8 +111,7 @@ class ScApiService
         $host     = config('services.sc-api.domain');
         $endpoint = '/api/organization/getOrganizations';
         $url      = $host . $endpoint;
-        dump($url);
-        $params = [];
+        $params   = [];
 
         if (!empty($ids)) {
             $params['ids'] = Arr::wrap($ids);
@@ -133,7 +129,6 @@ class ScApiService
             $response = Http::withToken('123')
                 ->timeout(static::$TIMEOUT_15)
                 ->get($url, $params);
-            dd($response);
 
             return $response->json();
         } catch (\Throwable $exception) {
