@@ -114,7 +114,7 @@ class ScApiService
         $host     = config('services.sc-api.domain');
         $endpoint = '/api/organization/getOrganizations';
         $url      = $host . $endpoint;
-        dd($url);
+        dump($url);
         $params = [];
 
         if (!empty($ids)) {
