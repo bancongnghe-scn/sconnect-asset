@@ -15,10 +15,31 @@
     </div>
     <div class="mt-3 tw-h-[70dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid">
         <div class="mt-3" x-show="activeLink.history">
-            <div class="container">
-                <template x-for="log in logs">
-                    <p x-text="`${log.created_at} - ${log.created_by} : ${log.desc}`"></p>
-                </template>
+{{--            <div class="container">--}}
+{{--                <template x-for="log in logs">--}}
+{{--                    <p x-text="`${log.created_at} - ${log.created_by} : ${log.desc}`"></p>--}}
+{{--                </template>--}}
+{{--            </div>--}}
+            <div class="container py-3">
+                <div class="list-group">
+                    <!-- Timeline item -->
+                    <div class="d-flex align-items-start gap-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <!-- Icon -->
+                            <span class="text-primary">
+                                <i class="fa-regular fa-star" style="color: #74C0FC;"></i>
+                            </span>
+                            <!-- Vertical Line -->
+                            <div class="border-start border-2"></div>
+                        </div>
+                        <!-- Content -->
+                        <div class="flex-grow-1">
+                            <p class="mb-1 text-muted small">18/11/2024 10:08</p>
+                            <p class="mb-0">
+                                <a href="#" class="text-primary fw-bold">Super Admin</a> đã update kế hoạch
+                            </p>
+                        </div>
+                    </div>
             </div>
         </div>
         <div class="mt-3" id="comment" x-show="activeLink.comment">
