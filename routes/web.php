@@ -21,7 +21,7 @@ Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware(['web'])->group(function () {
+Route::middleware(['checkAuth'])->group(function () {
     Route::get('/login/{id}', function ($id) {
         Illuminate\Support\Facades\Auth::loginUsingId($id);
 
