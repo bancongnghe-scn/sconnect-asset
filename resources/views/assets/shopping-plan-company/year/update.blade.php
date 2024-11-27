@@ -77,12 +77,11 @@
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
-                                <label class="tw-font-bold">Năm<span
-                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <input type="text" class="form-control yearPicker" id="selectYear" x-model="data.time"
-                                       autocomplete="off"
-                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW"
-                                >
+                                <label class="tw-font-bold">Năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                @include('common.datepicker.datepicker_year', [
+                                        'model' => 'data.time',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                ])
                             </div>
 
                             <div>

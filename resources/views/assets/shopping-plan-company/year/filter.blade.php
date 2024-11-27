@@ -5,8 +5,11 @@
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Năm</label>
-                        <input type="text" class="form-control yearPickerCompany" id="filterYear" placeholder="Chọn năm" autocomplete="off">
+                        <span @date-change="filters.time = $event.detail">
+                            @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
+                        </span>
                     </div>
+
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
                         <span x-data="{

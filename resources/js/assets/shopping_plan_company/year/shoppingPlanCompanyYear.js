@@ -1,14 +1,8 @@
-import AirDatepicker from "air-datepicker";
-import localeEn from "air-datepicker/locale/en";
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
             this.list({page:1, limit:10})
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
-            this.initYearPicker()
-            this.initDateRangePicker()
             window.initSelect2Modal('idModalInsert')
         },
 
@@ -47,14 +41,9 @@ document.addEventListener('alpine:init', () => {
         },
         listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
-        dateRangePicker: null,
-        permission: [],
-
-        action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalInfo: "idModalInfo",
 
         //methods
         async list(filters){
@@ -73,26 +62,6 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                this.permission = data.permission
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async edit() {
-            this.loading = true
-            try {
-                const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
-                if (!response.success) {
-                    toast.error(response.message)
-                    return
-                }
-                toast.success('Cập nhập kế hoạch năm thành công !')
-                $('#idModalUpdate').modal('hide');
-                this.resetData()
-                this.list(this.filters)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -135,47 +104,6 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
-        },
-
-        async handleShowModalUI(action, id = null) {
-            this.loading = true
-            try {
-                this.action = action
-                if (action === 'create') {
-                    this.resetData()
-                    $('#idModalInsert').modal('show');
-                } else {
-                    this.id = id
-                    const response = await window.apiShowShoppingPlanCompany(id)
-                    if (!response.success) {
-                        toast.error(response.message)
-                        return
-                    }
-                    const data = response.data.data
-                    this.data.time = data.time
-                    this.data.start_time = data.start_time
-                    this.data.end_time = data.end_time
-                    this.data.monitor_ids = data.monitor_ids
-                    this.dateRangePicker.selectDate([window.convertDateString(this.data.start_time), window.convertDateString(this.data.end_time)]);
-                    $('#idModalUpdate').modal('show');
-                }
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async handleShowModalInfo(id) {
-            this.loading = true
-            const response = await window.apiShowContract(id)
-            if (!response.success) {
-                toast.error(response.message)
-                return
-            }
-            this.data = this.formatDateAppendix(response.data.data)
-            $('#'+this.idModalInfo).modal('show');
-            this.loading = false
         },
 
         async getListUser(filters){
@@ -236,18 +164,15 @@ document.addEventListener('alpine:init', () => {
                 end_time: null,
                 monitor_ids: [],
             }
-            this.dateRangePicker.clear()
         },
 
         reloadPage() {
             this.filters = {
                 time: null,
                 status: [],
-                type: 1,
                 limit: 10,
                 page: 1
             }
-            $('#filterYear').val(null).change()
 
             this.list(this.filters)
         },
@@ -255,56 +180,6 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
-        },
-
-        onChangeYearPicker(el, year) {
-            const storageFormat = year != null ? year : null
-            if(el.id === 'filterYear') {
-                this.filters.time = storageFormat
-            } else if(el.id === 'selectYear') {
-                this.data.time = storageFormat
-            }
-        },
-
-        initYearPicker() {
-            document.querySelectorAll('.yearPickerCompany').forEach(el => {
-                new AirDatepicker(el, {
-                    view: 'years', // Hiển thị danh sách năm khi mở
-                    minView: 'years', // Giới hạn chỉ cho phép chọn năm
-                    dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
-                    autoClose: true, // Tự động đóng sau khi chọn năm
-                    clearButton: true, // Nút xóa để bỏ chọn
-                    onSelect: ({date}) => {
-                        const year = date.getFullYear();
-                        this.onChangeYearPicker(el, year)
-                    }
-                });
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.onChangeYearPicker(el, null)
-                            }
-                        }, 0);
-                    }
-                });
-            });
-
-        },
-
-        initDateRangePicker() {
-            this.dateRangePicker = new AirDatepicker('.dateRange', {
-                range: true,
-                multipleDatesSeparator: ' - ',
-                autoClose: true,
-                clearButton: true,
-                locale: localeEn,
-                dateFormat: 'dd/MM/yyyy',
-                onSelect: (selectedDates) => {
-                    this.data.start_time = selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
-                    this.data.end_time = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
-                }
-            })
         },
     }));
 });

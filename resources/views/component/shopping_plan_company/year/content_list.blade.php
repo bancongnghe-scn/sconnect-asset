@@ -1,7 +1,7 @@
 <div x-data="shoppingPlanCompanyYear">
     <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
         @can('shopping_plan_company.crud')
-            <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
+            <button type="button" class="btn btn-sc" @click="$('#idModalInsert').modal('show')">
                 Thêm mới
             </button>
             <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple"

@@ -10,7 +10,6 @@ document.addEventListener('alpine:init', () => {
             this.action = split.at(5);
             this.getOrganizationRegisterYear()
             this.initDateRangePicker()
-            this.initYearPicker()
             this.getInfoShoppingPlanCompanyYear()
             this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
         },
@@ -257,29 +256,6 @@ document.addEventListener('alpine:init', () => {
                     this.data.end_time = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
                 }
             })
-        },
-
-        initYearPicker() {
-            new AirDatepicker('.yearPicker', {
-                view: 'years', // Hiển thị danh sách năm khi mở
-                minView: 'years', // Giới hạn chỉ cho phép chọn năm
-                dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
-                autoClose: true, // Tự động đóng sau khi chọn năm
-                clearButton: true, // Nút xóa để bỏ chọn
-                onSelect: ({date}) => {
-                    const year = date.getFullYear();
-                    this.data.time = year != null ? year : null
-                }
-            });
-            $('.yearPicker').on('keydown', (e) => {
-                if (e.key === 'Backspace' || e.key === 'Delete') {
-                    setTimeout(() => {
-                        if (!$('.yearPicker').value) {
-                            this.data.time = null
-                        }
-                    }, 0);
-                }
-            });
         },
 
         confirmRemove() {
