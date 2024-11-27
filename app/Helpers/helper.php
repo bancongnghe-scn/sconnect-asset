@@ -60,7 +60,7 @@ if (!function_exists('callApiSSO')) {
             ])->timeout(30)
                 ->retry(2, 1000, throw: false)
                 ->get($url, [
-                    'scn_session' => $sessionCookie,
+                    env('SESSION_NAME') => $sessionCookie,
                 ]);
 
             return json_decode($response, true);

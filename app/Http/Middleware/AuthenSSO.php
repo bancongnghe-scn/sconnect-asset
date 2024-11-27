@@ -14,7 +14,7 @@ class AuthenSSO
         $secretKey     = env('SECRET_KEY');
         $token         = @$_GET['token'];
         $sig           = @$_GET['sig'];
-        $sessionCookie = @$_COOKIE['scn_session'];
+        $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
 
         if (hash_equals(hash_hmac('sha256', $token, $secretKey), $sig)) {
 
