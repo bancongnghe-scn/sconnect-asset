@@ -21,7 +21,7 @@ Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware(['checkAuth'])->group(function () {
+Route::middleware(['web'])->group(function () {
     Route::get('/login/{id}', function ($id) {
         Illuminate\Support\Facades\Auth::loginUsingId($id);
 
@@ -62,7 +62,7 @@ Route::middleware(['checkAuth'])->group(function () {
             dd(Illuminate\Support\Facades\Cache::forget($key));
         });
         Route::get('tag', function () {
-            dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->flush());
+            dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->clear());
         });
     });
 });
