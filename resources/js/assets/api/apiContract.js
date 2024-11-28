@@ -1,12 +1,10 @@
-import {format} from "date-fns";
-
 window.apiGetContract = async function (filters) {
     try {
-        filters.signing_date = filters.signing_date ? format(filters.signing_date, 'yyyy-MM-dd') : null
-        filters.from = filters.from ? format(filters.from, 'yyyy-MM-dd') : null
-
+        let dataFormat = JSON.parse(JSON.stringify(filters))
+        dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
+        dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
         const response = await axios.get("/api/contract", {
-            params: filters
+            params: dataFormat
         })
 
         const data = response.data;
@@ -106,7 +104,6 @@ window.apiShowContract = async function (id) {
 window.apiCreateContract = async function (dataCreate) {
     try {
         const formData = window.formData(formatContract(dataCreate))
-
         const response = await axios.post("/api/contract",formData)
 
         const data = response.data;
@@ -156,13 +153,13 @@ window.apiUpdateContract = async function (dataUpdate, id) {
 }
 
 function formatContract(contract) {
-    let contractFormat = contract
-    contractFormat.signing_date = contract.signing_date ? format(contract.signing_date, 'yyyy-MM-dd') : null
-    contractFormat.from = contract.from ? format(contract.from, 'yyyy-MM-dd') : null
-    contractFormat.to = contract.to ? format(contract.to, 'yyyy-MM-dd') : null
-    contractFormat.payments = contract.payments.map(payment => ({
+    let dataFormat = JSON.parse(JSON.stringify(contract))
+    dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
+    dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
+    dataFormat.to = dataFormat.to ? window.formatDate(dataFormat.to) : null
+    dataFormat.payments = dataFormat.payments.map(payment => ({
         ...payment,
-        payment_date: format(payment.payment_date, 'yyyy-MM-dd')
+        payment_date: payment.payment_date ? window.formatDate(payment.payment_date) : null
     }))
-    return contractFormat
+    return dataFormat
 }

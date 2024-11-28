@@ -8,6 +8,7 @@ use App\Http\Controllers\Manage\AssetLostController;
 use App\Http\Controllers\Manage\AssetCancelController;
 use App\Http\Controllers\Manage\PlanLiquidationController;
 use App\Http\Controllers\Manage\AssetLiquidationController;
+use App\Http\Controllers\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,7 +30,7 @@ Route::get('ping', function () {
     return 'pong';
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('checkAuth')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
@@ -54,19 +55,50 @@ Route::middleware('auth')->group(function () {
         ]);
     });
 
-    Route::prefix('shopping-plan-company')->controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
-        Route::get('list', 'getListShoppingPlanCompany');
-        Route::get('show/{id}', 'findShoppingPlanCompany');
-        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
-        Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+    Route::prefix('shopping-plan-company')->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
+            Route::get('show/{id}', 'findShoppingPlanCompany');
+            Route::post('sent-notification-register', 'sentNotificationRegister');
+            Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
+            Route::get('send-manager-approval/{id}', 'sendManagerApproval');
+            Route::post('manager-approval', 'managerApproval');
+            Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+        });
+
+        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyYear');
+            Route::post('create', 'createShoppingPlanCompanyYear');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
+            Route::get('get-organization-register/{id}', 'getOrganizationRegisterYear');
+        });
     });
 
-    Route::prefix('shopping-plan-company/year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
-        Route::post('create', 'createShoppingPlanCompanyYear');
-        Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
+    Route::prefix('shopping-plan-organization')->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
+            Route::get('view/{id}', 'findShoppingPlanOrganization');
+            Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
+            Route::post('account-approval', 'accountApprovalShoppingPlanOrganization');
+            Route::post('review', 'saveTotalAssetApproval');
+        });
+
+        Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationYear');
+            Route::post('register', 'registerShoppingPlanOrganizationYear');
+        });
     });
 
-    Route::prefix('/delete-multiple')->group(function () {
+    Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {
+        Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
+    });
+
+    Route::prefix('comment')->controller(App\Http\Controllers\CommentController::class)->group(function () {
+        Route::get('list', 'getListComment');
+        Route::post('sent', 'sentComment');
+        Route::post('delete/{id}', 'deleteComment');
+        Route::post('edit', 'editComment');
+    });
+
+    Route::prefix('delete-multiple')->group(function () {
         Route::post('asset-type', [AssetTypeController::class, 'deleteMultiple']);
         Route::post('asset-type-group', [AssetTypeGroupController::class, 'deleteMultiple']);
         Route::post('industry', [App\Http\Controllers\IndustryController::class, 'deleteMultiple']);
@@ -77,7 +109,16 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);
+
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
+
+    Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
+
+    Route::prefix('cache')->controller(App\Http\Controllers\CachingController::class)->group(function () {
+        Route::post('flush', 'flushCache');
+        Route::post('add', 'addCache');
+        Route::get('get', 'getCache');
+    });
 
     Route::prefix('/asset/manage')->group(function () {
         Route::get('asset-lost', [AssetLostController::class, 'getListAssetLost']);

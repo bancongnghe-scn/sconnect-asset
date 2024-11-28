@@ -21,6 +21,7 @@ class Contract extends Model
         'from',
         'to',
         'description',
+        'contract_link',
         'status',
         'type',
         'created_by',
@@ -64,5 +65,10 @@ class Contract extends Model
     public function contractAppendix(): HasMany
     {
         return $this->hasMany(ContractAppendix::class, 'contract_id');
+    }
+
+    public function contractAppendixApproval(): HasMany
+    {
+        return $this->hasMany(ContractAppendix::class, 'contract_id')->where('status', ContractAppendix::STATUS_APPROVED);
     }
 }

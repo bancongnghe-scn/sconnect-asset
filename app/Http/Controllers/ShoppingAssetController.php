@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ContractFileController extends Controller
+class ShoppingAssetController extends Controller
 {
     public function __construct()
     {

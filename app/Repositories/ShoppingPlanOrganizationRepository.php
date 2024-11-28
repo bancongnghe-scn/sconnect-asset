@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanOrganizationRepository extends BaseRepository
@@ -18,12 +19,54 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
         $query = $this->_model->newQuery();
 
         if (!empty($filters['shopping_plan_company_id'])) {
-            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+            $query->whereIn('shopping_plan_company_id', Arr::wrap($filters['shopping_plan_company_id']));
         }
 
         return $query->update([
             'deleted_at' => date('Y-m-d H:i:s'),
             'deleted_by' => Auth::id(),
         ]);
+    }
+
+    public function updateShoppingPlanOrganization(array $filters, array $dataUpdate)
+    {
+        $query = $this->_model->newQuery();
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        if (!empty($filters['ids'])) {
+            $query->whereIn('id', Arr::wrap($filters['ids']));
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        return $query->update($dataUpdate);
+    }
+
+    public function getInfoShoppingPlanOrganizationById($id, $columns = [
+        'shopping_plan_company.name', 'shopping_plan_company.start_time', 'shopping_plan_company.end_time',
+        'shopping_plan_organization.organization_id', 'shopping_plan_organization.status',
+    ])
+    {
+        return $this->_model->select($columns)
+            ->join('shopping_plan_company', 'shopping_plan_company.id', 'shopping_plan_organization.shopping_plan_company_id')
+            ->where('shopping_plan_organization.id', $id)->first();
+    }
+
+    public function getFirst($filters, $columns = ['*'])
+    {
+        $query = $this->_model->newQuery()->select($columns);
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        return $query->first();
     }
 }

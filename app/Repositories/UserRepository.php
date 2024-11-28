@@ -15,10 +15,14 @@ class UserRepository extends BaseRepository
 
     public function getListing(array $filers, array $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with);
+        $query = $this->_model->newQuery()->select($columns)->with($with)->where('status', User::STATUS_ACTIVE);
 
         if (!empty($filers['name'])) {
             $query->where('name', 'like', $filers['name'] . '%');
+        }
+
+        if (!empty($filers['dept_id'])) {
+            $query->whereIn('dept_id', Arr::wrap($filers['dept_id']));
         }
 
         if (!empty($filers['id'])) {
@@ -26,7 +30,7 @@ class UserRepository extends BaseRepository
         }
 
         if (!empty($filers['limit'])) {
-            $query->paginate($filers['limit'], page: $filers['page'] ?? 1);
+            return $query->paginate($filers['limit'], page: $filers['page'] ?? 1);
         }
 
         return $query->get();

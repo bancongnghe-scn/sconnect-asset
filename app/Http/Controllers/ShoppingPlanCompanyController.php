@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ShoppingPlanCompanyController extends Controller
 {
@@ -13,30 +14,107 @@ class ShoppingPlanCompanyController extends Controller
 
     }
 
-    public function getListShoppingPlanCompany(Request $request)
+    public function findShoppingPlanCompany(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->findShoppingPlanCompany($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
+    public function sentNotificationRegister(Request $request)
     {
         $request->validate([
-            'name'         => 'nullable|string',
-            'plan_year_id' => 'nullable|integer',
-            'time'         => 'nullable|integer',
-            'type'         => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
-            'start_time'   => 'nullable|date|date_format:Y-m-d',
-            'end_time'     => 'nullable|date|date_format:Y-m-d',
+            'id'              => 'required|integer',
+            'organizations'   => 'nullable|array',
+            'organizations.*' => 'integer',
         ]);
 
-        try {
-            $result = $this->planCompanyService->getListPlanCompany($request->all());
+        Auth::user()->canPer('shopping_plan_company.sent_notifi_register');
 
-            return response_success($result);
+        try {
+            $result = $this->planCompanyService->sentNotificationRegister($request->all());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
+
+    public function sendAccountantApproval(string $id)
+    {
+        Auth::user()->canPer('shopping_plan_company.sent_account_approval');
+
+        try {
+            $result = $this->planCompanyService->sendAccountantApproval($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
+    public function sendManagerApproval(string $id)
+    {
+        Auth::user()->canPer('shopping_plan_company.sent_manager_approval');
+
+        try {
+            $result = $this->planCompanyService->sendManagerApproval($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+
+            return response_error();
+        }
+    }
+
+    public function managerApproval(Request $request)
+    {
+        $request->validate([
+            'id'    => 'required|integer',
+            'type'  => 'required|string',
+        ]);
+
+        Auth::user()->canPer('shopping_plan_company.general_approval');
+
+        try {
+            $result = $this->planCompanyService->managerApproval($request->all());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+
             return response_error();
         }
     }
 
     public function deleteShoppingPlanCompany(string $id)
     {
+        Auth::user()->canPer('shopping_plan_company.crud');
+
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
             if (!$result['success']) {
@@ -54,10 +132,13 @@ class ShoppingPlanCompanyController extends Controller
         $request->validate([
             'ids'   => 'required|array',
             'ids.*' => 'integer',
+            'type'  => 'required|integer',
         ]);
 
+        Auth::user()->canPer('shopping_plan_company.crud');
+
         try {
-            $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'));
+            $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'), $request->integer('type'));
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -65,17 +146,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            return response_error();
-        }
-    }
 
-    public function findShoppingPlanCompany(string $id)
-    {
-        try {
-            $result = $this->planCompanyService->findShoppingPlanCompany($id);
-
-            return response_success($result);
-        } catch (\Throwable $exception) {
             return response_error();
         }
     }

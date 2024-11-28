@@ -1,0 +1,50 @@
+document.addEventListener('alpine:init', () => {
+    Alpine.data('history_comment_shopping_plan_organization', () => ({
+            init() {
+                this.listComment()
+                this.handleComment()
+            },
+
+            //data
+            comments: [],
+            comment_message: null,
+
+            async sentComment(reply = null) {
+                const param = {
+                    type: TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION,
+                    target_id: this.id,
+                    message: this.comment_message,
+                    reply: reply
+                }
+                const response = await window.apiSentComment(param)
+                this.comment_message = null
+                if (response.success) {
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            async listComment(reply = null) {
+                const param = {
+                    type: TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION,
+                    target_id: this.id,
+                }
+                const response = await window.apiGetComment(param)
+                if (response.success) {
+                    this.comments = response.data.data
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            handleComment() {
+                window.Echo.channel('channel_shopping_plan_organization' + this.id)
+                    .listen('.ShoppingPlanOrganizationCommentEvent', (e) => {
+                        this.comments.push(e)
+                    }).error((error) => {
+                    alert(error)
+                });
+            },
+        })
+    )
+})

@@ -1,8 +1,6 @@
-window.apiGetShoppingPlanCompany = async function (filters) {
+window.apiGetInfoShoppingPlanOrganization = async function (id) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/list", {
-            params: filters
-        })
+        const response = await axios.get("/api/shopping-plan-organization/view/"+id)
 
         const data = response.data;
         if (!data.success) {
@@ -14,7 +12,7 @@ window.apiGetShoppingPlanCompany = async function (filters) {
 
         return {
             success: true,
-            data: data
+            data: data.data
         }
     } catch (error) {
         return {
@@ -24,10 +22,9 @@ window.apiGetShoppingPlanCompany = async function (filters) {
     }
 }
 
-
-window.apiRemoveShoppingPlanCompany = async function (id) {
+window.apiGetRegisterShoppingPlanOrganization = async function (id) {
     try {
-        const response = await axios.delete("/api/shopping-plan-company/delete/"+id)
+        const response = await axios.get("/api/shopping-plan-organization/get-register/"+id)
 
         const data = response.data;
         if (!data.success) {
@@ -39,7 +36,7 @@ window.apiRemoveShoppingPlanCompany = async function (id) {
 
         return {
             success: true,
-            data: data
+            data: data.data
         }
     } catch (error) {
         return {
@@ -49,9 +46,9 @@ window.apiRemoveShoppingPlanCompany = async function (id) {
     }
 }
 
-window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
+window.apiAccountApprovalShoppingPlanOrganization = async function (ids, type) {
     try {
-        const response = await axios.post("/api/delete-multiple/shopping-plan-company",{ids: ids})
+        const response = await axios.post("/api/shopping-plan-organization/account-approval", {ids: ids, type: type})
 
         const data = response.data;
         if (!data.success) {
@@ -63,7 +60,7 @@ window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
 
         return {
             success: true,
-            data: data
+            data: data.data
         }
     } catch (error) {
         return {
@@ -73,9 +70,9 @@ window.apiRemoveShoppingPlanCompanyMultiple = async function (ids) {
     }
 }
 
-window.apiShowShoppingPlanCompany = async function (id) {
+window.apiSaveReviewRegisterAsset = async function (id, registers) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/show/"+id)
+        const response = await axios.post("/api/shopping-plan-organization/review", {id: id, registers: registers})
 
         const data = response.data;
         if (!data.success) {
@@ -87,7 +84,7 @@ window.apiShowShoppingPlanCompany = async function (id) {
 
         return {
             success: true,
-            data: data
+            data: data.data
         }
     } catch (error) {
         return {
@@ -96,6 +93,4 @@ window.apiShowShoppingPlanCompany = async function (id) {
         }
     }
 }
-
-
 

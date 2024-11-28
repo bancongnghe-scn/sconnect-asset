@@ -16,12 +16,16 @@ class MonitorRepository extends BaseRepository
     public function getListing($filters)
     {
         $query = $this->_model->newQuery();
-        if (isset($filters['target_id'])) {
+        if (!empty($filters['target_id'])) {
             $query->whereIn('target_id', Arr::wrap($filters['target_id']));
         }
 
-        if (isset($filters['type'])) {
-            $query->where('type', $filters['type']);
+        if (!empty($filters['type'])) {
+            $query->whereIn('type', Arr::wrap($filters['type']));
+        }
+
+        if (!empty($filters['user_id'])) {
+            $query->whereIn('user_id', Arr::wrap($filters['user_id']));
         }
 
         return $query->get();

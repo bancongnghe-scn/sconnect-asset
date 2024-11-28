@@ -28,13 +28,10 @@
                                         <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
-                                                <template x-if="key === 'website'">
-                                                    <a :href="data[key]" x-text="data[key]" target="_blank"></a>
-                                                </template>
                                                 <template x-if="key === 'status'">
                                                     @include('common.table-status')
                                                 </template>
-                                                <template x-if="key !== 'website' && key !== 'status'">
+                                                <template x-if="key !== 'status'">
                                                     <span x-text="data[key]"></span>
                                                 </template>
                                             </td>

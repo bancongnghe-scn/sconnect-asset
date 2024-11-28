@@ -17,9 +17,9 @@ class AssetTypeGroupController extends Controller
     {
         $request->validate([
             'id'    => 'integer',
-            'name'  => 'string|min:2|nullable',
-            'page'  => 'integer',
-            'limit' => 'integer|max:200',
+            'name'  => 'nullable|string|min:2|max:255',
+            'page'  => 'nullable|integer',
+            'limit' => 'nullable|integer|max:200',
         ]);
 
         try {
@@ -35,7 +35,7 @@ class AssetTypeGroupController extends Controller
     {
         $request->validate(
             [
-                'name'        => 'required|string',
+                'name'        => 'required|string|max:255',
                 'description' => 'nullable|string',
             ]
         );
@@ -72,13 +72,8 @@ class AssetTypeGroupController extends Controller
     {
         $request->validate(
             [
-                'name'        => 'required|string',
-                'description' => 'string',
-            ],
-            [
-                'name.required'      => 'Tên nhóm tài sản là bắt buộc.',
-                'name.string'        => 'Tên nhóm tài sản phải là một chuỗi ký tự.',
-                'description.string' => 'Mô tả phải là một chuỗi ký tự.',
+                'name'        => 'required|string|max:255',
+                'description' => 'nullable|string',
             ]
         );
 

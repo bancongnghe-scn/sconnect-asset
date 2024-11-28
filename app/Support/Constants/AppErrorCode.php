@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Constants;
 
 class AppErrorCode
 {
@@ -66,4 +66,20 @@ class AppErrorCode
     public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi, không thể cập nhật !
     public const CODE_2060 = 2060; //  Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !
     public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
+    public const CODE_2062 = 2062; //  Cập nhật trạng thái kế hoạch mua sắm thất bại !
+    public const CODE_2063 = 2063; //  Kế hoạch đã được gửi thông báo đến các đơn vị !
+    public const CODE_2064 = 2064; //  Chưa thể gửi duyệt do trạng thái khác với đăng ký!
+    public const CODE_2065 = 2065; //  Chưa thể gửi duyệt do chưa hết thời gian đăng ký!
+    public const CODE_2066 = 2066; //  Gửi duyệt thất bại!
+    public const CODE_2067 = 2067; //  Gửi bình luận thất bại !
+    public const CODE_2068 = 2068; //  Bình luận không tồn tại !
+    public const CODE_2069 = 2069; //  Bạn không có quyền xóa bình luận này !,
+    public const CODE_2070 = 2070; //  Xóa bình luận thất bại !
+    public const CODE_2071 = 2071; //  Sửa bình luận thất bại !
+    public const CODE_2072 = 2072; //  Kế hoạch không còn mở đăng ký !
+    public const CODE_2073 = 2073; //  Đăng ký mua sắm thất bại !
+    public const CODE_2074 = 2074; //  Trạng thái kế hoạch mua sắm không phù hợp !
+    public const CODE_2075 = 2075; //  Duyệt kế hoạch mua sắm thất bại !
+    public const CODE_2076 = 2076; //  Lưu lịch sử thất bại !
+    public const CODE_2077 = 2077; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
 }

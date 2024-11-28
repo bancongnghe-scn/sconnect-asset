@@ -8,11 +8,23 @@ import './bootstrap';
 import '@fortawesome/fontawesome-free/js/all.js';
 import Alpine from 'alpinejs'
 import './helpers.js'
-
+import AirDatepicker from "air-datepicker";
+import localeEn from "air-datepicker/locale/en";
+import {format} from "date-fns";
 window.Alpine = Alpine
-document.addEventListener('DOMContentLoaded', () => {
-    $('.select2').select2()
+window.AirDatepicker = AirDatepicker;
+window.localeEn = localeEn;
+window.format = format;
+window.addEventListener('load', () => {
     Alpine.start();
+
+    $('.select2').select2({
+        language: {
+            noResults: function() {
+                return "Không tìm thấy kết quả";
+            }
+        }
+    })
 });
 
 import { Toast } from 'bootstrap';

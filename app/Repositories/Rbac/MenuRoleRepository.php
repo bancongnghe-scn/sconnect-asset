@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Rbac;
 
 use App\Models\Rbac\MenuRole;
 use App\Repositories\Base\BaseRepository;

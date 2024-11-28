@@ -45,18 +45,7 @@ document.addEventListener('alpine:init', () => {
             description: null,
             measure: null,
         },
-        listMeasure: {
-            1: 'Chiếc',
-            2: 'Cái',
-            3: 'Bộ',
-            4: 'Bình',
-            5: 'Cuộn',
-            6: 'Hộp',
-            7: 'Túi',
-            8: 'Lọ',
-            9: 'Thùng',
-            10: 'Đôi',
-        },
+        listMeasure: LIST_MEASURE,
         listAssetTypeGroup: [],
         title: null,
         action: null,
@@ -77,7 +66,6 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                toast.success('Lấy danh sách loại tài sản thành công !')
             } else {
                 toast.error('Lấy danh sách loại tài sản thất bại !')
             }

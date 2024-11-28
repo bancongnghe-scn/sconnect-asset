@@ -6,7 +6,7 @@ use App\Http\Resources\RoleInfoResource;
 use App\Repositories\Rbac\RolePermissionRepository;
 use App\Repositories\Rbac\RoleRepository;
 use App\Repositories\Rbac\RoleUserRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -41,11 +41,10 @@ class RoleService
 
             $permissionIds = $data['permission_ids'] ?? [];
             if (!empty($permissionIds)) {
-                resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role);
+                resolve(RolePermissionService::class)->insertRolePermissions($permissionIds, $role->id);
             }
             DB::commit();
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
 
             return [
@@ -119,21 +118,17 @@ class RoleService
             }
 
             $userIds = $data['user_ids'] ?? [];
-            if (!empty($userIds)) {
-                resolve(RoleUserService::class)->updateRoleUsers($userIds, $role);
-            }
+            resolve(RoleUserService::class)->updateRoleUsers($userIds, $role);
 
-            $permissionIds = $data['permission_ids'] ?? [];
-            if (!empty($permissionIds)) {
-                $updateRolePermissions = resolve(RolePermissionService::class)->updateRolePermissions($permissionIds, $id);
-                if (!$updateRolePermissions) {
-                    DB::rollBack();
+            $permissionIds         = $data['permission_ids'] ?? [];
+            $updateRolePermissions = resolve(RolePermissionService::class)->updateRolePermissions($permissionIds, $id);
+            if (!$updateRolePermissions) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2042,
-                    ];
-                }
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2042,
+                ];
             }
 
             DB::commit();

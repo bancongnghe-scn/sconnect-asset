@@ -9,9 +9,11 @@
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">
-                                        <input type="checkbox" @click="selectedAll">
-                                    </th>
+                                    @can('shopping_plan_company.crud')
+                                        <th class="text-center">
+                                            <input type="checkbox" @click="selectedAll">
+                                        </th>
+                                    @endcan
                                     <th rowspan="1" colspan="1">STT</th>
                                     <template x-for="(columnName, key) in columns">
                                         <th rowspan="1" colspan="1" x-text="columnName"></th>
@@ -20,15 +22,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <template x-for="(data,index) in dataTable">
+                                <template x-for="(data,index) in dataTable" :key="index">
                                     <tr>
-                                        <td class="text-center align-middle">
-                                            <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
-                                        </td>
+                                        @can('shopping_plan_company.crud')
+                                            <td class="text-center align-middle" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                                <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                            </td>
+                                            <td class="text-center align-middle" x-show="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                                <input type="checkbox" disabled>
+                                            </td>
+                                        @endcan
                                         <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
-                                                <template x-if="key !== 'register_time' && key !== 'status'">
+                                                <template x-if="key !== 'register_time' && key !== 'status' && key !== 'user'">
                                                     <span x-text="data[key]"></span>
                                                 </template>
                                                 <template x-if="key === 'register_time'">
@@ -38,27 +45,62 @@
                                                     <div class="d-flex justify-content-center">
                                                         <span x-text="listStatus[data[key]]" class="p-1 border rounded"
                                                               :class="{
-                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
-                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 3,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 4,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 5
-                                                                 }"
-                                                        ></span>
+                                                                  'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                                                                  'tw-text-purple-600 tw-bg-purple-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                                                  'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                                                                                                        || +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                                                                  'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                                                                  'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                                                              }">
+                                                        </span>
                                                     </div>
                                                 </template>
+                                                <template x-if="key === 'user'">
+                                                    @include('common.user_info')
+                                                </template>
+
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
+                                            {{-- xem chi tiet --}}
+                                            <button class="border-0 bg-body"
+                                                    @click="window.location.href = `/shopping-plan-company/year/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
-                                            <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                                <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
-                                            </button>
-                                            <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
-                                                <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
-                                            </button>
+
+                                            {{-- sua va xoa --}}
+                                            @can('shopping_plan_company.crud')
+                                                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status)">
+                                                    <button class="border-0 bg-body"
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
+                                                        <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                    </button>
+                                                </template>
+                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                                    <button class="border-0 bg-body"
+                                                            @click="$dispatch('remove', { id: data.id })">
+                                                        <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                                    </button>
+                                                </template>
+                                            @endcan
+
+                                            {{-- ke toan va giam doc duyet --}}
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                                @can('shopping_plan_company.accounting_approval')
+                                                    <button class="border-0 bg-body"
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
+                                                        <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                    </button>
+                                                @endcan
+                                            </template>
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                                @can('shopping_plan_company.general_approval')
+                                                    <button class="border-0 bg-body"
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
+                                                        <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                    </button>
+                                                @endcan
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>
@@ -80,7 +122,11 @@
 
             selectedAll() {
                 this.checkedAll = !this.checkedAll
-                this.dataTable.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
+                this.dataTable.forEach((item) => {
+                    if(+item.status === STATUS_SHOPPING_PLAN_COMPANY_NEW) {
+                        this.selectedRow[item.id] = this.checkedAll
+                    }
+                })
             }
         }
     }

@@ -22,18 +22,19 @@ class StoreSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'             => 'required|string',
-            'name'             => 'required|string',
-            'contact'          => 'nullable|string',
-            'tax_code'         => 'nullable|string',
-            'address'          => 'nullable|string',
-            'website'          => 'nullable|string',
-            'industry_ids'     => 'required|array',
-            'industry_ids.*'   => 'integer',
-            'asset_type_ids'   => 'required|array',
-            'asset_type_ids.*' => 'integer',
-            'description'      => 'nullable|string',
-            'meta_data'        => 'nullable|array',
+            'code'                   => 'required|string|max:255',
+            'name'                   => 'required|string|max:255',
+            'contact'                => 'nullable|string|max:255',
+            'tax_code'               => 'nullable|string|max:255',
+            'address'                => 'nullable|string|max:255',
+            'email'                  => 'nullable|email',
+            'contract_user'          => 'nullable|string|max:255',
+            'industry_ids'           => 'required|array',
+            'industry_ids.*'         => 'integer',
+            'asset_type_ids'         => 'required|array',
+            'asset_type_ids.*'       => 'integer',
+            'description'            => 'nullable|string',
+            'meta_data'              => 'nullable|array',
         ];
     }
 

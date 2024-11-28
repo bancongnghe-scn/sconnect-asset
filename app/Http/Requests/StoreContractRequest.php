@@ -22,8 +22,8 @@ class StoreContractRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'                    => 'required|string',
-            'name'                    => 'required|string',
+            'code'                    => 'required|string|max:255',
+            'name'                    => 'required|string|max:255',
             'type'                    => 'required|integer',
             'supplier_id'             => 'required|integer',
             'signing_date'            => 'required|date|date_format:Y-m-d',
@@ -32,6 +32,7 @@ class StoreContractRequest extends FormRequest
             'user_ids'                => 'required|array',
             'user_ids.*'              => 'integer',
             'contract_value'          => 'nullable|integer',
+            'contract_link'           => 'nullable|url',
             'description'             => 'nullable|string',
             'files'                   => 'nullable|array',
             'payments'                => 'nullable|array',
@@ -44,10 +45,11 @@ class StoreContractRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'code'         => __('attributes.contract.code'),
-            'type'         => __('attributes.contract.type'),
-            'signing_date' => __('attributes.contract.signing_date'),
-            'user_ids'     => __('attributes.contract.user_ids'),
+            'code'              => __('attributes.contract.code'),
+            'type'              => __('attributes.contract.type'),
+            'signing_date'      => __('attributes.contract.signing_date'),
+            'user_ids'          => __('attributes.contract.user_ids'),
+            'contract_link'     => __('attributes.contract.contract_link'),
         ];
     }
 }

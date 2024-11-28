@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 
 return [
     AppErrorCode::CODE_1000 => 'Có lỗi xảy ra, vui lòng liên hệ admin !',
@@ -65,4 +65,20 @@ return [
     AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi, không thể cập nhật !',
     AppErrorCode::CODE_2060 => 'Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !',
     AppErrorCode::CODE_2061 => 'Xóa kế hoạch mua sắm thất bại !',
+    AppErrorCode::CODE_2062 => 'Cập nhật trạng thái kế hoạch mua sắm thất bại !',
+    AppErrorCode::CODE_2063 => 'Kế hoạch đã được gửi thông báo đến các đơn vị !',
+    AppErrorCode::CODE_2064 => 'Chưa thể gửi duyệt do trạng thái khác với đăng ký hoặc chưa hết thời gian đăng ký!',
+    AppErrorCode::CODE_2065 => 'Chưa thể gửi duyệt do chưa hết thời gian đăng ký!',
+    AppErrorCode::CODE_2066 => 'Gửi duyệt thất bại!',
+    AppErrorCode::CODE_2067 => 'Gửi bình luận thất bại !',
+    AppErrorCode::CODE_2068 => 'Bình luận không tồn tại !',
+    AppErrorCode::CODE_2069 => 'Bạn không có quyền xóa bình luận này !',
+    AppErrorCode::CODE_2070 => 'Xóa bình luận thất bại !',
+    AppErrorCode::CODE_2071 => 'Sửa bình luận thất bại !',
+    AppErrorCode::CODE_2072 => 'Kế hoạch không còn mở đăng ký !',
+    AppErrorCode::CODE_2073 => 'Đăng ký mua sắm thất bại !',
+    AppErrorCode::CODE_2074 => 'Trạng thái kế hoạch mua sắm không phù hợp !',
+    AppErrorCode::CODE_2075 => 'Duyệt kế hoạch mua sắm thất bại !',
+    AppErrorCode::CODE_2076 => 'Lưu lịch sử thất bại !',
+    AppErrorCode::CODE_2077 => 'Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !',
 ];

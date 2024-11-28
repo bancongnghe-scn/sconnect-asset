@@ -8,11 +8,11 @@ use App\Models\Contract;
 use App\Models\Monitor;
 use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
-use App\Repositories\MonitorRepository;
 use App\Repositories\ContractPaymentRepository;
 use App\Repositories\ContractRepository;
+use App\Repositories\MonitorRepository;
 use App\Repositories\SupplierRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -249,7 +249,8 @@ class ContractService
             with: [
                 'contractFiles:id,contract_id,file_url,file_name',
                 'contractPayments:id,contract_id,order,payment_date,money,description',
-                'contractMonitors', 'contractAppendix',
+                'contractAppendixApproval:id,code,name,signing_date,from,description,contract_id',
+                'contractMonitors',
             ]
         );
 

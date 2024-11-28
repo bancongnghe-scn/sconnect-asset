@@ -16,7 +16,7 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
+        // \SOfficeConstant\Http\Middleware\TrustHosts::class,
         Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         Middleware\PreventRequestsDuringMaintenance::class,

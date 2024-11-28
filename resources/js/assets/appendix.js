@@ -57,23 +57,20 @@ document.addEventListener('alpine:init', () => {
             signing_date: null,
             from: null,
             to: null,
-            user_ids: [],
             description: null,
+            link: null,
+            user_ids: [],
             files: [],
         },
         listContract: [],
-        listStatus: {
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Hủy'
-        },
+        listStatus: STATUS_APPENDIX,
         listUser: [],
         title: null,
         action: null,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalUI: "idModalUI",
+        idModalUI: "idModalUIAppendix",
         idModalInfo: "idModalInfo",
 
         //methods
@@ -191,10 +188,10 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.titleModal = 'Thêm mới'
+                this.title = 'Thêm mới'
                 this.resetData()
             } else {
-                this.titleModal = 'Cập nhật'
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiShowAppendix(id)
                 if (!response.success) {
@@ -210,7 +207,7 @@ document.addEventListener('alpine:init', () => {
 
         async handleShowModalInfo(id) {
             this.loading = true
-            const response = await window.apiShowContract(id)
+            const response = await window.apiShowAppendix(id)
             if (!response.success) {
                 toast.error(response.message)
                 return
@@ -260,7 +257,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
             $('#filterContract').val([]).change()
-            $('#filterStatusContract').val([]).change()
+            $('#filterStatusAppendix').val([]).change()
             $('#filterSigningDate').val(null).change()
             $('#filterFrom').val(null).change()
         },
@@ -286,10 +283,12 @@ document.addEventListener('alpine:init', () => {
                 const value = $(event.target).val()
                 if (event.target.id === 'filterContract') {
                     this.filters.contract_ids = value
-                } else if (event.target.id === 'filterStatusContract') {
+                } else if (event.target.id === 'filterStatusAppendix') {
                     this.filters.status = value
                 } else if (event.target.id === 'selectUserId') {
                     this.data.user_ids = value
+                } else if (event.target.id === 'selectContract') {
+                    this.data.contract_id = value
                 }
             });
         },

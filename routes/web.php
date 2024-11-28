@@ -16,11 +16,20 @@ Route::get('/ping', function () {
     return 'pong';
 });
 
+
 Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
 Route::middleware(['checkAuth'])->group(function () {
+    Route::get('/login/{id}', function ($id) {
+        Illuminate\Support\Facades\Auth::loginUsingId($id);
+
+        return redirect('/');
+    })->name('login');
+
+    Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
+
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');
@@ -32,10 +41,30 @@ Route::middleware(['checkAuth'])->group(function () {
     Route::view('asset-type/list', 'assets.asset_type.list');
     Route::view('industry/list', 'assets.industry.list');
     Route::view('supplier/list', 'assets.supplier.list');
-    Route::view('contract/list', 'assets.contract.list');
-    Route::view('contract-appendix/list', 'assets.contract_appendix.list');
-    Route::view('shopping-plan-company/year/list', 'assets.shopping-plan-company.year.list');
+    Route::view('contract/list', 'assets.contract.listContractAndAppendix');
+    Route::prefix('shopping-plan-company')->group(function () {
+        Route::prefix('year')->group(function () {
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyYearController::class, 'index']);
+            Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
+        });
+    });
+    Route::prefix('shopping-plan-organization')->group(function () {
+        Route::prefix('year')->group(function () {
+            Route::view('register/{id}', 'assets.shopping_plan_organization.year.register');
+            Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
+        });
+    });
 
+    Route::prefix('cache')->group(function () {
+        Route::get('key', function () {
+            $key = config('cache_keys.keys.menu_key').Illuminate\Support\Facades\Auth::id();
+            dd(Illuminate\Support\Facades\Cache::forget($key));
+        });
+        Route::get('tag', function () {
+            dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->clear());
+        });
+    });
 
     Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
 });

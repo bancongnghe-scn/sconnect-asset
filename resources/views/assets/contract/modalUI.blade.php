@@ -1,4 +1,4 @@
-<div class="modal fade" id="idModalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="idModalUIContract" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -39,15 +39,30 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectSigningDateContract"
+                                       placeholder="Chọn ngày ký" autocomplete="off"
+                                       x-model="data.signing_date">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu", 'id'=>"selectFrom", 'model' => "data.from"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectFromContract"
+                                       placeholder="Chọn ngày bắt đầu" autocomplete="off"
+                                       x-model="data.from">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc", 'id'=>"selectTo", 'model' => "data.to"])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepickerContract" id="selectToContract"
+                                       placeholder="Chọn ngày kết thúc" autocomplete="off"
+                                       x-model="data.to">
+                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
@@ -63,21 +78,25 @@
                             <label class="form-label">Tổng giá trị hợp đồng</label>
                             <input type="number" class="form-control" placeholder="Nhập tổng giá trị hợp đồng" x-model="data.contract_value">
                         </div>
-                        <div class="col-5">
-                            <label for="formFileMultiple" class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
+                        <div class="col-3">
+                            <label class="form-label">Link đính kèm</label>
+                            <input type="text" class="form-control" x-model="data.contract_link" placeholder="Nhập link đính kèm">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Ghi chú</label>
+                            <input type="text" class="form-control"  x-model="data.description" placeholder="Nhập ghi chú">
                         </div>
                     </div>
                     <div class="row">
                         <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
-                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
-                            <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
+                            <input class="form-control d-none" type="file" id="fileInputContract" multiple x-ref="fileInputContract" @change="handleFilesContract" accept=".pdf">
+                            <label type="button" class="btn btn-sc" for="fileInputContract">Chọn tệp</label>
 
                             <div class="mt-2 d-flex flex-column tw-gap-y-2">
                                 <template x-for="(file, index) in data.files" :key="index">
                                     <div>
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
+                                        <button @click="data.files.splice(index, 1)" class="border-0 bg-white"><i class="fa-solid fa-circle-xmark tw-cursor-pointer"></i></button>
                                         <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
                                         <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
                                     </div>
@@ -89,12 +108,12 @@
 
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
-                    <div class="mb-3 tw-max-h-60 overflow-y-scroll">
+                    <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
                                 <tr>
-                                    <th>Lần thanh toán</th>
+                                    <th class="tw-w-32">Lần thanh toán</th>
                                     <th>Ngày thanh toán</th>
                                     <th>Số tiền</th>
                                     <th>Nội dung thanh toán</th>
@@ -108,7 +127,7 @@
                                         <td>
                                             <div class="input-group">
                                                 <input type="text" class="form-control datepicker" name="selectPaymentDate"
-                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="data.payment_date" :id="index">
+                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="payment.payment_date" :id="index">
                                                 <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
                                             </div>
                                         </td>
@@ -131,9 +150,34 @@
                     <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
                 </div>
 
-                <template x-if="data.appendix">
+                <template x-if="action === 'update'">
                     <div class="container">
                         <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
+                        <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
+                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                                   aria-describedby="example2_info">
+                                <thead>
+                                <tr>
+                                    <th>Mã phụ lục</th>
+                                    <th>Tên phụ lục</th>
+                                    <th>Ngày ký</th>
+                                    <th>Ngày hiệu lực</th>
+                                    <th>Nội dung thay đổi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <template x-for="(appendix, index) in data.appendixes">
+                                    <tr>
+                                        <td x-text="appendix.code"></td>
+                                        <td x-text="appendix.name"></td>
+                                        <td x-text="appendix.signing_date"></td>
+                                        <td x-text="appendix.from"></td>
+                                        <td x-text="appendix.description"></td>
+                                    </tr>
+                                </template>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </template>
             </div>

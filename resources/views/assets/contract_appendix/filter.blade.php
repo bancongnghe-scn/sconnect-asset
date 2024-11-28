@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái">
+                        <select class="form-control select2" id="filterStatusAppendix" multiple="multiple" data-placeholder="Chọn trạng thái">
                             <template x-for="(value, key) in listStatus">
                                 <option :value="key" x-text="value"></option>
                             </template>

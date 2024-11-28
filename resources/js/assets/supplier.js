@@ -14,10 +14,10 @@ document.addEventListener('alpine:init', () => {
             code: 'Mã',
             name: 'Tên nhà cung cấp',
             industries: 'Ngành hàng',
-            contact: 'Liên hệ',
-            address: 'Địa chỉ',
+            contact: 'Số điện thoại',
+            address: 'Địa chỉ/Website',
             status: 'Đánh giá',
-            website: 'Website',
+            contract_user: 'Người liên hệ',
         },
         totalPages: null,
         currentPage: 1,
@@ -43,13 +43,14 @@ document.addEventListener('alpine:init', () => {
         data: {
             name: null,
             code: null,
-            website: null,
+            contract_user: null,
             contact: null,
             address: null,
+            tax_code: null,
+            email: null,
+            description: null,
             industry_ids: [],
             asset_type_ids: [],
-            tax_code: null,
-            description: null,
             meta_data: {
                 payment_terms: {
                     debt_day: null,
@@ -72,7 +73,7 @@ document.addEventListener('alpine:init', () => {
         title: null,
         action: null,
         id: null,
-        idModalConfirmDelete: "deleteSupplier",
+        idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         idModalUI: "idModalUI",
         activeLink: {
@@ -222,13 +223,14 @@ document.addEventListener('alpine:init', () => {
             this.data = {
                 name: null,
                 code: null,
-                website: null,
+                contract_user: null,
                 contact: null,
                 address: null,
-                industry_ids: [],
-                asset_type_ids: [],
                 tax_code: null,
                 description: null,
+                email: null,
+                industry_ids: [],
+                asset_type_ids: [],
                 meta_data: {
                     payment_terms: {
                         debt_day: null,

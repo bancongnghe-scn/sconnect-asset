@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\IndustryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class IndustryController extends Controller
 {
@@ -17,9 +16,9 @@ class IndustryController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name'  => 'nullable|string',
-            'page'  => 'integer',
-            'limit' => 'integer|max:200',
+            'name'  => 'nullable|string|max:255',
+            'page'  => 'nullable|integer',
+            'limit' => 'nullable|integer|max:200',
         ]);
 
         try {
@@ -37,7 +36,7 @@ class IndustryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 
@@ -50,8 +49,6 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            Log::error($exception);
-
             return response_error();
         }
     }
@@ -80,7 +77,7 @@ class IndustryController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'        => 'required|string',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
 

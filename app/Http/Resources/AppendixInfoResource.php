@@ -14,6 +14,7 @@ class AppendixInfoResource extends JsonResource
             'code'           => $this->resource->code,
             'name'           => $this->resource->name,
             'contract_id'    => $this->resource->contract_id,
+            'link'           => $this->resource->link,
             'signing_date'   => $this->resource->signing_date,
             'from'           => $this->resource->from,
             'to'             => $this->resource->to,

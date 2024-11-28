@@ -6,7 +6,7 @@ use App\Http\Resources\PermissionInfoResource;
 use App\Repositories\Rbac\PermissionRepository;
 use App\Repositories\Rbac\RolePermissionRepository;
 use App\Repositories\Rbac\UserPermissionRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
@@ -115,36 +115,26 @@ class PermissionService
 
     public function updatePermission($data, $id)
     {
-        $permission         = Permission::findById($id);
-        $data['updated_by'] = Auth::id();
-        $permission->fill($data);
         DB::beginTransaction();
         try {
-            if (!$permission->save()) {
+            Permission::where('id', $id)->update([
+                'name'        => $data['name'],
+                'description' => $data['description'],
+            ]);
+
+            $userIds    = $data['user_ids'] ?? [];
+            $permission = Permission::findById($id);
+            resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
+
+            $roleIds               = $data['role_ids'] ?? [];
+            $updateRolesPermission = resolve(RolePermissionService::class)->updateRolesPermission($roleIds, $id);
+            if (!$updateRolesPermission) {
                 DB::rollBack();
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2048,
+                    'error_code' => AppErrorCode::CODE_2050,
                 ];
-            }
-
-            $userIds = $data['user_ids'] ?? [];
-            if (!empty($userIds)) {
-                resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
-            }
-
-            $roleIds = $data['role_ids'] ?? [];
-            if (!empty($roleIds)) {
-                $updateRolesPermission = resolve(RolePermissionService::class)->updateRolesPermission($roleIds, $id);
-                if (!$updateRolesPermission) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2050,
-                    ];
-                }
             }
 
             DB::commit();

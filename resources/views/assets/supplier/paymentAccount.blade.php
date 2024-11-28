@@ -2,7 +2,7 @@
     <div class="row mb-3">
         <div class="col-4">
             <label class="form-label tw-font-bold">Số tài khoản</label>
-            <input type="number" class="form-control" x-model="data.meta_data.payment_account.number" placeholder="Nhập số tài khoản">
+            <input type="text" class="form-control" x-model="data.meta_data.payment_account.number" placeholder="Nhập số tài khoản">
         </div>
         <div class="col-4">
             <label class="form-label tw-font-bold">Tên ngân hàng</label>

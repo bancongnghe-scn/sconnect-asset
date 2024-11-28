@@ -18,11 +18,11 @@ class AssetTypeController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name'                  => 'nullable|string',
-            'asset_type_group_id'   => 'nullable|array',
-            'asset_type_group_id.*' => 'integer',
-            'page'                  => 'integer',
-            'limit'                 => 'integer|max:200',
+            'name'                   => 'nullable|string|max:255',
+            'asset_type_group_id'    => 'nullable|array',
+            'asset_type_group_id.*'  => 'integer',
+            'page'                   => 'nullable|integer',
+            'limit'                  => 'nullable|integer|max:200',
         ]);
 
         try {
@@ -40,7 +40,7 @@ class AssetTypeController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'                => 'required|string',
+            'name'                => 'required|string|max:255',
             'asset_type_group_id' => 'required|integer',
             'maintenance_months'  => 'required|integer',
             'measure'             => 'required|integer',
@@ -84,7 +84,7 @@ class AssetTypeController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'                => 'required|string',
+            'name'                => 'required|string|max:255',
             'asset_type_group_id' => 'required|integer',
             'maintenance_months'  => 'required|integer',
             'measure'             => 'required|integer',

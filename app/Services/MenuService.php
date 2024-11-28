@@ -5,12 +5,13 @@ namespace App\Services;
 use App\Http\Resources\ListMenuResource;
 use App\Http\Resources\ListMenuUserResource;
 use App\Http\Resources\MenuInfoResource;
-use App\Repositories\MenuRepository;
-use App\Repositories\MenuRoleRepository;
+use App\Repositories\Rbac\MenuRepository;
+use App\Repositories\Rbac\MenuRoleRepository;
+use App\Repositories\Rbac\MenuUserRepository;
 use App\Repositories\Rbac\RoleRepository;
 use App\Repositories\Rbac\RoleUserRepository;
-use App\Support\AppErrorCode;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Rbac\MenuUserService;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -21,31 +22,34 @@ class MenuService
         protected RoleUserRepository $roleUserRepository,
         protected MenuRoleRepository $menuRoleRepository,
         protected RoleRepository $roleRepository,
+        protected MenuUserRepository $menuUserRepository,
     ) {
 
     }
 
-    public function getMenuUser($userId = null)
+    public function getMenuUser($userId)
     {
         if (is_null($userId)) {
-            $userId = Auth::id();
+            return [];
         }
-        $cacheKey = config('cache_keys.menu_key').$userId;
 
-        return Cache::tags(config('cache_tags.menu_tag'))->remember($cacheKey, now()->addHours(2), function () use ($userId) {
+        $cacheKey = config('cache_keys.keys.menu_key').$userId;
+
+        return Cache::tags(config('cache_keys.tags.menu_tag'))->remember($cacheKey, now()->addHours(2), function () use ($userId) {
             $rolesUser = $this->roleUserRepository->getListing(['user_id' => $userId]);
-            if ($rolesUser->isEmpty()) {
-                return [];
-            }
-
             $roleIds   = $rolesUser->pluck('role_id')->toArray();
-            $roleMenus = $this->menuRoleRepository->getListing(['role_id' => $roleIds]);
-            if ($roleMenus->isEmpty()) {
-                return [];
+            $menuIds   = [];
+            if (!empty($roleIds)) {
+                $roleMenus = $this->menuRoleRepository->getListing(['role_id' => $roleIds]);
+                $menuIds   = $roleMenus->pluck('menu_id')->toArray();
             }
 
-            $menuIds = $roleMenus->pluck('menu_id')->toArray();
-            $menus   = $this->menuRepository->getListing(['id' => $menuIds]);
+            $menuUsers = $this->menuUserRepository->getListing(['user_id' => $userId]);
+            $menuIds   = array_merge($menuIds, $menuUsers->pluck('menu_id')->toArray());
+            if (empty($menuIds)) {
+                return [];
+            }
+            $menus = $this->menuRepository->getListing(['id' => $menuIds]);
 
             return ListMenuUserResource::make($menus)->resolve();
         });
@@ -88,12 +92,25 @@ class MenuService
 
                     return [
                         'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2055,
+                        'error_code' => AppErrorCode::CODE_2051,
                     ];
                 }
             }
 
-            Cache::tags('menu_tag')->clear();
+            $userIds = $data['user_ids'] ?? [];
+            if (!empty($userIds)) {
+                $insertMenuUsers = resolve(MenuUserService::class)->insertMenuUsers($userIds, $menu->id);
+                if (!$insertMenuUsers) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2051,
+                    ];
+                }
+            }
+
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -122,7 +139,8 @@ class MenuService
             }
 
             $this->menuRoleRepository->deleteByMenuId($id);
-            Cache::tags('menu_tag')->clear();
+            $this->menuUserRepository->deleteByMenuId($id);
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -165,19 +183,27 @@ class MenuService
                 ];
             }
 
-            $roleIds = $data['role_ids'] ?? [];
-            if (!empty($roleIds)) {
-                $updateMenuRoles = resolve(MenuRoleService::class)->updateMenuRoles($roleIds, $menu->id);
+            $roleIds         = $data['role_ids'] ?? [];
+            $updateMenuRoles = resolve(MenuRoleService::class)->updateMenuRoles($roleIds, $menu->id);
 
-                if (!$updateMenuRoles) {
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2055,
-                    ];
-                }
+            if (!$updateMenuRoles) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2055,
+                ];
             }
 
-            Cache::tags('menu_tag')->clear();
+            $userIds         = $data['user_ids'] ?? [];
+            $updateMenuUsers = resolve(MenuUserService::class)->updateMenuUsers($userIds, $menu->id);
+
+            if (!$updateMenuUsers) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2055,
+                ];
+            }
+
+            Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
             DB::rollBack();

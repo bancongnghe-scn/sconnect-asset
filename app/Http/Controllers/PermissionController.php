@@ -16,7 +16,7 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
             'role_ids'    => 'nullable|array',
             'role_ids.*'  => 'integer',
@@ -40,7 +40,7 @@ class PermissionController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name'    => 'nullable|string',
+            'name'    => 'nullable|string|max:255',
             'page'    => 'nullable|integer',
             'limit'   => 'nullable|integer|max:200',
         ]);
@@ -71,11 +71,11 @@ class PermissionController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'        => 'required|string',
+            'name'        => 'required|string|max:255',
             'description' => 'nullable|string',
-            'role_ids'    => 'required|array',
+            'role_ids'    => 'nullable|array',
             'role_ids.*'  => 'integer',
-            'user_ids'    => 'required|array',
+            'user_ids'    => 'nullable|array',
             'user_ids.*'  => 'integer',
         ]);
 

@@ -59,21 +59,16 @@ document.addEventListener('alpine:init', () => {
             signing_date: null,
             from: null,
             to: null,
-            user_ids: [],
             contract_value: null,
             description: null,
+            contract_link: null,
+            user_ids: [],
             files: [],
-            payments: []
+            payments: [],
+            appendixes: [],
         },
-        listTypeContract: {
-            1: 'Hợp đồng mua bán',
-            2: 'Hợp đồng nguyên tắc',
-        },
-        listStatusContract: {
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Hủy'
-        },
+        listTypeContract: TYPE_CONTRACT,
+        listStatusContract: STATUS_CONTRACT,
         listSupplier: [],
         listUser: [],
         title: null,
@@ -81,18 +76,12 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
-        idModalUI: "idModalUI",
-        idModalInfo: "idModalInfo",
+        idModalUI: "idModalUIContract",
+        idModalInfo: "idModalInfoContract",
 
         //methods
         async list(filters) {
             this.loading = true
-            if (filters.signing_date) {
-                filters.signing_date = format(filters.signing_date, 'yyyy-MM-dd')
-            }
-            if (filters.from) {
-                filters.from = format(filters.from, 'yyyy-MM-dd')
-            }
             const response = await window.apiGetContract(filters)
             if (response.success) {
                 const data = response.data
@@ -268,8 +257,8 @@ document.addEventListener('alpine:init', () => {
             }
             $('#filterTypeContract').val([]).change()
             $('#filterStatusContract').val([]).change()
-            $('#filterSigningDate').val(null).change()
-            $('#filterFrom').val(null).change()
+            $('#filterSigningDateContract').val(null).change()
+            $('#filterFromContract').val(null).change()
         },
 
         confirmRemove(id) {
@@ -307,23 +296,23 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'selectSigningDate') {
+            if(el.id === 'selectSigningDateContract') {
                 this.data.signing_date = storageFormat
-            } else if (el.id === 'selectFrom') {
+            } else if (el.id === 'selectFromContract') {
                 this.data.from = storageFormat
-            } else if (el.id === 'selectTo') {
+            } else if (el.id === 'selectToContract') {
                 this.data.to = storageFormat
             } else if (el.name === 'selectPaymentDate') {
                 this.data.payments[el.id].payment_date = storageFormat
-            } else if (el.id === 'filterSigningDate') {
+            } else if (el.id === 'filterSigningDateContract') {
                 this.filters.signing_date = storageFormat
-            } else if (el.id === 'filterFrom') {
+            } else if (el.id === 'filterFromContract') {
                 this.filters.from = storageFormat
             }
         },
 
-        handleFiles() {
-            const files = Array.from(this.$refs.fileInput.files)
+        handleFilesContract() {
+            const files = Array.from(this.$refs.fileInputContract.files)
             const maxSize = 5 * 1024 * 1024; // 5MB in bytes
 
             for (let i = 0; i < files.length; i++) {
@@ -333,7 +322,7 @@ document.addEventListener('alpine:init', () => {
                 }
             }
 
-            this.data.files = this.data.files.concat(Array.from(this.$refs.fileInput.files))
+            this.data.files = this.data.files.concat(Array.from(this.$refs.fileInputContract.files))
         },
 
         addRowPayment() {
@@ -353,13 +342,14 @@ document.addEventListener('alpine:init', () => {
             contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
             contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
             contract.files = contract.files ?? []
-            const payments = contract.payments ?? []
-            payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
+            contract.appendixes = contract.appendixes ?? []
+            contract.payments = contract.payments ?? []
+            contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
         },
 
         initDatePicker() {
-            document.querySelectorAll('.datepicker').forEach(el => {
+            document.querySelectorAll('.datepickerContract').forEach(el => {
                 new AirDatepicker(el, {
                     autoClose: true,
                     clearButton: true,

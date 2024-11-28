@@ -16,9 +16,6 @@ class Authenticate extends Middleware
      */
     public function handle($request, \Closure $next, ...$guards): mixed
     {
-        Auth::loginUsingId(1);
-
-        return $next($request);
         if (config('sso.login-local')) {
             $this->authenticate($request, $guards);
 
@@ -27,7 +24,7 @@ class Authenticate extends Middleware
         $secretKey     = config('sso.sso-secret-key');
         $token         = @$_GET['token'];
         $sig           = @$_GET['sig'];
-        $sessionCookie = @$_COOKIE['scn_session'];
+        $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
 
         if ($token && $sig) {
             if (!hash_equals(hash_hmac('sha256', $token, $secretKey), $sig)) {

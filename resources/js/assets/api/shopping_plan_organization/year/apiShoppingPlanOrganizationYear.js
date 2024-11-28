@@ -1,8 +1,8 @@
-import {format} from "date-fns";
-
-window.apiCreateShoppingPlanCompanyYear = async function (dataCreate) {
+window.apiGetShoppingPlanOrganizationYear = async function (filters) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/year/create",formatDate(dataCreate))
+        const response = await axios.get("/api/shopping-plan-organization/year/list", {
+            params: filters
+        })
 
         const data = response.data;
         if (!data.success) {
@@ -24,9 +24,12 @@ window.apiCreateShoppingPlanCompanyYear = async function (dataCreate) {
     }
 }
 
-window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
+window.apiSentRegisterYear = async function (id, registers = []) {
     try {
-        const response = await axios.put("/api/shopping-plan-company/year/update/"+id,formatDate(dataUpdate))
+        const response = await axios.post("/api/shopping-plan-organization/year/register",{
+            shopping_plan_organization_id: id,
+            registers: registers
+        })
 
         const data = response.data;
         if (!data.success) {
@@ -46,11 +49,4 @@ window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
             message: error?.response?.data?.message || error?.message
         }
     }
-}
-
-function formatDate(data) {
-    data.start_time = data.start_time ? format(data.start_time, 'yyyy-MM-dd') : null
-    data.end_time = data.end_time ? format(data.end_time, 'yyyy-MM-dd') : null
-
-    return data
 }

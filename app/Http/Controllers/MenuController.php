@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\MenuService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MenuController extends Controller
 {
@@ -15,11 +16,10 @@ class MenuController extends Controller
     public function getMenuUserLogin()
     {
         try {
-            $result = $this->menuService->getMenuUser();
+            $result = $this->menuService->getMenuUser(Auth::id());
 
             return response_success($result);
         } catch (\Throwable $exception) {
-
             return response_error();
         }
     }
@@ -46,6 +46,8 @@ class MenuController extends Controller
             'description'       => 'nullable|string',
             'role_ids'          => 'nullable|array',
             'role_ids.*'        => 'integer',
+            'user_ids'          => 'nullable|array',
+            'user_ids.*'        => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
         try {
@@ -105,6 +107,8 @@ class MenuController extends Controller
             'description'      => 'nullable|string',
             'role_ids'         => 'nullable|array',
             'role_ids.*'       => 'integer',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
         try {

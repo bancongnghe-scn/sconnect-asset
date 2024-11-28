@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\AssetTypeGroupRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 
 class AssetTypeGroupService

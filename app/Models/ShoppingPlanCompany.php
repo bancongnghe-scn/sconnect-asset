@@ -32,20 +32,37 @@ class ShoppingPlanCompany extends Model
     public const STATUS_REGISTER                    = 2;
     public const STATUS_PENDING_ACCOUNTANT_APPROVAL = 3;
     public const STATUS_PENDING_MANAGER_APPROVAL    = 4;
-    public const STATUS_DISAPPROVAL                 = 5;
+    public const STATUS_APPROVAL                    = 5;
+    public const STATUS_DISAPPROVAL                 = 6;
 
     public const TYPE_YEAR    = 1;
     public const TYPE_QUARTER = 2;
     public const TYPE_WEEK    = 3;
-
-    public const TYPE_NAME = [
+    public const TYPE_NAME    = [
         self::TYPE_YEAR    => 'năm',
         self::TYPE_QUARTER => 'quý',
         self::TYPE_WEEK    => 'tuần',
     ];
+    public const TYPE_APPROVAL    = 'approval';
+    public const TYPE_DISAPPROVAL = 'disapproval';
 
     public function monitorShoppingPlanYear(): HasMany
     {
         return $this->hasMany(Monitor::class, 'target_id')->where('type', Monitor::TYPE_SHOPPING_PLAN_COMPANY[ShoppingPlanCompany::TYPE_YEAR]);
+    }
+
+    public function monitorShoppingPlanQuarter(): HasMany
+    {
+        return $this->hasMany(Monitor::class, 'target_id')->where('type', Monitor::TYPE_SHOPPING_PLAN_COMPANY[ShoppingPlanCompany::TYPE_QUARTER]);
+    }
+
+    public function monitorShoppingPlanWeek(): HasMany
+    {
+        return $this->hasMany(Monitor::class, 'target_id')->where('type', Monitor::TYPE_SHOPPING_PLAN_COMPANY[ShoppingPlanCompany::TYPE_WEEK]);
+    }
+
+    public function shoppingPlanOrganizations(): HasMany
+    {
+        return $this->hasMany(ShoppingPlanOrganization::class, 'shopping_plan_company_id')->orderBy('status');
     }
 }

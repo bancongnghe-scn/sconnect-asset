@@ -6,7 +6,7 @@ use App\Http\Resources\ListSupplierResource;
 use App\Http\Resources\SupplierInfoResource;
 use App\Repositories\IndustryRepository;
 use App\Repositories\SupplierRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\DB;
 
 class SupplierService
@@ -33,7 +33,7 @@ class SupplierService
                 'limit' => $filters['limit'] ?? 10,
             ],
             [
-                'id', 'code', 'name', 'contact', 'address', 'website', 'status',
+                'id', 'code', 'name', 'contact', 'address', 'contract_user', 'status',
             ],
             [
                 'supplierAssetIndustries:id,supplier_id,industries_id' => [

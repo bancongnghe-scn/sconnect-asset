@@ -19,6 +19,7 @@ class ContractInfoResource extends JsonResource
             'from'           => $this->resource->from,
             'to'             => $this->resource->to,
             'contract_value' => $this->resource->contract_value,
+            'contract_link'  => $this->resource->contract_link,
             'description'    => $this->resource->description,
         ];
 
@@ -44,10 +45,14 @@ class ContractInfoResource extends JsonResource
             $contract['user_ids'][] = $user->user_id;
         }
 
-        $contractAppendix = $this->resource->contractAppendix ?? [];
+        $contractAppendix = $this->resource->contractAppendixApproval ?? [];
         foreach ($contractAppendix as $appendix) {
-            $contract['contractAppendix'][] = [
-
+            $contract['appendixes'][] = [
+                'code'         => $appendix->code,
+                'name'         => $appendix->name,
+                'signing_date' => $appendix->signing_date,
+                'from'         => $appendix->from,
+                'description'  => $appendix->description,
             ];
         }
 
