@@ -14,9 +14,11 @@
 
                     <div>
                         <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span @date-change="data.start_time = $event.detail.start; data.end_time = $event.detail.end">
-                            @include('common.datepicker.datepicker_range', ['placeholder' => 'Chọn thời gian đăng ký'])
-                        </span>
+                        @include('common.datepicker.datepicker_range', [
+                                'placeholder' => 'Chọn thời gian đăng ký',
+                                'start' => 'data.start_time',
+                                'end' => 'data.end_time'
+                        ])
                     </div>
 
                     <template x-if="listUser.length > 0">

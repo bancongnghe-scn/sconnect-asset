@@ -32,13 +32,13 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-
         data: {
             time: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
         },
+
         listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
         id: null,

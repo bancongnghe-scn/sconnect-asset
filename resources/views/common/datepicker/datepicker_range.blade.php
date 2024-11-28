@@ -10,13 +10,10 @@
                 clearButton: true,
                 locale: localeEn,
                 dateFormat: 'dd/MM/yyyy',
-                selectedDates: [
-                        new Date('{{ $start ?? null }}'),
-                        new Date('{{ $end ?? null }}')
-                    ],
+                selectedDates: [{{$start}} !== null ? formatDate({{$start}}) : new Date(), {{$end}} !== null ? formatDate({{$end}}) : new Date()],
                 onSelect: (selectedDates) => {
-                    @if(isset($start)) {{$start}} = selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null @endif
-                    @if(isset($end)) {{$end}} = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null @endif
+                    {{$start}} =  selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
+                    {{$end}} =  selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
                 }
             })"
     >
