@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\AssetLostRequest;
-use App\Services\Manage\AssetLostService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Services\Manage\AssetLostService;
 
 class AssetLostController extends Controller
 {
@@ -19,18 +17,16 @@ class AssetLostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getListAssetLost(AssetLostRequest $request)
+    public function getListAssetLost(Request $request)
     {
-        $request->validated([
+        $request->validate([
             'name_code'    => 'nullable|string',
         ]);
         try {
-            $result = $this->assetLostService->list($request->all());
+            $result = $this->assetLostService->getListAssetLost($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -42,21 +38,22 @@ class AssetLostController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
 
     public function updateAssetLost(Request $request)
     {
+        $request->validate([
+            'id'     => 'required|integer',
+            'status' => 'required|integer',
+        ]);
+
         try {
             $result = $this->assetLostService->updateAssetLost($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }

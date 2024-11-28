@@ -22,16 +22,6 @@ class AssetRepository extends BaseRepository
         return $updatedRows > 0;
     }
 
-    public function checkExistAsset($ids)
-    {
-        $count = $this->_model->whereIn('id', $ids)->count();
-        if ($count === count($ids)) {
-            return true;
-        }
-
-        return false;
-    }
-
     public function getElementAsset($ids, $columns = ['*'])
     {
         return $this->_model->whereIn('id', $ids)

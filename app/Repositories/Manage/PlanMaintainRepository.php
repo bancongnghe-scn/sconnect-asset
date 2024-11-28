@@ -20,8 +20,8 @@ class PlanMaintainRepository extends BaseRepository
 
         if (!empty($filters['name_code'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('code', 'LIKE', '%' . $filters['name_code'] . '%')
-                  ->orWhere('name', 'LIKE', '%' . $filters['name_code'] . '%');
+                $q->where('code', 'LIKE', $filters['name_code'] . '%')
+                  ->orWhere('name', 'LIKE', $filters['name_code'] . '%');
             });
         }
 
@@ -38,11 +38,6 @@ class PlanMaintainRepository extends BaseRepository
         }
 
         return $query->get();
-    }
-
-    public function checkExistPlanMaintain($id)
-    {
-        return $this->_model->where('id', $id)->exists();
     }
 
     public function deleteMultipleByIds($ids)

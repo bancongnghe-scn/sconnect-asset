@@ -80,6 +80,12 @@ document.addEventListener('alpine:init', () => {
             4: 'Đã mất',
             5: 'Đã hủy'
         },
+
+        assets: {
+            'Hoạt động' : 1,
+            'Đã hủy' : 5,
+        },
+
         id: null,
         idModalBackUI: "idModalBackUI",
         idModalCancelUI: "idModalCancelUI",
@@ -279,9 +285,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             // Chuyển về trạng thái hoạt động
-            this.data.status = 1;
+            this.data.status = this.assets['Hoạt động'];;
 
-            const response = await window.apiRevertAsset(this.data)
+            const response = await window.apiRevertAsset([this.data])
             
             if (!response.success) {
                 this.loading = false
@@ -315,10 +321,10 @@ document.addEventListener('alpine:init', () => {
 
             // Revert assets về status = 1
             this.dataSelectMulti.forEach(item => {
-                item.status = 1;
+                item.status = this.assets['Hoạt động'];
             });
 
-            const response = await window.apiRevertAsset()
+            const response = await window.apiRevertAsset(this.dataSelectMulti)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
@@ -339,7 +345,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             // Trạng thái hủy = 5
-            this.data.status = 5;
+            this.data.status = this.assets['Đã hủy'];
 
             const response = await window.apiCanceltAsset(this.data)
             
@@ -376,7 +382,7 @@ document.addEventListener('alpine:init', () => {
 
             // Cancel assets về status = 5
             this.dataSelectMulti.forEach(item => {
-                item.status = 5;
+                item.status = this.assets['Đã hủy'];
                 item.description = description
             });
 

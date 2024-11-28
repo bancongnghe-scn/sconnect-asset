@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AssetLostRequest;
 use App\Services\Manage\AssetLiquidationService;
-use Illuminate\Support\Facades\Log;
 
 class AssetLiquidationController extends Controller
 {
@@ -18,17 +17,16 @@ class AssetLiquidationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getListAssetLiquidation(AssetLostRequest $request)
+    public function getListAssetLiquidation(Request $request)
     {
-        $request->validated([
+        $request->validate([
             'name_code'    => 'nullable|string',
         ]);
         try {
-            $result = $this->assetLiquidationService->list($request->all());
+            $result = $this->assetLiquidationService->getListAssetLiquidation($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return response_error();
         }

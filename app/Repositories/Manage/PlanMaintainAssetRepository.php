@@ -12,24 +12,7 @@ class PlanMaintainAssetRepository extends BaseRepository
         return PlanMaintainAsset::class;
     }
 
-    public function getAssetId($planIds): array
-    {
-        $planIds = is_array($planIds) ? $planIds : [$planIds];
-
-        return $this->_model->newQuery()
-            ->whereIn('plan_maintain_id', $planIds)
-            ->pluck('asset_id')
-            ->toArray();
-    }
-
-    public function updateMulti($ids, $data)
-    {
-        return $this->_model->newQuery()
-            ->whereIn('id', $ids)
-            ->update($data);
-    }
-
-    public function getAssetIdWithStatus($planIds, $columns = ['*'])
+    public function getAssetOfPlanMaintain($planIds, $columns = ['*'])
     {
         $planIds = is_array($planIds) ? $planIds : [$planIds];
 
@@ -37,5 +20,12 @@ class PlanMaintainAssetRepository extends BaseRepository
             ->whereIn('plan_maintain_id', $planIds)
             ->select($columns)
             ->get();
+    }
+
+    public function updateMulti($ids, $data)
+    {
+        return $this->_model->newQuery()
+            ->whereIn('id', $ids)
+            ->update($data);
     }
 }

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AssetCancelRequest;
 use App\Services\Manage\AssetCancelService;
-use Illuminate\Support\Facades\Log;
 
 class AssetCancelController extends Controller
 {
@@ -18,18 +17,16 @@ class AssetCancelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function getListAssetCancel(AssetCancelRequest $request)
+    public function getListAssetCancel(Request $request)
     {
-        $request->validated([
+        $request->validate([
             'name_code'    => 'nullable|string',
         ]);
         try {
-            $result = $this->assetCancelService->list($request->all());
+            $result = $this->assetCancelService->getListAssetCancel($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }

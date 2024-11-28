@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Manage;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PlanLiquidationRequest;
-use App\Services\Manage\PlanLiquidationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use App\Services\Manage\PlanLiquidationService;
 
 class PlanLiquidationController extends Controller
 {
@@ -16,9 +14,9 @@ class PlanLiquidationController extends Controller
 
     }
 
-    public function create(PlanLiquidationRequest $request)
+    public function create(Request $request)
     {
-        $request->validated([
+        $request->validate([
             'name'      => 'required|string',
             'code'      => 'required|string',
             'note'      => 'nullable|string',
@@ -28,21 +26,22 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
 
-    public function get(PlanLiquidationRequest $request)
+    public function get(Request $request)
     {
+        $request->validate([
+            'name_code'         => 'nullable|string',
+            'created_at'        => 'nullable|string',
+            'status'            => 'nullable|integer',
+        ]);
         try {
-            $listPlanLiquidation = $this->planLiquidationService->list($request->all());
+            $result = $this->planLiquidationService->listPlanLiquidation($request->all());
 
-            return response_success($listPlanLiquidation);
+            return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -54,21 +53,21 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
 
     public function updateAssetToPlan(Request $request)
     {
+        $request->validate([
+            'plan_id'       => 'nullable|integer',
+            'asset_ids'     => 'nullable|array',
+        ]);
         try {
             $result = $this->planLiquidationService->updateAssetToPlanLiquidation($request);
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -80,8 +79,6 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -93,8 +90,6 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -110,8 +105,6 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -130,14 +123,16 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
 
     public function changeStatusMultiAssetOfPlan(Request $request)
     {
+        $request->validate([
+            'ids'       => 'required|array',
+            'status'    => 'required|integer',
+        ]);
         try {
             $plan_maintain_asset_ids = $request->get('ids');
             $dataUpdate              = $request->except('ids');
@@ -149,8 +144,6 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }

@@ -14,11 +14,10 @@ class AssetLiquidationService
 
     }
 
-    public function list(array $filters = [])
+    public function getListAssetLiquidation(array $filters = [])
     {
-        // Thêm trạng thái tài sản đề nghị thanh lý
         $filters['status'] = Asset::STATUS_PROPOSAL_LIQUIDATION;
-        $data              = $this->assetLiquidationRepository->getListing(
+        $data              = $this->assetLiquidationRepository->getListAssetLiquidation(
             $filters,
             [
                 'id',

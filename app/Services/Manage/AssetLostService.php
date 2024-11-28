@@ -4,7 +4,10 @@ namespace App\Services\Manage;
 
 use App\Repositories\Manage\AssetLostRepository;
 use App\Http\Resources\Manage\AssetLostResource;
+use App\Models\Asset;
 use App\Support\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AssetLostService
 {
@@ -14,12 +17,10 @@ class AssetLostService
 
     }
 
-    public function list(array $filters = [])
+    public function getListAssetLost(array $filters = [])
     {
-        // Thêm trạng thái tài sản mất
-        $filters['status'] = 4;
-
-        $data = $this->assetLostRepository->getListing(
+        $filters['status'] = Asset::STATUS_LOST;
+        $data              = $this->assetLostRepository->getListAssetLost(
             $filters,
             [
                 'id',
@@ -70,39 +71,53 @@ class AssetLostService
 
     public function updateAssetLost(array $data)
     {
-
-        $multi = array_reduce($data, function ($carry, $item) {
-            return $carry && is_array($item);
-        }, true);
-
-        if ($multi) {
+        try {
+            DB::beginTransaction();
             foreach ($data as $asset) {
-                $this->updateOneAsset($asset);
+                $result = $this->updateOneAsset($asset);
+                if (!$result['success']) {
+                    DB::rollBack();
+
+                    return response_error($result['error_code']);
+                }
             }
-        } else {
-            $this->updateOneAsset($data);
+
+            // Update signing_date,description to history
+            // ...
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response_error($result['error_code']);
         }
-
-
-        // Update signing_date,description
-        // ...
-
-        return [
-            'success' => true,
-        ];
     }
 
     private function updateOneAsset($data)
     {
         $assetLost = $this->assetLostRepository->find($data['id']);
-
-        if (empty($assetLost)) {
+        if (is_null($assetLost)) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2028,
+                'error_code' => AppErrorCode::CODE_2004,
+            ];
+        }
+        $data['updated_by'] = Auth::id();
+        $updateStatus       = ['status' => $data['status']];
+        $assetLost->fill($updateStatus)->save();
+        if (!$assetLost->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2008,
             ];
         }
 
-        $this->assetLostRepository->update($assetLost, ['status' => $data['status']]);
+        return [
+            'success' => true,
+        ];
     }
 }

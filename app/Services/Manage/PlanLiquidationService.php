@@ -2,17 +2,16 @@
 
 namespace App\Services\Manage;
 
-use App\Http\Resources\Manage\PlanMaintainResource;
 use App\Models\Asset;
 use App\Models\PlanMaintain;
-use App\Models\PlanMaintainAsset;
-use App\Repositories\AssetRepository;
 use App\Support\AppErrorCode;
+use App\Models\PlanMaintainAsset;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\AssetRepository;
+use App\Http\Resources\Manage\PlanMaintainResource;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\Manage\PlanMaintainAssetRepository;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class PlanLiquidationService
 {
@@ -89,7 +88,6 @@ class PlanLiquidationService
             ];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return [
                 'success'    => false,
@@ -98,9 +96,8 @@ class PlanLiquidationService
         }
     }
 
-    public function list(array $filters = [])
+    public function listPlanLiquidation(array $filters = [])
     {
-        // Loại kế hoạch là thanh lý
         $filters['type'] = PlanMaintain::TYPE_LIQUIDATION;
         $data            = $this->planMaintainRepository->getListing(
             $filters,
@@ -158,22 +155,6 @@ class PlanLiquidationService
             $planId   = $request->plan_id;
             $assetIds = $request->asset_ids;
 
-            $checkExistPlanLiquidation = $this->planMaintainRepository->checkExistPlanMaintain($planId);
-            if (!$checkExistPlanLiquidation) {
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2004,
-                ];
-            }
-
-            $checkExistAsset = $this->assetRepository->checkExistAsset($assetIds);
-            if (!$checkExistAsset) {
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2004,
-                ];
-            }
-
             $dataPlanLiquidationAsset = [];
             $assets                   = $this->assetRepository->getElementAsset($assetIds, ['id', 'price_liquidation']);
 
@@ -202,7 +183,6 @@ class PlanLiquidationService
             ];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return [
                 'success'    => false,
@@ -247,7 +227,6 @@ class PlanLiquidationService
             ];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return [
                 'success'    => false,
@@ -263,7 +242,9 @@ class PlanLiquidationService
 
             // TODO: Remove plan liquidation and revert asset to status STATUS_PROPOSAL_LIQUIDATION
 
-            $assetIds = $this->planMaintainAssetRepository->getAssetId($ids);
+            $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($ids, ['asset_id'])
+                ->pluck('asset_id')
+                ->toArray();
             if (!empty($assetIds)) {
                 $updateAssets = $this->assetRepository->changeStatusAsset($assetIds, Asset::STATUS_PROPOSAL_LIQUIDATION);
 
@@ -291,7 +272,6 @@ class PlanLiquidationService
             ];
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
 
             return [
                 'success'    => false,
@@ -321,7 +301,7 @@ class PlanLiquidationService
         if (!empty($dataUpdate['status'])) {
             if (in_array($dataUpdate['status'], [PlanMaintain::STATUS_APPROVAL, PlanMaintain::STATUS_REJECT])) {
 
-                $assetIds = $this->planMaintainAssetRepository->getAssetIdWithStatus($id, ['asset_id', 'status']);
+                $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($id, ['asset_id', 'status']);
                 if (PlanMaintain::STATUS_APPROVAL == $dataUpdate['status']) {
 
                     $statusActions = [
