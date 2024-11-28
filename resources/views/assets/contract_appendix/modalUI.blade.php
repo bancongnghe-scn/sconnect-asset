@@ -11,12 +11,14 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control select2" id="selectContract" x-model="data.contract_id">
-                                <option value="">Chọn hợp đồng</option>
-                                <template x-for="contract in listContract" :key="contract.id">
-                                    <option :value="contract.id" x-text="contract.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listContract.length > 0">
+                                <span x-data="{values: listContract}">
+                                    @include('common.select2.modal.extent.select2_single_modal', [
+                                        'placeholder' => 'Chọn hợp đồng',
+                                        'model' => 'data.contract_id'
+                                    ])
+                                </span>
+                            </template>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
@@ -48,12 +50,14 @@
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label
                                     class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" x-model="data.user_ids" id="selectUserIdApeendix"
-                                    multiple="multiple" data-placeholder="Chọn người theo dõi">
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listUser.length > 0">
+                                <span x-data="{values: listUser}">
+                                    @include('common.select2.modal.extent.select2_multiple_modal', [
+                                        'placeholder' => 'Chọn người theo dõi',
+                                        'model' => 'data.user_ids'
+                                    ])
+                                </span>
+                            </template>
                         </div>
                     </div>
                     <div class="row mb-3">

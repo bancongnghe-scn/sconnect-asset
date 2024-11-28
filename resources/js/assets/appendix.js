@@ -9,7 +9,6 @@ document.addEventListener('alpine:init', () => {
             this.getListContract({status: [2]})
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -253,10 +252,6 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterContract').val([]).change()
-            $('#filterStatusAppendix').val([]).change()
-            $('#filterSigningDate').val(null).change()
-            $('#filterFrom').val(null).change()
         },
 
         confirmRemove(id) {
@@ -273,21 +268,6 @@ document.addEventListener('alpine:init', () => {
 
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
             this.id = ids
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterContract') {
-                    this.filters.contract_ids = value
-                } else if (event.target.id === 'filterStatusAppendix') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserIdApeendix') {
-                    this.data.user_ids = value
-                } else if (event.target.id === 'selectContract') {
-                    this.data.contract_id = value
-                }
-            });
         },
 
         handleFiles() {

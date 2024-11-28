@@ -51,12 +51,12 @@
                                     <div x-data="{
                                         values: listUser,
                                         model: data.monitor_ids,
-                                        disabled: true
                                     }"
                                          @select-change="data.monitor_ids = $event.detail"
                                     >
                                         @include('common.select2.extent.select2_multiple', [
                                             'placeholder' => 'Chọn người quan sát',
+                                            'disabled' => true
                                         ])
                                     </div>
                                 </div>

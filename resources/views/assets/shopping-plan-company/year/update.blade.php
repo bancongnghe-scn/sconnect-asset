@@ -102,12 +102,12 @@
                                     <div x-data="{
                                         values: listUser,
                                         model: data.monitor_ids,
-                                        disabled: !([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))
                                     }"
                                         @select-change="data.monitor_ids = $event.detail"
                                     >
                                         @include('common.select2.extent.select2_multiple', [
                                             'placeholder' => 'Chọn người quan sát',
+                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))'
                                         ])
                                     </div>
                                 </div>

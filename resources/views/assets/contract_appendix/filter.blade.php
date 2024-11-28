@@ -9,19 +9,26 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Hợp đồng</label>
-                        <select class="form-select select2" id="filterContract" multiple="multiple" data-placeholder="Chọn hợp đồng">
-                            <template x-for="value in listContract" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
+                        <span x-data="{
+                                values: listContract, model: filters.contract_ids,
+                                init() {this.$watch('filters.contract_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                            }"
+                              @select-change="filters.type = $event.detail"
+                        >
+                                @include('common.select2.extent.select2_multiple', [
+                                    'placeholder' => 'Chọn hợp đồng'
+                                ])
+                        </span>
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <select class="form-control select2" id="filterStatusAppendix" multiple="multiple" data-placeholder="Chọn trạng thái">
-                            <template x-for="(value, key) in listStatus">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
+                        <span x-data="{values: listStatus, model: filters.status,
+                                       init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                        }" @select-change="filters.status = $event.detail">
+                            @include('common.select2.simple.select2_multiple', [
+                                'placeholder' => 'Chọn trạng thái'
+                            ])
+                        </span>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
