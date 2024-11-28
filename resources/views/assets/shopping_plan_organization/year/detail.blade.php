@@ -123,17 +123,19 @@
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                     <tr>
                                                         <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id, disabled: true}">
+                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}">
                                                                 @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn loại tài sản'
+                                                                    'placeholder' => 'Chọn loại tài sản',
+                                                                    'disabled' => true
                                                                 ])
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id, disabled: true}">
+                                                            <span x-data="{values: list_job, model: asset.job_id}">
                                                                 @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn chức danh'
+                                                                    'placeholder' => 'Chọn chức danh',
+                                                                    'disabled' => true
                                                                 ])
                                                             </span>
                                                         </td>
