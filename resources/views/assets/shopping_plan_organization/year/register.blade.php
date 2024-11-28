@@ -33,17 +33,24 @@
                         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                             <div>
                                 <label class="tw-font-bold">Tên</label>
-                                <div class="form-control" x-text="data.name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Đơn vị</label>
-                                <div class="form-control" x-text="data.organization_name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.organization_name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký</label>
-                                <div class="form-control" x-text="data.register_time"></div>
+                                <template x-if="data.start_time !== null">
+                                    @include('common.datepicker.datepicker_range', [
+                                         'placeholder' => 'Chọn thời gian đăng ký',
+                                         'disabled' => true,
+                                         'start' => 'data.start_time',
+                                         'end' => 'data.end_time',
+                                    ])
+                                </template>
                             </div>
                         </div>
                     </div>
