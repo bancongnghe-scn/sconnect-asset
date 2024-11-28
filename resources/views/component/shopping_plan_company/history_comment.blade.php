@@ -16,10 +16,25 @@
     <div class="mt-3 tw-h-[70dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid">
         <div class="mt-3" x-show="activeLink.history">
             <div class="container">
-                <template x-for="log in logs">
-                    <p x-text="`${log.created_at} - ${log.created_by} : ${log.desc}`"></p>
-                </template>
-            </div>
+                <div class="list-group">
+                    <template x-for="log in logs">
+                        <div class="d-flex tw-gap-x-2">
+                            <div class="tw-w-8 d-flex flex-column align-items-center">
+                            <span class="text-primary border tw-rounded-full d-flex tw-bg-blue-100">
+                                <i class="fa-regular fa-star tw-p-[5px] tw-text-blue-600" style="color: #74C0FC"></i>
+                            </span>
+                                <div class="border-start border-2 flex-grow-1"></div>
+                            </div>
+                            <div class="w-auto border rounded p-2 tw-bg-zinc-100 mb-3">
+                                <p class="mb-1 text-muted small" x-text="log.created_at"></p>
+                                <p class="mb-0">
+                                    <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
+                                    <span x-text="log.desc"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
         </div>
         <div class="mt-3" id="comment" x-show="activeLink.comment">
             <div class="tw-h-[65dvh]">

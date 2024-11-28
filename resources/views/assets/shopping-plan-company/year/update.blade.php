@@ -77,20 +77,23 @@
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
-                                <label class="tw-font-bold">Năm<span
-                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <input type="text" class="form-control yearPicker" id="selectYear" x-model="data.time"
-                                       autocomplete="off"
-                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW"
-                                >
+                                <label class="tw-font-bold">Năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                @include('common.datepicker.datepicker_year', [
+                                        'model' => 'data.time',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                ])
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <input type="text" class="form-control dateRange" id="selectDateRegister"
-                                       placeholder="Chọn thời gian đăng ký" autocomplete="off"
-                                       :disabled="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER"
-                                >
+                                <template x-if="data.start_time !== null">
+                                    @include('common.datepicker.datepicker_range', [
+                                       'placeholder' => 'Chọn thời gian đăng ký',
+                                       'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER',
+                                       'start' => 'data.start_time',
+                                       'end' => 'data.end_time',
+                                    ])
+                                </template>
                             </div>
 
                             <template x-if="listUser.length > 0">

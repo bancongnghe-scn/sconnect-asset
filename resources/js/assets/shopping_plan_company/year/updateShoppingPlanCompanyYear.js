@@ -9,8 +9,6 @@ document.addEventListener('alpine:init', () => {
             this.id = split.pop();
             this.action = split.at(5);
             this.getOrganizationRegisterYear()
-            this.initDateRangePicker()
-            this.initYearPicker()
             this.getInfoShoppingPlanCompanyYear()
             this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
         },
@@ -29,7 +27,6 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         register: [],
         selectedRow: [],
-        dateRangePicker: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -38,7 +35,6 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiShowShoppingPlanCompany(this.id)
                 if (response.success) {
                     const data = response.data.data
-                    this.dateRangePicker.selectDate([window.convertDateString(data.start_time), window.convertDateString(data.end_time)]);
                     this.data.time = data.time
                     this.data.status = data.status
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
@@ -244,43 +240,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        initDateRangePicker() {
-            this.dateRangePicker = new AirDatepicker('.dateRange', {
-                range: true,
-                multipleDatesSeparator: ' - ',
-                autoClose: true,
-                clearButton: true,
-                locale: localeEn,
-                dateFormat: 'dd/MM/yyyy',
-                onSelect: (selectedDates) => {
-                    this.data.start_time = selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
-                    this.data.end_time = selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
-                }
-            })
-        },
-
-        initYearPicker() {
-            new AirDatepicker('.yearPicker', {
-                view: 'years', // Hiển thị danh sách năm khi mở
-                minView: 'years', // Giới hạn chỉ cho phép chọn năm
-                dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
-                autoClose: true, // Tự động đóng sau khi chọn năm
-                clearButton: true, // Nút xóa để bỏ chọn
-                onSelect: ({date}) => {
-                    const year = date.getFullYear();
-                    this.data.time = year != null ? year : null
-                }
-            });
-            $('.yearPicker').on('keydown', (e) => {
-                if (e.key === 'Backspace' || e.key === 'Delete') {
-                    setTimeout(() => {
-                        if (!$('.yearPicker').value) {
-                            this.data.time = null
-                        }
-                    }, 0);
-                }
-            });
-        },
 
         confirmRemove() {
             $("#"+this.idModalConfirmDelete).modal('show');
