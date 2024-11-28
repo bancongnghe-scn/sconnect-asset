@@ -43,7 +43,7 @@
                           }"
                     ></span>
                 </td>
-                <td x-text="assetRegister.asset_type_name ?? '-'" class="text-center"></td>
+                <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
                     <td x-text="assetRegister.register?.[number - 1] ?? '-'" class="text-center"></td>
                 </template>

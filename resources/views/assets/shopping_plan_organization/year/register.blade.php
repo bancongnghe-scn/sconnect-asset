@@ -84,10 +84,10 @@
                                         </div>
 
                                         <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                            <div class="tw-max-w-full overflow-y-scroll custom-scroll">
+                                            <div class="tw-max-w-full overflow-x-scroll custom-scroll">
                                                 <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                                     <thead>
-                                                    <tr class="tw-w-fit">
+                                                    <tr class="tw-text-nowrap">
                                                         <th rowspan="1" colspan="1">Loại tài sản</th>
                                                         <th rowspan="1" colspan="1">Đơn vị tính</th>
                                                         <th rowspan="1" colspan="1">Chức danh</th>
@@ -100,7 +100,7 @@
                                                     </thead>
                                                     <tbody>
                                                     <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                        <tr
+                                                        <tr class="tw-text-nowrap"
                                                             x-data="{
                                                             get measure() {
                                                                 if (asset.asset_type_id) {
@@ -138,7 +138,7 @@
                                                             </td>
                                                             <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                             <td>
-                                                                <input class="form-control" type="number" min="1"
+                                                                <input class="form-control w-auto" type="number" min="1"
                                                                        x-model="asset.quantity_registered"
                                                                        @change="validateQuantityRegistered(asset.quantity_registered)"
                                                                        @input="
@@ -149,7 +149,7 @@
                                                             </td>
                                                             <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
                                                             <td>
-                                                                <input class="form-control" x-model="asset.description" type="text">
+                                                                <input class="form-control w-auto" x-model="asset.description" type="text">
                                                             </td>
                                                             <td class="text-center align-middle">
                                                                 <button class="border-0 bg-body" @click="deleteRow(index, key)">
