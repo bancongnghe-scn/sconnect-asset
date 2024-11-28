@@ -21,9 +21,6 @@ class ShoppingPlanOrganizationService
             $organizationIds = $this->organizationRepository->all()->pluck('id')->toArray();
         }
 
-        // lấy danh sách quản lý của đơn vị
-        $managerIds  = $organizationIds;
-
         $dataInsert  = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
