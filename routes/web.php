@@ -62,7 +62,7 @@ Route::middleware(['checkAuth'])->group(function () {
             dd(Illuminate\Support\Facades\Cache::forget($key));
         });
         Route::get('tag', function () {
-            Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->flush();
+            dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->flush());
         });
     });
 });
