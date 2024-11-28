@@ -109,4 +109,10 @@ Route::middleware('web')->group(function () {
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
 
     Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
+
+    Route::prefix('cache')->controller(App\Http\Controllers\CachingController::class)->group(function () {
+        Route::post('flush', 'flushCache');
+        Route::post('add', 'addCache');
+        Route::get('get', 'getCache');
+    });
 });
