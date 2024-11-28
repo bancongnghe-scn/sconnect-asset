@@ -26,6 +26,11 @@ Route::get('ping', function () {
     return 'pong';
 });
 
+Route::get('cache', function () {
+    $key = config('cache_keys.keys.menu_key').Illuminate\Support\Facades\Auth::id();
+    Illuminate\Support\Facades\Cache::forget($key);
+});
+
 Route::middleware('checkAuth')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
