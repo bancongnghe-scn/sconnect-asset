@@ -54,6 +54,9 @@ class OrganizationRegisterYearResource extends JsonResource
                     $assetRegister[$shoppingAsset->asset_type_id]['total_register']  = 0;
                     $assetRegister[$shoppingAsset->asset_type_id]['asset_type_name'] = $shoppingAsset->assetType?->name;
                     $assetRegister[$shoppingAsset->asset_type_id]['register']        = [];
+                    for ($i = 1; $i <= 12; ++$i) {
+                        $assetRegister[$shoppingAsset->asset_type_id]['register'][$i] = null;
+                    }
                 }
 
                 $assetRegister[$shoppingAsset->asset_type_id]['total_register'] += $shoppingAsset->quantity_registered;

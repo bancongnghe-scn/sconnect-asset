@@ -26,4 +26,13 @@ class RegisterShoppingPlanOrganizationRequest extends FormRequest
             'registers.*.assets.*.description'         => 'nullable|string',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'registers.*.assets.*.asset_type_id'       => __('validation.attributes.asset_type_ids'),
+            'registers.*.assets.*.job_id'              => __('attributes.job_id'),
+            'registers.*.assets.*.quantity_registered' => __('attributes.quantity_registered'),
+        ];
+    }
 }
