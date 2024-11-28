@@ -193,6 +193,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
 
             return [
