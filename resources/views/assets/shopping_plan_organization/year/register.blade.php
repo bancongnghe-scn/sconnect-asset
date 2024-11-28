@@ -18,32 +18,39 @@
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
-                            <span x-text="STATUS_SHOPPING_PLAN_ORGANIZATION[data.status]" class="p-1 border rounded"
+                            <span x-show="data.status" x-text="STATUS_SHOPPING_PLAN_ORGANIZATION[data.status]" class="p-1 border rounded"
                                   :class="{
-                                             'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
-                                             'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                             'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                             'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                                            'tw-text-purple-600 tw-bg-purple-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
+                                            'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                                            'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
+                                            'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                                   }"
                             ></span>
                         </div>
                         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                             <div>
                                 <label class="tw-font-bold">Tên</label>
-                                <div class="form-control" x-text="data.name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Đơn vị</label>
-                                <div class="form-control" x-text="data.organization_name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.organization_name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký</label>
-                                <div class="form-control" x-text="data.register_time"></div>
+                                <template x-if="data.start_time !== null">
+                                    @include('common.datepicker.datepicker_range', [
+                                         'placeholder' => 'Chọn thời gian đăng ký',
+                                         'disabled' => true,
+                                         'start' => 'data.start_time',
+                                         'end' => 'data.end_time',
+                                    ])
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -81,7 +88,7 @@
                                                 <thead>
                                                 <tr>
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị</th>
+                                                    <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị tính</th>
                                                     <th rowspan="1" colspan="1" >Chức danh</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
                                                     <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
@@ -93,22 +100,33 @@
                                                 <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                     <tr
+                                                        x-data="{
+                                                            get measure() {
+                                                                if (asset.asset_type_id) {
+                                                                    return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
+                                                                }
+                                                            }
+                                                        }"
                                                         x-init="$watch('asset.price', value => calculatePrice(index))"
                                                     >
                                                         <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id, disabled: false}"
+                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}"
                                                                   @select-change="
                                                                       asset.asset_type_id = $event.detail
                                                                       asset.price = getPrice(asset.asset_type_id, asset.job_id)
                                                                   "
                                                             >
-                                                                @include('common.select2.extent.select2', ['placeholder' => 'Chọn tài sản'])
+                                                                @include('common.select2.extent.select2', [
+                                                                   'placeholder' => 'Chọn tài sản',
+                                                                ])
                                                             </span>
-
                                                         </td>
-                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
+                                                        <td class="align-middle"
+                                                            x-text="measure"
+                                                        >
+                                                        </td>
                                                         <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id, disabled: false}"
+                                                            <span x-data="{values: list_job, model: asset.job_id}"
                                                                   @select-change="
                                                                       asset.job_id = $event.detail
                                                                       asset.price = getPrice(asset.asset_type_id, asset.job_id)
@@ -119,8 +137,9 @@
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                         <td>
-                                                            <input class="form-control" type="number"
+                                                            <input class="form-control" type="number" min="1"
                                                                    x-model="asset.quantity_registered"
+                                                                   @change="validateQuantityRegistered(asset.quantity_registered)"
                                                                    @input="
                                                                        asset.quantity_approved = asset.quantity_registered
                                                                        calculateRegister(index)

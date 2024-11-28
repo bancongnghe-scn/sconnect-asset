@@ -44,7 +44,6 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 this.data = response.data
-                this.data.register_time = format(this.data.start_time, 'dd/MM/yyyy') + ' - ' + format(this.data.end_time, 'dd/MM/yyyy')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -227,5 +226,11 @@ document.addEventListener('alpine:init', () => {
             this.registers[index].approval.price = price_approval
             this.registers[index].register.price = price_register
         },
+
+        validateQuantityRegistered(value) {
+            if (+value < 1) {
+                toast.error('Số lượng đăng ký phải lớn hơn 0')
+            }
+        }
     }));
 });

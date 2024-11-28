@@ -5,9 +5,7 @@
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Năm</label>
-                        <span @date-change="filters.time = $event.detail">
-                            @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
-                        </span>
+                        @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
                     </div>
 
                     <div class="col-2">

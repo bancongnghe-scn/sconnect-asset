@@ -44,7 +44,7 @@ const STATUS_SHOPPING_PLAN_COMPANY_APPROVAL = 5
 const STATUS_SHOPPING_PLAN_COMPANY_CANCEL = 6
 const STATUS_SHOPPING_PLAN_COMPANY = {
     1: 'Mới tạo',
-    2: 'Đăng ký',
+    2: 'Mở đăng ký',
     3: 'Chờ kế toán duyệt',
     4: 'Chờ giám đốc duyệt',
     5: 'Đã duyệt',
