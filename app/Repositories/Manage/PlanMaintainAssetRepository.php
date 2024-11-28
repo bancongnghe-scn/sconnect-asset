@@ -4,6 +4,7 @@ namespace App\Repositories\Manage;
 
 use App\Models\PlanMaintainAsset;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class PlanMaintainAssetRepository extends BaseRepository
 {
@@ -14,10 +15,8 @@ class PlanMaintainAssetRepository extends BaseRepository
 
     public function getAssetOfPlanMaintain($planIds, $columns = ['*'])
     {
-        $planIds = is_array($planIds) ? $planIds : [$planIds];
-
         return $this->_model->newQuery()
-            ->whereIn('plan_maintain_id', $planIds)
+            ->whereIn('plan_maintain_id', Arr::wrap($planIds))
             ->select($columns)
             ->get();
     }

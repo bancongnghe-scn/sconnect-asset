@@ -9,15 +9,15 @@ class AssetLiquidationResource extends JsonResource
 {
     public function toArray($request)
     {
-        $data = $this->resource->map(function ($data) {
+        $data = $this->resource->map(function ($item) {
             return [
-                'id'                    => $data->id,
-                'code'                  => $data->code,
-                'name'                  => $data->name,
-                'status'                => Asset::STATUS_NAME[$data->status],
-                'date'                  => $data->date ?? null,
-                'reason'                => $data->reason ?? null,
-                'price_liquidation'     => $data->price_liquidation ?? null,
+                'id'                    => $item->id,
+                'code'                  => $item->code,
+                'name'                  => $item->name,
+                'status'                => Asset::STATUS_NAME[$item->status],
+                'date'                  => $item?->date,
+                'reason'                => $item?->reason,
+                'price_liquidation'     => $item?->price_liquidation,
             ];
         });
         $result = $this->resource->toArray();

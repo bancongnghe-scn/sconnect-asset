@@ -9,15 +9,15 @@ class AssetCancelResource extends JsonResource
 {
     public function toArray($request)
     {
-        $data = $this->resource->map(function ($data) {
+        $data = $this->resource->map(function ($item) {
             return [
-                'code'                  => $data->code,
-                'name'                  => $data->name,
-                'user_name'             => $data->user->name ?? null,
-                'status'                => Asset::STATUS_NAME[$data->status],
-                'date'                  => $data->date ?? null,
-                'location'              => $data->location ?? null,
-                'reason'                => $data->reason ?? null,
+                'code'                  => $item->code,
+                'name'                  => $item->name,
+                'user_name'             => $item?->user?->name,
+                'status'                => Asset::STATUS_NAME[$item->status],
+                'date'                  => $item?->date,
+                'location'              => $item?->location,
+                'reason'                => $item?->reason,
             ];
         });
         $result = $this->resource->toArray();

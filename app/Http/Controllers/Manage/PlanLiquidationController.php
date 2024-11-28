@@ -134,10 +134,7 @@ class PlanLiquidationController extends Controller
             'status'    => 'required|integer',
         ]);
         try {
-            $plan_maintain_asset_ids = $request->get('ids');
-            $dataUpdate              = $request->except('ids');
-
-            $result = $this->planLiquidationService->updateMultiPlanMaintainAsset($plan_maintain_asset_ids, $dataUpdate);
+            $result = $this->planLiquidationService->updateMultiPlanMaintainAsset($request->get('ids'), $request->integer('status'));
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

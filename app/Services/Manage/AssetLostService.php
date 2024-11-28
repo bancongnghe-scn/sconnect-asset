@@ -78,7 +78,9 @@ class AssetLostService
                 if (!$result['success']) {
                     DB::rollBack();
 
-                    return response_error($result['error_code']);
+                    return [
+                        'success' => false,
+                    ];
                 }
             }
 
@@ -91,9 +93,10 @@ class AssetLostService
                 'success' => true,
             ];
         } catch (\Exception $e) {
-            DB::rollBack();
 
-            return response_error($result['error_code']);
+            return [
+                'success' => false,
+            ];
         }
     }
 
@@ -108,7 +111,7 @@ class AssetLostService
         }
         $data['updated_by'] = Auth::id();
         $updateStatus       = ['status' => $data['status']];
-        $assetLost->fill($updateStatus)->save();
+        $assetLost->fill($updateStatus);
         if (!$assetLost->save()) {
             return [
                 'success'    => false,

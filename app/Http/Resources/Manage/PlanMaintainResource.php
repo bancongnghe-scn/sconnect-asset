@@ -9,15 +9,15 @@ class PlanMaintainResource extends JsonResource
 {
     public function toArray($request)
     {
-        $data = $this->resource->map(function ($data) {
+        $data = $this->resource->map(function ($item) {
             return [
-                'id'                        => $data->id,
-                'code'                      => $data->code,
-                'name'                      => $data->name,
-                'asset_quantity'            => $data->asset_quantity,
-                'created_at'                => date('d/m/y', strtotime($data->created_at)),
-                'total_price_liquidation'   => $data->planMaintainAsset->sum('price'),
-                'status'                    => PlanMaintain::STATUS_NAME[$data->status],
+                'id'                        => $item->id,
+                'code'                      => $item->code,
+                'name'                      => $item->name,
+                'asset_quantity'            => $item->asset_quantity,
+                'created_at'                => date('d/m/y', strtotime($item->created_at)),
+                'total_price_liquidation'   => $item->planMaintainAsset->sum('price'),
+                'status'                    => PlanMaintain::STATUS_NAME[$item->status],
             ];
         });
 
