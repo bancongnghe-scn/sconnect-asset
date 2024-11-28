@@ -55,4 +55,14 @@ Route::middleware(['checkAuth'])->group(function () {
             Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
         });
     });
+
+    Route::prefix('cache')->group(function () {
+        Route::get('key', function () {
+            $key = config('cache_keys.keys.menu_key').Illuminate\Support\Facades\Auth::id();
+            dd(Illuminate\Support\Facades\Cache::forget($key));
+        });
+        Route::get('tag', function () {
+            Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->flush();
+        });
+    });
 });
