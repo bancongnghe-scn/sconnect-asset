@@ -25,42 +25,38 @@ class PlanLiquidationService
     public function createPlanLiquidatoin($data)
     {
         try {
+            DB::beginTransaction();
+
             $dataPlanLiquidation = [
-                'name'              => $data['name'],
-                'code'              => $data['code'],
-                'note'              => $data['note'],
-                'status'            => PlanMaintain::STATUS_NEW,
-                'type'              => PlanMaintain::TYPE_LIQUIDATION,
-                'asset_quantity'    => !empty($data['assets_id']) ? count($data['assets_id']) : 0,
-                'created_at'        => new \DateTime(),
-                'created_by'        => Auth::id(),
+                'name'           => $data['name'],
+                'code'           => $data['code'],
+                'note'           => $data['note'],
+                'status'         => PlanMaintain::STATUS_NEW,
+                'type'           => PlanMaintain::TYPE_LIQUIDATION,
+                'asset_quantity' => !empty($data['assets_id']) ? count($data['assets_id']) : 0,
+                'created_at'     => new \DateTime(),
+                'created_by'     => Auth::id(),
             ];
             // Thanh lý, Bảo dưỡng lưu ở plan_maintain
             $planLiquidation = $this->planMaintainRepository->create($dataPlanLiquidation);
-
-            if (empty($planLiquidation)) {
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2006,
-                ];
-            }
 
             $asset_ids                = [];
             $dataPlanLiquidationAsset = [];
             if (!empty($data['assets_id'])) {
                 foreach ($data['assets_id'] as $asset) {
                     $dataPlanLiquidationAsset[] = [
-                        'plan_maintain_id'  => $planLiquidation->id,
-                        'asset_id'          => $asset['id'],
-                        'price'             => $asset['price_liquidation'],
-                        'status'            => PlanMaintainAsset::STATUS_NEW,
+                        'plan_maintain_id' => $planLiquidation->id,
+                        'asset_id'         => $asset['id'],
+                        'price'            => $asset['price_liquidation'],
+                        'status'           => PlanMaintainAsset::STATUS_NEW,
                     ];
                 }
 
                 $asset_ids = array_column($data['assets_id'], 'id');
+            }
 
-                DB::beginTransaction();
-                // Bảng chung gian plan_maintain_asset giữa kế hoạch thanh lý và tài sản
+            // Bảng chung gian plan_maintain_asset giữa kế hoạch thanh lý và tài sản
+            if (!empty($dataPlanLiquidationAsset)) {
                 $planLiquidationAsset = $this->planMaintainAssetRepository->insert($dataPlanLiquidationAsset);
                 if (!$planLiquidationAsset) {
                     DB::rollBack();
@@ -70,32 +66,33 @@ class PlanLiquidationService
                         'error_code' => AppErrorCode::CODE_2006,
                     ];
                 }
-
-                // Chuyển tài sản sang trạng thái Đang thanh lý để đợi xét duyệt trong plan
-                if (!empty($asset_ids)) {
-                    $updateAssets = $this->assetRepository->changeStatusAsset($asset_ids, Asset::STATUS_IN_LIQUIDATION);
-                    if (!$updateAssets) {
-                        DB::rollBack();
-
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_2006,
-                        ];
-                    }
-                }
-                DB::commit();
             }
 
-            return [
-                'success' => true,
-            ];
-        } catch (\Exception $e) {
+            // Chuyển tài sản sang trạng thái Đang thanh lý để đợi xét duyệt trong plan
+            if (!empty($asset_ids)) {
+                $updateAssets = $this->assetRepository->changeStatusAsset($asset_ids, Asset::STATUS_IN_LIQUIDATION);
+                if (!$updateAssets) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2006,
+                    ];
+                }
+            }
+            DB::commit();
+        } catch (\Throwable $exception) {
+            DB::rollBack();
 
             return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2006,
+                'success' => false,
+                'e',
             ];
         }
+
+        return [
+            'success' => true,
+        ];
     }
 
     public function listPlanLiquidation(array $filters = [])
@@ -152,22 +149,22 @@ class PlanLiquidationService
 
     public function updateAssetToPlanLiquidation($data)
     {
+
+        $planId   = $data['plan_id'];
+        $assetIds = $data['asset_ids'];
+
+        $dataPlanLiquidationAsset = [];
+        $assets                   = $this->assetRepository->getElementAsset($assetIds, ['id', 'price_liquidation']);
+
+        foreach ($assets as $asset) {
+            $dataPlanLiquidationAsset[] = [
+                'plan_maintain_id' => $planId,
+                'asset_id'         => $asset->id,
+                'price'            => $asset->price_liquidation,
+                'status'           => PlanMaintainAsset::STATUS_NEW,
+            ];
+        }
         try {
-            $planId   = $data['plan_id'];
-            $assetIds = $data['asset_ids'];
-
-            $dataPlanLiquidationAsset = [];
-            $assets                   = $this->assetRepository->getElementAsset($assetIds, ['id', 'price_liquidation']);
-
-            foreach ($assets as $asset) {
-                $dataPlanLiquidationAsset[] = [
-                    'plan_maintain_id'  => $planId,
-                    'asset_id'          => $asset->id,
-                    'price'             => $asset->price_liquidation,
-                    'status'            => PlanMaintainAsset::STATUS_NEW,
-                ];
-            }
-
             DB::beginTransaction();
             $this->planMaintainAssetRepository->insert($dataPlanLiquidationAsset);
 
@@ -186,6 +183,7 @@ class PlanLiquidationService
                 'success' => true,
             ];
         } catch (\Exception $e) {
+            DB::rollBack();
 
             return [
                 'success'    => false,
@@ -206,7 +204,7 @@ class PlanLiquidationService
             }
 
             // Chuyển trạng thái tài sản về đề nghị thanh lý
-            $assetId      = $planMaintainAsset->asset_id;
+            $assetId = $planMaintainAsset->asset_id;
 
             DB::beginTransaction();
             $updateAssets = $this->assetRepository->changeStatusAsset($assetId, Asset::STATUS_PROPOSAL_LIQUIDATION);
