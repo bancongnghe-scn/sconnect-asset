@@ -84,32 +84,33 @@
                                         </div>
 
                                         <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                                                <thead>
-                                                <tr>
-                                                    <th rowspan="1" colspan="1">Loại tài sản</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị tính</th>
-                                                    <th rowspan="1" colspan="1" >Chức danh</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
-                                                    <th rowspan="1" colspan="1" >Tổng</th>
-                                                    <th rowspan="1" colspan="1" >Mô tả</th>
-                                                    <th rowspan="1" colspan="1"></th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr
-                                                        x-data="{
+                                            <div class="tw-max-w-full overflow-y-scroll custom-scroll">
+                                                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                                    <thead>
+                                                    <tr class="tw-w-fit">
+                                                        <th rowspan="1" colspan="1">Loại tài sản</th>
+                                                        <th rowspan="1" colspan="1">Đơn vị tính</th>
+                                                        <th rowspan="1" colspan="1">Chức danh</th>
+                                                        <th rowspan="1" colspan="1">Đơn giá</th>
+                                                        <th rowspan="1" colspan="1">Số lượng</th>
+                                                        <th rowspan="1" colspan="1">Tổng</th>
+                                                        <th rowspan="1" colspan="1">Mô tả</th>
+                                                        <th rowspan="1" colspan="1"></th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
+                                                        <tr
+                                                            x-data="{
                                                             get measure() {
                                                                 if (asset.asset_type_id) {
                                                                     return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
                                                                 }
                                                             }
                                                         }"
-                                                        x-init="$watch('asset.price', value => calculatePrice(index))"
-                                                    >
-                                                        <td>
+                                                            x-init="$watch('asset.price', value => calculatePrice(index))"
+                                                        >
+                                                            <td>
                                                             <span x-data="{values: list_asset_type, model: asset.asset_type_id}"
                                                                   @select-change="
                                                                       asset.asset_type_id = $event.detail
@@ -120,12 +121,12 @@
                                                                    'placeholder' => 'Chọn tài sản',
                                                                 ])
                                                             </span>
-                                                        </td>
-                                                        <td class="align-middle"
-                                                            x-text="measure"
-                                                        >
-                                                        </td>
-                                                        <td>
+                                                            </td>
+                                                            <td class="align-middle"
+                                                                x-text="measure"
+                                                            >
+                                                            </td>
+                                                            <td>
                                                             <span x-data="{values: list_job, model: asset.job_id}"
                                                                   @select-change="
                                                                       asset.job_id = $event.detail
@@ -134,31 +135,32 @@
                                                             >
                                                                 @include('common.select2.extent.select2', ['placeholder' => 'Chọn chức danh'])
                                                             </span>
-                                                        </td>
-                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
-                                                        <td>
-                                                            <input class="form-control" type="number" min="1"
-                                                                   x-model="asset.quantity_registered"
-                                                                   @change="validateQuantityRegistered(asset.quantity_registered)"
-                                                                   @input="
+                                                            </td>
+                                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
+                                                            <td>
+                                                                <input class="form-control" type="number" min="1"
+                                                                       x-model="asset.quantity_registered"
+                                                                       @change="validateQuantityRegistered(asset.quantity_registered)"
+                                                                       @input="
                                                                        asset.quantity_approved = asset.quantity_registered
                                                                        calculateRegister(index)
                                                                    "
-                                                            >
-                                                        </td>
-                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
-                                                        <td>
-                                                            <input class="form-control" x-model="asset.description" type="text">
-                                                        </td>
-                                                        <td class="text-center align-middle">
-                                                            <button class="border-0 bg-body" @click="deleteRow(index, key)">
-                                                                <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                </template>
-                                                </tbody>
-                                            </table>
+                                                                >
+                                                            </td>
+                                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
+                                                            <td>
+                                                                <input class="form-control" x-model="asset.description" type="text">
+                                                            </td>
+                                                            <td class="text-center align-middle">
+                                                                <button class="border-0 bg-body" @click="deleteRow(index, key)">
+                                                                    <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                    </tbody>
+                                                </table>
+                                            </div>
                                             <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
                                         </div>
                                     </div>
