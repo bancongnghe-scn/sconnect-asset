@@ -5,7 +5,7 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
-            // window.initSelect2Modal(this.idModalUI);
+            window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
             this.list({page: 1, limit: 10})
             this.getListSupplier({})
@@ -251,8 +251,6 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterTypeContract').val([]).change()
-            $('#filterStatusContract').val([]).change()
         },
 
         confirmRemove(id) {
@@ -269,23 +267,6 @@ document.addEventListener('alpine:init', () => {
 
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
             this.id = ids
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterTypeContract') {
-                    this.filters.type = value
-                } else if (event.target.id === 'filterStatusContract') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.data.user_ids = value
-                } else if (event.target.id === 'selectSupplier') {
-                    this.data.supplier_id = value
-                } else if (event.target.id === 'selectContractType') {
-                    this.data.type = value
-                }
-            });
         },
 
         handleFilesContract() {
