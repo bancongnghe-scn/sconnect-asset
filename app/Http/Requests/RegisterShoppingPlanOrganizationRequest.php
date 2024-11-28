@@ -21,8 +21,8 @@ class RegisterShoppingPlanOrganizationRequest extends FormRequest
             'registers.*.assets.*.asset_type_id'       => 'required|integer',
             'registers.*.assets.*.job_id'              => 'required|integer',
             'registers.*.assets.*.price'               => 'required|integer',
-            'registers.*.assets.*.quantity_registered' => 'required|integer',
-            'registers.*.assets.*.quantity_approved'   => 'nullable|integer',
+            'registers.*.assets.*.quantity_registered' => 'required|integer|min:1',
+            'registers.*.assets.*.quantity_approved'   => 'nullable|integer|min:0',
             'registers.*.assets.*.description'         => 'nullable|string',
         ];
     }

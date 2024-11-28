@@ -137,8 +137,9 @@
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                         <td>
-                                                            <input class="form-control" type="number"
+                                                            <input class="form-control" type="number" min="1"
                                                                    x-model="asset.quantity_registered"
+                                                                   @change="validateQuantityRegistered(asset.quantity_registered)"
                                                                    @input="
                                                                        asset.quantity_approved = asset.quantity_registered
                                                                        calculateRegister(index)

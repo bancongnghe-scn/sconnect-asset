@@ -226,5 +226,11 @@ document.addEventListener('alpine:init', () => {
             this.registers[index].approval.price = price_approval
             this.registers[index].register.price = price_register
         },
+
+        validateQuantityRegistered(value) {
+            if (+value < 1) {
+                toast.error('Số lượng đăng ký phải lớn hơn 0')
+            }
+        }
     }));
 });
