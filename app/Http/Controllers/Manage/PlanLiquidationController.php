@@ -64,7 +64,7 @@ class PlanLiquidationController extends Controller
             'asset_ids'     => 'nullable|array',
         ]);
         try {
-            $result = $this->planLiquidationService->updateAssetToPlanLiquidation($request);
+            $result = $this->planLiquidationService->updateAssetToPlanLiquidation($request->all());
 
             return response_success($result);
         } catch (\Exception $e) {

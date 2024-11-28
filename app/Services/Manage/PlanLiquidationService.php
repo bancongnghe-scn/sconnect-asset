@@ -148,12 +148,12 @@ class PlanLiquidationService
         return $planLiquidation->toArray();
     }
 
-    public function updateAssetToPlanLiquidation($request)
+    public function updateAssetToPlanLiquidation($data)
     {
         DB::beginTransaction();
         try {
-            $planId   = $request->plan_id;
-            $assetIds = $request->asset_ids;
+            $planId   = $data['plan_id'];
+            $assetIds = $data['asset_ids'];
 
             $dataPlanLiquidationAsset = [];
             $assets                   = $this->assetRepository->getElementAsset($assetIds, ['id', 'price_liquidation']);
