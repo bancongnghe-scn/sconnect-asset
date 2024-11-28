@@ -28,28 +28,27 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Link đính kèm</label>
-                            <input type="text" class="form-control" x-model="data.link"
-                                   placeholder="Nhập link đính kèm"></input>
+                            <input type="text" class="form-control" x-model="data.link"  placeholder="Nhập link đính kèm">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày ký", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực từ ngày<label
-                                        class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "data.from"])
+                                    class="tw-text-red-600 mb-0">*</label></label>
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "data.to"])
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label
-                                        class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId"
+                                    class="tw-text-red-600 mb-0">*</label></label>
+                            <select class="form-select select2" x-model="data.user_ids" id="selectUserIdApeendix"
                                     multiple="multiple" data-placeholder="Chọn người theo dõi">
                                 <template x-for="value in listUser" :key="value.id">
                                     <option :value="value.id" x-text="value.name"></option>

@@ -15,12 +15,19 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control select2" x-model="data.type" id="selectContractType">
-                                <option value="">Chọn loại hợp đồng</option>
-                                <template x-for="(value, key) in listTypeContract">
-                                    <option :value="key" x-text="value"></option>
-                                </template>
-                            </select>
+{{--                            <select class="form-control select2" x-model="data.type" id="selectContractType">--}}
+{{--                                <option value="">Chọn loại hợp đồng</option>--}}
+{{--                                <template x-for="(value, key) in listTypeContract">--}}
+{{--                                    <option :value="key" x-text="value"></option>--}}
+{{--                                </template>--}}
+{{--                            </select>--}}
+                            <span x-data="{values: listTypeContract, model: data.type}"
+                                  @select-change="data.type = $event.detail"
+                            >
+                            @include('common.select2.simple.select2_single', [
+                                'placeholder' => 'Chọn loại hợp đồng'
+                            ])
+                        </span>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
@@ -39,30 +46,16 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepickerContract" id="selectSigningDateContract"
-                                       placeholder="Chọn ngày ký" autocomplete="off"
-                                       x-model="data.signing_date">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày ký", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepickerContract" id="selectFromContract"
-                                       placeholder="Chọn ngày bắt đầu" autocomplete="off"
-                                       x-model="data.from">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            <label class="form-label">Hiệu lực từ ngày<label
+                                    class="tw-text-red-600 mb-0">*</label></label>
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control datepickerContract" id="selectToContract"
-                                       placeholder="Chọn ngày kết thúc" autocomplete="off"
-                                       x-model="data.to">
-                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                            </div>
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
@@ -125,11 +118,11 @@
                                     <tr>
                                         <td x-text="'Lần ' + (index + 1)"></td>
                                         <td>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control datepicker" name="selectPaymentDate"
-                                                       placeholder="Chọn ngày thanh toán" autocomplete="off" x-model="payment.payment_date" :id="index">
-                                                <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                                            </div>
+                                            @include('common.datepicker.datepicker', [
+                                                'placeholder'=>"Chọn ngày thanh toán",
+                                                'model' => "payment.payment_date",
+                                                'id' => 'index'
+                                            ])
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" placeholder="Nhập số tiền thanh toán" x-model="payment.money">

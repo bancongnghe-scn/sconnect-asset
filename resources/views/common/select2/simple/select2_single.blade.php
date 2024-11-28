@@ -10,7 +10,7 @@
         });
 
         // Đặt giá trị ban đầu cho Select2
-        $($el).val(model).trigger('change');
+        $($el).val([model]).trigger('change');
 
         // Lắng nghe sự kiện thay đổi từ Select2
         let isChanging = false; // Đánh dấu trạng thái thay đổi
@@ -33,10 +33,9 @@
         });
     })"
     class="form-control"
-    multiple="multiple"
-    data-placeholder="{{$placeholder ?? 'Chọn giá trị'}}"
     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
 >
+    <option value="">{{$placeholder ?? 'Chọn giá trị'}}</option>
     <template x-for="(value, key) in values">
         <option :value="key" x-text="value"></option>
     </template>
