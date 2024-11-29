@@ -48,7 +48,7 @@
                 <template
                         x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
                     <button class="btn bg-red"
-                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">Từ chối
+                            @click="showModalNoteDisapprovalShoppingCompany()">Từ chối
                     </button>
                 </template>
             @endcan
@@ -102,12 +102,12 @@
                                     <div x-data="{
                                         values: listUser,
                                         model: data.monitor_ids,
-                                        disabled: !([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))
                                     }"
                                         @select-change="data.monitor_ids = $event.detail"
                                     >
                                         @include('common.select2.extent.select2_multiple', [
                                             'placeholder' => 'Chọn người quan sát',
+                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))'
                                         ])
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
                                         Duyệt
                                     </button>
                                     <button class="btn bg-red"
-                                            @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)"
+                                            @click="showModalNoteDisapprovalMultiple()"
                                             :disabled="window.checkDisableSelectRow"
                                     >
                                         Từ chối
@@ -196,6 +196,18 @@
                 @ok="remove"
         >
             @include('common.modal-confirm')
+        </div>
+
+        <div @ok="accountApprovalShoppingPlanOrganization(id_organization, ORGANIZATION_TYPE_DISAPPROVAL)">
+            @include('common.modal-note', ['id' => 'modalNoteDisapproval', 'model' => 'note_disapproval'])
+        </div>
+
+        <div @ok="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)">
+            @include('common.modal-note', ['id' => 'modalNoteDisapprovalMultiple', 'model' => 'note_disapproval'])
+        </div>
+
+        <div @ok="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">
+            @include('common.modal-note', ['id' => 'modalNoteDisapprovalPlanCompany', 'model' => 'note_disapproval'])
         </div>
     </div>
 @endsection

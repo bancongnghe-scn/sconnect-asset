@@ -17,7 +17,6 @@ window.localeEn = localeEn;
 window.format = format;
 window.addEventListener('load', () => {
     Alpine.start();
-
     $('.select2').select2({
         language: {
             noResults: function() {

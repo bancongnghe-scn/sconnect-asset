@@ -23,6 +23,8 @@ class ShoppingPlanOrganizationController
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -48,6 +50,7 @@ class ShoppingPlanOrganizationController
             'ids'   => 'required|array',
             'ids.*' => 'integer',
             'type'  => 'required|string',
+            'note'  => 'nullable|string',
         ]);
 
         Auth::user()->canPer('shopping_plan_company.accounting_approval');

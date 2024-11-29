@@ -166,6 +166,7 @@ class SupplierService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

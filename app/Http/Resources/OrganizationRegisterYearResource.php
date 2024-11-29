@@ -36,7 +36,7 @@ class OrganizationRegisterYearResource extends JsonResource
         $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->getFirst([
             'id' => $this->resource->id,
         ], ['id'], [
-            'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id,status' => [
+            'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id,status,note' => [
                 'shoppingAssetsYear:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id,month' => [
                     'assetType:id,name',
                 ],
@@ -78,6 +78,7 @@ class OrganizationRegisterYearResource extends JsonResource
                 'id'             => $shoppingPlanOrganization->id,
                 'name'           => $organizations[$shoppingPlanOrganization->organization_id]['name'] ?? '',
                 'status'         => $shoppingPlanOrganization->status,
+                'note'           => $shoppingPlanOrganization->note,
                 'asset_register' => empty($assetRegister) ? [[]] : $assetRegister,
                 'total_price'    => $totalPrice,
             ];

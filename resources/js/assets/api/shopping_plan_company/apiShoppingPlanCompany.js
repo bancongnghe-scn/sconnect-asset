@@ -144,9 +144,9 @@ window.apiSendManagerApproval = async function (id) {
     }
 }
 
-window.apiGeneralApprovalShoppingPlanCompany = async function (id, type) {
+window.apiGeneralApprovalShoppingPlanCompany = async function (id, type, note = null) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/manager-approval", {id: id, type: type})
+        const response = await axios.post("/api/shopping-plan-company/manager-approval", {id: id, type: type, note: note})
 
         const data = response.data;
         if (!data.success) {

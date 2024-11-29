@@ -46,9 +46,9 @@ window.apiGetRegisterShoppingPlanOrganization = async function (id) {
     }
 }
 
-window.apiAccountApprovalShoppingPlanOrganization = async function (ids, type) {
+window.apiAccountApprovalShoppingPlanOrganization = async function (ids, type, note = null) {
     try {
-        const response = await axios.post("/api/shopping-plan-organization/account-approval", {ids: ids, type: type})
+        const response = await axios.post("/api/shopping-plan-organization/account-approval", {ids: ids, type: type, note: note})
 
         const data = response.data;
         if (!data.success) {

@@ -69,4 +69,19 @@ class ShoppingPlanOrganizationRepository extends BaseRepository
 
         return $query->first();
     }
+
+    public function getListing($filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->newQuery()->select($columns)->with($with);
+
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->whereIn('shopping_plan_company_id', Arr::wrap($filters['shopping_plan_company_id']));
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        return $query->get();
+    }
 }

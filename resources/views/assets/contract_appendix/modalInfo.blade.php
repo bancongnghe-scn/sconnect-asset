@@ -11,11 +11,15 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng</label>
-                            <select class="form-control" x-model="data.contract_id" disabled>
-                                <template x-for="contract in listContract" :key="contract.id">
-                                    <option :value="contract.id" x-text="contract.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listContract.length > 0">
+                                <span x-data="{values: listContract}">
+                                    @include('common.select2.modal.extent.select2_single_modal', [
+                                        'placeholder' => 'Chọn hợp đồng',
+                                        'model' => 'data.contract_id',
+                                        'disabled' => true
+                                    ])
+                                </span>
+                            </template>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Mã phụ lục</label>
@@ -45,11 +49,15 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
-                            <select class="form-select select2" x-model="data.user_ids" multiple="multiple" disabled>
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listUser.length > 0">
+                                <span x-data="{values: listUser}">
+                                    @include('common.select2.modal.extent.select2_multiple_modal', [
+                                        'placeholder' => 'Chọn người theo dõi',
+                                        'model' => 'data.user_ids',
+                                        'disabled' => true
+                                    ])
+                                </span>
+                            </template>
                         </div>
                     </div>
                     <div class="row mb-3">
