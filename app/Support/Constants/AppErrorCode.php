@@ -82,4 +82,15 @@ class AppErrorCode
     public const CODE_2075 = 2075; //  Duyệt kế hoạch mua sắm thất bại !
     public const CODE_2076 = 2076; //  Lưu lịch sử thất bại !
     public const CODE_2077 = 2077; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+
+    // hoangkiss
+    public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
+    public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !
+    public const CODE_5002 = 5002; //   Tạo kế hoạch thanh lý thất bại !
+    public const CODE_5003 = 5003; //   Chuyển trạng thái tài sản sang đang thanh lý thất bại !
+    public const CODE_5004 = 5004; //   Update tài sản trong kế hoạch thanh lý thất bại !
+    public const CODE_5005 = 5005; //   Xóa tài sản trong kế hoạch thanh lý thất bại !
+    public const CODE_5006 = 5006; //   Tìm kiếm tài sản thất bại !
+    public const CODE_5007 = 5007; //   Xóa kế hoạch thanh lý tài sản thất bại !
+    public const CODE_5008 = 5008; //   Update kế hoạch thanh lý thất bại !
 }

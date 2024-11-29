@@ -5,7 +5,7 @@ namespace App\Services\Manage;
 use App\Repositories\Manage\AssetLostRepository;
 use App\Http\Resources\Manage\AssetLostResource;
 use App\Models\Asset;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -79,7 +79,8 @@ class AssetLostService
                     DB::rollBack();
 
                     return [
-                        'success' => false,
+                        'success'       => false,
+                        'error_code'    => AppErrorCode::CODE_5000,
                     ];
                 }
             }
@@ -88,7 +89,8 @@ class AssetLostService
             DB::rollBack();
 
             return [
-                'success' => false,
+                'success'       => false,
+                'error_code'    => AppErrorCode::CODE_5001,
             ];
         }
         // Update signing_date,description to history
@@ -106,7 +108,7 @@ class AssetLostService
         if (is_null($assetLost)) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2004,
+                'error_code' => AppErrorCode::CODE_5000,
             ];
         }
         $data['updated_by'] = Auth::id();
@@ -115,7 +117,7 @@ class AssetLostService
         if (!$assetLost->save()) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2008,
+                'error_code' => AppErrorCode::CODE_5000,
             ];
         }
 

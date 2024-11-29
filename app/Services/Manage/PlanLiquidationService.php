@@ -4,7 +4,7 @@ namespace App\Services\Manage;
 
 use App\Models\Asset;
 use App\Models\PlanMaintain;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use App\Models\PlanMaintainAsset;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -63,7 +63,7 @@ class PlanLiquidationService
 
                     return [
                         'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2006,
+                        'error_code' => AppErrorCode::CODE_5002,
                     ];
                 }
             }
@@ -76,7 +76,7 @@ class PlanLiquidationService
 
                     return [
                         'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2006,
+                        'error_code' => AppErrorCode::CODE_5003,
                     ];
                 }
             }
@@ -85,8 +85,8 @@ class PlanLiquidationService
             DB::rollBack();
 
             return [
-                'success' => false,
-                'e',
+                'success'       => false,
+                'error_code'    => AppErrorCode::CODE_5001,
             ];
         }
 
@@ -172,7 +172,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2006,
+                    'error_code' => AppErrorCode::CODE_5002,
                 ];
             }
 
@@ -182,7 +182,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2006,
+                    'error_code' => AppErrorCode::CODE_5003,
                 ];
             }
             DB::commit();
@@ -195,7 +195,7 @@ class PlanLiquidationService
 
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2006,
+                'error_code' => AppErrorCode::CODE_5004,
             ];
         }
     }
@@ -206,7 +206,7 @@ class PlanLiquidationService
         if (is_null($planMaintainAsset)) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2002,
+                'error_code' => AppErrorCode::CODE_5006,
             ];
         }
 
@@ -222,7 +222,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2006,
+                    'error_code' => AppErrorCode::CODE_5001,
                 ];
             }
 
@@ -232,7 +232,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2003,
+                    'error_code' => AppErrorCode::CODE_5005,
                 ];
             }
             DB::commit();
@@ -242,7 +242,7 @@ class PlanLiquidationService
 
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2006,
+                'error_code' => AppErrorCode::CODE_5005,
             ];
         }
 
@@ -270,7 +270,7 @@ class PlanLiquidationService
 
                     return [
                         'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2006,
+                        'error_code' => AppErrorCode::CODE_5001,
                     ];
                 }
             }
@@ -282,7 +282,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2005,
+                    'error_code' => AppErrorCode::CODE_5007,
                 ];
             }
 
@@ -293,7 +293,7 @@ class PlanLiquidationService
 
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2006,
+                'error_code' => AppErrorCode::CODE_5007,
             ];
         }
 
@@ -308,7 +308,7 @@ class PlanLiquidationService
         if (is_null($planMaintain)) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2002,
+                'error_code' => AppErrorCode::CODE_5006,
             ];
         }
 
@@ -322,7 +322,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2003,
+                    'error_code' => AppErrorCode::CODE_5003,
                 ];
             }
 
@@ -346,7 +346,7 @@ class PlanLiquidationService
 
                                 return [
                                     'success'    => false,
-                                    'error_code' => AppErrorCode::CODE_2006,
+                                    'error_code' => AppErrorCode::CODE_5003,
                                 ];
                             }
                         }
@@ -359,7 +359,7 @@ class PlanLiquidationService
 
                             return [
                                 'success'    => false,
-                                'error_code' => AppErrorCode::CODE_2006,
+                                'error_code' => AppErrorCode::CODE_5003,
                             ];
                         }
                     }
@@ -373,6 +373,11 @@ class PlanLiquidationService
             ];
         } catch (\Exception $e) {
             DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_5008,
+            ];
         }
     }
 
@@ -382,7 +387,7 @@ class PlanLiquidationService
         if (is_null($planMaintainAsset)) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2002,
+                'error_code' => AppErrorCode::CODE_5006,
             ];
         }
 
@@ -391,7 +396,7 @@ class PlanLiquidationService
         if (!$planMaintainAsset->save()) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2003,
+                'error_code' => AppErrorCode::CODE_5008,
             ];
         }
 
@@ -412,7 +417,7 @@ class PlanLiquidationService
 
                 return [
                     'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2002,
+                    'error_code' => AppErrorCode::CODE_5008,
                 ];
             }
             DB::commit();
@@ -425,7 +430,7 @@ class PlanLiquidationService
 
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2002,
+                'error_code' => AppErrorCode::CODE_5008,
             ];
         }
     }
