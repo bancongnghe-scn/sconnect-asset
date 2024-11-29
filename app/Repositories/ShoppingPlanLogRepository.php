@@ -29,12 +29,12 @@ class ShoppingPlanLogRepository extends BaseRepository
         return $query->get();
     }
 
-    public function insertShoppingPlanLog($action, $recordId)
+    public function insertShoppingPlanLog($action, $recordId, $desc = null)
     {
         return $this->_model->insert([
             'action'     => $action,
             'record_id'  => $recordId,
-            'desc'       => __('shopping_plan_log.' . $action),
+            'desc'       => $desc ?? __('shopping_plan_log.' . $action),
             'created_by' => Auth::id(),
         ]);
     }

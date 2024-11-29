@@ -266,24 +266,34 @@ class ShoppingPlanOrganizationService
 
     public function accountApprovalShoppingPlanOrganization($data)
     {
+        if (ShoppingPlanOrganization::TYPE_APPROVAL == $data['type']) {
+            $status = ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL;
+            $action = ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION;
+        } else {
+            $status = ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL;
+            $action = ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION;
+        }
+
         DB::beginTransaction();
         try {
-            $status = ShoppingPlanOrganization::TYPE_APPROVAL == $data['type'] ?
-                ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL : ShoppingPlanOrganization::STATUS_DISAPPROVAL;
-            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(['ids' => $data['ids']], ['status' => $status]);
-
-            $action = ShoppingPlanOrganization::TYPE_APPROVAL == $data['type'] ?
-                ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION : ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION;
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['ids' => $data['ids']],
+                [
+                    'status' => $status,
+                    'note'   => $data['note'] ?? null]
+            );
 
             $dataInsertLogs = [];
             foreach ($data['ids'] as $id) {
                 $dataInsertLogs[] = [
                     'action'     => $action,
                     'record_id'  => $id,
-                    'desc'       => __('shopping_plan_log.' . $action),
+                    'desc'       => ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION == $action ?
+                        __('shopping_plan_log.' . $action) : __('shopping_plan_log.' . $action, ['note' => $data['note'] ?? null]),
                     'created_by' => Auth::id(),
                 ];
             }
+
             $insert = $this->shoppingPlanLogRepository->insert($dataInsertLogs);
             if (!$insert) {
                 DB::rollBack();

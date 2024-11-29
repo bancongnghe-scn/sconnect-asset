@@ -50,6 +50,7 @@ class ShoppingPlanOrganizationController
             'ids'   => 'required|array',
             'ids.*' => 'integer',
             'type'  => 'required|string',
+            'note'  => 'nullable|string',
         ]);
 
         Auth::user()->canPer('shopping_plan_company.accounting_approval');

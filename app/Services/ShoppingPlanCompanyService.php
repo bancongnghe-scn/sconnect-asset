@@ -660,11 +660,13 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        if (ShoppingPlanCompany::TYPE_APPROVAL == $data['type']) {
+        $isApproval = ShoppingPlanCompany::TYPE_APPROVAL == $data['type'];
+        if ($isApproval) {
             $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_APPROVAL;
             $action                      = ShoppingPlanLog::ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY;
         } else {
             $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_DISAPPROVAL;
+            $shoppingPlanCompany->note   = $data['note'] ?? null;
             $action                      = ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY;
         }
         DB::beginTransaction();
@@ -678,14 +680,58 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization([
-                'shopping_plan_company_id' => $data['id'],
-                'status'                   => ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
-            ], [
-                'status' => ShoppingPlanOrganization::STATUS_APPROVAL,
-            ]);
+            if ($isApproval) {
+                $filters = [
+                    'shopping_plan_company_id' => $data['id'],
+                    'status'                   => [
+                        ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
+                        ShoppingPlanOrganization::STATUS_MANAGER_DISAPPROVAL,
+                    ],
+                ];
+                $dataUpdate =  [
+                    'status' => ShoppingPlanOrganization::STATUS_MANAGER_APPROVAL,
+                    'note'   => $data['note'] ?? null,
+                ];
 
-            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog($action, $shoppingPlanCompany->id);
+            } else {
+                $filters = [
+                    'shopping_plan_company_id' => $data['id'],
+                    'status'                   => [
+                        ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL,
+                        ShoppingPlanOrganization::STATUS_MANAGER_APPROVAL,
+                    ],
+                ];
+                $dataUpdate =  [
+                    'status' => ShoppingPlanOrganization::STATUS_MANAGER_DISAPPROVAL,
+                    'note'   => $data['note'] ?? null,
+                ];
+            }
+
+            $shoppingPlanOrganizations = $this->shoppingPlanOrganizationRepository->getListing($filters);
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization($filters, $dataUpdate);
+
+            $dataLogs = [];
+            $desc     = $isApproval ? __('shopping_plan_log.' . $action) : __('shopping_plan_log.' . $action, [
+                'note' => $data['note'] ?? null,
+            ]);
+            foreach ($shoppingPlanOrganizations as $shoppingPlanOrganization) {
+                $dataLogs[] = [
+                    'action'     => $action,
+                    'record_id'  => $shoppingPlanOrganization->id,
+                    'desc'       => $desc,
+                    'created_by' => Auth::id(),
+                ];
+            }
+
+            $dataLogs[] = [
+                'action'     => $action,
+                'record_id'  => $shoppingPlanCompany->id,
+                'desc'       => $desc,
+                'created_by' => Auth::id(),
+            ];
+
+            $insertLog = $this->shoppingPlanLogRepository->insert($dataLogs);
             if (!$insertLog) {
                 DB::rollBack();
 
@@ -697,6 +743,7 @@ class ShoppingPlanCompanyService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

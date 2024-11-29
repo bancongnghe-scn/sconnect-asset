@@ -9,9 +9,9 @@ return [
     ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY               => 'Gửi giám độc kế toán duyệt',
     ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY                  => 'Gửi tổng giám độc duyệt',
     ShoppingPlanLog::ACTION_ACCOUNT_APPROVAL_ORGANIZATION                                => 'Kế toán đã duyệt kế hoạch mua sắm',
-    ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION                             => 'Kế toán từ chối kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_ACCOUNT_DISAPPROVAL_ORGANIZATION                             => 'Kế toán từ chối kế hoạch mua sắm với lý do ":note"',
     ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION                                  => 'Kế toán đang review kế hoạch mua sắm',
     ShoppingPlanLog::ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY                       => 'Giám đốc đã duyệt kế hoạch mua sắm',
-    ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY                    => 'Giám đốc đã từ chối kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY                    => 'Giám đốc đã từ chối kế hoạch mua sắm với lý do ":note"',
     ShoppingPlanLog::ACTION_REGISTER_SHOPPING                                            => 'Đăng ký mua sắm',
 ];

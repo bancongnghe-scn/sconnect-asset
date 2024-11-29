@@ -1,5 +1,3 @@
-import AirDatepicker from "air-datepicker";
-import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
@@ -15,6 +13,7 @@ document.addEventListener('alpine:init', () => {
 
         //data
         id: null,
+        id_organization: null,
         action: null,
         checkedAll: false,
         data: {
@@ -27,6 +26,7 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         register: [],
         selectedRow: [],
+        note_disapproval: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async getInfoShoppingPlanCompanyYear() {
@@ -179,11 +179,15 @@ document.addEventListener('alpine:init', () => {
         async accountApprovalShoppingPlanOrganization(id, type) {
             this.loading = true
             try {
-                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type, this.note_disapproval)
                 if (response.success) {
                     let organization = this.register.organizations.find((item) => +item.id === +id);
-                    organization.status = type === ORGANIZATION_TYPE_APPROVAL
-                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                    if (type === ORGANIZATION_TYPE_APPROVAL) {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    } else {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                        $("#modalNoteDisapproval").modal('hide')
+                    }
                     toast.success('Duyệt thành công !')
                     return
                 }
@@ -201,7 +205,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
                 ids = ids.map(Number);
-                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type)
+                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type, this.note_disapproval)
                 if (response.success) {
                     this.register.organizations.filter(function (item) {
                         if (ids.includes(item.id)) {
@@ -210,6 +214,9 @@ document.addEventListener('alpine:init', () => {
                         }
                     });
                     this.selectedRow = []
+                    if ( type === ORGANIZATION_TYPE_DISAPPROVAL) {
+                        $("#modalNoteDisapprovalMultiple").modal('hide')
+                    }
                     toast.success('Duyệt thành công !')
                     return
                 }
@@ -225,10 +232,16 @@ document.addEventListener('alpine:init', () => {
         async generalApprovalShoppingPlanCompany(type) {
             this.loading = true
             try {
-                const response = await window.apiGeneralApprovalShoppingPlanCompany(this.id, type)
+                const response = await window.apiGeneralApprovalShoppingPlanCompany(this.id, type, this.note_disapproval)
                 if (response.success) {
                     toast.success('Bạn đã duyệt thành công !')
-                    this.data.status = type === GENERAL_TYPE_APPROVAL_COMPANY ? STATUS_SHOPPING_PLAN_COMPANY_APPROVAL : STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                    if (type === GENERAL_TYPE_APPROVAL_COMPANY) {
+                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_APPROVAL
+                    } else {
+                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                        $("#modalNoteDisapprovalPlanCompany").modal('hide')
+                    }
+                    this.getOrganizationRegisterYear()
                     return
                 }
 
@@ -240,6 +253,21 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        showModalNoteDisapproval(id) {
+            this.id_organization = id
+            this.note_disapproval = null
+            $("#modalNoteDisapproval").modal('show')
+        },
+
+        showModalNoteDisapprovalMultiple() {
+            this.note_disapproval = null
+            $("#modalNoteDisapprovalMultiple").modal('show')
+        },
+
+        showModalNoteDisapprovalShoppingCompany() {
+            this.note_disapproval = null
+            $("#modalNoteDisapprovalPlanCompany").modal('show')
+        },
 
         confirmRemove() {
             $("#"+this.idModalConfirmDelete).modal('show');

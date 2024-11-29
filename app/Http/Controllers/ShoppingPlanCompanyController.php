@@ -98,6 +98,7 @@ class ShoppingPlanCompanyController extends Controller
         $request->validate([
             'id'    => 'required|integer',
             'type'  => 'required|string',
+            'note'  => 'nullable|string',
         ]);
 
         Auth::user()->canPer('shopping_plan_company.general_approval');
