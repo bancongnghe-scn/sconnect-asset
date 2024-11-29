@@ -11,10 +11,10 @@ class AssetCancelResource extends JsonResource
     {
         $data = $this->resource->map(function ($item) {
             return [
-                'code'                  => $item->code,
-                'name'                  => $item->name,
+                'code'                  => $item?->code,
+                'name'                  => $item?->name,
                 'user_name'             => $item?->user?->name,
-                'status'                => Asset::STATUS_NAME[$item->status],
+                'status'                => Asset::STATUS_NAME[$item?->status],
                 'date'                  => $item?->date,
                 'location'              => $item?->location,
                 'reason'                => $item?->reason,

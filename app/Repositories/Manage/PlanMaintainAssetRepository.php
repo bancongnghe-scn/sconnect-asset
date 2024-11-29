@@ -16,8 +16,8 @@ class PlanMaintainAssetRepository extends BaseRepository
     public function getAssetOfPlanMaintain($planIds, $columns = ['*'])
     {
         return $this->_model->newQuery()
-            ->whereIn('plan_maintain_id', Arr::wrap($planIds))
             ->select($columns)
+            ->whereIn('plan_maintain_id', Arr::wrap($planIds))
             ->get();
     }
 

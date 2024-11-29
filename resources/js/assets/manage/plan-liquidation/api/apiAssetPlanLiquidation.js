@@ -1,7 +1,7 @@
 window.apiGetPlanLiquidation = async function (filters) {
     try {
 
-        const res = await axios.get("/api/asset/manage/asset-plan-liquidation", {
+        const res = await axios.get("/api/manage-plan-liquidation/get", {
             params: filters
         })
 
@@ -28,7 +28,7 @@ window.apiGetPlanLiquidation = async function (filters) {
 
 window.apiShowPlanLiquidation = async function (id) {
     try {
-        const response = await axios.get("/api/asset/manage/asset-plan-liquidation/"+id)
+        const response = await axios.get("/api/manage-plan-liquidation/detail/"+id)
 
         const data = response.data;
 
@@ -54,7 +54,7 @@ window.apiShowPlanLiquidation = async function (id) {
 window.apiGetAssetLiquidationForModal = async function () {
     try {
 
-        const res = await axios.get("/api/asset/manage/asset-liquidation", {})
+        const res = await axios.get("/api/manage-asset-liquidation", {})
 
         const data = res.data;
         if (!data.success) {
@@ -78,7 +78,7 @@ window.apiGetAssetLiquidationForModal = async function () {
 
 window.apiUpdateAssettoPlanLiquidation = async function (dataUpdate) {
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation/updateAssetToPlan",dataUpdate)
+        const response = await axios.post("/api/manage-plan-liquidation/update-asset",dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -102,7 +102,7 @@ window.apiUpdateAssettoPlanLiquidation = async function (dataUpdate) {
 
 window.apiRemoveAssetFromPlanLiquidation = async function (plan_maintain_asset_id) {
     try {
-        const response = await axios.delete("/api/asset/manage/asset-plan-liquidation/"+plan_maintain_asset_id)
+        const response = await axios.delete("/api/manage-plan-liquidation/delete-asset/"+plan_maintain_asset_id)
 
         const data = response.data;
         if (!data.success) {
@@ -127,7 +127,7 @@ window.apiRemoveAssetFromPlanLiquidation = async function (plan_maintain_asset_i
 window.apiRemoveMultiPlanLiquidation = async function (planIds) {
     
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation/delete-multi",planIds)
+        const response = await axios.post("/api/manage-plan-liquidation/delete-multi",planIds)
 
         const data = response.data;
         if (!data.success) {
@@ -158,7 +158,7 @@ window.apiCreatePlanLiquidation = async function (dataCreate) {
             note: dataCreate['note'],
         }
 
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation",_data)
+        const response = await axios.post("/api/manage-plan-liquidation/create",_data)
 
         const data = response.data;
         if (!data.success) {
@@ -182,7 +182,7 @@ window.apiCreatePlanLiquidation = async function (dataCreate) {
 
 window.apiUpdatePlanLiquidation = async function (id, dataUpdate) {
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation/"+id,dataUpdate)
+        const response = await axios.post("/api/manage-plan-liquidation/update-plan/"+id,dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -206,7 +206,7 @@ window.apiUpdatePlanLiquidation = async function (id, dataUpdate) {
 
 window.apiUpdatePlanLiquidationAsset = async function (dataUpdate) {
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation/changeStatusAssetOfPlan",dataUpdate)
+        const response = await axios.post("/api/manage-plan-liquidation/update-status-asset",dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -230,7 +230,7 @@ window.apiUpdatePlanLiquidationAsset = async function (dataUpdate) {
 
 window.apiUpdateMultiAssetOfPlan = async function (dataUpdate) {
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation/changeStatusMultiAssetOfPlan",dataUpdate)
+        const response = await axios.post("/api/manage-plan-liquidation/update-status-multi-asset",dataUpdate)
 
         const data = response.data;
         if (!data.success) {

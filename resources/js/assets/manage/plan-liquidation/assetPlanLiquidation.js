@@ -58,7 +58,7 @@ document.addEventListener('alpine:init', () => {
             total_price_liquidation: null,
         },
         listStatusPlanLiquidation: {
-            0: 'Mới tạo',
+            0: 'Chọn trạng thái',
             1: 'Chờ duyệt',
             2: 'Đã duyệt',
             3: 'Từ chối',
@@ -437,12 +437,16 @@ document.addEventListener('alpine:init', () => {
                     locale: localeEn,
                     dateFormat: 'dd/MM/yyyy',
                     onSelect: ({date}) => {
+                        const created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
+                        const created_at_format = created_at
+                            ? format(parse(created_at, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
+                            : null;
                         this.list({
                             page: 1,
                             limit: 10,
                             name_code: $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val(),
                             status: $('#tableAssetPlanLiquidation #statusPlanLiquidation').val(),
-                            created_at: $('#tableAssetPlanLiquidation #filterSigningDate').val(),
+                            created_at: created_at_format,
                         })
                         
                         this.onChangeDatePicker(el, date)
@@ -462,7 +466,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         onChangeDatePicker(el, date) {
-            const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
+            const storageFormat = date != null ? format(date, 'yyyy-MM-dd') : null
             if(el.id === 'filterSigningDate') {
                 this.filters.signing_date = storageFormat
             } else if(el.id === 'filterFrom') {
@@ -491,12 +495,15 @@ document.addEventListener('alpine:init', () => {
                 let name_code = $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val();
                 let status = $('#tableAssetPlanLiquidation #statusPlanLiquidation').val();
                 let created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
+                const created_at_format = created_at
+                    ? format(parse(created_at, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
+                    : null;
                 Alpine.store('assetPlanLiquidation').instance.list({
                     page: 1,
                     limit: 10,
                     name_code: name_code,
                     status: status,
-                    created_at: created_at
+                    created_at: created_at_format
                 });
             })
         }

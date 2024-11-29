@@ -4,7 +4,6 @@ namespace App\Repositories\Manage;
 
 use App\Models\PlanMaintain;
 use App\Repositories\Base\BaseRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
 class PlanMaintainRepository extends BaseRepository
@@ -26,7 +25,7 @@ class PlanMaintainRepository extends BaseRepository
         }
 
         if (!empty($filters['created_at'])) {
-            $query->whereDate('created_at', Carbon::createFromFormat('d/m/Y', $filters['created_at'])->format('Y-m-d'));
+            $query->whereDate('created_at', $filters['created_at']);
         }
 
         if (!empty($filters['status'])) {

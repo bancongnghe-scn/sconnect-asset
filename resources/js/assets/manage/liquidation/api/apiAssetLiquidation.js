@@ -1,7 +1,7 @@
 window.apiGetAssetLiquidation = async function (filters) {
     try {
 
-        const res = await axios.get("/api/asset/manage/asset-liquidation", {
+        const res = await axios.get("/api/manage-asset-liquidation", {
             params: filters
         })
 
@@ -27,7 +27,7 @@ window.apiGetAssetLiquidation = async function (filters) {
 
 window.apiCreatePlanLiquidationFromSelectAsset = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/asset/manage/asset-plan-liquidation", dataCreate)
+        const response = await axios.post("/api/manage-plan-liquidation/create", dataCreate)
 
         const data = response.data;
         if (!data.success) {

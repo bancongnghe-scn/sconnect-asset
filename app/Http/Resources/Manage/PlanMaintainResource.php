@@ -16,8 +16,8 @@ class PlanMaintainResource extends JsonResource
                 'name'                      => $item->name,
                 'asset_quantity'            => $item->asset_quantity,
                 'created_at'                => date('d/m/y', strtotime($item->created_at)),
-                'total_price_liquidation'   => $item->planMaintainAsset->sum('price'),
-                'status'                    => PlanMaintain::STATUS_NAME[$item->status],
+                'total_price_liquidation'   => $item?->planMaintainAsset?->sum('price'),
+                'status'                    => PlanMaintain::STATUS_NAME[$item?->status],
             ];
         });
 

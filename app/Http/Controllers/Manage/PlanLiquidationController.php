@@ -14,7 +14,7 @@ class PlanLiquidationController extends Controller
 
     }
 
-    public function create(Request $request)
+    public function createPlan(Request $request)
     {
         $request->validate([
             'name'      => 'required|string',
@@ -30,7 +30,7 @@ class PlanLiquidationController extends Controller
         }
     }
 
-    public function get(Request $request)
+    public function getPlan(Request $request)
     {
         $request->validate([
             'name_code'         => 'nullable|string',
@@ -94,7 +94,7 @@ class PlanLiquidationController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function updatePlan($id, Request $request)
     {
         try {
             $request->validate([

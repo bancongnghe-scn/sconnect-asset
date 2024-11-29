@@ -11,11 +11,11 @@ class AssetLostResource extends JsonResource
     {
         $data = $this->resource->map(function ($item) {
             return [
-                'id'                => $item->id,
-                'code'              => $item->code,
-                'name'              => $item->name,
+                'id'                => $item?->id,
+                'code'              => $item?->code,
+                'name'              => $item?->name,
                 'user_name'         => $item?->user?->name,
-                'status'            => Asset::STATUS_NAME[$item->status],
+                'status'            => Asset::STATUS_NAME[$item?->status],
                 'date'              => $item?->date,
                 'location'          => $item?->location,
                 'reason'            => $item?->reason,

@@ -11,10 +11,10 @@ class AssetLiquidationResource extends JsonResource
     {
         $data = $this->resource->map(function ($item) {
             return [
-                'id'                    => $item->id,
-                'code'                  => $item->code,
-                'name'                  => $item->name,
-                'status'                => Asset::STATUS_NAME[$item->status],
+                'id'                    => $item?->id,
+                'code'                  => $item?->code,
+                'name'                  => $item?->name,
+                'status'                => Asset::STATUS_NAME[$item?->status],
                 'date'                  => $item?->date,
                 'reason'                => $item?->reason,
                 'price_liquidation'     => $item?->price_liquidation,

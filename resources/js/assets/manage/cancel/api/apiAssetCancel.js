@@ -1,7 +1,7 @@
 window.apiGetAssetCancel = async function (filters) {
     try {
 
-        const res = await axios.get("/api/asset/manage/asset-cancel", {
+        const res = await axios.get("/api/manage-asset-cancel", {
             params: filters
         })
 
