@@ -133,7 +133,7 @@ class ScApiService
 
             return $response->json();
         } catch (\Throwable $exception) {
-            Log::error($exception->getMessage());
+            report($exception);
 
             return null;
         }

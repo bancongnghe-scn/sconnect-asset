@@ -121,6 +121,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -184,6 +185,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -356,6 +358,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -404,6 +407,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -484,6 +488,7 @@ class ShoppingPlanCompanyService
             ]);
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -548,6 +553,7 @@ class ShoppingPlanCompanyService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

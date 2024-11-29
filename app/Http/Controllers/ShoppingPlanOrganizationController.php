@@ -23,6 +23,8 @@ class ShoppingPlanOrganizationController
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

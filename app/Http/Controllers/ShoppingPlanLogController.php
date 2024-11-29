@@ -19,6 +19,8 @@ class ShoppingPlanLogController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

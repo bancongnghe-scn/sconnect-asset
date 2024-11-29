@@ -45,6 +45,7 @@ class RoleService
             }
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -137,6 +138,7 @@ class RoleService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

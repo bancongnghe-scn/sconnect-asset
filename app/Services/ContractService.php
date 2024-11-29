@@ -84,6 +84,7 @@ class ContractService
             DB::commit();
 
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -155,6 +156,7 @@ class ContractService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -229,6 +231,7 @@ class ContractService
             }
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -279,6 +282,7 @@ class ContractService
             DB::commit();
 
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

@@ -193,6 +193,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -299,6 +300,7 @@ class ShoppingPlanOrganizationService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -360,6 +362,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
