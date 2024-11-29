@@ -97,7 +97,11 @@ class PlanLiquidationController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $result = $this->planLiquidationService->updatePlan($id, $request->all());
+            $request->validate([
+                'status'    => 'required|integer',
+            ]);
+
+            $result = $this->planLiquidationService->updatePlan($id, $request->integer('status'));
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -112,10 +116,12 @@ class PlanLiquidationController extends Controller
     public function changeStatusAssetOfPlan(Request $request)
     {
         try {
-            $plan_maintain_asset_id = $request->get('id');
-            $dataUpdate             = $request->except('id');
+            $request->validate([
+                'id'        => 'required|integer',
+                'status'    => 'required|integer',
+            ]);
 
-            $result = $this->planLiquidationService->updatePlanMaintainAsset($plan_maintain_asset_id, $dataUpdate);
+            $result = $this->planLiquidationService->updatePlanMaintainAsset($request->get('id'), $request->integer('status'));
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

@@ -34,7 +34,7 @@
                                     </div>
                                     <div class="col-3 mb-3">
                                         <label class="tw-font-bold">Được tạo bởi</label>
-                                        <input type="hidden" id="authUserName" value="{{ Auth::user()->name }}">
+                                        <input type="hidden" id="authUserName" value="{{ Auth::user()?->name }}">
                                         <input disabled type="text" class="form-control" :value="data.user ? data.user.name : $('#authUserName').val()">
                                     </div>
                                     <div class="col-4 mb-3">

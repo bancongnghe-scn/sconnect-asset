@@ -27,18 +27,3 @@
         </button>
     </div>
 </div>
-
-<script>
-    $('#tableAssetPlanLiquidation #statusPlanLiquidation, #tableAssetPlanLiquidation #filterSigningDate').on('change', function () {
-        let name_code = $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val();
-        let status = $('#tableAssetPlanLiquidation #statusPlanLiquidation').val();
-        let created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
-        Alpine.store('assetPlanLiquidation').instance.list({
-            page: 1,
-            limit: 10,
-            name_code: name_code,
-            status: status,
-            created_at: created_at
-        });
-    })
-</script>

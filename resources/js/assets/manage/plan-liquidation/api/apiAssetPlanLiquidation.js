@@ -1,8 +1,5 @@
 window.apiGetPlanLiquidation = async function (filters) {
     try {
-        filters.name_code = filters.name_code ? filters.name_code : null;
-        filters.status = filters.status ? filters.status : null;
-        filters.created_at = filters.created_at ? filters.created_at : null;
 
         const res = await axios.get("/api/asset/manage/asset-plan-liquidation", {
             params: filters

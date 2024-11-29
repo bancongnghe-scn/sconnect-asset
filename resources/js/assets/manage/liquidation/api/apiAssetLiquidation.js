@@ -1,6 +1,5 @@
 window.apiGetAssetLiquidation = async function (filters) {
     try {
-        filters.name_code = filters.name_code ? filters.name_code : null;
 
         const res = await axios.get("/api/asset/manage/asset-liquidation", {
             params: filters

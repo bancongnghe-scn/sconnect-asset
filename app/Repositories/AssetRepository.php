@@ -22,7 +22,7 @@ class AssetRepository extends BaseRepository
         return $updatedRows > 0;
     }
 
-    public function getElementAsset($ids, $columns = ['*'])
+    public function getElementAssetByIds($ids, $columns = ['*'])
     {
         return $this->_model->whereIn('id', $ids)
             ->select($columns)

@@ -71,8 +71,8 @@ class AssetLostService
 
     public function updateAssetLost(array $data)
     {
+        DB::beginTransaction();
         try {
-            DB::beginTransaction();
             foreach ($data as $asset) {
                 $result = $this->updateOneAsset($asset);
                 if (!$result['success']) {
@@ -83,21 +83,21 @@ class AssetLostService
                     ];
                 }
             }
-
-            // Update signing_date,description to history
-            // ...
-
             DB::commit();
-
-            return [
-                'success' => true,
-            ];
         } catch (\Exception $e) {
+            DB::rollBack();
 
             return [
                 'success' => false,
             ];
         }
+        // Update signing_date,description to history
+        // ...
+
+        return [
+            'success' => true,
+        ];
+
     }
 
     private function updateOneAsset($data)
