@@ -24,6 +24,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            report($exception);
 
             return response_error();
         }
@@ -48,6 +49,8 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -65,6 +68,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
 
             return response_error();
         }
@@ -83,6 +87,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
 
             return response_error();
         }
@@ -93,6 +98,7 @@ class ShoppingPlanCompanyController extends Controller
         $request->validate([
             'id'    => 'required|integer',
             'type'  => 'required|string',
+            'note'  => 'nullable|string',
         ]);
 
         Auth::user()->canPer('shopping_plan_company.general_approval');
@@ -106,6 +112,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
 
             return response_error();
         }
@@ -123,6 +130,8 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -146,6 +155,7 @@ class ShoppingPlanCompanyController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
 
             return response_error();
         }

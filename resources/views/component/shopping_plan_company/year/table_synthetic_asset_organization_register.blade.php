@@ -39,11 +39,12 @@
                                              'tw-text-green-900 tw-bg-green-100'  : +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                                              || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
                                              || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                             'tw-text-red-600 tw-bg-red-100'  : +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                                             'tw-text-red-600 tw-bg-red-100'  : +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
                           }"
+                          data-bs-toggle="tooltip" data-bs-placement="bottom" :title="organization.note"
                     ></span>
                 </td>
-                <td x-text="assetRegister.asset_type_name ?? '-'" class="text-center"></td>
+                <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
                     <td x-text="assetRegister.register?.[number - 1] ?? '-'" class="text-center"></td>
                 </template>
@@ -80,7 +81,7 @@
                                         ].includes(+organization.status)"
                                     >
                                         <button class="border-0 bg-body"
-                                                @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_DISAPPROVAL)"
+                                                @click="showModalNoteDisapproval(organization.id)"
                                         >
                                             <i class="fa-solid fa-thumbs-down" style="color: #727479;"></i>
                                         </button>

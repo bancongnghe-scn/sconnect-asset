@@ -5,11 +5,11 @@
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Năm</label>
-                        <input type="text" class="form-control yearPicker" id="filterYearOrganization" placeholder="Chọn năm" autocomplete="off">
+                        @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <span x-data="{values: listStatus, model: filters.status, disabled: false,
+                        <span x-data="{values: listStatus, model: filters.status,
                                 init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                         }"
                               @select-change="filters.status = $event.detail">

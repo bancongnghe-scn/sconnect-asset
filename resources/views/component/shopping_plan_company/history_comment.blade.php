@@ -13,31 +13,32 @@
             Bình luận
         </a>
     </div>
-    <div class="mt-3 tw-h-[70dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid">
-        <div class="mt-3" x-show="activeLink.history">
-            <div class="container">
-                <div class="list-group">
-                    <template x-for="log in logs">
-                        <div class="d-flex tw-gap-x-2">
-                            <div class="tw-w-8 d-flex flex-column align-items-center">
+    <div class="mt-3 tw-h-[73dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid" x-show="activeLink.history">
+        <div class="container mt-3">
+            <div class="list-group">
+                <template x-for="log in logs">
+                    <div class="d-flex tw-gap-x-2">
+                        <div class="tw-w-8 d-flex flex-column align-items-center">
                             <span class="text-primary border tw-rounded-full d-flex tw-bg-blue-100">
                                 <i class="fa-regular fa-star tw-p-[5px] tw-text-blue-600" style="color: #74C0FC"></i>
                             </span>
-                                <div class="border-start border-2 flex-grow-1"></div>
-                            </div>
-                            <div class="w-auto border rounded p-2 tw-bg-zinc-100 mb-3">
-                                <p class="mb-1 text-muted small" x-text="log.created_at"></p>
-                                <p class="mb-0">
-                                    <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
-                                    <span x-text="log.desc"></span>
-                                </p>
-                            </div>
+                            <div class="border-start border-2 flex-grow-1"></div>
                         </div>
-                    </template>
-                </div>
+                        <div class="w-auto border rounded p-2 tw-bg-zinc-100 mb-3">
+                            <p class="mb-1 text-muted small" x-text="log.created_at"></p>
+                            <p class="mb-0">
+                                <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
+                                <span x-text="log.desc"></span>
+                            </p>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
-        <div class="mt-3" id="comment" x-show="activeLink.comment">
-            <div class="tw-h-[65dvh]">
+    </div>
+    <div class="mt-3 tw-h-[73dvh]" style="border-top: 1px solid" x-show="activeLink.comment">
+        <div class="mt-3" id="comment">
+            <div class="tw-h-[65dvh] overflow-y-scroll custom-scroll">
                 <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
                         <div class="mb-3">

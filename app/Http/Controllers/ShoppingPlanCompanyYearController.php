@@ -44,6 +44,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -58,6 +60,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -78,6 +82,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -97,6 +103,8 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

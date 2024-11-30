@@ -137,6 +137,10 @@ th {
     background-color: #E4F0E6 !important;
 }
 
+td {
+    background-color: white !important;
+}
+
 .custom-scroll {
     overflow-y: auto; /* Tạo thanh cuộn dọc */
     scrollbar-width: thin; /* Với Firefox */

@@ -44,11 +44,11 @@ const STATUS_SHOPPING_PLAN_COMPANY_APPROVAL = 5
 const STATUS_SHOPPING_PLAN_COMPANY_CANCEL = 6
 const STATUS_SHOPPING_PLAN_COMPANY = {
     1: 'Mới tạo',
-    2: 'Đăng ký',
-    3: 'Chờ kế toán duyệt',
-    4: 'Chờ giám đốc duyệt',
-    5: 'Đã duyệt',
-    6: 'Hủy'
+    2: 'Mở đăng ký',
+    3: 'Chờ TCKT duyệt',
+    4: 'Chờ TGĐ duyệt',
+    5: 'TGĐ đã duyệt',
+    6: 'TGĐ từ chối'
 }
 const TYPE_SHOPPING_PLAN_COMPANY_YEAR = 1;
 const GENERAL_TYPE_APPROVAL_COMPANY = 'approval';
@@ -63,14 +63,16 @@ const STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED = 5
 const STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL = 6
 const STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL = 7
 const STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL = 8
+const STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL = 9
 const STATUS_SHOPPING_PLAN_ORGANIZATION = {
     2: 'Mở đăng ký',
     3: 'Đã đăng ký',
-    4: 'Chờ kế toán duyệt',
-    5: 'Kế toán đang đánh giá',
-    6: 'Chờ giám đốc duyệt',
-    7: 'Đã duyệt',
-    8: 'Hủy'
+    4: 'Chờ TCKT duyệt',
+    5: 'TCKT đang đánh giá',
+    6: 'Chờ TGĐ duyệt',
+    7: 'TGĐ đã duyệt',
+    8: 'TGĐ từ chối',
+    9: 'TCKT từ chối'
 }
 const ORGANIZATION_TYPE_APPROVAL = 'approval';
 const ORGANIZATION_TYPE_DISAPPROVAL = 'disapproval';

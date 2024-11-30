@@ -9,35 +9,37 @@
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Loại hợp đồng</label>
-                        <select class="form-control select2" id="filterTypeContract" multiple="multiple" data-placeholder="Chọn loại hợp đồng">
-                            <template x-for="(value, key) in listTypeContract">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
+                        <span x-data="{
+                                values: listTypeContract, model: filters.type,
+                                init() {this.$watch('filters.type', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                            }"
+                              @select-change="filters.type = $event.detail"
+                        >
+                            @include('common.select2.simple.select2_multiple', [
+                                'placeholder' => 'Chọn loại hợp đồng'
+                            ])
+                        </span>
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <select class="form-control select2" id="filterStatusContract" multiple="multiple" data-placeholder="Chọn trạng thái">
-                            <template x-for="(value, key) in listStatusContract">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
+                        <span x-data="{
+                                values: listStatusContract, model: filters.status,
+                                init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                            }"
+                              @select-change="filters.status = $event.detail"
+                        >
+                            @include('common.select2.simple.select2_multiple', [
+                                'placeholder' => 'Chọn trạng thái'
+                            ])
+                        </span>
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày ký</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control datepickerContract" id="filterSigningDateContract"
-                                   placeholder="Ngày ký" autocomplete="off">
-                            <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                        </div>
+                        @include('common.datepicker.datepicker', ['placeholder' => "Ngày ký", 'model' => "filters.signing_date"])
                     </div>
                     <div class="col-3">
                         <label class="tw-font-bold">Ngày hiệu lực</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control datepickerContract" id="filterFromContract"
-                                   placeholder="Ngày hiệu lực" autocomplete="off">
-                            <span class="input-group-text"><i class="fa-regular fa-calendar-days"></i></span>
-                        </div>
+                        @include('common.datepicker.datepicker', ['placeholder' => "Ngày hiệu lực", 'model' => "filters.from"])
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

@@ -17,6 +17,8 @@ class JobTitleController extends Controller
         try {
             return response_success(ScApiService::getAllJob());
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

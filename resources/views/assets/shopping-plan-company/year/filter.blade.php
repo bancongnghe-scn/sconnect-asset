@@ -5,15 +5,13 @@
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Năm</label>
-                        <span @date-change="filters.time = $event.detail">
-                            @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
-                        </span>
+                        @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
                     </div>
 
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
                         <span x-data="{
-                                values: listStatus, model: filters.status, disabled: false,
+                                values: listStatus, model: filters.status,
                                 init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                             }"
                             @select-change="filters.status = $event.detail"

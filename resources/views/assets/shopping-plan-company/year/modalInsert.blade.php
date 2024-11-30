@@ -27,7 +27,7 @@
                             <select class="form-select select2" x-model="data.monitor_ids"
                                     multiple="multiple" data-placeholder="Chọn người quan sát"
                                     x-init="$nextTick(() => {
-                                        $($el).on('change', () => {data.monitor_ids = $($el).val(); console.log(11111)});
+                                        $($el).on('change', () => {data.monitor_ids = $($el).val()});
                                     })"
                             >
                                 <template x-for="value in listUser" :key="value.id">

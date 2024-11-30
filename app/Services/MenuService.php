@@ -113,6 +113,7 @@ class MenuService
             Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -143,6 +144,7 @@ class MenuService
             Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -206,6 +208,7 @@ class MenuService
             Cache::tags(config('cache_keys.tags.menu_tag'))->clear();
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

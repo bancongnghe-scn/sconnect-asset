@@ -48,24 +48,31 @@
                                              'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                                              || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
                                              || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                             'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                                             'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
                                   }"
                             ></span>
                         </div>
                         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                             <div>
                                 <label class="tw-font-bold">Tên</label>
-                                <div class="form-control" x-text="data.name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Đơn vị</label>
-                                <div class="form-control" x-text="data.organization_name"></div>
+                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.organization_name"></div>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký</label>
-                                <div class="form-control" x-text="data.register_time"></div>
+                                <template x-if="data.start_time !== null">
+                                    @include('common.datepicker.datepicker_range', [
+                                         'placeholder' => 'Chọn thời gian đăng ký',
+                                         'disabled' => true,
+                                         'start' => 'data.start_time',
+                                         'end' => 'data.end_time',
+                                    ])
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -116,17 +123,19 @@
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                     <tr>
                                                         <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id, disabled: true}">
+                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}">
                                                                 @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn loại tài sản'
+                                                                    'placeholder' => 'Chọn loại tài sản',
+                                                                    'disabled' => true
                                                                 ])
                                                             </span>
                                                         </td>
                                                         <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
                                                         <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id, disabled: true}">
+                                                            <span x-data="{values: list_job, model: asset.job_id}">
                                                                 @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn chức danh'
+                                                                    'placeholder' => 'Chọn chức danh',
+                                                                    'disabled' => true
                                                                 ])
                                                             </span>
                                                         </td>

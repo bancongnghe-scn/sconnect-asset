@@ -27,13 +27,22 @@
                             <div>
                                 <label class="tw-font-bold">Năm<span
                                         class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <input type="text" class="form-control yearPicker" id="selectYear" x-model="data.time" autocomplete="off" disabled>
+                                @include('common.datepicker.datepicker_year', [
+                                        'model' => 'data.time',
+                                        'disabled' => true
+                                ])
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <input type="text" class="form-control dateRange" id="selectDateRegister"
-                                       placeholder="Chọn thời gian đăng ký" autocomplete="off" disabled>
+                                <template x-if="data.start_time !== null">
+                                    @include('common.datepicker.datepicker_range', [
+                                       'placeholder' => 'Chọn thời gian đăng ký',
+                                       'disabled' => true,
+                                       'start' => 'data.start_time',
+                                       'end' => 'data.end_time',
+                                    ])
+                                </template>
                             </div>
 
                             <template x-if="listUser.length > 0">
@@ -42,12 +51,12 @@
                                     <div x-data="{
                                         values: listUser,
                                         model: data.monitor_ids,
-                                        disabled: true
                                     }"
                                          @select-change="data.monitor_ids = $event.detail"
                                     >
                                         @include('common.select2.extent.select2_multiple', [
                                             'placeholder' => 'Chọn người quan sát',
+                                            'disabled' => true
                                         ])
                                     </div>
                                 </div>
