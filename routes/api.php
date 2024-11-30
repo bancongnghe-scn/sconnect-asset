@@ -115,4 +115,25 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('add', 'addCache');
         Route::get('get', 'getCache');
     });
+
+    Route::prefix('manage-asset-lost')->controller(App\Http\Controllers\Manage\AssetLostController::class)->group(function () {
+        Route::get('list', 'getListAssetLost');
+        Route::get('{id}', 'findAssetLost');
+        Route::post('update', 'findAssetLost');
+    });
+
+    Route::get('manage-asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
+    Route::get('manage-asset-liquidation', [App\Http\Controllers\Manage\AssetLiquidationController::class, 'getListAssetLiquidation']);
+
+    Route::prefix('manage-plan-liquidation')->controller(App\Http\Controllers\Manage\PlanLiquidationController::class)->group(function () {
+        Route::post('create', 'createPlan');
+        Route::get('get', 'getPlan');
+        Route::get('detail/{id}', 'detail');
+        Route::post('update-asset', 'updateAssetToPlan');
+        Route::delete('delete-asset/{plan_id}', 'deleteAssetFromPlan');
+        Route::post('delete-multi', 'deleteMultiPlan');
+        Route::post('update-status-asset', 'changeStatusAssetOfPlan');
+        Route::post('update-status-multi-asset', 'changeStatusMultiAssetOfPlan');
+        Route::post('update-plan/{id}', 'updatePlan');
+    });
 });
