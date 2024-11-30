@@ -36,7 +36,7 @@
     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
 >
     <option value="">{{$placeholder ?? 'Chọn giá trị'}}</option>
-    <template x-for="(value, key) in values">
+    <template x-for="(value, key) in {{$values ?? 'values'}}">
         <option :value="key" x-text="value"></option>
     </template>
 </select>

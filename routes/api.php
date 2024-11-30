@@ -26,7 +26,7 @@ Route::get('ping', function () {
     return 'pong';
 });
 
-Route::middleware('checkAuth')->group(function () {
+Route::middleware('web')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
@@ -59,6 +59,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::get('send-manager-approval/{id}', 'sendManagerApproval');
             Route::post('manager-approval', 'managerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+            Route::get('list', 'getListShoppingPlan');
         });
 
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
@@ -66,6 +67,13 @@ Route::middleware('checkAuth')->group(function () {
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
             Route::get('get-organization-register/{id}', 'getOrganizationRegisterYear');
+        });
+
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanCompanyQuarterController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyQuarter');
+            Route::post('create', 'createShoppingPlanCompanyQuarter');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyQuarter');
+            Route::get('get-organization-register/{id}', 'getOrganizationRegisterQuarter');
         });
     });
 

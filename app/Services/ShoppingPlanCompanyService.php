@@ -756,4 +756,14 @@ class ShoppingPlanCompanyService
             'success' => true,
         ];
     }
+
+    public function getListShoppingPlanByFilters($filters)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->getListing($filters);
+        if ($shoppingPlanCompany->isEmpty()) {
+            return [];
+        }
+
+        return $shoppingPlanCompany->toArray();
+    }
 }
