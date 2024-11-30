@@ -36,6 +36,7 @@
     multiple="multiple"
     data-placeholder="{{$placeholder ?? 'Chọn giá trị'}}"
     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+    @if(isset($id)) id="{{$id}}" @endif
 >
     <template x-for="(value, key) in {{$values ?? 'values'}}">
         <option :value="key" x-text="value"></option>

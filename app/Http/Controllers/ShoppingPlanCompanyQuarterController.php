@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateShoppingPlanCompanyQuarterRequest;
 use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
@@ -67,13 +68,13 @@ class ShoppingPlanCompanyQuarterController extends Controller
         }
     }
 
-    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
+    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyQuarterRequest $request)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
+            $data['type'] = ShoppingPlanCompany::TYPE_QUARTER;
 
             $result = $this->planCompanyService->createShoppingPlanCompany($data);
 

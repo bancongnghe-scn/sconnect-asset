@@ -77,12 +77,12 @@ document.addEventListener('alpine:init', () => {
         async create() {
             this.loading = true
             try {
-                const response = await window.apiCreateShoppingPlanCompanyYear(this.data)
+                const response = await window.apiCreateShoppingPlanCompanyQuarter(this.data)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                toast.success('Tạo kế hoạch mua sắm năm thành công !')
+                toast.success('Tạo kế hoạch mua sắm quý thành công !')
                 $('#idModalInsert').modal('hide');
                 this.resetData()
                 this.reloadPage()
@@ -175,6 +175,7 @@ document.addEventListener('alpine:init', () => {
 
         resetData() {
             this.data = {
+                plan_year_id: null,
                 time: null,
                 start_time: null,
                 end_time: null,

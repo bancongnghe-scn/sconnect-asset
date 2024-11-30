@@ -21,7 +21,7 @@
                     <div>
                         <label class="tw-font-bold">Quý</label>
                         <span>
-                            @include('common.select2.modal.extent.select2_single_modal', [
+                            @include('common.select2.modal.simple.select2_single_modal', [
                                'placeholder' => 'Chọn quý',
                                'model' => 'data.time',
                                'values' => 'listQuarter',
