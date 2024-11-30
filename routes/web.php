@@ -65,4 +65,6 @@ Route::middleware(['checkAuth'])->group(function () {
             dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->clear());
         });
     });
+
+    Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
 });
