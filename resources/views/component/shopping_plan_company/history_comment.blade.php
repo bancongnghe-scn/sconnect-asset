@@ -38,7 +38,7 @@
     </div>
     <div class="mt-3" style="border-top: 1px solid" x-show="activeLink.comment">
         <div class="mt-3 container" id="comment">
-            <div class="tw-h-[61dvh] lg:tw-h-[65dvh] overflow-y-scroll custom-scroll">
+            <div class="tw-h-[61dvh] xl:tw-h-[65dvh] overflow-y-scroll custom-scroll">
                 <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
                         <div class="mb-3">
