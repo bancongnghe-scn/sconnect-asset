@@ -141,7 +141,7 @@
                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                         <div class="mb-3">
                             <div class="active-link tw-w-fit">Thống kê</div>
-                            <div class="mt-3">
+                            <div class="mt-3 overflow-x-auto tw-max-w-full">
                                 <table id="example2" class="table table-bordered dataTable dtr-inline"
                                        aria-describedby="example2_info">
                                     <thead>

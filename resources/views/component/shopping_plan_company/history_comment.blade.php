@@ -36,8 +36,8 @@
             </div>
         </div>
     </div>
-    <div class="mt-3 tw-h-[73dvh]" style="border-top: 1px solid" x-show="activeLink.comment">
-        <div class="mt-3" id="comment">
+    <div class="mt-3" style="border-top: 1px solid" x-show="activeLink.comment">
+        <div class="mt-3 container" id="comment">
             <div class="tw-h-[65dvh] overflow-y-scroll custom-scroll">
                 <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
@@ -78,16 +78,14 @@
                 </div>
             </div>
 
-            <div class="container">
-                <div class="input-group border rounded mt-3">
-                    <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
-                           x-model="comment_message"
-                           x-ref="input_message"
-                           @keydown.enter="sentComment()">
-                    <button class="btn" type="button" @click="sentComment()">
-                        <i class="fas fa-paper-plane color-sc"></i>
-                    </button>
-                </div>
+            <div class="input-group border rounded mt-3">
+                <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
+                       x-model="comment_message"
+                       x-ref="input_message"
+                       @keydown.enter="sentComment()">
+                <button class="btn" type="button" @click="sentComment()">
+                    <i class="fas fa-paper-plane color-sc"></i>
+                </button>
             </div>
         </div>
     </div>
