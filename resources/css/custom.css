@@ -165,6 +165,30 @@ td {
     background: #ddd;
 }
 
+.custom-scroll-x {
+    overflow-x: auto; /* Tạo thanh cuộn dọc */
+    scrollbar-width: thin; /* Với Firefox */
+    scrollbar-color: #888 #ddd; /* Màu thanh cuộn và nền thanh cuộn */
+}
+
+/* Chrome, Edge, Safari */
+.custom-scroll-x::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scroll-x::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.custom-scroll-x::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.custom-scroll-x::-webkit-scrollbar-track {
+    background: #ddd;
+}
+
 html {
     scroll-behavior: smooth;
 }
