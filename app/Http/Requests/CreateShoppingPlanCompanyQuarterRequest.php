@@ -6,18 +6,19 @@ class CreateShoppingPlanCompanyQuarterRequest extends CreateShoppingPlanCompanyY
 {
     public function rules(): array
     {
+        $rules                 = parent::rules();
         $rules['plan_year_id'] = 'required|integer';
+        $rules['time']         = 'required|integer';
 
         return $rules;
     }
 
     public function attributes(): array
     {
-        return [
-            'time'          => __('attributes.shopping_plan_company.quarter.time'),
-            'plan_year_id'  => __('attributes.shopping_plan_company.plan_year_id'),
-            'start_time'    => __('attributes.shopping_plan_company.start_time'),
-            'end_time'      => __('attributes.shopping_plan_company.end_time'),
-        ];
+        $attributes                 = parent::attributes();
+        $attributes['time']         = __('attributes.shopping_plan_company.quarter.time');
+        $attributes['plan_year_id'] = __('attributes.shopping_plan_company.plan_year_id');
+
+        return $attributes;
     }
 }

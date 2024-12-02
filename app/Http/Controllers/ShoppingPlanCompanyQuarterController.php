@@ -68,15 +68,14 @@ class ShoppingPlanCompanyQuarterController extends Controller
         }
     }
 
-    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyQuarterRequest $request)
+    public function createShoppingPlanCompanyQuarter(CreateShoppingPlanCompanyQuarterRequest $request)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();
             $data['type'] = ShoppingPlanCompany::TYPE_QUARTER;
-
-            $result = $this->planCompanyService->createShoppingPlanCompany($data);
+            $result       = $this->planCompanyService->createShoppingPlanCompany($data);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
