@@ -13,7 +13,7 @@
             Bình luận
         </a>
     </div>
-    <div class="mt-3 tw-h-[73dvh] overflow-y-scroll custom-scroll" style="border-top: 1px solid" x-show="activeLink.history">
+    <div class="mt-3 tw-h-[73dvh] overflow-y-scroll overflow-x-hidden custom-scroll" style="border-top: 1px solid" x-show="activeLink.history">
         <div class="container mt-3">
             <div class="list-group">
                 <template x-for="log in logs">
