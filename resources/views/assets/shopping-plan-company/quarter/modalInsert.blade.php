@@ -31,11 +31,13 @@
 
                     <div>
                         <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        @include('common.datepicker.datepicker_range', [
+                        <span>
+                            @include('common.datepicker.datepicker_range', [
                                 'placeholder' => 'Chọn thời gian đăng ký',
                                 'start' => 'data.start_time',
                                 'end' => 'data.end_time'
-                        ])
+                            ])
+                        </span>
                     </div>
 
                     <template x-if="listUser.length > 0">

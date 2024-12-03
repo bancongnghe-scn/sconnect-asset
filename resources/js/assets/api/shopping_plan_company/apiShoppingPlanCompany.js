@@ -168,9 +168,9 @@ window.apiGeneralApprovalShoppingPlanCompany = async function (id, type, note = 
     }
 }
 
-window.apiGetShoppingPlanCompany = async function (param) {
+window.apiGetShoppingPlanCompany = async function (params) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/list", {param: param})
+        const response = await axios.get("/api/shopping-plan-company/list", {params: params})
 
         const data = response.data;
         if (!data.success) {

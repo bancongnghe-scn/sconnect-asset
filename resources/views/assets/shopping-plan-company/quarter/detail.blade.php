@@ -1,5 +1,5 @@
 @extends('layouts.app',[
-    'title' => 'Chi tiết kế hoạch mua sắm năm'
+    'title' => 'Chi tiết kế hoạch mua sắm quý'
 ])
 
 @section('content')

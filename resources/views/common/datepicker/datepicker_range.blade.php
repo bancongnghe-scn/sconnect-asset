@@ -4,18 +4,30 @@
            @if(isset($id)) id="{{$id}}" @endif
            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
            x-init="
-                new AirDatepicker($el, {
+                const datePicker = new AirDatepicker($el, {
                     range: true,
                     multipleDatesSeparator: ' - ',
                     autoClose: true,
                     clearButton: true,
                     locale: localeEn,
                     dateFormat: 'dd/MM/yyyy',
-                    selectedDates: [{{$start}} !== null ? formatDate({{$start}}) : new Date(), {{$end}} !== null ? formatDate({{$end}}) : new Date()],
+                    selectedDates: [{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''],
                     onSelect: (selectedDates) => {
                         {{$start}} =  selectedDates.date[0] ? format(selectedDates.date[0], 'dd/MM/yyyy') : null
                         {{$end}} =  selectedDates.date[1] ? format(selectedDates.date[1], 'dd/MM/yyyy') : null
                     }
+                });
+
+                $watch(`{{$start}}`, (newValue) => {
+                   if(newValue === null) {
+                       datePicker.clear()
+                   }
+                });
+
+                $watch(`{{$end}}`, (newValue) => {
+                   if(newValue === null) {
+                       datePicker.clear()
+                   }
                 });
            "
     >

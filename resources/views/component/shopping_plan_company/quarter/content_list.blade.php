@@ -27,9 +27,9 @@
     @include('assets.shopping-plan-company.quarter.modalInsert')
     <div
         x-data="{
-                        modalId: idModalConfirmDelete,
-                        contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
-                    }"
+              modalId: idModalConfirmDelete,
+              contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
+        }"
         @ok="remove"
     >
         @include('common.modal-confirm')
@@ -37,9 +37,9 @@
 
     <div
         x-data="{
-                modalId: idModalConfirmDeleteMultiple,
-                contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
-            }"
+             modalId: idModalConfirmDeleteMultiple,
+             contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
+        }"
         @ok="removeMultiple"
     >
         @include('common.modal-confirm')

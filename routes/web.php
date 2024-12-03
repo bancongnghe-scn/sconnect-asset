@@ -50,8 +50,8 @@ Route::middleware(['web'])->group(function () {
         });
         Route::prefix('quarter')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyQuarterController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
+            Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
         });
     });
     Route::prefix('shopping-plan-organization')->group(function () {
