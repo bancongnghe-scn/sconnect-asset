@@ -59,6 +59,11 @@ Route::middleware(['web'])->group(function () {
             Route::view('register/{id}', 'assets.shopping_plan_organization.year.register');
             Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
         });
+
+        Route::prefix('quarter')->group(function () {
+            Route::view('register/{id}', 'assets.shopping_plan_organization.quarter.register');
+            Route::view('view/{id}', 'assets.shopping_plan_organization.quarter.detail');
+        });
     });
 
     Route::prefix('cache')->group(function () {

@@ -3,9 +3,9 @@
 ])
 
 @section('content')
-    <div x-data="updateShoppingPlanCompanyYear">
+    <div x-data="updateShoppingPlanCompanyQuarter">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay lại</button>
         </div>
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">
@@ -25,42 +25,58 @@
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
-                                <label class="tw-font-bold">Năm<span
-                                        class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                @include('common.datepicker.datepicker_year', [
-                                        'model' => 'data.time',
-                                        'disabled' => true
-                                ])
+                                <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                <span x-data="{
+                                    model: data.plan_year_id,
+                                    init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                }">
+                                    @include('common.select2.extent.select2', [
+                                          'placeholder' => 'Chọn quý',
+                                          'values' => 'listPlanCompanyYear',
+                                          'disabled' => true
+                                    ])
+                                </span>
+                            </div>
+
+                            <div>
+                                <label class="tw-font-bold">Quý</label>
+                                <span x-data="{
+                                    model: data.time,
+                                    init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                }">
+                                    @include('common.select2.simple.select2_single', [
+                                          'placeholder' => 'Chọn quý',
+                                          'values' => 'listQuarter',
+                                          'disabled' => true
+                                    ])
+                                </span>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <template x-if="data.start_time !== null">
-                                    @include('common.datepicker.datepicker_range', [
+                                @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
                                        'disabled' => true,
                                        'start' => 'data.start_time',
                                        'end' => 'data.end_time',
-                                    ])
-                                </template>
+                                ])
                             </div>
 
-                            <template x-if="listUser.length > 0">
-                                <div>
-                                    <label class="form-label">Người quan sát</label>
-                                    <div x-data="{
-                                        values: listUser,
+                            <div>
+                                <label class="form-label">Người quan sát</label>
+                                <div x-data="{
                                         model: data.monitor_ids,
+                                        init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                                     }"
-                                         @select-change="data.monitor_ids = $event.detail"
-                                    >
-                                        @include('common.select2.extent.select2_multiple', [
-                                            'placeholder' => 'Chọn người quan sát',
-                                            'disabled' => true
-                                        ])
-                                    </div>
+                                     @select-change="data.monitor_ids = $event.detail"
+                                >
+                                    @include('common.select2.extent.select2_multiple', [
+                                        'placeholder' => 'Chọn người quan sát',
+                                        'disabled' => true,
+                                        'values' => 'listUser',
+                                    ])
                                 </div>
-                            </template>
+                            </div>
                         </div>
                     </div>
 
@@ -99,10 +115,10 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.year.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.quarter.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')
+                                @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')
                             </template>
                         </div>
                     </div>
@@ -117,10 +133,10 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/shopping_plan_company/year/updateShoppingPlanCompanyYear.js',
+        'resources/js/assets/shopping_plan_company/quarter/updateShoppingPlanCompanyQuarter.js',
         'resources/js/assets/history_comment/comment_shopping_plan_company.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
-        'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection

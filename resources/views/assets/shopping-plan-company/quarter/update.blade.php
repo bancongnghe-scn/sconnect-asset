@@ -1,9 +1,9 @@
 @extends('layouts.app',[
-    'title' => 'Chi tiết kế hoạch mua sắm năm'
+    'title' => 'Chi tiết kế hoạch mua sắm quý'
 ])
 
 @section('content')
-    <div x-data="updateShoppingPlanCompanyYear">
+    <div x-data="updateShoppingPlanCompanyQuarter">
         {{-- danh sách button --}}
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
@@ -19,7 +19,7 @@
             <template
                     x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 @can('shopping_plan_company.crud')
-                    <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
+                    <button class="btn btn-sc" @click="updatePlanQuarter()">Lưu</button>
                 @endcan
             </template>
             <template
@@ -52,7 +52,7 @@
                     </button>
                 </template>
             @endcan
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay
                 lại
             </button>
         </div>
@@ -77,41 +77,58 @@
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
-                                <label class="tw-font-bold">Năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                @include('common.datepicker.datepicker_year', [
-                                        'model' => 'data.time',
-                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
-                                ])
+                                <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                <span x-data="{
+                                    model: data.plan_year_id,
+                                    init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                }">
+                                    @include('common.select2.extent.select2', [
+                                          'placeholder' => 'Chọn quý',
+                                          'values' => 'listPlanCompanyYear',
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                    ])
+                                </span>
+                            </div>
+
+                            <div>
+                                <label class="tw-font-bold">Quý</label>
+                                <span x-data="{
+                                    model: data.time,
+                                    init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                }">
+                                    @include('common.select2.simple.select2_single', [
+                                          'placeholder' => 'Chọn quý',
+                                          'values' => 'listQuarter',
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                    ])
+                                </span>
                             </div>
 
                             <div>
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <template x-if="data.start_time !== null">
-                                    @include('common.datepicker.datepicker_range', [
+                                @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER',
                                        'start' => 'data.start_time',
                                        'end' => 'data.end_time',
-                                    ])
-                                </template>
+                                ])
                             </div>
 
-                            <template x-if="listUser.length > 0">
-                                <div>
-                                    <label class="form-label">Người quan sát</label>
-                                    <div x-data="{
-                                        values: listUser,
+                            <div>
+                                <label class="form-label">Người quan sát</label>
+                                <div x-data="{
                                         model: data.monitor_ids,
+                                        init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                                     }"
-                                        @select-change="data.monitor_ids = $event.detail"
-                                    >
-                                        @include('common.select2.extent.select2_multiple', [
-                                            'placeholder' => 'Chọn người quan sát',
-                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))'
-                                        ])
-                                    </div>
+                                     @select-change="data.monitor_ids = $event.detail"
+                                >
+                                    @include('common.select2.extent.select2_multiple', [
+                                        'placeholder' => 'Chọn người quan sát',
+                                        'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
+                                        'values' => 'listUser',
+                                    ])
                                 </div>
-                            </template>
+                            </div>
                         </div>
                     </div>
 
@@ -152,7 +169,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)"
+                                        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)"
                                                   :key="number">
                                             <th x-text="`T` + number" class="text-center"></th>
                                         </template>
@@ -175,10 +192,10 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.year.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.quarter.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')
+                                @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')
                             </template>
                         </div>
                     </div>
@@ -214,10 +231,10 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/shopping_plan_company/year/updateShoppingPlanCompanyYear.js',
+        'resources/js/assets/shopping_plan_company/quarter/updateShoppingPlanCompanyQuarter.js',
         'resources/js/assets/history_comment/comment_shopping_plan_company.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
-        'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js'
     ])

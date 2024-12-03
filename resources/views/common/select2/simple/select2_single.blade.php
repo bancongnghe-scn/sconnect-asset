@@ -1,4 +1,4 @@
-<select
+<select class="form-control"
     x-init="$nextTick(() => {
         // Khởi tạo Select2
         $($el).select2({
@@ -32,7 +32,6 @@
             }
         });
     })"
-    class="form-control"
     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     @if(isset($id)) id="{{$id}}" @endif
 >

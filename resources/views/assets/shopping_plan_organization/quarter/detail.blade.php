@@ -1,9 +1,9 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm năm'
+    'title' => 'Kế hoạch mua sắm quý'
 ])
 
 @section('content')
-    <div x-data="register_shopping_plan_organization_year">
+    <div x-data="register_shopping_plan_organization_quarter">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                 @can('shopping_plan_company.accounting_approval')
@@ -32,7 +32,7 @@
                     </div>
                 @endcan
             </template>
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay lại</button>
         </div>
         <div class="d-flex">
             <div class="card flex-grow-1 mr-3">
@@ -177,11 +177,11 @@
 
 @section('js')
     @vite([
-       'resources/js/assets/shopping_plan_organization/year/register_shopping_plan_organization_year.js',
+       'resources/js/assets/shopping_plan_organization/quarter/register_shopping_plan_organization_quarter.js',
        'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
        'resources/js/app/api/apiJob.js',
-       'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
+       'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
     ])
 @endsection

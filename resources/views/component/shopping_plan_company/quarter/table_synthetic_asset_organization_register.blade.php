@@ -7,13 +7,13 @@
         </th>
         <th rowspan="2" class="text-center">Đơn vị</th>
         <th rowspan="2" class="text-center">Loại tài sản</th>
-        <th colspan="12" class="text-center">Số lượng đăng ký theo tháng</th>
+        <th colspan="3" class="text-center">Số lượng đăng ký theo tháng</th>
         <th rowspan="2" class="text-center">Tổng Số lượng</th>
         <th rowspan="2" class="text-center">Tổng Thành tiền</th>
         <th rowspan="2" class="text-center tw-w-28">Thao tác</th>
     </tr>
     <tr>
-        <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="number">
             <th x-text="`T` + number" class="text-center"></th>
         </template>
     </tr>
@@ -45,14 +45,14 @@
                     ></span>
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
+                <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
                     <td x-text="assetRegister.register?.[number - 1] ?? '-'" class="text-center"></td>
                 </template>
                 <td x-text="assetRegister.total_register ?? '-'" class="text-center"></td>
                 <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                     {{-- button view --}}
-                    <button @click="window.location.href = `/shopping-plan-organization/year/view/${organization.id}`" class="border-0 bg-body">
+                    <button @click="window.location.href = `/shopping-plan-organization/quarter/view/${organization.id}`" class="border-0 bg-body">
                         <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                     </button>
 

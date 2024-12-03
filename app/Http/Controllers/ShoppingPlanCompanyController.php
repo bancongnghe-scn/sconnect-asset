@@ -161,6 +161,22 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
+    public function getOrganizationRegisterYearQuarter(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->getOrganizationRegisterYearQuarter($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
     public function getListShoppingPlan(Request $request)
     {
         $request->validate([

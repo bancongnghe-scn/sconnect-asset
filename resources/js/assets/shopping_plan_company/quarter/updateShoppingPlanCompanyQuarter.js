@@ -1,14 +1,12 @@
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('updateShoppingPlanCompanyYear', () => ({
+    Alpine.data('updateShoppingPlanCompanyQuarter', () => ({
         async init() {
             const split = window.location.href.split('/')
             this.id = split.pop();
             this.action = split.at(5);
-            this.getOrganizationRegisterYear()
-            this.getInfoShoppingPlanCompanyYear()
-            this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
+            this.feetData()
         },
 
         //data
@@ -18,6 +16,7 @@ document.addEventListener('alpine:init', () => {
         checkedAll: false,
         data: {
             time: null,
+            plan_year_id: null,
             status: null,
             start_time: null,
             end_time: null,
@@ -25,11 +24,20 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         register: [],
+        listQuarter: LIST_QUARTER,
+        listPlanCompanyYear: [],
         selectedRow: [],
         note_disapproval: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
-        async getInfoShoppingPlanCompanyYear() {
+        async feetData() {
+            this.getOrganizationRegisterQuarter()
+            await this.getListPlanCompanyYear()
+            await this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
+            this.getInfoShoppingPlanCompanyQuarter()
+        },
+
+        async getInfoShoppingPlanCompanyQuarter() {
             this.loading = true
             try {
                 const response = await window.apiShowShoppingPlanCompany(this.id)
@@ -40,6 +48,7 @@ document.addEventListener('alpine:init', () => {
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
                     this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
                     this.data.monitor_ids = data.monitor_ids
+                    this.data.plan_year_id = data.plan_year_id
                     return
                 }
 
@@ -52,10 +61,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async updatePlanYear() {
+        async updatePlanQuarter() {
             this.loading = true
             try {
-                const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
+                const response = await window.apiUpdateShoppingPlanCompanyQuarter(this.data, this.id)
                 if (response.success) {
                     toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
                     return
@@ -69,6 +78,18 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getListPlanCompanyYear(){
+            this.loading = true
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            if (response.success) {
+                this.listPlanCompanyYear = response.data
+                console.log('year')
+            } else {
+                toast.error('Lấy danh sách kế hoạch năm !')
+            }
+            this.loading = false
+        },
+
         async sentNotificationRegister() {
             this.loading = true
             try {
@@ -76,7 +97,7 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                    this.getOrganizationRegisterYear()
+                    this.getOrganizationRegisterQuarter()
                     return
                 }
 
@@ -94,7 +115,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSendAccountantApproval(this.id)
                 if (response.success) {
                     toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/year/list`
+                    window.location.href = `/shopping-plan-company/quarter/list`
                     return
                 }
 
@@ -112,7 +133,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSendManagerApproval(this.id)
                 if (response.success) {
                     toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/year/list`
+                    window.location.href = `/shopping-plan-company/quarter/list`
                     return
                 }
 
@@ -134,7 +155,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 $("#"+this.idModalConfirmDelete).modal('hide')
                 toast.success('Xóa kế hoạch mua sắm năm thành công !')
-                window.location.href = `/shopping-plan-company/year/list`
+                window.location.href = `/shopping-plan-company/quarter/list`
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -142,10 +163,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getOrganizationRegisterYear() {
+        async getOrganizationRegisterQuarter() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYear(this.id)
+                const response = await window.getOrganizationRegisterYearQuarter(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return
@@ -241,7 +262,7 @@ document.addEventListener('alpine:init', () => {
                         this.data.status = STATUS_SHOPPING_PLAN_COMPANY_CANCEL
                         $("#modalNoteDisapprovalPlanCompany").modal('hide')
                     }
-                    this.getOrganizationRegisterYear()
+                    this.getOrganizationRegisterQuarter()
                     return
                 }
 

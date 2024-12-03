@@ -29,11 +29,6 @@ class ShoppingPlanOrganization extends Model
         return $this->hasMany(ShoppingAsset::class, 'shopping_plan_organization_id');
     }
 
-    public function shoppingAssetsYear(): HasMany
-    {
-        return $this->hasMany(ShoppingAsset::class, 'shopping_plan_organization_id')->orderBy('month');
-    }
-
     public function shoppingPlanCompany(): BelongsTo
     {
         return $this->belongsTo(ShoppingPlanCompany::class, 'shopping_plan_company_id');

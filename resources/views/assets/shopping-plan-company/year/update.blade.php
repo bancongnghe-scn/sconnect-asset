@@ -16,14 +16,12 @@
                     @endcan
                 </div>
             </template>
-            <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 @can('shopping_plan_company.crud')
                     <button class="btn btn-sc" @click="updatePlanYear()">Lưu</button>
                 @endcan
             </template>
-            <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
                 @can('shopping_plan_company.sent_account_approval')
                     <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
                 @endcan
@@ -38,23 +36,15 @@
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
             </template>
             @can('shopping_plan_company.general_approval')
-                <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
-                    <button class="btn btn-sc"
-                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt
-                    </button>
+                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
+                    <button class="btn btn-sc" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt</button>
                 </template>
 
-                <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
-                    <button class="btn bg-red"
-                            @click="showModalNoteDisapprovalShoppingCompany()">Từ chối
-                    </button>
+                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
+                    <button class="btn bg-red" @click="showModalNoteDisapprovalShoppingCompany()">Từ chối</button>
                 </template>
             @endcan
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay
-                lại
-            </button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
         </div>
 
         {{-- content --}}

@@ -21,12 +21,16 @@
                 $watch(`{{$start}}`, (newValue) => {
                    if(newValue === null) {
                        datePicker.clear()
+                   } else {
+                        datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
                    }
                 });
 
                 $watch(`{{$end}}`, (newValue) => {
                    if(newValue === null) {
                        datePicker.clear()
+                   } else {
+                       datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
                    }
                 });
            "

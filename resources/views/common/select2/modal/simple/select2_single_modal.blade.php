@@ -1,7 +1,7 @@
 <select class="form-control select2"
         x-model="{{$model}}"
         x-init="$nextTick(() => {
-             $($el).on('change', () => { {{$model}} = $($el).val()});
+            $($el).on('change', () => { {{$model}} = $($el).val()});
         })"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
         @if(isset($id)) id="{{$id}}" @endif

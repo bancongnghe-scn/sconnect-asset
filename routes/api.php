@@ -60,20 +60,19 @@ Route::middleware('web')->group(function () {
             Route::post('manager-approval', 'managerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
             Route::get('list', 'getListShoppingPlan');
+            Route::get('get-organization-register-year-quarter/{id}', 'getOrganizationRegisterYearQuarter');
         });
 
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyYear');
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
-            Route::get('get-organization-register/{id}', 'getOrganizationRegisterYear');
         });
 
         Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanCompanyQuarterController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyQuarter');
             Route::post('create', 'createShoppingPlanCompanyQuarter');
             Route::put('update/{id}', 'updateShoppingPlanCompanyQuarter');
-            Route::get('get-organization-register/{id}', 'getOrganizationRegisterQuarter');
         });
     });
 
