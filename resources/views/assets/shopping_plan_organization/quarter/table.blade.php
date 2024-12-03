@@ -50,7 +50,7 @@
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" @click="window.location.href = `/shopping-plan-organization/year/view/${data.id}`">
+                                            <button class="border-0 bg-body" @click="window.location.href = `/shopping-plan-organization/quarter/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
                                             <template x-if="new Date() >= new Date(window.formatDate(data.start_time))
@@ -58,14 +58,14 @@
                                                 <span>
                                                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER">
                                                         <button class="border-0 bg-body"
-                                                                @click="window.location.href = `/shopping-plan-organization/year/register/${data.id}`"
+                                                                @click="window.location.href = `/shopping-plan-organization/quarter/register/${data.id}`"
                                                         >
                                                             <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                         </button>
                                                     </template>
                                                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED">
                                                         <button class="border-0 bg-body"
-                                                                @click="window.location.href = `/shopping-plan-organization/year/register/${data.id}`"
+                                                                @click="window.location.href = `/shopping-plan-organization/quarter/register/${data.id}`"
                                                         >
                                                             <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                                         </button>

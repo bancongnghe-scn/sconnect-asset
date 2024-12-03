@@ -1,8 +1,9 @@
 import AirDatepicker from "air-datepicker";
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shoppingPlanOrganizationYear', () => ({
+    Alpine.data('shoppingPlanOrganizationQuarter', () => ({
         init() {
             this.list({page:1, limit:10})
+            this.getListPlanCompanyYear()
         },
 
         //dataTable
@@ -31,6 +32,8 @@ document.addEventListener('alpine:init', () => {
             page: 1
         },
 
+        listPlanCompanyYear: [],
+        listQuarter: LIST_QUARTER,
         listStatus: STATUS_SHOPPING_PLAN_ORGANIZATION,
         action: null,
         id: null,
@@ -40,7 +43,7 @@ document.addEventListener('alpine:init', () => {
         async list(filters){
             this.loading = true
             try {
-                const response = await window.apiGetShoppingPlanOrganizationYear(filters)
+                const response = await window.apiGetShoppingPlanOrganizationQuarter(filters)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -58,6 +61,17 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        async getListPlanCompanyYear(){
+            this.loading = true
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            if (response.success) {
+                this.listPlanCompanyYear = response.data
+            } else {
+                toast.error('Lấy danh sách kế hoạch năm !')
+            }
+            this.loading = false
         },
 
         async handleShowModalInfo(id) {

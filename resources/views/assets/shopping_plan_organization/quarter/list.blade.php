@@ -1,14 +1,15 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm năm'
+    'title' => 'Kế hoạch mua sắm quý'
 ])
 
 @section('content')
-    @include('component.shopping_plan_organization.year.content_list')
+    @include('component.shopping_plan_organization.quarter.content_list')
 @endsection
 
 @section('js')
     @vite([
-        'resources/js/assets/shopping_plan_organization/year/shoppingPlanOrganizationYear.js',
-        'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
+        'resources/js/assets/shopping_plan_organization/quarter/shoppingPlanOrganizationQuarter.js',
+        'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
+        'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
     ])
 @endsection

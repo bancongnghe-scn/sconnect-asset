@@ -106,7 +106,7 @@ document.addEventListener('alpine:init', () => {
         async sentRegister() {
             this.loading = true
             try {
-                const response = await window.apiSentRegisterYear(this.id, this.registers)
+                const response = await window.apiSentRegisterQuarter(this.id, this.registers)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
                     this.getRegisterAsset()

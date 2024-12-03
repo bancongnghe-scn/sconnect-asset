@@ -1,6 +1,6 @@
-window.apiGetShoppingPlanOrganizationYear = async function (filters) {
+window.apiGetShoppingPlanOrganizationQuarter = async function (filters) {
     try {
-        const response = await axios.get("/api/shopping-plan-organization/year/list", {
+        const response = await axios.get("/api/shopping-plan-organization/quarter/list", {
             params: filters
         })
 
@@ -24,9 +24,9 @@ window.apiGetShoppingPlanOrganizationYear = async function (filters) {
     }
 }
 
-window.apiSentRegisterYear = async function (id, registers = []) {
+window.apiSentRegisterQuarter = async function (id, registers = []) {
     try {
-        const response = await axios.post("/api/shopping-plan-organization/year/register",{
+        const response = await axios.post("/api/shopping-plan-organization/quarter/register",{
             shopping_plan_organization_id: id,
             registers: registers
         })

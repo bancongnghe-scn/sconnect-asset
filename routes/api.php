@@ -88,6 +88,11 @@ Route::middleware('web')->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationYear');
             Route::post('register', 'registerShoppingPlanOrganizationYear');
         });
+
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanOrganizationQuarterController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationQuarter');
+            Route::post('register', 'registerShoppingPlanOrganizationQuarter');
+        });
     });
 
     Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {
