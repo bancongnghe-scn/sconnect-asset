@@ -22,7 +22,9 @@
                    if(newValue === null) {
                        datePicker.clear()
                    } else {
-                        datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
+                        if({{$end}} !== null) {
+                            datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
+                        }
                    }
                 });
 
@@ -30,7 +32,9 @@
                    if(newValue === null) {
                        datePicker.clear()
                    } else {
-                       datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
+                       if({{$start}} !== null) {
+                            datePicker.selectDate([{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''])
+                        }
                    }
                 });
            "

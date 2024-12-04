@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateShoppingPlanCompanyQuarterRequest;
-use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
@@ -52,22 +51,6 @@ class ShoppingPlanCompanyQuarterController extends Controller
         }
     }
 
-    public function getOrganizationRegisterYear(string $id)
-    {
-        try {
-            $result = $this->planCompanyService->getOrganizationRegisterYear($id);
-            if (!$result['success']) {
-                return response_error($result['error_code']);
-            }
-
-            return response_success($result['data']);
-        } catch (\Throwable $exception) {
-            report($exception);
-
-            return response_error();
-        }
-    }
-
     public function createShoppingPlanCompanyQuarter(CreateShoppingPlanCompanyQuarterRequest $request)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
@@ -89,13 +72,13 @@ class ShoppingPlanCompanyQuarterController extends Controller
         }
     }
 
-    public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
+    public function updateShoppingPlanCompanyQuarter(CreateShoppingPlanCompanyQuarterRequest $request, string $id)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
+            $data['type'] = ShoppingPlanCompany::TYPE_QUARTER;
             $result       = $this->planCompanyService->updateShoppingPlanCompany($data, $id);
 
             if (!$result['success']) {

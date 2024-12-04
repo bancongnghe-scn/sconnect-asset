@@ -50,11 +50,11 @@
         })
     </script>
     @vite([
-        'resources/js/assets/shopping_plan_organization/year/shoppingPlanOrganizationYear.js',
-        'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
-        'resources/js/assets/shopping_plan_company/year/shoppingPlanCompanyYear.js',
+        'resources/js/assets/shopping_plan_organization/quarter/shoppingPlanOrganizationQuarter.js',
+        'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
+        'resources/js/assets/shopping_plan_company/quarter/shoppingPlanCompanyQuarter.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
-        'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection
