@@ -94,7 +94,7 @@
                                         </th>
                                     </tr>
                                     <tr>
-                                        <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="number">
                                             <th x-text="`T` + number" class="text-center"></th>
                                         </template>
                                     </tr>

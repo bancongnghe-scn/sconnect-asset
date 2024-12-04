@@ -38,7 +38,7 @@
                                                                  'tw-text-green-900 tw-bg-green-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                                                                   || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
                                                                   || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
                                                                  }"
                                                         ></span>
                                                     </div>
