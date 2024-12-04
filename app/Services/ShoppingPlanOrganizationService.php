@@ -162,12 +162,11 @@ class ShoppingPlanOrganizationService
                 }
             }
 
-            if (!empty($shoppingAssetIds)) {
-                $shoppingAssetsOldIds = $shoppingPlanOrganization->shoppingAssets->pluck('id')->toArray();
-                $removedIds           = array_diff($shoppingAssetsOldIds, $shoppingAssetIds);
-                if (!empty($removedIds)) {
-                    $this->shoppingAssetRepository->deleteByIds($removedIds);
-                }
+            // xoa cac tai san
+            $shoppingAssetsOldIds = $shoppingPlanOrganization->shoppingAssets->pluck('id')->toArray();
+            $removedIds           = array_diff($shoppingAssetsOldIds, $shoppingAssetIds);
+            if (!empty($removedIds)) {
+                $this->shoppingAssetRepository->deleteByIds($removedIds);
             }
 
             if (!empty($dataNew)) {
@@ -219,7 +218,7 @@ class ShoppingPlanOrganizationService
             case ShoppingPlanCompany::TYPE_QUARTER:
             case ShoppingPlanCompany::TYPE_WEEK:
                 $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_year_id);
-                if (ShoppingPlanCompany::TYPE_QUARTER === $shoppingPlanCompany->type) {
+                if (ShoppingPlanCompany::TYPE_QUARTER == $shoppingPlanCompany->type) {
                     $data = [
                         'year'    => $shoppingPlanCompanyYear->time,
                         'quarter' => $shoppingPlanCompany->time,

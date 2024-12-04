@@ -7,7 +7,7 @@
         })"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
 >
-    <template x-for="value in values" :key="value.id">
+    <template x-for="value in {{$values ?? 'values'}}" :key="value.id">
         <option :value="value.id" x-text="value.name"></option>
     </template>
 </select>

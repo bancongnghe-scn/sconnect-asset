@@ -19,6 +19,7 @@ class ShoppingPlanOrganizationResource extends JsonResource
             'start_time'        => $this->resource->start_time,
             'end_time'          => $this->resource->end_time,
             'organization_name' => $organization['name'] ?? null,
+            'organization_id'   => $organization['id'] ?? null,
             'status_company'    => $this->resource->status_company,
         ];
     }

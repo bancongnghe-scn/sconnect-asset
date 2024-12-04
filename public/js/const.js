@@ -51,6 +51,7 @@ const STATUS_SHOPPING_PLAN_COMPANY = {
     6: 'TGĐ từ chối'
 }
 const TYPE_SHOPPING_PLAN_COMPANY_YEAR = 1;
+const TYPE_SHOPPING_PLAN_COMPANY_QUARTER = 2;
 const GENERAL_TYPE_APPROVAL_COMPANY = 'approval';
 const GENERAL_TYPE_DISAPPROVAL_COMPANY = 'disapproval';
 
@@ -83,3 +84,11 @@ const TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION = 2;
 
 // USERS
 const DEPT_IDS_FOLLOWERS = [7, 8, 9, 10, 11, 12, 41, 42, 149, 160]
+
+// OTHER
+const LIST_QUARTER = {
+    1: 'Quý 1',
+    2: 'Quý 2',
+    3: 'Quý 3',
+    4: 'Quý 4',
+}
