@@ -1,7 +1,7 @@
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
-    Alpine.data('updateShoppingPlanCompanyQuarter', () => ({
+    Alpine.data('updateShoppingPlanCompanyWeek', () => ({
         async init() {
             const split = window.location.href.split('/')
             this.id = split.pop();
@@ -16,7 +16,8 @@ document.addEventListener('alpine:init', () => {
         checkedAll: false,
         data: {
             time: null,
-            plan_year_id: null,
+            plan_quarter_id: null,
+            month: null,
             status: null,
             start_time: null,
             end_time: null,
@@ -24,20 +25,19 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         register: [],
-        listQuarter: LIST_QUARTER,
-        listPlanCompanyYear: [],
+        listPlanCompanyQuarter: [],
         selectedRow: [],
         note_disapproval: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async feetData() {
-            this.getOrganizationRegisterQuarter()
-            await this.getListPlanCompanyYear()
+            this.getOrganizationRegisterWeek()
+            await this.getListPlanCompanyQuarter()
             await this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
-            this.getInfoShoppingPlanCompanyQuarter()
+            this.getInfoShoppingPlanCompanyWeek()
         },
 
-        async getInfoShoppingPlanCompanyQuarter() {
+        async getInfoShoppingPlanCompanyWeek() {
             this.loading = true
             try {
                 const response = await window.apiShowShoppingPlanCompany(this.id)
@@ -48,7 +48,8 @@ document.addEventListener('alpine:init', () => {
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
                     this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
                     this.data.monitor_ids = data.monitor_ids
-                    this.data.plan_year_id = data.plan_year_id
+                    this.data.plan_quarter_id = data.plan_quarter_id
+                    this.data.month = data.month
                     return
                 }
 
@@ -61,10 +62,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async updatePlanQuarter() {
+        async updatePlanWeek() {
             this.loading = true
             try {
-                const response = await window.apiUpdateShoppingPlanCompanyQuarter(this.data, this.id)
+                const response = await window.apiUpdateShoppingPlanCompanyWeek(this.data, this.id)
                 if (response.success) {
                     toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
                     return
@@ -78,14 +79,14 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getListPlanCompanyYear(){
+        async getListPlanCompanyQuarter(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_QUARTER, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
-                this.listPlanCompanyYear = response.data
-                console.log('year')
+                this.listPlanCompanyQuarter = response.data
+                console.log('quarter')
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error('Lấy danh sách kế hoạch quý thất bại !')
             }
             this.loading = false
         },
@@ -97,7 +98,7 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                    this.getOrganizationRegisterQuarter()
+                    this.getOrganizationRegisterWeek()
                     return
                 }
 
@@ -115,7 +116,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSendAccountantApproval(this.id)
                 if (response.success) {
                     toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/quarter/list`
+                    window.location.href = `/shopping-plan-company/week/list`
                     return
                 }
 
@@ -133,7 +134,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSendManagerApproval(this.id)
                 if (response.success) {
                     toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/quarter/list`
+                    window.location.href = `/shopping-plan-company/week/list`
                     return
                 }
 
@@ -155,7 +156,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 $("#"+this.idModalConfirmDelete).modal('hide')
                 toast.success('Xóa kế hoạch mua sắm năm thành công !')
-                window.location.href = `/shopping-plan-company/quarter/list`
+                window.location.href = `/shopping-plan-company/week/list`
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -163,10 +164,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getOrganizationRegisterQuarter() {
+        async getOrganizationRegisterWeek() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYearQuarter(this.id)
+                const response = await window.getOrganizationRegisterYearWeek(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return
@@ -262,7 +263,7 @@ document.addEventListener('alpine:init', () => {
                         this.data.status = STATUS_SHOPPING_PLAN_COMPANY_CANCEL
                         $("#modalNoteDisapprovalPlanCompany").modal('hide')
                     }
-                    this.getOrganizationRegisterQuarter()
+                    this.getOrganizationRegisterWeek()
                     return
                 }
 
