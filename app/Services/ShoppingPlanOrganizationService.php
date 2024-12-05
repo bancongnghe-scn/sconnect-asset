@@ -172,6 +172,8 @@ class ShoppingPlanOrganizationService
             if (!empty($dataNew)) {
                 $insert = $this->shoppingAssetRepository->insert($dataNew);
                 if (!$insert) {
+                    DB::rollBack();
+
                     return [
                         'success'    => false,
                         'error_code' => AppErrorCode::CODE_2073,
@@ -184,6 +186,8 @@ class ShoppingPlanOrganizationService
                 $data['shopping_plan_organization_id']
             );
             if (!$insertLog) {
+                DB::rollBack();
+
                 return [
                     'success'    => false,
                     'error_code' => AppErrorCode::CODE_2076,
@@ -354,12 +358,18 @@ class ShoppingPlanOrganizationService
                 }
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'action'     => ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION,
-                'record_id'  => $shoppingPlanOrganization->id,
-                'desc'       => __('shopping_plan_log.' . ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION),
-                'created_by' => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION,
+                $shoppingPlanOrganization->id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             foreach ($data['registers'] as $register) {
                 foreach ($register['assets'] as $asset) {

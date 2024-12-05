@@ -62,7 +62,7 @@ return [
     AppErrorCode::CODE_2055 => 'Kế hoạch mua sắm đã tồn tại !',
     AppErrorCode::CODE_2057 => 'Tạo kế hoạch mua sắm năm của đơn vị thất bại !',
     AppErrorCode::CODE_2058 => 'Kế hoạch mua sắm không tồn tại !',
-    AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi, không thể cập nhật !',
+    AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi duyệt, không thể cập nhật !',
     AppErrorCode::CODE_2060 => 'Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !',
     AppErrorCode::CODE_2061 => 'Xóa kế hoạch mua sắm thất bại !',
     AppErrorCode::CODE_2062 => 'Cập nhật trạng thái kế hoạch mua sắm thất bại !',

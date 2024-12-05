@@ -89,31 +89,19 @@ class ShoppingPlanCompanyService
                 }
             }
 
-            // Chi voi ke hoach tuan thi tao ra ke hoach don vi luon, con kh nam va quy thi khi gui thong bao dang ky moi tao
-            if (ShoppingPlanCompany::TYPE_WEEK === $data['type']) {
-                $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-                    $shoppingPlanCompany->id,
-                    $data['organization_ids'],
-                    ShoppingPlanOrganization::STATUS_NEW
-                );
-
-                if (!$insertShoppingPlanOrganizations) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2057,
-                    ];
-                }
-            }
-
             // Tao log
-            $this->shoppingPlanLogRepository->create([
-                'action'      => ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
-                'record_id'   => $shoppingPlanCompany->id,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompany->id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
 
@@ -172,12 +160,18 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $id,
-                'action'      => ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY,
+                $id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
 
@@ -480,12 +474,19 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $data['id'],
-                'action'      => ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
+                $data['id']
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
             DB::commit();
         } catch (\Throwable $exception) {
             report($exception);
@@ -544,12 +545,18 @@ class ShoppingPlanCompanyService
                 'status' => ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL,
             ]);
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $shoppingPlanCompanyId,
-                'action'      => ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -617,12 +624,18 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $shoppingPlanCompanyId,
-                'action'      => ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
         } catch (\Throwable $exception) {

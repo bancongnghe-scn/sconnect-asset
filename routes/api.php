@@ -74,6 +74,12 @@ Route::middleware('web')->group(function () {
             Route::post('create', 'createShoppingPlanCompanyQuarter');
             Route::put('update/{id}', 'updateShoppingPlanCompanyQuarter');
         });
+
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanCompanyWeekController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyWeek');
+            Route::post('create', 'createShoppingPlanCompanyWeek');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyWeek');
+        });
     });
 
     Route::prefix('shopping-plan-organization')->group(function () {
