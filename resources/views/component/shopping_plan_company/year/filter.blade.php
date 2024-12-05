@@ -7,7 +7,6 @@
                         <label class="tw-font-bold">Năm</label>
                         @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
                     </div>
-
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
                         <span x-data="{
@@ -20,7 +19,6 @@
                                 'placeholder' => 'Chọn trạng thái'
                             ])
                         </span>
-
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

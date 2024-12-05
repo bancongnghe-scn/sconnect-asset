@@ -12,7 +12,7 @@
     </div>
 
     <div>
-        @include('assets.shopping-plan-company.quarter.filter')
+        @include('component.shopping_plan_company.quarter.filter')
     </div>
 
     <div

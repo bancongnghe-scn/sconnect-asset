@@ -26,7 +26,7 @@ Route::get('ping', function () {
     return 'pong';
 });
 
-Route::middleware('checkAuth')->group(function () {
+Route::middleware('web')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,

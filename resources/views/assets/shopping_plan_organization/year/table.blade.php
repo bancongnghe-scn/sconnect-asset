@@ -30,17 +30,7 @@
                                                 </template>
                                                 <template x-if="key === 'status'">
                                                     <div class="d-flex justify-content-center">
-                                                        <span x-text="listStatus[data[key]]" class="p-1 border rounded"
-                                                              :class="{
-                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                                                                  || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +data[key] === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
-                                                                 }"
-                                                        ></span>
+                                                        @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
                                                     </div>
                                                 </template>
                                                 <template x-if="key === 'user'">
