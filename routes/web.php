@@ -53,6 +53,11 @@ Route::middleware(['web'])->group(function () {
             Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
             Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
         });
+        Route::prefix('week')->group(function () {
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyWeekController::class, 'index']);
+            Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
+        });
     });
     Route::prefix('shopping-plan-organization')->group(function () {
         Route::prefix('year')->group(function () {

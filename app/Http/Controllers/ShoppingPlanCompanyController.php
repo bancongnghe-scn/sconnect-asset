@@ -180,9 +180,10 @@ class ShoppingPlanCompanyController extends Controller
     public function getListShoppingPlan(Request $request)
     {
         $request->validate([
-            'type'  => 'nullable|integer',
-            'page'  => 'nullable|integer',
-            'limit' => 'nullable|integer:max:200',
+            'type'   => 'nullable|integer',
+            'status' => 'nullable|integer',
+            'page'   => 'nullable|integer',
+            'limit'  => 'nullable|integer:max:200',
         ]);
 
         try {

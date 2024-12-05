@@ -16,7 +16,21 @@ class ShoppingPlanCompanyWeekController extends Controller
 
     }
 
-    public function getListShoppingPlanCompanyQuarter(Request $request)
+    public function index()
+    {
+        $user = Auth::user();
+
+        if ($user->hasAnyRole(['accounting_director', 'hr_director'])) {
+            return view('assets.shopping_plan_master.week.list');
+        }
+        if ($user->hasRole('manager_organization')) {
+            return view('assets.shopping_plan_organization.week.list');
+        } else {
+            return view('assets.shopping-plan-company.week.list');
+        }
+    }
+
+    public function getListShoppingPlanCompanyWeek(Request $request)
     {
         $request->validate([
             'name'         => 'nullable|integer',

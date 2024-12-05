@@ -35,6 +35,10 @@ class ShoppingPlanCompanyRepository extends BaseRepository
             $query->whereIn('plan_year_id', Arr::wrap($filters['plan_year_id']));
         }
 
+        if (!empty($filters['plan_quarter_id'])) {
+            $query->whereIn('plan_quarter_id', Arr::wrap($filters['plan_quarter_id']));
+        }
+
         if (!empty($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
         }

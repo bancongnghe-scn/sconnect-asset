@@ -1,9 +1,9 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shoppingPlanCompanyQuarter', () => ({
+    Alpine.data('shoppingPlanCompanyWeek', () => ({
         init() {
             this.list({page:1, limit:10})
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
-            this.getListPlanCompanyYear()
+            this.getListPlanCompanyQuarter()
             window.initSelect2Modal('idModalInsert')
         },
 
@@ -28,24 +28,23 @@ document.addEventListener('alpine:init', () => {
 
         //data
         filters: {
-            plan_year_id: null,
+            plan_quarter_id: null,
             time: null,
             status: [],
             limit: 10,
             page: 1
         },
         data: {
-            plan_year_id: null,
+            plan_quarter_id: null,
+            month: null,
             time: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
         },
 
-        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
-        listPlanCompanyYear: [],
-        listQuarter: LIST_QUARTER,
+        listPlanCompanyQuarter: [],
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
@@ -54,7 +53,7 @@ document.addEventListener('alpine:init', () => {
         async list(filters){
             this.loading = true
             try {
-                const response = await window.apiGetShoppingPlanCompanyQuarter(filters)
+                const response = await window.apiGetShoppingPlanCompanyWeek(filters)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -77,7 +76,7 @@ document.addEventListener('alpine:init', () => {
         async create() {
             this.loading = true
             try {
-                const response = await window.apiCreateShoppingPlanCompanyQuarter(this.data)
+                const response = await window.apiCreateShoppingPlanCompanyWeek(this.data)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -114,7 +113,7 @@ document.addEventListener('alpine:init', () => {
         async removeMultiple() {
             this.loading = true
             try {
-                const response = await window.apiRemoveShoppingPlanCompanyMultiple(this.id, TYPE_SHOPPING_PLAN_COMPANY_QUARTER)
+                const response = await window.apiRemoveShoppingPlanCompanyMultiple(this.id, TYPE_SHOPPING_PLAN_COMPANY_WEEK)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -141,13 +140,13 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListPlanCompanyYear(){
+        async getListPlanCompanyQuarter(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_QUARTER, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
-                this.listPlanCompanyYear = response.data
+                this.listPlanCompanyQuarter = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error('Lấy danh sách kế hoạch quý thất bại !')
             }
             this.loading = false
         },
@@ -185,7 +184,7 @@ document.addEventListener('alpine:init', () => {
 
         reloadPage() {
             this.filters = {
-                plan_year_id: null,
+                plan_quarter_id: null,
                 time: null,
                 status: [],
                 limit: 10,

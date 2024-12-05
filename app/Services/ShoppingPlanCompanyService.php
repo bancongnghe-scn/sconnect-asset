@@ -205,7 +205,6 @@ class ShoppingPlanCompanyService
                 'time'            => $data['time'],
                 'type'            => ShoppingPlanCompany::TYPE_WEEK,
                 'month'           => $data['month'],
-                'plan_year_id'    => $data['plan_year_id'],
                 'plan_quarter_id' => $data['plan_quarter_id'],
             ]),
             default => [],
@@ -239,11 +238,11 @@ class ShoppingPlanCompanyService
                 ]);
                 break;
             case ShoppingPlanCompany::TYPE_WEEK:
-                $shoppingPlanCompanyYear = $this->planCompanyRepository->find($data['plan_year_id']);
-                $name                    = __('asset.shopping_plan_company.week.name', [
+                $shoppingPlanCompanyQuarter = $this->planCompanyRepository->find($data['plan_quarter_id']);
+                $name                       = __('asset.shopping_plan_company.week.name', [
                     'time'  => $data['time'],
                     'month' => $data['month'],
-                    'year'  => $shoppingPlanCompanyYear->time,
+                    'year'  => $shoppingPlanCompanyQuarter?->shoppingPlanCompanyYear->time,
                 ]);
                 break;
             default:

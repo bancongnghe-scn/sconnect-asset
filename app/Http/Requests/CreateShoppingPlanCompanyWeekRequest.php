@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests;
 
-class CreateShoppingPlanCompanyWeekRequest extends CreateShoppingPlanCompanyQuarterRequest
+class CreateShoppingPlanCompanyWeekRequest extends CreateShoppingPlanCompanyYearRequest
 {
     public function rules(): array
     {
         $rules                    = parent::rules();
         $rules['plan_quarter_id'] = 'required|integer';
         $rules['month']           = 'required|integer';
+        $rules['time']            = 'required|integer';
 
         return $rules;
     }

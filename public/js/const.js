@@ -52,6 +52,7 @@ const STATUS_SHOPPING_PLAN_COMPANY = {
 }
 const TYPE_SHOPPING_PLAN_COMPANY_YEAR = 1;
 const TYPE_SHOPPING_PLAN_COMPANY_QUARTER = 2;
+const TYPE_SHOPPING_PLAN_COMPANY_WEEK = 3;
 const GENERAL_TYPE_APPROVAL_COMPANY = 'approval';
 const GENERAL_TYPE_DISAPPROVAL_COMPANY = 'disapproval';
 
@@ -91,4 +92,26 @@ const LIST_QUARTER = {
     2: 'Quý 2',
     3: 'Quý 3',
     4: 'Quý 4',
+}
+
+const LIST_WEEK = {
+    1: 'Tuần 1',
+    2: 'Tuần 2',
+    3: 'Tuần 3',
+    4: 'Tuần 4',
+}
+
+const LIST_MONTHS = {
+    1: 'Tháng 1',
+    2: 'Tháng 2',
+    3: 'Tháng 3',
+    4: 'Tháng 4',
+    5: 'Tháng 5',
+    6: 'Tháng 6',
+    7: 'Tháng 7',
+    8: 'Tháng 8',
+    9: 'Tháng 9',
+    10: 'Tháng 10',
+    11: 'Tháng 11',
+    12: 'Tháng 12',
 }

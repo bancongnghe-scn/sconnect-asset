@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -64,5 +65,10 @@ class ShoppingPlanCompany extends Model
     public function shoppingPlanOrganizations(): HasMany
     {
         return $this->hasMany(ShoppingPlanOrganization::class, 'shopping_plan_company_id')->orderBy('status');
+    }
+
+    public function shoppingPlanCompanyYear(): BelongsTo
+    {
+        return $this->belongsTo(ShoppingPlanCompany::class, 'plan_year_id');
     }
 }
