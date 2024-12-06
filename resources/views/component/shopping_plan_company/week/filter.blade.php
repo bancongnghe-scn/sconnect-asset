@@ -41,7 +41,7 @@
                         >
                             @include('common.select2.simple.select2_multiple', [
                                 'placeholder' => 'Chọn trạng thái',
-                                'values' => 'STATUS_SHOPPING_PLAN_COMPANY'
+                                'values' => 'STATUS_SHOPPING_PLAN_ORGANIZATION'
                             ])
                         </span>
                     </div>

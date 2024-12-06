@@ -100,7 +100,7 @@ Route::middleware('web')->group(function () {
             Route::post('register', 'registerShoppingPlanOrganizationQuarter');
         });
 
-        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationQuarterController::class)->group(function () {
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationWeekController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationWeek');
             Route::post('register', 'registerShoppingPlanOrganizationWeek');
         });

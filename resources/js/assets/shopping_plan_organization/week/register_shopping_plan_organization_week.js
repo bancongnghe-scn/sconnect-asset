@@ -1,7 +1,5 @@
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
-    Alpine.data('register_shopping_plan_organization_quarter', () => ({
+    Alpine.data('register_shopping_plan_organization_week', () => ({
         init() {
             const split = window.location.href.split('/')
             this.id = split.pop();
@@ -106,7 +104,7 @@ document.addEventListener('alpine:init', () => {
         async sentRegister() {
             this.loading = true
             try {
-                const response = await window.apiSentRegisterQuarter(this.id, this.registers)
+                const response = await window.apiSentRegisterWeek(this.id, this.registers)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
                     this.getRegisterAsset()

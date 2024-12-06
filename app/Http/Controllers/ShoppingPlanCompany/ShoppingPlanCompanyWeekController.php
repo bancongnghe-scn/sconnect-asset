@@ -34,11 +34,10 @@ class ShoppingPlanCompanyWeekController extends Controller
     public function getListShoppingPlanCompanyWeek(Request $request)
     {
         $request->validate([
-            'name'         => 'nullable|integer',
-            'start_time'   => 'nullable|integer',
-            'end_time'     => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'plan_quarter_id' => 'nullable|integer',
+            'time'            => 'nullable|integer',
+            'status'          => 'nullable|array',
+            'status.*'        => 'integer',
         ]);
         try {
             $filters         = $request->all();

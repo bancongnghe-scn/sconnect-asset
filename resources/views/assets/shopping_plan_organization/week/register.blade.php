@@ -1,16 +1,16 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm quý'
+    'title' => 'Kế hoạch mua sắm tuần'
 ])
 
 @section('content')
-    <div x-data="register_shopping_plan_organization_quarter">
+    <div x-data="register_shopping_plan_organization_week">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="
                 (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
                 && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
                 <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
             </template>
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
         <div class="d-flex">
             <div class="card flex-grow-1 mr-3">
@@ -169,11 +169,11 @@
 
 @section('js')
     @vite([
-       'resources/js/assets/shopping_plan_organization/quarter/register_shopping_plan_organization_quarter.js',
+       'resources/js/assets/shopping_plan_organization/week/register_shopping_plan_organization_week.js',
        'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
        'resources/js/app/api/apiJob.js',
-       'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
+       'resources/js/assets/api/shopping_plan_organization/week/apiShoppingPlanOrganizationWeek.js',
     ])
 @endsection

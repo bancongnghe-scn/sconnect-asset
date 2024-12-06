@@ -57,7 +57,7 @@ class ShoppingPlanOrganizationService
         if (is_null($deptId)) {
             $deptId = Auth::user()->dept_id;
         }
-        $planOrganization = $this->shoppingPlanCompanyRepository->getListingOfOrganization($filters, $deptId);
+        $planOrganization = $this->shoppingPlanOrganizationRepository->getListingOfOrganization($filters, $deptId);
 
         if ($planOrganization->isEmpty()) {
             return [];

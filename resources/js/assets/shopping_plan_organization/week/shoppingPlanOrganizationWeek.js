@@ -2,7 +2,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanOrganizationWeek', () => ({
         init() {
             this.list({page:1, limit:10})
-            // this.getListPlanCompanyYear()
+            this.getListPlanCompanyQuarter()
         },
 
         //dataTable
@@ -31,8 +31,7 @@ document.addEventListener('alpine:init', () => {
             page: 1
         },
 
-        listPlanCompanyYear: [],
-        listStatus: STATUS_SHOPPING_PLAN_ORGANIZATION,
+        listPlanCompanyQuarter: [],
         action: null,
         id: null,
         idModalInfo: "idModalInfo",
@@ -61,13 +60,13 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getListPlanCompanyYear(){
+        async getListPlanCompanyQuarter(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_QUARTER, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
-                this.listPlanCompanyYear = response.data
+                this.listPlanCompanyQuarter = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error('Lấy danh sách kế hoạch quý thất bại !')
             }
             this.loading = false
         },

@@ -19,10 +19,10 @@ class ShoppingPlanOrganizationWeekController extends Controller
     public function getListShoppingPlanOrganizationWeek(Request $request)
     {
         $request->validate([
-            'time'         => 'nullable|integer',
-            'plan_year_id' => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'plan_quarter_id' => 'nullable|integer',
+            'time'            => 'nullable|integer',
+            'status'          => 'nullable|array',
+            'status.*'        => 'integer',
         ]);
 
         Auth::user()->canPer('shopping_plan_organization.view');
