@@ -71,13 +71,14 @@
                             <div>
                                 <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 <span x-data="{
-                                    model: data.plan_year_id,
-                                    init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
+                                        model: data.plan_year_id,
+                                        init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                    }"
+                                    @select-change="data.plan_year_id = $event.detail">
                                     @include('common.select2.extent.select2', [
-                                          'placeholder' => 'Chọn quý',
-                                          'values' => 'listPlanCompanyYear',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                        'placeholder' => 'Chọn kế hoạch năm',
+                                        'values' => 'listPlanCompanyYear',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
                                     ])
                                 </span>
                             </div>

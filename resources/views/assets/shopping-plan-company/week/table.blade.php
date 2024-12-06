@@ -55,7 +55,7 @@
                                         <td class="text-center align-middle">
                                             {{-- xem chi tiet --}}
                                             <button class="border-0 bg-body"
-                                                    @click="window.location.href = `/shopping-plan-company/quarter/view/${data.id}`">
+                                                    @click="window.location.href = `/shopping-plan-company/week/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
 
@@ -63,7 +63,7 @@
                                             @can('shopping_plan_company.crud')
                                                 <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status)">
                                                     <button class="border-0 bg-body"
-                                                            @click="window.location.href = `/shopping-plan-company/quarter/update/${data.id}`">
+                                                            @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
                                                         <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                                     </button>
                                                 </template>
@@ -79,7 +79,7 @@
                                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                                                 @can('shopping_plan_company.accounting_approval')
                                                     <button class="border-0 bg-body"
-                                                            @click="window.location.href = `/shopping-plan-company/quarter/update/${data.id}`">
+                                                            @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
                                                 @endcan
@@ -87,7 +87,7 @@
                                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
                                                 @can('shopping_plan_company.general_approval')
                                                     <button class="border-0 bg-body"
-                                                            @click="window.location.href = `/shopping-plan-company/quarter/update/${data.id}`">
+                                                            @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
                                                 @endcan
