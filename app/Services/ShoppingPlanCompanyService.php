@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
-use App\Http\Resources\OrganizationRegisterYearQuarterResource;
+use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
@@ -284,7 +284,7 @@ class ShoppingPlanCompanyService
         ];
     }
 
-    public function getOrganizationRegisterYearQuarter($id)
+    public function getOrganizationRegister($id)
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
 
@@ -297,7 +297,7 @@ class ShoppingPlanCompanyService
 
         return [
             'success' => true,
-            'data'    => OrganizationRegisterYearQuarterResource::make($shoppingPlanCompany)->resolve(),
+            'data'    => SyntheticOrganizationRegisterPlanResource::make($shoppingPlanCompany)->resolve(),
         ];
     }
 

@@ -192,9 +192,9 @@ window.apiGetShoppingPlanCompany = async function (params) {
     }
 }
 
-window.getOrganizationRegisterYearQuarter = async function (id) {
+window.getOrganizationRegister = async function (id) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/get-organization-register-year-quarter/"+id)
+        const response = await axios.get("/api/shopping-plan-company/get-organization-register/"+id)
 
         const data = response.data;
         if (!data.success) {

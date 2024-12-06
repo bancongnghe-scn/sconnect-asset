@@ -161,10 +161,10 @@ class ShoppingPlanCompanyController extends Controller
         }
     }
 
-    public function getOrganizationRegisterYearQuarter(string $id)
+    public function getOrganizationRegister(string $id)
     {
         try {
-            $result = $this->planCompanyService->getOrganizationRegisterYearQuarter($id);
+            $result = $this->planCompanyService->getOrganizationRegister($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

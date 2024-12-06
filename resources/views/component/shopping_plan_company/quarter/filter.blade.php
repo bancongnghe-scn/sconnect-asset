@@ -26,7 +26,7 @@
                               @select-change="filters.time = $event.detail">
                             @include('common.select2.simple.select2_single', [
                                   'placeholder' => 'Chọn quý',
-                                  'values' => 'listQuarter'
+                                  'values' => 'LIST_QUARTER'
                             ])
                         </span>
                     </div>

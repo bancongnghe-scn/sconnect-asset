@@ -24,7 +24,7 @@
                             @include('common.select2.modal.simple.select2_single_modal', [
                                'placeholder' => 'Chọn quý',
                                'model' => 'data.time',
-                               'values' => 'listQuarter',
+                               'values' => 'LIST_QUARTER',
                             ])
                         </span>
                     </div>

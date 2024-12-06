@@ -77,7 +77,8 @@
                                     @include('common.select2.extent.select2', [
                                           'placeholder' => 'Chọn quý',
                                           'values' => 'listPlanCompanyQuarter',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                          'id' => 'selectPlanQuarter'
                                     ])
                                 </span>
                             </div>
@@ -91,7 +92,8 @@
                                     @include('common.select2.simple.select2_single', [
                                           'placeholder' => 'Chọn tháng',
                                           'values' => 'LIST_MONTHS',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                          'id' => 'selectMonth'
                                     ])
                                 </span>
                             </div>
@@ -105,7 +107,8 @@
                                     @include('common.select2.simple.select2_single', [
                                           'placeholder' => 'Chọn tuần',
                                           'values' => 'LIST_WEEK',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                          'id' => 'selectWeek'
                                     ])
                                 </span>
                             </div>
@@ -198,7 +201,7 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.week.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')

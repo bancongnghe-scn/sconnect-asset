@@ -38,7 +38,7 @@
                                 }">
                                     @include('common.select2.simple.select2_single', [
                                           'placeholder' => 'Chọn quý',
-                                          'values' => 'listQuarter',
+                                          'values' => 'LIST_QUARTER',
                                           'disabled' => true
                                     ])
                                 </span>
@@ -107,7 +107,7 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.quarter.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')

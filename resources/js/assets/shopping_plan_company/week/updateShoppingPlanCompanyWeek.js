@@ -31,7 +31,7 @@ document.addEventListener('alpine:init', () => {
         idModalConfirmDelete: 'idModalConfirmDelete',
         //methods
         async feetData() {
-            // this.getOrganizationRegisterWeek()
+            this.getOrganizationRegisterWeek()
             await this.getListPlanCompanyQuarter()
             await this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
             this.getInfoShoppingPlanCompanyWeek()
@@ -167,7 +167,7 @@ document.addEventListener('alpine:init', () => {
         async getOrganizationRegisterWeek() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYearWeek(this.id)
+                const response = await window.getOrganizationRegister(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return

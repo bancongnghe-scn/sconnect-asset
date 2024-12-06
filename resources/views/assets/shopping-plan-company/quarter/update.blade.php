@@ -17,13 +17,13 @@
                 </div>
             </template>
             <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+                x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 @can('shopping_plan_company.crud')
                     <button class="btn btn-sc" @click="updatePlanQuarter()">Lưu</button>
                 @endcan
             </template>
             <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+                x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
                 @can('shopping_plan_company.sent_account_approval')
                     <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
                 @endcan
@@ -39,14 +39,14 @@
             </template>
             @can('shopping_plan_company.general_approval')
                 <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
+                    x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
                     <button class="btn btn-sc"
                             @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt
                     </button>
                 </template>
 
                 <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
+                    x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
                     <button class="btn bg-red"
                             @click="showModalNoteDisapprovalShoppingCompany()">Từ chối
                     </button>
@@ -69,16 +69,18 @@
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
-                                <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                <label class="tw-font-bold">Kế hoạch năm<span
+                                        class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 <span x-data="{
                                         model: data.plan_year_id,
                                         init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                                     }"
-                                    @select-change="data.plan_year_id = $event.detail">
+                                      @select-change="data.plan_year_id = $event.detail">
                                     @include('common.select2.extent.select2', [
                                         'placeholder' => 'Chọn kế hoạch năm',
                                         'values' => 'listPlanCompanyYear',
-                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                        'id' => 'selectPlanYear'
                                     ])
                                 </span>
                             </div>
@@ -91,8 +93,9 @@
                                 }">
                                     @include('common.select2.simple.select2_single', [
                                           'placeholder' => 'Chọn quý',
-                                          'values' => 'listQuarter',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW'
+                                          'values' => 'LIST_QUARTER',
+                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                          'id' => 'selectQuarter'
                                     ])
                                 </span>
                             </div>
@@ -185,7 +188,7 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.quarter.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')
@@ -199,11 +202,11 @@
             </div>
         </div>
         <div
-                x-data="{
+            x-data="{
                         modalId: idModalConfirmDelete,
                         contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
                     }"
-                @ok="remove"
+            @ok="remove"
         >
             @include('common.modal-confirm')
         </div>

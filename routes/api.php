@@ -60,7 +60,7 @@ Route::middleware('web')->group(function () {
             Route::post('manager-approval', 'managerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
             Route::get('list', 'getListShoppingPlan');
-            Route::get('get-organization-register-year-quarter/{id}', 'getOrganizationRegisterYearQuarter');
+            Route::get('get-organization-register/{id}', 'getOrganizationRegister');
         });
 
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {

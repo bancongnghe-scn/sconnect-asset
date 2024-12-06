@@ -145,7 +145,7 @@ document.addEventListener('alpine:init', () => {
         async getOrganizationRegisterYear() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYearQuarter(this.id)
+                const response = await window.getOrganizationRegister(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return

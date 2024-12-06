@@ -3,29 +3,14 @@
 namespace App\Http\Resources;
 
 use App\Models\ShoppingPlanCompany;
-use App\Repositories\ShoppingPlanCompanyRepository;
-use App\Services\ScApiService;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Arr;
 
-class OrganizationRegisterYearQuarterResource extends JsonResource
+class SyntheticOrganizationRegisterPlanYearQuarterResource extends JsonResource
 {
-    protected $shoppingPlanCompanyRepository;
-
-    public function __construct(
-        $resource,
-    ) {
-        parent::__construct($resource);
-        $this->shoppingPlanCompanyRepository = new ShoppingPlanCompanyRepository();
-    }
-
     public function toArray($request)
     {
-        if (ShoppingPlanCompany::STATUS_NEW === +$this->resource->status) {
-            $organizations         = ScApiService::getAllOrganizationParent();
-
-            return Arr::pluck($organizations, 'name');
-        }
+        $shoppingPlanCompany = $this->resource;
+        $organizations       = $this->additional['organizations'] ?? [];
 
         $data = [
             'organizations'       => [],
@@ -33,21 +18,8 @@ class OrganizationRegisterYearQuarterResource extends JsonResource
             'total_price_company' => 0,
         ];
 
-        $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->getFirst([
-            'id' => $this->resource->id,
-        ], ['id'], [
-            'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id,status,note' => [
-                'shoppingAssets:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id,month' => [
-                    'assetType:id,name',
-                ],
-            ],
-        ]);
-
-        $organizationIds       = $shoppingPlanCompanyYear->shoppingPlanOrganizations->pluck('organization_id')->toArray();
-        $organizations         = ScApiService::getOrganizationByIds($organizationIds);
-        $organizations         = $organizations->keyBy('id')->toArray();
-        $month                 = ShoppingPlanCompany::TYPE_YEAR == $shoppingPlanCompanyYear->type ? 12 : 3;
-        foreach ($shoppingPlanCompanyYear->shoppingPlanOrganizations as $shoppingPlanOrganization) {
+        $month = ShoppingPlanCompany::TYPE_YEAR == $shoppingPlanCompany->type ? 12 : 3;
+        foreach ($shoppingPlanCompany->shoppingPlanOrganizations as $shoppingPlanOrganization) {
             $assetRegister = [];
             $totalPrice    = 0;
             foreach ($shoppingPlanOrganization->shoppingAssets as $shoppingAsset) {
