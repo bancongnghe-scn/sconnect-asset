@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanOrganization;
 
 use App\Services\ShoppingPlanOrganizationService;
 use Illuminate\Http\Request;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanOrganization;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterShoppingPlanOrganizationYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanOrganizationService;

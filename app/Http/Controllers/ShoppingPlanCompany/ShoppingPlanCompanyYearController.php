@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanCompany;
 
-use App\Http\Requests\CreateShoppingPlanCompanyWeekRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateShoppingPlanCompanyYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ShoppingPlanCompanyWeekController extends Controller
+class ShoppingPlanCompanyYearController extends Controller
 {
     public function __construct(
         protected ShoppingPlanCompanyService $planCompanyService,
@@ -21,27 +22,25 @@ class ShoppingPlanCompanyWeekController extends Controller
         $user = Auth::user();
 
         if ($user->hasAnyRole(['accounting_director', 'hr_director'])) {
-            return view('assets.shopping_plan_master.week.list');
+            return view('assets.shopping_plan_master.year.list');
         }
         if ($user->hasRole('manager_organization')) {
-            return view('assets.shopping_plan_organization.week.list');
+            return view('assets.shopping_plan_organization.year.list');
         } else {
-            return view('assets.shopping-plan-company.week.list');
+            return view('assets.shopping-plan-company.year.list');
         }
     }
 
-    public function getListShoppingPlanCompanyWeek(Request $request)
+    public function getListShoppingPlanCompanyYear(Request $request)
     {
         $request->validate([
-            'name'         => 'nullable|integer',
-            'start_time'   => 'nullable|integer',
-            'end_time'     => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'time'     => 'nullable|integer',
+            'status'   => 'nullable|array',
+            'status.*' => 'integer',
         ]);
         try {
             $filters         = $request->all();
-            $filters['type'] = ShoppingPlanCompany::TYPE_WEEK;
+            $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
             $result          = $this->planCompanyService->getListShoppingPlanCompany($filters);
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
@@ -52,14 +51,15 @@ class ShoppingPlanCompanyWeekController extends Controller
         }
     }
 
-    public function createShoppingPlanCompanyWeek(CreateShoppingPlanCompanyWeekRequest $request)
+    public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_WEEK;
-            $result       = $this->planCompanyService->createShoppingPlanCompany($data);
+            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
+
+            $result = $this->planCompanyService->createShoppingPlanCompany($data);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -73,13 +73,13 @@ class ShoppingPlanCompanyWeekController extends Controller
         }
     }
 
-    public function updateShoppingPlanCompanyWeek(CreateShoppingPlanCompanyWeekRequest $request, string $id)
+    public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
         Auth::user()->canPer('shopping_plan_company.crud');
 
         try {
             $data         = $request->validated();
-            $data['type'] = ShoppingPlanCompany::TYPE_WEEK;
+            $data['type'] = ShoppingPlanCompany::TYPE_YEAR;
             $result       = $this->planCompanyService->updateShoppingPlanCompany($data, $id);
 
             if (!$result['success']) {

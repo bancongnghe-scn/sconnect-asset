@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Rbac;
 
-use App\Services\Rbac\PermissionService;
+use App\Http\Controllers\Controller;
+use App\Services\Rbac\RoleService;
 use Illuminate\Http\Request;
 
-class PermissionController extends Controller
+class RoleController extends Controller
 {
     public function __construct(
-        protected PermissionService $permissionService,
+        protected RoleService $roleService,
     ) {
 
     }
@@ -16,16 +17,16 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'role_ids'    => 'nullable|array',
-            'role_ids.*'  => 'integer',
-            'user_ids'    => 'nullable|array',
-            'user_ids.*'  => 'integer',
+            'name'             => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
+            'permission_ids'   => 'nullable|array',
+            'permission_ids.*' => 'integer',
         ]);
 
         try {
-            $result = $this->permissionService->createPermission($request->all());
+            $result = $this->roleService->createRole($request->all());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -48,7 +49,7 @@ class PermissionController extends Controller
         ]);
 
         try {
-            $result = $this->permissionService->getListPermission($request->all());
+            $result = $this->roleService->getListRole($request->all());
 
             return response_success($result);
         } catch (\Throwable $exception) {
@@ -61,7 +62,7 @@ class PermissionController extends Controller
     public function destroy(string $id)
     {
         try {
-            $result = $this->permissionService->deletePermissionById($id);
+            $result = $this->roleService->deleteRoleById($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }
@@ -77,16 +78,16 @@ class PermissionController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name'        => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'role_ids'    => 'nullable|array',
-            'role_ids.*'  => 'integer',
-            'user_ids'    => 'nullable|array',
-            'user_ids.*'  => 'integer',
+            'name'             => 'required|string|max:255',
+            'description'      => 'nullable|string',
+            'user_ids'         => 'nullable|array',
+            'user_ids.*'       => 'integer',
+            'permission_ids'   => 'nullable|array',
+            'permission_ids.*' => 'integer',
         ]);
 
         try {
-            $result = $this->permissionService->updatePermission($request->all(), $id);
+            $result = $this->roleService->updateRole($request->all(), $id);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -103,7 +104,7 @@ class PermissionController extends Controller
     public function show(string $id)
     {
         try {
-            $result = $this->permissionService->findPermission($id);
+            $result = $this->roleService->findRole($id);
 
             return response_success($result);
         } catch (\Throwable $exception) {

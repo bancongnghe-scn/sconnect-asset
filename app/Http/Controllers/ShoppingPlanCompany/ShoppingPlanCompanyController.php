@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanCompany;
 
+use App\Http\Controllers\Controller;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

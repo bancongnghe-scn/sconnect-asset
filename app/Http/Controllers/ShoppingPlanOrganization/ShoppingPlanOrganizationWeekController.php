@@ -1,21 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanOrganization;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterShoppingPlanOrganizationYearRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanOrganizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ShoppingPlanOrganizationQuarterController extends Controller
+class ShoppingPlanOrganizationWeekController extends Controller
 {
     public function __construct(
         protected ShoppingPlanOrganizationService $shoppingPlanOrganizationService,
     ) {
     }
 
-    public function getListShoppingPlanOrganizationQuarter(Request $request)
+    public function getListShoppingPlanOrganizationWeek(Request $request)
     {
         $request->validate([
             'time'         => 'nullable|integer',
@@ -27,7 +28,7 @@ class ShoppingPlanOrganizationQuarterController extends Controller
         Auth::user()->canPer('shopping_plan_organization.view');
         try {
             $filters         = $request->all();
-            $filters['type'] = ShoppingPlanCompany::TYPE_QUARTER;
+            $filters['type'] = ShoppingPlanCompany::TYPE_WEEK;
             $result          = $this->shoppingPlanOrganizationService->getListShoppingPlanOrganization($filters);
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
@@ -38,7 +39,7 @@ class ShoppingPlanOrganizationQuarterController extends Controller
         }
     }
 
-    public function registerShoppingPlanOrganizationQuarter(RegisterShoppingPlanOrganizationYearRequest $request)
+    public function registerShoppingPlanOrganizationWeek(RegisterShoppingPlanOrganizationYearRequest $request)
     {
         Auth::user()->canPer('shopping_plan_organization.register');
 

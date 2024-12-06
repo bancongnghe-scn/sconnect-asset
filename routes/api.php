@@ -3,8 +3,8 @@
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ShoppingPlanOrganizationYearController;
+use App\Http\Controllers\Rbac\RoleController;
+use App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,20 +39,20 @@ Route::middleware('web')->group(function () {
 
 
     Route::prefix('rbac')->group(function () {
-        Route::prefix('menu')->controller(App\Http\Controllers\MenuController::class)->group(function () {
+        Route::prefix('menu')->controller(App\Http\Controllers\Rbac\MenuController::class)->group(function () {
             Route::get('user', 'getMenuUserLogin');
             Route::get('parent', 'getMenuParent');
         });
 
         Route::resources([
             'role'       => RoleController::class,
-            'permission' => App\Http\Controllers\PermissionController::class,
-            'menu'       => App\Http\Controllers\MenuController::class,
+            'permission' => App\Http\Controllers\Rbac\PermissionController::class,
+            'menu'       => App\Http\Controllers\Rbac\MenuController::class,
         ]);
     });
 
     Route::prefix('shopping-plan-company')->group(function () {
-        Route::controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyController::class)->group(function () {
             Route::get('show/{id}', 'findShoppingPlanCompany');
             Route::post('sent-notification-register', 'sentNotificationRegister');
             Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
@@ -63,19 +63,19 @@ Route::middleware('web')->group(function () {
             Route::get('get-organization-register/{id}', 'getOrganizationRegister');
         });
 
-        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyYear');
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
         });
 
-        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanCompanyQuarterController::class)->group(function () {
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyQuarter');
             Route::post('create', 'createShoppingPlanCompanyQuarter');
             Route::put('update/{id}', 'updateShoppingPlanCompanyQuarter');
         });
 
-        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanCompanyWeekController::class)->group(function () {
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyWeek');
             Route::post('create', 'createShoppingPlanCompanyWeek');
             Route::put('update/{id}', 'updateShoppingPlanCompanyWeek');
@@ -83,7 +83,7 @@ Route::middleware('web')->group(function () {
     });
 
     Route::prefix('shopping-plan-organization')->group(function () {
-        Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
             Route::post('account-approval', 'accountApprovalShoppingPlanOrganization');
@@ -95,9 +95,14 @@ Route::middleware('web')->group(function () {
             Route::post('register', 'registerShoppingPlanOrganizationYear');
         });
 
-        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanOrganizationQuarterController::class)->group(function () {
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationQuarterController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationQuarter');
             Route::post('register', 'registerShoppingPlanOrganizationQuarter');
+        });
+
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationQuarterController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationWeek');
+            Route::post('register', 'registerShoppingPlanOrganizationWeek');
         });
     });
 
@@ -119,7 +124,7 @@ Route::middleware('web')->group(function () {
         Route::post('supplier', [App\Http\Controllers\SupplierController::class, 'deleteMultiple']);
         Route::post('contract', [ContractController::class, 'deleteMultiple']);
         Route::post('appendix', [App\Http\Controllers\ContractAppendixController::class, 'deleteMultiple']);
-        Route::post('shopping-plan-company', [App\Http\Controllers\ShoppingPlanCompanyController::class, 'deleteMultiple']);
+        Route::post('shopping-plan-company', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyController::class, 'deleteMultiple']);
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);

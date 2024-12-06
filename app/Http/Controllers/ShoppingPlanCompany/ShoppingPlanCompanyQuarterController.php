@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ShoppingPlanCompany;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateShoppingPlanCompanyQuarterRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
