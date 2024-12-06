@@ -2,20 +2,16 @@
        aria-describedby="example2_info">
     <thead class="position-sticky z-1" style="top: -1px">
     <tr>
-        <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+        <th class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
             <input type="checkbox" @click="selectedAll">
         </th>
-        <th rowspan="2" class="text-center">Đơn vị</th>
-        <th rowspan="2" class="text-center">Loại tài sản</th>
-        <th colspan="3" class="text-center">Số lượng đăng ký theo tháng</th>
-        <th rowspan="2" class="text-center">Tổng Số lượng</th>
-        <th rowspan="2" class="text-center">Tổng Thành tiền</th>
-        <th rowspan="2" class="text-center tw-w-28">Thao tác</th>
-    </tr>
-    <tr>
-        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="number">
-            <th x-text="`T` + number" class="text-center"></th>
-        </template>
+        <th class="text-center">Đơn vị</th>
+        <th class="text-center">Loại tài sản</th>
+        <th class="text-center">Chức danh</th>
+        <th class="text-center">SL</th>
+        <th class="text-center">Thời gian cần</th>
+        <th class="text-center">Mô tả</th>
+        <th class="text-center tw-w-28">Thao tác</th>
     </tr>
     </thead>
     <tbody>
@@ -36,11 +32,10 @@
                     ])
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">
-                    <td x-text="assetRegister.register?.[number - 1] ?? '-'" class="text-center"></td>
-                </template>
-                <td x-text="assetRegister.total_register ?? '-'" class="text-center"></td>
-                <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
+                <td x-text="assetRegister.job_id ?? '-'"></td>
+                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
+                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
+                <td x-text="assetRegister.description ?? '-'"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                     {{-- button view --}}
                     <button @click="window.location.href = `/shopping-plan-organization/quarter/view/${organization.id}`" class="border-0 bg-body">

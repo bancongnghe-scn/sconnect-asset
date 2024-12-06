@@ -1,11 +1,11 @@
 @extends('layouts.app',[
-    'title' => 'Chi tiết kế hoạch mua sắm quý'
+    'title' => 'Chi tiết kế hoạch mua sắm tuần'
 ])
 
 @section('content')
-    <div x-data="updateShoppingPlanCompanyQuarter">
+    <div x-data="updateShoppingPlanCompanyWeek">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">
@@ -110,7 +110,7 @@
                                 @include('component.shopping_plan_company.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')
+                                @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
                             </template>
                         </div>
                     </div>
@@ -125,10 +125,10 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/shopping_plan_company/quarter/updateShoppingPlanCompanyQuarter.js',
+        'resources/js/assets/shopping_plan_company/week/updateShoppingPlanCompanyWeek.js',
         'resources/js/assets/history_comment/comment_shopping_plan_company.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
-        'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
+        'resources/js/assets/api/shopping_plan_company/week/apiShoppingPlanCompanyWeek.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection

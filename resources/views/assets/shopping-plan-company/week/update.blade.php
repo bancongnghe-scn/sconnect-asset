@@ -163,39 +163,6 @@
                         </template>
                     </div>
 
-                    {{--  thong ke--}}
-                    <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                        <div class="mb-3">
-                            <div class="active-link tw-w-fit">Thống kê</div>
-                            <div class="mt-3">
-                                <table id="example2" class="table table-bordered dataTable dtr-inline"
-                                       aria-describedby="example2_info">
-                                    <thead>
-                                    <tr>
-                                        <th colspan="12" class="text-center"
-                                            x-text="`Tổng tiền theo tháng toàn công ty(${window.formatCurrencyVND(register.total_price_company)})`"
-                                        >
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)"
-                                                  :key="number">
-                                            <th x-text="`T` + number" class="text-center"></th>
-                                        </template>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <template x-for="price in register.total_price_months">
-                                            <td x-text="window.formatCurrencyVND(price)"></td>
-                                        </template>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </template>
-
                     {{--  chi tiet--}}
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
