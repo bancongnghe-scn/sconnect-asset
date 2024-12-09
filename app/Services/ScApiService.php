@@ -156,7 +156,7 @@ class ScApiService
             });
     }
 
-    public static function getJobsApi($ids = [])
+    public static function getJobsApi($filters = [])
     {
         $host     = config('services.sc-api.domain');
         $endpoint = '/api/job/getJobs';
@@ -164,8 +164,12 @@ class ScApiService
 
         $params = [];
 
-        if (!empty($ids)) {
-            $params['id'] = Arr::wrap($ids);
+        if (!empty($filters['ids'])) {
+            $params['id'] = Arr::wrap($filters['ids']);
+        }
+
+        if (!empty($filters['org_id'])) {
+            $params['org_id'] = Arr::wrap($filters['org_id']);
         }
 
         try {

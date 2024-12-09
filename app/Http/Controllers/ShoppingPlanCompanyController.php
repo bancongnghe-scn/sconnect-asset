@@ -160,4 +160,39 @@ class ShoppingPlanCompanyController extends Controller
             return response_error();
         }
     }
+
+    public function getOrganizationRegisterYearQuarter(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->getOrganizationRegisterYearQuarter($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListShoppingPlan(Request $request)
+    {
+        $request->validate([
+            'type'  => 'nullable|integer',
+            'page'  => 'nullable|integer',
+            'limit' => 'nullable|integer:max:200',
+        ]);
+
+        try {
+            $result = $this->planCompanyService->getListShoppingPlanByFilters($request->all());
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

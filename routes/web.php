@@ -48,11 +48,21 @@ Route::middleware(['checkAuth'])->group(function () {
             Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
             Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
+        Route::prefix('quarter')->group(function () {
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyQuarterController::class, 'index']);
+            Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
+        });
     });
     Route::prefix('shopping-plan-organization')->group(function () {
         Route::prefix('year')->group(function () {
             Route::view('register/{id}', 'assets.shopping_plan_organization.year.register');
             Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
+        });
+
+        Route::prefix('quarter')->group(function () {
+            Route::view('register/{id}', 'assets.shopping_plan_organization.quarter.register');
+            Route::view('view/{id}', 'assets.shopping_plan_organization.quarter.detail');
         });
     });
 

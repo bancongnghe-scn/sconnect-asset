@@ -15,8 +15,12 @@ return [
         'year' => [
             'time' => 'năm',
         ],
-        'start_time' => 'thời gian bắt đầu đăng ký',
-        'end_time'   => 'thời gian kết thúc đăng ký',
+        'quarter' => [
+            'time' => 'quý',
+        ],
+        'start_time'     => 'thời gian bắt đầu đăng ký',
+        'end_time'       => 'thời gian kết thúc đăng ký',
+        'plan_year_id'   => 'kế hoạch năm',
     ],
     'job_id'              => 'chức danh',
     'quantity_registered' => 'số lượng đăng ký',

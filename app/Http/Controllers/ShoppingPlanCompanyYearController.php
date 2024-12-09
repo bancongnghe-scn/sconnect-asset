@@ -50,22 +50,6 @@ class ShoppingPlanCompanyYearController extends Controller
         }
     }
 
-    public function getOrganizationRegisterYear(string $id)
-    {
-        try {
-            $result = $this->planCompanyService->getOrganizationRegisterYear($id);
-            if (!$result['success']) {
-                return response_error($result['error_code']);
-            }
-
-            return response_success($result['data']);
-        } catch (\Throwable $exception) {
-            report($exception);
-
-            return response_error();
-        }
-    }
-
     public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
         Auth::user()->canPer('shopping_plan_company.crud');

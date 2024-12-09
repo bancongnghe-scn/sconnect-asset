@@ -8,7 +8,7 @@ use App\Services\ScApiService;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Arr;
 
-class OrganizationRegisterYearResource extends JsonResource
+class OrganizationRegisterYearQuarterResource extends JsonResource
 {
     protected $shoppingPlanCompanyRepository;
 
@@ -37,7 +37,7 @@ class OrganizationRegisterYearResource extends JsonResource
             'id' => $this->resource->id,
         ], ['id'], [
             'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id,status,note' => [
-                'shoppingAssetsYear:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id,month' => [
+                'shoppingAssets:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id,month' => [
                     'assetType:id,name',
                 ],
             ],
@@ -46,15 +46,16 @@ class OrganizationRegisterYearResource extends JsonResource
         $organizationIds       = $shoppingPlanCompanyYear->shoppingPlanOrganizations->pluck('organization_id')->toArray();
         $organizations         = ScApiService::getOrganizationByIds($organizationIds);
         $organizations         = $organizations->keyBy('id')->toArray();
+        $month                 = ShoppingPlanCompany::TYPE_YEAR == $shoppingPlanCompanyYear->type ? 12 : 3;
         foreach ($shoppingPlanCompanyYear->shoppingPlanOrganizations as $shoppingPlanOrganization) {
             $assetRegister = [];
             $totalPrice    = 0;
-            foreach ($shoppingPlanOrganization->shoppingAssetsYear as $shoppingAsset) {
+            foreach ($shoppingPlanOrganization->shoppingAssets as $shoppingAsset) {
                 if (!isset($assetRegister[$shoppingAsset->asset_type_id])) {
                     $assetRegister[$shoppingAsset->asset_type_id]['total_register']  = 0;
                     $assetRegister[$shoppingAsset->asset_type_id]['asset_type_name'] = $shoppingAsset->assetType?->name;
                     $assetRegister[$shoppingAsset->asset_type_id]['register']        = [];
-                    for ($i = 1; $i <= 12; ++$i) {
+                    for ($i = 1; $i <= $month; ++$i) {
                         $assetRegister[$shoppingAsset->asset_type_id]['register'][$i] = null;
                     }
                 }
@@ -68,9 +69,6 @@ class OrganizationRegisterYearResource extends JsonResource
                 }
                 $data['total_price_months'][$shoppingAsset->month] += $price;
 
-                if (empty($assetRegister[$shoppingAsset->asset_type_id]['register'][$shoppingAsset->month])) {
-                    $assetRegister[$shoppingAsset->asset_type_id]['register'][$shoppingAsset->month] = 0;
-                }
                 $assetRegister[$shoppingAsset->asset_type_id]['register'][$shoppingAsset->month] += $shoppingAsset->quantity_registered;
             }
 

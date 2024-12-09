@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
-use App\Http\Resources\OrganizationRegisterYearResource;
+use App\Http\Resources\OrganizationRegisterYearQuarterResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
@@ -291,7 +291,7 @@ class ShoppingPlanCompanyService
         ];
     }
 
-    public function getOrganizationRegisterYear($id)
+    public function getOrganizationRegisterYearQuarter($id)
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
 
@@ -304,7 +304,7 @@ class ShoppingPlanCompanyService
 
         return [
             'success' => true,
-            'data'    => OrganizationRegisterYearResource::make($shoppingPlanCompany)->resolve(),
+            'data'    => OrganizationRegisterYearQuarterResource::make($shoppingPlanCompany)->resolve(),
         ];
     }
 
@@ -755,5 +755,15 @@ class ShoppingPlanCompanyService
         return [
             'success' => true,
         ];
+    }
+
+    public function getListShoppingPlanByFilters($filters)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->getListing($filters);
+        if ($shoppingPlanCompany->isEmpty()) {
+            return [];
+        }
+
+        return $shoppingPlanCompany->toArray();
     }
 }

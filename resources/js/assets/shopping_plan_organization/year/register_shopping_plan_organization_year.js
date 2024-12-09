@@ -7,7 +7,6 @@ document.addEventListener('alpine:init', () => {
             this.id = split.pop();
             this.getInfo()
             this.getRegisterAsset()
-            this.getJobs()
             this.getListAssetType()
         },
 
@@ -18,6 +17,7 @@ document.addEventListener('alpine:init', () => {
         data: {
             name: null,
             organization_name: null,
+            organization_id: null,
             start_time : null,
             end_time : null,
             status: null,
@@ -48,13 +48,14 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+                this.getJobs([this.data.organization_id])
             }
         },
 
-        async getJobs(){
+        async getJobs(organization_id){
             this.loading = true
             try {
-                const response = await window.apiGetAllJob()
+                const response = await window.apiGetListJob({'org_id': organization_id})
                 if (!response.success) {
                     toast.error(response.message)
                     return
