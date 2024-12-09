@@ -172,8 +172,6 @@ document.addEventListener('alpine:init', () => {
             this.dataSelectMulti = this.dataSelectMulti.filter(item => ids.includes(item.id.toString())).map(item => Object.assign({}, item));
             Alpine.store('globalData').dataSelectMulti = this.dataSelectMulti;
 
-
-
             $('#'+this.numbAssetLost).text(ids.length);
             $("#"+this.idModalBackMultiple).modal('show');
             this.loading = false

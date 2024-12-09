@@ -15,7 +15,13 @@
     </div>
 
     <div class="col-3">
-        @include('common.datepicker', ['placeholder' => "Ngày tạo", 'id' => "filterSigningDate"])
+        <div class="input-group">
+            <input type="text" class="form-control datepicker" id="filterSigningDate"
+                   placeholder="Ngày tạo" autocomplete="off">
+            <span class="input-group-text">
+                <i class="fa-regular fa-calendar-days"></i>
+            </span>
+        </div>
     </div>
 
     <div class="col-4 d-flex tw-gap-x-2 tw-justify-end">

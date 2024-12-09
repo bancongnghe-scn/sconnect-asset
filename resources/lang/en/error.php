@@ -91,4 +91,6 @@ return [
     AppErrorCode::CODE_5006 => 'Tìm kiếm tài sản thất bại !',
     AppErrorCode::CODE_5007 => 'Xóa kế hoạch thanh lý tài sản thất bại !',
     AppErrorCode::CODE_5008 => 'Update kế hoạch thanh lý thất bại !',
+    AppErrorCode::CODE_5009 => 'Tạo tài sản sửa chữa thất bại !',
+    AppErrorCode::CODE_5010 => 'Sửa chữa tài sản thất bại !',
 ];

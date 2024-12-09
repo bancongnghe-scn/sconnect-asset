@@ -97,9 +97,7 @@
 
                                 <button class="mb-3 tw-w-fit border-0" style="color: #28a745;background-color:unset;" x-show="showAction.get ?? true" @click="$dispatch('get')">+ Thêm</button>
                                 
-                                <div
-                                    {{-- @delete="handleDeleteOfMultiModalCancelUI($event.detail.id)" --}}
-                                >
+                                <div>
                                     @include('assets.manage.plan-liquidation.modalSelectAsset')
                                 </div>
             

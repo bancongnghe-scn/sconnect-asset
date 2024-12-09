@@ -1,4 +1,4 @@
-<div class="modal fade" x-data="tableSelectAssetToPlan" id="idModalSelectAsset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" x-data="tableSelectAssetToPlan" id="idModalSelectAsset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="Close">
     <div class="modal-dialog modal-xl">
         <div class="modal-content" style="
                 width: 60%;

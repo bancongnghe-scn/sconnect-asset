@@ -93,4 +93,7 @@ class AppErrorCode
     public const CODE_5006 = 5006; //   Tìm kiếm tài sản thất bại !
     public const CODE_5007 = 5007; //   Xóa kế hoạch thanh lý tài sản thất bại !
     public const CODE_5008 = 5008; //   Update kế hoạch thanh lý thất bại !
+    public const CODE_5009 = 5009; //   Tạo tài sản sửa chữa thất bại !
+    public const CODE_5010 = 5010; //   Sửa chữa tài sản thất bại !
+
 }

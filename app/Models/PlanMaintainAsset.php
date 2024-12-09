@@ -22,6 +22,8 @@ class PlanMaintainAsset extends Model
         'price',        //thêm sửa bỏ requi
         'created_at',   //thêm sửa bỏ requi
         'created_by',   //thêm sửa bỏ requi
+
+        'note',         //thêm tình trạng sửa
         'deleted_at',
         'deleted_by',
     ];
