@@ -13,10 +13,10 @@ class AssetRepairResource extends JsonResource
 
             return [
                 'id'                    => $data->id,
-                'asset_id'              => $data?->asset->id,
-                'asset_name'            => $data?->asset->name,
-                'asset_code'            => $data?->asset->code,
-                'asset_reason'          => $data?->asset->reason,
+                'asset_id'              => $data?->asset?->id,
+                'asset_name'            => $data?->asset?->name,
+                'asset_code'            => $data?->asset?->code,
+                'asset_reason'          => $data?->asset?->reason,
                 'status_repair'         => AssetRepair::STATUS_NAME[$data->status],
                 'date_repair'           => $data->date_repair,
             ];

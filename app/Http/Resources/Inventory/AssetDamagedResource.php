@@ -14,11 +14,11 @@ class AssetDamagedResource extends JsonResource
                 'id'                    => $data->id,
                 'code'                  => $data->code,
                 'name'                  => $data->name,
-                'user_name'             => $data->user->name ?? null,
+                'user_name'             => $data?->user?->name,
                 'status'                => Asset::STATUS_NAME[$data->status],
-                'date'                  => $data->date ?? null,
-                'location'              => $data->location ?? null,
-                'reason'                => $data->reason ?? null,
+                'date'                  => $data?->date,
+                'location'              => $data?->location,
+                'reason'                => $data?->reason,
             ];
         });
         $result = $this->resource->toArray();

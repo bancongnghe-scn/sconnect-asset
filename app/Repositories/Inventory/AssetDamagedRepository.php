@@ -15,12 +15,12 @@ class AssetDamagedRepository extends BaseRepository
 
     public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with)->orderBy('created_at', 'DESC');
+        $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filters['name_code'])) {
             $query->where(function ($q) use ($filters) {
-                $q->where('code', 'LIKE', '%' . $filters['name_code'] . '%')
-                  ->orWhere('name', 'LIKE', '%' . $filters['name_code'] . '%');
+                $q->where('code', 'LIKE', $filters['name_code'] . '%')
+                  ->orWhere('name', 'LIKE', $filters['name_code'] . '%');
             });
         }
 

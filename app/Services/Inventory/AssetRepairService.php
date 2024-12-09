@@ -27,12 +27,14 @@ class AssetRepairService
             $assetIds = array_column($assets, 'id');
 
             foreach ($assets as $asset) {
-                $addressRepair =
-                    $data['location'] == AssetRepair::ADDRESS_NAME[AssetRepair::ADDRESS_COMPANY]
-                        ? AssetRepair::ADDRESS_COMPANY : AssetRepair::ADDRESS_SUPPLIER;
-                $performerSupplier =
-                    AssetRepair::ADDRESS_COMPANY == $addressRepair
-                        ? $data['performer_id'] : $data['supplier_id'];
+                $addressRepair = ($data['location'] == AssetRepair::ADDRESS_NAME[AssetRepair::ADDRESS_COMPANY])
+                    ? AssetRepair::ADDRESS_COMPANY
+                    : AssetRepair::ADDRESS_SUPPLIER;
+
+                $performerSupplier = (AssetRepair::ADDRESS_COMPANY === $addressRepair)
+                    ? $data['performer_id']
+                    : $data['supplier_id'];
+
 
                 $dataUpdate[] = [
                     'asset_id'              => $asset['id'],

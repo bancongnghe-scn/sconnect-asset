@@ -36,6 +36,7 @@ class AssetRepair extends Model
 
     public const STATUS_NOT_COMPLETE = 1;
     public const STATUS_COMPLETE     = 2;
+
     public const STATUS_NAME         = [
         self::STATUS_NOT_COMPLETE   => 'Đang sửa chữa',
         self::STATUS_COMPLETE       => 'Hoàn thành sửa chữa',

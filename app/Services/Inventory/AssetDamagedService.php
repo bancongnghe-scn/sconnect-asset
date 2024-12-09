@@ -20,7 +20,7 @@ class AssetDamagedService
 
     public function list(array $filters = [])
     {
-        // Thêm trạng thái tài sản hỏng
+        // Tài sản hỏng
         $filters['status'] = Asset::STATUS_DAMAGED;
 
         $data = $this->assetDamagedRepository->getListing(

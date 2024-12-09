@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Asset;
 use App\Services\Inventory\AssetDamagedService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AssetDamagedController extends Controller
 {
@@ -26,8 +25,6 @@ class AssetDamagedController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -46,8 +43,6 @@ class AssetDamagedController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
@@ -65,8 +60,6 @@ class AssetDamagedController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
-            Log::error(__FILE__ . __LINE__ . ': ' . $e->getMessage());
-
             return response_error();
         }
     }
