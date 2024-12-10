@@ -8,9 +8,10 @@
         <th class="text-center">Đơn vị</th>
         <th class="text-center">Loại tài sản</th>
         <th class="text-center">Chức danh</th>
-        <th class="text-center">SL</th>
+        <th class="text-center" x-text="`SL(${register.total_register})`"></th>
         <th class="text-center">Thời gian cần</th>
         <th class="text-center">Mô tả</th>
+        <th class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">Xử lý</th>
         <th class="text-center tw-w-28">Thao tác</th>
     </tr>
     </thead>
@@ -32,10 +33,17 @@
                     ])
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <td x-text="assetRegister.job_id ?? '-'"></td>
+                <td x-text="assetRegister.job_name ?? '-'"></td>
                 <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.description ?? '-'"></td>
+                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
+                    <select class="form-select" x-model="assetRegister.action">
+                        <template x-for="(action, value) in LIST_ACTION_SHOPPING_ASSET">
+                            <option :value="value" x-text="action"></option>
+                        </template>
+                    </select>
+                </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                     {{-- button view --}}
                     <button @click="window.location.href = `/shopping-plan-organization/quarter/view/${organization.id}`" class="border-0 bg-body">
@@ -81,3 +89,4 @@
     </template>
     </tbody>
 </table>
+

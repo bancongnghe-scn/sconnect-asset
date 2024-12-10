@@ -10,8 +10,6 @@ document.addEventListener('alpine:init', () => {
 
         //data
         id: null,
-        search: null,
-        table_index: [],
         data: {
             name: null,
             organization_name: null,
@@ -23,14 +21,7 @@ document.addEventListener('alpine:init', () => {
         },
         list_asset_type: [],
         list_job: [],
-        registers : [
-            {
-                assets: [],
-                register: {total:0, price: 0},
-                approval: {total:0, price: 0},
-                month: 1
-            }
-        ],
+        registers : [],
 
         //methods
         async getInfo(){
@@ -53,7 +44,7 @@ document.addEventListener('alpine:init', () => {
         async getJobs(organization_id){
             this.loading = true
             try {
-                const response = await window.apiGetListJob({'org_id': organization_id})
+                const response = await window.apiGetListJob({org_id: organization_id})
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -62,7 +53,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('job')
                 this.loading = false
             }
         },
@@ -73,13 +63,16 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiGetRegisterShoppingPlanOrganization(this.id)
                 if (response.success) {
                     this.registers = response.data
+                    this.registers = this.registers.map(register => ({
+                        ...register,
+                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                    }))
                     return
                 }
                 toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('register')
                 this.loading = false
             }
         },
@@ -96,7 +89,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('asset_type')
                 this.loading = false
             }
         },
@@ -157,30 +149,20 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        handleShowTable(index) {
-            if (!this.table_index.includes(index)) {
-                this.table_index.push(index)
-            } else {
-                this.table_index = this.table_index.filter(item => item !== index);
-            }
-        },
-
-        addRow(index) {
-            this.registers[index].assets.push({
+        addRow() {
+            this.registers.push({
                 id_fake: Date.now() + Math.random(),
                 asset_type_id: null,
-                job_id: null,
-                price: null,
-                description: null,
+                measure: null,
                 quantity_registered: null,
-                quantity_approved: null
+                job_id: null,
+                receiving_time: null,
+                description: null
             })
         },
 
-        deleteRow(index, key) {
-            this.registers[index].assets.splice(key,1)
-            this.calculateApproval(index)
-            this.calculateRegister(index)
+        deleteRow(index) {
+            this.registers.splice(index,1)
         },
 
         getPrice(asset_type_id, job_id) {

@@ -57,7 +57,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('info')
                 this.loading = false
             }
         },
@@ -84,7 +83,6 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_QUARTER, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
                 this.listPlanCompanyQuarter = response.data
-                console.log('quarter')
             } else {
                 toast.error('Lấy danh sách kế hoạch quý thất bại !')
             }
@@ -193,7 +191,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('users')
                 this.loading = false
             }
         },
@@ -264,6 +261,50 @@ document.addEventListener('alpine:init', () => {
                         $("#modalNoteDisapprovalPlanCompany").modal('hide')
                     }
                     this.getOrganizationRegisterWeek()
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShopping() {
+            this.loading = true
+            try {
+                const response = await window.apiHandleShoppingPlanWeek(this.id)
+                if (response.success) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                    toast.success('Đã chuyển sang bước xử lý')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async syntheticShopping() {
+            this.loading = true
+            try {
+                const shoppingAsset = []
+                this.register.organizations.forEach((item) => {
+                    item.asset_register.forEach((value) => {
+                        if (Object.keys(value).length > 0) {
+                            shoppingAsset.push(value)
+                        }
+                    })
+                })
+                const response = await window.apiSyntheticShoppingPlanWeek(this.id, shoppingAsset)
+                if (response.success) {
+                    this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
+                    toast.success('Đã chuyển sang bước tổng hợp')
                     return
                 }
 

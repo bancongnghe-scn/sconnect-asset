@@ -42,13 +42,17 @@ const STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL = 3
 const STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL = 4
 const STATUS_SHOPPING_PLAN_COMPANY_APPROVAL = 5
 const STATUS_SHOPPING_PLAN_COMPANY_CANCEL = 6
+const STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE = 7
+const STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC = 8
 const STATUS_SHOPPING_PLAN_COMPANY = {
     1: 'Mới tạo',
     2: 'Mở đăng ký',
     3: 'Chờ TCKT duyệt',
     4: 'Chờ TGĐ duyệt',
     5: 'TGĐ đã duyệt',
-    6: 'TGĐ từ chối'
+    6: 'TGĐ từ chối',
+    7: 'Đang xử lý',
+    8: 'Đang tổng hợp',
 }
 const TYPE_SHOPPING_PLAN_COMPANY_YEAR = 1;
 const TYPE_SHOPPING_PLAN_COMPANY_QUARTER = 2;
@@ -65,6 +69,8 @@ const STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL = 5
 const STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL = 6
 const STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL = 7
 const STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL = 8
+const STATUS_SHOPPING_PLAN_ORGANIZATION_HR_HANDLE = 9
+const STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC = 10
 const STATUS_SHOPPING_PLAN_ORGANIZATION = {
     1: 'Mở đăng ký',
     2: 'Đã đăng ký',
@@ -73,7 +79,9 @@ const STATUS_SHOPPING_PLAN_ORGANIZATION = {
     5: 'Chờ TGĐ duyệt',
     6: 'TGĐ đã duyệt',
     7: 'TGĐ từ chối',
-    8: 'TCKT từ chối'
+    8: 'TCKT từ chối',
+    9: 'Đang xử lý',
+    10: 'Đang tổng hợp',
 }
 const ORGANIZATION_TYPE_APPROVAL = 'approval';
 const ORGANIZATION_TYPE_DISAPPROVAL = 'disapproval';
@@ -113,4 +121,9 @@ const LIST_MONTHS = {
     10: 'Tháng 10',
     11: 'Tháng 11',
     12: 'Tháng 12',
+}
+
+const LIST_ACTION_SHOPPING_ASSET = {
+    1: 'Mua mới',
+    2: 'Luân chuyển'
 }

@@ -79,6 +79,8 @@ Route::middleware('web')->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyWeek');
             Route::post('create', 'createShoppingPlanCompanyWeek');
             Route::put('update/{id}', 'updateShoppingPlanCompanyWeek');
+            Route::get('handle-shopping/{id}', 'handleShopping');
+            Route::post('synthetic-shopping', 'syntheticShopping');
         });
     });
 

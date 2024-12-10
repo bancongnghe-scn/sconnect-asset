@@ -156,6 +156,37 @@ class ScApiService
             });
     }
 
+    public static function getJobByIds($ids)
+    {
+        $ids = Arr::wrap($ids);
+
+        $result = collect();
+
+        foreach ($ids as $idx => $id) {
+            $cacheKey = config('cache_keys.keys.job_title') . '_' . $id;
+
+            $job = Cache::tags(config('cache_keys.tags.job_title'))->get($cacheKey);
+            if ($job) {
+                $result->put($id, $job);
+                unset($ids[$idx]);
+            }
+        }
+        if (!empty($ids)) {
+            $response = self::getJobsApi(['ids' => $ids]);
+
+            if (!is_null($response) && $response['success']) {
+                foreach ($response['data'] as $job) {
+                    $result->put($job['id'], $job);
+
+                    $cacheKey = config('cache_keys.keys.job_title') . '_' . $job['id'];
+                    Cache::tags(config('cache_keys.tags.job_title'))->put($cacheKey, $job, config('cache_keys.ttl.month'));
+                }
+            }
+        }
+
+        return $result;
+    }
+
     public static function getJobsApi($filters = [])
     {
         $host     = config('services.sc-api.domain');

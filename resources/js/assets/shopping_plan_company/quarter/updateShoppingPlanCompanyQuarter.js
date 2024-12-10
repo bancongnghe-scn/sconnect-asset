@@ -55,7 +55,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('info')
                 this.loading = false
             }
         },
@@ -82,7 +81,6 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
             if (response.success) {
                 this.listPlanCompanyYear = response.data
-                console.log('year')
             } else {
                 toast.error('Lấy danh sách kế hoạch năm !')
             }
@@ -191,7 +189,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('users')
                 this.loading = false
             }
         },

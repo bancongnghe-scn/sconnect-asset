@@ -31,9 +31,7 @@ class SyntheticOrganizationRegisterPlanResource extends JsonResource
             'id' => $this->resource->id,
         ], ['id', 'type'], [
             'shoppingPlanOrganizations:id,organization_id,shopping_plan_company_id,status,note' => [
-                'shoppingAssets:id,asset_type_id,quantity_registered,price,shopping_plan_organization_id,month' => [
-                    'assetType:id,name',
-                ],
+                'shoppingAssets' => ['assetType:id,name'],
             ],
         ]);
         $organizationIds       = $shoppingPlanCompany->shoppingPlanOrganizations->pluck('organization_id')->toArray();

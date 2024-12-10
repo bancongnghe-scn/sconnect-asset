@@ -1,20 +1,19 @@
 <select class="form-select"
         x-init="$nextTick(() => {
         // Khởi tạo Select2
-        const selectInstance = $($el).select2({
+        $($el).select2({
             language: {
                 noResults: function () {
                     return 'Không tìm thấy kết quả';
                 }
             }
         });
-        console.log(selectInstance)
         // Đặt giá trị ban đầu cho Select2
-        selectInstance.val([model]).trigger('change');
+        $($el).val([model]).trigger('change');
 
         // Lắng nghe sự kiện thay đổi từ Select2
         let isChanging = false; // Đánh dấu trạng thái thay đổi
-        selectInstance.on('change', () => {
+        $($el).on('change', () => {
             if (!isChanging) {
                 isChanging = true;
                 const newValue = $($el).val();
@@ -33,7 +32,8 @@
         });
     })"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
-        @if(isset($id)) id="{{$id}}" @endif
+        @if(isset($id)) id="{{$id ?? ''}}" @endif
+        :id = "typeof select2_id !== 'undefined' ? select2_id : ''"
 >
     <option value="">{{$placeholder ?? 'Chọn ...'}}</option>
     <template x-for="value in {{$values ?? 'values'}}" :key="value.id">

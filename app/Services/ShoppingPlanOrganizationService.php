@@ -220,17 +220,15 @@ class ShoppingPlanOrganizationService
                 ];
                 break;
             case ShoppingPlanCompany::TYPE_QUARTER:
-            case ShoppingPlanCompany::TYPE_WEEK:
                 $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_year_id);
-                if (ShoppingPlanCompany::TYPE_QUARTER == $shoppingPlanCompany->type) {
-                    $data = [
-                        'year'    => $shoppingPlanCompanyYear->time,
-                        'quarter' => $shoppingPlanCompany->time,
-                    ];
-                    break;
-                }
-
+                $data                    = [
+                    'year'    => $shoppingPlanCompanyYear->time,
+                    'quarter' => $shoppingPlanCompany->time,
+                ];
+                break;
+            case ShoppingPlanCompany::TYPE_WEEK:
                 $shoppingPlanCompanyQuarter = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_quarter_id);
+                $shoppingPlanCompanyYear    = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompanyQuarter->plan_year_id);
                 $data                       = [
                     'year'    => $shoppingPlanCompanyYear->time,
                     'quarter' => $shoppingPlanCompanyQuarter->time,
@@ -254,8 +252,8 @@ class ShoppingPlanOrganizationService
             ];
         }
         // kiem tra loai ke hoach de tra ve format phu hop
-        if (ShoppingPlanCompany::TYPE_WEEK === $shoppingPlanOrganization->shoppingPlanCompany->type) {
-            $data = [];
+        if (ShoppingPlanCompany::TYPE_WEEK === +$shoppingPlanOrganization->shoppingPlanCompany->type) {
+            $data = $shoppingPlanOrganization->shoppingAssets->toArray();
         } else {
             // neu la kh nam va quy thi cung 1 format
             $data = RegisterShoppingYearResource::make($shoppingPlanOrganization)->resolve();

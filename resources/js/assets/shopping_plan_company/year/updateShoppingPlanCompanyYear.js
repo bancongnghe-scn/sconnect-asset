@@ -47,7 +47,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('info')
                 this.loading = false
             }
         },
@@ -171,7 +170,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('users')
                 this.loading = false
             }
         },

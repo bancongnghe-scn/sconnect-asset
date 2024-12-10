@@ -33,8 +33,6 @@
                     <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-            </template>
             @can('shopping_plan_company.general_approval')
                 <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
                     <button class="btn btn-sc" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt</button>

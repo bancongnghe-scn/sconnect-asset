@@ -93,4 +93,51 @@ class ShoppingPlanCompanyWeekController extends Controller
             return response_error();
         }
     }
+
+    public function handleShopping(string $id)
+    {
+        Auth::user()->canPer('shopping_plan_company.handle_shopping');
+
+        try {
+            $result = $this->planCompanyService->handleShoppingPlanWeek($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function syntheticShopping(Request $request)
+    {
+        $request->validate([
+            'shopping_plan_company_id' => 'required|integer',
+            'shopping_assets'          => 'nullable|array',
+            'shopping_assets.*'        => 'nullable|array',
+            'shopping_assets.*.id'     => 'required|integer',
+            'shopping_assets.*.action' => 'nullable|integer',
+        ]);
+
+        Auth::user()->canPer('shopping_plan_company.synthetic_shopping');
+
+        try {
+            $result = $this->planCompanyService->syntheticShoppingPlanWeek($request->all());
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            dd($exception);
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

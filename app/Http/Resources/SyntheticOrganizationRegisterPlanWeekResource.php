@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\ScApiService;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
@@ -21,11 +22,12 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
                 $assetRegister[] = [
                     'id'                  => $shoppingAsset->id,
                     'asset_type_name'     => $shoppingAsset->assetType?->name,
-                    'job_id'              => $shoppingAsset->job_id,
+                    'job_name'            => !is_null($shoppingAsset->job_id) ? ScApiService::getJobByIds($shoppingAsset->job_id)->first()['name'] : null,
                     'quantity_registered' => $shoppingAsset->quantity_registered,
                     'quantity_approved'   => $shoppingAsset->quantity_approved,
                     'receiving_time'      => $shoppingAsset->receiving_time,
                     'description'         => $shoppingAsset->description,
+                    'action'              => $shoppingAsset->action,
                 ];
                 $data['total_register'] += $shoppingAsset->quantity_registered;
             }

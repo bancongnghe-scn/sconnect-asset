@@ -16,16 +16,19 @@
                     @endcan
                 </div>
             </template>
-            <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 @can('shopping_plan_company.crud')
                     <button class="btn btn-sc" @click="updatePlanWeek()">Lưu</button>
                 @endcan
             </template>
-            <template
-                    x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
-                @can('shopping_plan_company.sent_account_approval')
-                    <button class="btn btn-primary" @click="sendAccountantApproval()">Gửi duyệt</button>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+                @can('shopping_plan_company.handle_shopping')
+                    <button class="btn btn-primary" @click="handleShopping()">Xử lý</button>
+                @endcan
+            </template>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE && new Date() > new Date(window.formatDate(data.end_time))">
+                @can('shopping_plan_company.synthetic_shopping')
+                    <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
                 @endcan
             </template>
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
@@ -34,8 +37,6 @@
                 @can('shopping_plan_company.sent_manager_approval')
                     <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
                 @endcan
-            </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
             </template>
             @can('shopping_plan_company.general_approval')
                 <template
@@ -52,9 +53,7 @@
                     </button>
                 </template>
             @endcan
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay
-                lại
-            </button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
 
         {{-- content --}}

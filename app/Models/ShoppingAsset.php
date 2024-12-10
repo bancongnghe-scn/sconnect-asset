@@ -28,6 +28,9 @@ class ShoppingAsset extends Model
         'created_by',
     ];
 
+    public const ACTION_NEW      = 1;
+    public const ACTION_ROTATION = 2;
+
     public function assetType(): BelongsTo
     {
         return $this->belongsTo(AssetType::class, 'asset_type_id', 'id');

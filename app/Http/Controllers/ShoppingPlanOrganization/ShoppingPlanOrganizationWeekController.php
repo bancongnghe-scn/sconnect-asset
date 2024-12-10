@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\ShoppingPlanOrganization;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RegisterShoppingPlanOrganizationYearRequest;
+use App\Http\Requests\RegisterShoppingPlanOrganizationWeekRequest;
 use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanOrganizationService;
 use Illuminate\Http\Request;
@@ -39,7 +39,7 @@ class ShoppingPlanOrganizationWeekController extends Controller
         }
     }
 
-    public function registerShoppingPlanOrganizationWeek(RegisterShoppingPlanOrganizationYearRequest $request)
+    public function registerShoppingPlanOrganizationWeek(RegisterShoppingPlanOrganizationWeekRequest $request)
     {
         Auth::user()->canPer('shopping_plan_organization.register');
 

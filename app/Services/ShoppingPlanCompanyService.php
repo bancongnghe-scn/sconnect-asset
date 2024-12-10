@@ -9,6 +9,7 @@ use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
+use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
@@ -26,6 +27,7 @@ class ShoppingPlanCompanyService
         protected MonitorRepository $monitorRepository,
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
         protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
+        protected ShoppingAssetRepository $shoppingAssetRepository,
     ) {
 
     }
@@ -777,5 +779,138 @@ class ShoppingPlanCompanyService
         }
 
         return $shoppingPlanCompany->toArray();
+    }
+
+    public function handleShoppingPlanWeek($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_REGISTER != $shoppingPlanCompany->status || Carbon::now() < Carbon::parse($shoppingPlanCompany->end_time)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2078,
+            ];
+        }
+
+        $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_HR_HANDLE;
+        DB::beginTransaction();
+        try {
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $id],
+                ['status' => ShoppingPlanOrganization::STATUS_HR_HANDLE]
+            );
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_HR_HANDLE_PLAN_COMPANY,
+                $id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function syntheticShoppingPlanWeek($data)
+    {
+        $shoppingPlanCompanyId = $data['shopping_plan_company_id'];
+        $shoppingPlanCompany   = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_HR_HANDLE != $shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2078,
+            ];
+        }
+
+        $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_HR_SYNTHETIC;
+        DB::beginTransaction();
+        try {
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $shoppingPlanCompanyId],
+                ['status' => ShoppingPlanOrganization::STATUS_HR_SYNTHETIC]
+            );
+
+            if (!empty($data['shopping_assets'])) {
+                resolve(ShoppingAssetService::class)->updateActionShoppingAssets($data['shopping_assets']);
+            }
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_HR_SYNTHETIC_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 }
