@@ -1,5 +1,6 @@
-<select class="form-select"
-        x-init="$nextTick(() => {
+<div class="input-group">
+    <select class="form-select"
+            x-init="$nextTick(() => {
                $($el).select2({
                    language: {
                        noResults: function() {
@@ -30,11 +31,15 @@
                     }
                 });
         })"
-        multiple="multiple"
-        data-placeholder="{{$placeholder ?? 'Chọn ...'}}"
-        @if(isset($disabled)) :disabled="{{$disabled}}" @endif
->
-    <template x-for="value in {{$values ?? 'values'}}" :key="value.id">
-        <option :value="value.id" x-text="value.name"></option>
-    </template>
-</select>
+            multiple="multiple"
+            data-placeholder="{{$placeholder ?? 'Chọn ...'}}"
+            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+    >
+        <template x-for="value in {{$values ?? 'values'}}" :key="value.id">
+            <option :value="value.id" x-text="value.name"></option>
+        </template>
+    </select>
+    <span class="input-group-text">
+        <i class="fa-solid fa-angle-down"></i>
+    </span>
+</div>

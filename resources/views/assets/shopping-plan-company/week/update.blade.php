@@ -31,6 +31,9 @@
                     <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
                 @endcan
             </template>
+            @can('shopping_plan_company.synthetic_shopping')
+                <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
+            @endcan
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
                     && new Date() > new Date(window.formatDate(data.end_time))"
             >

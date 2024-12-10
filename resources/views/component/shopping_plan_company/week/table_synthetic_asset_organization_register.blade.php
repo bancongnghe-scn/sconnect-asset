@@ -37,9 +37,10 @@
                 <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.description ?? '-'"></td>
-                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
-                    <select class="form-select" x-model="assetRegister.action">
-                        <template x-for="(action, value) in LIST_ACTION_SHOPPING_ASSET">
+{{--                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">--}}
+                <td>
+                    <select class="form-select" x-model="assetRegister.action" x-init="console.log(assetRegister.action)">
+                        <template x-for="(action, value) in LIST_ACTION_SHOPPING_ASSET" :key="value">
                             <option :value="value" x-text="action"></option>
                         </template>
                     </select>

@@ -1,5 +1,6 @@
-<select
-    x-init="$nextTick(() => {
+<div class="input-group">
+    <select
+        x-init="$nextTick(() => {
         // Khởi tạo Select2
         $($el).select2({
             language: {
@@ -32,13 +33,17 @@
             }
         });
     })"
-    class="form-control"
-    multiple="multiple"
-    data-placeholder="{{$placeholder ?? 'Chọn giá trị'}}"
-    @if(isset($disabled)) :disabled="{{$disabled}}" @endif
-    @if(isset($id)) id="{{$id}}" @endif
->
-    <template x-for="(value, key) in {{$values ?? 'values'}}">
-        <option :value="key" x-text="value"></option>
-    </template>
-</select>
+        class="form-control"
+        multiple="multiple"
+        data-placeholder="{{$placeholder ?? 'Chọn giá trị'}}"
+        @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+        @if(isset($id)) id="{{$id}}" @endif
+    >
+        <template x-for="(value, key) in {{$values ?? 'values'}}">
+            <option :value="key" x-text="value"></option>
+        </template>
+    </select>
+    <span class="input-group-text">
+        <i class="fa-solid fa-angle-down"></i>
+    </span>
+</div>
