@@ -2,14 +2,11 @@
        aria-describedby="example2_info">
     <thead class="position-sticky z-1" style="top: -1px">
     <tr>
-        <th class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-            <input type="checkbox" @click="selectedAll">
-        </th>
         <th class="text-center">Đơn vị</th>
         <th class="text-center">Loại tài sản</th>
         <th class="text-center">Chức danh</th>
-        <th class="text-center" x-text="`SL(${register.total_register})`"></th>
         <th class="text-center">Thời gian cần</th>
+        <th class="text-center" x-text="`SL(${register.total_register})`"></th>
         <th class="text-center">Mô tả</th>
         <th class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">Xử lý</th>
         <th class="text-center tw-w-28">Thao tác</th>
@@ -19,12 +16,6 @@
     <template x-for="(organization, index) in register.organizations" :key="index">
         <template x-for="(assetRegister, stt) in organization.asset_register" :key="index + '_' + stt">
             <tr>
-                <td :rowspan="stt === 0 ? organization.asset_register.length : 1"
-                    class="text-center align-middle"
-                    x-show="stt === 0 && +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL"
-                >
-                    <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]">
-                </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                     <span x-text="organization.name"></span>
                     @include('component.shopping_plan_organization.status_shopping_plan_organization', [
@@ -34,18 +25,18 @@
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <td x-text="assetRegister.job_name ?? '-'"></td>
-                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
+                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.description ?? '-'"></td>
-{{--                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">--}}
-                <td>
-                    <select class="form-select" x-model="assetRegister.action" x-init="console.log(assetRegister.action)">
-                        <template x-for="(action, value) in LIST_ACTION_SHOPPING_ASSET" :key="value">
-                            <option :value="value" x-text="action"></option>
-                        </template>
-                    </select>
+                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
+                    <template x-if="typeof assetRegister.action !== 'undefined'">
+                        <select class="form-select" x-model="assetRegister.action">
+                            <option value="1">Mua mới</option>
+                            <option value="2">Luân chuyển</option>
+                        </select>
+                    </template>
                 </td>
-                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
+                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
                     <button @click="window.location.href = `/shopping-plan-organization/quarter/view/${organization.id}`" class="border-0 bg-body">
                         <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>

@@ -81,7 +81,6 @@ return [
     AppErrorCode::CODE_2075 => 'Duyệt kế hoạch mua sắm thất bại !',
     AppErrorCode::CODE_2076 => 'Lưu lịch sử thất bại !',
     AppErrorCode::CODE_2077 => 'Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !',
-    AppErrorCode::CODE_2078 => 'Xử lý thật bại do chưa hết thời gian đăng ký hoặc trạng thái không phù hợp !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

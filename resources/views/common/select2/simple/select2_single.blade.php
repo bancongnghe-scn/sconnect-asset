@@ -1,17 +1,17 @@
 <select class="form-control"
     x-init="$nextTick(() => {
         // Khởi tạo Select2
-        const selectInstance = $($el).select2({
+        $($el).select2({
                 language: {
                     noResults: () => 'Không tìm thấy kết quả'
                 }
             });
 
-        selectInstance.val([model]).trigger('change');
+        $($el).val([model]).trigger('change');
 
         // Lắng nghe sự kiện thay đổi từ Select2
         let isChanging = false; // Đánh dấu trạng thái thay đổi
-        selectInstance.on('change', () => {
+        $($el).on('change', () => {
             if (!isChanging) {
                 isChanging = true;
                 const newValue = $($el).val();

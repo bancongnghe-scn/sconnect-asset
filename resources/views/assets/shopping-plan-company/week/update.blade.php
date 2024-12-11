@@ -31,26 +31,20 @@
                     <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
                 @endcan
             </template>
-            @can('shopping_plan_company.synthetic_shopping')
-                <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
-            @endcan
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                    && new Date() > new Date(window.formatDate(data.end_time))"
-            >
+                    && new Date() > new Date(window.formatDate(data.end_time))">
                 @can('shopping_plan_company.sent_manager_approval')
                     <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
                 @endcan
             </template>
             @can('shopping_plan_company.general_approval')
-                <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
+                <template  x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
                     <button class="btn btn-sc"
                             @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt
                     </button>
                 </template>
 
-                <template
-                        x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
+                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
                     <button class="btn bg-red"
                             @click="showModalNoteDisapprovalShoppingCompany()">Từ chối
                     </button>
@@ -69,57 +63,70 @@
                             <div class="active-link tw-w-fit">Thông tin chung</div>
                             @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
                         </div>
-                        <div class="tw-grid tw-grid-cols-2 tw-gap-4">
-                            <div>
-                                <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <span x-data="{
-                                    model: data.plan_quarter_id,
-                                    init() {this.$watch('data.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
-                                    @include('common.select2.extent.select2', [
-                                          'placeholder' => 'Chọn quý',
-                                          'values' => 'listPlanCompanyQuarter',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                          'id' => 'selectPlanQuarter'
-                                    ])
-                                </span>
+
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                            <div class="tw-grid tw-grid-cols-3 tw-gap-4">
+                                <div>
+                                    <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <div x-data="{
+                                            model: data.plan_quarter_id,
+                                            init() {this.$watch('data.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                        }">
+                                        @include('common.select2.extent.select2', [
+                                              'placeholder' => 'Chọn quý',
+                                              'values' => 'listPlanCompanyQuarter',
+                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                              'id' => 'selectPlanQuarter'
+                                        ])
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <div x-data="{
+                                                model: data.month,
+                                                init() {this.$watch('data.month', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                        }">
+                                        @include('common.select2.simple.select2_single', [
+                                              'placeholder' => 'Chọn tháng',
+                                              'values' => 'LIST_MONTHS',
+                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                              'id' => 'selectMonth'
+                                        ])
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="tw-font-bold">Tuần<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <div x-data="{
+                                            model: data.time,
+                                            init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                        }">
+                                        @include('common.select2.simple.select2_single', [
+                                              'placeholder' => 'Chọn tuần',
+                                              'values' => 'LIST_WEEK',
+                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                              'id' => 'selectWeek'
+                                        ])
+                                    </div>
+                                </div>
                             </div>
+                        </template>
+
+                        <div class="tw-grid tw-grid-cols-3 tw-gap-4 mt-3">
+                            <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                <div>
+                                    <label class="tw-font-bold">Tên</label>
+                                    <input class="form-control" type="text" x-model="data.name" disabled>
+                                </div>
+                            </template>
 
                             <div>
-                                <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <span x-data="{
-                                    model: data.month,
-                                    init() {this.$watch('data.month', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
-                                    @include('common.select2.simple.select2_single', [
-                                          'placeholder' => 'Chọn tháng',
-                                          'values' => 'LIST_MONTHS',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                          'id' => 'selectMonth'
-                                    ])
-                                </span>
-                            </div>
-
-                            <div>
-                                <label class="tw-font-bold">Tuần<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <span x-data="{
-                                    model: data.time,
-                                    init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
-                                    @include('common.select2.simple.select2_single', [
-                                          'placeholder' => 'Chọn tuần',
-                                          'values' => 'LIST_WEEK',
-                                          'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                          'id' => 'selectWeek'
-                                    ])
-                                </span>
-                            </div>
-
-                            <div>
-                                <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                <label class="tw-font-bold">Thời gian đăng ký<span
+                                        class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
-                                       'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER',
+                                       'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
                                        'start' => 'data.start_time',
                                        'end' => 'data.end_time',
                                 ])
@@ -128,9 +135,9 @@
                             <div>
                                 <label class="form-label">Người quan sát</label>
                                 <div x-data="{
-                                        model: data.monitor_ids,
-                                        init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                    }"
+                                                                    model: data.monitor_ids,
+                                                                    init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                                                }"
                                      @select-change="data.monitor_ids = $event.detail"
                                 >
                                     @include('common.select2.extent.select2_multiple', [
@@ -166,17 +173,53 @@
                     </div>
 
                     {{--  chi tiet--}}
-                    <div class="mb-3">
-                        <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.table_synthetic_organization_register')
-                            </template>
-                            <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
-                            </template>
+                    <template x-if="[
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                    ].includes(+data.status)">
+                        <div class="mb-3">
+                            <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+                            <div class="tw-max-h-dvh overflow-scroll custom-scroll">
+                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                </template>
+                                <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
+                                </template>
+                            </div>
                         </div>
-                    </div>
+                    </template>
+                    <template x-if="[
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                    ]">
+                        <div class="mb-3">
+                            <div class="d-flex tw-gap-x-4 mb-3">
+                                <a class="tw-no-underline hover:tw-text-green-500"
+                                   :class="activeLink.new ? 'active-link' : 'inactive-link'"
+                                   @click="handleShowActive('new')"
+                                >
+                                    Tài sản mua sắm
+                                </a>
+                                <a class="tw-no-underline hover:tw-text-green-500"
+                                   :class="activeLink.rotation ? 'active-link' : 'inactive-link'"
+                                   @click="handleShowActive('rotation')"
+                                >
+                                    Tài sản luân chuyển
+                                </a>
+                            </div>
+                            <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
+                                <div x-show="activeLink.new">
+                                    @include('component.shopping_plan_company.week.table_synthetic_with_action')
+                                </div>
+                                <div x-show="activeLink.rotation">2222</div>
+                            </div>
+                        </div>
+                    </template>
                 </div>
             </div>
             <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="comment_shopping_plan">

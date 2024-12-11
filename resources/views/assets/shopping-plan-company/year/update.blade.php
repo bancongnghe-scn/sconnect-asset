@@ -68,7 +68,7 @@
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
-                                       'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER',
+                                       'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
                                        'start' => 'data.start_time',
                                        'end' => 'data.end_time',
                                 ])

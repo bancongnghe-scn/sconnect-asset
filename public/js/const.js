@@ -93,6 +93,10 @@ const TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION = 2;
 // USERS
 const DEPT_IDS_FOLLOWERS = [7, 8, 9, 10, 11, 12, 41, 42, 149, 160]
 
+// SHOPPING ASSET
+const SHOPPING_ASSET_ACTION_NEW = 1
+const SHOPPING_ASSET_ACTION_ROTATION = 2
+
 // OTHER
 const LIST_QUARTER = {
     1: 'Quý 1',
@@ -121,9 +125,4 @@ const LIST_MONTHS = {
     10: 'Tháng 10',
     11: 'Tháng 11',
     12: 'Tháng 12',
-}
-
-const LIST_ACTION_SHOPPING_ASSET = {
-    1: 'Mua mới',
-    2: 'Luân chuyển'
 }

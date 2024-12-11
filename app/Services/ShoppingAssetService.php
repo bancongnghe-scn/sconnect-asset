@@ -18,7 +18,7 @@ class ShoppingAssetService
         $idShoppingAssetNew      = [];
         $idShoppingAssetRotation = [];
         foreach ($shoppingAssets as $shoppingAsset) {
-            if (ShoppingAsset::ACTION_NEW === $shoppingAsset['action'] || is_null($shoppingAsset['action'])) {
+            if (ShoppingAsset::ACTION_NEW == $shoppingAsset['action'] || is_null($shoppingAsset['action'])) {
                 $idShoppingAssetNew[] = $shoppingAsset['id'];
             } else {
                 $idShoppingAssetRotation[] = $shoppingAsset['id'];

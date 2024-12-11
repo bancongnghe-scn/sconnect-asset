@@ -859,7 +859,7 @@ class ShoppingPlanCompanyService
         if (ShoppingPlanCompany::STATUS_HR_HANDLE != $shoppingPlanCompany->status) {
             return [
                 'success'    => false,
-                'error_code' => AppErrorCode::CODE_2078,
+                'error_code' => AppErrorCode::CODE_2074,
             ];
         }
 

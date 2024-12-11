@@ -29,6 +29,10 @@ document.addEventListener('alpine:init', () => {
         selectedRow: [],
         note_disapproval: null,
         idModalConfirmDelete: 'idModalConfirmDelete',
+        activeLink: {
+            new: true,
+            rotation: false
+        },
         //methods
         async feetData() {
             this.getOrganizationRegisterWeek()
@@ -43,13 +47,9 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiShowShoppingPlanCompany(this.id)
                 if (response.success) {
                     const data = response.data.data
-                    this.data.time = data.time
-                    this.data.status = data.status
+                    this.data = data
                     this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
                     this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
-                    this.data.monitor_ids = data.monitor_ids
-                    this.data.plan_quarter_id = data.plan_quarter_id
-                    this.data.month = data.month
                     return
                 }
 
@@ -278,6 +278,9 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiHandleShoppingPlanWeek(this.id)
                 if (response.success) {
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                    this.register.organizations.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_HANDLE
+                    })
                     toast.success('Đã chuyển sang bước xử lý')
                     return
                 }
@@ -303,7 +306,10 @@ document.addEventListener('alpine:init', () => {
                 })
                 const response = await window.apiSyntheticShoppingPlanWeek(this.id, shoppingAsset)
                 if (response.success) {
-                    this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
+                    this.register.organizations.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
+                    })
                     toast.success('Đã chuyển sang bước tổng hợp')
                     return
                 }
@@ -314,6 +320,14 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        handleShowActive(active) {
+            for (const activeKey in this.activeLink) {
+                this.activeLink[activeKey] = false
+            }
+
+            this.activeLink[active] = true
         },
 
         showModalNoteDisapproval(id) {
