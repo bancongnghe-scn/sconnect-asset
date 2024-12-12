@@ -257,6 +257,7 @@
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/week/apiShoppingPlanCompanyWeek.js',
         'resources/js/app/api/apiUser.js',
-        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js'
+        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+        'resources/js/assets/api/apiSupplier.js'
     ])
 @endsection

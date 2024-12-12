@@ -24,6 +24,7 @@ document.addEventListener('alpine:init', () => {
             monitor_ids: [],
         },
         listUser: [],
+        listSupplier: [],
         register: [],
         listPlanCompanyQuarter: [],
         selectedRow: [],
@@ -58,6 +59,15 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+                if ([
+                    STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                ].includes(+this.data.status)) {
+                    this.getListSupplier()
+                }
             }
         },
 
@@ -315,6 +325,23 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListSupplier() {
+            this.loading = true
+            try {
+                const response = await window.apiGetSupplier({})
+                if (!response.success) {
+                    toast.success(response.message)
+                    return
+                }
+
+                this.listSupplier = response.data.data.data
             } catch (e) {
                 toast.error(e)
             } finally {

@@ -24,7 +24,23 @@
     <template x-for="(organization, index) in register.organizations" :key="index">
         <template x-for="(assetRegister, stt) in organization.asset_register" :key="index + '_' + stt">
             <template x-if="assetRegister.action === SHOPPING_ASSET_ACTION_NEW">
-                <tr>
+                <tr x-data="{
+                    get total() {
+                        if (assetRegister.tax_money !== null && assetRegister.price === null) {
+                        console.log(1111)
+                            return assetRegister.tax_money
+                        } else if (assetRegister.tax_money === null && assetRegister.price !== null) {
+                        console.log(2222)
+                            return assetRegister.price
+                        } else if (assetRegister.tax_money === null && assetRegister.price === null) {
+                        console.log(3333)
+                            return null
+                        } else {
+                        console.log(assetRegister)
+                            return assetRegister.price + assetRegister.tax_money
+                        }
+                    }
+                }">
                     <td class="text-center align-middle">
                         <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]">
                     </td>
@@ -48,9 +64,17 @@
                     <td>
                         <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money">
                     </td>
-                    <td x-text="assetRegister.tax_money + assetRegister.price ?? '-'" class="text-center"></td>
+                    <td x-text="total" class="text-center"></td>
                     <td>
-                        <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.supplier_id">
+                        <span x-data="{
+                                    model: assetRegister.supplier_id,
+                                    init() {this.$watch('assetRegister.supplier_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                        }">
+                                    @include('common.select2.extent.select2', [
+                                          'placeholder' => 'Chọn NCC',
+                                          'values' => 'listSupplier',
+                                    ])
+                        </span>
                     </td>
                     <td>
                         <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link">

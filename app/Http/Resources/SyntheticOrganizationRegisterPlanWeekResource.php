@@ -20,14 +20,19 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
             $assetRegister = [];
             foreach ($shoppingPlanOrganization->shoppingAssets as $shoppingAsset) {
                 $assetRegister[] = [
-                    'id'                  => $shoppingAsset->id,
-                    'asset_type_name'     => $shoppingAsset->assetType?->name,
-                    'job_name'            => !is_null($shoppingAsset->job_id) ? ScApiService::getJobByIds($shoppingAsset->job_id)->first()['name'] : null,
-                    'quantity_registered' => $shoppingAsset->quantity_registered,
-                    'quantity_approved'   => $shoppingAsset->quantity_approved,
-                    'receiving_time'      => $shoppingAsset->receiving_time,
-                    'description'         => $shoppingAsset->description,
-                    'action'              => $shoppingAsset->action,
+                    'id'                       => $shoppingAsset->id,
+                    'asset_type_name'          => $shoppingAsset->assetType?->name,
+                    'job_name'                 => !is_null($shoppingAsset->job_id) ? ScApiService::getJobByIds($shoppingAsset->job_id)->first()['name'] : null,
+                    'quantity_registered'      => $shoppingAsset->quantity_registered,
+                    'quantity_approved'        => $shoppingAsset->quantity_approved,
+                    'receiving_time'           => $shoppingAsset->receiving_time,
+                    'description'              => $shoppingAsset->description,
+                    'action'                   => $shoppingAsset->action,
+                    'status'                   => $shoppingAsset->status,
+                    'price'                    => $shoppingAsset->price,
+                    'tax_money'                => $shoppingAsset->tax_money,
+                    'supplier_id'              => $shoppingAsset->supplier_id,
+                    'link'                     => $shoppingAsset->link,
                 ];
                 $data['total_register'] += $shoppingAsset->quantity_registered;
             }

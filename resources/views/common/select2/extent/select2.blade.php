@@ -1,4 +1,4 @@
-<select class="form-select"
+<select class="form-select tw-w-fit"
         x-init="$nextTick(() => {
         // Khởi tạo Select2
         $($el).select2({
