@@ -134,7 +134,29 @@ class ShoppingPlanCompanyWeekController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function sendApprovalWeek(Request $request)
+    {
+        $request->validate([
+            'shopping_plan_company_id' => 'required|integer',
+            'status'                   => 'required|integer',
+        ]);
+        //        Auth::user()->canPer('shopping_plan_company.sent_account_approval');
+
+        try {
+            $result = $this->planCompanyService->sendApprovalWeek($request->all());
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
             report($exception);
 
             return response_error();

@@ -120,6 +120,7 @@ window.apiSendAccountantApproval = async function (id) {
     }
 }
 
+
 window.apiSendManagerApproval = async function (id) {
     try {
         const response = await axios.get("/api/shopping-plan-company/send-manager-approval/"+id)

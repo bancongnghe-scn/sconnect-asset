@@ -10,7 +10,8 @@
           'tw-text-red-600 tw-bg-red-100'  : +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
           || +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL,
            'tw-text-amber-400 tw-bg-amber-100'  : +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_HR_HANDLE
-           || +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC,
+           || +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
+           || +{{$status}} === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_HR_MANAGER
       }"
       @if(isset($tooltip))
           data-bs-toggle="tooltip" data-bs-placement="bottom" :title="{{$tooltip}}"

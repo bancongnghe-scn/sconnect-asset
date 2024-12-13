@@ -81,6 +81,7 @@ Route::middleware('web')->group(function () {
             Route::put('update/{id}', 'updateShoppingPlanCompanyWeek');
             Route::get('handle-shopping/{id}', 'handleShopping');
             Route::post('synthetic-shopping', 'syntheticShopping');
+            Route::post('send-approval', 'sendApprovalWeek');
         });
     });
 
@@ -160,5 +161,10 @@ Route::middleware('web')->group(function () {
         Route::post('update-status-asset', 'changeStatusAssetOfPlan');
         Route::post('update-status-multi-asset', 'changeStatusMultiAssetOfPlan');
         Route::post('update-plan/{id}', 'updatePlan');
+    });
+
+    Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
+        Route::post('sent-info', 'sentInfoShoppingAsset');
+        Route::post('approval', 'approvalShoppingAsset');
     });
 });

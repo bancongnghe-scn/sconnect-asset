@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
+use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
@@ -903,6 +904,97 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
 
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function sendApprovalWeek($data)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($data['shopping_plan_company_id']);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        $status             = null;
+        $statusOrganization = null;
+        $actionLog          = null;
+        switch ($data['status']) {
+            case ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_HR_SYNTHETIC;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_HR_MANAGER_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_HR_MANAGER_APPROVAL;
+                break;
+            case ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY;
+                break;
+            case ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY;
+                break;
+        }
+
+        if (+$shoppingPlanCompany->status !== $status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = $data['status'];
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL === $data['status']) {
+                $this->shoppingAssetRepository->updateShoppingAsset(
+                    ['shopping_plan_company_id' => $data['shopping_plan_company_id']],
+                    ['status' => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL]
+                );
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $data['shopping_plan_company_id']],
+                ['status' => $statusOrganization]
+            );
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                $actionLog,
+                $data['shopping_plan_company_id']
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);

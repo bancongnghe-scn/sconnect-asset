@@ -16,40 +16,44 @@
                     @endcan
                 </div>
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
+            <template
+                x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW || +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER">
                 @can('shopping_plan_company.crud')
                     <button class="btn btn-sc" @click="updatePlanWeek()">Lưu</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC">
+                @can('shopping_plan_company.synthetic_shopping')
+                    <button class="btn btn-sc" @click="sentInfoShoppingAsset()">Lưu</button>
+                @endcan
+            </template>
+            <template
+                x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER && new Date() > new Date(window.formatDate(data.end_time))">
                 @can('shopping_plan_company.handle_shopping')
                     <button class="btn btn-primary" @click="handleShopping()">Xử lý</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE && new Date() > new Date(window.formatDate(data.end_time))">
+            <template
+                x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE && new Date() > new Date(window.formatDate(data.end_time))">
                 @can('shopping_plan_company.synthetic_shopping')
                     <button class="btn btn-primary" @click="syntheticShopping()">Tổng hợp</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                    && new Date() > new Date(window.formatDate(data.end_time))">
-                @can('shopping_plan_company.sent_manager_approval')
-                    <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC">
+                @can('shopping_plan_company.synthetic_shopping')
+                    <button class="btn btn-primary" @click="sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR)">Gửi duyệt</button>
                 @endcan
             </template>
-            @can('shopping_plan_company.general_approval')
-                <template  x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
-                    <button class="btn btn-sc"
-                            @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt
-                    </button>
-                </template>
-
-                <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_APPROVAL].includes(+data.status)">
-                    <button class="btn bg-red"
-                            @click="showModalNoteDisapprovalShoppingCompany()">Từ chối
-                    </button>
-                </template>
-            @endcan
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR">
+                @can('shopping_asset.hr_manager_approval')
+                    <button class="btn btn-primary" @click="sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL)">Gửi duyệt</button>
+                @endcan
+            </template>
+            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                @can('shopping_plan_company.accounting_approval')
+                    <button class="btn btn-primary" @click="sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL)">Gửi duyệt</button>
+                @endcan
+            </template>
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
 
@@ -67,7 +71,8 @@
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                             <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                 <div>
-                                    <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <label class="tw-font-bold">Kế hoạch quý<span
+                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     <div x-data="{
                                             model: data.plan_quarter_id,
                                             init() {this.$watch('data.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
@@ -150,28 +155,6 @@
                         </div>
                     </div>
 
-                    {{-- button phe duyet--}}
-                    <div>
-                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                            @can('shopping_plan_company.accounting_approval')
-                                <div class="d-flex tw-gap-x-2 justify-content-end">
-                                    <button class="btn bg-sc text-white"
-                                            @click="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL)"
-                                            :disabled="window.checkDisableSelectRow"
-                                    >
-                                        Duyệt
-                                    </button>
-                                    <button class="btn bg-red"
-                                            @click="showModalNoteDisapprovalMultiple()"
-                                            :disabled="window.checkDisableSelectRow"
-                                    >
-                                        Từ chối
-                                    </button>
-                                </div>
-                            @endcan
-                        </template>
-                    </div>
-
                     {{--  chi tiet--}}
                     <template x-if="[
                         STATUS_SHOPPING_PLAN_COMPANY_NEW,
@@ -190,13 +173,74 @@
                             </div>
                         </div>
                     </template>
+
+                    {{-- button phe duyet--}}
+                    <div>
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR">
+                            @can('shopping_asset.hr_manager_approval')
+                                <div class="d-flex tw-gap-x-2 justify-content-end">
+                                    <button class="btn bg-sc text-white"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_APPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Duyệt
+                                    </button>
+                                    <button class="btn bg-red"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Từ chối
+                                    </button>
+                                </div>
+                            @endcan
+                        </template>
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                            @can('shopping_plan_company.accounting_approval')
+                                <div class="d-flex tw-gap-x-2 justify-content-end">
+                                    <button class="btn bg-sc text-white"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Duyệt
+                                    </button>
+                                    <button class="btn bg-red"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Từ chối
+                                    </button>
+                                </div>
+                            @endcan
+                        </template>
+                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                            @can('shopping_plan_company.general_approval')
+                                <div class="d-flex tw-gap-x-2 justify-content-end">
+                                    <button class="btn bg-sc text-white"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_APPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Duyệt
+                                    </button>
+                                    <button class="btn bg-red"
+                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL)"
+                                            :disabled="window.checkDisableSelectRow"
+                                    >
+                                        Từ chối
+                                    </button>
+                                </div>
+                            @endcan
+                        </template>
+                    </div>
+
+                    {{-- tổng hợp--}}
                     <template x-if="[
                         STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
                         STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL
-                    ]">
+                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    ].includes(+data.status)">
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
                                 <a class="tw-no-underline hover:tw-text-green-500"
@@ -214,9 +258,11 @@
                             </div>
                             <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                                 <div x-show="activeLink.new">
-                                    @include('component.shopping_plan_company.week.table_synthetic_with_action')
+                                    @include('component.shopping_plan_company.week.table_synthetic_action_new')
                                 </div>
-                                <div x-show="activeLink.rotation">2222</div>
+                                <div x-show="activeLink.rotation">
+                                    @include('component.shopping_plan_company.week.table_synthetic_action_rotation')
+                                </div>
                             </div>
                         </div>
                     </template>
@@ -227,11 +273,11 @@
             </div>
         </div>
         <div
-                x-data="{
+            x-data="{
                         modalId: idModalConfirmDelete,
                         contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
                     }"
-                @ok="remove"
+            @ok="remove"
         >
             @include('common.modal-confirm')
         </div>
@@ -258,6 +304,7 @@
         'resources/js/assets/api/shopping_plan_company/week/apiShoppingPlanCompanyWeek.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
-        'resources/js/assets/api/apiSupplier.js'
+        'resources/js/assets/api/apiSupplier.js',
+        'resources/js/assets/api/apiShoppingAsset.js'
     ])
 @endsection

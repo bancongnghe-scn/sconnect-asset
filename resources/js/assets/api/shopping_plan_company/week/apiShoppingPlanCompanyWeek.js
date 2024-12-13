@@ -99,7 +99,7 @@ window.getOrganizationRegisterWeek = async function (id) {
 
 window.apiHandleShoppingPlanWeek = async function (id) {
     try {
-        const response = await axios.get("/api/shopping-plan-company/week/synthetic-shopping/"+id)
+        const response = await axios.get("/api/shopping-plan-company/week/handle-shopping/"+id)
 
         const data = response.data;
         if (!data.success) {
@@ -147,6 +147,34 @@ window.apiSyntheticShoppingPlanWeek = async function (id, shoppingAssets) {
         }
     }
 }
+
+window.apiSendApprovalWeek = async function (nextStatus, id) {
+    try {
+        const response = await axios.post("/api/shopping-plan-company/week/send-approval", {
+            shopping_plan_company_id: id,
+            status: nextStatus
+        })
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
 
 function formatDateShoppingPlanCompanyWeek(data) {
     let dataFormat = data

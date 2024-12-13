@@ -3,9 +3,9 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
-                    <div class="col-3">
+                    <div class="col-2">
                         <label class="tw-font-bold">Kế hoạch quý</label>
-                        <span x-data="{
+                        <div x-data="{
                             model: filters.plan_quarter_id,
                             init() {this.$watch('filters.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                         }"
@@ -14,12 +14,12 @@
                                   'placeholder' => 'Chọn kế hoạch quý',
                                   'values' => 'listPlanCompanyQuarter'
                             ])
-                        </span>
+                        </div>
                     </div>
 
                     <div class="col-2">
                         <label class="tw-font-bold">Tuần</label>
-                        <span x-data="{
+                        <div x-data="{
                             model: filters.time,
                             init() {this.$watch('filters.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                         }"
@@ -28,12 +28,12 @@
                                   'placeholder' => 'Chọn tuần',
                                   'values' => 'LIST_WEEK'
                             ])
-                        </span>
+                        </div>
                     </div>
 
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <span x-data="{
+                        <div x-data="{
                                 model: filters.status,
                                 init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
                             }"
@@ -43,7 +43,7 @@
                                 'placeholder' => 'Chọn trạng thái',
                                 'values' => 'STATUS_SHOPPING_PLAN_ORGANIZATION'
                             ])
-                        </span>
+                        </div>
                     </div>
                     <div class="col-auto">
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

@@ -1,5 +1,5 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm quý'
+    'title' => 'Kế hoạch mua sắm tuần'
 ])
 
 @section('content')

@@ -21,6 +21,7 @@ class ShoppingPlanOrganization extends Model
     public const STATUS_ACCOUNT_DISAPPROVAL              = 8;
     public const STATUS_HR_HANDLE                        = 9;
     public const STATUS_HR_SYNTHETIC                     = 10;
+    public const STATUS_PENDING_HR_MANAGER_APPROVAL      = 11;
 
     public const TYPE_APPROVAL    = 'approval';
     public const TYPE_DISAPPROVAL = 'disapproval';

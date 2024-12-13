@@ -34,8 +34,10 @@ document.addEventListener('alpine:init', () => {
             new: true,
             rotation: false
         },
+        shoppingAssetWithAction: [],
         //methods
         async feetData() {
+            await this.getListSupplier()
             this.getOrganizationRegisterWeek()
             await this.getListPlanCompanyQuarter()
             await this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
@@ -64,9 +66,10 @@ document.addEventListener('alpine:init', () => {
                     STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                    STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                    STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
                 ].includes(+this.data.status)) {
-                    this.getListSupplier()
+                    this.syntheticShoppingAssetWithAction()
                 }
             }
         },
@@ -107,42 +110,6 @@ document.addEventListener('alpine:init', () => {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
                     this.getOrganizationRegisterWeek()
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async sendAccountantApproval() {
-            this.loading = true
-            try {
-                const response = await window.apiSendAccountantApproval(this.id)
-                if (response.success) {
-                    toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/week/list`
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async sendManagerApproval() {
-            this.loading = true
-            try {
-                const response = await window.apiSendManagerApproval(this.id)
-                if (response.success) {
-                    toast.success('Gửi duyệt thành công !')
-                    window.location.href = `/shopping-plan-company/week/list`
                     return
                 }
 
@@ -205,83 +172,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async accountApprovalShoppingPlanOrganization(id, type) {
-            this.loading = true
-            try {
-                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type, this.note_disapproval)
-                if (response.success) {
-                    let organization = this.register.organizations.find((item) => +item.id === +id);
-                    if (type === ORGANIZATION_TYPE_APPROVAL) {
-                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                    } else {
-                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                        $("#modalNoteDisapproval").modal('hide')
-                    }
-                    toast.success('Duyệt thành công !')
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async accountApprovalMultipleShoppingPlanOrganization(type) {
-            this.loading = true
-            try {
-                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
-                ids = ids.map(Number);
-                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type, this.note_disapproval)
-                if (response.success) {
-                    this.register.organizations.filter(function (item) {
-                        if (ids.includes(item.id)) {
-                            item.status = type === ORGANIZATION_TYPE_APPROVAL
-                                ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                        }
-                    });
-                    this.selectedRow = []
-                    if ( type === ORGANIZATION_TYPE_DISAPPROVAL) {
-                        $("#modalNoteDisapprovalMultiple").modal('hide')
-                    }
-                    toast.success('Duyệt thành công !')
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async generalApprovalShoppingPlanCompany(type) {
-            this.loading = true
-            try {
-                const response = await window.apiGeneralApprovalShoppingPlanCompany(this.id, type, this.note_disapproval)
-                if (response.success) {
-                    toast.success('Bạn đã duyệt thành công !')
-                    if (type === GENERAL_TYPE_APPROVAL_COMPANY) {
-                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_APPROVAL
-                    } else {
-                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_CANCEL
-                        $("#modalNoteDisapprovalPlanCompany").modal('hide')
-                    }
-                    this.getOrganizationRegisterWeek()
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async handleShopping() {
             this.loading = true
             try {
@@ -321,6 +211,7 @@ document.addEventListener('alpine:init', () => {
                         item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
                     })
                     toast.success('Đã chuyển sang bước tổng hợp')
+                    this.syntheticShoppingAssetWithAction()
                     return
                 }
 
@@ -347,6 +238,113 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        async sentInfoShoppingAsset() {
+            const assets = []
+            this.shoppingAssetWithAction.map((item) => {
+                item.asset_register.new.map((value) => {
+                    assets.push(value)
+                })
+            })
+
+            this.loading = true
+            try {
+                const response = await window.apiSentInfoShoppingAsset(this.id, assets)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Lưu thông tin mua sắm thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sendApprovalWeek(nextStatus) {
+            this.loading = true
+            try {
+                const response = await window.apiSendApprovalWeek(nextStatus, this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Gửi duyệt thành công')
+                if (nextStatus === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    this.shoppingAssetWithAction.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_HR_MANAGER
+                        item.asset_register.new.map((value) => {
+                            value.status = SHOPPING_ASSET_STATUS_PENDING_HR_MANAGER_APPROVAL
+                        })
+                    })
+                } else if (nextStatus === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                    this.shoppingAssetWithAction.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
+                    })
+                } else if (nextStatus === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                    this.shoppingAssetWithAction.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    })
+                }
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async approvalShoppingAsset(status) {
+            this.loading = true
+            try {
+                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+                ids = ids.map(Number);
+                const response = await window.apiApprovalShoppingAsset(ids, status)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Duyệt mua sắm thành công')
+                this.selectedRow = []
+                this.shoppingAssetWithAction.map((item) => {
+                    item.asset_register.new.map((value) => {
+                        if (ids.includes(value.id)) {
+                            value.status = status
+                        }
+                    })
+                })
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        syntheticShoppingAssetWithAction() {
+           this.register.organizations.map((item) => {
+               if (item.asset_register.length === 1) {
+                   return
+               }
+
+               let data = JSON.parse(JSON.stringify(item))
+               data.asset_register = {
+                   new: [],
+                   rotation: []
+               }
+               item.asset_register.map((value) => {
+                   if (+value.action === SHOPPING_ASSET_ACTION_ROTATION) {
+                       data.asset_register.rotation.push(value)
+                   } else {
+                       data.asset_register.new.push(value)
+                   }
+               })
+
+               this.shoppingAssetWithAction.push(data)
+           })
         },
 
         handleShowActive(active) {
@@ -379,8 +377,10 @@ document.addEventListener('alpine:init', () => {
 
         selectedAll() {
             this.checkedAll = !this.checkedAll
-            this.register.organizations.forEach((item) => {
-                this.selectedRow[item.id] = this.checkedAll
+            this.shoppingAssetWithAction.forEach((item) => {
+                item.asset_register.new.map((value) =>  {
+                    this.selectedRow[value.id] = this.checkedAll
+                })
             })
         }
     }))
