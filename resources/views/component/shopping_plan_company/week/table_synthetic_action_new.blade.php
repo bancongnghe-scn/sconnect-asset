@@ -1,4 +1,5 @@
-<table id="example2" class="table table-bordered dataTable dtr-inline"
+<table x-data="{can_handle: {{ json_encode(Auth::check() && Auth::user()->can('shopping_plan_company.handle_shopping')) }}}"
+       id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
     <thead class="position-sticky z-1" style="top: -1px">
     <tr>
@@ -37,18 +38,21 @@
     <template x-for="(organization, index) in shoppingAssetWithAction" :key="index">
         <template x-for="(assetRegister, stt) in organization.asset_register.new" :key="index + '_' + stt">
             <tr x-data="{
-                    get total() {
-                        if (assetRegister.tax_money !== null && assetRegister.price === null) {
-                            return formatCurrencyVND(+assetRegister.tax_money)
-                        } else if (assetRegister.tax_money === null && assetRegister.price !== null) {
-                            return formatCurrencyVND(+assetRegister.price)
-                        } else if (assetRegister.tax_money === null && assetRegister.price === null) {
-                            return null
-                        } else {
-                            return formatCurrencyVND((+assetRegister.price) + (+assetRegister.tax_money))
-                        }
-                    }
-                }">
+                isDisabled: action === 'view' || ![
+                    SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL,
+                    SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,
+                    SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL
+                ].includes(+assetRegister.status),
+
+                get total() {
+                    const tax = +assetRegister.tax_money || 0;
+                    const price = +assetRegister.price || 0;
+
+                    return (tax || price)
+                        ? formatCurrencyVND(tax + price)
+                        : null;
+                }
+            }">
                 <td class="text-center align-middle"
                     x-show="action === 'update' && [
                             STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
@@ -78,13 +82,17 @@
                 <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td>
-                    <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved" :disabled="action === 'view'">
+                    <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved"
+                           :disabled="isDisabled"
+                    >
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price" :disabled="action === 'view'">
+                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price"
+                           :disabled="isDisabled">
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money" :disabled="action === 'view'">
+                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money"
+                           :disabled="isDisabled">
                 </td>
                 <td x-text="total ?? '-'" class="text-center"></td>
                 <td>
@@ -95,12 +103,13 @@
                                     @include('common.select2.extent.select2', [
                                           'placeholder' => 'Chọn NCC',
                                           'values' => 'listSupplier',
-                                          'disabled' => "action === 'view'"
+                                          'disabled' => "isDisabled"
                                     ])
                         </span>
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link" :disabled="action === 'view'">
+                    <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link"
+                           :disabled="isDisabled">
                 </td>
                 <td x-text="assetRegister.description ?? '-'"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"

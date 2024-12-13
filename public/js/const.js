@@ -112,7 +112,7 @@ const SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL = 9
 const LIST_STATUS_SHOPPING_ASSET = {
     1: 'Chờ NSHC duyệt',
     2: 'Chờ TCKT duyệt',
-    3: 'Chờ GĐ duyệt',
+    3: 'Chờ TGĐ duyệt',
     4: 'NSHC đã duyệt',
     5: 'NSHC từ chối',
     6: 'TCKT đã duyệt',
