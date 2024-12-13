@@ -19,7 +19,6 @@ class PlanMaintain extends Model
         'type',
         'code',             //thêm
         'note',             //thêm
-        'asset_quantity',   //thêm
         'created_at',
         'created_by',
         'updated_at',

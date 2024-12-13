@@ -131,7 +131,7 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('manage-asset-lost')->controller(App\Http\Controllers\Manage\AssetLostController::class)->group(function () {
         Route::get('list', 'getListAssetLost');
         Route::get('{id}', 'findAssetLost');
-        Route::post('update', 'findAssetLost');
+        Route::post('update', 'updateAssetLost');
     });
 
     Route::get('manage-asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);

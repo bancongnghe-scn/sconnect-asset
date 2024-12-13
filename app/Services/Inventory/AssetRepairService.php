@@ -2,19 +2,21 @@
 
 namespace App\Services\Inventory;
 
-use App\Http\Resources\Inventory\AssetRepairResource;
 use App\Models\Asset;
 use App\Models\AssetRepair;
-use App\Repositories\AssetRepository;
-use App\Repositories\Inventory\AssetRepairRepository;
-use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\DB;
+use App\Repositories\AssetRepository;
+use App\Support\Constants\AppErrorCode;
+use App\Repositories\AssetHistoryRepository;
+use App\Repositories\Inventory\AssetRepairRepository;
+use App\Http\Resources\Inventory\AssetRepairResource;
 
 class AssetRepairService
 {
     public function __construct(
         protected AssetRepairRepository $assetRepairRepository,
         protected AssetRepository $assetRepository,
+        protected AssetHistoryRepository $assetHistoryRepository,
     ) {
 
     }
@@ -71,6 +73,16 @@ class AssetRepairService
                     return [
                         'success'       => false,
                         'error_code'    => AppErrorCode::CODE_5001,
+                    ];
+                }
+
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_REPAIR);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
                     ];
                 }
             } catch (\Exception $e) {
@@ -167,6 +179,17 @@ class AssetRepairService
                         'error_code'    => AppErrorCode::CODE_5001,
                     ];
                 }
+
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset([$assetRepair['asset_id']], Asset::STATUS_ACTIVE);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
+                    ];
+                }
+
             }
 
             DB::commit();

@@ -2,8 +2,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-show="data.id" x-text="data.code" style="color:rgba(43, 133, 11, 1);"></h4>
-                <h4 class="modal-title" x-show="!data.id" style="color:rgba(43, 133, 11, 1);">Tạo mới kế hoạch</h4>
+                <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
+                <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
                     <span x-text="listStatusPlanLiquidation[data.status]" 
                         class="pl-2 pr-2 border-none rounded" 

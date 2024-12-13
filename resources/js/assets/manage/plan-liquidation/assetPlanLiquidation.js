@@ -229,7 +229,7 @@ document.addEventListener('alpine:init', () => {
             const data_asset_liquidation_prev = Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation
             let response
             
-            if (data_asset_liquidation_prev && data_asset_liquidation_prev > 0) {
+            if (data_asset_liquidation_prev && data_asset_liquidation_prev.length > 0) {
                 const assets_id = { assets_id: data_asset_liquidation_prev.map(item => ({
                     id: item.id,
                     price_liquidation: item.price_liquidation
@@ -239,7 +239,7 @@ document.addEventListener('alpine:init', () => {
                     ...assets_id,
                     ...this.data
                 })
-            } else {                
+            } else {
                 response = await window.apiCreatePlanLiquidation(this.data)
             }
             
@@ -248,7 +248,8 @@ document.addEventListener('alpine:init', () => {
                 return
             }
 
-
+            this.dataTbodyListAssetLiqui = []
+            Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation = []
             this.list(this.filters)
 
             this.loading = false
@@ -310,10 +311,13 @@ document.addEventListener('alpine:init', () => {
 
         async sendForApproval(planId) {
             this.loading = true
-
             const _data = {
-                status: 1
+                name: this.data['name'] ?? '',
+                code: this.data['code'] ?? '',
+                note: this.data['note'] ?? '',
+                status: +Object.entries(this.listStatusPlanLiquidation).find(([key, value]) => value === 'Chờ duyệt')?.[0]
             }
+            
             const response = await window.apiUpdatePlanLiquidation(planId, _data)
             if (!response.success) {
                 toast.error(response.message)

@@ -98,10 +98,13 @@ class PlanLiquidationController extends Controller
     {
         try {
             $request->validate([
-                'status'    => 'required|integer',
+                'name'      => 'nullable|string',
+                'code'      => 'nullable|string',
+                'note'      => 'nullable|string',
+                'status'    => 'nullable|integer',
             ]);
 
-            $result = $this->planLiquidationService->updatePlan($id, $request->integer('status'));
+            $result = $this->planLiquidationService->updatePlan($id, $request->all());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

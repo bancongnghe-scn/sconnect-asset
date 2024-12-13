@@ -1,12 +1,6 @@
 <div class="modal fade" x-data="tableSelectRepair" id="idModalRepairMore" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="Close">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content" style="
-                width: 60%;
-                max-width: 600px;
-                max-height: 600px;
-                overflow: auto;
-                margin: auto;
-            ">
+        <div class="modal-content tw-w-2/3 tw-max-w-2xl tw-overflow-auto tw-m-auto tw-max-h-96">
             <div class="modal-header">
                 <h4 class="modal-title" x-text="'Thêm tài sản sửa chữa hoàn thành'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

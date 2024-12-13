@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Models\Asset;
 use App\Http\Resources\Inventory\AssetDamagedResource;
+use App\Repositories\AssetHistoryRepository;
 use App\Repositories\Inventory\AssetDamagedRepository;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Arr;
@@ -14,6 +15,7 @@ class AssetDamagedService
 {
     public function __construct(
         protected AssetDamagedRepository $assetDamagedRepository,
+        protected AssetHistoryRepository $assetHistoryRepository,
     ) {
 
     }
@@ -60,6 +62,16 @@ class AssetDamagedService
                     return [
                         'success'       => false,
                         'error_code'    => AppErrorCode::CODE_5001,
+                    ];
+                }
+
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset([$asset['id']], $status);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
                     ];
                 }
             }

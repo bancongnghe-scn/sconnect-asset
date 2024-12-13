@@ -22,24 +22,24 @@
                 </div>
                 <div>
                     <label class="form-label">Tài sản sửa chữa</label>
-                    <button class="mb-3 tw-w-fit border-0" style="color: #28a745;background-color:unset;" @click="getAssetRepair()">+ Thêm</button>
+                    <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent tw-right-4 tw-absolute" @click="getAssetRepair()">+ Thêm</button>
                 </div>
                 <div class="d-block overflow-x-auto tw-whitespace-nowrap">
                     <table class="table table-bordered table-hover dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            <th style="width:100px">Mã tài sản</th>
-                            <th style="width:100px">Tên tài sản</th>
-                            <th style="width:130px">Giá trị</th>
-                            <th style="width:150px">Ngày hỏng</th>
-                            <th style="width:150px">Ngày sửa chữa</th>
-                            <th style="width:130px">Chi phí sửa chữa</th>
-                            <th style="width:200px">Tình trạng sửa chữa</th>
-                            <th style="width:180px">Địa điểm sửa chữa</th>
-                            <th style="width:150px">Người thực hiện/<br>Đơn vị sửa chữa</th>
-                            <th style="width:200px">Địa chỉ</th>
-                            <th style="width:100px">Thao tác</th>
+                            <th class="tw-w-24">Mã tài sản</th>
+                            <th class="tw-w-24">Tên tài sản</th>
+                            <th class="tw-w-32" >Giá trị</th>
+                            <th class="tw-w-36">Ngày hỏng</th>
+                            <th class="tw-w-40">Ngày sửa chữa</th>
+                            <th class="tw-w-32">Chi phí sửa chữa</th>
+                            <th class="tw-w-48">Tình trạng sửa chữa</th>
+                            <th class="tw-w-44">Địa điểm sửa chữa</th>
+                            <th class="tw-w-36">Người thực hiện/<br>Đơn vị sửa chữa</th>
+                            <th class="tw-w-48">Địa chỉ</th>
+                            <th class="tw-w-24">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -94,7 +94,7 @@
                                         @input="data.cost_repair = $event.target.value.replace(/[^0-9.]/g, '')">
                                 </td>
                                 <td class="align-content-center">
-                                    <textarea x-model="data.note_repair" class="form-control" style="min-height: auto !important;"></textarea>
+                                    <textarea x-model="data.note_repair" class="form-control"></textarea>
                                 </td>
                                 <td class="align-content-center">
                                     <select class="form-control select2"
@@ -129,7 +129,7 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })">
-                                        <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                        <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>
                             </tr>

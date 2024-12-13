@@ -50,7 +50,7 @@
                             </template>
                             <td class="text-center align-middle" x-show="data.status_repair === 'Đang sửa chữa'">
                                 <button class="border-0 bg-body" @click="clickRepaired(data.id)">
-                                    <i class="fa-solid fa-check" style="color: #28c76f;">&#xF117;</i>
+                                    <i class="fa-solid fa-check tw-text-green-600">&#xF117;</i>
                                 </button>
                             </td>
                             <td class="text-center align-middle" x-show="data.status_repair === 'Hoàn thành sửa chữa'">

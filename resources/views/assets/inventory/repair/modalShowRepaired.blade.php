@@ -30,16 +30,16 @@
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            <th style="width:100px">Mã tài sản</th>
-                            <th style="width:100px">Tên tài sản</th>
-                            <th style="width:130px">Giá trị</th>
-                            <th style="width:150px">Ngày hỏng</th>
-                            <th style="width:150px">Ngày sửa chữa</th>
-                            <th style="width:130px">Chi phí sửa chữa</th>
-                            <th style="width:200px">Tình trạng sửa chữa</th>
-                            <th style="width:180px">Địa điểm sửa chữa</th>
-                            <th style="width:150px">Người thực hiện/<br>Đơn vị sửa chữa</th>
-                            <th style="width:200px">Địa chỉ</th>
+                            <th class="tw-w-24">Mã tài sản</th>
+                            <th class="tw-w-24">Tên tài sản</th>
+                            <th class="tw-w-32" >Giá trị</th>
+                            <th class="tw-w-36">Ngày hỏng</th>
+                            <th class="tw-w-36">Ngày sửa chữa</th>
+                            <th class="tw-w-32">Chi phí sửa chữa</th>
+                            <th class="tw-w-48">Tình trạng sửa chữa</th>
+                            <th class="tw-w-44">Địa điểm sửa chữa</th>
+                            <th class="tw-w-36">Người thực hiện/<br>Đơn vị sửa chữa</th>
+                            <th class="tw-w-48">Địa chỉ</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -74,7 +74,7 @@
                                         disabled>
                                 </td>
                                 <td class="align-content-center">
-                                    <textarea disabled x-model="dataShowRepair.note_repair" class="form-control" style="min-height: auto !important;"></textarea>
+                                    <textarea disabled x-model="dataShowRepair.note_repair" class="form-control"></textarea>
                                 </td>
                                 <td>
                                     <select class="form-control" disabled>

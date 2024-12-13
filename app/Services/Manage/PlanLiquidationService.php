@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Repositories\AssetRepository;
 use App\Http\Resources\Manage\PlanMaintainResource;
+use App\Repositories\AssetHistoryRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\Manage\PlanMaintainAssetRepository;
 
@@ -19,6 +20,7 @@ class PlanLiquidationService
         protected PlanMaintainRepository $planMaintainRepository,
         protected PlanMaintainAssetRepository $planMaintainAssetRepository,
         protected AssetRepository $assetRepository,
+        protected AssetHistoryRepository $assetHistoryRepository,
     ) {
     }
 
@@ -33,7 +35,6 @@ class PlanLiquidationService
                 'note'           => $data['note'],
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
-                'asset_quantity' => !empty($data['assets_id']) ? count($data['assets_id']) : 0,
                 'created_at'     => new \DateTime(),
                 'created_by'     => Auth::id(),
             ];
@@ -104,7 +105,6 @@ class PlanLiquidationService
                 'id',
                 'name',
                 'code',
-                'asset_quantity',
                 'created_at',
                 'status',
             ],
@@ -132,7 +132,6 @@ class PlanLiquidationService
                 'status',
                 'created_at',
                 'created_by',
-                'asset_quantity',
             ]
         )->load([
             'planMaintainAsset:id,asset_id,plan_maintain_id,price,status',
@@ -302,7 +301,7 @@ class PlanLiquidationService
         ];
     }
 
-    public function updatePlan($id, $status)
+    public function updatePlan($id, $dataUpdate)
     {
         $planMaintain = $this->planMaintainRepository->find($id);
         if (is_null($planMaintain)) {
@@ -312,23 +311,29 @@ class PlanLiquidationService
             ];
         }
 
-        $statusUpdate = ['status' => $status];
+        $status = $dataUpdate['status'] ?? '';
 
         DB::beginTransaction();
         try {
-            $planMaintain->fill($statusUpdate);
-            if (!$planMaintain->save()) {
-                DB::rollBack();
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_5003,
-                ];
+            // Update Plan
+            if (!empty($dataUpdate['name'])) {
+                $planMaintain->fill($dataUpdate);
+                if (!$planMaintain->save()) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5003,
+                    ];
+                }
             }
 
-            if (in_array($status, [PlanMaintain::STATUS_APPROVAL, PlanMaintain::STATUS_REJECT])) {
+            $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($id, ['asset_id', 'status']);
 
-                $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($id, ['asset_id', 'status']);
+            // Approval/Reject
+            if (!empty($status) && in_array($status, [PlanMaintain::STATUS_APPROVAL, PlanMaintain::STATUS_REJECT])) {
+
                 if (PlanMaintain::STATUS_APPROVAL == $status) {
 
                     $statusActions = [
@@ -349,6 +354,30 @@ class PlanLiquidationService
                                     'error_code' => AppErrorCode::CODE_5003,
                                 ];
                             }
+
+                            if (Asset::STATUS_LIQUIDATED == $newAssetStatus) {
+                                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIdsToUpdate, Asset::STATUS_LIQUIDATED);
+                                if (!$historyAsset) {
+                                    DB::rollBack();
+
+                                    return [
+                                        'success'    => false,
+                                        'error_code' => AppErrorCode::CODE_5011,
+                                    ];
+                                }
+                            }
+
+                            if (Asset::STATUS_PROPOSAL_LIQUIDATION == $newAssetStatus) {
+                                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIdsToUpdate, Asset::STATUS_PROPOSAL_LIQUIDATION);
+                                if (!$historyAsset) {
+                                    DB::rollBack();
+
+                                    return [
+                                        'success'    => false,
+                                        'error_code' => AppErrorCode::CODE_5011,
+                                    ];
+                                }
+                            }
                         }
                     }
                 } else {
@@ -362,7 +391,33 @@ class PlanLiquidationService
                                 'error_code' => AppErrorCode::CODE_5003,
                             ];
                         }
+
+                        $assetIds     = $assetIds->pluck('asset_id')->toArray();
+                        $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_PROPOSAL_LIQUIDATION);
+                        if (!$historyAsset) {
+                            DB::rollBack();
+
+                            return [
+                                'success'    => false,
+                                'error_code' => AppErrorCode::CODE_5011,
+                            ];
+                        }
                     }
+                }
+            }
+
+            // Send plan wait approval/reject
+            if (!empty($status) && PlanMaintain::STATUS_PENDING == $status) {
+
+                $assetIds     = $assetIds->pluck('asset_id')->toArray();
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_IN_LIQUIDATION);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
+                    ];
                 }
             }
 

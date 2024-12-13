@@ -66,7 +66,7 @@
                     <div class="row mb-3">
                         <div class="col-4">
                             <label class="form-label">Lý do hủy</label>
-                            <input type="text" class="form-control" x-model="data.description" placeholder="Nhập ghi chú" style="height: 100px;">
+                            <textarea type="text" class="form-control tw-h-24" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                 </div>

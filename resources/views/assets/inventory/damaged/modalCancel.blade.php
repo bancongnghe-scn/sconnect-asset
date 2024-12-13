@@ -22,14 +22,14 @@
                         <div class="col-4">
                             <label class="tw-font-bold">Lý hủy</label>
                             <div class="input-group">
-                                <textarea type="text" class="form-control" id="reasonCancel" placeholder="Nhập lý do" style="min-height:2rem;"></textarea>
+                                <textarea type="text" class="form-control tw-min-h-8" id="reasonCancel" placeholder="Nhập lý do"></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-12">
                             <label class="tw-font-bold">Tài sản huỷ</label>
-                            <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent" style="color: #28a745;" @click="getAssetDamagedModal('cancel')">+ Thêm</button>
+                            <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent tw-text-green-600" @click="getAssetDamagedModal('cancel')">+ Thêm</button>
                         </div>
                     </div>
                     <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
@@ -65,7 +65,7 @@
                                 </template>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
-                                        <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                        <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>
                             </tr>

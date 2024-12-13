@@ -76,7 +76,7 @@
                 </div>
                 <div>
                     <label class="modal-title">Tài sản sửa chữa</label>
-                    <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent" style="color: #28a745;" @click="getAssetDamagedModal('repair')">+ Thêm</button>
+                    <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent tw-text-green-600" @click="getAssetDamagedModal('repair')">+ Thêm</button>
                 </div>
                 <div>
                     <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
@@ -110,11 +110,11 @@
                                             @input="data.cost_repair = $event.target.value.replace(/[^0-9.]/g, '')">
                                 </td>
                                 <td class="align-content-center">
-                                    <textarea x-model="data.note_repair" class="form-control" style="min-height:2rem;"></textarea>
+                                    <textarea x-model="data.note_repair" class="form-control tw-min-h-8"></textarea>
                                 </td>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })">
-                                        <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                        <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>
                             </tr>
