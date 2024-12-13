@@ -26,12 +26,8 @@ class AssetHistoryRepository extends BaseRepository
             ];
         }
 
-        if (!empty($dataHistory)) {
-            $historyAsset = $this->_model->insert($dataHistory);
-            if (!$historyAsset) {
-
-                return false;
-            }
+        if (!empty($dataHistory) && !$this->_model->insert($dataHistory)) {
+            return false;
         }
 
         return true;
