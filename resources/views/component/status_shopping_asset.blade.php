@@ -15,5 +15,9 @@
                 SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,
                 SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL
             ].includes(+{{$status}})
-      }">
+      }"
+      @if(isset($tooltip))
+          data-bs-toggle="tooltip" data-bs-placement="bottom" :title="{{$tooltip}}"
+      @endif
+>
 </span>

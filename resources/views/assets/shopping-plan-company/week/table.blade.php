@@ -59,27 +59,22 @@
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
 
-                                            {{-- sua va xoa --}}
-                                            @can('shopping_plan_company.crud')
-                                                <template
-                                                    x-if="[
-                                                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                                                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE,
-                                                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
-                                                    ].includes(+data.status)"
-                                                >
-                                                    <button class="border-0 bg-body"
-                                                            @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
-                                                        <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
-                                                    </button>
-                                                </template>
-                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                            {{-- xoa --}}
+
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                                @can('shopping_plan_company.crud')
                                                     <button class="border-0 bg-body"
                                                             @click="$dispatch('remove', { id: data.id })">
                                                         <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                                     </button>
-                                                </template>
+                                                @endcan
+                                            </template>
+
+                                            @can('shopping_plan_company.handle_shopping')
+                                                <button class="border-0 bg-body"
+                                                        @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
+                                                    <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                </button>
                                             @endcan
 
                                             {{-- ke toan va giam doc duyet --}}

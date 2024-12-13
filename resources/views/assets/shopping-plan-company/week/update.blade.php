@@ -186,7 +186,7 @@
                                         Duyệt
                                     </button>
                                     <button class="btn bg-red"
-                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL)"
+                                            @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL)"
                                             :disabled="window.checkDisableSelectRow"
                                     >
                                         Từ chối
@@ -204,7 +204,7 @@
                                         Duyệt
                                     </button>
                                     <button class="btn bg-red"
-                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL)"
+                                            @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL)"
                                             :disabled="window.checkDisableSelectRow"
                                     >
                                         Từ chối
@@ -222,7 +222,7 @@
                                         Duyệt
                                     </button>
                                     <button class="btn bg-red"
-                                            @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL)"
+                                            @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL)"
                                             :disabled="window.checkDisableSelectRow"
                                     >
                                         Từ chối
@@ -282,16 +282,8 @@
             @include('common.modal-confirm')
         </div>
 
-        <div @ok="accountApprovalShoppingPlanOrganization(id_organization, ORGANIZATION_TYPE_DISAPPROVAL)">
+        <div @ok="approvalShoppingAsset(statusDisapproval)">
             @include('common.modal-note', ['id' => 'modalNoteDisapproval', 'model' => 'note_disapproval'])
-        </div>
-
-        <div @ok="accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL)">
-            @include('common.modal-note', ['id' => 'modalNoteDisapprovalMultiple', 'model' => 'note_disapproval'])
-        </div>
-
-        <div @ok="generalApprovalShoppingPlanCompany(GENERAL_TYPE_DISAPPROVAL_COMPANY)">
-            @include('common.modal-note', ['id' => 'modalNoteDisapprovalPlanCompany', 'model' => 'note_disapproval'])
         </div>
     </div>
 @endsection
