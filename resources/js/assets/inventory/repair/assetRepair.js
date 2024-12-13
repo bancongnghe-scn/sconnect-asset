@@ -159,11 +159,11 @@ document.addEventListener('alpine:init', () => {
             this.saveDraftId.push(id)
             const response = await window.apiGetAssetRepair(id);
             if (response.success) {
-                this.dataRepair = response.data.data
+                this.dataRepair = [response.data.data]
             } else {
                 toast.error(response.message)
             }
-            console.warn('this.dataRepair', this.dataRepair);
+
             $('#'+this.idModalRepaired).modal('show')
 
             this.loading = false

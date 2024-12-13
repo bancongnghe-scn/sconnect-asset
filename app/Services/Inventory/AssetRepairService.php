@@ -54,16 +54,14 @@ class AssetRepairService
 
             DB::beginTransaction();
             try {
-                foreach ($dataUpdate as $assetRepair) {
-                    $insertInforAssetRepair = $this->assetRepairRepository->insert($assetRepair);
-                    if (!$insertInforAssetRepair) {
-                        DB::rollBack();
+                $insertInforAssetRepair = $this->assetRepairRepository->insert($dataUpdate);
+                if (!$insertInforAssetRepair) {
+                    DB::rollBack();
 
-                        return [
-                            'success'       => false,
-                            'error_code'    => AppErrorCode::CODE_5009,
-                        ];
-                    }
+                    return [
+                        'success'       => false,
+                        'error_code'    => AppErrorCode::CODE_5009,
+                    ];
                 }
 
                 $updateAsset = $this->assetRepository->changeStatusAsset($assetIds, Asset::STATUS_REPAIR);
@@ -85,6 +83,7 @@ class AssetRepairService
                         'error_code' => AppErrorCode::CODE_5011,
                     ];
                 }
+                DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
 
@@ -93,7 +92,6 @@ class AssetRepairService
                     'error_code'    => AppErrorCode::CODE_5001,
                 ];
             }
-            DB::commit();
         }
 
         return [
@@ -137,7 +135,7 @@ class AssetRepairService
             return [];
         }
 
-        return [$assetRepair->toArray()];
+        return $assetRepair->toArray();
     }
 
     public function updateMultiAssetRepaired($data)
@@ -179,17 +177,17 @@ class AssetRepairService
                         'error_code'    => AppErrorCode::CODE_5001,
                     ];
                 }
+            }
 
-                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset([$assetRepair['asset_id']], Asset::STATUS_ACTIVE);
-                if (!$historyAsset) {
-                    DB::rollBack();
+            $assetIds     = array_column($assetsRepaired, 'asset_id');
+            $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_ACTIVE);
+            if (!$historyAsset) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_5011,
-                    ];
-                }
-
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_5011,
+                ];
             }
 
             DB::commit();
@@ -210,9 +208,13 @@ class AssetRepairService
 
     public function getMultiAssetRepairById($ids)
     {
+        $filter = [
+            'ids' => $ids,
+        ];
+
         $multiAssetRepair = $this->assetRepairRepository
-            ->getMultiAssetRepairById(
-                $ids,
+            ->getListAssetRepair(
+                $filter,
                 [
                     'id',
                     'asset_id',

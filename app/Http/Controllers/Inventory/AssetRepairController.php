@@ -21,12 +21,15 @@ class AssetRepairController extends Controller
     public function updateAssetRepair(Request $request)
     {
         $request->validate([
-            'date_repair'       => 'nullable|date|date_format:Y-m-d',
-            'date_repaired'     => 'nullable|date|date_format:Y-m-d',
-            'assets'            => 'array',
-            'location'          => 'nullable|string',
-            'supplier_id'       => 'nullable|integer',
-            'performer_id'      => 'nullable|integer',
+            'date_repair'               => 'nullable|date|date_format:Y-m-d',
+            'date_repaired'             => 'nullable|date|date_format:Y-m-d',
+            'location'                  => 'nullable|string',
+            'supplier_id'               => 'nullable|integer',
+            'performer_id'              => 'nullable|integer',
+            'assets'                    => 'array',
+            'assets.*.id'               => 'nullable|integer',
+            'assets.*.cost_repair'      => 'nullable|integer',
+            'assets.*.note_repair'      => 'nullable|string',
         ]);
 
         try {
@@ -44,10 +47,6 @@ class AssetRepairController extends Controller
 
     public function getListAssetRepair(Request $request)
     {
-        $request->validate([
-            'name_code'         => 'nullable|string',
-            'code'              => 'nullable',
-        ]);
 
         try {
             $result = $this->assetRepairService->getListAssetRepair($request->all());
@@ -72,8 +71,14 @@ class AssetRepairController extends Controller
     public function updateMultiAssetRepaired(Request $request)
     {
         $request->validate([
-            'date_repaired'         => 'nullable|date|date_format:Y-m-d',
-            'assets'                => 'array',
+            'date_repaired'                 => 'nullable|date|date_format:Y-m-d',
+            'assets'                        => 'array',
+            'assets.*.date_repair'          => 'nullable|date|date_format:Y-m-d',
+            'assets.*.cost_repair'          => 'nullable|integer',
+            'assets.*.note_repair'          => 'nullable|string',
+            'assets.*.address_repair'       => 'nullable|integer',  // Tại công ty or nhà cung cấp
+            'assets.*.address'              => 'nullable|string',
+            'assets.*.performer_supplier'   => 'nullable|integer',  // Người thực hiện or Đơn vị sửa chữa
         ]);
         try {
             $result = $this->assetRepairService->updateMultiAssetRepaired($request->all());

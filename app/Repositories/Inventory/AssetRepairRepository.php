@@ -23,6 +23,10 @@ class AssetRepairRepository extends BaseRepository
             });
         }
 
+        if (!empty($filters['ids'])) {
+            $query->whereIn('id', $filters['ids']);
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }
@@ -33,10 +37,5 @@ class AssetRepairRepository extends BaseRepository
     public function updateAssetRepaired($id, $dataUpdate)
     {
         return $this->_model->newQuery()->where('id', $id)->update($dataUpdate);
-    }
-
-    public function getMultiAssetRepairById($ids, $columns = ['*'], $with = [])
-    {
-        return $this->_model->newQuery()->select($columns)->whereIn('id', $ids)->with($with)->get();
     }
 }
