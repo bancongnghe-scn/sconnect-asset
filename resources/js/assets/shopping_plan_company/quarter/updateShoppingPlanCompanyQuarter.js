@@ -24,7 +24,6 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         register: [],
-        listQuarter: LIST_QUARTER,
         listPlanCompanyYear: [],
         selectedRow: [],
         note_disapproval: null,
@@ -56,7 +55,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('info')
                 this.loading = false
             }
         },
@@ -83,7 +81,6 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
             if (response.success) {
                 this.listPlanCompanyYear = response.data
-                console.log('year')
             } else {
                 toast.error('Lấy danh sách kế hoạch năm !')
             }
@@ -166,7 +163,7 @@ document.addEventListener('alpine:init', () => {
         async getOrganizationRegisterQuarter() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYearQuarter(this.id)
+                const response = await window.getOrganizationRegister(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return
@@ -192,7 +189,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('users')
                 this.loading = false
             }
         },

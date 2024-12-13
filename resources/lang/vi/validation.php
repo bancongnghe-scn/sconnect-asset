@@ -106,5 +106,6 @@ return [
         'asset_type_group_id' => 'nhóm tài sản',
         'maintenance_months'  => 'thời gian bảo dưỡng',
         'measure'             => 'đơn vị tính',
+        'month'               => 'tháng',
     ],
 ];

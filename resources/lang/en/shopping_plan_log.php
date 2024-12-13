@@ -14,4 +14,8 @@ return [
     ShoppingPlanLog::ACTION_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY                       => 'Giám đốc đã duyệt kế hoạch mua sắm',
     ShoppingPlanLog::ACTION_MANAGER_DISAPPROVAL_SHOPPING_PLAN_COMPANY                    => 'Giám đốc đã từ chối kế hoạch mua sắm với lý do ":note"',
     ShoppingPlanLog::ACTION_REGISTER_SHOPPING                                            => 'Đăng ký mua sắm',
+    ShoppingPlanLog::ACTION_HR_HANDLE_PLAN_COMPANY                                       => 'Nhân sự xử lý kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_HR_SYNTHETIC_PLAN_COMPANY                                    => 'Nhân sự tổng hợp kế hoạch mua sắm',
+    ShoppingPlanLog::ACTION_SENT_INFO_SHOPPING_ASSET                                     => 'Nhân sự điền thông tin mua sắm',
+    ShoppingPlanLog::ACTION_SEND_HR_MANAGER_APPROVAL                                     => 'Gửi giám đốc nhân sự duyệt',
 ];

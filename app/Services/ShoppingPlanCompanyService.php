@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingPlanCompanyResource;
-use App\Http\Resources\OrganizationRegisterYearQuarterResource;
+use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
+use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
@@ -26,6 +27,7 @@ class ShoppingPlanCompanyService
         protected MonitorRepository $monitorRepository,
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
         protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
+        protected ShoppingAssetRepository $shoppingAssetRepository,
     ) {
 
     }
@@ -89,31 +91,19 @@ class ShoppingPlanCompanyService
                 }
             }
 
-            // Chi voi ke hoach tuan thi tao ra ke hoach don vi luon, con kh nam va quy thi khi gui thong bao dang ky moi tao
-            if (ShoppingPlanCompany::TYPE_WEEK === $data['type']) {
-                $insertShoppingPlanOrganizations = resolve(ShoppingPlanOrganizationService::class)->insertShoppingPlanOrganizations(
-                    $shoppingPlanCompany->id,
-                    $data['organization_ids'],
-                    ShoppingPlanOrganization::STATUS_NEW
-                );
-
-                if (!$insertShoppingPlanOrganizations) {
-                    DB::rollBack();
-
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2057,
-                    ];
-                }
-            }
-
             // Tao log
-            $this->shoppingPlanLogRepository->create([
-                'action'      => ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
-                'record_id'   => $shoppingPlanCompany->id,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_CREATE_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompany->id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
 
@@ -172,12 +162,18 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $id,
-                'action'      => ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_UPDATE_SHOPPING_PLAN_COMPANY,
+                $id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
 
@@ -211,7 +207,6 @@ class ShoppingPlanCompanyService
                 'time'            => $data['time'],
                 'type'            => ShoppingPlanCompany::TYPE_WEEK,
                 'month'           => $data['month'],
-                'plan_year_id'    => $data['plan_year_id'],
                 'plan_quarter_id' => $data['plan_quarter_id'],
             ]),
             default => [],
@@ -245,11 +240,11 @@ class ShoppingPlanCompanyService
                 ]);
                 break;
             case ShoppingPlanCompany::TYPE_WEEK:
-                $shoppingPlanCompanyYear = $this->planCompanyRepository->find($data['plan_year_id']);
-                $name                    = __('asset.shopping_plan_company.week.name', [
+                $shoppingPlanCompanyQuarter = $this->planCompanyRepository->find($data['plan_quarter_id']);
+                $name                       = __('asset.shopping_plan_company.week.name', [
                     'time'  => $data['time'],
                     'month' => $data['month'],
-                    'year'  => $shoppingPlanCompanyYear->time,
+                    'year'  => $shoppingPlanCompanyQuarter?->shoppingPlanCompanyYear->time,
                 ]);
                 break;
             default:
@@ -291,7 +286,7 @@ class ShoppingPlanCompanyService
         ];
     }
 
-    public function getOrganizationRegisterYearQuarter($id)
+    public function getOrganizationRegister($id)
     {
         $shoppingPlanCompany = $this->planCompanyRepository->find($id);
 
@@ -304,7 +299,7 @@ class ShoppingPlanCompanyService
 
         return [
             'success' => true,
-            'data'    => OrganizationRegisterYearQuarterResource::make($shoppingPlanCompany)->resolve(),
+            'data'    => SyntheticOrganizationRegisterPlanResource::make($shoppingPlanCompany)->resolve(),
         ];
     }
 
@@ -480,12 +475,19 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $data['id'],
-                'action'      => ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SENT_NOTIFICATION_SHOPPING_PLAN_COMPANY,
+                $data['id']
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
             DB::commit();
         } catch (\Throwable $exception) {
             report($exception);
@@ -544,12 +546,18 @@ class ShoppingPlanCompanyService
                 'status' => ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL,
             ]);
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $shoppingPlanCompanyId,
-                'action'      => ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -617,12 +625,18 @@ class ShoppingPlanCompanyService
                 ];
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'record_id'   => $shoppingPlanCompanyId,
-                'action'      => ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,
-                'desc'        => __('shopping_plan_log.'.ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY),
-                'created_by'  => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             DB::commit();
         } catch (\Throwable $exception) {
@@ -765,5 +779,226 @@ class ShoppingPlanCompanyService
         }
 
         return $shoppingPlanCompany->toArray();
+    }
+
+    public function handleShoppingPlanWeek($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_REGISTER != $shoppingPlanCompany->status || Carbon::now() < Carbon::parse($shoppingPlanCompany->end_time)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2078,
+            ];
+        }
+
+        $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_HR_HANDLE;
+        DB::beginTransaction();
+        try {
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $id],
+                ['status' => ShoppingPlanOrganization::STATUS_HR_HANDLE]
+            );
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_HR_HANDLE_PLAN_COMPANY,
+                $id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function syntheticShoppingPlanWeek($data)
+    {
+        $shoppingPlanCompanyId = $data['shopping_plan_company_id'];
+        $shoppingPlanCompany   = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_HR_HANDLE != $shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_HR_SYNTHETIC;
+        DB::beginTransaction();
+        try {
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $shoppingPlanCompanyId],
+                ['status' => ShoppingPlanOrganization::STATUS_HR_SYNTHETIC]
+            );
+
+            if (!empty($data['shopping_assets'])) {
+                resolve(ShoppingAssetService::class)->updateActionShoppingAssets($data['shopping_assets']);
+            }
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_HR_SYNTHETIC_PLAN_COMPANY,
+                $shoppingPlanCompanyId
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function sendApprovalWeek($data)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($data['shopping_plan_company_id']);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        $status             = null;
+        $statusOrganization = null;
+        $actionLog          = null;
+        switch ($data['status']) {
+            case ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_HR_SYNTHETIC;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_HR_MANAGER_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_HR_MANAGER_APPROVAL;
+                break;
+            case ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_ACCOUNTANT_APPROVAL_SHOPPING_PLAN_COMPANY;
+                break;
+            case ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL:
+                $status             = ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                $statusOrganization = ShoppingPlanOrganization::STATUS_PENDING_MANAGER_APPROVAL;
+                $actionLog          = ShoppingPlanLog::ACTION_SEND_MANAGER_APPROVAL_SHOPPING_PLAN_COMPANY;
+                break;
+        }
+
+        if (+$shoppingPlanCompany->status !== $status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = $data['status'];
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL === $data['status']) {
+                resolve(ShoppingAssetService::class)->setStatusWithMoneyByShoppingPlanCompanyId($data['shopping_plan_company_id']);
+            }
+
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(
+                ['shopping_plan_company_id' => $data['shopping_plan_company_id']],
+                ['status' => $statusOrganization]
+            );
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                $actionLog,
+                $data['shopping_plan_company_id']
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 }

@@ -4,7 +4,7 @@
            @if(isset($model)) x-model="{{$model}}" @endif
            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
            x-init="
-            new AirDatepicker($el, {
+            const datepicker = new AirDatepicker($el, {
                     autoClose: true,
                     clearButton: true,
                     locale: localeEn,
@@ -21,7 +21,7 @@
                     if (!$el.value) {
                        {{$model}} = null
                     }}, 0)}
-            })
+            });
         "
     >
     <span class="input-group-text">

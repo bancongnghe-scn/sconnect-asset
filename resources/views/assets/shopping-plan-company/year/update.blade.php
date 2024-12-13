@@ -33,8 +33,6 @@
                     <button class="btn btn-primary" @click="sendManagerApproval()">Gửi duyệt</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-            </template>
             @can('shopping_plan_company.general_approval')
                 <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL, STATUS_SHOPPING_PLAN_COMPANY_CANCEL].includes(+data.status)">
                     <button class="btn btn-sc" @click="generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY)">Duyệt</button>
@@ -55,15 +53,7 @@
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
-                            <span x-text="STATUS_SHOPPING_PLAN_COMPANY[data.status]" class="px-1 border rounded"
-                                  :class="{
-                                  'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                                  'tw-text-purple-600 tw-bg-purple-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                  'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                                                                        || +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                                  'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                                  'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_CANCEL
-                              }"></span>
+                            @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
                         </div>
                         <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                             <div>
@@ -78,7 +68,7 @@
                                 <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
-                                       'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW && +data.status !== STATUS_SHOPPING_PLAN_COMPANY_REGISTER',
+                                       'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
                                        'start' => 'data.start_time',
                                        'end' => 'data.end_time',
                                 ])
@@ -163,7 +153,7 @@
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.year.table_synthetic_organization_register')
+                                @include('component.shopping_plan_company.table_synthetic_organization_register')
                             </template>
                             <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')

@@ -45,7 +45,6 @@ document.addEventListener('alpine:init', () => {
         listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
         listPlanCompanyYear: [],
-        listQuarter: LIST_QUARTER,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
@@ -143,7 +142,7 @@ document.addEventListener('alpine:init', () => {
 
         async getListPlanCompanyYear(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
                 this.listPlanCompanyYear = response.data
             } else {

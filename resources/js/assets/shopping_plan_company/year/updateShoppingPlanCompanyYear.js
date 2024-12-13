@@ -47,7 +47,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('info')
                 this.loading = false
             }
         },
@@ -145,7 +144,7 @@ document.addEventListener('alpine:init', () => {
         async getOrganizationRegisterYear() {
             this.loading = true
             try {
-                const response = await window.getOrganizationRegisterYearQuarter(this.id)
+                const response = await window.getOrganizationRegister(this.id)
                 if (response.success) {
                     this.register = response.data.data
                     return
@@ -171,7 +170,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('users')
                 this.loading = false
             }
         },

@@ -21,7 +21,7 @@ Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware(['checkAuth'])->group(function () {
+Route::middleware(['web'])->group(function () {
     Route::get('/login/{id}', function ($id) {
         Illuminate\Support\Facades\Auth::loginUsingId($id);
 
@@ -44,14 +44,19 @@ Route::middleware(['checkAuth'])->group(function () {
     Route::view('contract/list', 'assets.contract.listContractAndAppendix');
     Route::prefix('shopping-plan-company')->group(function () {
         Route::prefix('year')->group(function () {
-            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyYearController::class, 'index']);
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class, 'index']);
             Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
             Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
         Route::prefix('quarter')->group(function () {
-            Route::get('list', [App\Http\Controllers\ShoppingPlanCompanyQuarterController::class, 'index']);
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class, 'index']);
             Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
             Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
+        });
+        Route::prefix('week')->group(function () {
+            Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class, 'index']);
+            Route::view('update/{id}', 'assets.shopping-plan-company.week.update');
+            Route::view('view/{id}', 'assets.shopping-plan-company.week.detail');
         });
     });
     Route::prefix('shopping-plan-organization')->group(function () {
@@ -63,6 +68,11 @@ Route::middleware(['checkAuth'])->group(function () {
         Route::prefix('quarter')->group(function () {
             Route::view('register/{id}', 'assets.shopping_plan_organization.quarter.register');
             Route::view('view/{id}', 'assets.shopping_plan_organization.quarter.detail');
+        });
+
+        Route::prefix('week')->group(function () {
+            Route::view('register/{id}', 'assets.shopping_plan_organization.week.register');
+            Route::view('view/{id}', 'assets.shopping_plan_organization.week.detail');
         });
     });
 

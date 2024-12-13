@@ -64,7 +64,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('job')
                 this.loading = false
             }
         },
@@ -81,7 +80,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('register')
                 this.loading = false
             }
         },
@@ -98,7 +96,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                console.log('asset_type')
                 this.loading = false
             }
         },

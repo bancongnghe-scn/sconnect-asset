@@ -1,6 +1,6 @@
 <div x-data="shoppingPlanOrganizationQuarter">
     <div>
-        @include('assets.shopping_plan_organization.quarter.filters')
+        @include('component.shopping_plan_company.quarter.filter')
     </div>
 
     <div
