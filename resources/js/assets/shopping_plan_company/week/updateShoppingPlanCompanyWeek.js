@@ -5,13 +5,12 @@ document.addEventListener('alpine:init', () => {
         async init() {
             const split = window.location.href.split('/')
             this.id = split.pop();
-            this.action = split.at(5);
+            this.action = split.at(5)
             this.feetData()
         },
 
         //data
         id: null,
-        id_organization: null,
         action: null,
         checkedAll: false,
         data: {
@@ -35,6 +34,7 @@ document.addEventListener('alpine:init', () => {
             rotation: false
         },
         shoppingAssetWithAction: [],
+        statusDisapproval: null,
         //methods
         async feetData() {
             await this.getListSupplier()
@@ -309,8 +309,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
                 ids = ids.map(Number);
-                const response = await window.apiApprovalShoppingAsset(ids, status)
-                console.log(response)
+                const response = await window.apiApprovalShoppingAsset(ids, status, this.note_disapproval)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -324,6 +323,7 @@ document.addEventListener('alpine:init', () => {
                         }
                     })
                 })
+                $("#modalNoteDisapproval").modal('hide')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -352,8 +352,6 @@ document.addEventListener('alpine:init', () => {
                    this.shoppingAssetWithAction.push(data)
                }
            })
-
-            console.log(this.shoppingAssetWithAction)
         },
 
         handleShowActive(active) {
@@ -364,20 +362,10 @@ document.addEventListener('alpine:init', () => {
             this.activeLink[active] = true
         },
 
-        showModalNoteDisapproval(id) {
-            this.id_organization = id
+        showModalNoteDisapproval(statusDisable) {
             this.note_disapproval = null
+            this.statusDisapproval = statusDisable
             $("#modalNoteDisapproval").modal('show')
-        },
-
-        showModalNoteDisapprovalMultiple() {
-            this.note_disapproval = null
-            $("#modalNoteDisapprovalMultiple").modal('show')
-        },
-
-        showModalNoteDisapprovalShoppingCompany() {
-            this.note_disapproval = null
-            $("#modalNoteDisapprovalPlanCompany").modal('show')
         },
 
         confirmRemove() {

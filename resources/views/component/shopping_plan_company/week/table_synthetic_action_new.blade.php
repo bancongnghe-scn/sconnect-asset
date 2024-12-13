@@ -3,7 +3,7 @@
     <thead class="position-sticky z-1" style="top: -1px">
     <tr>
         <th class="text-center"
-            x-show="[
+            x-show="action === 'update' && [
                  STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
                  STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                  STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
@@ -50,7 +50,7 @@
                     }
                 }">
                 <td class="text-center align-middle"
-                    x-show="[
+                    x-show="action === 'update' && [
                             STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
                             STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                             STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
@@ -69,21 +69,22 @@
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
                     ].includes(+data.status)"
                 >
-                    @include('component.status_shopping_asset', ['status' => 'assetRegister.status'])
+                    @include('component.status_shopping_asset', [
+                        'status' => 'assetRegister.status', 'tooltip' => 'assetRegister.reason'
+                    ])
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <td x-text="assetRegister.job_name ?? '-'"></td>
                 <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
                 <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
                 <td>
-                    <input class="form-control tw-min-w-20" type="number" min="1"
-                           x-model="assetRegister.quantity_approved">
+                    <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved" :disabled="action === 'view'">
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price">
+                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price" :disabled="action === 'view'">
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money">
+                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money" :disabled="action === 'view'">
                 </td>
                 <td x-text="total ?? '-'" class="text-center"></td>
                 <td>
@@ -94,11 +95,12 @@
                                     @include('common.select2.extent.select2', [
                                           'placeholder' => 'Chọn NCC',
                                           'values' => 'listSupplier',
+                                          'disabled' => "action === 'view'"
                                     ])
                         </span>
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link">
+                    <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link" :disabled="action === 'view'">
                 </td>
                 <td x-text="assetRegister.description ?? '-'"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"

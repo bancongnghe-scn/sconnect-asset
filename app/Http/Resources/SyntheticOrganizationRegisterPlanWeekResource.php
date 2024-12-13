@@ -33,6 +33,7 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
                     'tax_money'                => $shoppingAsset->tax_money,
                     'supplier_id'              => $shoppingAsset->supplier_id,
                     'link'                     => $shoppingAsset->link,
+                    'reason'                   => $shoppingAsset->reason,
                 ];
                 $data['total_register'] += $shoppingAsset->quantity_registered;
             }

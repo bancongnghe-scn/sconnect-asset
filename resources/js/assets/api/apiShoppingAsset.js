@@ -25,11 +25,12 @@ window.apiSentInfoShoppingAsset = async function (shoppingPlanCompanyId, assets)
     }
 }
 
-window.apiApprovalShoppingAsset = async function (ids, status) {
+window.apiApprovalShoppingAsset = async function (ids, status, note) {
     try {
         const response = await axios.post("/api/shopping-asset/approval",{
             ids: ids,
-            status: status
+            status: status,
+            note: note
         })
 
         const data = response.data;

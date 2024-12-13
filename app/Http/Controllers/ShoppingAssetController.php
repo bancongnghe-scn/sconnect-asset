@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SentInfoShoppingAssetRequest;
 use App\Services\ShoppingAssetService;
-use App\Support\Constants\AppErrorCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,10 +28,7 @@ class ShoppingAssetController extends Controller
         } catch (\Throwable $exception) {
             report($exception);
 
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_1000,
-            ];
+            return response_success();
         }
     }
 
@@ -42,6 +38,7 @@ class ShoppingAssetController extends Controller
             'ids'    => 'required|array',
             'ids.*'  => 'required|integer',
             'status' => 'required|integer',
+            'note'   => 'nullable|string',
         ]);
 
         try {
@@ -54,10 +51,7 @@ class ShoppingAssetController extends Controller
         } catch (\Throwable $exception) {
             report($exception);
 
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_1000,
-            ];
+            return response_error();
         }
     }
 }

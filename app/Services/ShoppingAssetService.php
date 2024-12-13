@@ -173,7 +173,7 @@ class ShoppingAssetService
             ];
         }
 
-        $this->shoppingAssetRepository->updateShoppingAsset(['id' => $data['ids']], ['status' => $data['status']]);
+        $this->shoppingAssetRepository->updateShoppingAsset(['id' => $data['ids']], ['status' => $data['status'], 'reason' => $data['note'] ?? null]);
 
         return [
             'success' => true,
