@@ -316,74 +316,39 @@ class PlanLiquidationService
         DB::beginTransaction();
         try {
 
-            // Update Plan
-            if (!empty($dataUpdate['name'])) {
-                $planMaintain->fill($dataUpdate);
-                if (!$planMaintain->save()) {
-                    DB::rollBack();
+            $planMaintain->fill($dataUpdate);
+            if (!$planMaintain->save()) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_5003,
-                    ];
-                }
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_5003,
+                ];
             }
 
             $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($id, ['asset_id', 'status']);
 
             // Approval/Reject
             if (!empty($status) && in_array($status, [PlanMaintain::STATUS_APPROVAL, PlanMaintain::STATUS_REJECT])) {
+                $statusActions = [
+                    PlanMaintain::STATUS_APPROVAL => Asset::STATUS_LIQUIDATED,
+                    PlanMaintain::STATUS_REJECT   => Asset::STATUS_PROPOSAL_LIQUIDATION,
+                ];
 
-                if (PlanMaintain::STATUS_APPROVAL == $status) {
+                $historyGroupedByStatus = [];
 
-                    $statusActions = [
-                        PlanMaintain::STATUS_APPROVAL => Asset::STATUS_LIQUIDATED,
-                        PlanMaintain::STATUS_REJECT   => Asset::STATUS_PROPOSAL_LIQUIDATION,
-                    ];
-
+                if (PlanMaintain::STATUS_APPROVAL === $status) {
                     foreach ($statusActions as $filterStatus => $newAssetStatus) {
                         $filteredAssets = $assetIds->filter(fn ($item) => $item->status == $filterStatus);
-                        if ($filteredAssets->isNotEmpty()) {
-                            $assetIdsToUpdate  = $filteredAssets->pluck('asset_id')->toArray();
-                            $changeStatusAsset = $this->assetRepository->changeStatusAsset($assetIdsToUpdate, $newAssetStatus);
-                            if (!$changeStatusAsset) {
-                                DB::rollBack();
 
-                                return [
-                                    'success'    => false,
-                                    'error_code' => AppErrorCode::CODE_5003,
-                                ];
-                            }
-
-                            if (Asset::STATUS_LIQUIDATED == $newAssetStatus) {
-                                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIdsToUpdate, Asset::STATUS_LIQUIDATED);
-                                if (!$historyAsset) {
-                                    DB::rollBack();
-
-                                    return [
-                                        'success'    => false,
-                                        'error_code' => AppErrorCode::CODE_5011,
-                                    ];
-                                }
-                            }
-
-                            if (Asset::STATUS_PROPOSAL_LIQUIDATION == $newAssetStatus) {
-                                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIdsToUpdate, Asset::STATUS_PROPOSAL_LIQUIDATION);
-                                if (!$historyAsset) {
-                                    DB::rollBack();
-
-                                    return [
-                                        'success'    => false,
-                                        'error_code' => AppErrorCode::CODE_5011,
-                                    ];
-                                }
-                            }
+                        if ($filteredAssets->isEmpty()) {
+                            continue;
                         }
-                    }
-                } else {
-                    if ($assetIds->isNotEmpty()) {
-                        $changeStatusAsset = $this->assetRepository->changeStatusAsset($assetIds->pluck('asset_id')->toArray(), Asset::STATUS_PROPOSAL_LIQUIDATION);
-                        if (!$changeStatusAsset) {
+
+                        $assetIdsToUpdate = $filteredAssets->pluck('asset_id')->toArray();
+
+                        // Cập nhật trạng thái tài sản
+                        if (!$this->assetRepository->changeStatusAsset($assetIdsToUpdate, $newAssetStatus)) {
                             DB::rollBack();
 
                             return [
@@ -392,21 +357,48 @@ class PlanLiquidationService
                             ];
                         }
 
-                        $assetIds     = $assetIds->pluck('asset_id')->toArray();
-                        $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_PROPOSAL_LIQUIDATION);
-                        if (!$historyAsset) {
+                        // Gom nhóm lịch sử theo trạng thái
+                        $historyGroupedByStatus[$newAssetStatus] = array_merge(
+                            $historyGroupedByStatus[$newAssetStatus] ?? [],
+                            $assetIdsToUpdate
+                        );
+                    }
+                } else {
+                    $newAssetStatus = Asset::STATUS_PROPOSAL_LIQUIDATION;
+
+                    if ($assetIds->isNotEmpty()) {
+                        $assetIdsToUpdate = $assetIds->pluck('asset_id')->toArray();
+
+                        // update status asset
+                        if (!$this->assetRepository->changeStatusAsset($assetIdsToUpdate, $newAssetStatus)) {
                             DB::rollBack();
 
                             return [
                                 'success'    => false,
-                                'error_code' => AppErrorCode::CODE_5011,
+                                'error_code' => AppErrorCode::CODE_5003,
                             ];
                         }
+
+                        // group history
+                        $historyGroupedByStatus[$newAssetStatus] = $assetIdsToUpdate;
+                    }
+                }
+
+                // insert history
+                foreach ($historyGroupedByStatus as $status => $assetIdsToInsert) {
+                    if (!$this->assetHistoryRepository->insertHistoryAsset($assetIdsToInsert, $status)) {
+                        DB::rollBack();
+
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_5011,
+                        ];
                     }
                 }
             }
 
-            // Send plan wait approval/reject
+
+            // send plan wait approval/reject
             if (!empty($status) && PlanMaintain::STATUS_PENDING == $status) {
 
                 $assetIds     = $assetIds->pluck('asset_id')->toArray();
