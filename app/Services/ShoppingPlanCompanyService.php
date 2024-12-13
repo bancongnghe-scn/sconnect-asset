@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
-use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
@@ -966,10 +965,7 @@ class ShoppingPlanCompanyService
             }
 
             if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_HR_APPROVAL === $data['status']) {
-                $this->shoppingAssetRepository->updateShoppingAsset(
-                    ['shopping_plan_company_id' => $data['shopping_plan_company_id']],
-                    ['status' => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL]
-                );
+                resolve(ShoppingAssetService::class)->setStatusWithMoneyByShoppingPlanCompanyId($data['shopping_plan_company_id']);
             }
 
             $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization(

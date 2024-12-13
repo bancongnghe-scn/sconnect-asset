@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SentInfoShoppingAssetRequest;
-use App\Repositories\ShoppingAssetRepository;
 use App\Services\ShoppingAssetService;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Http\Request;
@@ -46,9 +45,12 @@ class ShoppingAssetController extends Controller
         ]);
 
         try {
-            resolve(ShoppingAssetRepository::class)->updateShoppingAsset(['id' => $request->get('ids')], ['status' => $request->get('status')]);
+            $result = $this->shoppingAssetService->approvalShoppingAsset($request->all());
+            if ($result['success']) {
+                return response_success();
+            }
 
-            return response_success();
+            return response_error($result['error_code']);
         } catch (\Throwable $exception) {
             report($exception);
 

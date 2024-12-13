@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-wrap gap-3 align-items-end form-group">
-                    <div class="col-2">
+                    <div class="col-3">
                         <label class="tw-font-bold">Kế hoạch quý</label>
                         <div x-data="{
                             model: filters.plan_quarter_id,

@@ -83,6 +83,7 @@ class AppErrorCode
     public const CODE_2076 = 2076; //  Lưu lịch sử thất bại !
     public const CODE_2077 = 2077; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
     public const CODE_2078 = 2078; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+    public const CODE_2079 = 2079; //  Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

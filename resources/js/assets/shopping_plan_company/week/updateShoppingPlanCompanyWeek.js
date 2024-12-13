@@ -277,7 +277,13 @@ document.addEventListener('alpine:init', () => {
                     this.shoppingAssetWithAction.map((item) => {
                         item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_HR_MANAGER
                         item.asset_register.new.map((value) => {
-                            value.status = SHOPPING_ASSET_STATUS_PENDING_HR_MANAGER_APPROVAL
+                            if (+value.price < PRICE_HR_APPROVAL) {
+                                value.status = SHOPPING_ASSET_STATUS_PENDING_HR_MANAGER_APPROVAL
+                            } else if (+value.price > PRICE_HR_APPROVAL && +value.price < PRICE_ACCOUNTANT_APPROVAL) {
+                                value.status = SHOPPING_ASSET_STATUS_PENDING_ACCOUNTANT_APPROVAL
+                            } else {
+                                value.status = SHOPPING_ASSET_STATUS_PENDING_GENERAL_APPROVAL
+                            }
                         })
                     })
                 } else if (nextStatus === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL) {
@@ -304,6 +310,7 @@ document.addEventListener('alpine:init', () => {
                 let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
                 ids = ids.map(Number);
                 const response = await window.apiApprovalShoppingAsset(ids, status)
+                console.log(response)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -326,25 +333,27 @@ document.addEventListener('alpine:init', () => {
 
         syntheticShoppingAssetWithAction() {
            this.register.organizations.map((item) => {
-               if (item.asset_register.length === 1) {
-                   return
-               }
-
                let data = JSON.parse(JSON.stringify(item))
                data.asset_register = {
                    new: [],
                    rotation: []
                }
                item.asset_register.map((value) => {
-                   if (+value.action === SHOPPING_ASSET_ACTION_ROTATION) {
-                       data.asset_register.rotation.push(value)
-                   } else {
-                       data.asset_register.new.push(value)
+                   if (value.length !== 0) {
+                       if (+value.action === SHOPPING_ASSET_ACTION_ROTATION) {
+                           data.asset_register.rotation.push(value)
+                       } else {
+                           data.asset_register.new.push(value)
+                       }
                    }
                })
 
-               this.shoppingAssetWithAction.push(data)
+               if (data.asset_register.new.length !== 0 || data.asset_register.rotation.length !== 0) {
+                   this.shoppingAssetWithAction.push(data)
+               }
            })
+
+            console.log(this.shoppingAssetWithAction)
         },
 
         handleShowActive(active) {

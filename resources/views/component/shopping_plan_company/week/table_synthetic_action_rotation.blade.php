@@ -14,7 +14,7 @@
     <template x-for="(organization, index) in shoppingAssetWithAction" :key="index">
         <template x-for="(assetRegister, stt) in organization.asset_register.rotation" :key="index + '_' + stt">
             <tr>
-                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.rotation.length : 1" class="tw-font-bold">
+                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.rotation.length : 1" class="tw-font-bold align-middle">
                     <span x-text="organization.name"></span>
                     @include('component.shopping_plan_organization.status_shopping_plan_organization', [
                         'status' => 'organization.status',

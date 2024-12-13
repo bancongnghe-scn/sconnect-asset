@@ -28,4 +28,26 @@ class ShoppingAssetRepository extends BaseRepository
 
         return $query->update($dataUpdate) > 0;
     }
+
+    public function getListing($filters, $columns = ['*'], $first = false)
+    {
+        $query = $this->_model->select($columns)->newQuery();
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
+        if (!empty($filters['status_other'])) {
+            $query->whereNotIn('status', Arr::wrap($filters['status_other']));
+        }
+
+        if ($first) {
+            return $query->first();
+        }
+
+        return $query->get();
+    }
 }

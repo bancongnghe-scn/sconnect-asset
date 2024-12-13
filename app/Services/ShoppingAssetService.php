@@ -96,4 +96,87 @@ class ShoppingAssetService
             ];
         }
     }
+
+    public function setStatusWithMoneyByShoppingPlanCompanyId($shoppingPlanCompanyId)
+    {
+        $shoppingAssets = $this->shoppingAssetRepository->getListing(['shopping_plan_company_id' => $shoppingPlanCompanyId]);
+
+        $shoppingAssetsHrApproval         = [];
+        $shoppingAssetsAccountantApproval = [];
+        $shoppingAssetsGeneralApproval    = [];
+        foreach ($shoppingAssets as $shoppingAsset) {
+            if (+$shoppingAsset->price < ShoppingAsset::PRICE_HR_APPROVAL) {
+                $shoppingAssetsHrApproval[] = $shoppingAsset->id;
+            } elseif (+$shoppingAsset->price > ShoppingAsset::PRICE_HR_APPROVAL && +$shoppingAsset->price < ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL) {
+                $shoppingAssetsAccountantApproval[] = $shoppingAsset->id;
+            } else {
+                $shoppingAssetsGeneralApproval[] = $shoppingAsset->id;
+            }
+        }
+
+        if (!empty($shoppingAssetsHrApproval)) {
+            $this->shoppingAssetRepository->updateShoppingAsset(
+                ['id' => $shoppingAssetsHrApproval],
+                ['status' => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL]
+            );
+        }
+
+        if (!empty($shoppingAssetsAccountantApproval)) {
+            $this->shoppingAssetRepository->updateShoppingAsset(
+                ['id' => $shoppingAssetsAccountantApproval],
+                ['status' => ShoppingAsset::STATUS_PENDING_ACCOUNTANT_APPROVAL]
+            );
+        }
+
+        if (!empty($shoppingAssetsGeneralApproval)) {
+            $this->shoppingAssetRepository->updateShoppingAsset(
+                ['id' => $shoppingAssetsGeneralApproval],
+                ['status' => ShoppingAsset::STATUS_PENDING_GENERAL_APPROVAL]
+            );
+        }
+    }
+
+    public function approvalShoppingAsset($data)
+    {
+        if (in_array($data['status'], [ShoppingAsset::STATUS_HR_MANAGER_APPROVAL, ShoppingAsset::STATUS_HR_MANAGER_DISAPPROVAL])) {
+            $shoppingAsset = $this->shoppingAssetRepository->getListing([
+                'id'           => $data['ids'],
+                'status_other' => [
+                    ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL,
+                    ShoppingAsset::STATUS_HR_MANAGER_APPROVAL,
+                    ShoppingAsset::STATUS_HR_MANAGER_DISAPPROVAL,
+                ],
+            ], first: true);
+        } elseif (in_array($data['status'], [ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL, ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL])) {
+            $shoppingAsset = $this->shoppingAssetRepository->getListing([
+                'id'           => $data['ids'],
+                'status_other' => [
+                    ShoppingAsset::STATUS_PENDING_ACCOUNTANT_APPROVAL,
+                    ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL,
+                    ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL,
+                ],
+            ], first: true);
+        } else {
+            $shoppingAsset = $this->shoppingAssetRepository->getListing([
+                'id'           => $data['ids'],
+                'status_other' => [
+                    ShoppingAsset::STATUS_PENDING_GENERAL_APPROVAL,
+                    ShoppingAsset::STATUS_GENERAL_APPROVAL,
+                    ShoppingAsset::STATUS_GENERAL_DISAPPROVAL,
+                ],
+            ], first: true);
+        }
+        if (!empty($shoppingAsset)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2079,
+            ];
+        }
+
+        $this->shoppingAssetRepository->updateShoppingAsset(['id' => $data['ids']], ['status' => $data['status']]);
+
+        return [
+            'success' => true,
+        ];
+    }
 }

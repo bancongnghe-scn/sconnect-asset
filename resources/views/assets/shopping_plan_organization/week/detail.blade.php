@@ -1,38 +1,11 @@
 @extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm quý'
+    'title' => 'Kế hoạch mua sắm tuần'
 ])
 
 @section('content')
-    <div x-data="register_shopping_plan_organization_quarter">
+    <div x-data="register_shopping_plan_organization_week">
         <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                @can('shopping_plan_company.accounting_approval')
-                    <div class="d-flex gap-2"
-                    >
-                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
-                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED">
-                            <button class="btn btn-primary" @click="saveReviewRegisterAsset()">Lưu</button>
-                        </template>
-                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
-                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL">
-                            <button class="btn bg-sc text-white"
-                                    @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_APPROVAL)"
-                            >
-                                Duyệt
-                            </button>
-                        </template>
-                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL
-                           || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL">
-                            <button class="btn bg-red"
-                                    @click="accountApprovalShoppingPlanOrganization(data.id, ORGANIZATION_TYPE_DISAPPROVAL)"
-                            >
-                                Từ chối
-                            </button>
-                        </template>
-                    </div>
-                @endcan
-            </template>
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/quarter/list`">Quay lại</button>
+            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
         <div class="d-flex">
             <div class="card flex-grow-1 mr-3">
@@ -70,89 +43,73 @@
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                         <template x-if="list_asset_type.length > 0 && list_job.length > 0">
-                            <div>
-                                <template x-for="(register, index) in registers" :key="index">
-                                    <div class="p-4 tw-bg-[#E4F0E6] mb-3">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
-                                                <span class="form-control" style="flex: 1;" x-text="`Tháng ${register.month}`"></span>
-
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <span class="me-2 flex-shrink-0 tw-font-bold">Tổng số lượng</span>
-                                                    <span class="form-control text-center" x-text="`${register.approval.total} / ${register.register.total}`"></span>
-                                                </div>
-
-                                                <div class="d-flex align-items-center" style="flex: 1;">
-                                                    <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
-                                                    <span class="form-control text-center"
-                                                          x-text="`${window.formatCurrencyVND(register.approval.price)} / ${window.formatCurrencyVND(register.register.price)}`"
-                                                    ></span>
-                                                </div>
-                                            </div>
-
-                                            <button class="btn" @click="handleShowTable(index)">
-                                                <i class="fa-solid fa-chevron-down"></i>
-                                            </button>
-                                        </div>
-
-                                        <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                                                <thead>
-                                                <tr>
-                                                    <th rowspan="1" colspan="1">Loại tài sản</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-20">Đơn vị</th>
-                                                    <th rowspan="1" colspan="1" >Chức danh</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-28">Đơn giá</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
-                                                    <th rowspan="1" colspan="1" class="tw-w-24">Duyệt</th>
-                                                    <th rowspan="1" colspan="1" >Tổng</th>
-                                                    <th rowspan="1" colspan="1" >Mô tả</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr>
-                                                        <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}">
-                                                                @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn loại tài sản',
-                                                                    'disabled' => true
-                                                                ])
-                                                            </span>
-                                                        </td>
-                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
-                                                        <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id}">
-                                                                @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn chức danh',
-                                                                    'disabled' => true
-                                                                ])
-                                                            </span>
-                                                        </td>
-                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
-                                                        <td>
-                                                            <input class="form-control" type="number" x-model="asset.quantity_registered" disabled>
-                                                        </td>
-                                                        <td>
-                                                            <input
-                                                                class="form-control" type="number" x-model="asset.quantity_approved"
-                                                                @input="calculateApproval(index)"
-                                                                @cannot('shopping_plan_company.accounting_approval')
-                                                                    disabled
-                                                                @endcannot
-                                                            >
-                                                        </td>
-                                                        <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
-                                                        <td>
-                                                            <input class="form-control" x-model="asset.description" type="text" disabled>
-                                                        </td>
-                                                    </tr>
-                                                </template>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </template>
+                            <div class="card card-body mt-3">
+                                <div class="tw-max-w-full overflow-x-scroll custom-scroll">
+                                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                        <thead>
+                                        <tr class="tw-text-nowrap">
+                                            <th rowspan="1" colspan="1">Loại tài sản</th>
+                                            <th rowspan="1" colspan="1">Đơn vị tính</th>
+                                            <th rowspan="1" colspan="1">Chức danh</th>
+                                            <th rowspan="1" colspan="1">SL</th>
+                                            <th rowspan="1" colspan="1">Thời gian cần</th>
+                                            <th rowspan="1" colspan="1">Mô tả</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template x-for="(register, index) in registers" :key="`asset_${register.id || register.id_fake}`">
+                                            <tr class="tw-text-nowrap"
+                                                x-data="{
+                                                  get measure() {
+                                                    if (register.asset_type_id) {
+                                                       return list_asset_type.find((item) => +item.id === +register.asset_type_id).measure
+                                                    }
+                                                  }
+                                                }"
+                                            >
+                                                <td>
+                                                <span
+                                                    x-data="{model: register.asset_type_id}"
+                                                    @select-change="register.asset_type_id = $event.detail"
+                                                >
+                                                    @include('common.select2.extent.select2', [
+                                                       'placeholder' => 'Chọn tài sản',
+                                                       'values' => 'list_asset_type',
+                                                       'disabled' => true
+                                                    ])
+                                                </span>
+                                                </td>
+                                                <td class="align-middle" x-text="measure">
+                                                </td>
+                                                <td>
+                                                <span
+                                                    x-data="{model: register.job_id}"
+                                                    @select-change="register.job_id = $event.detail"
+                                                >
+                                                      @include('common.select2.extent.select2', [
+                                                         'placeholder' => 'Chọn chức danh',
+                                                         'values' => 'list_job',
+                                                         'disabled' => true
+                                                      ])
+                                                </span>
+                                                </td>
+                                                <td>
+                                                    <input class="form-control w-auto" type="number" min="1"
+                                                           x-model="register.quantity_registered" disabled>
+                                                </td>
+                                                <td>
+                                                    @include('common.datepicker.datepicker',[
+                                                        'placeholder' => "Thời gian cần", 'model' => "register.receiving_time", 'disabled' => true
+                                                    ])
+                                                </td>
+                                                <td>
+                                                    <input class="form-control w-auto" x-model="register.description" type="text" disabled>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -167,11 +124,11 @@
 
 @section('js')
     @vite([
-       'resources/js/assets/shopping_plan_organization/quarter/register_shopping_plan_organization_quarter.js',
+       'resources/js/assets/shopping_plan_organization/week/register_shopping_plan_organization_week.js',
        'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
        'resources/js/assets/api/apiAssetType.js',
        'resources/js/app/api/apiJob.js',
-       'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
+       'resources/js/assets/api/shopping_plan_organization/week/apiShoppingPlanOrganizationWeek.js',
     ])
 @endsection

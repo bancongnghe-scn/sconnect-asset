@@ -12,6 +12,13 @@
             <input type="checkbox" @click="selectedAll">
         </th>
         <th class="text-center">Đơn vị</th>
+        <th class="text-center"
+            x-show="[
+                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+            ].includes(+data.status)"
+        >Trạng thái</th>
         <th class="text-center">Loại tài sản</th>
         <th class="text-center">Chức danh</th>
         <th class="text-center">Thời gian cần</th>
@@ -23,13 +30,6 @@
         <th class="text-center">NCC</th>
         <th class="text-center">Ghi chú</th>
         <th class="text-center">Mô tả</th>
-        <th class="text-center"
-            x-show="[
-                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
-                STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
-            ].includes(+data.status)">Trạng thái
-        </th>
         <th class="text-center tw-w-28">Thao tác</th>
     </tr>
     </thead>
@@ -56,16 +56,20 @@
                             STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
                         ].includes(+data.status)"
                 >
-                    <input type="checkbox" x-model="selectedRow[assetRegister.id]"
-                           x-bind:checked="selectedRow[assetRegister.id]">
+                    <input type="checkbox" x-model="selectedRow[assetRegister.id]" x-bind:checked="selectedRow[assetRegister.id]">
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"
-                    class="tw-font-bold">
+                    class="tw-font-bold align-middle">
                     <span x-text="organization.name"></span>
-                    @include('component.shopping_plan_organization.status_shopping_plan_organization', [
-                        'status' => 'organization.status',
-                        'tooltip' => 'organization.note'
-                    ])
+                </td>
+                <td
+                    x-show="[
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                    ].includes(+data.status)"
+                >
+                    @include('component.status_shopping_asset', ['status' => 'assetRegister.status'])
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <td x-text="assetRegister.job_name ?? '-'"></td>
@@ -97,15 +101,6 @@
                     <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link">
                 </td>
                 <td x-text="assetRegister.description ?? '-'"></td>
-                <td
-                    x-show="[
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
-                    ].includes(+data.status)"
-                >
-                    @include('component.status_shopping_asset', ['status' => 'assetRegister.status'])
-                </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"
                     class="text-center align-middle">
                     {{-- button view --}}

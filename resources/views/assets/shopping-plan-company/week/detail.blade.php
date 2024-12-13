@@ -4,48 +4,31 @@
 
 @section('content')
     <div x-data="updateShoppingPlanCompanyWeek">
+        {{-- danh sách button --}}
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
         </div>
+
+        {{-- content --}}
         <div class="d-flex justify-content-between">
             <div class="card tw-w-[78%]">
                 <div class="card-body">
+                    {{--Thong tin chung--}}
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
                             @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
                         </div>
-                        <div class="tw-grid tw-grid-cols-2 tw-gap-4">
+
+                        <div class="tw-grid tw-grid-cols-3 tw-gap-4 mt-3">
                             <div>
-                                <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                <span x-data="{
-                                    model: data.plan_year_id,
-                                    init() {this.$watch('data.plan_year_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
-                                    @include('common.select2.extent.select2', [
-                                          'placeholder' => 'Chọn quý',
-                                          'values' => 'listPlanCompanyYear',
-                                          'disabled' => true
-                                    ])
-                                </span>
+                                <label class="tw-font-bold">Tên</label>
+                                <input class="form-control" type="text" x-model="data.name" disabled>
                             </div>
 
                             <div>
-                                <label class="tw-font-bold">Quý</label>
-                                <span x-data="{
-                                    model: data.time,
-                                    init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
-                                    @include('common.select2.simple.select2_single', [
-                                          'placeholder' => 'Chọn quý',
-                                          'values' => 'LIST_QUARTER',
-                                          'disabled' => true
-                                    ])
-                                </span>
-                            </div>
-
-                            <div>
-                                <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                <label class="tw-font-bold">Thời gian đăng ký<span
+                                        class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                 @include('common.datepicker.datepicker_range', [
                                        'placeholder' => 'Chọn thời gian đăng ký',
                                        'disabled' => true,
@@ -57,10 +40,9 @@
                             <div>
                                 <label class="form-label">Người quan sát</label>
                                 <div x-data="{
-                                        model: data.monitor_ids,
-                                        init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                    }"
-                                     @select-change="data.monitor_ids = $event.detail"
+                                         model: data.monitor_ids,
+                                         init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                     }"
                                 >
                                     @include('common.select2.extent.select2_multiple', [
                                         'placeholder' => 'Chọn người quan sát',
@@ -72,48 +54,59 @@
                         </div>
                     </div>
 
-                    <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                    {{--  chi tiet--}}
+                    <template x-if="[
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                    ].includes(+data.status)">
                         <div class="mb-3">
-                            <div class="active-link tw-w-fit">Thống kê</div>
-                            <div class="mt-3">
-                                <table id="example2" class="table table-bordered dataTable dtr-inline"
-                                       aria-describedby="example2_info">
-                                    <thead>
-                                    <tr>
-                                        <th colspan="12" class="text-center"
-                                            x-text="`Tổng tiền theo tháng toàn công ty(${window.formatCurrencyVND(register.total_price_company)})`"
-                                        >
-                                        </th>
-                                    </tr>
-                                    <tr>
-                                        <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="number">
-                                            <th x-text="`T` + number" class="text-center"></th>
-                                        </template>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <template x-for="price in register.total_price_months">
-                                            <td x-text="window.formatCurrencyVND(price)"></td>
-                                        </template>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                            <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+                            <div class="tw-max-h-dvh overflow-scroll custom-scroll">
+                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                </template>
+                                <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
+                                </template>
                             </div>
                         </div>
                     </template>
 
-                    <div class="mb-3">
-                        <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.table_synthetic_organization_register')
-                            </template>
-                            <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
-                            </template>
+                    {{-- tổng hợp--}}
+                    <template x-if="[
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    ].includes(+data.status)">
+                        <div class="mb-3">
+                            <div class="d-flex tw-gap-x-4 mb-3">
+                                <a class="tw-no-underline hover:tw-text-green-500"
+                                   :class="activeLink.new ? 'active-link' : 'inactive-link'"
+                                   @click="handleShowActive('new')"
+                                >
+                                    Tài sản mua sắm
+                                </a>
+                                <a class="tw-no-underline hover:tw-text-green-500"
+                                   :class="activeLink.rotation ? 'active-link' : 'inactive-link'"
+                                   @click="handleShowActive('rotation')"
+                                >
+                                    Tài sản luân chuyển
+                                </a>
+                            </div>
+                            <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
+                                <div x-show="activeLink.new">
+                                    @include('component.shopping_plan_company.week.table_synthetic_action_new')
+                                </div>
+                                <div x-show="activeLink.rotation">
+                                    @include('component.shopping_plan_company.week.table_synthetic_action_rotation')
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
             <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="comment_shopping_plan">
@@ -130,5 +123,8 @@
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/week/apiShoppingPlanCompanyWeek.js',
         'resources/js/app/api/apiUser.js',
+        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+        'resources/js/assets/api/apiSupplier.js',
+        'resources/js/assets/api/apiShoppingAsset.js'
     ])
 @endsection
