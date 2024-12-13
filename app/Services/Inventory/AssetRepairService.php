@@ -167,19 +167,21 @@ class AssetRepairService
                     ];
                 }
 
-                // Status asset: repair -> active
-                $updateStatusAsset = $this->assetRepository->changeStatusAsset($assetRepair['asset_id'], Asset::STATUS_ACTIVE);
-                if (!$updateStatusAsset) {
-                    DB::rollBack();
-
-                    return [
-                        'success'       => false,
-                        'error_code'    => AppErrorCode::CODE_5001,
-                    ];
-                }
             }
 
             $assetIds     = array_column($assetsRepaired, 'asset_id');
+
+            // Status asset: repair -> active
+            $updateStatusAsset = $this->assetRepository->changeStatusAsset($assetIds, Asset::STATUS_ACTIVE);
+            if (!$updateStatusAsset) {
+                DB::rollBack();
+
+                return [
+                    'success'       => false,
+                    'error_code'    => AppErrorCode::CODE_5001,
+                ];
+            }
+
             $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_ACTIVE);
             if (!$historyAsset) {
                 DB::rollBack();
