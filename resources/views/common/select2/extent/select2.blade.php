@@ -1,4 +1,4 @@
-<select class="form-select w-auto"
+<select class="form-select"
         x-init="$nextTick(() => {
         // Khởi tạo Select2
         $($el).select2({
