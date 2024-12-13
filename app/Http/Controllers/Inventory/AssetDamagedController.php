@@ -32,14 +32,15 @@ class AssetDamagedController extends Controller
     public function updateMultiAssetLiquidation(Request $request)
     {
         $request->validate([
-            '*.id'                     => 'required|integer',
-            '*.price_liquidation'      => 'nullable',
-            '*.date'                   => 'nullable|date|date_format:Y-m-d',
-            '*.reason'                 => 'nullable',
+            'asset_liqui'                           => 'array',
+            'asset_liqui.*.id'                      => 'required|integer',
+            'asset_liqui.*.price_liquidation'       => 'nullable',
+            'asset_liqui.*.date'                    => 'nullable|date|date_format:Y-m-d',
+            'asset_liqui.*.reason'                  => 'nullable',
         ]);
 
         try {
-            $result = $this->assetDamagedService->updateMultiAsset($request->all(), Asset::STATUS_PROPOSAL_LIQUIDATION);
+            $result = $this->assetDamagedService->updateMultiAsset($request->asset_liqui, Asset::STATUS_PROPOSAL_LIQUIDATION);
 
             return response_success($result);
         } catch (\Exception $e) {
@@ -50,13 +51,14 @@ class AssetDamagedController extends Controller
     public function updateMultiAssetCancel(Request $request)
     {
         $request->validate([
-            '*.id'                     => 'required|integer',
-            '*.date'                   => 'nullable|date|date_format:Y-m-d',
-            '*.reason'                 => 'nullable',
+            'asset_cancel'                          => 'array',
+            'asset_cancel.*.id'                     => 'required|integer',
+            'asset_cancel.*.date'                   => 'nullable|date|date_format:Y-m-d',
+            'asset_cancel.*.reason'                 => 'nullable',
         ]);
 
         try {
-            $result = $this->assetDamagedService->updateMultiAsset($request->all(), Asset::STATUS_CANCEL);
+            $result = $this->assetDamagedService->updateMultiAsset($request->asset_cancel, Asset::STATUS_CANCEL);
 
             return response_success($result);
         } catch (\Exception $e) {

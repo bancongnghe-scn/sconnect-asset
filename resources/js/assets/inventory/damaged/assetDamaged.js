@@ -351,7 +351,11 @@ document.addEventListener('alpine:init', () => {
                 reason: reasonLiquidation
             }))
 
-            const response = await window.apiUpdateAssetLiquidation(assetsLiquidation)
+            const dataUpdateLiquidation = {
+                asset_liqui: assetsLiquidation
+            }
+
+            const response = await window.apiUpdateAssetLiquidation(dataUpdateLiquidation)
             if (response.success) {
                 this.list(this.filters)
             } else {
@@ -425,7 +429,11 @@ document.addEventListener('alpine:init', () => {
                 reason: reasonCancel
             }))
 
-            const response = await window.apiUpdateAssetCancel(assetsCancel)
+            const dataUpdateCancel = {
+                asset_cancel: assetsCancel
+            }
+
+            const response = await window.apiUpdateAssetCancel(dataUpdateCancel)
             if (response.success) {
                 this.list(this.filters)
             } else {

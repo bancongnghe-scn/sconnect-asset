@@ -19,9 +19,6 @@ class AssetLostController extends Controller
      */
     public function getListAssetLost(Request $request)
     {
-        $request->validate([
-            'name_code'    => 'nullable|string',
-        ]);
         try {
             $result = $this->assetLostService->getListAssetLost($request->all());
 
@@ -45,12 +42,13 @@ class AssetLostController extends Controller
     public function updateAssetLost(Request $request)
     {
         $request->validate([
-            '*.id'     => 'required|integer',
-            '*.status' => 'required|integer',
+            'update_status_assets'                      => 'array',
+            'update_status_assets.*.id'                 => 'required|integer',
+            'update_status_assets.*.status'             => 'required|integer',
         ]);
 
         try {
-            $result = $this->assetLostService->updateAssetLost($request->all());
+            $result = $this->assetLostService->updateAssetLost($request->update_status_assets);
 
             return response_success($result);
         } catch (\Exception $e) {

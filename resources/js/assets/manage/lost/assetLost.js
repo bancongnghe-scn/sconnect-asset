@@ -291,7 +291,11 @@ document.addEventListener('alpine:init', () => {
                 this.data.signing_date = formattedDate;
             }
 
-            const response = await window.apiRevertAsset([this.data])
+            const statusUpdate = {
+                update_status_assets : [this.data]
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             
             if (!response.success) {
                 this.loading = false
@@ -323,7 +327,11 @@ document.addEventListener('alpine:init', () => {
                 item.status = this.assets['Hoạt động'];
             });
 
-            const response = await window.apiRevertAsset(this.dataSelectMulti)
+            const statusUpdate = {
+                update_status_assets : this.dataSelectMulti
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
@@ -352,7 +360,11 @@ document.addEventListener('alpine:init', () => {
                 this.data.signing_date = formattedDate;
             }
 
-            const response = await window.apiCanceltAsset([this.data])
+            const statusUpdate = {
+                update_status_assets : [this.data]
+            }
+
+            const response = await window.apiCanceltAsset(statusUpdate)
             
             if (!response.success) {
                 this.loading = false
@@ -387,7 +399,11 @@ document.addEventListener('alpine:init', () => {
                 item.description = description
             });
 
-            const response = await window.apiRevertAsset(this.dataSelectMulti)
+            const statusUpdate = {
+                update_status_assets : this.dataSelectMulti
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
