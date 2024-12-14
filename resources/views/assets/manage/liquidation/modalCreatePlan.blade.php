@@ -22,7 +22,13 @@
                         </div>
                         <div class="col-6 mb-3">
                             <label class="tw-font-bold">Ngày tạo</label>
-                            @include('common.datepicker',['placeholder' => "Lựa chọn ngày", 'id' => 'selectSigningDate'])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="selectSigningDate"
+                                       placeholder="Lựa chọn ngày" autocomplete="off">
+                                <span class="input-group-text">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                                </span>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label class="tw-font-bold">Ghi chú</label>
@@ -54,7 +60,7 @@
                                 </template>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: data.id })">
-                                        <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                        <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>
                             </tr>

@@ -1,7 +1,7 @@
 <div class="d-flex align-items-end mt-3 mb-3">
     <div class="col-3 d-flex position-relative">
         <input type="text" class="form-control" x-model="filters.name_code" id="namecodePlanLiquidation" placeholder="Tên/mã kế hoạch" @keydown.enter="list(filters)">
-        <i class="fa-solid fa-magnifying-glass position-absolute mr-3" style="right: 0;height: -webkit-fill-available;scale:0.45;"></i>
+        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
     </div>
     
     <div class="col-2">
@@ -15,7 +15,13 @@
     </div>
 
     <div class="col-3">
-        @include('common.datepicker', ['placeholder' => "Ngày tạo", 'id' => "filterSigningDate"])
+        <div class="input-group">
+            <input type="text" class="form-control datepicker" id="filterSigningDate"
+                   placeholder="Ngày tạo" autocomplete="off">
+            <span class="input-group-text">
+                <i class="fa-regular fa-calendar-days"></i>
+            </span>
+        </div>
     </div>
 
     <div class="col-4 d-flex tw-gap-x-2 tw-justify-end">

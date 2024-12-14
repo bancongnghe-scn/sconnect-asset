@@ -2,17 +2,19 @@
 
 namespace App\Services\Manage;
 
+use App\Models\Asset;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Support\Constants\AppErrorCode;
+use App\Repositories\AssetHistoryRepository;
 use App\Repositories\Manage\AssetLostRepository;
 use App\Http\Resources\Manage\AssetLostResource;
-use App\Models\Asset;
-use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class AssetLostService
 {
     public function __construct(
         protected AssetLostRepository $assetLostRepository,
+        protected AssetHistoryRepository $assetHistoryRepository,
     ) {
 
     }
@@ -93,8 +95,6 @@ class AssetLostService
                 'error_code'    => AppErrorCode::CODE_5001,
             ];
         }
-        // Update signing_date,description to history
-        // ...
 
         return [
             'success' => true,
@@ -118,6 +118,24 @@ class AssetLostService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_5000,
+            ];
+        }
+
+        // update asset history
+        $dataHistory = [
+            'asset_id'              => $data['id'],
+            'action'                => $data['status'],
+            'date'                  => $data['signing_date'] ?? new \DateTime(),
+            'description'           => $data['description'] ?? '',
+            'created_at'            => new \DateTime(),
+            'created_by'            => Auth::id(),
+        ];
+
+        $historyAsset = $this->assetHistoryRepository->insert($dataHistory);
+        if (!$historyAsset) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_5011,
             ];
         }
 

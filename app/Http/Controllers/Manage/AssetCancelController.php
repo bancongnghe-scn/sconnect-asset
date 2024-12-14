@@ -19,9 +19,6 @@ class AssetCancelController extends Controller
      */
     public function getListAssetCancel(Request $request)
     {
-        $request->validate([
-            'name_code'    => 'nullable|string',
-        ]);
         try {
             $result = $this->assetCancelService->getListAssetCancel($request->all());
 

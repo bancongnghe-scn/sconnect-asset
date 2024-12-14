@@ -151,14 +151,8 @@ window.apiRemoveMultiPlanLiquidation = async function (planIds) {
 
 window.apiCreatePlanLiquidation = async function (dataCreate) {
     try {
-        
-        const _data = {
-            name: dataCreate['name'],
-            code: dataCreate['code'],
-            note: dataCreate['note'],
-        }
 
-        const response = await axios.post("/api/manage-plan-liquidation/create",_data)
+        const response = await axios.post("/api/manage-plan-liquidation/create", dataCreate)
 
         const data = response.data;
         if (!data.success) {

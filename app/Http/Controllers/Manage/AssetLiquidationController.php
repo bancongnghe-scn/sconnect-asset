@@ -19,9 +19,6 @@ class AssetLiquidationController extends Controller
      */
     public function getListAssetLiquidation(Request $request)
     {
-        $request->validate([
-            'name_code'    => 'nullable|string',
-        ]);
         try {
             $result = $this->assetLiquidationService->getListAssetLiquidation($request->all());
 

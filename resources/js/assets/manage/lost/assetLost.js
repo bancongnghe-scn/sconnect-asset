@@ -172,8 +172,6 @@ document.addEventListener('alpine:init', () => {
             this.dataSelectMulti = this.dataSelectMulti.filter(item => ids.includes(item.id.toString())).map(item => Object.assign({}, item));
             Alpine.store('globalData').dataSelectMulti = this.dataSelectMulti;
 
-
-
             $('#'+this.numbAssetLost).text(ids.length);
             $("#"+this.idModalBackMultiple).modal('show');
             this.loading = false
@@ -285,9 +283,19 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             // Chuyển về trạng thái hoạt động
-            this.data.status = this.assets['Hoạt động'];;
+            this.data.status = this.assets['Hoạt động'];
+            let signing_date = $('#'+this.idModalBackUI+' #'+this.selectSigningDate).val()
+            
+            if (signing_date != null) {
+                const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
+                this.data.signing_date = formattedDate;
+            }
 
-            const response = await window.apiRevertAsset([this.data])
+            const statusUpdate = {
+                update_status_assets : [this.data]
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             
             if (!response.success) {
                 this.loading = false
@@ -306,14 +314,9 @@ document.addEventListener('alpine:init', () => {
         async revertMulti() {
             this.loading = true
 
-            const signing_date = $('#'+this.idModalBackMultiple+'#'+this.selectSigningDate).val()
-            
-            if (
-                signing_date != null
-                &&
-                isValid(parse(signing_date, 'dd/MM/yyyy', ''))
-            ) { 
-                const formattedDate = format(signing_date, 'dd/MM/yyyy');
+            let signing_date = $('#'+this.idModalBackMultiple+' #'+this.selectSigningDate).val()
+            if (signing_date != null) {
+                const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.dataSelectMulti.forEach(item => {
                     item.signing_date = formattedDate;
                 });
@@ -324,7 +327,11 @@ document.addEventListener('alpine:init', () => {
                 item.status = this.assets['Hoạt động'];
             });
 
-            const response = await window.apiRevertAsset(this.dataSelectMulti)
+            const statusUpdate = {
+                update_status_assets : this.dataSelectMulti
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)
@@ -346,8 +353,18 @@ document.addEventListener('alpine:init', () => {
 
             // Trạng thái hủy = 5
             this.data.status = this.assets['Đã hủy'];
+            let signing_date = $('#'+this.idModalCancelUI+' #'+this.selectSigningDate).val()
+            
+            if (signing_date != null) {
+                const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
+                this.data.signing_date = formattedDate;
+            }
 
-            const response = await window.apiCanceltAsset(this.data)
+            const statusUpdate = {
+                update_status_assets : [this.data]
+            }
+
+            const response = await window.apiCanceltAsset(statusUpdate)
             
             if (!response.success) {
                 this.loading = false
@@ -366,15 +383,11 @@ document.addEventListener('alpine:init', () => {
         async cancelMulti() {
             this.loading = true
 
-            const signing_date = $('#'+this.idModalCancelMultiple+'#'+this.selectSigningDate).val()
-            const description = $('#'+this.idModalCancelMultiple+'#'+this.reasonCancel).val()
+            const signing_date = $('#'+this.idModalCancelMultiple+' #'+this.selectSigningDate).val()
+            const description = $('#'+this.idModalCancelMultiple+' #'+this.reasonCancel).val()
 
-            if (
-                signing_date != null
-                &&
-                isValid(parse(signing_date, 'dd/MM/yyyy', ''))
-            ) { 
-                const formattedDate = format(signing_date, 'dd/MM/yyyy');
+            if (signing_date != null) {
+                const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.dataSelectMulti.forEach(item => {
                     item.signing_date = formattedDate;
                 });
@@ -386,7 +399,11 @@ document.addEventListener('alpine:init', () => {
                 item.description = description
             });
 
-            const response = await window.apiRevertAsset(this.dataSelectMulti)
+            const statusUpdate = {
+                update_status_assets : this.dataSelectMulti
+            }
+
+            const response = await window.apiRevertAsset(statusUpdate)
             if (!response.success) {
                 this.loading = false
                 toast.error(response.message)

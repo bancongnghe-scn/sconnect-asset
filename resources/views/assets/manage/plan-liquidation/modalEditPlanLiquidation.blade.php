@@ -2,8 +2,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-show="data.id" x-text="data.code" style="color:rgba(43, 133, 11, 1);"></h4>
-                <h4 class="modal-title" x-show="!data.id" style="color:rgba(43, 133, 11, 1);">Tạo mới kế hoạch</h4>
+                <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
+                <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
                     <span x-text="listStatusPlanLiquidation[data.status]" 
                         class="pl-2 pr-2 border-none rounded" 
@@ -87,7 +87,7 @@
                                             </td>
                                             <td class="text-center align-middle">
                                                 <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: dataAsset.id })">
-                                                    <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                                    <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                                 </button>
                                             </td>
                                         </tr>
@@ -95,11 +95,9 @@
                                     </tbody>
                                 </table>
 
-                                <button class="mb-3 tw-w-fit border-0" style="color: #28a745;background-color:unset;" x-show="showAction.get ?? true" @click="$dispatch('get')">+ Thêm</button>
+                                <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent" x-show="showAction.get ?? true" @click="$dispatch('get')">+ Thêm</button>
                                 
-                                <div
-                                    {{-- @delete="handleDeleteOfMultiModalCancelUI($event.detail.id)" --}}
-                                >
+                                <div>
                                     @include('assets.manage.plan-liquidation.modalSelectAsset')
                                 </div>
             

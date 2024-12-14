@@ -89,4 +89,5 @@ Route::middleware('web')->group(function () {
     });
 
     Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
+    Route::view('/assets/inventory/list', 'assets.inventory.list');
 });
