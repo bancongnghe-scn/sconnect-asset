@@ -10,6 +10,7 @@ export default defineConfig({
                 'resources/sass/app.scss',
                 'resources/css/app.css',
                 'resources/css/custom.css',
+                'resources/css/assets/manage/list.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 ...sync('resources/js/assets/**/*.js'),
