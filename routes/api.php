@@ -145,7 +145,7 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('manage-asset-lost')->controller(App\Http\Controllers\Manage\AssetLostController::class)->group(function () {
         Route::get('list', 'getListAssetLost');
         Route::get('{id}', 'findAssetLost');
-        Route::post('update', 'findAssetLost');
+        Route::post('update', 'updateAssetLost');
     });
 
     Route::get('manage-asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
@@ -161,6 +161,20 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('update-status-asset', 'changeStatusAssetOfPlan');
         Route::post('update-status-multi-asset', 'changeStatusMultiAssetOfPlan');
         Route::post('update-plan/{id}', 'updatePlan');
+    });
+
+    Route::prefix('asset-damaged')->controller(App\Http\Controllers\Inventory\AssetDamagedController::class)->group(function () {
+        Route::get('list', 'getListAssetDamaged');
+        Route::post('update-asset-liquidation', 'updateMultiAssetLiquidation');
+        Route::post('update-asset-cancel', 'updateMultiAssetCancel');
+    });
+
+    Route::prefix('asset-repair')->controller(App\Http\Controllers\Inventory\AssetRepairController::class)->group(function () {
+        Route::post('create', 'createAssetRepair');
+        Route::get('list', 'getListAssetRepair');
+        Route::get('detail/{id}', 'getAssetRepair');
+        Route::post('multi', 'getMultiAssetRepair');
+        Route::post('update/multi', 'updateMultiAssetRepaired');
     });
 
     Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {

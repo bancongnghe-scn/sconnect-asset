@@ -43,10 +43,10 @@
                             </template>
                             <td class="text-center align-middle">
                                 <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                    <i class="fa-solid fa-arrow-rotate-left" style="color: #1ec258;">&#xF117;</i>
+                                    <i class="fa-solid fa-arrow-rotate-left tw-text-green-500">&#xF117;</i>
                                 </button>
                                 <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })">
-                                    <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
+                                    <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                 </button>
                             </td>
                         </tr>

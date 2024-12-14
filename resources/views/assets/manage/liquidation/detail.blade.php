@@ -9,7 +9,7 @@
         @edit="handleBackModalUI($event.detail.id)"
         @cancel="handleCancelModalUI($event.detail.id)"
         @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changLimit"
+        @change-limit.window="changeLimit"
     >
         @include('assets.manage.liquidation.table')
     </div>

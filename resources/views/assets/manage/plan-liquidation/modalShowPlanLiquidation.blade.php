@@ -2,8 +2,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-show="data.id" x-text="data.code" style="color:rgba(43, 133, 11, 1);"></h4>
-                <h4 class="modal-title" x-show="!data.id" style="color:rgba(43, 133, 11, 1);">Tạo mới kế hoạch</h4>
+                <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
+                <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
                     <span x-text="listStatusPlanLiquidation[data.status]" 
                         class="pl-2 pr-2 border-none rounded" 
@@ -161,6 +161,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                @can('liquidation_asset.hr_manager_approval')
                 <button class="btn bg-body" 
                     x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
@@ -177,6 +178,7 @@
                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                     Từ chối
                 </button>
+                @endcan
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>

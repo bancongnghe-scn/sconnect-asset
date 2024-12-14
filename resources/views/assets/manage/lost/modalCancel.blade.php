@@ -54,13 +54,19 @@
                     <div class="row mb-3">
                         <div class="col-4">
                             <label class="tw-font-bold">Ngày hủy</label>
-                            @include('common.datepicker',['placeholder' => "Lựa chọn ngày", 'id' => 'selectSigningDate'])
+                            <div class="input-group">
+                                <input type="text" class="form-control datepicker" id="selectSigningDate"
+                                       placeholder="Lựa chọn ngày" autocomplete="off">
+                                <span class="input-group-text">
+                                    <i class="fa-regular fa-calendar-days"></i>
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-4">
                             <label class="form-label">Lý do hủy</label>
-                            <input type="text" class="form-control" x-model="data.description" placeholder="Nhập ghi chú" style="height: 100px;">
+                            <textarea type="text" class="form-control tw-h-24" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                 </div>
