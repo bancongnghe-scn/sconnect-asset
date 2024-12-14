@@ -51,7 +51,8 @@ class ShoppingAssetService
                 'error_code' => AppErrorCode::CODE_2058,
             ];
         }
-        if (ShoppingPlanCompany::STATUS_HR_SYNTHETIC !== +$shoppingPlanCompany->status) {
+
+        if (ShoppingPlanCompany::STATUS_APPROVAL == +$shoppingPlanCompany->status) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2074,

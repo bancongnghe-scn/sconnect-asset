@@ -22,7 +22,12 @@
                     <button class="btn btn-sc" @click="updatePlanWeek()">Lưu</button>
                 @endcan
             </template>
-            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC">
+            <template x-if="[
+                    STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                ].includes(+data.status)">
                 @can('shopping_plan_company.synthetic_shopping')
                     <button class="btn btn-sc" @click="sentInfoShoppingAsset()">Lưu</button>
                 @endcan
@@ -140,9 +145,9 @@
                             <div>
                                 <label class="form-label">Người quan sát</label>
                                 <div x-data="{
-                                                                    model: data.monitor_ids,
-                                                                    init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                                                }"
+                                     model: data.monitor_ids,
+                                     init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
+                                }"
                                      @select-change="data.monitor_ids = $event.detail"
                                 >
                                     @include('common.select2.extent.select2_multiple', [
@@ -272,6 +277,8 @@
                 @include('component.shopping_plan_company.history_comment')
             </div>
         </div>
+
+        {{-- modal--}}
         <div
             x-data="{
                         modalId: idModalConfirmDelete,
