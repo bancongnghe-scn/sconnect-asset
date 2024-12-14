@@ -17,8 +17,8 @@ class PlanLiquidationController extends Controller
     public function createPlan(Request $request)
     {
         $request->validate([
-            'name'      => 'required|string',
-            'code'      => 'required|string',
+            'name'      => 'required|string|max:255',
+            'code'      => 'required|string|max:255',
             'note'      => 'nullable|string',
         ]);
         try {
@@ -33,9 +33,9 @@ class PlanLiquidationController extends Controller
     public function getPlan(Request $request)
     {
         $request->validate([
-            'name_code'         => 'nullable|string',
+            'name_code'         => 'nullable|string|max:255',
             'created_at'        => 'nullable|string',
-            'status'            => 'nullable|integer',
+            'status'            => 'nullable|integer|max:200',
         ]);
         try {
             $result = $this->planLiquidationService->listPlanLiquidation($request->all());
@@ -60,7 +60,7 @@ class PlanLiquidationController extends Controller
     public function updateAssetToPlan(Request $request)
     {
         $request->validate([
-            'plan_id'       => 'nullable|integer',
+            'plan_id'       => 'nullable|integer|max:200',
             'asset_ids'     => 'nullable|array',
         ]);
         try {
@@ -98,10 +98,10 @@ class PlanLiquidationController extends Controller
     {
         try {
             $request->validate([
-                'name'      => 'nullable|string',
-                'code'      => 'nullable|string',
+                'name'      => 'nullable|string|max:255',
+                'code'      => 'nullable|string|max:255',
                 'note'      => 'nullable|string',
-                'status'    => 'nullable|integer',
+                'status'    => 'nullable|integer|max:200',
             ]);
 
             $result = $this->planLiquidationService->updatePlan($id, $request->all());
@@ -121,7 +121,7 @@ class PlanLiquidationController extends Controller
         try {
             $request->validate([
                 'id'        => 'required|integer',
-                'status'    => 'required|integer',
+                'status'    => 'required|integer|max:200',
             ]);
 
             $result = $this->planLiquidationService->updatePlanMaintainAsset($request->get('id'), $request->integer('status'));
@@ -140,7 +140,7 @@ class PlanLiquidationController extends Controller
     {
         $request->validate([
             'ids'       => 'required|array',
-            'status'    => 'required|integer',
+            'status'    => 'required|integer|max:200',
         ]);
         try {
             $result = $this->planLiquidationService->updateMultiPlanMaintainAsset($request->get('ids'), $request->integer('status'));

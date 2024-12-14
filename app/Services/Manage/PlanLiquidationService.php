@@ -335,7 +335,7 @@ class PlanLiquidationService
                     PlanMaintain::STATUS_REJECT   => Asset::STATUS_PROPOSAL_LIQUIDATION,
                 ];
 
-                $historyGroupedByStatus = [];
+                $historyAsset = [];
 
                 if (PlanMaintain::STATUS_APPROVAL === $status) {
                     foreach ($statusActions as $filterStatus => $newAssetStatus) {
@@ -357,11 +357,15 @@ class PlanLiquidationService
                             ];
                         }
 
-                        // Gom nhóm lịch sử theo trạng thái
-                        $historyGroupedByStatus[$newAssetStatus] = array_merge(
-                            $historyGroupedByStatus[$newAssetStatus] ?? [],
-                            $assetIdsToUpdate
-                        );
+                        foreach ($assetIdsToUpdate as $assetId) {
+                            $historyAsset[] = [
+                                'asset_id'              => $assetId,
+                                'action'                => $newAssetStatus,
+                                'date'                  => new \DateTime(),
+                                'created_at'            => new \DateTime(),
+                                'created_by'            => Auth::id(),
+                            ];
+                        }
                     }
                 } else {
                     $newAssetStatus = Asset::STATUS_PROPOSAL_LIQUIDATION;
@@ -379,21 +383,27 @@ class PlanLiquidationService
                             ];
                         }
 
-                        // group history
-                        $historyGroupedByStatus[$newAssetStatus] = $assetIdsToUpdate;
+                        foreach ($assetIdsToUpdate as $assetId) {
+                            $historyAsset[] = [
+                                'asset_id'              => $assetId,
+                                'action'                => $newAssetStatus,
+                                'date'                  => new \DateTime(),
+                                'created_at'            => new \DateTime(),
+                                'created_by'            => Auth::id(),
+                            ];
+                        }
                     }
                 }
 
                 // insert history
-                foreach ($historyGroupedByStatus as $status => $assetIdsToInsert) {
-                    if (!$this->assetHistoryRepository->insertHistoryAsset($assetIdsToInsert, $status)) {
-                        DB::rollBack();
+                $historyAsset = $this->assetHistoryRepository->insert($historyAsset);
+                if (!$historyAsset) {
+                    DB::rollBack();
 
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_5011,
-                        ];
-                    }
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
+                    ];
                 }
             }
 

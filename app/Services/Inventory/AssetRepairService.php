@@ -21,9 +21,9 @@ class AssetRepairService
 
     }
 
-    public function updateAssetRepair($data)
+    public function createAssetRepair($data)
     {
-        $dataUpdate = [];
+        $dataInsert = [];
         if (!empty($data['assets'])) {
             $assets   = $data['assets'];
             $assetIds = array_column($assets, 'id');
@@ -38,7 +38,7 @@ class AssetRepairService
                     : $data['supplier_id'];
 
 
-                $dataUpdate[] = [
+                $dataInsert[] = [
                     'asset_id'              => $asset['id'],
                     'date_repair'           => $data['date_repair'],
                     'date_repaired'         => $data['date_repaired'],
@@ -54,7 +54,7 @@ class AssetRepairService
 
             DB::beginTransaction();
             try {
-                $insertInforAssetRepair = $this->assetRepairRepository->insert($dataUpdate);
+                $insertInforAssetRepair = $this->assetRepairRepository->insert($dataInsert);
                 if (!$insertInforAssetRepair) {
                     DB::rollBack();
 

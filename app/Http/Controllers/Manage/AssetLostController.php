@@ -42,9 +42,9 @@ class AssetLostController extends Controller
     public function updateAssetLost(Request $request)
     {
         $request->validate([
-            'update_status_assets'                      => 'array',
+            'update_status_assets'                      => 'nullable|array',
             'update_status_assets.*.id'                 => 'required|integer',
-            'update_status_assets.*.status'             => 'required|integer',
+            'update_status_assets.*.status'             => 'required|integer|max:200',
         ]);
 
         try {

@@ -18,22 +18,22 @@ class AssetRepairController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function updateAssetRepair(Request $request)
+    public function createAssetRepair(Request $request)
     {
         $request->validate([
             'date_repair'               => 'nullable|date|date_format:Y-m-d',
             'date_repaired'             => 'nullable|date|date_format:Y-m-d',
             'location'                  => 'nullable|string',
-            'supplier_id'               => 'nullable|integer',
-            'performer_id'              => 'nullable|integer',
-            'assets'                    => 'array',
+            'supplier_id'               => 'nullable|integer|max:200',
+            'performer_id'              => 'nullable|integer|max:200',
+            'assets'                    => 'nullable|array',
             'assets.*.id'               => 'nullable|integer',
             'assets.*.cost_repair'      => 'nullable|integer',
             'assets.*.note_repair'      => 'nullable|string',
         ]);
 
         try {
-            $result = $this->assetRepairService->updateAssetRepair($request->all());
+            $result = $this->assetRepairService->createAssetRepair($request->all());
 
             if (!$result['success']) {
                 return response_error($result['error_code']);

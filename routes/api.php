@@ -156,7 +156,7 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::prefix('asset-repair')->controller(App\Http\Controllers\Inventory\AssetRepairController::class)->group(function () {
-        Route::post('update', 'updateAssetRepair');
+        Route::post('create', 'createAssetRepair');
         Route::get('list', 'getListAssetRepair');
         Route::get('detail/{id}', 'getAssetRepair');
         Route::post('multi', 'getMultiAssetRepair');

@@ -176,7 +176,7 @@ document.addEventListener('alpine:init', () => {
                 assets: this.dataRepair
             }
 
-            const response = await window.apiUpdateAssetRepair(dataUpdate)
+            const response = await window.apiCreateAssetRepair(dataUpdate)
             if (response.success) {
                 this.list(this.filters)
             } else {

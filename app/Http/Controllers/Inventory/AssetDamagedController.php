@@ -32,11 +32,11 @@ class AssetDamagedController extends Controller
     public function updateMultiAssetLiquidation(Request $request)
     {
         $request->validate([
-            'asset_liqui'                           => 'array',
+            'asset_liqui'                           => 'nullable|array',
             'asset_liqui.*.id'                      => 'required|integer',
-            'asset_liqui.*.price_liquidation'       => 'nullable',
+            'asset_liqui.*.price_liquidation'       => 'nullable|integer',
             'asset_liqui.*.date'                    => 'nullable|date|date_format:Y-m-d',
-            'asset_liqui.*.reason'                  => 'nullable',
+            'asset_liqui.*.reason'                  => 'nullable|string',
         ]);
 
         try {
@@ -51,10 +51,10 @@ class AssetDamagedController extends Controller
     public function updateMultiAssetCancel(Request $request)
     {
         $request->validate([
-            'asset_cancel'                          => 'array',
+            'asset_cancel'                          => 'nullable|array',
             'asset_cancel.*.id'                     => 'required|integer',
             'asset_cancel.*.date'                   => 'nullable|date|date_format:Y-m-d',
-            'asset_cancel.*.reason'                 => 'nullable',
+            'asset_cancel.*.reason'                 => 'nullable|string',
         ]);
 
         try {

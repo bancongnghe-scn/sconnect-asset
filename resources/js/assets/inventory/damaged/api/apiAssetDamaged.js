@@ -24,10 +24,10 @@ window.apiGetAssetDamaged = async function (filters) {
     }
 }
 
-window.apiUpdateAssetRepair = async function (dataUpdate) {
+window.apiCreateAssetRepair = async function (dataCreate) {
     try {
 
-        const res = await axios.post("/api/asset-repair/update", dataUpdate)
+        const res = await axios.post("/api/asset-repair/create", dataCreate)
 
         const data = res.data;
         if (!data.success) {

@@ -54,6 +54,7 @@ class AssetDamagedService
     {
         DB::beginTransaction();
         try {
+            $dataHistory = [];
             foreach ($data as $asset) {
                 $result = $this->updateAsset($asset, $status);
                 if (!$result['success']) {
@@ -65,15 +66,23 @@ class AssetDamagedService
                     ];
                 }
 
-                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset([$asset['id']], $status);
-                if (!$historyAsset) {
-                    DB::rollBack();
+                $dataHistory[] = [
+                    'asset_id'              => $asset['id'],
+                    'action'                => $status,
+                    'date'                  => new \DateTime(),
+                    'created_at'            => new \DateTime(),
+                    'created_by'            => Auth::id(),
+                ];
+            }
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_5011,
-                    ];
-                }
+            $historyAsset = $this->assetHistoryRepository->insert($dataHistory);
+            if (!$historyAsset) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_5011,
+                ];
             }
             DB::commit();
         } catch (\Exception $e) {
