@@ -161,6 +161,7 @@
                 </div>
             </div>
             <div class="modal-footer">
+                @can('liquidation_asset.hr_manager_approval')
                 <button class="btn bg-body" 
                     x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
@@ -177,6 +178,7 @@
                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                     Từ chối
                 </button>
+                @endcan
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
