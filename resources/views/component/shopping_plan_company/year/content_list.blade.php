@@ -12,13 +12,13 @@
     </div>
 
     <div>
-        @include('assets.shopping-plan-company.year.filter')
+        @include('component.shopping_plan_company.year.filter')
     </div>
 
     <div
-        @remove="confirmRemove($event.detail.id)"
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
+            @remove="confirmRemove($event.detail.id)"
+            @change-page.window="changePage($event.detail.page)"
+            @change-limit.window="changeLimit"
     >
         @include('assets.shopping-plan-company.year.table')
     </div>
@@ -26,21 +26,21 @@
     {{--  modal--}}
     @include('assets.shopping-plan-company.year.modalInsert')
     <div
-        x-data="{
+            x-data="{
                         modalId: idModalConfirmDelete,
                         contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
                     }"
-        @ok="remove"
+            @ok="remove"
     >
         @include('common.modal-confirm')
     </div>
 
     <div
-        x-data="{
+            x-data="{
                 modalId: idModalConfirmDeleteMultiple,
                 contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
             }"
-        @ok="removeMultiple"
+            @ok="removeMultiple"
     >
         @include('common.modal-confirm')
     </div>

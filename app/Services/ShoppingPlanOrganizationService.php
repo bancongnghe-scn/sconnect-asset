@@ -57,7 +57,7 @@ class ShoppingPlanOrganizationService
         if (is_null($deptId)) {
             $deptId = Auth::user()->dept_id;
         }
-        $planOrganization = $this->shoppingPlanCompanyRepository->getListingOfOrganization($filters, $deptId);
+        $planOrganization = $this->shoppingPlanOrganizationRepository->getListingOfOrganization($filters, $deptId);
 
         if ($planOrganization->isEmpty()) {
             return [];
@@ -172,6 +172,8 @@ class ShoppingPlanOrganizationService
             if (!empty($dataNew)) {
                 $insert = $this->shoppingAssetRepository->insert($dataNew);
                 if (!$insert) {
+                    DB::rollBack();
+
                     return [
                         'success'    => false,
                         'error_code' => AppErrorCode::CODE_2073,
@@ -184,6 +186,8 @@ class ShoppingPlanOrganizationService
                 $data['shopping_plan_organization_id']
             );
             if (!$insertLog) {
+                DB::rollBack();
+
                 return [
                     'success'    => false,
                     'error_code' => AppErrorCode::CODE_2076,
@@ -216,17 +220,15 @@ class ShoppingPlanOrganizationService
                 ];
                 break;
             case ShoppingPlanCompany::TYPE_QUARTER:
-            case ShoppingPlanCompany::TYPE_WEEK:
                 $shoppingPlanCompanyYear = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_year_id);
-                if (ShoppingPlanCompany::TYPE_QUARTER == $shoppingPlanCompany->type) {
-                    $data = [
-                        'year'    => $shoppingPlanCompanyYear->time,
-                        'quarter' => $shoppingPlanCompany->time,
-                    ];
-                    break;
-                }
-
+                $data                    = [
+                    'year'    => $shoppingPlanCompanyYear->time,
+                    'quarter' => $shoppingPlanCompany->time,
+                ];
+                break;
+            case ShoppingPlanCompany::TYPE_WEEK:
                 $shoppingPlanCompanyQuarter = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompany->plan_quarter_id);
+                $shoppingPlanCompanyYear    = $this->shoppingPlanCompanyRepository->find($shoppingPlanCompanyQuarter->plan_year_id);
                 $data                       = [
                     'year'    => $shoppingPlanCompanyYear->time,
                     'quarter' => $shoppingPlanCompanyQuarter->time,
@@ -250,8 +252,8 @@ class ShoppingPlanOrganizationService
             ];
         }
         // kiem tra loai ke hoach de tra ve format phu hop
-        if (ShoppingPlanCompany::TYPE_WEEK === $shoppingPlanOrganization->shoppingPlanCompany->type) {
-            $data = [];
+        if (ShoppingPlanCompany::TYPE_WEEK === +$shoppingPlanOrganization->shoppingPlanCompany->type) {
+            $data = $shoppingPlanOrganization->shoppingAssets->toArray();
         } else {
             // neu la kh nam va quy thi cung 1 format
             $data = RegisterShoppingYearResource::make($shoppingPlanOrganization)->resolve();
@@ -354,12 +356,18 @@ class ShoppingPlanOrganizationService
                 }
             }
 
-            $this->shoppingPlanLogRepository->create([
-                'action'     => ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION,
-                'record_id'  => $shoppingPlanOrganization->id,
-                'desc'       => __('shopping_plan_log.' . ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION),
-                'created_by' => Auth::id(),
-            ]);
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_ACCOUNT_REVIEW_ORGANIZATION,
+                $shoppingPlanOrganization->id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
 
             foreach ($data['registers'] as $register) {
                 foreach ($register['assets'] as $asset) {

@@ -62,7 +62,7 @@ return [
     AppErrorCode::CODE_2055 => 'Kế hoạch mua sắm đã tồn tại !',
     AppErrorCode::CODE_2057 => 'Tạo kế hoạch mua sắm năm của đơn vị thất bại !',
     AppErrorCode::CODE_2058 => 'Kế hoạch mua sắm không tồn tại !',
-    AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi, không thể cập nhật !',
+    AppErrorCode::CODE_2059 => 'Kế hoạch mua sắm đã được gửi duyệt, không thể cập nhật !',
     AppErrorCode::CODE_2060 => 'Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !',
     AppErrorCode::CODE_2061 => 'Xóa kế hoạch mua sắm thất bại !',
     AppErrorCode::CODE_2062 => 'Cập nhật trạng thái kế hoạch mua sắm thất bại !',
@@ -81,6 +81,8 @@ return [
     AppErrorCode::CODE_2075 => 'Duyệt kế hoạch mua sắm thất bại !',
     AppErrorCode::CODE_2076 => 'Lưu lịch sử thất bại !',
     AppErrorCode::CODE_2077 => 'Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !',
+    AppErrorCode::CODE_2078 => 'Trạng thái của kế hoạch không phù hợp hoặc chưa hết thời gian đăng ký !',
+    AppErrorCode::CODE_2079 => 'Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

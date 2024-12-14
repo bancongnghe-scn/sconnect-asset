@@ -30,19 +30,10 @@
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                     <span x-text="organization.name"></span>
-                    <span x-text="STATUS_SHOPPING_PLAN_ORGANIZATION[organization.status]"
-                          class="p-1 border rounded d-block tw-w-fit text-xs"
-                          :class="{
-                                             'tw-text-sky-600 tw-bg-sky-100': +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
-                                             'tw-text-green-600 tw-bg-green-100': +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                                             || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                             'tw-text-green-900 tw-bg-green-100'  : +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                                             || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                                             || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                             'tw-text-red-600 tw-bg-red-100'  : +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +organization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
-                          }"
-                          data-bs-toggle="tooltip" data-bs-placement="bottom" :title="organization.note"
-                    ></span>
+                    @include('component.shopping_plan_organization.status_shopping_plan_organization', [
+                        'status' => 'organization.status',
+                        'tooltip' => 'organization.note'
+                    ])
                 </td>
                 <td x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="index + '_' + stt + '_' + number">

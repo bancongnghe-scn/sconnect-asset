@@ -63,7 +63,7 @@ class AppErrorCode
     public const CODE_2055 = 2055; //  Kế hoạch mua sắm đã tồn tại !
     public const CODE_2057 = 2057; //  Tạo kế hoạch mua sắm năm của đơn vị thất bại !
     public const CODE_2058 = 2058; //  Kế hoạch mua sắm không tồn tại !
-    public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi, không thể cập nhật !
+    public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi duyệt, không thể cập nhật !
     public const CODE_2060 = 2060; //  Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !
     public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
     public const CODE_2062 = 2062; //  Cập nhật trạng thái kế hoạch mua sắm thất bại !
@@ -82,6 +82,8 @@ class AppErrorCode
     public const CODE_2075 = 2075; //  Duyệt kế hoạch mua sắm thất bại !
     public const CODE_2076 = 2076; //  Lưu lịch sử thất bại !
     public const CODE_2077 = 2077; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+    public const CODE_2078 = 2078; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+    public const CODE_2079 = 2079; //  Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

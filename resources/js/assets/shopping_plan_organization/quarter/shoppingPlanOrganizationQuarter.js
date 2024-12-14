@@ -33,7 +33,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         listPlanCompanyYear: [],
-        listQuarter: LIST_QUARTER,
         listStatus: STATUS_SHOPPING_PLAN_ORGANIZATION,
         action: null,
         id: null,

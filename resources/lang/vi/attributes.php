@@ -18,9 +18,13 @@ return [
         'quarter' => [
             'time' => 'quý',
         ],
-        'start_time'     => 'thời gian bắt đầu đăng ký',
-        'end_time'       => 'thời gian kết thúc đăng ký',
-        'plan_year_id'   => 'kế hoạch năm',
+        'week' => [
+            'time' => 'tuần',
+        ],
+        'start_time'        => 'thời gian bắt đầu đăng ký',
+        'end_time'          => 'thời gian kết thúc đăng ký',
+        'plan_year_id'      => 'kế hoạch năm',
+        'plan_quarter_id'   => 'kế hoạch quý',
     ],
     'job_id'              => 'chức danh',
     'quantity_registered' => 'số lượng đăng ký',

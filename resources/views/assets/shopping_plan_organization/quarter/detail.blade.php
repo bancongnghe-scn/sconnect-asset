@@ -40,17 +40,7 @@
                     <div class="mb-3">
                         <div class="d-flex tw-gap-x-4 mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
-                            <span x-text="STATUS_SHOPPING_PLAN_ORGANIZATION[data.status]" class="p-1 border rounded"
-                                  :class="{
-                                             'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER,
-                                             'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                             'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                                             || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_APPROVAL,
-                                             'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
-                                  }"
-                            ></span>
+                            @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
                         </div>
                         <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                             <div>
