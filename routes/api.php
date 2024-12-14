@@ -3,6 +3,7 @@
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
@@ -105,4 +106,16 @@ Route::middleware('web')->group(function () {
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
 
     Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
+});
+
+Route::prefix('report')->group(function () {
+    Route::get('/get-data-value-report', [ReportController::class, 'getDataValueReport'])->name('assets.report.getDataValueReport');
+
+    Route::get('/get-data-operating-report', [ReportController::class, 'getDataOperatingReport'])->name('assets.report.getDataOperatingReport');
+
+    Route::get('/get-data-structure-report', [ReportController::class, 'getDataStructureReport'])->name('assets.report.getDataStructureReport');
+
+    Route::get('/get-data-use-report', [ReportController::class, 'getDataUseReport'])->name('assets.report.getDataUseReport');
+
+    Route::get('/get-data-maintain-report', [ReportController::class, 'getDataMaintainReport'])->name('assets.report.getDataMaintainReport');
 });

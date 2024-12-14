@@ -37,7 +37,7 @@ if (!function_exists('response_error')) {
             'success'  => false,
             'code'     => $errorCode,
             'errors'   => empty($errors) ? $extraData['errors'] ?? [] : $errors,
-            'message'  => !empty($message) ? $message : __('error.'.$errorCode, $extraData),
+            'message'  => !empty($message) ? $message : __('error.' . $errorCode, $extraData),
         ];
 
         if (!empty($data)) {
@@ -69,6 +69,22 @@ if (!function_exists('callApiSSO')) {
             Log::info($e->getMessage());
             Log::info('======================== End Helper:: callApiWithSession ============================');
             throw $e;
+        }
+    }
+}
+
+if (!function_exists('formatNumberToReadable')) {
+
+    function formatNumberToReadable($number)
+    {
+        if ($number >= 1000000000) {
+            return round($number / 1000000000, 1) . ' tỷ';
+        } elseif ($number >= 1000000) {
+            return round($number / 1000000, 1) . ' triệu';
+        } elseif ($number >= 1000) {
+            return round($number / 1000, 1) . ' nghìn';
+        } else {
+            return $number;
         }
     }
 }
