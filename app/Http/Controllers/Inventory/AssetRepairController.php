@@ -21,7 +21,7 @@ class AssetRepairController extends Controller
     public function createAssetRepair(Request $request)
     {
         $request->validate([
-            'date_repair'               => 'nullable|date|date_format:Y-m-d h:i:s',
+            'date_repair'               => 'nullable|date|date_format:Y-m-d',
             'date_repaired'             => 'nullable|date|date_format:Y-m-d',
             'location'                  => 'nullable|string',
             'supplier_id'               => 'nullable|integer|max:200',
