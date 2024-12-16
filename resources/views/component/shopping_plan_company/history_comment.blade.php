@@ -13,16 +13,32 @@
             Bình luận
         </a>
     </div>
-    <div class="mt-3 tw-h-[70dvh]" style="border-top: 1px solid">
-        <div class="overflow-y-scroll custom-scroll mt-3" x-show="activeLink.history">
-            <div class="container">
+    <div class="mt-3 tw-h-[73dvh] overflow-y-scroll overflow-x-hidden custom-scroll" style="border-top: 1px solid" x-show="activeLink.history">
+        <div class="container mt-3">
+            <div class="list-group">
                 <template x-for="log in logs">
-                    <p x-text="`${log.created_at} - ${log.created_by} : ${log.desc}`"></p>
+                    <div class="d-flex tw-gap-x-2">
+                        <div class="tw-w-8 d-flex flex-column align-items-center">
+                            <span class="text-primary border tw-rounded-full d-flex tw-bg-blue-100">
+                                <i class="fa-regular fa-star tw-p-[5px] tw-text-blue-600" style="color: #74C0FC"></i>
+                            </span>
+                            <div class="border-start border-2 flex-grow-1"></div>
+                        </div>
+                        <div class="w-auto border rounded p-2 tw-bg-zinc-100 mb-3">
+                            <p class="mb-1 text-muted small" x-text="log.created_at"></p>
+                            <p class="mb-0">
+                                <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
+                                <span x-text="log.desc"></span>
+                            </p>
+                        </div>
+                    </div>
                 </template>
             </div>
         </div>
-        <div class="mt-3" id="comment" x-show="activeLink.comment">
-            <div class="overflow-y-scroll custom-scroll tw-h-[65dvh]">
+    </div>
+    <div class="mt-3" style="border-top: 1px solid" x-show="activeLink.comment">
+        <div class="mt-3 container" id="comment">
+            <div class="tw-h-[61dvh] xl:tw-h-[65dvh] overflow-y-scroll custom-scroll">
                 <div class="container" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
                     <template x-for="comment in comments" :key="comment.id">
                         <div class="mb-3">
@@ -62,16 +78,14 @@
                 </div>
             </div>
 
-            <div class="container">
-                <div class="input-group border rounded mt-3">
-                    <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
-                           x-model="comment_message"
-                           x-ref="input_message"
-                           @keydown.enter="sentComment()">
-                    <button class="btn" type="button" @click="sentComment()">
-                        <i class="fas fa-paper-plane color-sc"></i>
-                    </button>
-                </div>
+            <div class="input-group border rounded mt-3">
+                <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
+                       x-model="comment_message"
+                       x-ref="input_message"
+                       @keydown.enter="sentComment()">
+                <button class="btn" type="button" @click="sentComment()">
+                    <i class="fas fa-paper-plane color-sc"></i>
+                </button>
             </div>
         </div>
     </div>

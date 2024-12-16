@@ -15,7 +15,7 @@ class CreateShoppingPlanCompanyYearRequest extends FormRequest
     {
         return [
             'time'               => 'required|integer|gte:'.now()->year,
-            'start_time'         => 'required|date|date_format:Y-m-d|after_or_equal:today',
+            'start_time'         => 'required|date|date_format:Y-m-d',
             'end_time'           => 'required|date|date_format:Y-m-d|after_or_equal:start_time',
             'monitor_ids'        => 'nullable|array',
             'monitor_ids.*'      => 'integer',

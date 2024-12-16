@@ -8,12 +8,15 @@ import './bootstrap';
 import '@fortawesome/fontawesome-free/js/all.js';
 import Alpine from 'alpinejs'
 import './helpers.js'
-
+import AirDatepicker from "air-datepicker";
+import localeEn from "air-datepicker/locale/en";
+import {format} from "date-fns";
 window.Alpine = Alpine
-
-window.onload = function () {
+window.AirDatepicker = AirDatepicker;
+window.localeEn = localeEn;
+window.format = format;
+window.addEventListener('load', () => {
     Alpine.start();
-
     $('.select2').select2({
         language: {
             noResults: function() {
@@ -21,7 +24,7 @@ window.onload = function () {
             }
         }
     })
-}
+});
 
 import { Toast } from 'bootstrap';
 const toast = {

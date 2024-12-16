@@ -56,6 +56,7 @@ class PermissionService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -115,21 +116,15 @@ class PermissionService
 
     public function updatePermission($data, $id)
     {
-        $permission         = Permission::findById($id);
-        $data['updated_by'] = Auth::id();
-        $permission->fill($data);
         DB::beginTransaction();
         try {
-            if (!$permission->save()) {
-                DB::rollBack();
+            Permission::where('id', $id)->update([
+                'name'        => $data['name'],
+                'description' => $data['description'],
+            ]);
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2048,
-                ];
-            }
-
-            $userIds = $data['user_ids'] ?? [];
+            $userIds    = $data['user_ids'] ?? [];
+            $permission = Permission::findById($id);
             resolve(UserPermissionService::class)->updateUsersPermission($userIds, $permission);
 
             $roleIds               = $data['role_ids'] ?? [];
@@ -146,6 +141,7 @@ class PermissionService
             DB::commit();
 
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

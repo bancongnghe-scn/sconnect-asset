@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,22 +29,26 @@ class ShoppingPlanCompany extends Model
         'deleted_by',
     ];
 
-    public const STATUS_NEW                         = 1;
-    public const STATUS_REGISTER                    = 2;
-    public const STATUS_PENDING_ACCOUNTANT_APPROVAL = 3;
-    public const STATUS_PENDING_MANAGER_APPROVAL    = 4;
-    public const STATUS_APPROVAL                    = 5;
-    public const STATUS_DISAPPROVAL                 = 6;
+    public const STATUS_NEW                            = 1;
+    public const STATUS_REGISTER                       = 2;
+    public const STATUS_PENDING_ACCOUNTANT_APPROVAL    = 3;
+    public const STATUS_PENDING_MANAGER_APPROVAL       = 4;
+    public const STATUS_APPROVAL                       = 5;
+    public const STATUS_DISAPPROVAL                    = 6;
+    public const STATUS_HR_HANDLE                      = 7;
+    public const STATUS_HR_SYNTHETIC                   = 8;
+    public const STATUS_PENDING_MANAGER_HR_APPROVAL    = 9;
 
     public const TYPE_YEAR    = 1;
     public const TYPE_QUARTER = 2;
     public const TYPE_WEEK    = 3;
-
-    public const TYPE_NAME = [
+    public const TYPE_NAME    = [
         self::TYPE_YEAR    => 'năm',
         self::TYPE_QUARTER => 'quý',
         self::TYPE_WEEK    => 'tuần',
     ];
+    public const TYPE_APPROVAL    = 'approval';
+    public const TYPE_DISAPPROVAL = 'disapproval';
 
     public function monitorShoppingPlanYear(): HasMany
     {
@@ -63,5 +68,10 @@ class ShoppingPlanCompany extends Model
     public function shoppingPlanOrganizations(): HasMany
     {
         return $this->hasMany(ShoppingPlanOrganization::class, 'shopping_plan_company_id')->orderBy('status');
+    }
+
+    public function shoppingPlanCompanyYear(): BelongsTo
+    {
+        return $this->belongsTo(ShoppingPlanCompany::class, 'plan_year_id');
     }
 }

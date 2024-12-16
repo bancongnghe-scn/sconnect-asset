@@ -63,10 +63,10 @@ class AppErrorCode
     public const CODE_2055 = 2055; //  Kế hoạch mua sắm đã tồn tại !
     public const CODE_2057 = 2057; //  Tạo kế hoạch mua sắm năm của đơn vị thất bại !
     public const CODE_2058 = 2058; //  Kế hoạch mua sắm không tồn tại !
-    public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi, không thể cập nhật !
+    public const CODE_2059 = 2059; //  Kế hoạch mua sắm đã được gửi duyệt, không thể cập nhật !
     public const CODE_2060 = 2060; //  Chỉ được xóa các kế hoạch mua sắm có trạng thái là mới tạo !
     public const CODE_2061 = 2061; //  Xóa kế hoạch mua sắm thất bại !
-    public const CODE_2062 = 2062; //  Cập nhật trạng thái kế hoạch mua sắm năm thất bại !
+    public const CODE_2062 = 2062; //  Cập nhật trạng thái kế hoạch mua sắm thất bại !
     public const CODE_2063 = 2063; //  Kế hoạch đã được gửi thông báo đến các đơn vị !
     public const CODE_2064 = 2064; //  Chưa thể gửi duyệt do trạng thái khác với đăng ký!
     public const CODE_2065 = 2065; //  Chưa thể gửi duyệt do chưa hết thời gian đăng ký!
@@ -77,4 +77,26 @@ class AppErrorCode
     public const CODE_2070 = 2070; //  Xóa bình luận thất bại !
     public const CODE_2071 = 2071; //  Sửa bình luận thất bại !
     public const CODE_2072 = 2072; //  Kế hoạch không còn mở đăng ký !
+    public const CODE_2073 = 2073; //  Đăng ký mua sắm thất bại !
+    public const CODE_2074 = 2074; //  Trạng thái kế hoạch mua sắm không phù hợp !
+    public const CODE_2075 = 2075; //  Duyệt kế hoạch mua sắm thất bại !
+    public const CODE_2076 = 2076; //  Lưu lịch sử thất bại !
+    public const CODE_2077 = 2077; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+    public const CODE_2078 = 2078; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
+    public const CODE_2079 = 2079; //  Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !
+
+    // hoangkiss
+    public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
+    public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !
+    public const CODE_5002 = 5002; //   Tạo kế hoạch thanh lý thất bại !
+    public const CODE_5003 = 5003; //   Chuyển trạng thái tài sản sang đang thanh lý thất bại !
+    public const CODE_5004 = 5004; //   Update tài sản trong kế hoạch thanh lý thất bại !
+    public const CODE_5005 = 5005; //   Xóa tài sản trong kế hoạch thanh lý thất bại !
+    public const CODE_5006 = 5006; //   Tìm kiếm tài sản thất bại !
+    public const CODE_5007 = 5007; //   Xóa kế hoạch thanh lý tài sản thất bại !
+    public const CODE_5008 = 5008; //   Update kế hoạch thanh lý thất bại !
+    public const CODE_5009 = 5009; //   Tạo tài sản sửa chữa thất bại !
+    public const CODE_5010 = 5010; //   Sửa chữa tài sản thất bại !
+    public const CODE_5011 = 5011; //   Cập nhật lịch sử tài sản thất bại !
+
 }

@@ -3,8 +3,6 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanOrganizationYear', () => ({
         init() {
             this.list({page:1, limit:10})
-            this.initYearPicker()
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -88,47 +86,10 @@ document.addEventListener('alpine:init', () => {
             this.filters = {
                 time: null,
                 status: [],
-                type: 1,
                 limit: 10,
                 page: 1
             }
-            $('#filterStatusOrganization').val([]).change()
-            $('#filterYearOrganization').val(null).change()
-
             this.list(this.filters)
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                if (event.target.id === 'filterStatusOrganization') {
-                    this.filters.status = $(event.target).val()
-                }
-            });
-        },
-
-        initYearPicker() {
-            document.querySelectorAll('.yearPicker').forEach(el => {
-                new AirDatepicker(el, {
-                    view: 'years', // Hiển thị danh sách năm khi mở
-                    minView: 'years', // Giới hạn chỉ cho phép chọn năm
-                    dateFormat: 'yyyy', // Định dạng chỉ hiển thị năm
-                    autoClose: true, // Tự động đóng sau khi chọn năm
-                    clearButton: true, // Nút xóa để bỏ chọn
-                    onSelect: ({date}) => {
-                        const year = date.getFullYear();
-                        this.filters.time = year != null ? year : null
-                    }
-                });
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.filters.time = null
-                            }
-                        }, 0);
-                    }
-                });
-            });
         },
     }));
 });

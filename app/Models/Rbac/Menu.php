@@ -22,4 +22,9 @@ class Menu extends Model
     {
         return $this->hasMany(MenuRole::class, 'menu_id');
     }
+
+    public function menuUsers(): HasMany
+    {
+        return $this->hasMany(MenuUser::class, 'menu_id');
+    }
 }

@@ -43,16 +43,7 @@
                                                 </template>
                                                 <template x-if="key === 'status'">
                                                     <div class="d-flex justify-content-center">
-                                                        <span x-text="listStatus[data[key]]" class="p-1 border rounded"
-                                                              :class="{
-                                                                  'tw-text-sky-600 tw-bg-sky-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                                                                  'tw-text-purple-600 tw-bg-purple-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                                                  'tw-text-green-600 tw-bg-green-100': +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
-                                                                                                        || +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                                                                  'tw-text-green-900 tw-bg-green-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                                                                  'tw-text-red-600 tw-bg-red-100'  : +data.status === STATUS_SHOPPING_PLAN_COMPANY_CANCEL
-                                                              }">
-                                                        </span>
+                                                        @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
                                                     </div>
                                                 </template>
                                                 <template x-if="key === 'user'">
@@ -62,10 +53,13 @@
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
+                                            {{-- xem chi tiet --}}
                                             <button class="border-0 bg-body"
                                                     @click="window.location.href = `/shopping-plan-company/year/view/${data.id}`">
                                                 <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                             </button>
+
+                                            {{-- sua va xoa --}}
                                             @can('shopping_plan_company.crud')
                                                 <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status)">
                                                     <button class="border-0 bg-body"
@@ -73,8 +67,6 @@
                                                         <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
                                                     </button>
                                                 </template>
-                                            @endcan
-                                            @can('shopping_plan_company.crud')
                                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                                     <button class="border-0 bg-body"
                                                             @click="$dispatch('remove', { id: data.id })">
@@ -82,22 +74,24 @@
                                                     </button>
                                                 </template>
                                             @endcan
-                                            @can('shopping_plan_company.accounting_approval')
-                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+
+                                            {{-- ke toan va giam doc duyet --}}
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                                @can('shopping_plan_company.accounting_approval')
                                                     <button class="border-0 bg-body"
-                                                            @click="$dispatch('remove', { id: data.id })">
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
-                                                </template>
-                                            @endcan
-                                            @can('shopping_plan_company.general_approval')
-                                                <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                                @endcan
+                                            </template>
+                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                                @can('shopping_plan_company.general_approval')
                                                     <button class="border-0 bg-body"
-                                                            @click="$dispatch('remove', { id: data.id })">
+                                                            @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
                                                         <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                                     </button>
-                                                </template>
-                                            @endcan
+                                                @endcan
+                                            </template>
                                         </td>
                                     </tr>
                                 </template>

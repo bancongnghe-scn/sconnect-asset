@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    @include('component.shopping_plan_organization.year.list_shopping_plan_organization')
+    @include('component.shopping_plan_organization.year.content_list')
 @endsection
 
 @section('js')

@@ -121,4 +121,98 @@ window.apiSendAccountantApproval = async function (id) {
 }
 
 
+window.apiSendManagerApproval = async function (id) {
+    try {
+        const response = await axios.get("/api/shopping-plan-company/send-manager-approval/"+id)
 
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.apiGeneralApprovalShoppingPlanCompany = async function (id, type, note = null) {
+    try {
+        const response = await axios.post("/api/shopping-plan-company/manager-approval", {id: id, type: type, note: note})
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.apiGetShoppingPlanCompany = async function (params) {
+    try {
+        const response = await axios.get("/api/shopping-plan-company/list", {params: params})
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data.data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.getOrganizationRegister = async function (id) {
+    try {
+        const response = await axios.get("/api/shopping-plan-company/get-organization-register/"+id)
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}

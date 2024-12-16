@@ -11,12 +11,14 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-control select2" id="selectContract" x-model="data.contract_id">
-                                <option value="">Chọn hợp đồng</option>
-                                <template x-for="contract in listContract" :key="contract.id">
-                                    <option :value="contract.id" x-text="contract.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listContract.length > 0">
+                                <span x-data="{values: listContract}">
+                                    @include('common.select2.modal.extent.select2_single_modal', [
+                                        'placeholder' => 'Chọn hợp đồng',
+                                        'model' => 'data.contract_id'
+                                    ])
+                                </span>
+                            </template>
                         </div>
                         <div class="col-3">
                             <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
@@ -28,49 +30,59 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Link đính kèm</label>
-                            <input type="text" class="form-control" x-model="data.link" placeholder="Nhập link đính kèm"></input>
+                            <input type="text" class="form-control" x-model="data.link"  placeholder="Nhập link đính kèm">
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Ngày ký<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày ký", 'id'=>"selectSigningDate", 'model' => "data.signing_date"])
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày ký", 'model' => "data.signing_date"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Hiệu lực từ ngày<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'id'=>"selectFrom", 'model' => "data.from"])
+                            <label class="form-label">Hiệu lực từ ngày<label
+                                    class="tw-text-red-600 mb-0">*</label></label>
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày bắt đầu hiệu lực", 'model' => "data.from"])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Hiệu lực đến ngày</label>
-                            @include('common.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'id'=>"selectTo", 'model' => "data.to"])
+                            @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
-                            <select class="form-select select2" x-model="data.user_ids" id="selectUserId" multiple="multiple" data-placeholder="Chọn người theo dõi">
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            <label class="form-label">Người theo dõi<label
+                                    class="tw-text-red-600 mb-0">*</label></label>
+                            <template x-if="listUser.length > 0">
+                                <span x-data="{values: listUser}">
+                                    @include('common.select2.modal.extent.select2_multiple_modal', [
+                                        'placeholder' => 'Chọn người theo dõi',
+                                        'model' => 'data.user_ids'
+                                    ])
+                                </span>
+                            </template>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
                             <label class="form-label">Ghi chú</label>
-                            <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
+                            <textarea class="form-control tw-h-40" x-model="data.description"
+                                      placeholder="Nhập ghi chú"></textarea>
                         </div>
                     </div>
                     <div class="row">
-                        <span class="form-label tw-font-bold" x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
+                        <span class="form-label tw-font-bold"
+                              x-text="'Tệp đính kèm('+data.files.length+') dung lượng tối đa 5MB'"></span>
                         <div>
-                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput" @change="handleFiles" accept=".pdf">
+                            <input class="form-control d-none" type="file" id="fileInput" multiple x-ref="fileInput"
+                                   @change="handleFiles" accept=".pdf">
                             <label type="button" class="btn btn-sc" for="fileInput">Chọn tệp</label>
 
                             <div class="mt-2 d-flex flex-column tw-gap-y-2">
                                 <template x-for="(file, index) in data.files" :key="index">
                                     <div>
-                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer" @click="data.files.splice(index, 1)"></i>
+                                        <i class="fa-solid fa-circle-xmark tw-cursor-pointer"
+                                           @click="data.files.splice(index, 1)"></i>
                                         <i class="fa-solid fa-file-pdf fa-xl" style="color: #74C0FC;"></i>
-                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'" target="_blank"></a>
+                                        <a x-text="file.name" class="tw-text-[#1484FF] tw-w-fit" :href="file.url ?? '#'"
+                                           target="_blank"></a>
                                     </div>
                                 </template>
                             </div>

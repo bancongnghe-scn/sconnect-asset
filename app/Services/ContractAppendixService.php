@@ -73,6 +73,7 @@ class ContractAppendixService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -143,6 +144,7 @@ class ContractAppendixService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -195,6 +197,7 @@ class ContractAppendixService
             $this->contractFileRepository->deleteByContractIds($id);
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -220,6 +223,7 @@ class ContractAppendixService
             $this->contractFileRepository->deleteByContractIds($ids);
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

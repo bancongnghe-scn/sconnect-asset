@@ -47,7 +47,7 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('contract_appendix', () => ({
                 init() {
-
+                    this.getListUser({})
                 },
 
                 //data
@@ -55,6 +55,7 @@
                     contract: true,
                     appendix: false
                 },
+                listUser: [],
 
                 //method
                 handleShowActive(active) {
@@ -63,7 +64,18 @@
                     }
 
                     this.activeLink[active] = true
-                }
+                },
+
+                async getListUser(filters){
+                    this.loading = true
+                    const response = await window.apiGetUser(filters)
+                    if (response.success) {
+                        this.listUser = response.data.data
+                    } else {
+                        toast.error('Lấy danh sách nhân viên thất bại !')
+                    }
+                    this.loading = false
+                },
             }))
         })
     </script>

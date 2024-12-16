@@ -7,11 +7,8 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListContract({status: [2]})
-            this.getListUser({page: 1, limit:20})
-            this.initDatePicker()
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -64,7 +61,6 @@ document.addEventListener('alpine:init', () => {
         },
         listContract: [],
         listStatus: STATUS_APPENDIX,
-        listUser: [],
         title: null,
         action: null,
         id: null,
@@ -256,10 +252,6 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterContract').val([]).change()
-            $('#filterStatusAppendix').val([]).change()
-            $('#filterSigningDate').val(null).change()
-            $('#filterFrom').val(null).change()
         },
 
         confirmRemove(id) {
@@ -276,36 +268,6 @@ document.addEventListener('alpine:init', () => {
 
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
             this.id = ids
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterContract') {
-                    this.filters.contract_ids = value
-                } else if (event.target.id === 'filterStatusAppendix') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.data.user_ids = value
-                } else if (event.target.id === 'selectContract') {
-                    this.data.contract_id = value
-                }
-            });
-        },
-
-        onChangeDatePicker(el, date) {
-            const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'filterSigningDate') {
-                this.filters.signing_date = storageFormat
-            } else if(el.id === 'filterFrom') {
-                this.filters.from = storageFormat
-            } else if(el.id === 'selectSigningDate') {
-                this.data.signing_date = storageFormat
-            } else if(el.id === 'selectFrom') {
-                this.data.from = storageFormat
-            } else if(el.id === 'selectTo') {
-                this.data.to = storageFormat
-            }
         },
 
         handleFiles() {
@@ -339,30 +301,6 @@ document.addEventListener('alpine:init', () => {
             appendix.from = appendix.from !== null ? format(appendix.from, 'dd/MM/yyyy') : null
             appendix.to = appendix.to !== null ? format(appendix.to, 'dd/MM/yyyy') : null
             return appendix
-        },
-
-        initDatePicker() {
-            document.querySelectorAll('.datepicker').forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    clearButton: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
-
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.onChangeDatePicker(el, null);
-                            }
-                        }, 0);
-                    }
-                });
-            });
         },
     }));
 });

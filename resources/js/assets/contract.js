@@ -7,11 +7,8 @@ document.addEventListener('alpine:init', () => {
         init() {
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
-            this.onChangeSelect2()
-            this.initDatePicker()
             this.list({page: 1, limit: 10})
             this.getListSupplier({})
-            this.getListUser({page: 1, limit:20})
         },
 
         //dataTable
@@ -70,7 +67,6 @@ document.addEventListener('alpine:init', () => {
         listTypeContract: TYPE_CONTRACT,
         listStatusContract: STATUS_CONTRACT,
         listSupplier: [],
-        listUser: [],
         title: null,
         action: null,
         id: null,
@@ -255,10 +251,6 @@ document.addEventListener('alpine:init', () => {
                 limit: 10,
                 page: 1
             }
-            $('#filterTypeContract').val([]).change()
-            $('#filterStatusContract').val([]).change()
-            $('#filterSigningDateContract').val(null).change()
-            $('#filterFromContract').val(null).change()
         },
 
         confirmRemove(id) {
@@ -275,40 +267,6 @@ document.addEventListener('alpine:init', () => {
 
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
             this.id = ids
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterTypeContract') {
-                    this.filters.type = value
-                } else if (event.target.id === 'filterStatusContract') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.data.user_ids = value
-                } else if (event.target.id === 'selectSupplier') {
-                    this.data.supplier_id = value
-                } else if (event.target.id === 'selectContractType') {
-                    this.data.type = value
-                }
-            });
-        },
-
-        onChangeDatePicker(el, date) {
-            const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'selectSigningDateContract') {
-                this.data.signing_date = storageFormat
-            } else if (el.id === 'selectFromContract') {
-                this.data.from = storageFormat
-            } else if (el.id === 'selectToContract') {
-                this.data.to = storageFormat
-            } else if (el.name === 'selectPaymentDate') {
-                this.data.payments[el.id].payment_date = storageFormat
-            } else if (el.id === 'filterSigningDateContract') {
-                this.filters.signing_date = storageFormat
-            } else if (el.id === 'filterFromContract') {
-                this.filters.from = storageFormat
-            }
         },
 
         handleFilesContract() {
@@ -346,30 +304,6 @@ document.addEventListener('alpine:init', () => {
             contract.payments = contract.payments ?? []
             contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
-        },
-
-        initDatePicker() {
-            document.querySelectorAll('.datepickerContract').forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    clearButton: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
-
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.onChangeDatePicker(el, null);
-                            }
-                        }, 0);
-                    }
-                });
-            });
         },
     }));
 });

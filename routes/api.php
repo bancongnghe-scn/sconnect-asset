@@ -3,9 +3,9 @@
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\ShoppingPlanOrganizationYearController;
+ use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Rbac\RoleController;
+use App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +27,7 @@ Route::get('ping', function () {
     return 'pong';
 });
 
-Route::middleware('web')->group(function () {
+Route::middleware('checkAuth')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
@@ -40,43 +40,73 @@ Route::middleware('web')->group(function () {
 
 
     Route::prefix('rbac')->group(function () {
-        Route::prefix('menu')->controller(App\Http\Controllers\MenuController::class)->group(function () {
+        Route::prefix('menu')->controller(App\Http\Controllers\Rbac\MenuController::class)->group(function () {
             Route::get('user', 'getMenuUserLogin');
             Route::get('parent', 'getMenuParent');
         });
 
         Route::resources([
             'role'       => RoleController::class,
-            'permission' => App\Http\Controllers\PermissionController::class,
-            'menu'       => App\Http\Controllers\MenuController::class,
+            'permission' => App\Http\Controllers\Rbac\PermissionController::class,
+            'menu'       => App\Http\Controllers\Rbac\MenuController::class,
         ]);
     });
 
     Route::prefix('shopping-plan-company')->group(function () {
-        Route::controller(App\Http\Controllers\ShoppingPlanCompanyController::class)->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyController::class)->group(function () {
             Route::get('show/{id}', 'findShoppingPlanCompany');
             Route::post('sent-notification-register', 'sentNotificationRegister');
             Route::get('send-accountant-approval/{id}', 'sendAccountantApproval');
+            Route::get('send-manager-approval/{id}', 'sendManagerApproval');
+            Route::post('manager-approval', 'managerApproval');
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
+            Route::get('list', 'getListShoppingPlan');
+            Route::get('get-organization-register/{id}', 'getOrganizationRegister');
         });
 
-        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompanyYearController::class)->group(function () {
+        Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanCompanyYear');
             Route::post('create', 'createShoppingPlanCompanyYear');
             Route::put('update/{id}', 'updateShoppingPlanCompanyYear');
-            Route::get('get-organization-register/{id}', 'getOrganizationRegisterYear');
+        });
+
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyQuarter');
+            Route::post('create', 'createShoppingPlanCompanyQuarter');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyQuarter');
+        });
+
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanCompanyWeek');
+            Route::post('create', 'createShoppingPlanCompanyWeek');
+            Route::put('update/{id}', 'updateShoppingPlanCompanyWeek');
+            Route::get('handle-shopping/{id}', 'handleShopping');
+            Route::post('synthetic-shopping', 'syntheticShopping');
+            Route::post('send-approval', 'sendApprovalWeek');
         });
     });
 
     Route::prefix('shopping-plan-organization')->group(function () {
-        Route::controller(App\Http\Controllers\ShoppingPlanOrganizationController::class)->group(function () {
+        Route::controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationController::class)->group(function () {
             Route::get('view/{id}', 'findShoppingPlanOrganization');
             Route::get('get-register/{id}', 'getRegisterShoppingPlanOrganization');
-            Route::post('register', 'registerShoppingPlanOrganization');
+            Route::post('account-approval', 'accountApprovalShoppingPlanOrganization');
+            Route::post('review', 'saveTotalAssetApproval');
         });
 
         Route::prefix('year')->controller(ShoppingPlanOrganizationYearController::class)->group(function () {
             Route::get('list', 'getListShoppingPlanOrganizationYear');
+            Route::post('register', 'registerShoppingPlanOrganizationYear');
+        });
+
+        Route::prefix('quarter')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationQuarterController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationQuarter');
+            Route::post('register', 'registerShoppingPlanOrganizationQuarter');
+        });
+
+        Route::prefix('week')->controller(App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationWeekController::class)->group(function () {
+            Route::get('list', 'getListShoppingPlanOrganizationWeek');
+            Route::post('register', 'registerShoppingPlanOrganizationWeek');
         });
     });
 
@@ -98,7 +128,7 @@ Route::middleware('web')->group(function () {
         Route::post('supplier', [App\Http\Controllers\SupplierController::class, 'deleteMultiple']);
         Route::post('contract', [ContractController::class, 'deleteMultiple']);
         Route::post('appendix', [App\Http\Controllers\ContractAppendixController::class, 'deleteMultiple']);
-        Route::post('shopping-plan-company', [App\Http\Controllers\ShoppingPlanCompanyController::class, 'deleteMultiple']);
+        Route::post('shopping-plan-company', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyController::class, 'deleteMultiple']);
     });
 
     Route::post('contract/{id}', [ContractController::class, 'update']);
@@ -106,6 +136,52 @@ Route::middleware('web')->group(function () {
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
 
     Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
+
+    Route::prefix('cache')->controller(App\Http\Controllers\CachingController::class)->group(function () {
+        Route::post('flush', 'flushCache');
+        Route::post('add', 'addCache');
+        Route::get('get', 'getCache');
+    });
+
+    Route::prefix('manage-asset-lost')->controller(App\Http\Controllers\Manage\AssetLostController::class)->group(function () {
+        Route::get('list', 'getListAssetLost');
+        Route::get('{id}', 'findAssetLost');
+        Route::post('update', 'updateAssetLost');
+    });
+
+    Route::get('manage-asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
+    Route::get('manage-asset-liquidation', [App\Http\Controllers\Manage\AssetLiquidationController::class, 'getListAssetLiquidation']);
+
+    Route::prefix('manage-plan-liquidation')->controller(App\Http\Controllers\Manage\PlanLiquidationController::class)->group(function () {
+        Route::post('create', 'createPlan');
+        Route::get('get', 'getPlan');
+        Route::get('detail/{id}', 'detail');
+        Route::post('update-asset', 'updateAssetToPlan');
+        Route::delete('delete-asset/{plan_id}', 'deleteAssetFromPlan');
+        Route::post('delete-multi', 'deleteMultiPlan');
+        Route::post('update-status-asset', 'changeStatusAssetOfPlan');
+        Route::post('update-status-multi-asset', 'changeStatusMultiAssetOfPlan');
+        Route::post('update-plan/{id}', 'updatePlan');
+    });
+
+    Route::prefix('asset-damaged')->controller(App\Http\Controllers\Inventory\AssetDamagedController::class)->group(function () {
+        Route::get('list', 'getListAssetDamaged');
+        Route::post('update-asset-liquidation', 'updateMultiAssetLiquidation');
+        Route::post('update-asset-cancel', 'updateMultiAssetCancel');
+    });
+
+    Route::prefix('asset-repair')->controller(App\Http\Controllers\Inventory\AssetRepairController::class)->group(function () {
+        Route::post('create', 'createAssetRepair');
+        Route::get('list', 'getListAssetRepair');
+        Route::get('detail/{id}', 'getAssetRepair');
+        Route::post('multi', 'getMultiAssetRepair');
+        Route::post('update/multi', 'updateMultiAssetRepaired');
+    });
+
+    Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
+        Route::post('sent-info', 'sentInfoShoppingAsset');
+        Route::post('approval', 'approvalShoppingAsset');
+    });
 });
 
 Route::prefix('report')->group(function () {
