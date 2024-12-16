@@ -15,9 +15,9 @@ class AssetCancelResource extends JsonResource
                 'name'                  => $item?->name,
                 'user_name'             => $item?->user?->name,
                 'status'                => Asset::STATUS_NAME[$item?->status],
-                'date'                  => $item?->date,
-                'location'              => $item?->location,
-                'reason'                => $item?->reason,
+                'date'                  => $item?->assetHistory?->first()?->date,
+                'reason'                => $item?->assetHistory?->first()?->description,
+                'location'              => Asset::LOCATION_NAME[$item?->location],
             ];
         });
         $result = $this->resource->toArray();

@@ -30,13 +30,15 @@ class AssetLostService
                 'code',
                 'status',
                 'user_id',
-                'date',
                 'location',
-                'reason',
-                'price_liquidation',
             ],
             [
                 'user:id,name',
+                'assetHistory' => function ($query) {
+                    $query->select('asset_id', 'date', 'description')
+                        ->where('action', Asset::STATUS_LOST)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 
