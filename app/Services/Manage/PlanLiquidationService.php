@@ -36,7 +36,7 @@ class PlanLiquidationService
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
                 'created_at'     => new \DateTime(),
-                'created_by'     => Auth::id(),
+                'created_by'     => Auth::id() ?? 1,
             ];
             // Thanh lý, Bảo dưỡng lưu ở plan_maintain
             $planLiquidation = $this->planMaintainRepository->create($dataPlanLiquidation);
@@ -46,10 +46,12 @@ class PlanLiquidationService
             if (!empty($data['assets_id'])) {
                 foreach ($data['assets_id'] as $asset) {
                     $dataPlanLiquidationAsset[] = [
-                        'plan_maintain_id' => $planLiquidation->id,
-                        'asset_id'         => $asset['id'],
-                        'price'            => $asset['price_liquidation'],
-                        'status'           => PlanMaintainAsset::STATUS_NEW,
+                        'plan_maintain_id'                  => $planLiquidation->id,
+                        'asset_id'                          => $asset['id'],
+                        'price'                             => $asset['price_liquidation'] ?? 1,
+                        'status'                            => PlanMaintainAsset::STATUS_NEW,
+                        'created_at'                        => new \DateTime(),
+                        'created_by'                        => Auth::id() ?? 1,
                     ];
                 }
 
@@ -135,7 +137,7 @@ class PlanLiquidationService
             ]
         )->load([
             'planMaintainAsset:id,asset_id,plan_maintain_id,price,status',
-            'planMaintainAsset.asset:id,name,code,reason',
+            'planMaintainAsset.asset:id,name,code',
             'user:id,name',
         ]);
 

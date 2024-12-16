@@ -25,12 +25,15 @@ class AssetCancelService
                 'code',
                 'status',
                 'user_id',
-                'date',
                 'location',
-                'reason',
             ],
             [
                 'user:id,name',
+                'assetHistory' => function ($query) {
+                    $query->select('asset_id', 'date', 'description')
+                        ->where('action', Asset::STATUS_CANCEL)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 
