@@ -9,16 +9,18 @@ use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
-    public function __construct(private readonly ReportService $reportService) {}
+    public function __construct(private readonly ReportService $reportService)
+    {
+    }
 
-    public function overviewReport() : View 
+    public function overviewReport(): View
     {
         $arrDataOverview = $this->reportService->getDataOverviewReport();
 
         return view('assets.report.overviewReport', $arrDataOverview);
     }
 
-    public function getDataValueReport() : JsonResponse
+    public function getDataValueReport(): JsonResponse
     {
         try {
             $arrData = $this->reportService->getDataValueReport();
@@ -27,11 +29,12 @@ class ReportController extends Controller
         } catch (\Throwable $exception) {
             Log::error($exception);
             dd($exception);
+
             return response_error();
-        } 
+        }
     }
 
-    public function getDataOperatingReport() : JsonResponse
+    public function getDataOperatingReport(): JsonResponse
     {
         try {
             $arrData = $this->reportService->getDataOperatingReport();
@@ -39,11 +42,12 @@ class ReportController extends Controller
             return response_success($arrData);
         } catch (\Throwable $exception) {
             Log::error($exception);
+
             return response_error();
         }
     }
 
-    public function getDataStructureReport() : JsonResponse
+    public function getDataStructureReport(): JsonResponse
     {
         try {
             $arrData = $this->reportService->getDataStructureReport();
@@ -51,11 +55,12 @@ class ReportController extends Controller
             return response_success($arrData);
         } catch (\Throwable $exception) {
             Log::error($exception);
+
             return response_error();
         }
     }
 
-    public function getDataUseReport() : JsonResponse
+    public function getDataUseReport(): JsonResponse
     {
         try {
             $arrData = $this->reportService->getDataUseReport();
@@ -63,11 +68,12 @@ class ReportController extends Controller
             return response_success($arrData);
         } catch (\Throwable $exception) {
             Log::error($exception);
+
             return response_error();
         }
     }
 
-    public function getDataMaintainReport() : JsonResponse
+    public function getDataMaintainReport(): JsonResponse
     {
         try {
             $arrData = $this->reportService->getDataMaintainReport();
@@ -75,6 +81,7 @@ class ReportController extends Controller
             return response_success($arrData);
         } catch (\Throwable $exception) {
             Log::error($exception);
+
             return response_error();
         }
     }

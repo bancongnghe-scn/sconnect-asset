@@ -15,7 +15,6 @@
     </div>
     <div class="col-1">
         <button type="button" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.back ?? true" @click="$dispatch('back')" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-arrow-rotate-left">&#xF117;</i>
             <span>
                 Tìm thấy
             </span>
@@ -23,7 +22,6 @@
     </div>
     <div class="col-2">
         <button type="button" class="btn tw-bg-red-500 tw-text-white" x-show="showAction.cancel ?? true" @click="$dispatch('cancel')" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-arrow-rotate-left">&#xF117;</i>
             <span>
                 Hủy tài sản
             </span>
