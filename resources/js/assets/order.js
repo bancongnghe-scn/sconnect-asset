@@ -6,8 +6,8 @@ document.addEventListener('alpine:init', () => {
         //dataTable
         dataTable: [],
         columns: {
-            name: 'Tên ngành hàng',
-            description: 'Ghi chú'
+            code: 'Mã đơn hàng',
+
         },
 
         // pagination
