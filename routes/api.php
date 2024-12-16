@@ -3,7 +3,7 @@
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
- use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Rbac\RoleController;
 use App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;

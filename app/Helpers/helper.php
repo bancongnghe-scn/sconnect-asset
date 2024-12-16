@@ -82,9 +82,11 @@ if (!function_exists('formatNumberToReadable')) {
     {
         if ($number >= 1000000000) {
             return round($number / 1000000000, 1) . ' tỷ';
-        } elseif ($number >= 1000000) {
+        }
+        if ($number >= 1000000) {
             return round($number / 1000000, 1) . ' triệu';
-        } elseif ($number >= 1000) {
+        }
+        if ($number >= 1000) {
             return round($number / 1000, 1) . ' nghìn';
         } else {
             return $number;

@@ -8,7 +8,6 @@
         <button type="button" class="btn tw-bg-orange-400 tw-text-white" 
             @click="modalRepairMultiUI" 
             x-show="true" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-check"></i>
             <span>
                 Sửa chữa
             </span>
@@ -19,7 +18,6 @@
         <button type="button" class="btn tw-bg-red-400 tw-text-white"
             @click="modalCancelMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-check"></i>
             <span>
                 Hủy
             </span>
@@ -30,7 +28,6 @@
         <button type="button" class="btn tw-bg-yellow-400 tw-text-white" 
             @click="modalLiquidationMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
-            <i class="fa-solid fa-check"></i>
             <span>
                 Đề nghị thanh lý
             </span>
