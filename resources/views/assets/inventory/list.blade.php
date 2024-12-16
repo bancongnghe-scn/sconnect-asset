@@ -1,7 +1,7 @@
 @section('css')
 @vite([
     'resources/css/assets/manage/list.css',
-]);
+])
 @endsection
 
 @extends('layouts.app',[
