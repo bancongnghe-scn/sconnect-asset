@@ -21,6 +21,7 @@ class AssetCancelService
         $data = $this->assetCancelRepository->getListAssetCancel(
             $filters,
             [
+                'id',
                 'name',
                 'code',
                 'status',

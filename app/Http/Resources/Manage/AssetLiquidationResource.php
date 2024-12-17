@@ -17,7 +17,7 @@ class AssetLiquidationResource extends JsonResource
                 'status'                => Asset::STATUS_NAME[$item?->status],
                 'date'                  => $item?->assetHistory?->first()?->date,
                 'reason'                => $item?->assetHistory?->first()?->description,
-                'price_liquidation'     => $item?->price_liquidation,
+                'price_liquidation'     => $item?->assetHistory?->first()?->price,
             ];
         });
         $result = $this->resource->toArray();

@@ -29,7 +29,7 @@ class AssetLiquidationService
             [
                 'user:id,name',
                 'assetHistory' => function ($query) {
-                    $query->select('asset_id', 'date', 'description')
+                    $query->select('asset_id', 'date', 'description', 'price')
                         ->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
                         ->orderBy('date', 'desc');
                 },
