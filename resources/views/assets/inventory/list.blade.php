@@ -9,29 +9,33 @@
 ])
 
 @section('content')
-    <div x-data="{tab: 'assets-damaged'}" class="mt-3">
-        <div class="manage_assets_tab">
-            <div>
-                <button :class="{'active': tab === 'assets-damaged'}" @click="tab='assets-damaged' ">
-                    Tài sản hỏng
-                </button>
+<div class="card">
+    <div class="card-body">
+        <div x-data="{tab: 'assets-damaged'}" class="mt-3">
+            <div class="manage_assets_tab">
+                <div>
+                    <button :class="{'active': tab === 'assets-damaged'}" @click="tab='assets-damaged' ">
+                        Tài sản hỏng
+                    </button>
+                </div>
+                <div>
+                    <button :class="{'active': tab === 'assets-repair'}" @click="tab='assets-repair' ">
+                        Đang sửa chữa
+                    </button>
+                </div>
             </div>
-            <div>
-                <button :class="{'active': tab === 'assets-repair'}" @click="tab='assets-repair' ">
-                    Đang sửa chữa
-                </button>
+    
+    
+            <div x-show="tab === 'assets-damaged' ">
+                @include('assets.inventory.damaged.detail')
             </div>
+            <div x-show="tab === 'assets-repair' ">
+                @include('assets.inventory.repair.detail')
+            </div>
+    
         </div>
-
-
-        <div x-show="tab === 'assets-damaged' ">
-            @include('assets.inventory.damaged.detail')
-        </div>
-        <div x-show="tab === 'assets-repair' ">
-            @include('assets.inventory.repair.detail')
-        </div>
-
     </div>
+</div>
 @endsection
 
 @section('js')
