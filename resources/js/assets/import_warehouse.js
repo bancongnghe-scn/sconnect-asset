@@ -3,13 +3,8 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.getListOrder()
             window.initSelect2Modal('modalUI')
-            this.$watch('data.order_ids', (value) => {
-                if (value.length === 0) {
-                    this.data.shopping_assets = []
-                    return
-                }
-
-                this.getAssetForImportWarehouse(value)
+            this.$watch('data.order_ids', (newValue, oldValue) => {
+                this.handleGetImportWarehouseAsset(newValue, oldValue)
             })
         },
 
@@ -63,7 +58,6 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 this.listOrders = response.data
-                console.log(this.listOrders)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -80,7 +74,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
 
-                this.data.shopping_assets = response.data
+                return response.data
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -109,6 +103,23 @@ document.addEventListener('alpine:init', () => {
             }
             this.loading = false
             $('#modalUI').modal('show');
+        },
+
+        async handleGetImportWarehouseAsset(newValue, oldValue) {
+            if (newValue.length === 0) {
+                this.data.shopping_assets = []
+                return
+            }
+
+            const orderRemove = oldValue.filter(item => !newValue.includes(item));
+            if (orderRemove.length > 0) {
+                this.data.shopping_assets = this.data.shopping_assets.filter((item) => !orderRemove.includes((String(item.order_id))))
+            }
+            const orderNew = newValue.filter(item => !oldValue.includes(item));
+            if (orderNew.length > 0) {
+                const data = await this.getAssetForImportWarehouse(orderNew)
+                this.data.shopping_assets = [...this.data.shopping_assets, ...data]
+            }
         },
 
         changePage(page) {

@@ -39,36 +39,46 @@
 
                     <div>
                         <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản nhập (${data.shopping_assets?.length})`"></div>
-                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                            <thead>
+                        <div class="mt-3 overflow-auto custom-scroll">
+                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                <thead>
                                 <tr>
                                     <th>Mã</th>
                                     <th>Tên</th>
-                                    <th>Giá trị</th>
-                                    <th>Ngày mua</th>
                                     <th>Bảo hành (tháng)</th>
                                     <th>Seri</th>
+                                    <th>Đơn giá</th>
+                                    <th>Giá trị</th>
+                                    <th>Ngày mua</th>
                                     <th>Loại tài sản</th>
                                     <th>ĐVT</th>
                                     <th>NCC</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                            <template x-for="(asset,index) in data.shopping_assets" :key="index">
-                                <tr>
-                                    <td x-text="asset.code"></td>
-                                    <td x-text="asset.name"></td>
-                                    <td x-text="asset.price"></td>
-                                    <td x-text="asset.date_purchase"></td>
-                                    <td x-text="asset.warranty_time"></td>
-                                    <td x-text="asset.seri_number"></td>
-                                    <td x-text="asset.asset_type_id"></td>
-                                    <td x-text="asset.asset_type_id"></td>
-                                    <td x-text="asset.supplier_id"></td>
-                                </tr>
-                            </template>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                <template x-for="(asset,index) in data.shopping_assets" :key="index">
+                                    <tr>
+                                        <td x-text="asset.code"></td>
+                                        <td>
+                                            <input class="form-control tw-w-fit" type="text" x-model="asset.name">
+                                        </td>
+                                        <td>
+                                            <input class="form-control tw-w-[8rem]" type="number" min="1" x-model="asset.warranty_time">
+                                        </td>
+                                        <td>
+                                            <input class="form-control tw-w-[9rem]" type="text" x-model="asset.seri_number">
+                                        </td>
+                                        <td x-text="asset.price"></td>
+                                        <td x-text="asset.price_last"></td>
+                                        <td x-text="asset.date_purchase"></td>
+                                        <td x-text="asset.asset_type_name"></td>
+                                        <td x-text="LIST_MEASURE[asset.measure]"></td>
+                                        <td x-text="asset.supplier_name"></td>
+                                    </tr>
+                                </template>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -82,6 +92,10 @@
 <style>
     .air-datepicker {
         z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
+    }
+
+    th, td {
+        white-space: nowrap;
     }
 </style>
 

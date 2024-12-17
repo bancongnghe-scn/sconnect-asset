@@ -15,17 +15,11 @@ class ImportWarehouseService
 
     }
 
-    public function getAssetForImportWarehouse(array $orderIds)
+    public function getAssetForImportWarehouse($orderId)
     {
-        if (empty($orderIds)) {
-            return [];
-        }
-
-        $data                          = $this->importWarehouseAssetRepository->getListing(['order_id' => $orderIds]);
-        $orderIdsImportWarehouseAssets = $data->pluck('order_id')->unique()->toArray();
-        $orderIdsShoppingAssetOrder    = array_diff($orderIds, $orderIdsImportWarehouseAssets);
-        if (!empty($orderIdsShoppingAssetOrder)) {
-            $data = $data->merge($this->shoppingAssetOrderRepository->getListing(['order_id' => $orderIdsShoppingAssetOrder]));
+        $data = $this->importWarehouseAssetRepository->getListing(['order_id' => $orderId]);
+        if ($data->isEmpty()) {
+            $data = $this->shoppingAssetOrderRepository->getListing(['order_id' => $orderId]);
         }
 
         return ListImportWarehouseAssetResource::make($data)->resolve();

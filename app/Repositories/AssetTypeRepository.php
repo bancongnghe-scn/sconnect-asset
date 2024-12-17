@@ -24,6 +24,10 @@ class AssetTypeRepository extends BaseRepository
             $query->where('name', 'like', $filters['name'] . '%');
         }
 
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
         if (!empty($filters['asset_type_group_id'])) {
             $query->whereIn('asset_type_group_id', $filters['asset_type_group_id']);
         }

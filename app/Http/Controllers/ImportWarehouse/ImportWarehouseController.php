@@ -4,7 +4,6 @@ namespace App\Http\Controllers\ImportWarehouse;
 
 use App\Http\Controllers\Controller;
 use App\Services\ImportWarehouseService;
-use Illuminate\Http\Request;
 
 class ImportWarehouseController extends Controller
 {
@@ -14,15 +13,10 @@ class ImportWarehouseController extends Controller
 
     }
 
-    public function getAssetForImportWarehouse(Request $request)
+    public function getAssetForImportWarehouse(string $id)
     {
-        $request->validate([
-            'order_ids'   => 'required|array',
-            'order_ids.*' => 'integer',
-        ]);
-
         try {
-            $result = $this->importWarehouseService->getAssetForImportWarehouse($request->get('order_ids'));
+            $result = $this->importWarehouseService->getAssetForImportWarehouse($id);
 
             return response_success($result);
         } catch (\Throwable $exception) {
