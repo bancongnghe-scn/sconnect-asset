@@ -33,7 +33,7 @@ class ShoppingAssetRepository extends BaseRepository
     {
         $query = $this->_model->select($columns)->newQuery();
         if (!empty($filters['shopping_plan_company_id'])) {
-            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+            $query->whereIn('shopping_plan_company_id', Arr::wrap($filters['shopping_plan_company_id']));
         }
 
         if (!empty($filters['id'])) {
@@ -42,6 +42,14 @@ class ShoppingAssetRepository extends BaseRepository
 
         if (!empty($filters['status_other'])) {
             $query->whereNotIn('status', Arr::wrap($filters['status_other']));
+        }
+
+        if (!empty($filters['supplier_id'])) {
+            $query->whereIn('supplier_id', Arr::wrap($filters['supplier_id']));
+        }
+
+        if (!empty($filters['status'])) {
+            $query->whereIn('status', Arr::wrap($filters['status']));
         }
 
         if ($first) {

@@ -1,8 +1,6 @@
-window.apiGetListOrder = async function (filters) {
+window.apiGetAssetForImportWarehouse = async function (orderIds) {
     try {
-        const response = await axios.get("/api/order/list", {
-            params: filters
-        })
+        const response = await axios.get("/api/import-warehouse/asset", {params: {'order_ids': orderIds}})
 
         const data = response.data;
         if (!data.success) {
@@ -23,4 +21,3 @@ window.apiGetListOrder = async function (filters) {
         }
     }
 }
-

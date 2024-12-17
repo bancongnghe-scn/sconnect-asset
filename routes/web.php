@@ -78,6 +78,9 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('order')->group(function () {
         Route::view('list', 'assets.order.list');
     });
+    Route::prefix('import-warehouse')->group(function () {
+        Route::view('list', 'assets.import_warehouse.list');
+    });
     Route::prefix('cache')->group(function () {
         Route::get('key', function () {
             $key = config('cache_keys.keys.menu_key').Illuminate\Support\Facades\Auth::id();
