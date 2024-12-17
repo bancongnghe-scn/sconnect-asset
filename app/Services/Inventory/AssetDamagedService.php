@@ -40,7 +40,7 @@ class AssetDamagedService
                 'user:id,name',
                 'assetHistory' => function ($query) {
                     $query->select('asset_id', 'date', 'description')
-                        ->where('action', Asset::STATUS_CANCEL)
+                        ->where('action', Asset::STATUS_DAMAGED)
                         ->orderBy('date', 'desc');
                 },
             ]
