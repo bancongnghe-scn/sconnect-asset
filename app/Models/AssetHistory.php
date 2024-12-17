@@ -16,6 +16,7 @@ class AssetHistory extends Model
         'action',
         'date',
         'description',
+        'price',
         'created_by',
         'created_at',
         'updated_at',
