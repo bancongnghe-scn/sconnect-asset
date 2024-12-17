@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Repositories\ImportWarehouse;
+namespace App\Repositories;
 
-use App\Models\ImportWarehouseAsset;
+use App\Models\OrderHistory;
 use App\Repositories\Base\BaseRepository;
-use Illuminate\Support\Arr;
 
-class ImportWarehouseAssetRepository extends BaseRepository
+class OrderHistoryRepository extends BaseRepository
 {
     public function getModelClass(): string
     {
-        return ImportWarehouseAsset::class;
+        return OrderHistory::class;
     }
 
     public function getListing($filters, $columns = ['*'])
@@ -18,11 +17,11 @@ class ImportWarehouseAssetRepository extends BaseRepository
         $query = $this->_model->newQuery()->select($columns);
 
         if (!empty($filters['order_id'])) {
-            $query->whereIn('order_id', Arr::wrap($filters['order_id']));
+            $query->where('order_id', $filters['order_id']);
         }
 
-        if (!empty($filters['code'])) {
-            $query->whereIn('code', Arr::wrap($filters['code']));
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
         }
 
         if (!empty($filters['first'])) {

@@ -48,6 +48,23 @@ document.addEventListener('alpine:init', () => {
         id: null,
 
         //methods
+        async create() {
+            this.loading = true
+            try {
+                const response = await window.apiCreateImportWarehouse(this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.listOrders = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async getListOrder() {
             this.loading = true
             try {
@@ -139,7 +156,7 @@ document.addEventListener('alpine:init', () => {
                 name: null,
                 description: null,
                 order_ids: [],
-                assets: []
+                shopping_assets: []
             }
         },
 

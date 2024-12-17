@@ -2,9 +2,12 @@
 
 namespace App\Http\Resources;
 
+use App\Models\OrderHistory;
 use App\Repositories\AssetTypeRepository;
+use App\Repositories\OrderHistoryRepository;
 use App\Repositories\OrderRepository;
 use App\Repositories\SupplierRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
 
@@ -13,13 +16,15 @@ class ListImportWarehouseAssetResource extends JsonResource
     protected $orderRepository;
     protected $supplierRepository;
     protected $assetTypeRepository;
+    protected $orderHistoryRepository;
 
     public function __construct($resource)
     {
         parent::__construct($resource);
-        $this->orderRepository     = new OrderRepository();
-        $this->supplierRepository  = new SupplierRepository();
-        $this->assetTypeRepository = new AssetTypeRepository();
+        $this->orderRepository        = new OrderRepository();
+        $this->supplierRepository     = new SupplierRepository();
+        $this->assetTypeRepository    = new AssetTypeRepository();
+        $this->orderHistoryRepository = new OrderHistoryRepository();
     }
 
     public function toArray($request)
@@ -33,21 +38,24 @@ class ListImportWarehouseAssetResource extends JsonResource
                 $value['supplier_name']   = $suppliers[$value->supplier_id]->name ?? null;
                 $value['asset_type_name'] = $assetType[$value->asset_type_id]->name ?? null;
                 $value['measure']         = $assetType[$value->asset_type_id]->measure ?? null;
+                $value['date_purchase']   = Carbon::parse($value['date_purchase'])->format('d-m-Y');
             }
 
             return $this->resource;
         }
 
-        $order      = $this->orderRepository->find($asset->order_id);
-        $totalCost  = (+$order->shipping_costs) + (+$order->other_costs);
-        $totalPrice = 0;
+        $order             = $this->orderRepository->find($asset->order_id);
+        $orderHistory      = $this->orderHistoryRepository->getListing(['order_id' => $order->id, 'type' => OrderHistory::TYPE_COMPLETE_ORDER, 'first' => true]);
+        $dateCompleteOrder = Carbon::parse($orderHistory->created_at)->format('d-m-Y');
+        $totalCost         = (+$order->shipping_costs) + (+$order->other_costs);
+        $totalPrice        = 0;
         foreach ($this->resource as $key => $value) {
             $code   = strtoupper(Str::random(7)).$key;
             $data[] = [
                 'code'                  => $code,
                 'name'                  => $value->name,
                 'price'                 => $value->price_last,
-                'date_purchase'         => null,
+                'date_purchase'         => $dateCompleteOrder,
                 'warranty_time'         => null,
                 'seri_number'           => null,
                 'asset_type_id'         => $value->asset_type_id,

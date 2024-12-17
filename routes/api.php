@@ -194,5 +194,6 @@ Route::middleware('checkAuth')->group(function () {
 
     Route::prefix('import-warehouse')->controller(ImportWarehouseController::class)->group(function () {
         Route::get('asset/{id}', 'getAssetForImportWarehouse');
+        Route::post('create', 'createImportWarehouse');
     });
 });

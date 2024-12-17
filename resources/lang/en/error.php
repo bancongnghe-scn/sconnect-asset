@@ -84,6 +84,9 @@ return [
     AppErrorCode::CODE_2078 => 'Trạng thái của kế hoạch không phù hợp hoặc chưa hết thời gian đăng ký !',
     AppErrorCode::CODE_2079 => 'Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !',
     AppErrorCode::CODE_2080 => 'Đơn hàng không tồn tại !',
+    AppErrorCode::CODE_2081 => 'Phiếu nhập kho đã tồn tại !',
+    AppErrorCode::CODE_2082 => 'Lưu đơn hàng của phiếu nhập thất bại !',
+    AppErrorCode::CODE_2083 => 'Lưu tài sản nhập kho thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

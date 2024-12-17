@@ -85,6 +85,9 @@ class AppErrorCode
     public const CODE_2078 = 2078; //  Bạn chưa duyệt hết các kế hoạch đơn vị, vui lòng kiểm tra lại !
     public const CODE_2079 = 2079; //  Bạn đã duyệt các mua sắm không được phép, vui lòng kiểm tra lại !
     public const CODE_2080 = 2080; //  Đơn hàng không tồn tại !
+    public const CODE_2081 = 2081; //  Phiếu nhập kho đã tồn tại !
+    public const CODE_2082 = 2082; //  Lưu đơn hàng của phiếu nhập thất bại !
+    public const CODE_2083 = 2083; //  Lưu tài sản nhập kho thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
