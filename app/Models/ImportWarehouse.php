@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ImportWarehouse extends Model
 {
@@ -20,4 +21,14 @@ class ImportWarehouse extends Model
     public const STATUS_NOT_COMPLETE = 1;
     public const STATUS_COMPLETE     = 2;
     public const STATUS_CANCEL       = 3;
+
+    public function importWarehouseOrders(): HasMany
+    {
+        return $this->hasMany(ImportWarehouseOrder::class, 'import_warehouse_id');
+    }
+
+    public function importWarehouseAssets(): HasMany
+    {
+        return $this->hasMany(ImportWarehouseAsset::class, 'import_warehouse_id');
+    }
 }

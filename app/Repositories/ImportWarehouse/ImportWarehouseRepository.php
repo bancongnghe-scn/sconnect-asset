@@ -12,12 +12,37 @@ class ImportWarehouseRepository extends BaseRepository
         return ImportWarehouse::class;
     }
 
-    public function getListing($filters, $columns = ['*'])
+    public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->select($columns)->newQuery();
+        $query = $this->_model->select($columns)->with($with)->newQuery();
 
         if (!empty($filters['code'])) {
             $query->where('code', $filters['code']);
+        }
+
+        if (!empty($filters['id'])) {
+            $query->where('id', $filters['id']);
+        }
+
+        if (!empty($filters['code_name'])) {
+            $query->where('name', 'like', $filters['code_name'] . '%')
+                ->orWhere('code', $filters['code_name']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['created_by'])) {
+            $query->where('created_by', $filters['created_by']);
+        }
+
+        if (!empty($filters['created_at'])) {
+            $query->where('created_at', $filters['created_at']);
+        }
+
+        if (!empty($filters['limit'])) {
+            return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }
 
         if (!empty($filters['first'])) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\ImportWarehouse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateImportWarehouseRequest;
 use App\Services\ImportWarehouseService;
+use Illuminate\Http\Request;
 
 class ImportWarehouseController extends Controller
 {
@@ -27,6 +28,45 @@ class ImportWarehouseController extends Controller
         }
     }
 
+    public function getListImportWarehouse(Request $request)
+    {
+        $request->validate([
+            'code_name'  => 'nullable|string',
+            'status'     => 'nullable|integer',
+            'user_id'    => 'nullable|integer',
+            'created_at' => 'nullable|date',
+            'page'       => 'nullable|integer',
+            'limit'      => 'nullable|integer',
+        ]);
+
+        try {
+            $result = $this->importWarehouseService->getListImportWarehouse($request->all());
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getInfoImportWarehouse(string $id)
+    {
+        try {
+            $result = $this->importWarehouseService->getInfoImportWarehouse($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
     public function createImportWarehouse(CreateImportWarehouseRequest $request)
     {
         try {
@@ -38,7 +78,23 @@ class ImportWarehouseController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function completeImportWarehouse(string $id)
+    {
+        try {
+            $result = $this->importWarehouseService->completeImportWarehouse($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
             report($exception);
 
             return response_error();

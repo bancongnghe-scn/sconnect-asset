@@ -9,7 +9,7 @@
 
                 <div class="col-2">
                     <label class="tw-font-bold">Trạng thái</label>
-                    <select class="form-select">
+                    <select class="form-select" x-model="filters.status">
                         <option value="">Chọn trạng thái</option>
                         <template x-for="(value, key) in LIST_STATUS_IMPORT_WAREHOUSE">
                             <option :value="key" x-text="value"></option>

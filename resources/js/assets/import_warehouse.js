@@ -1,6 +1,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('import_warehouse_list', () => ({
         init() {
+            this.list(this.filters)
             this.getListOrder()
             window.initSelect2Modal('modalUI')
             this.$watch('data.order_ids', (newValue, oldValue) => {
@@ -17,14 +18,9 @@ document.addEventListener('alpine:init', () => {
             created_by: 'Người nhập',
             status: 'Trạng thái',
         },
-        showAction: {
-            view: false,
-            edit: true,
-            remove: true
-        },
-        selectedRow: [],
         listUser: [],
         listOrders: [],
+
         //pagination
         totalPages: null,
         currentPage: 1,
@@ -34,7 +30,14 @@ document.addEventListener('alpine:init', () => {
         limit: 10,
 
         //data
-        filters: {},
+        filters: {
+            'code_name': null,
+            'status': null,
+            'created_at': null,
+            'created_by': null,
+            'page': 1,
+            'limit': 10
+        },
         data: {
             id: null,
             code: null,
@@ -48,6 +51,28 @@ document.addEventListener('alpine:init', () => {
         id: null,
 
         //methods
+        async list(filters) {
+            this.loading = true
+            try {
+                const response = await window.apiGetImportWarehouse(filters)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                const data = response.data
+                this.dataTable = data.data
+                this.totalPages = data.last_page
+                this.currentPage = data.current_page
+                this.total = data.total ?? 0
+                this.from = data.from ?? 0
+                this.to = data.to ?? 0
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async create() {
             this.loading = true
             try {
@@ -57,7 +82,8 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
 
-                this.listOrders = response.data
+                toast.success('Tạo phiếu nhập thành công')
+                $('#modalUI').modal('hide')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -111,12 +137,17 @@ document.addEventListener('alpine:init', () => {
             } else {
                 this.title = 'Cập nhật'
                 this.id = id
-                const response = await window.apiShowAssetType(id)
+                const response = await window.apiGetInfoImportWarehouse(id)
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
-                this.data = response.data.data
+                const data = response.data
+                this.data.id = data.id
+                this.data.code = data.code
+                this.data.name = data.name
+                this.data.description = data.description
+                this.data.order_ids = data.order_ids
             }
             this.loading = false
             $('#modalUI').modal('show');
@@ -161,7 +192,14 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
+            this.filters = {
+                'code_name': null,
+                'status': null,
+                'created_at': null,
+                'created_by': null,
+                'page': 1,
+                'limit': 10
+            }
             this.list(this.filters)
         },
     }));

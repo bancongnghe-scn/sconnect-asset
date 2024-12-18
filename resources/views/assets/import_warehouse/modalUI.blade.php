@@ -39,7 +39,7 @@
 
                     <div>
                         <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản nhập (${data.shopping_assets?.length})`"></div>
-                        <div class="mt-3 overflow-auto custom-scroll">
+                        <div class="mt-3 overflow-auto custom-scroll tw-max-h-56">
                             <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                 <thead>
                                 <tr>
@@ -70,7 +70,7 @@
                                         </td>
                                         <td x-text="asset.price"></td>
                                         <td x-text="asset.price_last"></td>
-                                        <td x-text="asset.date_purchase"></td>
+                                        <td x-text="formatDateVN(asset.date_purchase)"></td>
                                         <td x-text="asset.asset_type_name"></td>
                                         <td x-text="LIST_MEASURE[asset.measure]"></td>
                                         <td x-text="asset.supplier_name"></td>
@@ -85,6 +85,7 @@
             <div x-show="action !== 'view'" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
+                <button @click="completeOrder" type="button" class="btn btn-primary">Hoàn thành</button>
             </div>
         </div>
     </div>

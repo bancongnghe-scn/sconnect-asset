@@ -38,7 +38,6 @@ class ListImportWarehouseAssetResource extends JsonResource
                 $value['supplier_name']   = $suppliers[$value->supplier_id]->name ?? null;
                 $value['asset_type_name'] = $assetType[$value->asset_type_id]->name ?? null;
                 $value['measure']         = $assetType[$value->asset_type_id]->measure ?? null;
-                $value['date_purchase']   = Carbon::parse($value['date_purchase'])->format('d-m-Y');
             }
 
             return $this->resource;
@@ -46,7 +45,7 @@ class ListImportWarehouseAssetResource extends JsonResource
 
         $order             = $this->orderRepository->find($asset->order_id);
         $orderHistory      = $this->orderHistoryRepository->getListing(['order_id' => $order->id, 'type' => OrderHistory::TYPE_COMPLETE_ORDER, 'first' => true]);
-        $dateCompleteOrder = Carbon::parse($orderHistory->created_at)->format('d-m-Y');
+        $dateCompleteOrder = Carbon::parse($orderHistory?->created_at)->format('Y-m-d');
         $totalCost         = (+$order->shipping_costs) + (+$order->other_costs);
         $totalPrice        = 0;
         foreach ($this->resource as $key => $value) {

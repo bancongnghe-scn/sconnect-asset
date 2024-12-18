@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Http\Resources\InfoImportWarehouseResource;
 use App\Http\Resources\ListImportWarehouseAssetResource;
 use App\Models\ImportWarehouse;
+use App\Models\Order;
 use App\Repositories\ImportWarehouse\ImportWarehouseAssetRepository;
 use App\Repositories\ImportWarehouse\ImportWarehouseRepository;
 use App\Repositories\ImportWarehouseOrderRepository;
@@ -40,6 +42,14 @@ class ImportWarehouseService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2081,
+            ];
+        }
+
+        $importWarehouseOrder = $this->importWarehouseOrderRepository->getListing(['order_id' => $data['order_id'], 'first' => true]);
+        if (!empty($importWarehouseOrder)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2084,
             ];
         }
 
@@ -96,7 +106,67 @@ class ImportWarehouseService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+            report($exception);
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function getListImportWarehouse($filters)
+    {
+        $result = $this->importWarehouseRepository->getListing($filters);
+
+        return $result->toArray();
+    }
+
+    public function getInfoImportWarehouse($id)
+    {
+        $importWarehouse = $this->importWarehouseRepository->find($id);
+        if (empty($importWarehouse)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2085,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => InfoImportWarehouseResource::make($importWarehouse)->resolve(),
+        ];
+    }
+
+    public function completeImportWarehouse($id)
+    {
+        $importWarehouse = $this->importWarehouseRepository->find($id);
+        if (empty($importWarehouse)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2085,
+            ];
+        }
+
+        $orderIds = $importWarehouse->importWarehouseOrders->pluck('order_id')->toArray();
+
+        DB::beginTransaction();
+        try {
+            $importWarehouse->status = ImportWarehouse::STATUS_COMPLETE;
+            if (!$importWarehouse->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2086,
+                ];
+            }
+
+            // Thay doi trang thai don hang thanh da nhap kho
+            $this->importWarehouseOrderRepository->updateByCondition(['order_id' => $orderIds], ['status' => Order::STATUS_WAREHOUSED]);
+
+        } catch (\Throwable $exception) {
             report($exception);
             DB::rollBack();
 
