@@ -284,4 +284,43 @@ class ImportWarehouseService
             ];
         }
     }
+
+    public function deleteImportWarehouse($id)
+    {
+        $importWarehouse = $this->importWarehouseRepository->find($id);
+        if (empty($importWarehouse)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2085,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            if (!$importWarehouse->delete()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2088,
+                ];
+            }
+
+            $this->importWarehouseOrderRepository->deleteByCondition(['import_warehouse_id' => $id]);
+            $this->importWarehouseAssetRepository->deleteByCondition(['import_warehouse_id' => $id]);
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
 }

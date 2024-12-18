@@ -31,4 +31,14 @@ class ImportWarehouseAssetRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function deleteByCondition($filters)
+    {
+        $query = $this->_model->newQuery();
+        if (!empty($filters['import_warehouse_id'])) {
+            $query->where('import_warehouse_id', $filters['import_warehouse_id']);
+        }
+
+        return $query->delete();
+    }
 }

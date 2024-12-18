@@ -117,4 +117,21 @@ class ImportWarehouseController extends Controller
             return response_error();
         }
     }
+
+    public function deleteImportWarehouse(string $id)
+    {
+        try {
+            $result = $this->importWarehouseService->deleteImportWarehouse($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

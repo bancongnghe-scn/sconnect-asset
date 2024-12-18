@@ -1,5 +1,8 @@
 <div class="modal fade" id="modalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl"
+         x-data="{disabled: false}"
+         x-effect="disabled = action === 'view'"
+    >
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" x-text="title + ' phiếu nhập kho'"></h4>
@@ -17,7 +20,7 @@
                                  </div>
                                  <div>
                                      <label>Tên phiếu</label>
-                                     <input class="form-control" type="text" x-model="data.name" placeholder="Tên phiếu">
+                                     <input class="form-control" type="text" x-model="data.name" placeholder="Tên phiếu" :disabled="disabled">
                                  </div>
                              </div>
 
@@ -25,14 +28,15 @@
                                  <label>Đơn hàng</label>
                                  @include('common.select2.modal.extent.select2_multiple_modal', [
                                          'model' => 'data.order_ids',
-                                         'values' => 'listOrders',
-                                         'placeholder' => 'Chọn đơn hàng'
+                                         'values' => "action === 'view' ? listOrders : listOrdersDelivered",
+                                         'placeholder' => 'Chọn đơn hàng',
+                                         'disabled' => 'disabled'
                                  ])
                              </div>
 
                              <div class="mb-3">
                                  <label>Ghi chú</label>
-                                 <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
+                                 <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú" :disabled="disabled"></textarea>
                              </div>
                          </div>
                      </div>
@@ -60,13 +64,13 @@
                                     <tr>
                                         <td x-text="asset.code"></td>
                                         <td>
-                                            <input class="form-control tw-w-fit" type="text" x-model="asset.name">
+                                            <input class="form-control tw-w-fit" type="text" x-model="asset.name" :disabled="disabled">
                                         </td>
                                         <td>
-                                            <input class="form-control tw-w-[8rem]" type="number" min="1" x-model="asset.warranty_time">
+                                            <input class="form-control tw-w-[8rem]" type="number" min="1" x-model="asset.warranty_time" :disabled="disabled">
                                         </td>
                                         <td>
-                                            <input class="form-control tw-w-[9rem]" type="text" x-model="asset.seri_number">
+                                            <input class="form-control tw-w-[9rem]" type="text" x-model="asset.seri_number" :disabled="disabled">
                                         </td>
                                         <td x-text="asset.price"></td>
                                         <td x-text="asset.price_last"></td>
@@ -84,7 +88,7 @@
             </div>
             <div x-show="action !== 'view'" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
+                <button @click="action === 'create' ? create() : update()" type="button" class="btn btn-sc">Lưu</button>
                 <button @click="$('#modalConfirmComplete').modal('show')" type="button" class="btn btn-primary">Hoàn thành</button>
             </div>
         </div>

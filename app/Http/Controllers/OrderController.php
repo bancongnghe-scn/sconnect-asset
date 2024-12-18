@@ -15,9 +15,10 @@ class OrderController extends Controller
     public function getListOrder(Request $request)
     {
         $request->validate([
-            'status' => 'nullable|integer',
-            'page'   => 'nullable|integer',
-            'limit'  => 'nullable|integer',
+            'status'   => 'nullable|array',
+            'status.*' => 'integer',
+            'page'     => 'nullable|integer',
+            'limit'    => 'nullable|integer',
         ]);
 
         try {

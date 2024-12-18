@@ -20,6 +20,7 @@ document.addEventListener('alpine:init', () => {
         },
         listUser: [],
         listOrders: [],
+        listOrdersDelivered: [],
 
         //pagination
         totalPages: null,
@@ -81,9 +82,46 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.list({})
+                this.list({page: 1, limit: 10})
                 toast.success('Tạo phiếu nhập thành công')
                 $('#modalUI').modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async update() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdateImportWarehouse(this.id, this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.list(this.filters)
+                toast.success('Cập nhật phiếu nhập thành công')
+                $('#modalUI').modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async remove() {
+            this.loading = true
+            try {
+                const response = await window.apiDeleteImportWarehouse(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.dataTable = this.dataTable.filter((item) => item.id !== this.id)
+                toast.success('Xóa phiếu nhập thành công')
+                $('#modalConfirmDelete').modal('hide')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -103,6 +141,13 @@ document.addEventListener('alpine:init', () => {
                         return
                     }
                     id = response.data.id
+                } else {
+                    const response = await window.apiUpdateImportWarehouse(this.id, this.data)
+                    if (!response.success) {
+                        toast.error(response.message)
+                        return
+                    }
+                    id = this.id
                 }
 
                 response = await window.apiCompleteImportWarehouse(id)
@@ -111,7 +156,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
 
-                this.list({})
+                this.list(this.filters)
                 toast.success('Hoàn thành phiếu nhập kho thành công')
                 $('#modalUI').modal('hide')
                 $('#modalConfirmComplete').modal('hide')
@@ -125,13 +170,14 @@ document.addEventListener('alpine:init', () => {
         async getListOrder() {
             this.loading = true
             try {
-                const response = await window.apiGetListOrder({status: ORDER_STATUS_DELIVERED})
+                const response = await window.apiGetListOrder({status: [ORDER_STATUS_DELIVERED, ORDER_STATUS_WAREHOUSED]})
                 if (!response.success) {
                     toast.error(response.message)
                     return
                 }
 
                 this.listOrders = response.data
+                this.listOrdersDelivered = this.listOrders.filter((item) => +item.status === ORDER_STATUS_DELIVERED)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -166,7 +212,11 @@ document.addEventListener('alpine:init', () => {
                     this.data.code = 'PN_'+code
                 })
             } else {
-                this.title = 'Cập nhật'
+                if (action === 'update') {
+                    this.title = 'Cập nhật'
+                } else {
+                    this.title = 'Chi tiết'
+                }
                 this.id = id
                 const response = await window.apiGetInfoImportWarehouse(id)
                 if (!response.success) {
@@ -199,6 +249,11 @@ document.addEventListener('alpine:init', () => {
                 const data = await this.getAssetForImportWarehouse(orderNew)
                 this.data.shopping_assets = [...this.data.shopping_assets, ...data]
             }
+        },
+
+        confirmRemove(id) {
+           this.id = id
+           $('#modalConfirmDelete').modal('show')
         },
 
         changePage(page) {
