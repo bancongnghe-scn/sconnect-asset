@@ -5,12 +5,16 @@ namespace App\Exports;
 use App\Models\ImportWarehouse;
 use App\Repositories\ImportWarehouse\ImportWarehouseRepository;
 use App\Repositories\UserRepository;
+use App\Traits\ExportStylingTrait;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Events\AfterSheet;
 
-class ImportWarehouseExport implements FromArray, WithHeadings
+class ImportWarehouseExport implements FromArray, WithHeadings, WithEvents
 {
+    use ExportStylingTrait;
     protected $ids;
     protected $importWarehouseRepository;
     protected $userRepository;
@@ -54,5 +58,23 @@ class ImportWarehouseExport implements FromArray, WithHeadings
         }
 
         return $importWarehouse;
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $sheet         = $event->sheet->getDelegate();
+                $highestColumn = $sheet->getHighestColumn();
+                // Apply header style using trait
+                $sheet->getStyle("A1:{$highestColumn}1")->applyFromArray($this->headerStyle());
+
+                // Áp dụng auto-size và wrap-text cùng lúc
+                foreach (range('A', $sheet->getHighestColumn()) as $column) {
+                    $dimension = $sheet->getColumnDimension($column);
+                    $dimension->setAutoSize(true); // Tự động căn chỉnh
+                }
+            },
+        ];
     }
 }
