@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\ImportWarehouse;
 
+use App\Exports\ImportWarehouseExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateImportWarehouseRequest;
 use App\Services\ImportWarehouseService;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ImportWarehouseController extends Controller
 {
@@ -133,5 +135,17 @@ class ImportWarehouseController extends Controller
 
             return response_error();
         }
+    }
+
+    public function exportImportWarehouse(Request $request)
+    {
+        $request->validate([
+            'ids'   => 'nullable|array',
+            'ids.*' => 'integer',
+        ]);
+
+        $id = $request->ids ?? [];
+
+        return Excel::download(new ImportWarehouseExport($id), 'phieu_nhap_kho.xlsx');
     }
 }

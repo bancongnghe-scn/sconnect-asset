@@ -49,12 +49,11 @@
                                                 class="border-0 bg-body" @click="confirmRemove(value.id)">
                                                 <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                             </button>
-                                            <button x-show="+value.status === STATUS_IMPORT_WAREHOUSE_COMPLETE"
-                                                    class="border-0 bg-body"
-                                                    @click="printImportWarehouse(value.id)"
-                                            >
-                                                <i class="fa-solid fa-print"></i>
-                                            </button>
+                                            <a :href="`/api/import-warehouse/export?ids[]=${value.id}`" download>
+                                                <button x-show="+value.status === STATUS_IMPORT_WAREHOUSE_COMPLETE" class="border-0 bg-body">
+                                                    <i class="fa-solid fa-print"></i>
+                                                </button>
+                                            </a>
                                         </td>
                                     </tr>
                                 </template>

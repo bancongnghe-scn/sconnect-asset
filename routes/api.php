@@ -200,5 +200,6 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('complete/{id}', 'completeImportWarehouse');
         Route::post('update/{id}', 'updateImportWarehouse');
         Route::get('delete/{id}', 'deleteImportWarehouse');
+        Route::get('export', 'exportImportWarehouse');
     });
 });

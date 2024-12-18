@@ -8,9 +8,11 @@
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
             </button>
-            <button type="button" class="btn btn-primary"  @click="exportWarehouse">
-                Xuất Excel
-            </button>
+            <a href="/api/import-warehouse/export" download>
+                <button type="button" class="btn btn-primary">
+                    Xuất Excel
+                </button>
+            </a>
         </div>
 
         <div>
