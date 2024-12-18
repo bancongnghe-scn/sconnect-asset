@@ -27,6 +27,7 @@ class CreateImportWarehouseRequest extends FormRequest
             'shopping_assets.*.supplier_id'         => 'required|integer',
             'shopping_assets.*.order_id'            => 'required|integer',
             'shopping_assets.*.import_warehouse_id' => 'nullable|integer',
+            'shopping_assets.*.id'                  => 'nullable|integer',
         ];
     }
 }

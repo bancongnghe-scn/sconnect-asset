@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Repositories\ImportWarehouse\ImportWarehouseAssetRepository;
 use App\Repositories\ImportWarehouse\ImportWarehouseRepository;
 use App\Repositories\ImportWarehouseOrderRepository;
+use App\Repositories\OrderRepository;
 use App\Repositories\ShoppingAssetOrderRepository;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,7 @@ class ImportWarehouseService
         protected ShoppingAssetOrderRepository $shoppingAssetOrderRepository,
         protected ImportWarehouseOrderRepository $importWarehouseOrderRepository,
         protected ImportWarehouseRepository $importWarehouseRepository,
+        protected OrderRepository $orderRepository,
     ) {
 
     }
@@ -45,7 +47,7 @@ class ImportWarehouseService
             ];
         }
 
-        $importWarehouseOrder = $this->importWarehouseOrderRepository->getListing(['order_id' => $data['order_id'], 'first' => true]);
+        $importWarehouseOrder = $this->importWarehouseOrderRepository->getListing(['order_id' => $data['order_ids'], 'first' => true]);
         if (!empty($importWarehouseOrder)) {
             return [
                 'success'    => false,
@@ -64,16 +66,7 @@ class ImportWarehouseService
                 'created_by'  => $userId,
             ]);
 
-            $dataInsertImportWarehouseOrder = [];
-            foreach ($data['order_ids'] as $orderId) {
-                $dataInsertImportWarehouseOrder[] = [
-                    'order_id'            => $orderId,
-                    'import_warehouse_id' => $importWarehouse->id,
-                    'created_by'          => $userId,
-                ];
-            }
-
-            $insert = $this->importWarehouseOrderRepository->insert($dataInsertImportWarehouseOrder);
+            $insert = resolve(ImportWarehouseOrderService::class)->insertImportWarehouseOrder($data['order_ids'], $importWarehouse->id);
             if (!$insert) {
                 DB::rollBack();
 
@@ -104,6 +97,9 @@ class ImportWarehouseService
 
             return [
                 'success' => true,
+                'data'    => [
+                    'id' => $importWarehouse->id,
+                ],
             ];
         } catch (\Throwable $exception) {
             report($exception);
@@ -164,11 +160,123 @@ class ImportWarehouseService
             }
 
             // Thay doi trang thai don hang thanh da nhap kho
-            $this->importWarehouseOrderRepository->updateByCondition(['order_id' => $orderIds], ['status' => Order::STATUS_WAREHOUSED]);
+            $this->orderRepository->updateByCondition(['id' => $orderIds], ['status' => Order::STATUS_WAREHOUSED]);
 
+            $generalAssets = resolve(AssetService::class)->generalAssetByImportWarehouse($id);
+            if (!$generalAssets) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2087,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
         } catch (\Throwable $exception) {
             report($exception);
             DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function updateImportWarehouse($id, array $dateUpdate)
+    {
+        $importWarehouse = $this->importWarehouseRepository->find($id);
+        if (empty($importWarehouse)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2085,
+            ];
+        }
+
+        $userId = Auth::id();
+        DB::beginTransaction();
+        try {
+            $updateImportWarehouse = $importWarehouse->update([
+                'name'        => $dateUpdate['name'],
+                'code'        => $dateUpdate['code'],
+                'description' => $dateUpdate['description'],
+                'updated_by'  => $userId,
+            ]);
+
+            if (!$updateImportWarehouse) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2086,
+                ];
+            }
+
+            $orderIdsOld = $importWarehouse->importWarehouseOrders->pluck('order_id')->toArray();
+            $orderIdsAdd = array_diff($dateUpdate['order_ids'], $orderIdsOld);
+            if (!empty($orderIdsAdd)) {
+                $insert = resolve(ImportWarehouseOrderService::class)->insertImportWarehouseOrder($orderIdsAdd, $id);
+                if (!$insert) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2082,
+                    ];
+                }
+            }
+            $orderIdsRemove = array_diff($orderIdsOld, $dateUpdate['order_ids']);
+            if (!empty($orderIdsRemove)) {
+                $this->importWarehouseOrderRepository->deleteByCondition(['order_id' => $orderIdsRemove, 'import_warehouse_id' => $id]);
+            }
+
+            $dataInsert = [];
+            foreach ($dateUpdate['shopping_assets'] as $shoppingAsset) {
+                if (in_array($shoppingAsset['order_id'], $orderIdsAdd)) {
+                    $shoppingAsset['import_warehouse_id'] = $id;
+                    $shoppingAsset['created_by']          = $userId;
+                    $dataInsert[]                         = $shoppingAsset;
+                } else {
+                    $id = $shoppingAsset['id'];
+                    unset($shoppingAsset['id']);
+                    $update = $this->importWarehouseAssetRepository->update($id, $shoppingAsset);
+                    if (!$update) {
+                        DB::rollBack();
+
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2083,
+                        ];
+                    }
+                }
+            }
+
+            if (!empty($dataInsert)) {
+                $insert = $this->importWarehouseAssetRepository->insert($dataInsert);
+                if (!$insert) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2083,
+                    ];
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
 
             return [
                 'success'    => false,

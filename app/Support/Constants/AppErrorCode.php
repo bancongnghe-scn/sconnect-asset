@@ -91,6 +91,7 @@ class AppErrorCode
     public const CODE_2084 = 2084; //  Đã có phiếu nhập kho ứng với đơn hàng !
     public const CODE_2085 = 2085; //  Phiếu nhập kho không tồn tại !
     public const CODE_2086 = 2086; //  Lưu thông tin phiếu nhập kho thất bại !
+    public const CODE_2087 = 2087; //  Sinh tài sản từ phiếu nhập kho thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

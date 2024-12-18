@@ -90,6 +90,7 @@ return [
     AppErrorCode::CODE_2084 => 'Đã có phiếu nhập kho ứng với đơn hàng !',
     AppErrorCode::CODE_2085 => 'Phiếu nhập kho không tồn tại !',
     AppErrorCode::CODE_2086 => 'Lưu thông tin phiếu nhập kho thất bại !',
+    AppErrorCode::CODE_2087 => 'Sinh tài sản từ phiếu nhập kho thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

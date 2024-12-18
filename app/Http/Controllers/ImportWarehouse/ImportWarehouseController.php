@@ -73,7 +73,7 @@ class ImportWarehouseController extends Controller
             $result = $this->importWarehouseService->createImportWarehouse($request->validated());
 
             if ($result['success']) {
-                return response_success();
+                return response_success($result['data']);
             }
 
             return response_error($result['error_code']);
@@ -88,6 +88,23 @@ class ImportWarehouseController extends Controller
     {
         try {
             $result = $this->importWarehouseService->completeImportWarehouse($id);
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function updateImportWarehouse(string $id, CreateImportWarehouseRequest $request)
+    {
+        try {
+            $result = $this->importWarehouseService->updateImportWarehouse($id, $request->validated());
 
             if ($result['success']) {
                 return response_success();

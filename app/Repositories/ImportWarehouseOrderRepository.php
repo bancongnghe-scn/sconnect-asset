@@ -28,14 +28,17 @@ class ImportWarehouseOrderRepository extends BaseRepository
         return $query->get();
     }
 
-    public function updateByCondition($filters, array $dataUpdate)
+    public function deleteByCondition($filters)
     {
         $query = $this->_model->newQuery();
-
         if (!empty($filters['order_id'])) {
             $query->whereIn('order_id', Arr::wrap($filters['order_id']));
         }
 
-        return $query->update($dataUpdate) > 0;
+        if (!empty($filters['import_warehouse_id'])) {
+            $query->whereIn('import_warehouse_id', Arr::wrap($filters['import_warehouse_id']));
+        }
+
+        return $query->delete();
     }
 }

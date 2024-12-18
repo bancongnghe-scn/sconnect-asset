@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ImportWarehouseAsset extends Model
 {
@@ -23,4 +24,9 @@ class ImportWarehouseAsset extends Model
         'order_id',
         'import_warehouse_id',
     ];
+
+    public function assetType(): BelongsTo
+    {
+        return $this->belongsTo(AssetType::class, 'asset_type_id');
+    }
 }

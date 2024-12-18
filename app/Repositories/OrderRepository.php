@@ -31,4 +31,15 @@ class OrderRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function updateByCondition($filters, array $dataUpdate)
+    {
+        $query = $this->_model->newQuery();
+
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
+        return $query->update($dataUpdate) > 0;
+    }
 }

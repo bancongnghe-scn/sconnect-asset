@@ -81,9 +81,40 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-
+                this.list({})
                 toast.success('Tạo phiếu nhập thành công')
                 $('#modalUI').modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async completeImportWarehouse() {
+            this.loading = true
+            try {
+                let response = null
+                let id = null
+                if (this.action === 'create') {
+                    response = await window.apiCreateImportWarehouse(this.data)
+                    if (!response.success) {
+                        toast.error(response.message)
+                        return
+                    }
+                    id = response.data.id
+                }
+
+                response = await window.apiCompleteImportWarehouse(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.list({})
+                toast.success('Hoàn thành phiếu nhập kho thành công')
+                $('#modalUI').modal('hide')
+                $('#modalConfirmComplete').modal('hide')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -94,7 +125,7 @@ document.addEventListener('alpine:init', () => {
         async getListOrder() {
             this.loading = true
             try {
-                const response = await window.apiGetListOrder({status: ORDER_STATUS_COMPLETE})
+                const response = await window.apiGetListOrder({status: ORDER_STATUS_DELIVERED})
                 if (!response.success) {
                     toast.error(response.message)
                     return

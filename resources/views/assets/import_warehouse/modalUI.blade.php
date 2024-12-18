@@ -85,7 +85,7 @@
             <div x-show="action !== 'view'" class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu</button>
-                <button @click="completeOrder" type="button" class="btn btn-primary">Hoàn thành</button>
+                <button @click="$('#modalConfirmComplete').modal('show')" type="button" class="btn btn-primary">Hoàn thành</button>
             </div>
         </div>
     </div>

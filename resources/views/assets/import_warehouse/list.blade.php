@@ -39,6 +39,16 @@
             >
                 @include('common.modal-confirm')
             </div>
+
+            <div
+                x-data="{
+                        modalId: 'modalConfirmComplete',
+                        contentBody: 'Bạn có chắc chắn muốn hoàn thành phiếu nhập kho này không ?'
+                    }"
+                @ok="completeImportWarehouse"
+            >
+                @include('common.modal-confirm')
+            </div>
         </div>
     </div>
 @endsection

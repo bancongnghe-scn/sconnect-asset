@@ -13,9 +13,9 @@ class ImportWarehouseAssetRepository extends BaseRepository
         return ImportWarehouseAsset::class;
     }
 
-    public function getListing($filters, $columns = ['*'])
+    public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filters['order_id'])) {
             $query->whereIn('order_id', Arr::wrap($filters['order_id']));
