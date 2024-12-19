@@ -47,7 +47,7 @@ class AssetRepairService
                     'performer_supplier'    => $performerSupplier,
                     'cost_repair'           => $asset['cost_repair'],
                     'note_repair'           => $asset['note_repair'],
-                    'created_at'            => date('Y-m-d H:i:s'),
+                    'created_at'            => new \DateTime(),
                     'status'                => AssetRepair::STATUS_NOT_COMPLETE,
                 ];
             }
@@ -114,7 +114,12 @@ class AssetRepairService
                 'status',
             ],
             [
-                'asset:id,name,code,status,reason',
+                'asset:id,name,code,status',
+                'asset.assetHistory' => function ($query) {
+                    $query->select('asset_id', 'date', 'description')
+                        ->where('action', Asset::STATUS_REPAIR)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 
@@ -129,7 +134,7 @@ class AssetRepairService
     {
         $assetRepair = $this->assetRepairRepository
             ->find($id)
-            ->load('asset:id,name,code,status,reason,price');
+            ->load('asset:id,name,code,status,price');
 
         if (empty($assetRepair)) {
             return [];

@@ -4,6 +4,7 @@ use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ImportWarehouse\ImportWarehouseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Rbac\RoleController;
 use App\Http\Controllers\ShoppingAssetOrderController;
 use App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationYearController;
@@ -202,4 +203,16 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('delete/{id}', 'deleteImportWarehouse');
         Route::get('export', 'exportImportWarehouse');
     });
+});
+
+Route::prefix('report')->group(function () {
+    Route::get('/get-data-value-report', [ReportController::class, 'getDataValueReport'])->name('assets.report.getDataValueReport');
+
+    Route::get('/get-data-operating-report', [ReportController::class, 'getDataOperatingReport'])->name('assets.report.getDataOperatingReport');
+
+    Route::get('/get-data-structure-report', [ReportController::class, 'getDataStructureReport'])->name('assets.report.getDataStructureReport');
+
+    Route::get('/get-data-use-report', [ReportController::class, 'getDataUseReport'])->name('assets.report.getDataUseReport');
+
+    Route::get('/get-data-maintain-report', [ReportController::class, 'getDataMaintainReport'])->name('assets.report.getDataMaintainReport');
 });

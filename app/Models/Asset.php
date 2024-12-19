@@ -26,10 +26,7 @@ class Asset extends Model
         'user_id',
         'status',
         'image',
-        'date',             //thêm
         'location',         //thêm
-        'reason',           //thêm
-        'price_liquidation',
         'organization_id',
         'import_warehouse_id',
         'created_at',
@@ -64,6 +61,26 @@ class Asset extends Model
         self::STATUS_REPAIR                     => 'Đang sửa chữa',
     ];
 
+    public const LOCATION_HN_1                  = 1;
+    public const LOCATION_HN_2                  = 2;
+    public const LOCATION_HN_3                  = 3;
+    public const LOCATION_HN_4                  = 4;
+    public const LOCATION_HN_5                  = 5;
+    public const LOCATION_HN_6                  = 6;
+    public const LOCATION_HN_7                  = 7;
+    public const LOCATION_HCM                   = 8;
+
+    public const LOCATION_NAME = [
+        self::LOCATION_HN_1                     => 'HN_Tầng 1',
+        self::LOCATION_HN_2                     => 'HN_Tầng 2',
+        self::LOCATION_HN_3                     => 'HN_Tầng 3',
+        self::LOCATION_HN_4                     => 'HN_Tầng 4',
+        self::LOCATION_HN_5                     => 'HN_Tầng 5',
+        self::LOCATION_HN_6                     => 'HN_Tầng 6',
+        self::LOCATION_HN_7                     => 'HN_Tầng 7',
+        self::LOCATION_HCM                      => 'HCM',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -72,5 +89,10 @@ class Asset extends Model
     public function assetRepair(): HasMany
     {
         return $this->hasMany(AssetRepair::class, 'asset_id');
+    }
+
+    public function assetHistory(): HasMany
+    {
+        return $this->hasMany(AssetHistory::class, 'asset_id');
     }
 }
