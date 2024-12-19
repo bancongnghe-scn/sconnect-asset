@@ -38,7 +38,7 @@ class ImportWarehouseRepository extends BaseRepository
         }
 
         if (!empty($filters['created_at'])) {
-            $query->where('created_at', $filters['created_at']);
+            $query->whereDate('created_at', $filters['created_at']);
         }
 
         if (!empty($filters['limit'])) {

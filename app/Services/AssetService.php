@@ -6,6 +6,8 @@ use App\Models\Asset;
 use App\Repositories\AssetRepository;
 use App\Repositories\ImportWarehouse\ImportWarehouseAssetRepository;
 use Carbon\Carbon;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Auth;
 
 class AssetService
@@ -27,11 +29,9 @@ class AssetService
         $dataInsert = [];
         $userId     = Auth::id();
         foreach ($importWarehouseAssets as $importWarehouseAsset) {
-            $dataInsert[] = [
+            $data = [
                 'name'                    => $importWarehouseAsset->name,
-                'asset_type_id'           => $importWarehouseAsset->asset_type_id,
                 'code'                    => $importWarehouseAsset->code,
-                'supplier_id'             => $importWarehouseAsset->supplier_id,
                 'price'                   => $importWarehouseAsset->price_last,
                 'warranty_months'         => $importWarehouseAsset->warranty_time,
                 'depreciation_months'     => $importWarehouseAsset->assetType?->depreciation_months,
@@ -39,12 +39,35 @@ class AssetService
                 'next_maintenance_date'   => Carbon::create($importWarehouseAsset->date_purchase)
                     ->addMonths($importWarehouseAsset->assetType?->depreciation_months)
                     ->format('Y-m-d'),
-                'status'              => Asset::STATUS_NEW,
-                'import_warehouse_id' => $importWarehouseId,
-                'created_by'          => $userId,
+                'asset_type_id'           => $importWarehouseAsset->asset_type_id,
+                'supplier_id'             => $importWarehouseAsset->supplier_id,
+                'status'                  => Asset::STATUS_NEW,
+                'import_warehouse_id'     => $importWarehouseId,
+                'created_by'              => $userId,
             ];
+
+            $dataInsert[] = $data;
         }
 
-        return $this->assetRepository->insert($dataInsert);
+        $insert = $this->assetRepository->insert($dataInsert);
+        if (!$insert) {
+            return $insert;
+        }
+
+        $assets = $this->assetRepository->getListing(['import_warehouse_id' => $importWarehouseId]);
+        foreach ($assets as $asset) {
+            $link     = config('app.url').'/assets/info/'.$asset->id;
+            $savePath = storage_path('app/public/qrcode/qr_image_'.$asset->id.'.png');
+            $qrCode   = Builder::create()
+                ->writer(new PngWriter())
+                ->data($link)
+                ->size(300)
+                ->margin(10)
+                ->build();
+
+            $qrCode->saveToFile($savePath);
+        }
+
+        return true;
     }
 }

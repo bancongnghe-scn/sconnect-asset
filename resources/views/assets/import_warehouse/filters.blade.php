@@ -22,7 +22,7 @@
                     <span x-data="{
                                     model: filters.created_by,
                                     init() {this.$watch('filters.created_by', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }">
+                                }" @select-change="filters.created_by = $event.detail">
                                     @include('common.select2.extent.select2', [
                                           'placeholder' => 'Người nhập',
                                           'values' => 'listUser',

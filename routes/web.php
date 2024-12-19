@@ -91,6 +91,9 @@ Route::middleware('checkAuth')->group(function () {
         });
     });
 
-    Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
-    Route::view('/assets/inventory/list', 'assets.inventory.list');
+    Route::prefix('assets')->group(function () {
+        Route::view('manage/list', 'assets.manage.list')->name('assets.manage.list');
+        Route::view('inventory/list', 'assets.inventory.list');
+        Route::view('info', 'assets.info');
+    });
 });

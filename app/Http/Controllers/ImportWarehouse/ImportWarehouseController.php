@@ -17,10 +17,15 @@ class ImportWarehouseController extends Controller
 
     }
 
-    public function getAssetForImportWarehouse(string $id)
+    public function getAssetForImportWarehouse(Request $request)
     {
+        $request->validate([
+            'order_ids'   => 'required|array',
+            'order_ids.*' => 'integer',
+        ]);
+
         try {
-            $result = $this->importWarehouseService->getAssetForImportWarehouse($id);
+            $result = $this->importWarehouseService->getAssetForImportWarehouse($request->get('ids'));
 
             return response_success($result);
         } catch (\Throwable $exception) {
@@ -114,6 +119,7 @@ class ImportWarehouseController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();

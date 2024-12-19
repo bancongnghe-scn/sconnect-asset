@@ -60,6 +60,7 @@
         'resources/js/assets/import_warehouse.js',
         'resources/js/assets/api/apiImportWarehouse.js',
         'resources/js/assets/api/order/apiOrder.js',
+        'resources/js/app/api/apiUser.js',
     ])
 @endsection
 

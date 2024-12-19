@@ -22,19 +22,22 @@
                                         <td x-text="from + index"></td>
                                         <template x-for="(columnName, key) in columns">
                                             <td>
-                                                <template x-if="key === 'status'">
-                                                    @include('component.status_import_warehouse', ['status' => 'value.status'])
-                                                </template>
                                                 <template x-if="key === 'code'">
                                                     <span class="tw-cursor-pointer tw-text-blue-500" x-text="value.code"
                                                           @click="handleShowModalUI('view', value.id)">
                                                     </span>
                                                 </template>
+                                                <template x-if="key === 'name'">
+                                                    <span x-text="value.name"></span>
+                                                </template>
                                                 <template x-if="key === 'created_at'">
                                                     <span x-text="formatDateVN(value.created_at)"></span>
                                                 </template>
-                                                <template x-if="key !== 'status' && key !== 'created_at' && key !== 'code'">
-                                                    <span x-text="value[key]"></span>
+                                                <template x-if="key === 'created_by'" x-data="{data: value}">
+                                                    @include('common.user_info')
+                                                </template>
+                                                <template x-if="key === 'status'">
+                                                    @include('component.status_import_warehouse', ['status' => 'value.status'])
                                                 </template>
                                             </td>
                                         </template>

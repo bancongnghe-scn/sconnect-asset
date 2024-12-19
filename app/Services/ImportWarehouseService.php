@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\InfoImportWarehouseResource;
 use App\Http\Resources\ListImportWarehouseAssetResource;
+use App\Http\Resources\ListImportWarehouseResource;
 use App\Models\ImportWarehouse;
 use App\Models\Order;
 use App\Repositories\ImportWarehouse\ImportWarehouseAssetRepository;
@@ -116,7 +117,7 @@ class ImportWarehouseService
     {
         $result = $this->importWarehouseRepository->getListing($filters);
 
-        return $result->toArray();
+        return ListImportWarehouseResource::make($result)->resolve();
     }
 
     public function getInfoImportWarehouse($id)
@@ -178,6 +179,7 @@ class ImportWarehouseService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
             DB::rollBack();
 
@@ -277,6 +279,7 @@ class ImportWarehouseService
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);
+            dd($exception);
 
             return [
                 'success'    => false,

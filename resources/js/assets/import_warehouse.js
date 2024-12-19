@@ -3,6 +3,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list(this.filters)
             this.getListOrder()
+            this.getListUser()
             window.initSelect2Modal('modalUI')
             this.$watch('data.order_ids', (newValue, oldValue) => {
                 this.handleGetImportWarehouseAsset(newValue, oldValue)
@@ -167,6 +168,17 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getListUser(){
+            this.loading = true
+            const response = await window.apiGetUser({})
+            if (!response.success) {
+                toast.error('Lấy danh sách nhân viên thất bại !')
+                return
+            }
+            this.listUser = response.data.data
+            this.loading = false
+        },
+
         async getListOrder() {
             this.loading = true
             try {
@@ -205,9 +217,9 @@ document.addEventListener('alpine:init', () => {
         async handleShowModalUI(action, id = null) {
             this.loading = true
             this.action = action
+            this.resetData()
             if (action === 'create') {
                 this.title = 'Thêm mới'
-                this.resetData()
                 window.generateShortCode().then(code => {
                     this.data.code = 'PN_'+code
                 })

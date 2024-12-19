@@ -1,6 +1,6 @@
-window.apiGetAssetForImportWarehouse = async function (orderId) {
+window.apiGetAssetForImportWarehouse = async function (orderIds) {
     try {
-        const response = await axios.get("/api/import-warehouse/asset/"+orderId)
+        const response = await axios.get("/api/import-warehouse/asset", {params: {order_ids: orderIds}})
 
         const data = response.data;
         if (!data.success) {
