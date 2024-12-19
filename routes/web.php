@@ -90,10 +90,10 @@ Route::middleware('checkAuth')->group(function () {
             dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->clear());
         });
     });
+    Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
+    Route::view('/assets/inventory/list', 'assets.inventory.list');
+});
 
-    Route::prefix('assets')->group(function () {
-        Route::view('manage/list', 'assets.manage.list')->name('assets.manage.list');
-        Route::view('inventory/list', 'assets.inventory.list');
-        Route::view('info', 'assets.info');
-    });
+Route::prefix('asset')->group(function () {
+    Route::view('info/{id}', 'assets.assets.info');
 });
