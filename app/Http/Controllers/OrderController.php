@@ -15,10 +15,12 @@ class OrderController extends Controller
     public function getListOrder(Request $request)
     {
         $request->validate([
-            'status'   => 'nullable|array',
-            'status.*' => 'integer',
-            'page'     => 'nullable|integer',
-            'limit'    => 'nullable|integer',
+            'code_name'  => 'nullable|string',
+            'created_at' => 'nullable|date|date_format:Y-m-d',
+            'status'     => 'nullable|array',
+            'status.*'   => 'integer',
+            'page'       => 'nullable|integer',
+            'limit'      => 'nullable|integer',
         ]);
 
         try {
@@ -30,5 +32,10 @@ class OrderController extends Controller
 
             return response_error();
         }
+    }
+
+    public function createOrder(Request $request)
+    {
+
     }
 }
