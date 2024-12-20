@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -23,6 +26,8 @@ class OrderController extends Controller
             'limit'      => 'nullable|integer',
         ]);
 
+        Auth::user()->canPer('order.view');
+
         try {
             $result = $this->orderService->getListOrder($request->all());
 
@@ -34,8 +39,41 @@ class OrderController extends Controller
         }
     }
 
-    public function createOrder(Request $request)
+    public function createOrder(CreateOrderRequest $request)
     {
+        Auth::user()->canPer('order.create');
 
+        try {
+            $result = $this->orderService->createOrder($request->validated());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function updateOrder(UpdateOrderRequest $request)
+    {
+        Auth::user()->canPer('order.update');
+
+        try {
+            $result = $this->orderService->updateOrder($request->validated());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
     }
 }
