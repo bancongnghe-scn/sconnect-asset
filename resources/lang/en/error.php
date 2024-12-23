@@ -95,6 +95,8 @@ return [
     AppErrorCode::CODE_2089 => 'Lưu thông tin tài sản đơn hàng thất bại !',
     AppErrorCode::CODE_2090 => 'Lưu lịch sử đơn hàng thất bại !',
     AppErrorCode::CODE_2091 => 'Lưu thông tin đơn hàng thất bại !',
+    AppErrorCode::CODE_2092 => 'Đã tồn tại đơn hàng này !',
+    AppErrorCode::CODE_2093 => 'Xóa đơn hàng thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

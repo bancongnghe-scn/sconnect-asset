@@ -162,4 +162,17 @@ class ShoppingPlanCompanyWeekController extends Controller
             return response_error();
         }
     }
+
+    public function getSupplierOfShoppingPlanWeek(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->getSupplierOfShoppingPlanWeek($id);
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

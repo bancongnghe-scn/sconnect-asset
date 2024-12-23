@@ -96,6 +96,8 @@ class AppErrorCode
     public const CODE_2089 = 2089; //  Lưu thông tin tài sản đơn hàng thất bại !
     public const CODE_2090 = 2090; //  Lưu lịch sử đơn hàng thất bại !
     public const CODE_2091 = 2091; //  Lưu thông tin đơn hàng thất bại !
+    public const CODE_2092 = 2092; //  Đã tồn tại đơn hàng này !
+    public const CODE_2093 = 2093; //  Xóa đơn hàng thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

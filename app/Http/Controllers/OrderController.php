@@ -76,4 +76,29 @@ class OrderController extends Controller
             return response_error();
         }
     }
+
+    public function deleteOrder(Request $request)
+    {
+        $request->validate([
+            'ids'    => 'required|array',
+            'ids.*'  => 'integer',
+            'reason' => 'required|string',
+        ]);
+
+        Auth::user()->canPer('order.delete');
+
+        try {
+            $result = $this->orderService->deleteOrder($request->input('ids'), $request->input('reason'));
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

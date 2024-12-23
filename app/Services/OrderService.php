@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Http\Resources\ListOrderResource;
+use App\Models\Order;
 use App\Models\OrderHistory;
 use App\Repositories\OrderHistoryRepository;
 use App\Repositories\OrderRepository;
@@ -24,11 +26,25 @@ class OrderService
     {
         $data = $this->orderRepository->getListing($filters);
 
-        return $data->toArray();
+        return ListOrderResource::make($data)->resolve();
     }
 
     public function createOrder($data)
     {
+        $order = $this->orderRepository->getListing([
+            'shopping_plan_company_id' => $data['shopping_plan_company_id'],
+            'supplier_id'              => $data['supplier_id'],
+            'status'                   => [Order::STATUS_NEW, Order::STATUS_TRANSIT, Order::STATUS_DELIVERED, Order::STATUS_WAREHOUSED],
+            'first'                    => true,
+        ]);
+        if (!empty($order)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2092,
+            ];
+        }
+
+        $data['code'] = $this->generalCodeOrder();
         DB::beginTransaction();
         try {
             $order                    = $this->orderRepository->create($data);
@@ -118,5 +134,35 @@ class OrderService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function deleteOrder(array $ids, $reason)
+    {
+        $delete = $this->orderRepository->updateByCondition(['id' => $ids], [
+            'status' => Order::STATUS_CANCEL,
+            'reason' => $reason,
+        ]);
+
+        if (!$delete) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2093,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function generalCodeOrder()
+    {
+        $orderLate = $this->orderRepository->getLateOrder();
+        $id        = $orderLate->id ?? 0;
+        if ($id < 10) {
+            return 'DH0'.$id;
+        }
+
+        return 'DH'.$id;
     }
 }

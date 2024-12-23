@@ -34,6 +34,18 @@ class OrderRepository extends BaseRepository
             $query->whereDate('created_at', $filters['created_at']);
         }
 
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->where('shopping_plan_company_id', $filters['shopping_plan_company_id']);
+        }
+
+        if (!empty($filters['supplier_id'])) {
+            $query->where('supplier_id', $filters['supplier_id']);
+        }
+
+        if (!empty($filters['first'])) {
+            return $query->first();
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }
@@ -50,5 +62,10 @@ class OrderRepository extends BaseRepository
         }
 
         return $query->update($dataUpdate) > 0;
+    }
+
+    public function getLateOrder()
+    {
+        return $this->_model->latest()->first();
     }
 }

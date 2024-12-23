@@ -84,6 +84,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::get('handle-shopping/{id}', 'handleShopping');
             Route::post('synthetic-shopping', 'syntheticShopping');
             Route::post('send-approval', 'sendApprovalWeek');
+            Route::get('supplier/{id}', 'getSupplierOfShoppingPlanWeek');
         });
     });
 
@@ -186,6 +187,8 @@ Route::middleware('checkAuth')->group(function () {
 
     Route::prefix('order')->controller(App\Http\Controllers\OrderController::class)->group(function () {
         Route::get('list', 'getListOrder');
+        Route::post('create', 'createOrder');
+        Route::post('update', 'updateOrder');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
