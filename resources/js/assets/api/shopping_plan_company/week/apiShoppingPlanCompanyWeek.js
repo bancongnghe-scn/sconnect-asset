@@ -178,7 +178,6 @@ window.apiSendApprovalWeek = async function (nextStatus, id) {
 window.apiGetSupplierOfShoppingPlanWeek = async function (id) {
     try {
         const response = await axios.get("/api/shopping-plan-company/week/supplier/"+id)
-
         const data = response.data;
         if (!data.success) {
             return {

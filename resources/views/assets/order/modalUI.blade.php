@@ -19,24 +19,21 @@
                                 <div class="tw-grid tw-grid-cols-4 mt-3 gap-3">
                                     <div>
                                         <label>Lập đơn hàng từ<span class="tw-text-red-600 mb-0">*</span></label>
-                                        <template x-if="listShoppingPlanCompany.length > 0">
-                                            <div x-data="{values: listShoppingPlanCompany}" x-init="console.log(listShoppingPlanCompany)">
-                                                @include('common.select2.modal.extent.select2_single_modal', [
-                                                    'id' => 'shopping',
-                                                    'placeholder' => 'Chọn kế hoạch',
-                                                    'model' => 'data.shopping_plan_company_id',
-                                                    'disabled' => "action !== 'create'"
-                                                ])
-                                            </div>
-                                        </template>
+                                        <div>
+                                            @include('common.select_custom.extent.select_single', [
+                                                'selected' => 'data.shopping_plan_company_id',
+                                                'options' => 'listShoppingPlanCompany',
+                                                'placeholder' => 'Chọn kế hoạch',
+                                            ])
+                                        </div>
                                     </div>
                                     <div>
                                         <label>Nhà cung cấp<span class="tw-text-red-600 mb-0">*</span></label>
-                                        <div x-data="{values: listSupplier}">
-                                            @include('common.select2.modal.extent.select2_single_modal', [
+                                        <div>
+                                            @include('common.select_custom.extent.select_single', [
+                                                'selected' => 'data.supplier_id',
+                                                'options' => 'listSupplier',
                                                 'placeholder' => 'Chọn nhà cung cấp',
-                                                'model' => 'data.supplier_id',
-                                                'disabled' => "action !== 'create'"
                                             ])
                                         </div>
                                     </div>
@@ -46,10 +43,11 @@
                                     </div>
                                     <div>
                                         <label>Người phụ trách mua sắm<span class="tw-text-red-600 mb-0">*</span></label>
-                                        <div x-data="{values: listUser}">
-                                            @include('common.select2.modal.extent.select2_single_modal', [
+                                        <div>
+                                            @include('common.select_custom.extent.select_single', [
+                                                'selected' => 'data.purchasing_manager_id',
+                                                'options' => 'listUser',
                                                 'placeholder' => 'Chọn người phụ trách',
-                                                'model' => 'data.purchasing_manager_id',
                                             ])
                                         </div>
                                     </div>
@@ -75,13 +73,11 @@
                                     </div>
                                     <div>
                                         <label>Trạng thái</label>
-                                        <span>
-                                            @include('common.select2.modal.simple.select2_single_modal', [
-                                               'placeholder' => 'Chọn trạng thái',
-                                               'model' => 'data.status',
-                                               'values' => 'LIST_STATUS_ORDER',
-                                            ])
-                                        </span>
+                                        @include('common.select_custom.simple.select_single', [
+                                             'selected' => 'data.status',
+                                             'options' => 'LIST_STATUS_ORDER',
+                                             'placeholder' => 'Chọn trạng thái',
+                                        ])
                                     </div>
                                 </div>
                             </div>

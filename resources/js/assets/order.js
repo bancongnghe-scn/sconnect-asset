@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
             this.getListShoppingPlanCompany()
             this.getListSupplier(64)
             this.list(this.filters)
-            window.initSelect2Modal('modalUI')
         },
 
         //dataTable
@@ -128,7 +127,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.listSupplier = response.data
+                this.listSupplier = response.data.data
             } catch (e) {
                 toast.error(e)
             } finally {
