@@ -95,5 +95,5 @@ Route::middleware('checkAuth')->group(function () {
 });
 
 Route::prefix('asset')->group(function () {
-    Route::view('info/{id}', 'assets.assets.info');
+    Route::view('info/{id}', 'assets.assets.info2');
 });
