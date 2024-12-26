@@ -49,11 +49,13 @@ class ListImportWarehouseAssetResource extends JsonResource
         $totalCost         = (+$order->shipping_costs) + (+$order->other_costs);
         $totalPrice        = 0;
         foreach ($this->resource as $key => $value) {
-            $code   = strtoupper(Str::random(7)).$key;
-            $data[] = [
+            $code       = strtoupper(Str::random(7)).$key;
+            $price      = +$value->price + ($value->price * $value->vate_rate ?? 0);
+            $totalPrice = $totalPrice + $price;
+            $data[]     = [
                 'code'                  => $code,
                 'name'                  => $value->name,
-                'price'                 => $value->price_last,
+                'price'                 => $price,
                 'date_purchase'         => $dateCompleteOrder,
                 'warranty_time'         => null,
                 'seri_number'           => null,
@@ -65,7 +67,6 @@ class ListImportWarehouseAssetResource extends JsonResource
                 'order_id'              => $value->order_id,
                 'import_warehouse_id'   => $value->import_warehouse_id ?? null,
             ];
-            $totalPrice = $totalPrice + (+$value->price + ($value->price * $value->vate_rate ?? 0));
         }
 
         foreach ($data as &$value) {
