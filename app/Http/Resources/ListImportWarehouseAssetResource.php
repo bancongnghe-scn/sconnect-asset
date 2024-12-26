@@ -65,7 +65,7 @@ class ListImportWarehouseAssetResource extends JsonResource
                 'order_id'              => $value->order_id,
                 'import_warehouse_id'   => $value->import_warehouse_id ?? null,
             ];
-            $totalPrice = $totalPrice + (+$value->price_last);
+            $totalPrice = $totalPrice + (+$value->price + ($value->price * $value->vate_rate ?? 0));
         }
 
         foreach ($data as &$value) {
