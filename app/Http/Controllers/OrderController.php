@@ -26,7 +26,7 @@ class OrderController extends Controller
             'limit'      => 'nullable|integer',
         ]);
 
-        Auth::user()->canPer('order.view');
+        //        Auth::user()->canPer('order.view');
 
         try {
             $result = $this->orderService->getListOrder($request->all());
@@ -61,7 +61,7 @@ class OrderController extends Controller
 
     public function updateOrder(UpdateOrderRequest $request)
     {
-        Auth::user()->canPer('order.update');
+        //        Auth::user()->canPer('order.update');
 
         try {
             $result = $this->orderService->updateOrder($request->validated());
