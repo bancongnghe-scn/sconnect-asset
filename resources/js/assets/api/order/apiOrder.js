@@ -4,9 +4,7 @@ window.apiGetListOrder = async function (filters) {
         if (filtersFormat.created_at !== null) {
             filtersFormat.created_at = formatDate(filtersFormat.created_at)
         }
-        if (filtersFormat.status !== null) {
-            filtersFormat.status = [filtersFormat.status]
-        }
+
         const response = await axios.get("/api/order/list", {
             params: filtersFormat
         })
