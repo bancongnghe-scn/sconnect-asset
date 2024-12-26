@@ -4,12 +4,12 @@ namespace App\Services\Manage;
 
 use App\Http\Resources\Manage\AssetLiquidationResource;
 use App\Models\Asset;
-use App\Repositories\Manage\assetLiquidationRepository;
+use App\Repositories\Manage\AssetLiquidationRepository;
 
 class AssetLiquidationService
 {
     public function __construct(
-        protected assetLiquidationRepository $assetLiquidationRepository,
+        protected AssetLiquidationRepository $assetLiquidationRepository,
     ) {
 
     }
@@ -25,12 +25,14 @@ class AssetLiquidationService
                 'code',
                 'status',
                 'user_id',
-                'date',
-                'reason',
-                'price_liquidation',
             ],
             [
                 'user:id,name',
+                'assetHistory' => function ($query) {
+                    $query->select('asset_id', 'date', 'description', 'price')
+                        ->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 

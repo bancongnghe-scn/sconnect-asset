@@ -34,12 +34,15 @@ class AssetDamagedService
                 'status',
                 'user_id',
                 'price',
-                'date',
                 'location',
-                'reason',
             ],
             [
                 'user:id,name',
+                'assetHistory' => function ($query) {
+                    $query->select('asset_id', 'date', 'description')
+                        ->where('action', Asset::STATUS_DAMAGED)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 
@@ -70,8 +73,9 @@ class AssetDamagedService
                     'asset_id'              => $asset['id'],
                     'action'                => $status,
                     'date'                  => new \DateTime(),
+                    'description'           => $asset['reason'] ?? '',
                     'created_at'            => new \DateTime(),
-                    'created_by'            => Auth::id(),
+                    'created_by'            => Auth::id() ?? 1,
                 ];
             }
 
