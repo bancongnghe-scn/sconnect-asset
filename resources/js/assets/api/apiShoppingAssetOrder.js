@@ -1,6 +1,6 @@
 window.apiGetShoppingAssetOrder = async function (filters) {
     try {
-        const response = await axios.get("/api/shopping-asset-order/list", {params: {filters}})
+        const response = await axios.get("/api/shopping-asset-order/list", {params: filters})
 
         const data = response.data;
         if (!data.success) {

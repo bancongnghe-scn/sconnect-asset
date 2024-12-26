@@ -289,10 +289,6 @@ document.addEventListener('alpine:init', () => {
                 money: null,
                 description: null
             })
-
-            this.$nextTick(() => {
-                this.initDatePicker()
-            });
         },
 
         formatDataContract(contract) {

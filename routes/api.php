@@ -85,6 +85,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::get('handle-shopping/{id}', 'handleShopping');
             Route::post('synthetic-shopping', 'syntheticShopping');
             Route::post('send-approval', 'sendApprovalWeek');
+            Route::get('supplier/{id}', 'getSupplierOfShoppingPlanWeek');
         });
     });
 
@@ -183,14 +184,18 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
         Route::post('sent-info', 'sentInfoShoppingAsset');
         Route::post('approval', 'approvalShoppingAsset');
+        Route::get('list', 'getListShoppingAsset');
     });
 
     Route::prefix('order')->controller(App\Http\Controllers\OrderController::class)->group(function () {
         Route::get('list', 'getListOrder');
+        Route::post('create', 'createOrder');
+        Route::post('update', 'updateOrder');
+        Route::get('find/{id}', 'findOrder');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
-        Route::get('list', 'list');
+        Route::get('list', 'getListShoppingAssetOrder');
     });
 
     Route::prefix('import-warehouse')->controller(ImportWarehouseController::class)->group(function () {

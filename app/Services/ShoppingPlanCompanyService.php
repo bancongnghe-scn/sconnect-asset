@@ -5,14 +5,17 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
+use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
+use App\Repositories\OrderRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
+use App\Repositories\SupplierRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
@@ -28,6 +31,8 @@ class ShoppingPlanCompanyService
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
         protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
         protected ShoppingAssetRepository $shoppingAssetRepository,
+        protected OrderRepository $orderRepository,
+        protected SupplierRepository $supplierRepository,
     ) {
 
     }
@@ -1000,5 +1005,30 @@ class ShoppingPlanCompanyService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function getSupplierOfShoppingPlanWeek($id)
+    {
+        $supplierShoppingAsset = $this->shoppingAssetRepository->getListing([
+            'shopping_plan_company_id' => $id,
+            'status'                   => [ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL, ShoppingAsset::STATUS_GENERAL_APPROVAL],
+        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+
+        if (empty($supplierShoppingAsset)) {
+            return [];
+        }
+
+        //        $supplierOrder = $this->orderRepository->getListing([
+        //            'shopping_plan_company_id' => $id,
+        //        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+        //
+        //        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
+        //        if (empty($supplierIds)) {
+        //            return [];
+        //        }
+
+        $suppliers = $this->supplierRepository->getListing(['ids' => array_unique($supplierShoppingAsset)]);
+
+        return $suppliers->toArray();
     }
 }

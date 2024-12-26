@@ -2,26 +2,28 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div class="card-body d-flex flex-row align-items-end form-group">
+                <div class="d-flex flex-row align-items-end form-group">
                     <div class="col-2">
-                        <label class="tw-font-bold">Mã đơn hàng</label>
-                        <input class="form-control" type="text" x-model="filters.code" placeholder="Mã đơn hàng">
+                        <label class="tw-font-bold">Tên/số đơn hàng</label>
+                        <input class="form-control" type="text" x-model="filters.code_name" placeholder="Tên/số đơn hàng">
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Ngày đơn hàng</label>
-                        @include('common.datepicker.datepicker', ['placeholder' => "Ngày đơn hàng", 'model' => "filters.created_at"])
+                        @include('common.datepicker.datepicker', [
+                            'placeholder' => "Ngày đơn hàng",
+                            'model' => "filters.created_at",
+                            'id' => 'filters.created_at'
+                        ])
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
-                        <div x-data="{
-                                model: filters.status,
-                                init() {this.$watch('filters.status', (newValue) => {console.log(filters.status); if (this.model !== newValue) {this.model = newValue}})}
-                            }"
-                             @select-change="filters.status = $event.detail">
-                            @include('common.select2.simple.select2_single', [
-                                  'placeholder' => 'Chọn trạng thái',
-                                  'values' => 'LIST_STATUS_ORDER'
-                            ])
+                        <div>
+                            <select class="form-select" x-model="filters.status">
+                                <option value="#">Chọn trạng thái</option>
+                                <template x-for="(value, key) in LIST_STATUS_ORDER">
+                                    <option :value="key" x-text="value"></option>
+                                </template>
+                            </select>
                         </div>
                     </div>
                     <div class="col-auto">

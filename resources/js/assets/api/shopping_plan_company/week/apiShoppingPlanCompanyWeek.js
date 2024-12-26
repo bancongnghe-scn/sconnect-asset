@@ -175,7 +175,28 @@ window.apiSendApprovalWeek = async function (nextStatus, id) {
     }
 }
 
+window.apiGetSupplierOfShoppingPlanWeek = async function (id) {
+    try {
+        const response = await axios.get("/api/shopping-plan-company/week/supplier/"+id)
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
 
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
 function formatDateShoppingPlanCompanyWeek(data) {
     let dataFormat = data
     dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null

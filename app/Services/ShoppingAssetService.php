@@ -180,4 +180,14 @@ class ShoppingAssetService
             'success' => true,
         ];
     }
+
+    public function getListShoppingAsset($filters)
+    {
+        $data = $this->shoppingAssetRepository->getListing($filters);
+        foreach ($data as $shoppingAsset) {
+            $shoppingAsset->shopping_asset_id = $shoppingAsset->id;
+        }
+
+        return $data->toArray();
+    }
 }

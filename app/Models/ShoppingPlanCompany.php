@@ -38,6 +38,7 @@ class ShoppingPlanCompany extends Model
     public const STATUS_HR_HANDLE                      = 7;
     public const STATUS_HR_SYNTHETIC                   = 8;
     public const STATUS_PENDING_MANAGER_HR_APPROVAL    = 9;
+    public const STATUS_COMPLETE                       = 10;
 
     public const TYPE_YEAR    = 1;
     public const TYPE_QUARTER = 2;

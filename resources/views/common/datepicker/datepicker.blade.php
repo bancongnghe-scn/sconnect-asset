@@ -1,6 +1,6 @@
 <div class="input-group">
     <input type="text" class="form-control" placeholder="{{$placeholder ?? 'Chọn năm'}}" autocomplete="off"
-           @if(isset($id)) :id="{{$id}}" @endif
+           @if(isset($id)) id="{{$id}}" @endif
            @if(isset($model)) x-model="{{$model}}" @endif
            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
            x-init="

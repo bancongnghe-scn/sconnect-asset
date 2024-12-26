@@ -82,7 +82,7 @@ window.formatDateVN = function formatDateVN(date) {
     if (date === null) {
         return null
     }
-    
+
     return format(date, 'dd/MM/yyyy')
 }
 

@@ -54,4 +54,24 @@ class ShoppingAssetController extends Controller
             return response_error();
         }
     }
+
+    public function getListShoppingAsset(Request $request)
+    {
+        $request->validate([
+            'shopping_plan_company_id' => 'nullable|integer',
+            'supplier_id'              => 'nullable|integer',
+            'status'                   => 'nullable|array',
+            'status.*'                 => 'integer',
+        ]);
+
+        try {
+            $result = $this->shoppingAssetService->getListShoppingAsset($request->all());
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }
