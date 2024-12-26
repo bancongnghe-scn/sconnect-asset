@@ -1018,16 +1018,16 @@ class ShoppingPlanCompanyService
             return [];
         }
 
-        $supplierOrder = $this->orderRepository->getListing([
-            'shopping_plan_company_id' => $id,
-        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+        //        $supplierOrder = $this->orderRepository->getListing([
+        //            'shopping_plan_company_id' => $id,
+        //        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+        //
+        //        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
+        //        if (empty($supplierIds)) {
+        //            return [];
+        //        }
 
-        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
-        if (empty($supplierIds)) {
-            return [];
-        }
-
-        $suppliers = $this->supplierRepository->getListing(['id' => array_unique($supplierIds)]);
+        $suppliers = $this->supplierRepository->getListing(['ids' => array_unique($supplierShoppingAsset)]);
 
         return $suppliers->toArray();
     }

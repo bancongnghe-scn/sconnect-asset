@@ -12,7 +12,7 @@ class ShoppingAssetOrderService
 
     }
 
-    public function getList($filters)
+    public function getListShoppingAssetOrder($filters)
     {
         $result = $this->shoppingAssetOrderRepository->getListing($filters);
 

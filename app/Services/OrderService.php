@@ -10,6 +10,7 @@ use App\Repositories\OrderRepository;
 use App\Repositories\ShoppingAssetOrderRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Support\Constants\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrderService
@@ -44,7 +45,8 @@ class OrderService
             ];
         }
 
-        $data['code'] = $this->generalCodeOrder();
+        $data['code']       = $this->generalCodeOrder();
+        $data['created_by'] = Auth::id();
         DB::beginTransaction();
         try {
             $order                    = $this->orderRepository->create($data);
@@ -73,6 +75,7 @@ class OrderService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
             report($exception);
 
@@ -164,5 +167,21 @@ class OrderService
         }
 
         return 'DH'.$id;
+    }
+
+    public function findOrder($id)
+    {
+        $order = $this->orderRepository->find($id);
+        if (empty($order)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2080,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => $order->toArray(),
+        ];
     }
 }

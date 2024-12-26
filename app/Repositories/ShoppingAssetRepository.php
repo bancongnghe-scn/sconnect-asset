@@ -48,6 +48,10 @@ class ShoppingAssetRepository extends BaseRepository
             $query->whereIn('supplier_id', Arr::wrap($filters['supplier_id']));
         }
 
+        if (!empty($filters['shopping_plan_company_id'])) {
+            $query->whereIn('shopping_plan_company_id', Arr::wrap($filters['shopping_plan_company_id']));
+        }
+
         if (!empty($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
         }

@@ -1,9 +1,10 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('order', () => ({
         async init() {
-            this.getListShoppingPlanCompany()
-            this.getListSupplier(64)
             this.list(this.filters)
+            this.getListUser()
+            this.getListShoppingPlanCompany()
+            this.watch()
         },
 
         //dataTable
@@ -45,6 +46,7 @@ document.addEventListener('alpine:init', () => {
             shopping_plan_company_id: null,
             supplier_id: null,
             name: null,
+            type: ORDER_TYPE_CREATE_WITH_PLAN,
             purchasing_manager_id: null,
             delivery_date: null,
             delivery_location: null,
@@ -60,6 +62,8 @@ document.addEventListener('alpine:init', () => {
         listSupplier: [],
         listUser: [],
         title: null,
+        action: null,
+        id: null,
 
 
         //methods
@@ -86,14 +90,37 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async create() {
+            this.loading = true
+            try {
+                const response = await window.apiCreateOrder(this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Tạo đơn hàng thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModalUI(action, id = null) {
             this.loading = true
             try {
+                this.resetData()
                 if (action === 'create') {
-                    this.resetData()
+                    this.data.type = this.typeCreateOrder
                     this.title = 'Tạo mới'
-                    $('#modalUI').modal('show')
+                    this.action = action
+                } else if (action === 'view') {
+                    this.title = 'Chi tiết'
+                    this.action = action
+                    this.id = id
+                    await this.findOrder(id)
                 }
+                $('#modalUI').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -119,7 +146,24 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getListSupplier(id) {
+        async getListSupplier() {
+            this.loading = true
+            try {
+                const response = await window.apiGetSupplier({})
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.listSupplier = response.data.data.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getSupplierOfShoppingPlanWeek(id) {
             this.loading = true
             try {
                 const response = await window.apiGetSupplierOfShoppingPlanWeek(id)
@@ -133,6 +177,97 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        async getListUser(){
+            this.loading = true
+            try {
+                const response = await window.apiGetUser({})
+                if (response.success) {
+                    this.listUser = response.data.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async findOrder(id){
+            this.loading = true
+            try {
+                const response = await window.apiFindOrder(id)
+                if (response.success) {
+                    this.data = response.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getShoppingAssets(){
+            this.loading = true
+            try {
+                let response = {}
+                if (this.action === 'create') {
+                     response = await window.apiGetListShoppingAsset({
+                        shopping_plan_company_id: this.data.shopping_plan_company_id,
+                        supplier_id: this.data.supplier_id,
+                        status: [SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL, SHOPPING_ASSET_STATUS_GENERAL_APPROVAL]
+                    })
+                } else {
+                     response = await window.apiGetShoppingAssetOrder({
+                        order_ids: [this.id]
+                    })
+                }
+                if (response.success) {
+                    this.data.shopping_assets_order = this.action === 'create' ? response.data.data : response.data
+                    if (this.action === 'create') {
+                        this.data.shopping_assets_order.filter((item) => {
+                            window.generateShortCode().then(code => {
+                                item.code = code + item.id
+                            })
+                        })
+                    }
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        watch() {
+            this.$watch('data.type', (value) => {
+                if (value !== null) {
+                    if (+value === ORDER_TYPE_CREATE_WITH_NOT_PLAN) {
+                        this.getListSupplier();
+                    } else {
+                        this.listSupplier = [];
+                    }
+                }
+            });
+
+            this.$watch('data.shopping_plan_company_id', (value) => {
+                if (value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                    this.getSupplierOfShoppingPlanWeek(value);
+                    this.data.supplier_id = null;
+                }
+            });
+
+            this.$watch('data.supplier_id', (value) => {
+                if (value !== null && this.data.shopping_plan_company_id !== null) {
+                    this.getShoppingAssets();
+                }
+            });
         },
 
         changePage(page) {
@@ -150,6 +285,7 @@ document.addEventListener('alpine:init', () => {
                 shopping_plan_company_id: null,
                 supplier_id: null,
                 name: null,
+                type: null,
                 purchasing_manager_id: null,
                 delivery_date: null,
                 delivery_location: null,

@@ -6,6 +6,7 @@
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
                     this.options = newValue
+                    this.selected = null
                 })
             },
             open: false,
@@ -55,7 +56,7 @@
 
         <!-- Danh sách các tùy chọn -->
         <ul
-            class="list-unstyled mb-0 overflow-y-auto"
+            class="list-unstyled mb-0 overflow-y-auto tw-max-h-64 custom-scroll"
         >
             <template x-for="option in filteredOptions" :key="option.id">
                 <li>

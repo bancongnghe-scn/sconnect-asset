@@ -41,7 +41,7 @@ class OrderController extends Controller
 
     public function createOrder(CreateOrderRequest $request)
     {
-        Auth::user()->canPer('order.create');
+        //        Auth::user()->canPer('order.create');
 
         try {
             $result = $this->orderService->createOrder($request->validated());
@@ -52,6 +52,7 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();
@@ -96,6 +97,26 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function findOrder(string $id)
+    {
+        //        Auth::user()->canPer('order.view');
+
+        try {
+            $result = $this->orderService->findOrder($id);
+
+            if ($result['success']) {
+                return response_success($result['data']);
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();

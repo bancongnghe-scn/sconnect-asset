@@ -13,7 +13,7 @@ class ShoppingAssetOrderController extends Controller
 
     }
 
-    public function list(Request $request)
+    public function getListShoppingAssetOrder(Request $request)
     {
         $request->validate([
             'order_ids'   => 'required|array',
@@ -21,7 +21,7 @@ class ShoppingAssetOrderController extends Controller
         ]);
 
         try {
-            $result = $this->shoppingAssetOrderService->getList($request->all());
+            $result = $this->shoppingAssetOrderService->getListShoppingAssetOrder($request->all());
 
             return response_success($result);
         } catch (\Throwable $exception) {

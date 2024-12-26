@@ -9,7 +9,11 @@
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Ngày đơn hàng</label>
-                        @include('common.datepicker.datepicker', ['placeholder' => "Ngày đơn hàng", 'model' => "filters.created_at"])
+                        @include('common.datepicker.datepicker', [
+                            'placeholder' => "Ngày đơn hàng",
+                            'model' => "filters.created_at",
+                            'id' => 'filters.created_at'
+                        ])
                     </div>
                     <div class="col-2">
                         <label class="tw-font-bold">Trạng thái</label>
