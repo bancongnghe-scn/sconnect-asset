@@ -4,7 +4,7 @@
             <div class="card-body d-flex flex-row align-items-end pb-4">
                 <div class="col-2">
                     <label class="tw-font-bold">Tên/mã phiếu nhập</label>
-                    <input class="form-control" type="text" x-model="filters.name_code" placeholder="Tên/mã phiếu nhập">
+                    <input class="form-control" type="text" x-model="filters.code_name" placeholder="Tên/mã phiếu nhập">
                 </div>
 
                 <div class="col-2">
