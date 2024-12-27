@@ -96,14 +96,14 @@
                                         <tr>
                                             <th>Mã</th>
                                             <th>Tên</th>
-                                            <th>Đơn giá</th>
-                                            <th>VAT (%)</th>
+                                            <th class="tw-w-40">Đơn giá</th>
+                                            <th class="tw-w-24">VAT (%)</th>
                                             <th>Tiền VAT</th>
                                             <th>Thành tiền</th>
                                             <th>Loại tài sản</th>
                                             <th>ĐVT</th>
-                                            <th>Mô tả</th>
                                             <th>Đơn vị</th>
+                                            <th class="tw-w-80">Mô tả</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -123,8 +123,8 @@
                                                     <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                     <td x-text="asset.asset_type_name"></td>
                                                     <td x-text="LIST_MEASURE[asset.measure]"></td>
-                                                    <td x-text="asset.description"></td>
                                                     <td x-text="asset.organization_name"></td>
+                                                    <td x-text="asset.description"></td>
                                                 </tr>
                                             </template>
                                         </tbody>

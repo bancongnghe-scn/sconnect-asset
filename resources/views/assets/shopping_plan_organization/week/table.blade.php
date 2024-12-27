@@ -57,7 +57,7 @@
                                                         <button class="border-0 bg-body"
                                                                 @click="window.location.href = `/shopping-plan-organization/week/register/${data.id}`"
                                                         >
-                                                            <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                            <i class="fa-regular fa-pen-to-square color-sc"></i>
                                                         </button>
                                                     </template>
                                                 </span>

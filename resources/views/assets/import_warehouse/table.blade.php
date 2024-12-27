@@ -13,7 +13,7 @@
                                     <template x-for="(columnName, key) in columns">
                                         <th rowspan="1" colspan="1" x-text="columnName"></th>
                                     </template>
-                                    <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
+                                    <th rowspan="1" colspan="1" class="col-2 text-center tw-w-40">Thao tác</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -45,7 +45,7 @@
                                             <button
                                                 x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"
                                                 class="border-0 bg-body" @click="handleShowModalUI('update', value.id)">
-                                                <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                <i class="fa-regular fa-pen-to-square color-sc"></i>
                                             </button>
                                             <button
                                                 x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"

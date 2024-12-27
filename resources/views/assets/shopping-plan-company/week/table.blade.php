@@ -73,7 +73,7 @@
                                             @can('shopping_plan_company.handle_shopping')
                                                 <button class="border-0 bg-body"
                                                         @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
-                                                    <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                    <i class="fa-regular fa-pen-to-square color-sc"></i>
                                                 </button>
                                             @endcan
 

@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
             this.$watch('data.order_ids', (newValue, oldValue) => {
                 this.handleGetImportWarehouseAsset(newValue, oldValue)
             })
+            this.watchFilters()
         },
 
         //dataTable
@@ -261,6 +262,17 @@ document.addEventListener('alpine:init', () => {
                 const data = await this.getAssetForImportWarehouse(orderNew)
                 this.data.shopping_assets = [...this.data.shopping_assets, ...data]
             }
+        },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['created_by', 'status', 'created_at'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
         },
 
         confirmRemove(id) {
