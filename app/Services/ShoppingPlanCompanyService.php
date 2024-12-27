@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
+use App\Models\Order;
 use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
@@ -1019,6 +1020,7 @@ class ShoppingPlanCompanyService
         }
         $supplierOrder = $this->orderRepository->getListing([
             'shopping_plan_company_id' => $id,
+            'status'                   => [Order::STATUS_NEW, Order::STATUS_TRANSIT, Order::STATUS_DELIVERED, Order::STATUS_WAREHOUSED],
         ], ['supplier_id'])->pluck('supplier_id')->toArray();
         $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
         if (empty($supplierIds)) {

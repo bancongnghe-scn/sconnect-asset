@@ -31,14 +31,32 @@ window.apiGetListOrder = async function (filters) {
 
 window.apiCreateOrder = async function (dataCreate) {
     try {
-        let dataCreateFormat = JSON.parse(JSON.stringify(dataCreate))
-        if (dataCreateFormat.delivery_date !== null) {
-            dataCreateFormat.delivery_date = formatDate(dataCreateFormat.delivery_date)
+        const response = await axios.post("/api/order/create", formatData(dataCreate))
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
         }
-        if (dataCreateFormat.payment_time !== null) {
-            dataCreateFormat.payment_time = formatDate(dataCreateFormat.payment_time)
+
+        return {
+            success: true,
+            data: data.data
         }
-        const response = await axios.post("/api/order/create", dataCreateFormat)
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+
+window.apiUpdateOrder = async function (dataUpdate) {
+    try {
+        const response = await axios.post("/api/order/update", formatData(dataUpdate))
 
         const data = response.data;
         if (!data.success) {
@@ -109,5 +127,16 @@ window.apiRemoveOrder = async function (ids, reason) {
             message: error?.response?.data?.message || error?.message
         }
     }
+}
+
+function formatData(data) {
+    let dataFormat = JSON.parse(JSON.stringify(data))
+    if (dataFormat.delivery_date !== null) {
+        dataFormat.delivery_date = formatDate(dataFormat.delivery_date)
+    }
+    if (dataFormat.payment_time !== null) {
+        dataFormat.payment_time = formatDate(dataFormat.payment_time)
+    }
+    return dataFormat
 }
 

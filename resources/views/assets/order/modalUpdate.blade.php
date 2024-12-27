@@ -4,7 +4,7 @@
             <div class="modal-header">
                 <h4 class="modal-title" x-text="title + ' đơn hàng'"></h4>
                 <div>
-                    <button x-show="action === 'update'" @click="edit()" type="button" class="btn btn-primary">Lưu</button>
+                    <button x-show="action === 'update'" @click="update()" type="button" class="btn btn-primary">Lưu</button>
                     <button type="button" class="btn btn-sc">Gửi NCC</button>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
                 </div>
@@ -72,7 +72,7 @@
                                         <label>Trạng thái</label>
                                         @include('common.select_custom.simple.select_single', [
                                              'selected' => 'data.status',
-                                             'options' => 'LIST_STATUS_ORDER',
+                                             'options' => 'listStatus',
                                              'placeholder' => 'Chọn trạng thái',
                                              'disabled' => 'disabled'
                                         ])

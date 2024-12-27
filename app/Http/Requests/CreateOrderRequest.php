@@ -14,6 +14,7 @@ class CreateOrderRequest extends FormRequest
             'supplier_id'                                                       => 'required|integer',
             'purchasing_manager_id'                                             => 'required|integer',
             'status'                                                            => 'required|integer',
+            'type'                                                              => 'required|integer',
             'delivery_date'                                                     => 'nullable|date|date_format:Y-m-d',
             'delivery_location'                                                 => 'nullable|string',
             'contact_person'                                                    => 'nullable|string',

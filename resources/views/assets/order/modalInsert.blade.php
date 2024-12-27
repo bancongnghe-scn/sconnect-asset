@@ -80,7 +80,7 @@
                                         <label>Trạng thái</label>
                                         @include('common.select_custom.simple.select_single', [
                                              'selected' => 'data.status',
-                                             'options' => 'LIST_STATUS_ORDER',
+                                             'options' => 'listStatus',
                                              'placeholder' => 'Chọn trạng thái',
                                         ])
                                     </div>

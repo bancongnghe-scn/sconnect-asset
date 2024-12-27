@@ -90,7 +90,7 @@ class OrderService
     public function updateOrder($data)
     {
         $order = $this->orderRepository->find($data['id']);
-        if (!empty($order)) {
+        if (empty($order)) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2080,
@@ -123,13 +123,22 @@ class OrderService
                 }
             }
 
-            $this->orderHistoryRepository->insertOrderHistory($data['id'], OrderHistory::TYPE_UPDATE_ORDER, $order->getAttributes(), $order->getAttributes());
+            $insert = $this->orderHistoryRepository->insertOrderHistory($data['id'], OrderHistory::TYPE_UPDATE_ORDER);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2090,
+                ];
+            }
             DB::commit();
 
             return [
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
             report($exception);
 

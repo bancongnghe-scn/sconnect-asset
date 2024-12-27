@@ -52,7 +52,6 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();
@@ -72,6 +71,7 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();
@@ -97,7 +97,6 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();

@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
             this.getListUser()
             this.getListShoppingPlanCompany()
             this.watch()
+            this.watchFilters()
         },
 
         //dataTable
@@ -65,7 +66,11 @@ document.addEventListener('alpine:init', () => {
         action: null,
         id: null,
         reason: null,
-
+        listStatus: {
+            [ORDER_STATUS_NEW]: 'Mới tạo',
+            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
+            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+        },
 
         //methods
         async list(filters) {
@@ -106,6 +111,25 @@ document.addEventListener('alpine:init', () => {
                 }
                 toast.success('Tạo đơn hàng thành công')
                 $('#modalInsert').modal('hide')
+                this.list(this.filters)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async update() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdateOrder(this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Cập nhật đơn hàng thành công')
+                $('#modalUpdate').modal('hide')
+                this.list(this.filters)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -117,8 +141,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const ids = Array.isArray(this.id) ? this.id : [this.id]
-                console.log(ids)
-                return
                 const response = await window.apiRemoveOrder(ids, this.reason)
                 if (!response.success) {
                     toast.error(response.message)
@@ -131,6 +153,7 @@ document.addEventListener('alpine:init', () => {
                         item.status = ORDER_STATUS_CANCEL
                     }
                 })
+                this.selectedRow = []
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -298,14 +321,31 @@ document.addEventListener('alpine:init', () => {
             });
         },
 
+        watchFilters() {
+            this.$watch('filters.created_at', (value) => {
+                if (value !== null) {
+                    this.list(this.filters)
+                }
+            });
+
+            this.$watch('filters.status', (value) => {
+                if (value === '#') {
+                    this.filters.status = null
+                    this.list(this.filters)
+                } else if (value !== null) {
+                    this.list(this.filters)
+                }
+            });
+        },
+
         confirmRemove(multiple = false, id = null) {
             if (multiple) {
-                this.id = this.selectedRow.filter((value, key) => {
+                this.id = []
+                this.selectedRow.filter((value, key) => {
                     if (value) {
-                        return +key
+                        this.id.push(+key)
                     }
                 })
-                console.log(this.id)
             } else {
                 this.id = id
             }
