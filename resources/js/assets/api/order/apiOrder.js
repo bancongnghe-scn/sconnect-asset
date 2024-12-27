@@ -84,4 +84,30 @@ window.apiFindOrder = async function (id) {
     }
 }
 
+window.apiRemoveOrder = async function (ids, reason) {
+    try {
+        const response = await axios.post("/api/order/delete", {
+            ids: ids,
+            reason: reason
+        })
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data.data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
 

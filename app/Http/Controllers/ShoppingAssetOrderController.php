@@ -16,8 +16,8 @@ class ShoppingAssetOrderController extends Controller
     public function getListShoppingAssetOrder(Request $request)
     {
         $request->validate([
-            'order_ids'   => 'required|array',
-            'order_ids.*' => 'integer',
+            'order_id'   => 'required|array',
+            'order_id.*' => 'integer',
         ]);
 
         try {

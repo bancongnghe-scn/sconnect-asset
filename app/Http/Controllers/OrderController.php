@@ -86,7 +86,7 @@ class OrderController extends Controller
             'reason' => 'required|string',
         ]);
 
-        Auth::user()->canPer('order.delete');
+        //        Auth::user()->canPer('order.delete');
 
         try {
             $result = $this->orderService->deleteOrder($request->input('ids'), $request->input('reason'));
@@ -97,6 +97,7 @@ class OrderController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();

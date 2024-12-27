@@ -8,7 +8,6 @@ use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
-use App\Repositories\OrganizationRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
@@ -19,6 +18,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Modules\Service\Repositories\OrganizationRepository;
 
 class ShoppingPlanOrganizationService
 {

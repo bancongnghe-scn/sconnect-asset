@@ -64,13 +64,19 @@ document.addEventListener('alpine:init', () => {
         title: null,
         action: null,
         id: null,
+        reason: null,
 
 
         //methods
         async list(filters) {
             this.loading = true
             try {
-                const response = await window.apiGetListOrder(filters)
+                let filtersFormat = JSON.parse(JSON.stringify(filters))
+                if (filtersFormat.status !== null) {
+                    filtersFormat.status = [filtersFormat.status]
+                }
+
+                const response = await window.apiGetListOrder(filtersFormat)
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -99,6 +105,32 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 toast.success('Tạo đơn hàng thành công')
+                $('#modalInsert').modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async remove() {
+            this.loading = true
+            try {
+                const ids = Array.isArray(this.id) ? this.id : [this.id]
+                console.log(ids)
+                return
+                const response = await window.apiRemoveOrder(ids, this.reason)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Xóa đơn hàng thành công')
+                $('#modalReason').modal('hide')
+                this.dataTable.filter((item) => {
+                    if (ids.includes(item.id)) {
+                        item.status = ORDER_STATUS_CANCEL
+                    }
+                })
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -110,17 +142,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 this.resetData()
+                this.action = action
                 if (action === 'create') {
                     this.data.type = this.typeCreateOrder
                     this.title = 'Tạo mới'
-                    this.action = action
-                } else if (action === 'view') {
-                    this.title = 'Chi tiết'
-                    this.action = action
+                    $('#modalInsert').modal('show')
+                } else {
+                    this.title = action === 'view' ? 'Chi tiết' : 'Cập nhật'
                     this.id = id
                     await this.findOrder(id)
+                    $('#modalUpdate').modal('show')
                 }
-                $('#modalUI').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -223,7 +255,7 @@ document.addEventListener('alpine:init', () => {
                     })
                 } else {
                      response = await window.apiGetShoppingAssetOrder({
-                        order_ids: [this.id]
+                        order_id: [this.id]
                     })
                 }
                 if (response.success) {
@@ -247,17 +279,13 @@ document.addEventListener('alpine:init', () => {
 
         watch() {
             this.$watch('data.type', (value) => {
-                if (value !== null) {
-                    if (+value === ORDER_TYPE_CREATE_WITH_NOT_PLAN) {
-                        this.getListSupplier();
-                    } else {
-                        this.listSupplier = [];
-                    }
+                if (value !== null && +value === ORDER_TYPE_CREATE_WITH_NOT_PLAN && this.action === 'create') {
+                    this.getListSupplier();
                 }
             });
 
             this.$watch('data.shopping_plan_company_id', (value) => {
-                if (value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                if (value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN && this.action === 'create') {
                     this.getSupplierOfShoppingPlanWeek(value);
                     this.data.supplier_id = null;
                 }
@@ -268,6 +296,21 @@ document.addEventListener('alpine:init', () => {
                     this.getShoppingAssets();
                 }
             });
+        },
+
+        confirmRemove(multiple = false, id = null) {
+            if (multiple) {
+                this.id = this.selectedRow.filter((value, key) => {
+                    if (value) {
+                        return +key
+                    }
+                })
+                console.log(this.id)
+            } else {
+                this.id = id
+            }
+            $("#confirmRemove").modal('show');
+            this.reason = null
         },
 
         changePage(page) {

@@ -1017,17 +1017,15 @@ class ShoppingPlanCompanyService
         if (empty($supplierShoppingAsset)) {
             return [];
         }
+        $supplierOrder = $this->orderRepository->getListing([
+            'shopping_plan_company_id' => $id,
+        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
+        if (empty($supplierIds)) {
+            return [];
+        }
 
-        //        $supplierOrder = $this->orderRepository->getListing([
-        //            'shopping_plan_company_id' => $id,
-        //        ], ['supplier_id'])->pluck('supplier_id')->toArray();
-        //
-        //        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
-        //        if (empty($supplierIds)) {
-        //            return [];
-        //        }
-
-        $suppliers = $this->supplierRepository->getListing(['ids' => array_unique($supplierShoppingAsset)]);
+        $suppliers = $this->supplierRepository->getListing(['ids' => array_unique($supplierIds)]);
 
         return $suppliers->toArray();
     }

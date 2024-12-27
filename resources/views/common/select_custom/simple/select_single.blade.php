@@ -28,7 +28,10 @@
                 this.open = false;
                 this.search = '';
             },
-}" class="dropdown" id="{{$id ?? '#'}}">
+}"
+     class="dropdown"
+     @if(isset($id)) id="{{$id}}" @endif
+>
     <!-- Nút chọn -->
     <button
         @click="open = !open"
@@ -36,6 +39,7 @@
         type="button"
         x-text="selected ? options[selected] : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
+        @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >
     </button>
 

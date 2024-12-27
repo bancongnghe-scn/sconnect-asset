@@ -9,7 +9,7 @@
                 <button type="button" class="btn btn-sc" @click="$('#modalSelectTypeCreate').modal('show')">
                     Thêm mới
                 </button>
-                <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple"
+                <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemove(true)"
                         :disabled="window.checkDisableSelectRow">
                     Xóa chọn
                 </button>
@@ -23,7 +23,7 @@
         {{--modal--}}
         <div
             @edit="handleShowModalUI('update', $event.detail.id)"
-            @remove="confirmRemove($event.detail.id)"
+            @remove="confirmRemove(false, $event.detail.id)"
             @change-page.window="changePage($event.detail.page)"
             @change-limit.window="changeLimit"
         >
@@ -31,11 +31,29 @@
         </div>
 
         <div>
-            @include('assets.order.modalUI')
+            @include('assets.order.modalInsert')
+        </div>
+
+        <div>
+            @include('assets.order.modalUpdate')
         </div>
 
         <div>
             @include('assets.order.modalSelectTypeCreate')
+        </div>
+
+        <div
+            x-data="{
+                    modalId: 'confirmRemove',
+                    contentBody: 'Bạn có chắc chắn muốn xóa đơn hàng này không ?'
+                }"
+            @ok="$('#confirmRemove').modal('hide');$('#modalReason').modal('show')"
+        >
+            @include('common.modal-confirm')
+        </div>
+
+        <div @ok="remove">
+            @include('common.modal-note', ['id' => 'modalReason', 'model' => 'reason'])
         </div>
     </div>
 @endsection

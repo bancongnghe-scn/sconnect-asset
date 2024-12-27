@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -34,4 +35,14 @@ class Order extends Model
     public const STATUS_DELIVERED  = 3;
     public const STATUS_WAREHOUSED = 4;
     public const STATUS_CANCEL     = 5;
+
+    public function shoppingPlanCompany(): BelongsTo
+    {
+        return $this->belongsTo(ShoppingPlanCompany::class, 'shopping_plan_company_id');
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 }

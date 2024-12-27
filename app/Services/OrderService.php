@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\InfoOrderResource;
 use App\Http\Resources\ListOrderResource;
 use App\Models\Order;
 use App\Models\OrderHistory;
@@ -181,7 +182,7 @@ class OrderService
 
         return [
             'success' => true,
-            'data'    => $order->toArray(),
+            'data'    => InfoOrderResource::make($order)->resolve(),
         ];
     }
 }

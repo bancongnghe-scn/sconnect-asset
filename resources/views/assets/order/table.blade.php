@@ -23,7 +23,7 @@
                                 <template x-for="(value,index) in dataTable" :key="index">
                                     <tr x-data="{
                                         isStatusActive: [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)
-                                    }">
+                                    }" x-effect="isStatusActive = [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)">
                                         <td class="text-center align-middle" >
                                             <input x-show="isStatusActive" type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                             <input x-show="!isStatusActive" type="checkbox" disabled>

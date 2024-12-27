@@ -1,11 +1,10 @@
-<div class="modal fade" id="modalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalInsert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" x-text="title + ' đơn hàng'"></h4>
                 <div>
                     <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-primary">Lưu</button>
-                    <button type="button" class="btn btn-sc">Gửi NCC</button>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
                 </div>
             </div>
@@ -122,10 +121,10 @@
                                                     </td>
                                                     <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
                                                     <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                    <td x-text="asset.asset_type_id"></td>
-                                                    <td x-text="asset.asset_type_id"></td>
+                                                    <td x-text="asset.asset_type_name"></td>
+                                                    <td x-text="LIST_MEASURE[asset.measure]"></td>
                                                     <td x-text="asset.description"></td>
-                                                    <td x-text="asset.organization_id"></td>
+                                                    <td x-text="asset.organization_name"></td>
                                                 </tr>
                                             </template>
                                         </tbody>

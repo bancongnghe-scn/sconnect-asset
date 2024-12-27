@@ -34,4 +34,13 @@ class CreateOrderRequest extends FormRequest
             'shopping_assets_order.*.description'                               => 'nullable|string',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'purchasing_manager_id'        => __('attributes.purchasing_manager_id'),
+            'shopping_plan_company_id'     => __('attributes.shopping_plan_company_id'),
+            'shopping_assets_order.*.name' => 'tên mặt hàng',
+        ];
+    }
 }
