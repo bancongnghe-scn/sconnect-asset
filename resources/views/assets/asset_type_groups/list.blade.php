@@ -13,14 +13,12 @@
                         </div>
 
                         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-                            @can('order.crud')
-                                <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModal('create')">
-                                    <span>+ Thêm</span>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
-                                    <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
-                                </button>
-                            @endcan
+                            <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModal('create')">
+                                <span>+ Thêm</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+                                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
+                            </button>
                         </div>
 
                         <div

@@ -1,26 +1,17 @@
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-body d-flex flex-row align-items-end form-group">
-                <div class="col-3">
-                    <label class="tw-font-bold">Tên loại tài sản</label>
-                    <input type="text" class="form-control" x-model="filters.name" placeholder="Nhập tên loại tài sản">
-                </div>
-                <div class="col-3">
-                    <label class="tw-font-bold">Nhóm tài sản</label>
-                    <select class="form-select select2" x-model="data.asset_type_group_id" id="filterAssetTypeGroup" multiple="multiple" data-placeholder="Chọn nhóm tài sản">
-                        <template x-for="value in listAssetTypeGroup" :key="value.id">
-                            <option :value="value.id" x-text="value.name"></option>
-                        </template>
-                    </select>
-                </div>
-                <div class="col-auto">
-                    <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
-                </div>
-                <div class="col-auto">
-                    <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
-                </div>
-            </div>
+<div class="d-flex flex-row align-items-end form-group">
+    <div class="col-3">
+        <input type="text" class="form-control" x-model="filters.name" placeholder="Nhập tên loại tài sản" @keydown.enter="list(filters)">
+    </div>
+    <div class="col-3">
+        <div>
+            @include('common.select_custom.extent.select_single', [
+                'selected' => 'filters.asset_type_group_id',
+                'options' => 'listAssetTypeGroup',
+                'placeholder' => 'Chọn nhóm tài sản',
+            ])
         </div>
+    </div>
+    <div class="col-auto">
+        <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>
     </div>
 </div>

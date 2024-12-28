@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListIndustry()
-            this.getListAssetType({})
+            this.getListAssetType()
             window.initSelect2Modal(this.idModalUI)
             this.onChangeSelect2()
         },
@@ -175,9 +175,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListAssetType(filters) {
+        async getListAssetType() {
             this.loading = true
-            const response = await window.apiGetAssetType(filters)
+            const response = await window.apiGetAssetType({})
             if (response.success) {
                 this.listAssetType = response.data.data
             } else {
