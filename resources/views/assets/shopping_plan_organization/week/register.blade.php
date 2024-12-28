@@ -119,7 +119,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <button type="button" class="btn btn-sm btn-sc mt-3" @click="addRow()">Thêm hàng</button>
+                                <button type="button" class="btn btn-sm btn-sc mt-3 tw-w-fit" @click="addRow()">Thêm hàng</button>
                             </div>
                         </template>
                     </div>

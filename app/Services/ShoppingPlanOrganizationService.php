@@ -15,7 +15,6 @@ use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Service\Repositories\OrganizationRepository;
@@ -35,8 +34,7 @@ class ShoppingPlanOrganizationService
     public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
     {
         if (empty($organizationIds)) {
-            $organizations   = ScApiService::getAllOrganizationParent();
-            $organizationIds = Arr::pluck($organizations, 'id');
+            $organizationIds   = $this->organizationRepository->getListing([])->pluck('id')->toArray();
         }
 
         $dataInsert = [];
