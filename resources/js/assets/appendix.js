@@ -167,17 +167,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListSupplier(filters) {
-            this.loading = true
-            const response = await window.apiGetSupplier(filters)
-            if (response.success) {
-                this.listSupplier = response.data.data.data
-            } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
-            }
-            this.loading = false
-        },
-
         async handleShowModalUI(action, id = null) {
             this.loading = true
             this.action = action

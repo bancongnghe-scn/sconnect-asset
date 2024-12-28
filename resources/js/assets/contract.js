@@ -8,7 +8,7 @@ document.addEventListener('alpine:init', () => {
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
             this.list({page: 1, limit: 10})
-            this.getListSupplier({})
+            this.getListSupplier()
         },
 
         //dataTable
@@ -154,9 +154,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListSupplier(filters) {
+        async getListSupplier() {
             this.loading = true
-            const response = await window.apiGetSupplier(filters)
+            const response = await window.apiGetSupplier({})
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
