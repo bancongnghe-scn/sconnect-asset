@@ -35,8 +35,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             code_name: null,
-            status: [],
-            industry_ids: [],
+            status: null,
+            industry_ids: null,
             page: 1,
             limit: 10
         },
@@ -79,9 +79,6 @@ document.addEventListener('alpine:init', () => {
         activeLink: {
             payment_terms : true,
             payment_account : false
-        },
-        status: {
-           1: 'Chờ phê duyệt'
         },
 
         //methods
@@ -274,8 +271,8 @@ document.addEventListener('alpine:init', () => {
         resetFilters() {
             this.filters = {
                 code_name: null,
-                status: [],
-                industry_ids: [],
+                status: null,
+                industry_ids: null,
                 page: 1,
                 limit: 10
             }

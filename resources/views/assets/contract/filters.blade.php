@@ -45,7 +45,7 @@
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
                     </div>
                     <div class="col-auto">
-                        <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
+                        <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>
                     </div>
                 </div>
             </div>

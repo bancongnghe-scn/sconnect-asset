@@ -38,7 +38,7 @@
         @click="open = !open"
         class="form-select tw-w-full"
         type="button"
-        x-text="selected ? options.find((item) => +item.id === +selected).name : '{{ $placeholder ?? 'Chọn ...' }}'"
+        x-text="selected ? options.find((item) => +item.id === +selected)?.name : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >
