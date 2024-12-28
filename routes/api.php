@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
@@ -194,4 +195,8 @@ Route::prefix('report')->group(function () {
     Route::get('/get-data-use-report', [ReportController::class, 'getDataUseReport'])->name('assets.report.getDataUseReport');
 
     Route::get('/get-data-maintain-report', [ReportController::class, 'getDataMaintainReport'])->name('assets.report.getDataMaintainReport');
+});
+
+Route::prefix('asset')->group(function () {
+    Route::get('/get-data-list-asset', [AssetController::class, 'getListAsset'])->name('assets.getListAsset');
 });

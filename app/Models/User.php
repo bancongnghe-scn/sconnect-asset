@@ -24,6 +24,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    protected $connection = 'db_dev';
+
     protected $fillable = [
         'name',
         'email',
@@ -49,4 +52,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
     ];
+
+    public function organization()
+    {
+        return $this->hasOne(Organization::class, 'id', 'dept_id');
+    }
 }
