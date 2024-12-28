@@ -11,9 +11,9 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        Auth::loginUsingId(851);
+        //        Auth::loginUsingId(851);
 
-        return $next($request);
+        //        return $next($request);
         $secretKey     = env('SECRET_KEY');
         $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
         if (!Auth::check()) {
