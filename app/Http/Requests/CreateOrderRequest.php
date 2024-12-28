@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateOrderRequest extends FormRequest
@@ -10,11 +11,11 @@ class CreateOrderRequest extends FormRequest
     {
         return [
             'name'                                                              => 'required|string',
-            'shopping_plan_company_id'                                          => 'required|integer',
             'supplier_id'                                                       => 'required|integer',
             'purchasing_manager_id'                                             => 'required|integer',
             'status'                                                            => 'required|integer',
             'type'                                                              => 'required|integer',
+            'shopping_plan_company_id'                                          => 'required_if:type,' . Order::TYPE_CREATE_WITH_PLAN,
             'delivery_date'                                                     => 'nullable|date|date_format:Y-m-d',
             'delivery_location'                                                 => 'nullable|string',
             'contact_person'                                                    => 'nullable|string',
@@ -41,6 +42,7 @@ class CreateOrderRequest extends FormRequest
         return [
             'purchasing_manager_id'        => __('attributes.purchasing_manager_id'),
             'shopping_plan_company_id'     => __('attributes.shopping_plan_company_id'),
+            'shopping_assets_order'        => 'mặt hàng',
             'shopping_assets_order.*.name' => 'tên mặt hàng',
         ];
     }

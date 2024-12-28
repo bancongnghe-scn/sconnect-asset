@@ -3,7 +3,6 @@ document.addEventListener('alpine:init', () => {
         async init() {
             this.list(this.filters)
             this.getListUser()
-            this.getListShoppingPlanCompany()
             this.watch()
             this.watchFilters()
         },
@@ -62,6 +61,8 @@ document.addEventListener('alpine:init', () => {
         listShoppingPlanCompany: [],
         listSupplier: [],
         listUser: [],
+        listAssetType: [],
+        listOrganization: [],
         title: null,
         action: null,
         id: null,
@@ -269,27 +270,35 @@ document.addEventListener('alpine:init', () => {
         async getShoppingAssets(){
             this.loading = true
             try {
-                let response = {}
-                if (this.action === 'create') {
-                     response = await window.apiGetListShoppingAsset({
-                        shopping_plan_company_id: this.data.shopping_plan_company_id,
-                        supplier_id: this.data.supplier_id,
-                        status: [SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL, SHOPPING_ASSET_STATUS_GENERAL_APPROVAL]
-                    })
-                } else {
-                     response = await window.apiGetShoppingAssetOrder({
-                        order_id: [this.id]
-                    })
-                }
+                let response = await window.apiGetListShoppingAsset({
+                    shopping_plan_company_id: this.data.shopping_plan_company_id,
+                    supplier_id: this.data.supplier_id,
+                    status: [SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL, SHOPPING_ASSET_STATUS_GENERAL_APPROVAL]
+                })
                 if (response.success) {
-                    this.data.shopping_assets_order = this.action === 'create' ? response.data.data : response.data
-                    if (this.action === 'create') {
-                        this.data.shopping_assets_order.filter((item) => {
-                            window.generateShortCode().then(code => {
-                                item.code = code + item.id
-                            })
-                        })
-                    }
+                    this.data.shopping_assets_order = response.data.data
+                    this.data.shopping_assets_order.filter((item) => {
+                        item.code = 'MH' + item.id
+                    })
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getShoppingAssetOrder() {
+            this.loading = true
+            try {
+                let response = await window.apiGetShoppingAssetOrder({
+                    order_id: [this.id]
+                })
+
+                if (response.success) {
+                    this.data.shopping_assets_order = response.data
                     return
                 }
                 toast.error(response.message)
@@ -302,21 +311,31 @@ document.addEventListener('alpine:init', () => {
 
         watch() {
             this.$watch('data.type', (value) => {
-                if (value !== null && +value === ORDER_TYPE_CREATE_WITH_NOT_PLAN && this.action === 'create') {
-                    this.getListSupplier();
+                if (this.action === 'create' && value !== null) {
+                    if (+value === ORDER_TYPE_CREATE_WITH_PLAN && this.listShoppingPlanCompany.length < 1) {
+                        this.getListShoppingPlanCompany()
+                    } else {
+                        this.listSupplier = []
+                        this.getListSupplier();
+                    }
                 }
             });
 
             this.$watch('data.shopping_plan_company_id', (value) => {
-                if (value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN && this.action === 'create') {
+                if (this.action === 'create' && value !== null && this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                    console.log(11111111)
                     this.getSupplierOfShoppingPlanWeek(value);
                     this.data.supplier_id = null;
                 }
             });
 
             this.$watch('data.supplier_id', (value) => {
-                if (value !== null && this.data.shopping_plan_company_id !== null) {
-                    this.getShoppingAssets();
+                if (value !== null) {
+                    if (this.action === 'create' && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                        this.getShoppingAssets()
+                    } else if (this.action !== 'create') {
+                        this.getShoppingAssetOrder()
+                    }
                 }
             });
         },
@@ -351,6 +370,18 @@ document.addEventListener('alpine:init', () => {
             }
             $("#confirmRemove").modal('show');
             this.reason = null
+        },
+
+        addRows() {
+            this.data.shopping_assets_order.push({
+                code:  window.generateShortCode(),
+                name: null,
+                vat_rate: null,
+                price: null,
+                asset_type_id: null,
+                description: null,
+                organization_id: null,
+            })
         },
 
         changePage(page) {

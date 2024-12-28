@@ -136,7 +136,7 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <button class="border-0 bg-body" @click="data.payments.splice(index, 1)">
-                                            <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -144,7 +144,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
+                    <button @click="addRowPayment" type="button" class="btn btn-sm btn-sc">Thêm hàng</button>
                 </div>
 
                 <template x-if="action === 'update'">

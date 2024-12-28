@@ -30,11 +30,13 @@ class Order extends Model
         'created_by',
     ];
 
-    public const STATUS_NEW        = 1;
-    public const STATUS_TRANSIT    = 2;
-    public const STATUS_DELIVERED  = 3;
-    public const STATUS_WAREHOUSED = 4;
-    public const STATUS_CANCEL     = 5;
+    public const STATUS_NEW                = 1;
+    public const STATUS_TRANSIT            = 2;
+    public const STATUS_DELIVERED          = 3;
+    public const STATUS_WAREHOUSED         = 4;
+    public const STATUS_CANCEL             = 5;
+    public const TYPE_CREATE_WITH_PLAN     = 1;
+    public const TYPE_CREATE_WITH_NOT_PLAN = 2;
 
     public function shoppingPlanCompany(): BelongsTo
     {
