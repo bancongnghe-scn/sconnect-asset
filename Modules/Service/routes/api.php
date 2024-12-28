@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
     Route::get('service', fn (Request $request) => $request->user())->name('service');
 });
+
+Route::middleware('checkAuth')->group(function () {
+    Route::prefix('organization')->controller(Modules\Service\App\Http\Controllers\OrganizationController::class)->group(function () {
+        Route::get('list', 'getListOrganization');
+    });
+});

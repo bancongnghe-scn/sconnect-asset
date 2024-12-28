@@ -73,6 +73,8 @@
         'resources/js/assets/api/order/apiOrder.js',
         'resources/js/assets/api/apiShoppingAsset.js',
         'resources/js/assets/api/apiShoppingAssetOrder.js',
+        'resources/js/assets/api/apiAssetType.js',
+        'resources/js/app/api/apiOrganization.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/week/apiShoppingPlanCompanyWeek.js',
     ])

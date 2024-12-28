@@ -5,6 +5,8 @@ document.addEventListener('alpine:init', () => {
             this.getListUser()
             this.watch()
             this.watchFilters()
+            this.getListAssetType()
+            this.getListOrganization()
         },
 
         //dataTable
@@ -257,6 +259,8 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiFindOrder(id)
                 if (response.success) {
                     this.data = response.data
+                    this.data.delivery_date = formatDateVN(this.data.delivery_date)
+                    this.data.payment_time = formatDateVN(this.data.payment_time)
                     return
                 }
                 toast.error(response.message)
@@ -309,12 +313,44 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.listAssetType = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListOrganization() {
+            this.loading = true
+            try {
+                const response = await window.apiGetOrganization({})
+                if (response.success) {
+                    this.listOrganization = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách đơn vị thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         watch() {
             this.$watch('data.type', (value) => {
                 if (this.action === 'create' && value !== null) {
                     if (+value === ORDER_TYPE_CREATE_WITH_PLAN && this.listShoppingPlanCompany.length < 1) {
                         this.getListShoppingPlanCompany()
-                    } else {
+                    } else if (+value === ORDER_TYPE_CREATE_WITH_NOT_PLAN) {
                         this.listSupplier = []
                         this.getListSupplier();
                     }
@@ -322,10 +358,10 @@ document.addEventListener('alpine:init', () => {
             });
 
             this.$watch('data.shopping_plan_company_id', (value) => {
-                if (this.action === 'create' && value !== null && this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
-                    console.log(11111111)
+                if (this.action === 'create' && value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                    this.listSupplier = []
+                    this.data.supplier_id = null
                     this.getSupplierOfShoppingPlanWeek(value);
-                    this.data.supplier_id = null;
                 }
             });
 
@@ -373,15 +409,19 @@ document.addEventListener('alpine:init', () => {
         },
 
         addRows() {
-            this.data.shopping_assets_order.push({
-                code:  window.generateShortCode(),
+            let rows = {
+                code: null,
                 name: null,
                 vat_rate: null,
                 price: null,
                 asset_type_id: null,
                 description: null,
                 organization_id: null,
+            }
+            window.generateShortCode().then(code => {
+                rows.code =  'MH'+ code
             })
+            this.data.shopping_assets_order.push(rows)
         },
 
         changePage(page) {

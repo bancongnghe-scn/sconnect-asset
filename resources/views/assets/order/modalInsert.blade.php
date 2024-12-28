@@ -90,7 +90,7 @@
                             {{--  thông tin mặt hàng--}}
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                                <div class="mt-3 overflow-auto custom-scroll tw-max-h-72">
+                                <div class="mt-3 overflow-auto custom-scroll tw-max-h-72 tw-max-w-full">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
@@ -136,15 +136,15 @@
                                             <thead>
                                             <tr>
                                                 <th>Mã</th>
-                                                <th>Tên</th>
-                                                <th class="tw-w-40">Đơn giá</th>
-                                                <th class="tw-w-24">VAT (%)</th>
+                                                <th class="tw-min-w-60">Tên</th>
+                                                <th class="tw-min-w-40">Đơn giá</th>
+                                                <th>VAT (%)</th>
                                                 <th>Tiền VAT</th>
                                                 <th>Thành tiền</th>
-                                                <th>Loại tài sản</th>
+                                                <th class="tw-min-w-52">Loại tài sản</th>
                                                 <th>ĐVT</th>
-                                                <th>Đơn vị</th>
-                                                <th class="tw-w-80">Mô tả</th>
+                                                <th class="tw-min-w-60">Đơn vị</th>
+                                                <th class="tw-min-w-60">Mô tả</th>
                                                 <th></th>
                                             </tr>
                                             </thead>
@@ -245,5 +245,9 @@
 <style>
     .air-datepicker {
         z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
+    }
+
+    th, td {
+        white-space: nowrap;
     }
 </style>

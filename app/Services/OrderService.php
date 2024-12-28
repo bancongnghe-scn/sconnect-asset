@@ -33,17 +33,19 @@ class OrderService
 
     public function createOrder($data)
     {
-        $order = $this->orderRepository->getListing([
-            'shopping_plan_company_id' => $data['shopping_plan_company_id'],
-            'supplier_id'              => $data['supplier_id'],
-            'status'                   => [Order::STATUS_NEW, Order::STATUS_TRANSIT, Order::STATUS_DELIVERED, Order::STATUS_WAREHOUSED],
-            'first'                    => true,
-        ]);
-        if (!empty($order)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2092,
-            ];
+        if (Order::TYPE_CREATE_WITH_PLAN === $data['type']) {
+            $order = $this->orderRepository->getListing([
+                'shopping_plan_company_id' => $data['shopping_plan_company_id'],
+                'supplier_id'              => $data['supplier_id'],
+                'status'                   => [Order::STATUS_NEW, Order::STATUS_TRANSIT, Order::STATUS_DELIVERED, Order::STATUS_WAREHOUSED],
+                'first'                    => true,
+            ]);
+            if (!empty($order)) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2092,
+                ];
+            }
         }
 
         $data['code']       = $this->generalCodeOrder();
@@ -109,11 +111,28 @@ class OrderService
                 ];
             }
 
+            $shoppingAssetOrderNew = [];
             foreach ($data['shopping_assets_order'] as $shoppingAssetOrder) {
+                if (!isset($shoppingAssetOrder['id'])) {
+                    $shoppingAssetOrderNew[] = $shoppingAssetOrder;
+                    continue;
+                }
                 $id = $shoppingAssetOrder['id'];
                 unset($shoppingAssetOrder['id']);
                 $update = $this->shoppingAssetOrderRepository->update($id, $shoppingAssetOrder);
                 if (!$update) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2089,
+                    ];
+                }
+            }
+
+            if (!empty($shoppingAssetOrderNew)) {
+                $insertShoppingAssetOrder = resolve(ShoppingAssetOrderService::class)->insertShoppingAssetOrder($shoppingAssetOrderNew, $order->id);
+                if (!$insertShoppingAssetOrder) {
                     DB::rollBack();
 
                     return [

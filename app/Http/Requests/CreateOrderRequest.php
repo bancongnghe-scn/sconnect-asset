@@ -30,8 +30,8 @@ class CreateOrderRequest extends FormRequest
             'shopping_assets_order.*.price'                                     => 'required|numeric',
             'shopping_assets_order.*.asset_type_id'                             => 'required|integer',
             'shopping_assets_order.*.organization_id'                           => 'required|integer',
-            'shopping_assets_order.*.shopping_asset_id'                         => 'required|integer',
-            'shopping_assets_order.*.supplier_id'                               => 'required|integer',
+            'shopping_assets_order.*.shopping_asset_id'                         => 'required_if:type,' . Order::TYPE_CREATE_WITH_PLAN,
+            'shopping_assets_order.*.supplier_id'                               => 'required_if:type,' . Order::TYPE_CREATE_WITH_PLAN,
             'shopping_assets_order.*.vat_rate'                                  => 'nullable|integer',
             'shopping_assets_order.*.description'                               => 'nullable|string',
         ];

@@ -31,6 +31,7 @@
             },
 }" class="dropdown"
      @if(isset($id)) id="{{$id}}" @endif
+     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
 >
     <!-- Nút chọn -->
     <button

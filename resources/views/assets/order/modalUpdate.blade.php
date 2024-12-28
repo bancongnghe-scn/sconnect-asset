@@ -84,45 +84,111 @@
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
                                 <div class="mt-3 overflow-auto custom-scroll tw-max-h-72">
-                                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
-                                        <thead>
-                                        <tr>
-                                            <th>Mã</th>
-                                            <th>Tên</th>
-                                            <th class="tw-w-40">Đơn giá</th>
-                                            <th class="tw-w-24">VAT (%)</th>
-                                            <th>Tiền VAT</th>
-                                            <th>Thành tiền</th>
-                                            <th>Loại tài sản</th>
-                                            <th>ĐVT</th>
-                                            <th>Đơn vị</th>
-                                            <th class="tw-w-80">Mô tả</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
-                                            <tr>
-                                                <td x-text="asset.code"></td>
-                                                <td>
-                                                    <input class="form-control" type="text" x-model="asset.name" :disabled="disabled">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control" type="number" min="1" x-model="asset.price" :disabled="disabled">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control" type="number" min="1" x-model="asset.vat_rate" :disabled="disabled">
-                                                </td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                <td x-text="asset.asset_type_name"></td>
-                                                <td x-text="LIST_MEASURE[asset.measure]"></td>
-                                                <td x-text="asset.organization_name"></td>
-                                                <td x-text="asset.description"></td>
-                                            </tr>
+                                    <div class="mt-3 overflow-auto custom-scroll tw-max-h-72 tw-max-w-full">
+                                        <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
+                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã</th>
+                                                    <th>Tên</th>
+                                                    <th class="tw-w-40">Đơn giá</th>
+                                                    <th class="tw-w-24">VAT (%)</th>
+                                                    <th>Tiền VAT</th>
+                                                    <th>Thành tiền</th>
+                                                    <th>Loại tài sản</th>
+                                                    <th>ĐVT</th>
+                                                    <th>Đơn vị</th>
+                                                    <th class="tw-w-80">Mô tả</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
+                                                    <tr>
+                                                        <td x-text="asset.code"></td>
+                                                        <td>
+                                                            <input class="form-control" type="text" x-model="asset.name" :disabled="disabled">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" min="1" x-model="asset.price" :disabled="disabled">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" min="1" x-model="asset.vat_rate" :disabled="disabled">
+                                                        </td>
+                                                        <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                        <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                        <td x-text="asset.asset_type_name"></td>
+                                                        <td x-text="LIST_MEASURE[asset.measure]"></td>
+                                                        <td x-text="asset.organization_name"></td>
+                                                        <td x-text="asset.description"></td>
+                                                    </tr>
+                                                </template>
+                                                </tbody>
+                                            </table>
                                         </template>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                        <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN">
+                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                                <thead>
+                                                <tr>
+                                                    <th>Mã</th>
+                                                    <th class="tw-min-w-60">Tên</th>
+                                                    <th class="tw-min-w-40">Đơn giá</th>
+                                                    <th>VAT (%)</th>
+                                                    <th>Tiền VAT</th>
+                                                    <th>Thành tiền</th>
+                                                    <th class="tw-min-w-52">Loại tài sản</th>
+                                                    <th>ĐVT</th>
+                                                    <th class="tw-min-w-60">Đơn vị</th>
+                                                    <th class="tw-min-w-60">Mô tả</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
+                                                    <tr>
+                                                        <td x-text="asset.code"></td>
+                                                        <td>
+                                                            <input class="form-control" type="text" x-model="asset.name" :disabled="disabled">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" min="1" x-model="asset.price" :disabled="disabled">
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="number" min="1" x-model="asset.vat_rate" :disabled="disabled">
+                                                        </td>
+                                                        <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                        <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                        <td>
+                                                            @include('common.select_custom.extent.select_single', [
+                                                                 'selected' => 'asset.asset_type_id',
+                                                                 'options' => 'listAssetType',
+                                                                 'placeholder' => 'Loại tài sản',
+                                                                 'disabled' => 'disabled',
+                                                            ])
+                                                        </td>
+                                                        <td x-text="LIST_MEASURE[asset.measure]"></td>
+                                                        <td>
+                                                            @include('common.select_custom.extent.select_single', [
+                                                                 'selected' => 'asset.organization_id',
+                                                                 'options' => 'listOrganization',
+                                                                 'placeholder' => 'Đơn vị',
+                                                                 'disabled' => 'disabled',
+                                                            ])
+                                                        </td>
+                                                        <td>
+                                                            <input class="form-control" type="text" x-model="asset.description" :disabled="disabled">
+                                                        </td>
+                                                        <td class="text-center align-middle">
+                                                            <button class="border-0 bg-body" @click="data.shopping_assets_order.splice(index, 1)">
+                                                                <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                                </tbody>
+                                            </table>
+                                        </template>
+                                    </div>
+                                    <button x-show="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN" class="btn btn-sm btn-sc mt-3" @click="addRows()">Thêm hàng</button>
                             </div>
 
                             <hr>
