@@ -41,8 +41,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            type: [],
-            status: [],
+            type: null,
+            status: null,
             signing_date: null,
             from : null,
             limit: 10,
@@ -64,8 +64,6 @@ document.addEventListener('alpine:init', () => {
             payments: [],
             appendixes: [],
         },
-        listTypeContract: TYPE_CONTRACT,
-        listStatusContract: STATUS_CONTRACT,
         listSupplier: [],
         title: null,
         action: null,
@@ -237,20 +235,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name_code: null,
-                type: [],
-                status: [],
+                type: null,
+                status: null,
                 signing_date: null,
                 from : null,
                 limit: 10,
                 page: 1
             }
+            this.list(this.filters)
         },
 
         confirmRemove(id) {

@@ -35,7 +35,7 @@
 >
     <!-- Nút chọn -->
     <button
-        @click="open = !open"
+        @click="open = true"
         class="form-select tw-w-full"
         type="button"
         x-text="selected ? options.find((item) => +item.id === +selected)?.name : '{{ $placeholder ?? 'Chọn ...' }}'"
