@@ -36,8 +36,7 @@ class ShoppingPlanCompanyWeekController extends Controller
         $request->validate([
             'plan_quarter_id' => 'nullable|integer',
             'time'            => 'nullable|integer',
-            'status'          => 'nullable|array',
-            'status.*'        => 'integer',
+            'status'          => 'nullable|integer',
         ]);
         try {
             $filters         = $request->all();
