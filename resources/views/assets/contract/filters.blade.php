@@ -1,5 +1,5 @@
 <div class="d-flex flex-wrap align-items-end form-group tw-gap-y-3">
-    <div class="col-3">
+    <div class="col-3 pl-0">
         <input type="text" class="form-control" x-model="filters.name_code" placeholder="Nhập tên/mã hợp đồng" @keydown.enter="list(filters)">
     </div>
     <div class="col-3">
@@ -21,7 +21,7 @@
     <div class="col-3">
         @include('common.datepicker.datepicker', ['placeholder' => "Ngày ký", 'model' => "filters.signing_date"])
     </div>
-    <div class="col-3">
+    <div class="col-3 pl-0">
         @include('common.datepicker.datepicker', ['placeholder' => "Ngày hiệu lực", 'model' => "filters.from"])
     </div>
     <div class="col-auto">

@@ -1,5 +1,5 @@
 <div class="d-flex flex-row align-items-end form-group">
-    <div class="col-3">
+    <div class="col-3 pl-0">
         <input type="text" class="form-control" x-model="filters.code_name" placeholder="Nhập tên mã/nhà cung cấp" @keydown.enter="list(filters)">
     </div>
     <div class="col-3">

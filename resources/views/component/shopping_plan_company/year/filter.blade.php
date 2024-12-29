@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-12">
         <div class="d-flex flex-wrap gap-3 align-items-end form-group">
-            <div class="col-3">
+            <div class="col-3 pl-0">
                 @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
             </div>
             <div class="col-2">
