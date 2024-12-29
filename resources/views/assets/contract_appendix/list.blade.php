@@ -1,26 +1,29 @@
 <div x-data="appendix">
-    <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-        <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
-            Thêm mới
-        </button>
-        <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple"
-                :disabled="window.checkDisableSelectRow">
-            Xóa chọn
-        </button>
-    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tw-mt-8">
+                @include('assets.contract_appendix.filter')
+            </div>
 
-    <div>
-        @include('assets.contract_appendix.filter')
-    </div>
+            <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+                <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModalUI('create')">
+                    <span>+ Thêm</span>
+                </button>
+                <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+                    <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
+                </button>
+            </div>
 
-    <div
-        @edit="handleShowModalUI('update', $event.detail.id)"
-        @remove="confirmRemove($event.detail.id)"
-        @view="handleShowModalInfo($event.detail.id)"
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
-    >
-        @include('assets.contract_appendix.table')
+            <div
+                @edit="handleShowModalUI('update', $event.detail.id)"
+                @remove="confirmRemove($event.detail.id)"
+                @view="handleShowModalInfo($event.detail.id)"
+                @change-page.window="changePage($event.detail.page)"
+                @change-limit.window="changeLimit"
+            >
+                @include('assets.contract_appendix.table')
+            </div>
+        </div>
     </div>
 
     {{--  modal--}}

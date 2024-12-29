@@ -1,5 +1,3 @@
-import AirDatepicker from "air-datepicker";
-import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
@@ -9,6 +7,7 @@ document.addEventListener('alpine:init', () => {
             window.initSelect2Modal(this.idModalInfo);
             this.list({page: 1, limit: 10})
             this.getListSupplier()
+            this.watchFilters()
         },
 
         //dataTable
@@ -295,5 +294,16 @@ document.addEventListener('alpine:init', () => {
             contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
         },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['type', 'status', 'signing_date','from'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        }
     }));
 });

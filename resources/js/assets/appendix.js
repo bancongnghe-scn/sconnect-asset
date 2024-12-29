@@ -4,9 +4,10 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('appendix', () => ({
         init() {
             this.list({page: 1, limit: 10})
-            this.getListContract({status: [2]})
+            this.getListContract()
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
+            this.watchFilters()
         },
 
         //dataTable
@@ -38,8 +39,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            contract_ids: [],
-            status: [],
+            contract_id: null,
+            status: null,
             signing_date: null,
             from : null,
             limit: 10,
@@ -58,7 +59,6 @@ document.addEventListener('alpine:init', () => {
             files: [],
         },
         listContract: [],
-        listStatus: STATUS_APPENDIX,
         title: null,
         action: null,
         id: null,
@@ -145,9 +145,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListContract(filters) {
+        async getListContract() {
             this.loading = true
-            const response = await window.apiGetContract(filters)
+            const response = await window.apiGetContract({status: CONTRACT_STATUS_APPROVED})
             if (response.success) {
                 this.listContract = response.data.data
             } else {
@@ -200,6 +200,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['contract_id', 'status', 'signing_date', 'from'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
         changePage(page) {
             this.filters.page = page
             this.list(this.filters)
@@ -225,20 +236,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name_code: null,
-                contract_ids: [],
-                status: [],
+                contract_id: null,
+                status: null,
                 signing_date: null,
                 from : null,
                 limit: 10,
                 page: 1
             }
+            this.list(this.filters)
         },
 
         confirmRemove(id) {

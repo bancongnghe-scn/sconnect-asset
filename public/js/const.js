@@ -20,10 +20,13 @@ STATUS_APPENDIX = {
 }
 
 //CONTRACT
+CONTRACT_STATUS_PENDING          = 1;
+CONTRACT_STATUS_APPROVED         = 2;
+CONTRACT_STATUS_CANCEL           = 3;
 STATUS_CONTRACT = {
-    1: 'Chờ duyệt',
-    2: 'Đã duyệt',
-    3: 'Hủy'
+    [CONTRACT_STATUS_PENDING]: 'Chờ duyệt',
+    [CONTRACT_STATUS_APPROVED]: 'Đã duyệt',
+    [CONTRACT_STATUS_CANCEL]: 'Hủy'
 }
 
 TYPE_CONTRACT = {

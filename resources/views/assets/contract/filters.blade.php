@@ -1,6 +1,6 @@
 <div class="d-flex flex-wrap align-items-end form-group tw-gap-y-3">
     <div class="col-3">
-        <input type="text" class="form-control" x-model="filters.name_code" placeholder="Nhập tên/mã hợp đồng">
+        <input type="text" class="form-control" x-model="filters.name_code" placeholder="Nhập tên/mã hợp đồng" @keydown.enter="list(filters)">
     </div>
     <div class="col-3">
         @include('common.select_custom.simple.select_single', [
