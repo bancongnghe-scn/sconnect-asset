@@ -41,6 +41,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         listUser: [],
+        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
