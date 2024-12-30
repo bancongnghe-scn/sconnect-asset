@@ -131,6 +131,14 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
+        formatDate(date) {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
+        },
+
         async confirmRepaired() {
             this.loading = true
             const date_repaired = $('#'+this.repaired).val();

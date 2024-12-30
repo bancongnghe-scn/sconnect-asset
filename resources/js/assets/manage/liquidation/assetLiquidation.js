@@ -68,6 +68,8 @@ document.addEventListener('alpine:init', () => {
         selectedAllLiquidation: "selectedAllLiquidation",
         selectSigningDate: "selectSigningDate",
 
+        assetsProposeLiquidationCount: "assetsProposeLiquidationCount",
+
         //methods
         async list(filters) {
             this.loading = true
@@ -83,6 +85,8 @@ document.addEventListener('alpine:init', () => {
                 this.to = data.data.to ?? 0
 
                 Alpine.store('globalData').dataAssetLiquidation = this.dataTable
+
+                $('#'+this.assetsProposeLiquidationCount).text(`(${data.data.total ?? 0})`)
             } else {
                 toast.error(response.message)
             }
@@ -97,6 +101,19 @@ document.addEventListener('alpine:init', () => {
         changeLimit() {
             this.filters.limit = this.limit
             this.list(this.filters)
+        },
+
+        formatPrice(value) {
+            if (!value) return '0';
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        },
+
+        formatDate(date) {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
         },
 
         resetData() {
