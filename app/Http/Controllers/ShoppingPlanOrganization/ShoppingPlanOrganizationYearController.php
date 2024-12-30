@@ -20,8 +20,7 @@ class ShoppingPlanOrganizationYearController extends Controller
     {
         $request->validate([
             'time'         => 'nullable|integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'status'       => 'nullable|integer',
         ]);
 
         Auth::user()->canPer('shopping_plan_organization.view');

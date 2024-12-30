@@ -1,5 +1,3 @@
-import AirDatepicker from "air-datepicker";
-import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
@@ -8,7 +6,8 @@ document.addEventListener('alpine:init', () => {
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
             this.list({page: 1, limit: 10})
-            this.getListSupplier({})
+            this.getListSupplier()
+            this.watchFilters()
         },
 
         //dataTable
@@ -41,8 +40,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            type: [],
-            status: [],
+            type: null,
+            status: null,
             signing_date: null,
             from : null,
             limit: 10,
@@ -64,8 +63,6 @@ document.addEventListener('alpine:init', () => {
             payments: [],
             appendixes: [],
         },
-        listTypeContract: TYPE_CONTRACT,
-        listStatusContract: STATUS_CONTRACT,
         listSupplier: [],
         title: null,
         action: null,
@@ -154,9 +151,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListSupplier(filters) {
+        async getListSupplier() {
             this.loading = true
-            const response = await window.apiGetSupplier(filters)
+            const response = await window.apiGetSupplier({})
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
@@ -237,20 +234,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name_code: null,
-                type: [],
-                status: [],
+                type: null,
+                status: null,
                 signing_date: null,
                 from : null,
                 limit: 10,
                 page: 1
             }
+            this.list(this.filters)
         },
 
         confirmRemove(id) {
@@ -301,5 +294,16 @@ document.addEventListener('alpine:init', () => {
             contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
         },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['type', 'status', 'signing_date','from'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        }
     }));
 });

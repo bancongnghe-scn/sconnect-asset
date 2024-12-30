@@ -3,6 +3,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanOrganizationYear', () => ({
         init() {
             this.list({page:1, limit:10})
+            this.watchFilters()
         },
 
         //dataTable
@@ -26,7 +27,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             time: null,
-            status: [],
+            status: null,
             limit: 10,
             page: 1
         },
@@ -72,6 +73,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['time', 'status'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
         changePage(page) {
             this.filters.page = page
             this.list(this.filters)
@@ -85,7 +97,7 @@ document.addEventListener('alpine:init', () => {
         reloadPage() {
             this.filters = {
                 time: null,
-                status: [],
+                status: null,
                 limit: 10,
                 page: 1
             }

@@ -29,7 +29,7 @@ class AssetTypeRepository extends BaseRepository
         }
 
         if (!empty($filters['asset_type_group_id'])) {
-            $query->whereIn('asset_type_group_id', $filters['asset_type_group_id']);
+            $query->whereIn('asset_type_group_id', Arr::wrap($filters['asset_type_group_id']));
         }
 
         if (!empty($filters['limit'])) {

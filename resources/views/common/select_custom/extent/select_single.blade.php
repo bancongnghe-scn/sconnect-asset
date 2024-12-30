@@ -31,13 +31,14 @@
             },
 }" class="dropdown"
      @if(isset($id)) id="{{$id}}" @endif
+     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
 >
     <!-- Nút chọn -->
     <button
-        @click="open = !open"
+        @click="open = true"
         class="form-select tw-w-full"
         type="button"
-        x-text="selected ? options.find((item) => +item.id === +selected).name : '{{ $placeholder ?? 'Chọn ...' }}'"
+        x-text="selected ? options.find((item) => +item.id === +selected)?.name : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >

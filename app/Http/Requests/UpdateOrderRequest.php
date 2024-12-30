@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Order;
+
 class UpdateOrderRequest extends CreateOrderRequest
 {
     public function rules(): array
@@ -21,18 +23,15 @@ class UpdateOrderRequest extends CreateOrderRequest
             'other_costs'                                                       => 'nullable|string',
             'shopping_assets_order'                                             => 'required|array',
             'shopping_assets_order.*'                                           => 'array',
-            'shopping_assets_order.*.id'                                        => 'required|integer',
+            'shopping_assets_order.*.code'                                      => 'required|string',
             'shopping_assets_order.*.name'                                      => 'required|string',
             'shopping_assets_order.*.price'                                     => 'required|numeric',
+            'shopping_assets_order.*.asset_type_id'                             => 'required|integer',
+            'shopping_assets_order.*.organization_id'                           => 'required|integer',
+            'shopping_assets_order.*.shopping_asset_id'                         => 'required_if:type,' . Order::TYPE_CREATE_WITH_PLAN,
+            'shopping_assets_order.*.supplier_id'                               => 'required_if:type,' . Order::TYPE_CREATE_WITH_PLAN,
             'shopping_assets_order.*.vat_rate'                                  => 'nullable|integer',
-        ];
-    }
-
-    public function attributes()
-    {
-        return [
-            'purchasing_manager_id'        => __('attributes.purchasing_manager_id'),
-            'shopping_assets_order.*.name' => 'tên mặt hàng',
+            'shopping_assets_order.*.description'                               => 'nullable|string',
         ];
     }
 }

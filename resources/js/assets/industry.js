@@ -126,7 +126,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             if (action === 'create') {
                 this.title = 'Thêm mới'
-this.resetData()
+                this.resetData()
             } else {
                 this.title = 'Cập nhật'
                 this.id = id
@@ -162,16 +162,12 @@ this.resetData()
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name: null,
                 page: 1,
                 limit: 10
             }
+            this.list(this.filters)
         },
 
         confirmRemove(id) {

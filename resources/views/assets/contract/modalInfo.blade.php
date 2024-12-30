@@ -15,13 +15,12 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng</label>
-                            <span x-data="{values: listTypeContract}">
-                                @include('common.select2.modal.simple.select2_single_modal', [
+                            @include('common.select_custom.simple.select_single', [
+                                    'selected' => 'data.type',
+                                    'options' => 'TYPE_CONTRACT',
                                     'placeholder' => 'Chọn loại hợp đồng',
-                                    'model' => 'data.type',
                                     'disabled' => true
-                                ])
-                            </span>
+                            ])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng</label>
