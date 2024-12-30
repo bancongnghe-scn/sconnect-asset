@@ -11,6 +11,13 @@ class ShoppingAssetOrder extends Model
     protected $table    = 'shopping_assets_order';
     protected $fillable = [
         'name',
+        'code',
+        'price',
+        'asset_type_id',
+        'organization_id',
+        'organization_id',
+        'vat_rate',
+        'description',
     ];
     public $timestamps = false;
 }

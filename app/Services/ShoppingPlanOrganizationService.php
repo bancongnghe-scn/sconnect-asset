@@ -14,6 +14,7 @@ use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
+use App\Support\Constants\SOfficeConstant;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -34,7 +35,10 @@ class ShoppingPlanOrganizationService
     public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
     {
         if (empty($organizationIds)) {
-            $organizationIds   = $this->organizationRepository->getListing([])->pluck('id')->toArray();
+            $organizationIds   = $this->organizationRepository->getListing([
+                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
+                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
+            ])->pluck('id')->toArray();
         }
 
         $dataInsert = [];

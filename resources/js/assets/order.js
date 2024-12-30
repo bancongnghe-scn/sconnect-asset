@@ -65,6 +65,8 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         listAssetType: [],
         listOrganization: [],
+        comments: [],
+        comment_message: null,
         title: null,
         action: null,
         id: null,
@@ -230,6 +232,9 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 this.listSupplier = response.data.data
+                if (this.listSupplier.length === 0) {
+                    toast.error('Không còn nhà cung cấp nào ứng với kế hoạch !')
+                }
             } catch (e) {
                 toast.error(e)
             } finally {
