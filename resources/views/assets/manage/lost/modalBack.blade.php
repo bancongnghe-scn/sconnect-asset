@@ -1,5 +1,5 @@
 <div class="modal fade" id="idModalBackUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 {{-- <h4 class="modal-title" x-text="title + ' hợp đồng'"></h4> --}}
@@ -53,7 +53,7 @@
                     </div>
                     <div class="mb-3 active-link tw-w-fit">Thông tin ghi nhận tài sản được tìm thấy</div>
                     <div class="row mb-3">
-                        <div class="col-4">
+                        <div class="col-8">
                             <label class="tw-font-bold">Ngày tìm thấy</label>
                             <div class="input-group">
                                 <input type="text" class="form-control datepicker" id="selectSigningDate"
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col-4">
+                        <div class="col-8">
                             <label class="form-label">Ghi chú</label>
                             <textarea type="text" class="form-control tw-h-24" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                         </div>

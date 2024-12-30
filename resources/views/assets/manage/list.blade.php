@@ -15,22 +15,22 @@
             <div class="manage_assets_tab">
                 <div>
                     <button :class="{'active': tab === 'assets-lost'}" @click="tab='assets-lost' ">
-                        Tài sản mất
+                        Tài sản mất <span id="assetsLostCount">()</span>
                     </button>
                 </div>
                 <div>
                     <button :class="{'active': tab === 'assets-cancel'}" @click="tab='assets-cancel' ">
-                        Tài sản hủy
+                        Tài sản hủy <span id="assetsCancelCount">()</span>
                     </button>
                 </div>
                 <div>
                     <button :class="{'active': tab === 'propose-liquidation'}" @click="tab='propose-liquidation' ">
-                        Đề nghị thanh lý
+                        Đề nghị thanh lý <span id="assetsProposeLiquidationCount">()</span>
                     </button>
                 </div>
                 <div>
                     <button :class="{'active': tab === 'assets-liquidation'}" @click="tab='assets-liquidation' ">
-                        Kế hoạch thanh lý
+                        Kế hoạch thanh lý <span id="assetsLiquidationCount">()</span>
                     </button>
                 </div>
             </div>

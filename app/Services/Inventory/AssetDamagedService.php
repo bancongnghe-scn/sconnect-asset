@@ -76,6 +76,7 @@ class AssetDamagedService
                     'description'           => $asset['reason'] ?? '',
                     'created_at'            => new \DateTime(),
                     'created_by'            => Auth::id() ?? 1,
+                    'price'                 => $asset['price_liquidation'] ?? '',
                 ];
             }
 
