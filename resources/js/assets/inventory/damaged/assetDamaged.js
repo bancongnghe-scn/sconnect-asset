@@ -1,6 +1,6 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
-import {format, parse, isValid} from "date-fns";
+import { format, parse, isValid } from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.store('globalData', {
@@ -10,11 +10,11 @@ document.addEventListener('alpine:init', () => {
         init() {
             window.initSelect2Modal(this.idModalRepair)
             this.onChangeSelect2()
-            this.list({page: 1, limit: 10})
+            this.list({ page: 1, limit: 10 })
             this.initDatePicker()
             this.closeModalRepair()
         },
-
+        formattedPrice: '',
         dataTable: [],
         columns: {
             code: 'Mã tài sản',
@@ -65,7 +65,7 @@ document.addEventListener('alpine:init', () => {
         idModalDamagedMore: "idModalDamagedMore",
         idModalLiquidationMore: "idModalLiquidationMore",
         idModalCancelMore: "idModalCancelMore",
-        dataRepair : [],
+        dataRepair: [],
         performer: {
             1: 'Minh Hoàng',
             2: 'Long sky',
@@ -87,7 +87,7 @@ document.addEventListener('alpine:init', () => {
             reason: 'Tình trạng sửa chữa',
         },
         idModalDetailCost: "idModalDetailCost",
-        dataTheadModalDamagedMore : {
+        dataTheadModalDamagedMore: {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             date: 'Ngày hỏng',
@@ -124,7 +124,7 @@ document.addEventListener('alpine:init', () => {
         dataModalCancelMore: [],
 
         //methods
-        async list(filters){
+        async list(filters) {
             this.loading = true
 
             const response = await window.apiGetAssetDamaged(filters)
@@ -152,11 +152,25 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
+        formatPrice(event) {
+            let rawValue = event.target.value.replace(/[^0-9]/g, '');
+            this.formattedPrice = rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            this.data.price_liquidation = rawValue;
+        },
+
+        formatDate(date) {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
+        },
+
         handleRepaidModalUI(id) {
             this.loading = true
 
             this.dataRepair = this.dataTable.filter(item => item.id == id)
-            $('#'+this.idModalRepair).modal('show')
+            $('#' + this.idModalRepair).modal('show')
 
             this.loading = false
         },
@@ -182,10 +196,10 @@ document.addEventListener('alpine:init', () => {
             } else {
                 toast.error(response.message)
             }
-            $('#'+this.idModalRepair).modal('hide')
+            $('#' + this.idModalRepair).modal('hide')
 
             // Reset lại bảng repair
-            Alpine.store('listAssetRepair').instance.list({page: 1, limit: 10})
+            Alpine.store('listAssetRepair').instance.list({ page: 1, limit: 10 })
 
             this.loading = false
         },
@@ -194,53 +208,53 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             const ids = Object.keys(this.selectedRow)
-                .filter( key => this.selectedRow[key] === true )
+                .filter(key => this.selectedRow[key] === true)
                 .map(Number)
 
             this.dataRepair = this.dataTable.filter(item => ids.includes(item.id))
-            $('#'+this.idModalRepair).modal('show')
+            $('#' + this.idModalRepair).modal('show')
 
             this.loading = false
         },
 
         async getAssetDamagedModal(type) {
-            
+
             const response = await window.apiGetAssetDamaged({
                 name_code: null
             })
-            
+
             if (type == 'repair') {
                 const assetsDamaged = response.data.data
                 const ids = this.dataRepair.map(i => i.id)
                 this.dataModalDamagedMore = assetsDamaged.filter(i => !ids.includes(i.id))
-                $('#'+this.idModalDamagedMore).modal('show')
+                $('#' + this.idModalDamagedMore).modal('show')
             }
 
             if (type == 'liquidation') {
                 const assetsLiquidation = response.data.data
                 const ids = this.dataLiquidation.map(i => i.id)
                 this.dataModalLiquidationMore = assetsLiquidation.filter(i => !ids.includes(i.id))
-                $('#'+this.idModalLiquidationMore).modal('show')
+                $('#' + this.idModalLiquidationMore).modal('show')
             }
 
             if (type == 'cancel') {
                 const assetsCancel = response.data.data
                 const ids = this.dataCancel.map(i => i.id)
                 this.dataModalCancelMore = assetsCancel.filter(i => !ids.includes(i.id))
-                $('#'+this.idModalCancelMore).modal('show')
+                $('#' + this.idModalCancelMore).modal('show')
             }
         },
 
         addRepairMore() {
             const ids = Object.keys(this.selectedDamagedMore)
-                .filter( key => this.selectedDamagedMore[key] === true )
+                .filter(key => this.selectedDamagedMore[key] === true)
                 .map(Number)
-            
+
             const select = this.dataModalDamagedMore.filter(i => ids.includes(i.id))
             this.dataRepair = this.dataRepair.concat(select)
 
             this.selectedDamagedMore = []
-            $('#'+this.idModalDamagedMore).modal('hide')
+            $('#' + this.idModalDamagedMore).modal('hide')
         },
 
         handleCancelOfModalRepairUI(id) {
@@ -248,10 +262,10 @@ document.addEventListener('alpine:init', () => {
         },
 
         countAssetDamaged() {
-            const ids = Object.keys(this.selectedRow).filter(key => 
+            const ids = Object.keys(this.selectedRow).filter(key =>
                 this.selectedRow[key] === true && this.selectedRow[key] !== undefined
             )
-            
+
             // $('#'+this.numberShow).text(ids.length)
         },
 
@@ -262,7 +276,7 @@ document.addEventListener('alpine:init', () => {
                     clearButton: true,
                     locale: localeEn,
                     dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
+                    onSelect: ({ date }) => {
                         this.onChangeDatePicker(el, date)
                     }
                 })
@@ -281,9 +295,9 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'yyyy-MM-dd') : null
-            if(el.id === 'dateRepair') {
+            if (el.id === 'dateRepair') {
                 this.data.date_repair = storageFormat
-            } else if(el.id === 'dateRepaired') {
+            } else if (el.id === 'dateRepaired') {
                 this.data.date_repaired = storageFormat
             }
         },
@@ -301,19 +315,19 @@ document.addEventListener('alpine:init', () => {
         },
 
         closeModalRepair() {
-            $('#'+this.idModalRepair).on('hidden.bs.modal', function () {
+            $('#' + this.idModalRepair).on('hidden.bs.modal', function () {
                 this.selectedRow = []
             })
 
-            $('#'+this.idModalDamagedMore).on('hidden.bs.modal', function () {
+            $('#' + this.idModalDamagedMore).on('hidden.bs.modal', function () {
                 this.selectedDamagedMore = []
             })
 
-            $('#'+this.idModalLiquidation).on('hidden.bs.modal', function () {
+            $('#' + this.idModalLiquidation).on('hidden.bs.modal', function () {
                 this.selectedRow = []
             })
 
-            $('#'+this.idModalLiquidationMore).on('hidden.bs.modal', function () {
+            $('#' + this.idModalLiquidationMore).on('hidden.bs.modal', function () {
                 this.selectedDamagedMore = []
             })
         },
@@ -323,7 +337,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             this.dataLiquidation = this.dataTable.filter(item => item.id == id)
-            $('#'+this.idModalLiquidation).modal('show')
+            $('#' + this.idModalLiquidation).modal('show')
 
             this.loading = false
         },
@@ -332,18 +346,18 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             const ids = Object.keys(this.selectedRow)
-                .filter( key => this.selectedRow[key] === true )
+                .filter(key => this.selectedRow[key] === true)
                 .map(Number)
 
             this.dataLiquidation = this.dataTable.filter(item => ids.includes(item.id))
-            $('#'+this.idModalLiquidation).modal('show')
+            $('#' + this.idModalLiquidation).modal('show')
 
             this.loading = false
         },
 
         async completeLiquidation() {
-            const dateLiquidation = $('#'+this.dateLiquidation).val()
-            const reasonLiquidation = $('#'+this.reasonLiquidation).val()
+            const dateLiquidation = $('#' + this.dateLiquidation).val()
+            const reasonLiquidation = $('#' + this.reasonLiquidation).val()
             const assetsLiquidation = this.dataLiquidation.map(item => ({
                 id: item.id,
                 price_liquidation: item.price_liquidation,
@@ -362,19 +376,23 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
             }
 
-            $('#'+this.idModalLiquidation).modal('hide')
+            $('#' + this.dateLiquidation).val('')
+            $('#' + this.reasonLiquidation).val('')
+            this.formattedPrice = '';
+            this.data.price_liquidation = 0;
+            $('#' + this.idModalLiquidation).modal('hide')
         },
 
         addLiquidatonMore() {
             const ids = Object.keys(this.selectedLiquidationMore)
-                .filter( key => this.selectedLiquidationMore[key] === true )
+                .filter(key => this.selectedLiquidationMore[key] === true)
                 .map(Number)
-            
+
             const select = this.dataModalLiquidationMore.filter(i => ids.includes(i.id))
             this.dataLiquidation = this.dataLiquidation.concat(select)
 
             this.selectedLiquidationMore = []
-            $('#'+this.idModalLiquidationMore).modal('hide')
+            $('#' + this.idModalLiquidationMore).modal('hide')
         },
 
         handleRemoveLiquidationOfModalUI(id) {
@@ -386,7 +404,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             this.dataCancel = this.dataTable.filter(item => item.id == id)
-            $('#'+this.idModalCancel).modal('show')
+            $('#' + this.idModalCancel).modal('show')
 
             this.loading = false
         },
@@ -395,25 +413,25 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             const ids = Object.keys(this.selectedRow)
-                .filter( key => this.selectedRow[key] === true )
+                .filter(key => this.selectedRow[key] === true)
                 .map(Number)
 
             this.dataCancel = this.dataTable.filter(item => ids.includes(item.id))
-            $('#'+this.idModalCancel).modal('show')
+            $('#' + this.idModalCancel).modal('show')
 
             this.loading = false
         },
 
         addCancelMore() {
             const ids = Object.keys(this.selectedCancelMore)
-                .filter( key => this.selectedCancelMore[key] === true )
+                .filter(key => this.selectedCancelMore[key] === true)
                 .map(Number)
-            
+
             const select = this.dataModalCancelMore.filter(i => ids.includes(i.id))
             this.dataCancel = this.dataCancel.concat(select)
 
             this.selectedCancelMore = []
-            $('#'+this.idModalCancelMore).modal('hide')
+            $('#' + this.idModalCancelMore).modal('hide')
         },
 
         handleRemoveCancelOfModalUI(id) {
@@ -421,8 +439,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         async completeCancel() {
-            const dateCancel = $('#'+this.dateCancel).val()
-            const reasonCancel = $('#'+this.reasonCancel).val()
+            const dateCancel = $('#' + this.dateCancel).val()
+            const reasonCancel = $('#' + this.reasonCancel).val()
             const assetsCancel = this.dataCancel.map(item => ({
                 id: item.id,
                 date: dateCancel ? format(parse(dateCancel, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : null,
@@ -440,7 +458,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
             }
 
-            $('#'+this.idModalCancel).modal('hide')
+            $('#' + this.idModalCancel).modal('hide')
         }
     }))
 })

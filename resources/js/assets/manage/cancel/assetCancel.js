@@ -53,6 +53,8 @@ document.addEventListener('alpine:init', () => {
             5: 'Đã hủy'
         },
 
+        assetsCancelCount: "assetsCancelCount",
+
         //methods
         async list(filters){
             this.loading = true
@@ -66,6 +68,8 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
+
+                $('#'+this.assetsCancelCount).text(`(${data.data.total ?? 0})`)
             } else {
                 toast.error(response.message)
             }
@@ -80,6 +84,14 @@ document.addEventListener('alpine:init', () => {
         changeLimit() {
             this.filters.limit = this.limit
             this.list(this.filters)
+        },
+
+        formatDate(date) {
+            const d = new Date(date);
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const year = d.getFullYear();
+            return `${day}/${month}/${year}`;
         },
     }))
 })
