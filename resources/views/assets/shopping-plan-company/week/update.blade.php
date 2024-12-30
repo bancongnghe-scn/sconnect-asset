@@ -76,49 +76,36 @@
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                             <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                 <div>
-                                    <label class="tw-font-bold">Kế hoạch quý<span
-                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                    <div x-data="{
-                                            model: data.plan_quarter_id,
-                                            init() {this.$watch('data.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                        }">
-                                        @include('common.select2.extent.select2', [
-                                              'placeholder' => 'Chọn quý',
-                                              'values' => 'listPlanCompanyQuarter',
-                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                              'id' => 'selectPlanQuarter'
-                                        ])
-                                    </div>
+                                    <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    @include('common.select_custom.extent.select_single', [
+                                        'selected' => 'data.plan_quarter_id',
+                                        'options' => 'listPlanCompanyQuarter',
+                                        'placeholder' => 'Chọn kế hoạch quý',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                        'id' => 'selectPlanQuarter'
+                                    ])
                                 </div>
 
                                 <div>
                                     <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                    <div x-data="{
-                                                model: data.month,
-                                                init() {this.$watch('data.month', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                        }">
-                                        @include('common.select2.simple.select2_single', [
-                                              'placeholder' => 'Chọn tháng',
-                                              'values' => 'LIST_MONTHS',
-                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                              'id' => 'selectMonth'
-                                        ])
-                                    </div>
+                                    @include('common.select_custom.simple.select_single', [
+                                        'selected' => 'data.month',
+                                        'options' => 'LIST_MONTHS',
+                                        'placeholder' => 'Chọn tháng',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                        'id' => 'selectMonth'
+                                    ])
                                 </div>
 
                                 <div>
                                     <label class="tw-font-bold">Tuần<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                                    <div x-data="{
-                                            model: data.time,
-                                            init() {this.$watch('data.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                        }">
-                                        @include('common.select2.simple.select2_single', [
-                                              'placeholder' => 'Chọn tuần',
-                                              'values' => 'LIST_WEEK',
-                                              'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
-                                              'id' => 'selectWeek'
-                                        ])
-                                    </div>
+                                    @include('common.select_custom.simple.select_single', [
+                                        'selected' => 'data.time',
+                                        'options' => 'LIST_WEEK',
+                                        'placeholder' => 'Chọn tuần',
+                                        'disabled' => '+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW',
+                                        'id' => 'selectWeek'
+                                    ])
                                 </div>
                             </div>
                         </template>
@@ -144,18 +131,12 @@
 
                             <div>
                                 <label class="form-label">Người quan sát</label>
-                                <div x-data="{
-                                     model: data.monitor_ids,
-                                     init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                }"
-                                     @select-change="data.monitor_ids = $event.detail"
-                                >
-                                    @include('common.select2.extent.select2_multiple', [
+                                @include('common.select_custom.extent.select_multiple', [
+                                        'selected' => 'data.monitor_ids',
+                                        'options' => 'listUser',
                                         'placeholder' => 'Chọn người quan sát',
                                         'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
-                                        'values' => 'listUser',
-                                    ])
-                                </div>
+                                ])
                             </div>
                         </div>
                     </div>

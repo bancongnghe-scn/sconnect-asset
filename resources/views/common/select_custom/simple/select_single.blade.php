@@ -4,6 +4,7 @@
                     this.selected = newValue
                 })
 
+                this.selected = {{$selected}}
                 this.options = {{$options}}
             },
             open: false,
@@ -35,7 +36,8 @@
     <!-- Nút chọn -->
     <button
         @click="open = !open"
-        class="form-select tw-w-full tw-text-gray-500"
+        class="form-select tw-w-full"
+        :class="selected? '' : 'tw-text-gray-500'"
         type="button"
         x-text="selected ? options[selected] : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
