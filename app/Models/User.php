@@ -7,6 +7,7 @@ use App\Traits\MigrateAuthorize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -53,8 +54,31 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
+    protected $appends = ['org_last_parent'];
+
     public function organization()
     {
         return $this->hasOne(Organization::class, 'id', 'dept_id');
+    }
+
+    public function getOrgLastParentAttribute()
+    {
+        if ($this->dept_id != 1) {
+            $departments = Organization::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
+                ->selectRaw(
+                    'organizations.id, 
+        organizations.parent_id, 
+        CONCAT(cfOrg.cfg_key, " ",organizations.name) AS org_name'
+                )
+                ->orderBy('id')->get();
+
+            $departmentsCollection = new Collection($departments);
+
+            $deptId = Organization::getLastParentId($this->dept_id, $departmentsCollection, 1);
+
+            return Organization::find($deptId);
+        }
+
+        return null;
     }
 }

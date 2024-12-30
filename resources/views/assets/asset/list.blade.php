@@ -62,6 +62,10 @@
         color: #379237;
         font-weight: 600;
     }
+
+    .table-repair tr th {
+        background-color: #E7E9ED !important;
+    }
     </style>
 <div x-data="listAsset">
     <div class="row" >
@@ -69,13 +73,13 @@
             <div style="background: #fff; padding: 30px; border-radius: 15px;" x-data="fetchDataComponent()" x-init="fetchData()">
                 <div class="d-flex align-items-end mt-3 mb-3">
                     <div class="col-2 d-flex position-relative">
-                        <input type="text" class="form-control" x-model="filters.name_code" id="namecodePlanLiquidation" placeholder="Tên/mã tài sản" @keydown.enter="list(filters)">
+                        <input type="text" class="form-control" id="nameCodeAsset" placeholder="Tên/mã tài sản">
                         <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
                     </div>
                     
                     <div class="col-2">
                         <select class="form-control select2" data-placeholder="Loại" id="typeSearch">
-                            <option value="" disabled selected>Loại</option>
+                            <option value="0" selected>Loại</option>
                             <template x-for="(value, key) in assetType">
                                 <option :value="value.id" x-text="value.name"></option>
                             </template>
@@ -84,7 +88,7 @@
 
                     <div class="col-1">
                         <select class="form-control select2" data-placeholder="Vị trí" id="locationSearch">
-                            <option value="" disabled selected>Vị trí</option>
+                            <option value="0" selected>Vị trí</option>
                             <template x-for="(value, key) in listLocation">
                                 <option :value="key" x-text="value"></option>
                             </template>
@@ -93,29 +97,27 @@
 
                     <div class="col-2">
                         <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusSearch" x-model="status">
-                            <option value="" selected>Trạng thái</option>
+                            <option value="0" selected>Trạng thái</option>
                             <template x-for="(value, key) in listStatus">
                                 <option :value="value.num" x-text="value.text"></option>
                             </template>
                         </select>
                     </div>
 
-                    <div class="col-2">
+                    {{-- <div class="col-2">
                         <select class="form-control select2" data-placeholder="Chọn đơn vị" id="unitSearch">
                             <option value="" disabled selected>Trạng thái</option>
-                            {{-- <template x-for="(value, key) in listStatusPlanLiquidation">
-                                <option :value="key" x-text="value"></option>
-                            </template> --}}
+                           
                         </select>
-                    </div>
+                    </div> --}}
                 
                     <div class="col-2 d-flex position-relative">
-                        <input type="text" class="form-control" x-model="filters.name_code" id="namecodePlanLiquidation" placeholder="Người sử dụng/người đại diện" @keydown.enter="list(filters)">
+                        <input type="text" class="form-control" id="nameUser" placeholder="Người sử dụng/người đại diện">
                         <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
                     </div>
                 
                     <div class="col-1">
-                        <span @click="fetchData($('#statusSearch').val())" style="cursor: pointer;">
+                        <span @click="fetchData($('#statusSearch').val(), $('#locationSearch').val(), $('#typeSearch').val(), $('#nameCodeAsset').val(), $('#nameUser').val())" style="cursor: pointer;">
                             <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_d_13695_32688)">
                                 <rect x="2" width="34" height="34" rx="6" fill="#379237"/>
@@ -155,7 +157,7 @@
                         <th class="text-center">Mã tài sản</th>
                         <th scope="col">Tên tài sản</th>
                         <th class="text-center">Loại tài sản</th>
-                        <th class="text-center">Đơn vị</th>
+                        <th class="text-left">Đơn vị</th>
                         <th class="text-center">Nhân viên đang sử dụng</th>
                         <th class="text-center">Người đại diện</th>
                         <th class="text-center">Giá trị</th>
@@ -171,7 +173,7 @@
                             <td class="text-center" x-text="asset.code"></td>
                             <td class="text-center" x-text="asset.name"></td>
                             <td class="text-center" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                            <td class="text-center" x-text="asset.organization ? asset.organization.name : (asset.user ? asset.user.organization.name : '')"></td>
+                            <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '')"></td>
                             <td class="text-center">
                                 <div class="d-flex">
                                     <img x-show="asset.user" x-bind:src="asset.user && asset.user.avatar 
@@ -341,20 +343,26 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Loại tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
+                                                            {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
+                                                            <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAsetSelect">
+                                                                <option value="0" selected>Loại tài sản</option>
+                                                                <template x-for="(value, key) in assetType">
+                                                                    <option :value="value.id" x-text="value.name"></option>
+                                                                </template>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Vị trí tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control" x-model="assetObj.location_text">
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Mã tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control" x-model="assetObj.code">
 
                                                         </div>
                                                     </div>
@@ -368,7 +376,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Tên tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
+                                                            <input type="text" class="form-control" x-model="assetObj.name">
 
                                                         </div>
                                                     </div>
@@ -389,7 +397,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị <span class="text-danger">*</span></span>
-                                                            <input type="number" class="form-control">
+                                                            <input type="number" class="form-control" x-model="assetObj.price">
 
                                                         </div>
                                                     </div>
@@ -489,13 +497,13 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng gần nhất</span>
-                                                            <input type="date" class="form-control">
+                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                                            <input type="date" class="form-control">
+                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -508,58 +516,87 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị tính phân bổ</span>
-                                                            <input type="number" class="form-control">
+                                                            <input type="number" class="form-control" value="2000000">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số kì phân bổ còn lại (tháng)</span></span>
-                                                            <input type="number" class="form-control">
+                                                            <input type="number" class="form-control" value="24">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control">
+                                                            <input type="date" class="form-control" value="2024-11-01">
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị đã phân bổ</span></span>
-                                                            <input type="number" class="form-control">
+                                                            <input type="number" class="form-control" value="83333">
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="repair-tab" x-show="tab == 'guarantee-tab'">
+                                            <div class="repair-tab" x-show="tab == 'repair-tab'">
                                                 <h6 class="text-bold">
                                                     Sửa chữa
                                                 </h6>
                                                 <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Giá trị tính phân bổ</span>
-                                                            <input type="number" class="form-control">
-                                                        </div>
+                                                    <div class="col-12" style="overflow-x: auto;width: 100%;">
+                                                        <table class="table table-bordered table-repair" style="width: 1000px;">
+                                                            <thead>
+                                                            <tr style="font-size: 14px;">
+                                                                <th>Ngày báo hỏng</th>
+                                                                <th>Tình trạng hỏng</th>
+                                                                <th>Ngày sửa chữa</th>
+                                                                <th>Chi phí sửa</th>
+                                                                <th>Tình trạng sửa chữa</th>
+                                                                <th>Ngày hoàn thành</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Số kì phân bổ còn lại (tháng)</span></span>
-                                                            <input type="number" class="form-control">
-                                                        </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="lost-tab" x-show="tab == 'lost-tab'">
+                                                <h6 class="text-bold">
+                                                    Mất - hủy - thanh lý
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <table class="table table-bordered table-repair">
+                                                            <thead>
+                                                            <tr style="font-size: 14px;">
+                                                                <th>Loại</th>
+                                                                <th>Ngày đánh dấu</th>
+                                                                <th>Người thao tác</th>
+                                                                <th>Ghi chú</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Giá trị đã phân bổ</span></span>
-                                                            <input type="number" class="form-control">
-                                                        </div>
-                                                    </div>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
@@ -601,13 +638,30 @@
             tab: 'general-tab',
             assetName: '',
             assetStatus: 1,
+            assetObj: {},
 
-            async fetchData(status = '') {
+            async fetchData(status = '' ,location = '' ,type ='', nameCodeAsset = '', nameUser = '') {
                 try {
                     let urlSearch = '/api/asset/get-data-list-asset?';
 
                     if (status) {
-                        urlSearch += 'status=' + status;
+                        urlSearch += 'status=' + status + '&';
+                    }
+
+                    if (location) {
+                        urlSearch += 'location=' + location + '&';
+                    }
+
+                    if (type) {
+                        urlSearch += 'type=' + type + '&';
+                    }
+
+                    if (nameCodeAsset) {
+                        urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
+                    }
+
+                    if (nameUser) {
+                        urlSearch += 'nameUser=' + nameUser + '&';
                     }
 
                     const response = await axios.get(urlSearch);
@@ -617,7 +671,7 @@
                     this.listLocation = data.data.listLocation;
                     this.listStatus = data.data.listStatus;
 
-                    console.log(this.assetType);
+                    console.log(this.listAsset);
                                       
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
@@ -627,9 +681,10 @@
             fillData(asset) {
                 this.assetName = asset.name;
                 this.assetStatus = asset.status;
+                this.assetObj = asset;
                 console.log(this.assetName);
                 
-                console.log(asset);
+                console.log(this.asset);
                 
             }
         };
