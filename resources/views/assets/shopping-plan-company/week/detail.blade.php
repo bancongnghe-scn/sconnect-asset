@@ -39,17 +39,12 @@
 
                             <div>
                                 <label class="form-label">Người quan sát</label>
-                                <div x-data="{
-                                         model: data.monitor_ids,
-                                         init() {this.$watch('data.monitor_ids', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                                     }"
-                                >
-                                    @include('common.select2.extent.select2_multiple', [
+                                @include('common.select_custom.extent.select_multiple', [
+                                        'selected' => 'data.monitor_ids',
+                                        'options' => 'listUser',
                                         'placeholder' => 'Chọn người quan sát',
                                         'disabled' => true,
-                                        'values' => 'listUser',
-                                    ])
-                                </div>
+                                ])
                             </div>
                         </div>
                     </div>

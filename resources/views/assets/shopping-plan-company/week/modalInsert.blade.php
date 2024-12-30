@@ -45,16 +45,6 @@
                         </span>
                     </div>
 
-{{--                    <template x-if="listUser.length > 0">--}}
-{{--                        <div>--}}
-{{--                            <label class="form-label">Người quan sát</label>--}}
-{{--                            @include('common.select2.modal.extent.select2_multiple_modal', [--}}
-{{--                                'placeholder' => 'Chọn người quan sát',--}}
-{{--                                'model' => 'data.monitor_ids',--}}
-{{--                                'values' => 'listUser'--}}
-{{--                            ])--}}
-{{--                        </div>--}}
-{{--                    </template>--}}
                     <div>
                         <label class="form-label">Người quan sát</label>
                         @include('common.select_custom.extent.select_multiple', [
