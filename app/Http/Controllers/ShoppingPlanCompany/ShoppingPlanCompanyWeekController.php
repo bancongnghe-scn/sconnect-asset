@@ -36,8 +36,7 @@ class ShoppingPlanCompanyWeekController extends Controller
         $request->validate([
             'plan_quarter_id' => 'nullable|integer',
             'time'            => 'nullable|integer',
-            'status'          => 'nullable|array',
-            'status.*'        => 'integer',
+            'status'          => 'nullable|integer',
         ]);
         try {
             $filters         = $request->all();
@@ -156,6 +155,19 @@ class ShoppingPlanCompanyWeekController extends Controller
             }
 
             return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getSupplierOfShoppingPlanWeek(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->getSupplierOfShoppingPlanWeek($id);
+
+            return response_success($result);
         } catch (\Throwable $exception) {
             report($exception);
 

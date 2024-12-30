@@ -41,7 +41,8 @@
                 isDisabled: action === 'view' || ![
                     SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL,
                     SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,
-                    SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL
+                    SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL,
+                    0
                 ].includes(+assetRegister.status),
 
                 get total() {

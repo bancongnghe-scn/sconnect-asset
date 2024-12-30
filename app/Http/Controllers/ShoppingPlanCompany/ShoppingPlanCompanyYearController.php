@@ -35,8 +35,7 @@ class ShoppingPlanCompanyYearController extends Controller
     {
         $request->validate([
             'time'     => 'nullable|integer',
-            'status'   => 'nullable|array',
-            'status.*' => 'integer',
+            'status'   => 'nullable|integer',
         ]);
         try {
             $filters         = $request->all();

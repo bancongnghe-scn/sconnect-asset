@@ -1,57 +1,31 @@
 <div class="row">
     <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex flex-wrap gap-3 align-items-end form-group">
-                    <div class="col-3">
-                        <label class="tw-font-bold">Kế hoạch quý</label>
-                        <div x-data="{
-                            model: filters.plan_quarter_id,
-                            init() {this.$watch('filters.plan_quarter_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                        }"
-                              @select-change="filters.plan_quarter_id = $event.detail">
-                            @include('common.select2.extent.select2', [
-                                  'placeholder' => 'Chọn kế hoạch quý',
-                                  'values' => 'listPlanCompanyQuarter'
-                            ])
-                        </div>
-                    </div>
+        <div class="d-flex flex-wrap gap-3 align-items-end form-group">
+            <div class="col-3 pl-0">
+                @include('common.select_custom.extent.select_single', [
+                    'selected' => 'filters.plan_quarter_id',
+                    'options' => 'listPlanCompanyQuarter',
+                    'placeholder' => 'Chọn kế hoạch quý',
+                ])
+            </div>
 
-                    <div class="col-2">
-                        <label class="tw-font-bold">Tuần</label>
-                        <div x-data="{
-                            model: filters.time,
-                            init() {this.$watch('filters.time', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                        }"
-                              @select-change="filters.time = $event.detail">
-                            @include('common.select2.simple.select2_single', [
-                                  'placeholder' => 'Chọn tuần',
-                                  'values' => 'LIST_WEEK'
-                            ])
-                        </div>
-                    </div>
+            <div class="col-2">
+                @include('common.select_custom.simple.select_single', [
+                   'selected' => 'filters.time',
+                   'options' => 'LIST_WEEK',
+                   'placeholder' => 'Chọn tuần',
+                ])
+            </div>
 
-                    <div class="col-2">
-                        <label class="tw-font-bold">Trạng thái</label>
-                        <div x-data="{
-                                model: filters.status,
-                                init() {this.$watch('filters.status', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                            }"
-                            @select-change="filters.status = $event.detail"
-                        >
-                            @include('common.select2.simple.select2_multiple', [
-                                'placeholder' => 'Chọn trạng thái',
-                                'values' => 'STATUS_SHOPPING_PLAN_ORGANIZATION'
-                            ])
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>
-                    </div>
-                    <div class="col-auto">
-                        <button @click="reloadPage()" type="button" class="btn btn-secondary">Xóa lọc</button>
-                    </div>
-                </div>
+            <div class="col-2">
+                @include('common.select_custom.simple.select_single', [
+                   'selected' => 'filters.status',
+                   'options' => 'STATUS_SHOPPING_PLAN_ORGANIZATION',
+                   'placeholder' => 'Chọn trạng thái',
+                ])
+            </div>
+            <div class="col-auto">
+                <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>
             </div>
         </div>
     </div>

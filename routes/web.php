@@ -22,7 +22,7 @@ Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware(['checkAuth'])->group(function () {
+Route::middleware('checkAuth')->group(function () {
     Route::get('/login/{id}', function ($id) {
         Illuminate\Support\Facades\Auth::loginUsingId($id);
 
@@ -76,7 +76,12 @@ Route::middleware(['checkAuth'])->group(function () {
             Route::view('view/{id}', 'assets.shopping_plan_organization.week.detail');
         });
     });
-
+    Route::prefix('order')->group(function () {
+        Route::view('list', 'assets.order.list');
+    });
+    Route::prefix('import-warehouse')->group(function () {
+        Route::view('list', 'assets.import_warehouse.list');
+    });
     Route::prefix('cache')->group(function () {
         Route::get('key', function () {
             $key = config('cache_keys.keys.menu_key').Illuminate\Support\Facades\Auth::id();
@@ -86,7 +91,6 @@ Route::middleware(['checkAuth'])->group(function () {
             dd(Illuminate\Support\Facades\Cache::tags(config('cache_keys.tags.menu_tag'))->clear());
         });
     });
-
     Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
     Route::view('/assets/inventory/list', 'assets.inventory.list');
 });
@@ -116,4 +120,8 @@ Route::prefix('report')->group(function () {
     Route::get('/supplier-report', function () {
         return view('assets.report.supplierReport');
     })->name('assets.report.supplierReport');
+});
+
+Route::prefix('asset')->group(function () {
+    Route::view('info/{id}', 'assets.assets.info2');
 });

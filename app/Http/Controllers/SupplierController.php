@@ -18,10 +18,8 @@ class SupplierController extends Controller
     {
         $request->validate([
             'code_name'      => 'nullable|string|max:255',
-            'industry_ids'   => 'nullable|array',
-            'industry_ids.*' => 'integer',
-            'status'         => 'nullable|array',
-            'status.*'       => 'integer',
+            'industry_ids'   => 'nullable|integer',
+            'status'         => 'nullable|integer',
             'page'           => 'integer',
             'limit'          => 'integer|max:200',
         ]);

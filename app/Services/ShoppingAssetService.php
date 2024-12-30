@@ -5,11 +5,13 @@ namespace App\Services;
 use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
+use App\Repositories\AssetTypeRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\DB;
+use Modules\Service\Repositories\OrganizationRepository;
 
 class ShoppingAssetService
 {
@@ -17,6 +19,8 @@ class ShoppingAssetService
         protected ShoppingAssetRepository $shoppingAssetRepository,
         protected ShoppingPlanCompanyRepository $shoppingPlanCompanyRepository,
         protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
+        protected OrganizationRepository $organizationRepository,
+        protected AssetTypeRepository $assetTypeRepository,
     ) {
 
     }
@@ -179,5 +183,33 @@ class ShoppingAssetService
         return [
             'success' => true,
         ];
+    }
+
+    public function getListShoppingAsset($filters)
+    {
+        $data = $this->shoppingAssetRepository->getListing($filters);
+        if ($data->isEmpty()) {
+            return [];
+        }
+
+        $assetTypeIds = $data->pluck('asset_type_id')->toArray();
+        $assetTypes   = [];
+        if (!empty($assetTypeIds)) {
+            $assetTypes = $this->assetTypeRepository->getListAssetType(['id' => $assetTypeIds])->keyBy('id')->toArray();
+        }
+
+        $organizationIds = $data->pluck('organization_id')->toArray();
+        $organizations   = [];
+        if (!empty($organizationIds)) {
+            $organizations = $this->organizationRepository->getInfoOrganizationByFilters(['id' => $organizationIds])->keyBy('id')->toArray();
+        }
+        foreach ($data as $shoppingAsset) {
+            $shoppingAsset->shopping_asset_id = $shoppingAsset->id;
+            $shoppingAsset->organization_name = $organizations[$shoppingAsset->organization_id]['name'] ?? null;
+            $shoppingAsset->asset_type_name   = $assetTypes[$shoppingAsset->asset_type_id]['name'] ?? null;
+            $shoppingAsset->measure           = $assetTypes[$shoppingAsset->asset_type_id]['measure'] ?? null;
+        }
+
+        return $data->toArray();
     }
 }

@@ -15,9 +15,11 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <span x-data="{values: listTypeContract}">
-                                @include('common.select2.modal.simple.select2_single_modal', ['placeholder' => 'Chọn loại hợp đồng', 'model' => 'data.type'])
-                            </span>
+                            @include('common.select_custom.simple.select_single', [
+                                    'selected' => 'data.type',
+                                    'options' => 'TYPE_CONTRACT',
+                                    'placeholder' => 'Chọn loại hợp đồng',
+                            ])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
@@ -136,7 +138,7 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <button class="border-0 bg-body" @click="data.payments.splice(index, 1)">
-                                            <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -144,7 +146,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <button @click="addRowPayment" type="button" class="btn btn-sc tw-w-fit">Thêm hàng</button>
+                    <button @click="addRowPayment" type="button" class="btn btn-sm btn-sc">Thêm hàng</button>
                 </div>
 
                 <template x-if="action === 'update'">

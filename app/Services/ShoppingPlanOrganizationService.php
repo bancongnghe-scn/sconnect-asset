@@ -8,17 +8,17 @@ use App\Http\Resources\ShoppingPlanOrganizationResource;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
-use App\Repositories\OrganizationRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
+use App\Support\Constants\SOfficeConstant;
 use Carbon\Carbon;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Modules\Service\Repositories\OrganizationRepository;
 
 class ShoppingPlanOrganizationService
 {
@@ -35,8 +35,10 @@ class ShoppingPlanOrganizationService
     public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
     {
         if (empty($organizationIds)) {
-            $organizations   = ScApiService::getAllOrganizationParent();
-            $organizationIds = Arr::pluck($organizations, 'id');
+            $organizationIds   = $this->organizationRepository->getListing([
+                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
+                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
+            ])->pluck('id')->toArray();
         }
 
         $dataInsert = [];

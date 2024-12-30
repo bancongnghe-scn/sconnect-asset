@@ -13,23 +13,21 @@
                     </div>
                     <div class="col-6">
                         <label class="form-label">Nhóm tài sản<label class="tw-text-red-600 mb-0">*</label></label>
-                        <select class="form-select select2" x-model="data.asset_type_group_id" id="selectAssetTypeGroup">
-                            <option value="">Chọn nhóm tài sản</option>
-                            <template x-for="value in listAssetTypeGroup" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
+                        @include('common.select_custom.extent.select_single', [
+                                'selected' => 'data.asset_type_group_id',
+                                'options' => 'listAssetTypeGroup',
+                                'placeholder' => 'Chọn nhóm tài sản',
+                        ])
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col-6">
                         <label class="form-label">Đơn vị tính<label class="tw-text-red-600 mb-0">*</label></label>
-                        <select class="form-control select2" x-model="data.measure" id="selectMeasure">
-                            <option value="">Chọn đơn vị</option>
-                            <template x-for="(value, key) in listMeasure">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
+                        @include('common.select_custom.simple.select_single', [
+                               'selected' => 'data.measure',
+                               'options' => 'LIST_MEASURE',
+                               'placeholder' => 'Chọn đơn vị',
+                        ])
                     </div>
                     <div class="col-6">
                         <label class="form-label">Thời gian bảo dưỡng(tháng)<label class="tw-text-red-600 mb-0">*</label></label>

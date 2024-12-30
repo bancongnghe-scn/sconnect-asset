@@ -78,6 +78,14 @@ window.formatDate = function formatDate(date) {
     return date
 }
 
+window.formatDateVN = function formatDateVN(date) {
+    if (date === null) {
+        return null
+    }
+
+    return format(date, 'dd/MM/yyyy')
+}
+
 window.convertDateString = function convertDateString(dateString) {
     const [year, month, day] = dateString.split('-')
     return new Date(year, month - 1, day)

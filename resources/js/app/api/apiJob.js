@@ -28,7 +28,6 @@ window.apiGetListJob = async function (filters) {
         const response = await axios.get(domain + '/api/job/getJobs', {
             params: filters,
         })
-        console.log(response)
         const data = response.data;
         if (!data.success) {
             return {

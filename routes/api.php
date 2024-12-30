@@ -3,8 +3,10 @@
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ImportWarehouse\ImportWarehouseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Rbac\RoleController;
+use App\Http\Controllers\ShoppingAssetOrderController;
 use App\Http\Controllers\ShoppingPlanOrganization\ShoppingPlanOrganizationYearController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -83,6 +85,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::get('handle-shopping/{id}', 'handleShopping');
             Route::post('synthetic-shopping', 'syntheticShopping');
             Route::post('send-approval', 'sendApprovalWeek');
+            Route::get('supplier/{id}', 'getSupplierOfShoppingPlanWeek');
         });
     });
 
@@ -181,6 +184,30 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
         Route::post('sent-info', 'sentInfoShoppingAsset');
         Route::post('approval', 'approvalShoppingAsset');
+        Route::get('list', 'getListShoppingAsset');
+    });
+
+    Route::prefix('order')->controller(App\Http\Controllers\OrderController::class)->group(function () {
+        Route::get('list', 'getListOrder');
+        Route::post('create', 'createOrder');
+        Route::post('update', 'updateOrder');
+        Route::get('find/{id}', 'findOrder');
+        Route::post('delete', 'deleteOrder');
+    });
+
+    Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
+        Route::get('list', 'getListShoppingAssetOrder');
+    });
+
+    Route::prefix('import-warehouse')->controller(ImportWarehouseController::class)->group(function () {
+        Route::get('asset', 'getAssetForImportWarehouse');
+        Route::post('create', 'createImportWarehouse');
+        Route::get('list', 'getListImportWarehouse');
+        Route::get('info/{id}', 'getInfoImportWarehouse');
+        Route::get('complete/{id}', 'completeImportWarehouse');
+        Route::post('update/{id}', 'updateImportWarehouse');
+        Route::get('delete/{id}', 'deleteImportWarehouse');
+        Route::get('export', 'exportImportWarehouse');
     });
 });
 
