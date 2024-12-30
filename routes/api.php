@@ -86,6 +86,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::post('synthetic-shopping', 'syntheticShopping');
             Route::post('send-approval', 'sendApprovalWeek');
             Route::get('supplier/{id}', 'getSupplierOfShoppingPlanWeek');
+            Route::get('complete/{id}', 'completeShoppingPlanWeek');
         });
     });
 

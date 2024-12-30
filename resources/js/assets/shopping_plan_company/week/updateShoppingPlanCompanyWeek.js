@@ -7,6 +7,7 @@ document.addEventListener('alpine:init', () => {
             this.id = split.pop();
             this.action = split.at(5)
             this.feetData()
+            this.setConfigButtons()
         },
 
         //data
@@ -35,6 +36,8 @@ document.addEventListener('alpine:init', () => {
         },
         shoppingAssetWithAction: [],
         statusDisapproval: null,
+        configButtons: [],
+
         //methods
         async feetData() {
             await this.getListSupplier()
@@ -263,6 +266,23 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async completeShoppingPlan() {
+            this.loading = true
+            try {
+                const response = await window.apiCompleteShoppingPlanWeek(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data.status = STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                toast.success('Hoàn thành kế hoạch mua sắm tuần thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async sendApprovalWeek(nextStatus) {
             this.loading = true
             try {
@@ -379,6 +399,126 @@ document.addEventListener('alpine:init', () => {
                     this.selectedRow[value.id] = this.checkedAll
                 })
             })
+        },
+
+        setConfigButtons() {
+            this.configButtons = [
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                    buttons: [
+                        {
+                            text: 'Gửi thông báo',
+                            class: 'btn btn-primary',
+                            action: () => this.sentNotificationRegister(),
+                            permission: 'shopping_plan_company.sent_notifi_register'
+                        },
+                        {
+                            text: 'Xóa',
+                            class: 'btn btn-danger',
+                            action: () => this.confirmRemove(),
+                            permission: 'shopping_plan_company.crud'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [+STATUS_SHOPPING_PLAN_COMPANY_NEW, +STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-sc',
+                            action: () => this.updatePlanWeek(),
+                            permission: 'shopping_plan_company.crud'
+                        },
+                    ],
+                },
+                {
+                    condition: () =>
+                        [
+                            STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                        ].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-sc',
+                            action: () => this.sentInfoShoppingAsset(),
+                            permission: 'shopping_plan_company.synthetic_shopping'
+                        },
+                    ],
+                },
+                {
+                    condition: () =>
+                        +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER &&
+                        new Date() > new Date(window.formatDate(this.data.end_time)),
+                    buttons: [
+                        {
+                            text: 'Xử lý',
+                            class: 'btn btn-primary',
+                            action: () => this.handleShopping(),
+                            permission: 'shopping_plan_company.handle_shopping'
+                        },
+                    ],
+                },
+                {
+                    condition: () =>
+                        +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE &&
+                        new Date() > new Date(window.formatDate(this.data.end_time)),
+                    buttons: [
+                        {
+                            text: 'Tổng hợp',
+                            class: 'btn btn-primary',
+                            action: () => this.syntheticShopping(),
+                            permission: 'shopping_plan_company.synthetic_shopping'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                    buttons: [
+                        {
+                            text: 'Gửi duyệt',
+                            class: 'btn btn-primary',
+                            action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR),
+                            permission: 'shopping_plan_company.synthetic_shopping'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                    buttons: [
+                        {
+                            text: 'Gửi duyệt',
+                            class: 'btn btn-primary',
+                            action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL),
+                            permission: 'shopping_asset.hr_manager_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    buttons: [
+                        {
+                            text: 'Gửi duyệt',
+                            class: 'btn btn-primary',
+                            action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    buttons: [
+                        {
+                            text: 'Hoàn thành',
+                            class: 'btn btn-sc',
+                            action: () => this.completeShoppingPlan(),
+                            permission: 'shopping_plan_company_week.complete'
+                        },
+                    ],
+                },
+            ]
         }
     }))
 })

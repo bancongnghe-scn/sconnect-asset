@@ -174,4 +174,21 @@ class ShoppingPlanCompanyWeekController extends Controller
             return response_error();
         }
     }
+
+    public function completeShoppingPlanWeek(string $id)
+    {
+        try {
+            $result = $this->planCompanyService->completeShoppingPlanWeek($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }
