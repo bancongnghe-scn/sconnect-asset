@@ -156,6 +156,7 @@ class ShoppingAssetService
             $shoppingAsset = $this->shoppingAssetRepository->getListing([
                 'id'           => $data['ids'],
                 'status_other' => [
+                    ShoppingAsset::STATUS_HR_MANAGER_APPROVAL,
                     ShoppingAsset::STATUS_PENDING_ACCOUNTANT_APPROVAL,
                     ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL,
                     ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL,
