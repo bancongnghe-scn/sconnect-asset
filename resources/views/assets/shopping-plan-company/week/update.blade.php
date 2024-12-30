@@ -11,7 +11,7 @@
                 <template x-for="(config, key) in configButtons" :key="key">
                     <template x-if="config.condition()">
                         <template x-for="(button, index) in config.buttons" :key="key + index">
-                            <template x-if="permission.includes(button.permission)">
+                            <template x-if="!button.permission || permission.includes(button.permission)">
                                 <button :class="button.class" @click="button.action()">
                                     <span x-text="button.text"></span>
                                 </button>

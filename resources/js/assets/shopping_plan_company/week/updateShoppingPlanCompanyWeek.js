@@ -266,6 +266,23 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async completeShoppingPlan() {
+            this.loading = true
+            try {
+                const response = await window.apiCompleteShoppingPlanWeek(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data.status = STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                toast.success('Hoàn thành kế hoạch mua sắm tuần thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async sendApprovalWeek(nextStatus) {
             this.loading = true
             try {
@@ -487,6 +504,17 @@ document.addEventListener('alpine:init', () => {
                             class: 'btn btn-primary',
                             action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL),
                             permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    buttons: [
+                        {
+                            text: 'Hoàn thành',
+                            class: 'btn btn-sc',
+                            action: () => this.completeShoppingPlan(),
+                            permission: null
                         },
                     ],
                 },

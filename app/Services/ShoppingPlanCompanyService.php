@@ -1031,4 +1031,62 @@ class ShoppingPlanCompanyService
 
         return $suppliers->toArray();
     }
+
+    public function completeShoppingPlanWeek($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL != $shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_COMPLETE;
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_COMPLETE_SHOPPING_PLAN_WEEK,
+                $shoppingPlanCompany->id
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
 }
