@@ -514,7 +514,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Hoàn thành',
                             class: 'btn btn-sc',
                             action: () => this.completeShoppingPlan(),
-                            permission: null
+                            permission: 'shopping_plan_company_week.complete'
                         },
                     ],
                 },
