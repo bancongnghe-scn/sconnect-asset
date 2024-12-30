@@ -190,9 +190,7 @@
                                     </div>
                                     <button x-show="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN" class="btn btn-sm btn-sc mt-3" @click="addRows()">Thêm hàng</button>
                             </div>
-
                             <hr>
-
                             <div class="d-flex justify-content-between">
                                 <div class="col-4">
                                     <div class="mb-2">
@@ -230,9 +228,10 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     </div>
                     <div class="card col-2">
-                        {{--                        @include('component.shopping_plan_company.history_comment')--}}
+                        @include('component.shopping_plan_company.history_comment')
                     </div>
                 </div>
             </div>
