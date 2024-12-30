@@ -9,8 +9,8 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="d-flex tw-gap-x-4 h-auto">
-                    <div class="card col-10">
+                <div class="d-flex tw-gap-x-4 h-100">
+                    <div class="card col-10 mh-100 overflow-y-auto custom-scroll">
                         <div class="card-body">
                             {{--Thong tin chung--}}
                             <div class="mb-3">
@@ -90,7 +90,7 @@
                             {{--  thông tin mặt hàng--}}
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                                <div class="mt-3 overflow-auto custom-scroll tw-max-h-72 tw-max-w-full">
+                                <div class="mt-3 tw-max-w-full overflow-x-auto custom-scroll">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
@@ -170,7 +170,7 @@
                                                              'placeholder' => 'Loại tài sản',
                                                         ])
                                                     </td>
-                                                    <td x-text="LIST_MEASURE[asset.measure]"></td>
+                                                    <td x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
                                                     <td>
                                                         @include('common.select_custom.extent.select_single', [
                                                              'selected' => 'asset.organization_id',
@@ -197,7 +197,7 @@
 
                             <hr>
 
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between tw-pb-8">
                                 <div class="col-4">
                                     <div class="mb-2">
                                         <label>Chi phí vận chuyển, lắp đặt</label>
@@ -235,7 +235,7 @@
                         </div>
                     </div>
                     <div class="card col-2">
-{{--                        @include('component.shopping_plan_company.history_comment')--}}
+                        @include('component.shopping_plan_company.history_comment')
                     </div>
                 </div>
             </div>

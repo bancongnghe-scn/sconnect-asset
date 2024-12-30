@@ -36,7 +36,7 @@
     <!-- Nút chọn -->
     <button
         @click="open = true"
-        class="form-select tw-w-full"
+        class="form-select tw-w-full tw-text-gray-500"
         type="button"
         x-text="selected ? options.find((item) => +item.id === +selected)?.name : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
