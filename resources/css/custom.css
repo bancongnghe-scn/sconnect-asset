@@ -168,5 +168,5 @@ html {
 }
 
 .table-bordered > :not(caption) > * > * {
-    continue: auto;
+    border-width: thin !important;
 }
