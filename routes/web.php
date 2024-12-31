@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
+    return Maatwebsite\Excel\Facades\Excel::download(new App\Exports\OrderExport(), 'purchase_proposal.xlsx');
+
     return 'pong';
 });
 

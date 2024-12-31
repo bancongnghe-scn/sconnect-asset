@@ -90,7 +90,7 @@
                             {{--  thông tin mặt hàng--}}
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                                <div class="mt-3 tw-max-w-full overflow-x-auto custom-scroll">
+                                <div class="mt-3">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
