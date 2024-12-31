@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
-class AssetService
+class ListAssetService
 {
     public function getListAsset($request): LengthAwarePaginator
     {

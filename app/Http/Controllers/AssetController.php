@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssetType;
 use App\Models\Organization;
-use App\Services\AssetService;
+use App\Services\ListAssetService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class AssetController extends Controller
 {
-    public function __construct(private readonly AssetService $assetService) {}
+    public function __construct(private readonly ListAssetService $assetService) {}
 
     public function listAsset(): View
     {
