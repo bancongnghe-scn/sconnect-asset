@@ -182,7 +182,7 @@
                                                 : asset.user.avatar) 
                                             : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
                                             alt="" 
-                                            style="width: 70px; height: 70px; object-fit: cover; border-radius: 100px;">
+                                            style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
                                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
                                         <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
                                         <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
@@ -197,7 +197,7 @@
                                         : asset.organization.manager.avatar) 
                                     : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
                                     alt="" 
-                                    style="width: 70px; height: 70px; object-fit: cover; border-radius: 100px;">
+                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
                                     <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
                                         <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 16px;"></span>
                                         <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
@@ -608,7 +608,9 @@
                             </div>
                         </div>
                     </div>
-
+                    <div>
+                        @include('assets.asset.common.modal-asset')
+                    </div>
             </div>
         </div>
     </div>

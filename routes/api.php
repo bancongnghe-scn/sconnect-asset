@@ -199,4 +199,9 @@ Route::prefix('report')->group(function () {
 
 Route::prefix('asset')->group(function () {
     Route::get('/get-data-list-asset', [AssetController::class, 'getListAsset'])->name('assets.getListAsset');
+    Route::get('/get-data-list-user-asset', [AssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
+
+    Route::get('/get-list-asset-of-user', [AssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
+
+    Route::post('/allocate-asset', [AssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
 });

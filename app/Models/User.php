@@ -54,11 +54,26 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
-    protected $appends = ['org_last_parent'];
+    protected $appends = ['org_last_parent', 'job_position'];
 
     public function organization()
     {
         return $this->hasOne(Organization::class, 'id', 'dept_id');
+    }
+
+    public function jobTitle()
+    {
+        return $this->hasOne(OrgJobTitle::class, 'id', 'job_title_id');
+    }
+
+    //code cũ
+    public function getJobPositionAttribute()
+    {
+        if (isset($this->jobTitle) && isset($this->jobTitle->positionOffice) && isset($this->jobTitle->jobPosition)) {
+            $job = $this->jobTitle->positionOffice->cfg_key . ' ' . $this->jobTitle->jobPosition->cfg_key;
+        }
+
+        return $job ?? '';
     }
 
     public function getOrgLastParentAttribute()
@@ -76,7 +91,7 @@ class User extends Authenticatable
 
             $deptId = Organization::getLastParentId($this->dept_id, $departmentsCollection, 1);
 
-            return Organization::find($deptId);
+            return $departmentsCollection->where('id', $deptId)->first();
         }
 
         return null;

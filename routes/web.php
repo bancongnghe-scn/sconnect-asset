@@ -122,6 +122,7 @@ Route::prefix('report')->group(function () {
 
 Route::prefix('asset')->group(function () {
     Route::get('/list-asset', [AssetController::class, 'listAsset'])->name('assets.listAsset');
+    Route::get('/list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
 });
 
 Route::prefix('asset')->group(function () {
