@@ -179,7 +179,6 @@ class ImportWarehouseService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
             DB::rollBack();
 
@@ -279,7 +278,6 @@ class ImportWarehouseService
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);
-            dd($exception);
 
             return [
                 'success'    => false,

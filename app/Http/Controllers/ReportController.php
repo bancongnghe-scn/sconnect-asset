@@ -28,7 +28,6 @@ class ReportController extends Controller
             return response_success($arrData);
         } catch (\Throwable $exception) {
             Log::error($exception);
-            dd($exception);
 
             return response_error();
         }
