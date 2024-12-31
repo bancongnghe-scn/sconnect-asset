@@ -167,3 +167,6 @@ html {
     scroll-behavior: smooth;
 }
 
+.table-bordered > :not(caption) > * > * {
+    continue: auto;
+}
