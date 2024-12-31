@@ -26,6 +26,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('ping', function () {
+    return Maatwebsite\Excel\Facades\Excel::download(new App\Exports\OrderExport(), 'purchase_proposal.xlsx');
+
     return 'pong';
 });
 
