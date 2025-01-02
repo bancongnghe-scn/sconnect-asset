@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <div class="col-2">
+    <div class="col-7 text-right">
         <button type="button" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.complete ?? true" @click="$dispatch('complete')" :disabled="window.checkDisableSelectRow">
             <span>
                 Hoàn thành

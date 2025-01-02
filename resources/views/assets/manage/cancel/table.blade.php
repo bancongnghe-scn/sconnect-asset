@@ -6,7 +6,6 @@
                         aria-describedby="example2_info">
                     <thead>
                     <tr>
-                        <th rowspan="1" colspan="1">STT</th>
                         <template x-for="(columnName, key) in columns">
                             <th rowspan="1" colspan="1" x-text="columnName"></th>
                         </template>
@@ -15,10 +14,9 @@
                     <tbody>
                     <template x-for="(data,index) in dataTable" x-data="{line: 1}">
                         <tr>
-                            <td x-text="from + index"></td>
                             <template x-for="(columnName, key) in columns">
                                 <td>
-                                    <template x-if="key !== 'validity' && key !== 'status'">
+                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'created_at'">
                                         <span x-text="data[key]"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
@@ -31,6 +29,9 @@
                                     </template>
                                     <template x-if="key === 'status'">
                                         @include('common.table-status-asset')
+                                    </template>
+                                    <template x-if="key === 'created_at'">
+                                        <span x-text="formatDate(data.date)"></span>
                                     </template>
                                 </td>
                             </template>

@@ -28,7 +28,7 @@
                             <td x-text="from + index"></td>
                             <template x-for="(columnName, key) in columns">
                                 <td>
-                                    <template x-if="key !== 'validity' && key !== 'status'">
+                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'date'">
                                         <span x-text="data[key]"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
@@ -41,6 +41,9 @@
                                     </template>
                                     <template x-if="key === 'status'">
                                         @include('common.table-status-asset')
+                                    </template>
+                                    <template x-if="key === 'date'">
+                                        <span x-text="formatDate(data.date)"></span>
                                     </template>
                                 </td>
                             </template>
