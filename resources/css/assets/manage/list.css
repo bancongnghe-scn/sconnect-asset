@@ -42,7 +42,7 @@ button:hover .tooltip-text {
 }
 
 .manage_assets_tab button {
-    padding: 10px 15px;
+    padding: 0 15px;
     border: none;
     background-color: unset;
 }

@@ -11,7 +11,7 @@
 @section('content')
 <div class="card">
     <div class="card-body">
-        <div x-data="{tab: 'assets-lost'}" class="mt-3 manage_assets">
+        <div x-data="{tab: 'assets-lost'}" class="manage_assets">
             <div class="manage_assets_tab">
                 <div>
                     <button :class="{'active': tab === 'assets-lost'}" @click="tab='assets-lost' ">
