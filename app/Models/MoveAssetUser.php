@@ -9,5 +9,7 @@ class MoveAssetUser extends Model
 {
     use HasFactory;
 
+    protected $connection = 'mysql';
+
     protected $table = 'move_asset_users';
 }

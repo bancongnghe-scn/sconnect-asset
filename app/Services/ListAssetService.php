@@ -36,6 +36,7 @@ class ListAssetService
             $arrAssetIdOfUser = MoveAssetUser::where('user_id', $request->userId)->pluck('asset_id');
 
             $query->whereNotIn('id', $arrAssetIdOfUser);
+            $query->whereNull('user_id');
         }
 
         return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('created_at', 'desc')->paginate($request->limit);
@@ -60,7 +61,7 @@ class ListAssetService
                 ->orWhere('code', 'LIKE', "%{$request->nameUser}%");
         }
 
-        return $query->with(['organization', 'organization.deptType'])->where('status', 1)->paginate(10);
+        return $query->with(['organization', 'organization.deptType', 'listAssetUse'])->where('status', 1)->paginate($request->limit);
     }
 
     public function allocateAsset($request)
