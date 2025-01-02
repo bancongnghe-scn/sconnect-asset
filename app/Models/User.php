@@ -90,6 +90,10 @@ class User extends Authenticatable
 
             $deptId = Org::getLastParentId($this->dept_id, $departmentsCollection, 1);
 
+            if ($deptId === null) {
+                return null;
+            }
+
             return $departmentsCollection->where('id', $deptId)->first();
         }
 
