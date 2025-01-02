@@ -2,23 +2,28 @@
 
 namespace App\Exports;
 
+use App\Models\AssetType;
+use App\Repositories\AssetTypeRepository;
+use App\Repositories\OrderRepository;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
-use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class OrderExport implements FromArray, WithEvents, WithDrawings, WithTitle
+class OrderExport extends TemplateExport implements FromArray, WithEvents
 {
-    public function title(): string
-    {
-        return 'Đơn hàng';
-    }
+    protected $id;
+    protected $data;
+    protected $orderRepository;
+    protected $assetTypeRepository;
 
-    public function array(): array
+    public function __construct($id)
     {
-        return [];
+        parent::__construct('Đơn hàng');
+        $this->id                  = $id;
+        $this->orderRepository     = new OrderRepository();
+        $this->assetTypeRepository = new AssetTypeRepository();
     }
 
     public function registerEvents(): array
@@ -26,71 +31,102 @@ class OrderExport implements FromArray, WithEvents, WithDrawings, WithTitle
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet;
-
-                // gộp cột
-                $sheet->mergeCells('A1:B3');
-                $sheet->mergeCells('A4:B6');
-                $sheet->mergeCells('C1:G6');
-                $sheet->mergeCells('H1:H2');
-                $sheet->mergeCells('H3:H4');
-                $sheet->mergeCells('H5:H6');
-                $sheet->mergeCells('I1:J2');
-                $sheet->mergeCells('I3:J4');
-                $sheet->mergeCells('I5:J6');
-                $sheet->mergeCells('A7:J9');
-
-                // set chiều rộng cho cột
-                $sheet->getColumnDimension('B')->setWidth(20);
-                $sheet->getColumnDimension('H')->setWidth(5);
-
-
-                // Đặt giá trị vào các ô
-                $sheet->setCellValue('A1', 'Công ty TNHH đầu tư công nghệ và dịch vụ Sconnect Việt Nam');
-                $sheet->setCellValue('C1', 'SCONNECT');
-                $sheet->setCellValue('H1', 'Ngày ban hành');
-                $sheet->setCellValue('H3', 'Ngày sửa đổi');
-                $sheet->setCellValue('H5', 'Lần sửa đổi');
-                $sheet->setCellValue('I1', '10/06/2015');
-                $sheet->setCellValue('I3', '25/05/2022');
-                $sheet->setCellValue('I5', '01');
-                $sheet->setCellValue('A7', 'Đơn hàng');
-                $sheet->setCellValue('A10', 'Nhà cung cấp');
-                $sheet->setCellValue('A11', 'Tên đơn hàng');
-                $sheet->setCellValue('A12', 'Người phụ trách');
-                $sheet->setCellValue('A13', 'Ngày giao hàng');
-
-                // Định dạng font chữ
-                //                $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
-                //                $sheet->getStyle('A3')->getFont()->setBold(true);
-
-                // Tạo đường viền
-                $sheet->getStyle('A1:B3')->applyFromArray([
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                        ],
-                    ],
-                ]);
-                $sheet->getStyle('A10:J13')->applyFromArray([
-                    'borders' => [
-                        'allBorders' => [
-                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                        ],
-                    ],
-                ]);
+                $this->registerEventsTemplate($sheet);
+                $this->setCellValueInfo($sheet);
+                $this->setCellValueTable($sheet);
             },
         ];
     }
 
-    public function drawings()
+    private function setCellValueInfo($sheet): void
     {
-        $drawing = new Drawing();
-        $drawing->setName('Logo');
-        $drawing->setDescription('This is the company logo.');
-        $drawing->setPath(public_path('images/logo-s-v2.png')); // Thay đường dẫn ảnh của bạn
-        $drawing->setHeight(50);
-        $drawing->setCoordinates('A4');
+        $configs = [
+            'supplier_name'           => 'Nhà cung cấp',
+            'name'                    => 'Tên đơn hàng',
+            'purchasing_manager_name' => 'Người phụ trách',
+            'delivery_date'           => 'Ngày giao hàng',
+            'delivery_location'       => 'Địa điểm giao hàng',
+            'contact_person'          => 'Người liên hệ',
+            'contract_info'           => 'Thông tin liên hệ',
+            'payment_time'            => 'Thời gian thanh toán',
+        ];
+        $row = 10;
+        foreach ($configs as $key => $value) {
+            $sheet->setCellValue('A'.$row, $value);
+            $sheet->setCellValue('C'.$row, $this->data[$key]);
+            ++$row;
+        }
+    }
 
-        return $drawing;
+    public function setCellValueTable($sheet): void
+    {
+        $configs = [
+            'A' => ['name' => 'STT', 'key' => 'stt'],
+            'B' => ['name' => 'Mã', 'key' => 'code'],
+            'C' => ['name' => 'Tên', 'key' => 'name'],
+            'D' => ['name' => 'Đơn giá', 'key' => 'price'],
+            'E' => ['name' => 'VAT (%)', 'key' => 'vat_rate'],
+            'F' => ['name' => 'Tiền VAT', 'key' => 'total_vat'],
+            'G' => ['name' => 'Thành tiền', 'key' => 'total_price'],
+            'H' => ['name' => 'Loại tài sản', 'key' => 'asset_type_name'],
+            'I' => ['name' => 'ĐVT', 'key' => 'measure_name'],
+            'J' => ['name' => 'Mô tả', 'key' => 'description'],
+        ];
+        $rowStart = $sheet->getHighestRow() + 1;
+        foreach ($configs as $key => $value) {
+            $sheet->setCellValue("{$key}{$rowStart}", $value['name']);
+        }
+        $row = $rowStart + 1;
+
+        foreach ($this->data['assets'] as $stt => $asset) {
+            foreach ($configs as $key => $value) {
+                if ('A' === $key) {
+                    $sheet->setCellValue('A'.$row, $stt + 1);
+                    continue;
+                }
+                $sheet->setCellValue($key.$row, $asset[$value['key']]);
+            }
+            ++$row;
+        }
+
+        $sheet->getStyle("A{$rowStart}:J{$row}")->applyFromArray([
+            'borders' => [
+                'allBorders' => [
+                    'borderStyle' => Border::BORDER_THIN,
+                ],
+            ],
+        ]);
+    }
+
+    public function array(): array
+    {
+        $order        = $this->orderRepository->find($this->id);
+        $assetOrders  = $order->shoppingAssetOrders;
+        $assetTypeIds = $assetOrders->pluck('asset_type_id')->toArray();
+        $assetTypes   = [];
+        if (!empty($assetTypeIds)) {
+            $assetTypes = $this->assetTypeRepository->getListAssetType(['id' => $assetTypeIds])->keyBy('id')->toArray();
+        }
+        foreach ($assetOrders as $assetOrder) {
+            $assetOrder->total_vat       = +$assetOrder->price * +$assetOrder->vat_rate;
+            $assetOrder->total_price     = +$assetOrder->price + (+$assetOrder->price * +$assetOrder->vat_rate);
+            $assetOrder->asset_type_name = $assetTypes[$assetOrder->asset_type_id]['name'] ?? '';
+            $assetOrder->measure_name    = AssetType::MEASURE_NAME[$assetTypes[$assetOrder->asset_type_id]['measure']] ?? '';
+        }
+        $this->data = [
+            'supplier_name'           => $order->supplier?->name,
+            'name'                    => $order->name,
+            'purchasing_manager_name' => $order->purchasingManager?->name,
+            'delivery_date'           => $order->delivery_date,
+            'delivery_location'       => $order->delivery_location,
+            'contact_person'          => $order->contact_person,
+            'contract_info'           => $order->contract_info,
+            'payment_time'            => Carbon::parse($order->payment_time)->format('d-m-Y'),
+            'shipping_costs'          => $order->shipping_costs,
+            'other_costs'             => $order->other_costs,
+            'assets'                  => $assetOrders,
+        ];
+
+        return [];
     }
 }

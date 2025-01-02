@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderExport;
 use App\Http\Requests\CreateOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class OrderController extends Controller
 {
@@ -119,5 +121,10 @@ class OrderController extends Controller
 
             return response_error();
         }
+    }
+
+    public function exportOrder(string $id)
+    {
+        return Excel::download(new OrderExport($id), 'don_hang.xlsx');
     }
 }

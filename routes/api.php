@@ -194,6 +194,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('update', 'updateOrder');
         Route::get('find/{id}', 'findOrder');
         Route::post('delete', 'deleteOrder');
+        Route::get('export/{id}', 'exportOrder');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
