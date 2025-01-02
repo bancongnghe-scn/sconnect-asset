@@ -9,7 +9,6 @@
                         <th class="text-center">
                             <input type="checkbox" id="selectedAll" @click="selectedAll" @change="count()">
                         </th>
-                        <th rowspan="1" colspan="1">STT</th>
                         <template x-for="(columnName, key) in columns">
                             <th rowspan="1" colspan="1" x-text="columnName"></th>
                         </template>
@@ -29,7 +28,6 @@
 
                             </td>
 
-                            <td x-text="from + index"></td>
                             <template x-for="(columnName, key) in columns">
                                 <td>
                                     <template x-if="key !== 'validity' && key !== 'status_repair' && key !== 'date' && key !== 'date_repair'">
