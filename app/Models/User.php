@@ -58,7 +58,7 @@ class User extends Authenticatable
 
     public function organization()
     {
-        return $this->hasOne(Organization::class, 'id', 'dept_id');
+        return $this->hasOne(Org::class, 'id', 'dept_id');
     }
 
     public function jobTitle()
@@ -79,7 +79,7 @@ class User extends Authenticatable
     public function getOrgLastParentAttribute()
     {
         if ($this->dept_id != 1) {
-            $departments = Organization::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
+            $departments = Org::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
                 ->selectRaw(
                     'organizations.id, 
         organizations.parent_id, 
@@ -89,7 +89,7 @@ class User extends Authenticatable
 
             $departmentsCollection = new Collection($departments);
 
-            $deptId = Organization::getLastParentId($this->dept_id, $departmentsCollection, 1);
+            $deptId = Org::getLastParentId($this->dept_id, $departmentsCollection, 1);
 
             return $departmentsCollection->where('id', $deptId)->first();
         }

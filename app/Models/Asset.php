@@ -117,6 +117,6 @@ class Asset extends Model
 
     public function organization()
     {
-        return $this->hasOne(Organization::class, 'id', 'organization_id');
+        return $this->hasOne(Org::class, 'id', 'organization_id');
     }
 }

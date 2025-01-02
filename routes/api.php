@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AssetController;
+use App\Http\Controllers\ListAssetController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
@@ -198,10 +198,10 @@ Route::prefix('report')->group(function () {
 });
 
 Route::prefix('asset')->group(function () {
-    Route::get('/get-data-list-asset', [AssetController::class, 'getListAsset'])->name('assets.getListAsset');
-    Route::get('/get-data-list-user-asset', [AssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
+    Route::get('/get-data-list-asset', [ListAssetController::class, 'getListAsset'])->name('assets.getListAsset');
+    Route::get('/get-data-list-user-asset', [ListAssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
 
-    Route::get('/get-list-asset-of-user', [AssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
+    Route::get('/get-list-asset-of-user', [ListAssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
 
-    Route::post('/allocate-asset', [AssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
+    Route::post('/allocate-asset', [ListAssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
 });

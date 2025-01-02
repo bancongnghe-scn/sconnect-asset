@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AssetController;
+use App\Http\Controllers\ListAssetController;
 use App\Http\Controllers\ReportController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -121,17 +121,6 @@ Route::prefix('report')->group(function () {
 });
 
 Route::prefix('asset')->group(function () {
-    Route::get('/list-asset', [AssetController::class, 'listAsset'])->name('assets.listAsset');
-    Route::get('/list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
-});
-
-Route::prefix('asset')->group(function () {
-    Route::get('/list-asset/demo', function () {
-        dd(User::all());
-        try {
-            dd(User::all());
-        } catch (\Exception $e) {
-            dd($e);
-        }
-    })->name('assets.listAsset');
+    Route::get('/list-asset', [ListAssetController::class, 'listAsset'])->name('assets.listAsset');
+    Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
 });

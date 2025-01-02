@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Models\Asset;
 use App\Models\MoveAssetUser;
-use App\Models\Organization;
+use App\Models\Org;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -47,9 +47,9 @@ class ListAssetService
         $query = User::query();
 
         if ($request->unit && $request->unit != 0) {
-            $arrOrg = Organization::get();
+            $arrOrg = Org::get();
 
-            $arrChildOrg = Organization::getAllChildIds($request->unit, $arrOrg);
+            $arrChildOrg = Org::getAllChildIds($request->unit, $arrOrg);
 
             $arrChildOrg[] = $request->unit;
 

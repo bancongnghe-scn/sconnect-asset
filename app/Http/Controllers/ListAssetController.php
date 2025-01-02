@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\AssetType;
-use App\Models\Organization;
+use App\Models\Org;
 use App\Services\ListAssetService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class AssetController extends Controller
+class ListAssetController extends Controller
 {
     public function __construct(private readonly ListAssetService $assetService) {}
 
@@ -49,7 +49,7 @@ class AssetController extends Controller
 
             return response_success([
                 'listUserAsset' => $listUserAsset,
-                'listUnit' => Organization::with('deptType')->where('parent_id', 1)->get(),
+                'listUnit' => Org::with('deptType')->where('parent_id', 1)->get(),
                 'listAssetType' => AssetType::all(),
             ]);
         } catch (\Throwable $exception) {
