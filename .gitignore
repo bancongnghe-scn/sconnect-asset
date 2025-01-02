@@ -19,3 +19,7 @@ yarn-error.log
 /.idea
 /.vscode
 /.php-cs-fixer.cache
+/public/vendor/telescope
+/database/migrations/2018_08_08_100000_create_telescope_entries_table.php
+/config/telescope.php
+/app/Providers/TelescopeServiceProvider.php

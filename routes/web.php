@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\ListAssetController;
 use App\Http\Controllers\ReportController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -125,5 +127,7 @@ Route::prefix('report')->group(function () {
 });
 
 Route::prefix('asset')->group(function () {
+    Route::get('/list-asset', [ListAssetController::class, 'listAsset'])->name('assets.listAsset');
+    Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
     Route::view('info/{id}', 'assets.assets.info2');
 });
