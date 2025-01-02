@@ -38,7 +38,7 @@ class ListAssetService
             $query->whereNotIn('id', $arrAssetIdOfUser);
         }
 
-        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->paginate(10);
+        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('created_at', 'desc')->paginate($request->limit);
     }
 
     public function getListUserAsset($request): LengthAwarePaginator
