@@ -18,15 +18,16 @@ class AssetRepairResource extends JsonResource
                 'asset_reason'          => $data?->asset?->assetHistory?->first()?->description,
                 'status_repair'         => AssetRepair::STATUS_NAME[$data->status],
                 'date_repair'           => $data->date_repair,
+                'date'                  => $data?->asset?->assetHistory?->first()?->date,
             ];
         });
-        $result = $this->resource->toArray();
-        if (isset($result['total'])) {
-            $result['data'] = $data->toArray();
 
-            return $result;
-        }
-
-        return $data;
+        return [
+            'data'         => $data->toArray(),
+            'current_page' => $this->resource->currentPage(),
+            'last_page'    => $this->resource->lastPage(),
+            'per_page'     => $this->resource->perPage(),
+            'total'        => $this->resource->total(),
+        ];
     }
 }

@@ -90,7 +90,7 @@ class User extends Authenticatable
 
             $deptId = Org::getLastParentId($this->dept_id, $departmentsCollection, 1);
 
-            if ($deptId === null) {
+            if (null === $deptId) {
                 return null;
             }
 
