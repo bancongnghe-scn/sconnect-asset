@@ -9,7 +9,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class TemplateExport implements WithTitle, WithDrawings
+class BaseExport implements WithTitle, WithDrawings
 {
     protected $title;
     protected $heightRowInfo;
@@ -82,7 +82,7 @@ class TemplateExport implements WithTitle, WithDrawings
     {
         // set chiều rộng cho cột
         foreach (['B', 'H', 'J'] as $item) {
-            $sheet->getColumnDimension($item)->setWidth(20);
+            $sheet->getColumnDimension($item)->setWidth(30);
         }
 
         //Định dạng font chữ

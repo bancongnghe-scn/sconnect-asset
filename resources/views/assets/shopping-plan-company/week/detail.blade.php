@@ -7,6 +7,11 @@
         {{-- danh sách button --}}
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/week/list`">Quay lại</button>
+            <template x-if="data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                @can('shopping_plan_company_week.complete')
+                    <button class="btn btn-sc" @click="completeShoppingPlan()">Quay lại</button>
+                @endcan
+            </template>
         </div>
 
         {{-- content --}}
