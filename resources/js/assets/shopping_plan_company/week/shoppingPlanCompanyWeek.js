@@ -6,6 +6,7 @@ document.addEventListener('alpine:init', () => {
             this.list({page:1, limit:10})
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
             this.getListPlanCompanyQuarter()
+            this.getListSupplier()
             this.watchFilters()
         },
 
@@ -49,12 +50,17 @@ document.addEventListener('alpine:init', () => {
         listPlanCompanyQuarter: [],
         register: [],
         shoppingAssetWithAction: [],
+        listSupplier: [],
         id: null,
         action: null,
         configButtons: [],
         configButtonsApproval: [],
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        activeLink: {
+            new: true,
+            rotation: false
+        },
 
         //methods
         async list(filters){
@@ -210,18 +216,45 @@ document.addEventListener('alpine:init', () => {
             try {
                 this.id = id
                 this.action = action
+                this.resetData()
                 await this.getOrganizationRegisterWeek()
                 this.getInfoShoppingPlanCompanyWeek()
-                this.setConfigButtons()
-                this.setConfigButtonsApproval()
                 if (action === 'view') {
                     $('#modalDetail').modal('show')
+                } else {
+                    this.setConfigButtons()
+                    this.setConfigButtonsApproval()
                 }
             } catch (e) {
                 toast.error(e)
             } finally {
                 this.loading = false
             }
+        },
+
+        async getListSupplier() {
+            this.loading = true
+            try {
+                const response = await window.apiGetSupplier({})
+                if (!response.success) {
+                    toast.success(response.message)
+                    return
+                }
+
+                this.listSupplier = response.data.data.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        handleShowActive(active) {
+            for (const activeKey in this.activeLink) {
+                this.activeLink[activeKey] = false
+            }
+
+            this.activeLink[active] = true
         },
 
         syntheticShoppingAssetWithAction() {
@@ -451,6 +484,7 @@ document.addEventListener('alpine:init', () => {
             this.data = {
                 plan_year_id: null,
                 time: null,
+                status: null,
                 start_time: null,
                 end_time: null,
                 monitor_ids: [],

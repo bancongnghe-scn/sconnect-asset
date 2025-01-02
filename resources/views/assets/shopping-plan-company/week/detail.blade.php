@@ -21,7 +21,9 @@
                                 <div class="mb-3">
                                     <div class="d-flex tw-gap-x-4 mb-3">
                                         <div class="active-link tw-w-fit">Thông tin chung</div>
-                                        @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                        <div x-show="data.status !== null">
+                                            @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                        </div>
                                     </div>
 
                                     <div class="tw-grid tw-grid-cols-3 tw-gap-4 mt-3">
@@ -118,8 +120,4 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+

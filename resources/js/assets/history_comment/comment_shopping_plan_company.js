@@ -1,8 +1,12 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('comment_shopping_plan', () => ({
             init() {
-                this.listComment()
-                this.handleComment()
+                this.$watch('id', (newValue, oldValue) => {
+                    if (newValue !== null) {
+                        this.listComment()
+                        this.handleComment()
+                    }
+                });
             },
 
             //data
