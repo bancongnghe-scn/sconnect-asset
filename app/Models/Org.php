@@ -29,9 +29,15 @@ class Org extends Model
         $department = $arr->first(function ($item) use ($parent_id) {
             return $item['id'] === $parent_id;
         });
-        if ($department && $department['parent_id'] == $rootOrgId) {
+
+        if (!$department || !isset($department['parent_id'])) {
+            return null;
+        }
+
+        if ($department['parent_id'] == $rootOrgId) {
             return $department['id'];
         }
+
         return self::getLastParentId($department['parent_id'], $arr, $rootOrgId);
     }
 
