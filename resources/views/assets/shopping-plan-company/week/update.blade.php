@@ -80,8 +80,7 @@
                                 </template>
 
                                 <div>
-                                    <label class="tw-font-bold">Thời gian đăng ký<span
-                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',
                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
@@ -104,10 +103,10 @@
 
                         {{--  chi tiet--}}
                         <template x-if="[
-                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
-                    ].includes(+data.status)">
+                            STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                            STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                            STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                        ].includes(+data.status)">
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                                 <div class="tw-max-h-dvh overflow-scroll custom-scroll">
@@ -123,71 +122,32 @@
 
                         {{-- button phe duyet--}}
                         <div>
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR">
-                                @can('shopping_asset.hr_manager_approval')
-                                    <div class="d-flex tw-gap-x-2 justify-content-end">
-                                        <button class="btn bg-sc text-white"
-                                                @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_APPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Duyệt
-                                        </button>
-                                        <button class="btn bg-red"
-                                                @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Từ chối
-                                        </button>
-                                    </div>
-                                @endcan
-                            </template>
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                                @can('shopping_plan_company.accounting_approval')
-                                    <div class="d-flex tw-gap-x-2 justify-content-end">
-                                        <button class="btn bg-sc text-white"
-                                                @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Duyệt
-                                        </button>
-                                        <button class="btn bg-red"
-                                                @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Từ chối
-                                        </button>
-                                    </div>
-                                @endcan
-                            </template>
-                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                                @can('shopping_plan_company.general_approval')
-                                    <div class="d-flex tw-gap-x-2 justify-content-end">
-                                        <button class="btn bg-sc text-white"
-                                                @click="approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_APPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Duyệt
-                                        </button>
-                                        <button class="btn bg-red"
-                                                @click="showModalNoteDisapproval(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL)"
-                                                :disabled="window.checkDisableSelectRow"
-                                        >
-                                            Từ chối
-                                        </button>
-                                    </div>
-                                @endcan
+                            <template x-for="(config, key) in configButtonsApproval" :key="key">
+                                <template x-if="config.condition()">
+                                    <template x-if="!config.permission || permission.includes(config.permission)">
+                                        <div class="d-flex tw-gap-x-2 justify-content-end">
+                                            <template x-for="(button, index) in config.buttons" :key="key + index">
+                                                <button :class="button.class"
+                                                        x-text="button.text"
+                                                        @click="button.action()" :disabled="button.disabled()">
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </template>
                             </template>
                         </div>
 
                         {{-- tổng hợp--}}
                         <template x-if="[
-                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
-                    ].includes(+data.status)">
+                            STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                            STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                        ].includes(+data.status)">
                             <div class="mb-3">
                                 <div class="d-flex tw-gap-x-4 mb-3">
                                     <a class="tw-no-underline hover:tw-text-green-500"

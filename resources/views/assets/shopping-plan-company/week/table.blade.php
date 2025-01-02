@@ -20,13 +20,13 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template x-for="(data,index) in dataTable" :key="index">
+                        <template x-for="(value,index) in dataTable" :key="index">
                             <tr>
                                 @can('shopping_plan_company.crud')
-                                    <td class="text-center align-middle" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                    <td class="text-center align-middle" x-show="+value.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                     </td>
-                                    <td class="text-center align-middle" x-show="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    <td class="text-center align-middle" x-show="+value.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         <input type="checkbox" disabled>
                                     </td>
                                 @endcan
@@ -34,18 +34,20 @@
                                 <template x-for="(columnName, key) in columns">
                                     <td>
                                         <template x-if="key !== 'register_time' && key !== 'status' && key !== 'user'">
-                                            <span x-text="data[key]"></span>
+                                            <span x-text="value[key]"></span>
                                         </template>
                                         <template x-if="key === 'register_time'">
-                                            <span :class="!data.status_register ? 'tw-text-red-500': ''" x-text="data.start_time + ' - ' + data.end_time"></span>
+                                            <span :class="!value.status_register ? 'tw-text-red-500': ''" x-text="value.start_time + ' - ' + value.end_time"></span>
                                         </template>
                                         <template x-if="key === 'status'">
                                             <div class="d-flex justify-content-center">
-                                                @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                                @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'value.status'])
                                             </div>
                                         </template>
                                         <template x-if="key === 'user'">
-                                            @include('common.user_info')
+                                            <span x-data="{data: value}">
+                                                @include('common.user_info')
+                                            </span>
                                         </template>
 
                                     </td>
@@ -53,16 +55,15 @@
                                 <td class="text-center align-middle">
                                     {{-- xem chi tiet --}}
                                     <button class="border-0 bg-body"
-                                            @click="window.location.href = `/shopping-plan-company/week/view/${data.id}`">
+                                            @click="handleShowModal(value.id, 'view')">
                                         <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                     </button>
 
                                     {{-- xoa --}}
-
-                                    <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         @can('shopping_plan_company.crud')
                                             <button class="border-0 bg-body"
-                                                    @click="$dispatch('remove', { id: data.id })">
+                                                    @click="$dispatch('remove', { id: value.id })">
                                                 <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                             </button>
                                         @endcan
@@ -70,24 +71,24 @@
 
                                     @can('shopping_plan_company.handle_shopping')
                                         <button class="border-0 bg-body"
-                                                @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
+                                                @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
                                             <i class="fa-regular fa-pen-to-square color-sc"></i>
                                         </button>
                                     @endcan
 
                                     {{-- ke toan va giam doc duyet --}}
-                                    <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                                         @can('shopping_plan_company.accounting_approval')
                                             <button class="border-0 bg-body"
-                                                    @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
+                                                    @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan
                                     </template>
-                                    <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
+                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
                                         @can('shopping_plan_company.general_approval')
                                             <button class="border-0 bg-body"
-                                                    @click="window.location.href = `/shopping-plan-company/week/update/${data.id}`">
+                                                    @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan

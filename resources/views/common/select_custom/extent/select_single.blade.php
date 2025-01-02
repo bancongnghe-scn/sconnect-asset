@@ -8,7 +8,6 @@
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
                     this.options = newValue
-                    this.selected = null
                 })
             },
             open: false,
