@@ -122,7 +122,7 @@
 <div x-data="listAsset">
     <div class="row" >
         <div class="col-xxl-12 col-sm-12">
-            <div style="background: #fff; padding: 30px; border-radius: 15px;" x-data="fetchDataComponent()" x-init="fetchData()">
+            <div style="background: #fff; padding: 30px; border-radius: 15px;">
                 <div class="d-flex align-items-end mt-3 mb-3">
                     <div class="col-2 d-flex position-relative">
                         <input type="text" class="form-control" id="nameUser" placeholder="Tên/mã nhân viên">
@@ -204,10 +204,10 @@
                             </td>
                             <td class="text-left" x-text="user.job_position"></td>
                             <td class="text-left" x-text="user.org_last_parent ? user.org_last_parent.org_name : user.organization.dept_type.cfg_key + ' ' + user.organization.name"></td>
-                            <td class="text-center">
-
+                            <td class="text-center" x-text="user.list_asset_use.length">
+                                
                             </td>
-                            <td class="text-center"></td>
+                            <td class="text-center">0</td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center" style="gap: 8px;">
                                     <span style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetail" @click="fillData(user); tab = 'allocation-tab';">
@@ -226,6 +226,7 @@
                     </template>
                     </tbody>
               </table>
+              @include('common.pagination')
             @include('assets.asset.common.modal-asset')
                     
             </div>
@@ -263,8 +264,133 @@
         return value.toLocaleString('vi-VN') + 'đ';
     }
 
-    function fetchDataComponent() {
-        return {
+    // function fetchDataComponent() {
+    //     return {
+    //         listUserAsset: [],
+    //         listUnit: [],
+    //         listAssetType: [],
+    //         tab: 'general-tab',
+    //         userObj: {},
+    //         listAsset: [],
+    //         listAssetAllocate: [],
+    //         listAssetOfUser: [],
+
+    //         async fetchData(unit = '', nameUser = '') {
+    //             try {
+    //                 let urlSearch = '/api/asset/get-data-list-user-asset?';
+
+    //                 if (unit) {
+    //                     urlSearch += 'unit=' + unit + '&';
+    //                 }
+
+    //                 if (nameUser) {
+    //                     urlSearch += 'nameUser=' + nameUser + '&';
+    //                 }
+
+    //                 const response = await axios.get(urlSearch);
+    //                 const data = response.data;
+    //                 this.listUserAsset = data.data.listUserAsset.data;
+    //                 this.listUnit = data.data.listUnit;
+    //                 this.listAssetType = data.data.listAssetType;
+
+    //                 console.log(this.listUserAsset);
+                                      
+    //             } catch (error) {
+    //                 console.error('Lỗi khi gọi API:', error);
+    //             }
+    //         },
+
+    //         async getDataAsset(type = '', nameCodeAsset = '') {
+    //             try {
+    //                 let urlSearch = '/api/asset/get-data-list-asset?status=2&';
+
+    //                 if (type) {
+    //                     urlSearch += 'type=' + type + '&';
+    //                 }
+
+    //                 if (nameCodeAsset) {
+    //                     urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
+    //                 }
+
+    //                 urlSearch += 'userId=' + this.userObj.id + '&';
+
+    //                 const response = await axios.get(urlSearch);
+    //                 const data = response.data;
+    //                 this.listAsset = data.data.listAsset.data;
+    //             } catch (error) {
+    //                 console.error('Lỗi khi gọi API:', error);
+    //             }
+    //         },
+    //         async getDataAssetOfUser() {
+    //             try {
+    //                 let urlSearch = '/api/asset/get-list-asset-of-user?userId=' + this.userObj.id;
+
+    //                 const response = await axios.get(urlSearch);
+    //                 const data = response.data;
+    //                 this.listAssetOfUser = data.data.listAssetOfUser;                   
+    //             } catch (error) {
+    //                 console.error('Lỗi khi gọi API:', error);
+    //             }
+    //         },
+    //         fillData(user) {
+    //             this.userObj = user;
+    //             this.getDataAssetOfUser();
+    //         },
+    //         toggleSelection(asset, isChecked) {
+    //             if (isChecked) {
+    //                 if (!this.listAssetAllocate.some(selected => selected.id === asset.id)) {
+    //                     this.listAssetAllocate.push(asset);
+    //                 }
+    //             } else {
+    //                 this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== asset.id);
+    //             }
+    //         },
+    //         deleteSelection(assetId){
+    //             this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetId);
+    //         },
+    //         async allocateAsset(){
+    //             try {
+    //                 let urlSearch = '/api/asset/allocate-asset';
+
+    //                 const response = await axios.post(urlSearch, {
+    //                     listAssetAllocate: this.listAssetAllocate,
+    //                     user: this.userObj,
+    //                 }, {
+    //                     headers: {
+    //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    //                     }
+    //                 });
+
+    //                 const data = response.data;
+    //                 this.listAssetOfUser = data.data.listAssetOfUser;
+    //                 this.listAssetAllocate = [];
+
+    //                 openModal('#successAllocateModal');
+    //             } catch (error) {
+    //                 console.error('Lỗi khi gọi API:', error);
+    //             }
+    //         }
+    //     };
+    // }
+
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('listAsset', () => ({
+            init() {
+                window.initSelect2Modal('searchAssetModal');
+
+                this.fetchData();
+
+                window.addEventListener('change-page', (event) => {
+                    this.pageParam = event.detail.page;
+                    this.fetchData();
+                });
+
+                window.addEventListener('change-limit', (event) => {
+                    this.pageParam = 1;
+                    this.limitParam = event.target.value;
+                    this.fetchData();
+                });
+            },
             listUserAsset: [],
             listUnit: [],
             listAssetType: [],
@@ -274,9 +400,22 @@
             listAssetAllocate: [],
             listAssetOfUser: [],
 
+            totalPages: null,
+            currentPage: 1,
+            pageParam: 1,
+            limitParam: 10,
+
             async fetchData(unit = '', nameUser = '') {
                 try {
                     let urlSearch = '/api/asset/get-data-list-user-asset?';
+
+                    if (this.limitParam) {
+                        urlSearch += 'limit=' + this.limitParam + '&';
+                    }
+
+                    if (this.pageParam) {
+                        urlSearch += 'page=' + this.pageParam + '&';
+                    }
 
                     if (unit) {
                         urlSearch += 'unit=' + unit + '&';
@@ -291,6 +430,9 @@
                     this.listUserAsset = data.data.listUserAsset.data;
                     this.listUnit = data.data.listUnit;
                     this.listAssetType = data.data.listAssetType;
+
+                    this.totalPages = data.data.listUserAsset.last_page;
+                    this.currentPage = data.data.listUserAsset.current_page;
 
                     console.log(this.listUserAsset);
                                       
@@ -369,14 +511,6 @@
                     console.error('Lỗi khi gọi API:', error);
                 }
             }
-        };
-    }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('listAsset', () => ({
-            init() {
-                window.initSelect2Modal('searchAssetModal')
-            },
         }));
     });
 </script>

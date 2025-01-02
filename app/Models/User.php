@@ -65,6 +65,11 @@ class User extends Authenticatable
         return $this->hasOne(OrgJobTitle::class, 'id', 'job_title_id');
     }
 
+    public function listAssetUse()
+    {
+        return $this->hasMany(MoveAssetUser::class, 'user_id', 'id');
+    }
+
     //code cũ
     public function getJobPositionAttribute()
     {

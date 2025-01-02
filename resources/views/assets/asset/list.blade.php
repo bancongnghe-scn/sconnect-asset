@@ -154,8 +154,8 @@
                     <tr>
                         <th class="text-center">STT</th>
                         <th class="text-center">Mã tài sản</th>
-                        <th scope="col">Tên tài sản</th>
-                        <th class="text-center">Loại tài sản</th>
+                        <th class="text-left">Tên tài sản</th>
+                        <th class="text-left">Loại tài sản</th>
                         <th class="text-left">Đơn vị</th>
                         <th class="text-center">Nhân viên đang sử dụng</th>
                         <th class="text-center">Người đại diện</th>
@@ -170,12 +170,12 @@
                         <tr>
                             <td class="text-center" x-text="index"></td>
                             <td class="text-center" x-text="asset.code"></td>
-                            <td class="text-center" x-text="asset.name"></td>
-                            <td class="text-center" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
+                            <td class="text-left" x-text="asset.name"></td>
+                            <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
                             <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '')"></td>
                             <td class="text-center">
                                 <div class="d-flex">
-                                    <img x-show="asset.user" x-bind:src="asset.user && asset.user.avatar 
+                                    <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
                                             ? (asset.user.avatar.includes('/uploads/') 
                                                 ? 'https://office.sconnect.com.vn' + asset.user.avatar 
                                                 : asset.user.avatar) 
@@ -190,7 +190,7 @@
                             </td>
                             <td class="text-center">
                                 <div class="d-flex">
-                                    <img x-show="!asset.user" x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
+                                    <img x-show="!asset.user_id" x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
                                     ? (asset.organization.manager.avatar.includes('/uploads/') 
                                         ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar 
                                         : asset.organization.manager.avatar) 
