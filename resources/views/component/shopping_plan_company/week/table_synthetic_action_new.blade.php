@@ -88,25 +88,15 @@
                     >
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price"
+                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price"
                            :disabled="isDisabled">
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money"
+                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"
                            :disabled="isDisabled">
                 </td>
                 <td x-text="total ?? '-'" class="text-center"></td>
                 <td>
-{{--                        <span x-data="{--}}
-{{--                             model: assetRegister.supplier_id,--}}
-{{--                             init() {this.$watch('assetRegister.supplier_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}--}}
-{{--                        }" @select-change="assetRegister.supplier_id = $event.detail">--}}
-{{--                                    @include('common.select2.extent.select2', [--}}
-{{--                                          'placeholder' => 'Chọn NCC',--}}
-{{--                                          'values' => 'listSupplier',--}}
-{{--                                          'disabled' => "isDisabled"--}}
-{{--                                    ])--}}
-{{--                        </span>--}}
                     @include('common.select_custom.extent.select_single', [
                         'selected' => 'assetRegister.supplier_id',
                         'options' => 'listSupplier',

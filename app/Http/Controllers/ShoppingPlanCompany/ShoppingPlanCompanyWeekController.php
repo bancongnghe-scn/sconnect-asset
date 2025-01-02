@@ -45,6 +45,7 @@ class ShoppingPlanCompanyWeekController extends Controller
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();
