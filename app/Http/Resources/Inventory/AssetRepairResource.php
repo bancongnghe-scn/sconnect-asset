@@ -22,12 +22,13 @@ class AssetRepairResource extends JsonResource
             ];
         });
 
-        return [
-            'data'         => $data->toArray(),
-            'current_page' => $this->resource->currentPage(),
-            'last_page'    => $this->resource->lastPage(),
-            'per_page'     => $this->resource->perPage(),
-            'total'        => $this->resource->total(),
-        ];
+        $result = $this->resource->toArray();
+        if (isset($result['total'])) {
+            $result['data'] = $data->toArray();
+
+            return $result;
+        }
+
+        return $data;
     }
 }
