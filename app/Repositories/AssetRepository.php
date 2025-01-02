@@ -28,4 +28,15 @@ class AssetRepository extends BaseRepository
             ->select($columns)
             ->get();
     }
+
+    public function getListing($filters, $columns = ['*'], $with = [])
+    {
+        $query = $this->_model->select($columns)->with($with)->newQuery();
+
+        if (!empty($filters['import_warehouse_id'])) {
+            $query->where('import_warehouse_id', $filters['import_warehouse_id']);
+        }
+
+        return $query->get();
+    }
 }

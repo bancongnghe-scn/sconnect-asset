@@ -1,11 +1,11 @@
 <div class="modal fade" x-data="tableSelectAssetToPlan" id="idModalSelectAsset" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="Close">
     <div class="modal-dialog modal-xl">
-        <div class="modal-content tw-w-2/3 tw-max-w-2xl tw-overflow-auto tw-m-auto tw-max-h-96">
+        <div class="modal-content tw-w-2/3 tw-max-w-2xl tw-overflow-auto tw-m-auto tw-max-h-96 tw-mt-28">
             <div class="modal-header">
                 <h4 class="modal-title" x-text="'Thêm tài sản'"></h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body tw-overflow-y-auto tw-max-h-60">
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Danh sách tài sản đề nghị thanh lý</div>
                     <table id="" class="table table-bordered table-hover dataTable dtr-inline"

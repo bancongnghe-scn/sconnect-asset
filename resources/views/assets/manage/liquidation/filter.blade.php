@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="col-2">
+    <div class="col-7 text-right">
         <button type="button" style="border:1px solid #ddd;" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.create ?? true" @click="$dispatch('create')" :disabled="window.checkDisableSelectRow">
             <i class="fa-solid fa-plus" style="">&#xF117;</i>
             <span>

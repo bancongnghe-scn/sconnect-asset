@@ -5,14 +5,18 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingPlanCompanyResource;
 use App\Http\Resources\SyntheticOrganizationRegisterPlanResource;
 use App\Models\Monitor;
+use App\Models\Order;
+use App\Models\ShoppingAsset;
 use App\Models\ShoppingPlanCompany;
 use App\Models\ShoppingPlanLog;
 use App\Models\ShoppingPlanOrganization;
 use App\Repositories\MonitorRepository;
+use App\Repositories\OrderRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
+use App\Repositories\SupplierRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
@@ -28,6 +32,8 @@ class ShoppingPlanCompanyService
         protected ShoppingPlanOrganizationRepository $shoppingPlanOrganizationRepository,
         protected ShoppingPlanLogRepository $shoppingPlanLogRepository,
         protected ShoppingAssetRepository $shoppingAssetRepository,
+        protected OrderRepository $orderRepository,
+        protected SupplierRepository $supplierRepository,
     ) {
 
     }
@@ -976,6 +982,88 @@ class ShoppingPlanCompanyService
             $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
                 $actionLog,
                 $data['shopping_plan_company_id']
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function getSupplierOfShoppingPlanWeek($id)
+    {
+        $supplierShoppingAsset = $this->shoppingAssetRepository->getListing([
+            'shopping_plan_company_id' => $id,
+            'status'                   => [ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL, ShoppingAsset::STATUS_GENERAL_APPROVAL],
+        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+
+        if (empty($supplierShoppingAsset)) {
+            return [];
+        }
+        $supplierOrder = $this->orderRepository->getListing([
+            'shopping_plan_company_id' => $id,
+            'status'                   => [Order::STATUS_NEW, Order::STATUS_TRANSIT, Order::STATUS_DELIVERED, Order::STATUS_WAREHOUSED],
+        ], ['supplier_id'])->pluck('supplier_id')->toArray();
+        $supplierIds = array_diff($supplierShoppingAsset, $supplierOrder);
+        if (empty($supplierIds)) {
+            return [];
+        }
+
+        $suppliers = $this->supplierRepository->getListing(['ids' => array_unique($supplierIds)]);
+
+        return $suppliers->toArray();
+    }
+
+    public function completeShoppingPlanWeek($id)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($id);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL != $shoppingPlanCompany->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_COMPLETE;
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_COMPLETE_SHOPPING_PLAN_WEEK,
+                $shoppingPlanCompany->id
             );
             if (!$insertLog) {
                 DB::rollBack();

@@ -4,27 +4,30 @@ namespace App\Http\Resources;
 
 use App\Models\ShoppingPlanCompany;
 use App\Repositories\ShoppingPlanCompanyRepository;
-use App\Services\ScApiService;
+use App\Support\Constants\SOfficeConstant;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Arr;
+use Modules\Service\Repositories\OrganizationRepository;
 
 class SyntheticOrganizationRegisterPlanResource extends JsonResource
 {
     protected $shoppingPlanCompanyRepository;
+    protected $organizationRepository;
 
     public function __construct(
         $resource,
     ) {
         parent::__construct($resource);
         $this->shoppingPlanCompanyRepository = new ShoppingPlanCompanyRepository();
+        $this->organizationRepository        = new OrganizationRepository();
     }
 
     public function toArray($request)
     {
         if (ShoppingPlanCompany::STATUS_NEW === +$this->resource->status) {
-            $organizations         = ScApiService::getAllOrganizationParent();
-
-            return Arr::pluck($organizations, 'name');
+            return $this->organizationRepository->getListing([
+                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
+                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
+            ])->pluck('name')->toArray();
         }
 
         $shoppingPlanCompany = $this->shoppingPlanCompanyRepository->getFirst([
@@ -35,8 +38,7 @@ class SyntheticOrganizationRegisterPlanResource extends JsonResource
             ],
         ]);
         $organizationIds       = $shoppingPlanCompany->shoppingPlanOrganizations->pluck('organization_id')->toArray();
-        $organizations         = ScApiService::getOrganizationByIds($organizationIds);
-        $organizations         = $organizations->keyBy('id')->toArray();
+        $organizations         = $this->organizationRepository->getListing(['id' => $organizationIds])->keyBy('id')->toArray();
 
         if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
             $data =  SyntheticOrganizationRegisterPlanYearQuarterResource::make($shoppingPlanCompany)->additional(['organizations' => $organizations]);

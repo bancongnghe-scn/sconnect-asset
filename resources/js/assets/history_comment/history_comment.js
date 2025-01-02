@@ -1,19 +1,19 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment', () => ({
         init() {
-           this.getShoppingPlanLogByRecordId()
+           this.getLogByRecordId()
         },
         //data
         activeLink: {
-            history: true,
-            comment: false
+            history: false,
+            comment: true
         },
         message_edit: null,
         id_comment_edit: null,
         logs: [],
 
         //methods
-        async getShoppingPlanLogByRecordId() {
+        async getLogByRecordId() {
             const response = await window.getShoppingPlanLogByRecordId(this.id)
             if (response.success) {
                 this.logs = response.data.data

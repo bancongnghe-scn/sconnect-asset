@@ -1,26 +1,33 @@
 <div x-data="shoppingPlanCompanyQuarter">
-    <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-        @can('shopping_plan_company.crud')
-            <button type="button" class="btn btn-sc" @click="$('#idModalInsert').modal('show')">
-                Thêm mới
-            </button>
-            <button type="button" class="btn tw-bg-red-600 tw-text-white" @click="confirmRemoveMultiple"
-                    :disabled="window.checkDisableSelectRow">
-                Xóa chọn
-            </button>
-        @endcan
-    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="tw-mt-8">
+                        @include('component.shopping_plan_company.quarter.filter')
+                    </div>
 
-    <div>
-        @include('component.shopping_plan_company.quarter.filter')
-    </div>
+                    @can('shopping_plan_company.crud')
+                        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+                            <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#idModalInsert').modal('show')">
+                                <span>+ Thêm</span>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+                                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
+                            </button>
+                        </div>
+                    @endcan
 
-    <div
-        @remove="confirmRemove($event.detail.id)"
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
-    >
-        @include('assets.shopping-plan-company.quarter.table')
+                    <div
+                        @remove="confirmRemove($event.detail.id)"
+                        @change-page.window="changePage($event.detail.page)"
+                        @change-limit.window="changeLimit"
+                    >
+                        @include('assets.shopping-plan-company.quarter.table')
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     {{--  modal--}}

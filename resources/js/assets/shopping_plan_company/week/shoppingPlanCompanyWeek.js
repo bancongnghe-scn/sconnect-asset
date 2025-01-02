@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
             this.getListPlanCompanyQuarter()
             window.initSelect2Modal('idModalInsert')
+            this.watchFilters()
         },
 
         //dataTable
@@ -30,7 +31,7 @@ document.addEventListener('alpine:init', () => {
         filters: {
             plan_quarter_id: null,
             time: null,
-            status: [],
+            status: null,
             limit: 10,
             page: 1
         },
@@ -151,6 +152,17 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['plan_quarter_id', 'status', 'time'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
         confirmRemoveMultiple() {
             const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             if (ids.length === 0) {
@@ -186,7 +198,7 @@ document.addEventListener('alpine:init', () => {
             this.filters = {
                 plan_quarter_id: null,
                 time: null,
-                status: [],
+                status: null,
                 limit: 10,
                 page: 1
             }

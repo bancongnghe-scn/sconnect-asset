@@ -26,6 +26,8 @@ return [
         'plan_year_id'      => 'kế hoạch năm',
         'plan_quarter_id'   => 'kế hoạch quý',
     ],
-    'job_id'              => 'chức danh',
-    'quantity_registered' => 'số lượng đăng ký',
+    'job_id'                   => 'chức danh',
+    'quantity_registered'      => 'số lượng đăng ký',
+    'purchasing_manager_id'    => 'người phụ trách mua sắm',
+    'shopping_plan_company_id' => 'kế hoạch mua sắm',
 ];

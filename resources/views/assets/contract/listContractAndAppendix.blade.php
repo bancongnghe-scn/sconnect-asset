@@ -4,29 +4,34 @@
 
 @section('content')
     <div x-data="contract_appendix">
-        <div class="mb-4">
-            <div class="d-flex tw-gap-x-4">
-                <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                    :class="activeLink.contract ? 'active-link' : 'inactive-link'"
-                    @click="handleShowActive('contract')"
-                >
-                    Hợp đồng
-                </a>
-                <a href="#" class="tw-no-underline hover:tw-text-green-500"
-                    :class="activeLink.appendix ? 'active-link' : 'inactive-link'"
-                    @click="handleShowActive('appendix')"
-                >
-                    Phụ lục hợp đồng
-                </a>
-            </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex tw-gap-x-4">
+                            <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                               :class="activeLink.contract ? 'active-link' : 'inactive-link'"
+                               @click="handleShowActive('contract')"
+                            >
+                                Hợp đồng
+                            </a>
+                            <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                               :class="activeLink.appendix ? 'active-link' : 'inactive-link'"
+                               @click="handleShowActive('appendix')"
+                            >
+                                Phụ lục hợp đồng
+                            </a>
+                        </div>
+                        <div>
+                            <div x-show="activeLink.contract">
+                                @include('assets.contract.list')
+                            </div>
 
-            <div>
-                <div x-show="activeLink.contract">
-                    @include('assets.contract.list')
-                </div>
-
-                <div x-show="activeLink.appendix">
-                    @include('assets.contract_appendix.list')
+                            <div x-show="activeLink.appendix">
+                                @include('assets.contract_appendix.list')
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,7 +71,7 @@
                     this.activeLink[active] = true
                 },
 
-                async getListUser(filters){
+                async getListUser(filters) {
                     this.loading = true
                     const response = await window.apiGetUser(filters)
                     if (response.success) {

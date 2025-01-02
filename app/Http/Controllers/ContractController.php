@@ -35,10 +35,8 @@ class ContractController extends Controller
     {
         $request->validate([
             'name_code'    => 'nullable|string|max:255',
-            'type'         => 'nullable|array',
-            'type.*'       => 'integer',
-            'status'       => 'nullable|array',
-            'status.*'     => 'integer',
+            'type'         => 'nullable|integer',
+            'status'       => 'nullable|integer',
             'signing_date' => 'nullable|date|date_format:Y-m-d',
             'from'         => 'nullable|date|date_format:Y-m-d',
             'page'         => 'nullable|integer',

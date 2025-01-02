@@ -2,15 +2,23 @@
 
 namespace App\Http\Resources;
 
-use App\Services\ScApiService;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Service\Repositories\OrganizationRepository;
 
 class ShoppingPlanOrganizationResource extends JsonResource
 {
+    protected $organizationRepository;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+        $this->organizationRepository = new OrganizationRepository();
+    }
+
     public function toArray($request)
     {
         $organizationId = $this->resource->organization_id;
-        $organization   = ScApiService::getOrganizationByIds($organizationId)->first();
+        $organization   = $this->organizationRepository->find($organizationId);
 
         return [
             'id'                => $this->resource->id,
@@ -18,8 +26,8 @@ class ShoppingPlanOrganizationResource extends JsonResource
             'status'            => $this->resource->status,
             'start_time'        => $this->resource->start_time,
             'end_time'          => $this->resource->end_time,
-            'organization_name' => $organization['name'] ?? null,
-            'organization_id'   => $organization['id'] ?? null,
+            'organization_name' => $organization?->name,
+            'organization_id'   => $organization?->id,
             'status_company'    => $this->resource->status_company,
         ];
     }

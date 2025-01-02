@@ -9,35 +9,29 @@
                 <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                     <div>
                         <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span>
-                            @include('common.select2.modal.extent.select2_single_modal', [
-                               'placeholder' => 'Chọn kế hoạch quý',
-                               'model' => 'data.plan_quarter_id',
-                               'values' => 'listPlanCompanyQuarter',
-                            ])
-                        </span>
+                        @include('common.select_custom.extent.select_single', [
+                            'selected' => 'data.plan_quarter_id',
+                            'options' => 'listPlanCompanyQuarter',
+                            'placeholder' => 'Chọn kế hoạch quý',
+                        ])
                     </div>
 
                     <div>
                         <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span>
-                            @include('common.select2.modal.simple.select2_single_modal', [
-                               'placeholder' => 'Chọn tháng',
-                               'model' => 'data.month',
-                               'values' => 'LIST_MONTHS',
-                            ])
-                        </span>
+                        @include('common.select_custom.simple.select_single', [
+                                'selected' => 'data.month',
+                                'options' => 'LIST_MONTHS',
+                                'placeholder' => 'Chọn tháng',
+                        ])
                     </div>
 
                     <div>
                         <label class="tw-font-bold">Tuần<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span>
-                            @include('common.select2.modal.simple.select2_single_modal', [
-                               'placeholder' => 'Chọn tuần',
-                               'model' => 'data.time',
-                               'values' => 'LIST_WEEK',
-                            ])
-                        </span>
+                        @include('common.select_custom.simple.select_single', [
+                                'selected' => 'data.time',
+                                'options' => 'LIST_WEEK',
+                                'placeholder' => 'Chọn tuần',
+                        ])
                     </div>
 
                     <div>
@@ -51,16 +45,14 @@
                         </span>
                     </div>
 
-                    <template x-if="listUser.length > 0">
-                        <div>
-                            <label class="form-label">Người quan sát</label>
-                            @include('common.select2.modal.extent.select2_multiple_modal', [
-                                'placeholder' => 'Chọn người quan sát',
-                                'model' => 'data.monitor_ids',
-                                'values' => 'listUser'
-                            ])
-                        </div>
-                    </template>
+                    <div>
+                        <label class="form-label">Người quan sát</label>
+                        @include('common.select_custom.extent.select_multiple', [
+                            'placeholder' => 'Chọn người quan sát',
+                            'selected' => 'data.monitor_ids',
+                            'options' => 'listUser'
+                        ])
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

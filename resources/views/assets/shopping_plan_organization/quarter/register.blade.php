@@ -143,7 +143,7 @@
                                                             </td>
                                                             <td class="text-center align-middle">
                                                                 <button class="border-0 bg-body" @click="deleteRow(index, key)">
-                                                                    <i class="fa-solid fa-trash" style="color: #cd1326;"></i>
+                                                                    <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                                                 </button>
                                                             </td>
                                                         </tr>
@@ -151,7 +151,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            <button type="button" class="btn btn-sc tw-w-fit mt-3" @click="addRow(index)">Thêm hàng</button>
+                                            <button type="button" class="btn btn-sm btn-sc mt-3 tw-w-fit" @click="addRow(index)">Thêm hàng</button>
                                         </div>
                                     </div>
                                 </template>

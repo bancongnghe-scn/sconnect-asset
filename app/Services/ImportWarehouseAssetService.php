@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-class OrganizationService
+class ImportWarehouseAssetService
 {
     public function __construct()
     {

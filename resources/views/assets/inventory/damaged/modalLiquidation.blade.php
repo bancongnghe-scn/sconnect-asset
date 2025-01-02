@@ -54,9 +54,8 @@
                                             <input type="text" 
                                                 placeholder="Nhập giá trị thanh lý" 
                                                 class="form-control"
-                                                x-model.number="data.price_liquidation"
-                                                @input="data.price_liquidation = $event.target.value.replace(/[^0-9.]/g, '')"
-                                            >
+                                                :value="formattedPrice"
+                                                @input="formatPrice">
                                         </template>
                                         <template x-if="key == 'find_reason'">
                                             <textarea x-model="data[key]" placeholder="Nhập mô tả" class="border-0 rounded-1"></textarea>

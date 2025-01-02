@@ -21,8 +21,7 @@ class ShoppingPlanOrganizationWeekController extends Controller
         $request->validate([
             'plan_quarter_id' => 'nullable|integer',
             'time'            => 'nullable|integer',
-            'status'          => 'nullable|array',
-            'status.*'        => 'integer',
+            'status'          => 'nullable|integer',
         ]);
 
         Auth::user()->canPer('shopping_plan_organization.view');
@@ -52,7 +51,6 @@ class ShoppingPlanOrganizationWeekController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();

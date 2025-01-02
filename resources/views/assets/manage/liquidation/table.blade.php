@@ -9,7 +9,6 @@
                         <th class="text-center">
                             <input type="checkbox" id="selectedAllLiquidation" @click="selectedAllLiquidation" @change="countLiquidation()">
                         </th>
-                        <th rowspan="1" colspan="1">STT</th>
                         <template x-for="(columnName, key) in columns">
                             <th rowspan="1" colspan="1" x-text="columnName"></th>
                         </template>
@@ -21,10 +20,9 @@
                             <td class="text-center align-middle">
                                 <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]" @change="countLiquidation()">
                             </td>
-                            <td x-text="from + index"></td>
                             <template x-for="(columnName, key) in columns">
                                 <td>
-                                    <template x-if="key !== 'validity' && key !== 'status'">
+                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'price_liquidation' && key !== 'date'">
                                         <span x-text="data[key]"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
@@ -37,6 +35,12 @@
                                     </template>
                                     <template x-if="key === 'status'">
                                         @include('common.table-status-asset')
+                                    </template>
+                                    <template x-if="key === 'price_liquidation'">
+                                        <span x-text="formatPrice(data[key])"></span>
+                                    </template>
+                                    <template x-if="key === 'date'">
+                                        <span x-text="formatDate(data.date)"></span>
                                     </template>
                                 </td>
                             </template>

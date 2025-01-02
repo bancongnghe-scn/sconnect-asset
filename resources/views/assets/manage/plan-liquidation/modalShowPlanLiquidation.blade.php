@@ -58,7 +58,7 @@
                                     <div class="col-2"></div>
                                     <div class="col-6" x-show="dataTbodyListAssetLiqui.some(data => listStatusAssetOfPlan[data.status] === 'Chưa duyệt')">
                                         <div class="row">
-                                            <div class="col-6 text-end">
+                                            <div class="col-9 text-end">
                                                 <button type="button" style="background-color: #dff7e9!important;" class="btn tw-text-black" @click="handleUpdateAssetOfPlanMulti('approve')" :disabled="window.checkDisableSelectRowOfModalShowPlan">
                                                     <i class="fa-solid fa-check" style="color: #28c76f;">&#xF117;</i>
                                                     <span>
@@ -66,7 +66,7 @@
                                                     </span>
                                                 </button>
                                             </div>
-                                            <div class="col-6 text-end">
+                                            <div class="col-3 text-end">
                                                 <button type="button" style="background-color: #fce5e6 !important;" class="btn tw-text-black" @click="handleUpdateAssetOfPlanMulti('cancel')" :disabled="window.checkDisableSelectRowOfModalShowPlan">
                                                     <i class="fa-solid fa-xmark" style="color: #ea5455;">&#xF117;</i>
                                                     <span>

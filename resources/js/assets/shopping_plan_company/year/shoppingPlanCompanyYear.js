@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
             this.list({page:1, limit:10})
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
             window.initSelect2Modal('idModalInsert')
+            this.watchFilters()
         },
 
         //dataTable
@@ -28,7 +29,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             time: null,
-            status: [],
+            status: null,
             limit: 10,
             page: 1
         },
@@ -39,8 +40,8 @@ document.addEventListener('alpine:init', () => {
             monitor_ids: [],
         },
 
-        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
+        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
@@ -136,6 +137,17 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['time', 'status'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
         confirmRemoveMultiple() {
             const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             if (ids.length === 0) {
@@ -169,7 +181,7 @@ document.addEventListener('alpine:init', () => {
         reloadPage() {
             this.filters = {
                 time: null,
-                status: [],
+                status: null,
                 limit: 10,
                 page: 1
             }
