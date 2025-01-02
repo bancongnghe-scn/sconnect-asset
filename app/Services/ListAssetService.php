@@ -28,8 +28,8 @@ class ListAssetService
         }
 
         if ($request->nameCodeAsset) {
-            $query->where('name', 'LIKE', "%{$request->nameCodeAsset}%")
-                ->orWhere('code', 'LIKE', "%{$request->nameCodeAsset}%");
+            $query->whereRaw('LOWER(name) LIKE ?', ['%'.strtolower($request->nameCodeAsset).'%'])
+            ->orWhereRaw('LOWER(code) LIKE ?', ['%'.strtolower($request->nameCodeAsset).'%']);
         }
 
         if ($request->userId) {
@@ -38,7 +38,7 @@ class ListAssetService
             $query->whereNotIn('id', $arrAssetIdOfUser);
         }
 
-        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->paginate(10);
+        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('created_at', 'desc')->paginate($request->limit);
     }
 
     public function getListUserAsset($request): LengthAwarePaginator

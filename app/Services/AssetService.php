@@ -41,7 +41,7 @@ class AssetService
                     ->format('Y-m-d'),
                 'asset_type_id'           => $importWarehouseAsset->asset_type_id,
                 'supplier_id'             => $importWarehouseAsset->supplier_id,
-                'status'                  => Asset::STATUS_NEW,
+                'status'                  => Asset::STATUS_PENDING,
                 'import_warehouse_id'     => $importWarehouseId,
                 'created_by'              => $userId,
             ];
