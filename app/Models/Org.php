@@ -32,6 +32,7 @@ class Org extends Model
         if ($department && $department['parent_id'] == $rootOrgId) {
             return $department['id'];
         }
+
         return self::getLastParentId($department['parent_id'], $arr, $rootOrgId);
     }
 

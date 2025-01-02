@@ -11,12 +11,13 @@ class OrgJobTitle extends Model
 
     protected $connection = 'db_dev';
 
-    protected $table = "org_job_titles";
+    protected $table = 'org_job_titles';
 
     public function positionOffice()
     {
         return $this->belongsTo(Config::class, 'position');
     }
+
     public function jobPosition()
     {
         return $this->belongsTo(Config::class, 'job_position');

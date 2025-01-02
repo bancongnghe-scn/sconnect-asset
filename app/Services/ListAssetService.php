@@ -8,7 +8,6 @@ use App\Models\Org;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 
 class ListAssetService
 {
@@ -16,15 +15,15 @@ class ListAssetService
     {
         $query = Asset::query();
 
-        if ($request->status && $request->status != 0) {
+        if ($request->status && 0 != $request->status) {
             $query->where('status', $request->status);
         }
 
-        if ($request->location && $request->location != 0) {
+        if ($request->location && 0 != $request->location) {
             $query->where('location', $request->location);
         }
 
-        if ($request->type && $request->type != 0) {
+        if ($request->type && 0 != $request->type) {
             $query->where('asset_type_id', $request->type);
         }
 
@@ -34,7 +33,7 @@ class ListAssetService
         }
 
         if ($request->userId) {
-            $arrAssetIdOfUser = MoveAssetUser::where('user_id',  $request->userId)->pluck('asset_id');
+            $arrAssetIdOfUser = MoveAssetUser::where('user_id', $request->userId)->pluck('asset_id');
 
             $query->whereNotIn('id', $arrAssetIdOfUser);
         }
@@ -46,7 +45,7 @@ class ListAssetService
     {
         $query = User::query();
 
-        if ($request->unit && $request->unit != 0) {
+        if ($request->unit && 0 != $request->unit) {
             $arrOrg = Org::get();
 
             $arrChildOrg = Org::getAllChildIds($request->unit, $arrOrg);
@@ -70,10 +69,10 @@ class ListAssetService
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
-                'user_id' => $request->user['id'],
-                'org_id' => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'asset_id' => $asset['id'],
-                'type' => 1,
+                'user_id'    => $request->user['id'],
+                'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'asset_id'   => $asset['id'],
+                'type'       => 1,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
@@ -86,7 +85,7 @@ class ListAssetService
 
     public function getListAssetOfUser(int $userId)
     {
-        $arrAssetIdOfUser = MoveAssetUser::where('user_id',  $userId)->pluck('asset_id');
+        $arrAssetIdOfUser = MoveAssetUser::where('user_id', $userId)->pluck('asset_id');
 
         return Asset::whereIn('id', $arrAssetIdOfUser)->get();
     }

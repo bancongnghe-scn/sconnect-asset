@@ -39,7 +39,7 @@ class Asset extends Model
     ];
 
     protected $appends = [
-        'location_text'
+        'location_text',
     ];
 
     public const STATUS_ACTIVE                  = 1;
@@ -93,7 +93,7 @@ class Asset extends Model
         return Attribute::make(
             get: fn () => self::LOCATION_NAME[$this->location],
         );
-    } 
+    }
 
     public function user(): BelongsTo
     {

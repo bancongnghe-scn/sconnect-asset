@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Log;
 
 class ListAssetController extends Controller
 {
-    public function __construct(private readonly ListAssetService $assetService) {}
+    public function __construct(private readonly ListAssetService $assetService)
+    {
+    }
 
     public function listAsset(): View
     {
@@ -25,10 +27,10 @@ class ListAssetController extends Controller
             $listAsset = $this->assetService->getListAsset($request);
 
             return response_success([
-                'listAsset' => $listAsset,
+                'listAsset'     => $listAsset,
                 'listAssetType' => AssetType::all(),
-                'listStatus' => config('constant.status'),
-                'listLocation' => config('constant.location')
+                'listStatus'    => config('constant.status'),
+                'listLocation'  => config('constant.location'),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -49,7 +51,7 @@ class ListAssetController extends Controller
 
             return response_success([
                 'listUserAsset' => $listUserAsset,
-                'listUnit' => Org::with('deptType')->where('parent_id', 1)->get(),
+                'listUnit'      => Org::with('deptType')->where('parent_id', 1)->get(),
                 'listAssetType' => AssetType::all(),
             ]);
         } catch (\Throwable $exception) {

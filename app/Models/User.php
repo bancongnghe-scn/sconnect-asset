@@ -25,7 +25,6 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-
     protected $connection = 'db_dev';
 
     protected $fillable = [
@@ -69,7 +68,7 @@ class User extends Authenticatable
     //code cũ
     public function getJobPositionAttribute()
     {
-        if (isset($this->jobTitle) && isset($this->jobTitle->positionOffice) && isset($this->jobTitle->jobPosition)) {
+        if (isset($this->jobTitle, $this->jobTitle->positionOffice, $this->jobTitle->jobPosition)) {
             $job = $this->jobTitle->positionOffice->cfg_key . ' ' . $this->jobTitle->jobPosition->cfg_key;
         }
 
@@ -78,7 +77,7 @@ class User extends Authenticatable
 
     public function getOrgLastParentAttribute()
     {
-        if ($this->dept_id != 1) {
+        if (1 != $this->dept_id) {
             $departments = Org::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
                 ->selectRaw(
                     'organizations.id, 
