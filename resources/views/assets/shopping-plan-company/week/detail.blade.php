@@ -4,12 +4,12 @@
             <div class="modal-header">
                 <h4 class="modal-title">Chi tiết kế hoạch</h4>
                 <div>
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
                     <template x-if="data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
                         @can('shopping_plan_company_week.complete')
                             <button class="btn btn-sc" @click="completeShoppingPlan()">Hoàn thành</button>
                         @endcan
                     </template>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
                 </div>
             </div>
             <div class="modal-body">
@@ -75,14 +75,10 @@
                                 </template>
 
                                 {{-- tổng hợp--}}
-                                <template x-if="[
-                                    STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
-                                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                                    STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                                    STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
-                                    STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                                <template x-if="![
+                                    STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                                    STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                    STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
                                 ].includes(+data.status)">
                                     <div class="mb-3">
                                         <div class="d-flex tw-gap-x-4 mb-3">
@@ -111,7 +107,7 @@
                                 </template>
                             </div>
                         </div>
-                        <div class="card col-2" x-data="comment_shopping_plan">
+                        <div class="card col-2">
                             @include('component.shopping_plan_company.history_comment')
                         </div>
                     </div>

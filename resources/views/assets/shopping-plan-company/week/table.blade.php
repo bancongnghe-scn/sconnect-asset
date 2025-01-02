@@ -71,7 +71,7 @@
 
                                     @can('shopping_plan_company.handle_shopping')
                                         <button class="border-0 bg-body"
-                                                @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
+                                                @click="handleShowModal(value.id, 'update')">
                                             <i class="fa-regular fa-pen-to-square color-sc"></i>
                                         </button>
                                     @endcan
@@ -80,7 +80,7 @@
                                     <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                                         @can('shopping_plan_company.accounting_approval')
                                             <button class="border-0 bg-body"
-                                                    @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
+                                                    @click="handleShowModal(value.id, 'update')">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan
@@ -88,7 +88,7 @@
                                     <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
                                         @can('shopping_plan_company.general_approval')
                                             <button class="border-0 bg-body"
-                                                    @click="window.location.href = `/shopping-plan-company/week/update/${value.id}`">
+                                                    @click="handleShowModal(value.id, 'update')">
                                                 <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan

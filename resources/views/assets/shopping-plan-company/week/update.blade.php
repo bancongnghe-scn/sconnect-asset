@@ -1,46 +1,36 @@
-<div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
+<div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen" x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Chi tiết kế hoạch</h4>
-                <div>
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
-                    <template x-if="data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                        @can('shopping_plan_company_week.complete')
-                            <button class="btn btn-sc" @click="completeShoppingPlan()">Hoàn thành</button>
-                        @endcan
+                <h4 class="modal-title">Cập nhật kế hoạch</h4>
+                <div class="d-flex tw-gap-x-2">
+                    <template x-for="(config, key) in configButtons" :key="key">
+                        <template x-if="config.condition()">
+                            <template x-for="(button, index) in config.buttons" :key="key + index">
+                                <template x-if="!button.permission || permission.includes(button.permission)">
+                                    <button :class="button.class" @click="button.action()">
+                                        <span x-text="button.text"></span>
+                                    </button>
+                                </template>
+                            </template>
+                        </template>
                     </template>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
                 </div>
             </div>
             <div class="modal-body">
-                <div x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}">
-                    <div x-data="updateShoppingPlanCompanyWeek">
-                        {{-- danh sách button --}}
-                        <div class="mb-3 d-flex gap-2 justify-content-end">
-                            <template x-for="(config, key) in configButtons" :key="key">
-                                <template x-if="config.condition()">
-                                    <template x-for="(button, index) in config.buttons" :key="key + index">
-                                        <template x-if="!button.permission || permission.includes(button.permission)">
-                                            <button :class="button.class" @click="button.action()">
-                                                <span x-text="button.text"></span>
-                                            </button>
-                                        </template>
-                                    </template>
-                                </template>
-                            </template>
-                            <button class="btn btn-warning" @click="window.location.href = '/shopping-plan-company/week/list'">Quay lại</button>
-                        </div>
-
-
-                        {{-- content --}}
-                        <div class="d-flex justify-content-between">
-                            <div class="card tw-w-[78%]">
+                <div>
+                    <div>
+                        <div class="d-flex tw-gap-x-4 h-100">
+                            <div class="card col-10">
                                 <div class="card-body">
                                     {{--Thong tin chung--}}
                                     <div class="mb-3">
                                         <div class="d-flex tw-gap-x-4 mb-3">
                                             <div class="active-link tw-w-fit">Thông tin chung</div>
-                                            @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                            <div x-show="data.status !== null">
+                                                @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                            </div>
                                         </div>
 
                                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
@@ -112,10 +102,10 @@
 
                                     {{--  chi tiet--}}
                                     <template x-if="[
-                            STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                            STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                            STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
-                        ].includes(+data.status)">
+                                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                                    ].includes(+data.status)">
                                         <div class="mb-3">
                                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                                             <div class="tw-max-h-dvh overflow-scroll custom-scroll">
@@ -148,15 +138,11 @@
                                     </div>
 
                                     {{-- tổng hợp--}}
-                                    <template x-if="[
-                            STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
-                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                            STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                            STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
-                            STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
-                        ].includes(+data.status)">
+                                    <template x-if="![
+                                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                                    ].includes(+data.status)">
                                         <div class="mb-3">
                                             <div class="d-flex tw-gap-x-4 mb-3">
                                                 <a class="tw-no-underline hover:tw-text-green-500"
@@ -172,7 +158,7 @@
                                                     Tài sản luân chuyển
                                                 </a>
                                             </div>
-                                            <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
+                                            <div class="table-responsive custom-scroll">
                                                 <div x-show="activeLink.new">
                                                     @include('component.shopping_plan_company.week.table_synthetic_action_new')
                                                 </div>
@@ -184,7 +170,7 @@
                                     </template>
                                 </div>
                             </div>
-                            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="comment_shopping_plan">
+                            <div class="card col-2">
                                 @include('component.shopping_plan_company.history_comment')
                             </div>
                         </div>
@@ -192,9 +178,9 @@
                         {{-- modal--}}
                         <div
                             x-data="{
-                        modalId: idModalConfirmDelete,
-                        contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
-                    }"
+                                modalId: idModalConfirmDelete,
+                                contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
+                            }"
                             @ok="remove"
                         >
                             @include('common.modal-confirm')

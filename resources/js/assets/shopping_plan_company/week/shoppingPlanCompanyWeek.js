@@ -53,6 +53,7 @@ document.addEventListener('alpine:init', () => {
         listSupplier: [],
         id: null,
         action: null,
+        note_disapproval: null,
         configButtons: [],
         configButtonsApproval: [],
         idModalConfirmDelete: "idModalConfirmDelete",
@@ -224,6 +225,7 @@ document.addEventListener('alpine:init', () => {
                 } else {
                     this.setConfigButtons()
                     this.setConfigButtonsApproval()
+                    $('#modalUpdate').modal('show')
                 }
             } catch (e) {
                 toast.error(e)
@@ -242,6 +244,95 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 this.listSupplier = response.data.data.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sentNotificationRegister() {
+            this.loading = true
+            try {
+                const response = await window.apiSentNotificationRegister(this.id)
+                if (response.success) {
+                    toast.success('Gửi thông báo thành công !')
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
+                    this.register.organizations.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                    })
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShopping() {
+            this.loading = true
+            try {
+                const response = await window.apiHandleShoppingPlanWeek(this.id)
+                if (response.success) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                    this.register.organizations.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_HANDLE
+                    })
+                    toast.success('Đã chuyển sang bước xử lý')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async updatePlanWeek() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdateShoppingPlanCompanyWeek(this.data, this.id)
+                if (response.success) {
+                    toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async syntheticShopping() {
+            this.loading = true
+            try {
+                const shoppingAsset = []
+                this.register.organizations.forEach((item) => {
+                    item.asset_register.forEach((value) => {
+                        if (Object.keys(value).length > 0) {
+                            shoppingAsset.push(value)
+                        }
+                    })
+                })
+                const response = await window.apiSyntheticShoppingPlanWeek(this.id, shoppingAsset)
+                if (response.success) {
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
+                    this.register.organizations.map((item) => {
+                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_HR_SYNTHETIC
+                    })
+                    toast.success('Đã chuyển sang bước tổng hợp')
+                    this.syntheticShoppingAssetWithAction()
+                    return
+                }
+
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {

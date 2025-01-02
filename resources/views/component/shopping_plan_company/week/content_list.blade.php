@@ -33,6 +33,7 @@
     {{--  modal--}}
     @include('assets.shopping-plan-company.week.modalInsert')
     @include('assets.shopping-plan-company.week.detail')
+    @include('assets.shopping-plan-company.week.update')
     <div
         x-data="{
               modalId: idModalConfirmDelete,

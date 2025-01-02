@@ -1,7 +1,13 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment', () => ({
         init() {
-           this.getLogByRecordId()
+           this.$watch('id', (newValue) => {
+               if (newValue !== null) {
+                   this.getLogByRecordId()
+                   this.listComment()
+                   this.handleComment()
+               }
+           })
         },
         //data
         activeLink: {
@@ -11,7 +17,45 @@ document.addEventListener('alpine:init', () => {
         message_edit: null,
         id_comment_edit: null,
         logs: [],
+        comments: [],
+        comment_message: null,
 
+        async sentComment(reply = null) {
+            const param = {
+                type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
+                target_id: this.id,
+                message: this.comment_message,
+                reply: reply
+            }
+            const response = await window.apiSentComment(param)
+            this.comment_message = null
+            if (response.success) {
+                return
+            }
+            toast.error(response.message)
+        },
+
+        async listComment() {
+            const param = {
+                type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
+                target_id: this.id,
+            }
+            const response = await window.apiGetComment(param)
+            if (response.success) {
+                this.comments = response.data.data
+                return
+            }
+            toast.error(response.message)
+        },
+
+        handleComment() {
+            window.Echo.channel('channel_shopping_plan_' + this.id)
+                .listen('.ShoppingPlanCommentEvent', (e) => {
+                    this.comments.push(e)
+                }).error((error) => {
+                alert(error)
+            });
+        },
         //methods
         async getLogByRecordId() {
             const response = await window.getShoppingPlanLogByRecordId(this.id)

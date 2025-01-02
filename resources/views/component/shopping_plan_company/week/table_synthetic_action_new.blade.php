@@ -97,16 +97,22 @@
                 </td>
                 <td x-text="total ?? '-'" class="text-center"></td>
                 <td>
-                        <span x-data="{
-                             model: assetRegister.supplier_id,
-                             init() {this.$watch('assetRegister.supplier_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                        }" @select-change="assetRegister.supplier_id = $event.detail">
-                                    @include('common.select2.extent.select2', [
-                                          'placeholder' => 'Chọn NCC',
-                                          'values' => 'listSupplier',
-                                          'disabled' => "isDisabled"
-                                    ])
-                        </span>
+{{--                        <span x-data="{--}}
+{{--                             model: assetRegister.supplier_id,--}}
+{{--                             init() {this.$watch('assetRegister.supplier_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}--}}
+{{--                        }" @select-change="assetRegister.supplier_id = $event.detail">--}}
+{{--                                    @include('common.select2.extent.select2', [--}}
+{{--                                          'placeholder' => 'Chọn NCC',--}}
+{{--                                          'values' => 'listSupplier',--}}
+{{--                                          'disabled' => "isDisabled"--}}
+{{--                                    ])--}}
+{{--                        </span>--}}
+                    @include('common.select_custom.extent.select_single', [
+                        'selected' => 'assetRegister.supplier_id',
+                        'options' => 'listSupplier',
+                        'placeholder' => 'Chọn NCC',
+                        'disabled' => "isDisabled"
+                    ])
                 </td>
                 <td>
                     <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link"

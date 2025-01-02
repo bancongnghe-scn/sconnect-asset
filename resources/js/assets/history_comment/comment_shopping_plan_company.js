@@ -28,7 +28,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
             },
 
-            async listComment(reply = null) {
+            async listComment() {
                 const param = {
                     type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                     target_id: this.id,
