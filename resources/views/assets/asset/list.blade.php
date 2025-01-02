@@ -117,7 +117,7 @@
                     </div>
                 
                     <div class="col-1">
-                        <span @click="fetchData($('#statusSearch').val(), $('#locationSearch').val(), $('#typeSearch').val(), $('#nameCodeAsset').val(), $('#nameUser').val())" style="cursor: pointer;">
+                        <span @click="pageParam = 1; fetchData($('#statusSearch').val(), $('#locationSearch').val(), $('#typeSearch').val(), $('#nameCodeAsset').val(), $('#nameUser').val());" style="cursor: pointer;">
                             <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_d_13695_32688)">
                                 <rect x="2" width="34" height="34" rx="6" fill="#379237"/>

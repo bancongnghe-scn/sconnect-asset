@@ -28,8 +28,8 @@ class ListAssetService
         }
 
         if ($request->nameCodeAsset) {
-            $query->where('name', 'LIKE', "%{$request->nameCodeAsset}%")
-                ->orWhere('code', 'LIKE', "%{$request->nameCodeAsset}%");
+            $query->whereRaw("LOWER(name) LIKE ?", ["%".strtolower($request->nameCodeAsset)."%"])
+            ->orWhereRaw("LOWER(code) LIKE ?", ["%".strtolower($request->nameCodeAsset)."%"]);
         }
 
         if ($request->userId) {
