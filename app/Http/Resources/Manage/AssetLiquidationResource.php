@@ -20,13 +20,13 @@ class AssetLiquidationResource extends JsonResource
                 'price_liquidation'     => $item?->assetHistory?->first()?->price,
             ];
         });
-        $result = $this->resource->toArray();
-        if (isset($result['total'])) {
-            $result['data'] = $data->toArray();
 
-            return $result;
-        }
-
-        return $data;
+        return [
+            'data'         => $data->toArray(),
+            'current_page' => $this->resource->currentPage(),
+            'last_page'    => $this->resource->lastPage(),
+            'per_page'     => $this->resource->perPage(),
+            'total'        => $this->resource->total(),
+        ];
     }
 }

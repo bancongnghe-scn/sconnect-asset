@@ -13,14 +13,12 @@
             </div>
         </div>
     </div>
-    <div class="col-6 text-right">
+    <div class="col-7 text-right">
         <button type="button" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.back ?? true" @click="$dispatch('back')" :disabled="window.checkDisableSelectRow">
             <span>
                 Tìm thấy
             </span>
         </button>
-    </div>
-    <div class="col-1 text-right">
         <button type="button" class="btn tw-bg-red-500 tw-text-white" x-show="showAction.cancel ?? true" @click="$dispatch('cancel')" :disabled="window.checkDisableSelectRow">
             <span>
                 Hủy tài sản
