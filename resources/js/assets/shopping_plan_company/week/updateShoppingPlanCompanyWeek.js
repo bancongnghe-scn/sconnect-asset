@@ -507,17 +507,6 @@ document.addEventListener('alpine:init', () => {
                         },
                     ],
                 },
-                {
-                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                    buttons: [
-                        {
-                            text: 'Hoàn thành',
-                            class: 'btn btn-sc',
-                            action: () => this.completeShoppingPlan(),
-                            permission: 'shopping_plan_company_week.complete'
-                        },
-                    ],
-                },
             ]
         }
     }))

@@ -11,7 +11,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class OrderExport extends TemplateExport implements FromArray, WithEvents
+class OrderExport extends BaseExport implements FromArray, WithEvents
 {
     protected $id;
     protected $data;
