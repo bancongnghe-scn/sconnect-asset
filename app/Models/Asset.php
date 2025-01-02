@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Asset extends Model
 {
@@ -38,10 +37,6 @@ class Asset extends Model
         'deleted_by',
     ];
 
-    protected $appends = [
-        'location_text'
-    ];
-
     public const STATUS_ACTIVE                  = 1;
     public const STATUS_PENDING                 = 2;
     public const STATUS_NEW                     = 3;
@@ -52,11 +47,10 @@ class Asset extends Model
     public const STATUS_LIQUIDATED              = 8;
     public const STATUS_DAMAGED                 = 9;
     public const STATUS_REPAIR                  = 10;
-    public const STATUS_MAINTAIN                = 11;
 
     public const STATUS_NAME = [
-        self::STATUS_ACTIVE                     => 'Đang sử dụng',
-        self::STATUS_PENDING                    => 'Chưa sử dụng',
+        self::STATUS_ACTIVE                     => 'Hoạt động',
+        self::STATUS_PENDING                    => 'Tạm dừng',
         self::STATUS_NEW                        => 'Mới',
         self::STATUS_LOST                       => 'Đã mất',
         self::STATUS_CANCEL                     => 'Đã hủy',
@@ -65,7 +59,6 @@ class Asset extends Model
         self::STATUS_LIQUIDATED                 => 'Đã thanh lý',
         self::STATUS_DAMAGED                    => 'Hỏng',
         self::STATUS_REPAIR                     => 'Đang sửa chữa',
-        self::STATUS_MAINTAIN                   => 'Bảo Dưỡng',
     ];
 
     public const LOCATION_HN_1                  = 1;
@@ -88,21 +81,9 @@ class Asset extends Model
         self::LOCATION_HCM                      => 'HCM',
     ];
 
-    protected function locationText(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => self::LOCATION_NAME[$this->location],
-        );
-    } 
-
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function assetType(): BelongsTo
-    {
-        return $this->belongsTo(AssetType::class, 'asset_type_id');
     }
 
     public function assetRepair(): HasMany
@@ -113,10 +94,5 @@ class Asset extends Model
     public function assetHistory(): HasMany
     {
         return $this->hasMany(AssetHistory::class, 'asset_id');
-    }
-
-    public function organization()
-    {
-        return $this->hasOne(Org::class, 'id', 'organization_id');
     }
 }
