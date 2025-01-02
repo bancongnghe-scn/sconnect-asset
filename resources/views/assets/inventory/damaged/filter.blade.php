@@ -4,7 +4,7 @@
         <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
     </div>
 
-    <div class="col-2 col-md-1 text-center">
+    <div class="col-9 text-right">
         <button type="button" class="btn tw-bg-orange-400 tw-text-white" 
             @click="modalRepairMultiUI" 
             x-show="true" :disabled="window.checkDisableSelectRow">
@@ -12,9 +12,6 @@
                 Sửa chữa
             </span>
         </button>
-    </div>
-
-    <div class="col-2 col-md-1 text-center">
         <button type="button" class="btn tw-bg-red-400 tw-text-white"
             @click="modalCancelMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
@@ -22,9 +19,6 @@
                 Hủy
             </span>
         </button>
-    </div>
-
-    <div class="col-2 col-md-2">
         <button type="button" class="btn tw-bg-yellow-400 tw-text-white" 
             @click="modalLiquidationMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
@@ -33,5 +27,4 @@
             </span>
         </button>
     </div>
-
 </div>
