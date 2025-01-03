@@ -74,13 +74,10 @@
                     </template>
 
                     {{-- tổng hợp--}}
-                    <template x-if="[
-                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                        STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    <template x-if="![
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
                     ].includes(+data.status)">
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">

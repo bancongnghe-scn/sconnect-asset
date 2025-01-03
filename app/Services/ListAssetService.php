@@ -83,7 +83,7 @@ class ListAssetService
 
         Asset::where('id', $asset['id'])->update([
             'user_id' => $request->user['id'],
-            'status' => Asset::STATUS_ACTIVE,
+            'status'  => Asset::STATUS_ACTIVE,
             'user_id' => $request->user['id'],
         ]);
 
