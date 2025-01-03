@@ -81,6 +81,12 @@ class ListAssetService
 
         MoveAssetUser::insert($arrAllocationAsset);
 
+        Asset::where('id', $asset['id'])->update([
+            'user_id' => $request->user['id'],
+            'status' => Asset::STATUS_ACTIVE,
+            'user_id' => $request->user['id'],
+        ]);
+
         return $this->getListAssetOfUser($request->user['id']);
     }
 
