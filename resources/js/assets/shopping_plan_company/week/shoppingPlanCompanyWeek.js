@@ -47,16 +47,16 @@ document.addEventListener('alpine:init', () => {
             status: null,
         },
         listUser: [],
-        listPlanCompanyQuarter: [],
         register: [],
-        shoppingAssetWithAction: [],
         listSupplier: [],
-        id: null,
-        action: null,
-        note_disapproval: null,
-        checkedAll: false,
         configButtons: [],
         configButtonsApproval: [],
+        listPlanCompanyQuarter: [],
+        shoppingAssetWithAction: [],
+        id: null,
+        action: null,
+        checkedAll: false,
+        note_disapproval: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         activeLink: {
@@ -431,7 +431,6 @@ document.addEventListener('alpine:init', () => {
                 this.loading = false
             }
         },
-
 
         handleShowActive(active) {
             for (const activeKey in this.activeLink) {
