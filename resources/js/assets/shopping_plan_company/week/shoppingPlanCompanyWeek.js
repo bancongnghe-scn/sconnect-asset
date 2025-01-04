@@ -57,6 +57,11 @@ document.addEventListener('alpine:init', () => {
         action: null,
         checkedAll: false,
         note_disapproval: null,
+        statusShowDetail: [
+            STATUS_SHOPPING_PLAN_COMPANY_NEW,
+            STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+            STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+        ],
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         activeLink: {
@@ -259,9 +264,7 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                    this.register.organizations.map((item) => {
-                        item.status = STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                    })
+                    this.getOrganizationRegisterWeek()
                     return
                 }
 

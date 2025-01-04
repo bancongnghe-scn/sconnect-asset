@@ -98,11 +98,7 @@
                         </div>
 
                         {{--  chi tiet--}}
-                        <template x-if="[
-                                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
-                                    ].includes(+data.status)">
+                        <template x-if="data.status !== null && statusShowDetail.includes(+data.status)">
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                                 <div class="tw-max-h-dvh overflow-scroll custom-scroll">
@@ -135,11 +131,7 @@
                         </div>
 
                         {{-- tổng hợp--}}
-                        <template x-if="![
-                                        STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
-                                    ].includes(+data.status)">
+                        <template x-if="data.status !== null && !statusShowDetail.includes(+data.status)">
                             <div class="mb-3">
                                 <div class="d-flex tw-gap-x-4 mb-3">
                                     <a class="tw-no-underline hover:tw-text-green-500"
