@@ -122,7 +122,7 @@ class ShoppingPlanCompanyWeekController extends Controller
             'shopping_assets.*.action' => 'nullable|integer',
         ]);
 
-        Auth::user()->canPer('shopping_plan_company.synthetic_shopping');
+        Auth::user()->canPer('shopping_plan_company.week.synthetic_shopping');
 
         try {
             $result = $this->planCompanyService->syntheticShoppingPlanWeek($request->all());

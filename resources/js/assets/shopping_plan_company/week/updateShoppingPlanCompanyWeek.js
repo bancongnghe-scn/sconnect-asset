@@ -473,7 +473,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notifi_register'
+                            permission: 'shopping_plan_company.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
@@ -507,7 +507,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Lưu',
                             class: 'btn btn-sc',
                             action: () => this.sentInfoShoppingAsset(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -520,7 +520,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Xử lý',
                             class: 'btn btn-primary',
                             action: () => this.handleShopping(),
-                            permission: 'shopping_plan_company.handle_shopping'
+                            permission: 'shopping_plan_company.week.handle_shopping'
                         },
                     ],
                 },
@@ -533,7 +533,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Tổng hợp',
                             class: 'btn btn-primary',
                             action: () => this.syntheticShopping(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -544,7 +544,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi duyệt',
                             class: 'btn btn-primary',
                             action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },

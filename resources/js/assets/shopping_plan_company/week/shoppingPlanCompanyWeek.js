@@ -550,13 +550,13 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notifi_register'
+                            permission: 'shopping_plan_company.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
                             class: 'btn btn-danger',
                             action: () => this.confirmRemove(),
-                            permission: 'shopping_plan_company.crud'
+                            permission: 'shopping_plan_company.week.crud'
                         },
                     ],
                 },
@@ -567,7 +567,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Lưu',
                             class: 'btn btn-sc',
                             action: () => this.updatePlanWeek(),
-                            permission: 'shopping_plan_company.crud'
+                            permission: 'shopping_plan_company.week.crud'
                         },
                     ],
                 },
@@ -584,7 +584,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Lưu',
                             class: 'btn btn-sc',
                             action: () => this.sentInfoShoppingAsset(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -597,7 +597,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Xử lý',
                             class: 'btn btn-primary',
                             action: () => this.handleShopping(),
-                            permission: 'shopping_plan_company.handle_shopping'
+                            permission: 'shopping_plan_company.week.handle_shopping'
                         },
                     ],
                 },
@@ -610,7 +610,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Tổng hợp',
                             class: 'btn btn-primary',
                             action: () => this.syntheticShopping(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -621,7 +621,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi duyệt',
                             class: 'btn btn-primary',
                             action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -668,7 +668,7 @@ document.addEventListener('alpine:init', () => {
                 },
                 {
                     condition: (status) => true,
-                    permission: 'shopping_plan_company.handle_shopping',
+                    permission: 'shopping_plan_company.week.handle_shopping',
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
