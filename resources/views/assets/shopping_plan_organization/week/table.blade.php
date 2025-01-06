@@ -39,7 +39,7 @@
                                     </template>
                                     <td class="text-center align-middle">
                                         <button class="border-0 bg-body" @click="handleShowModal(value.id, 'view')">
-                                            <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                                            <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                         </button>
                                         <template x-if="
                                                           (new Date() >= new Date(window.formatDate(value.start_time))

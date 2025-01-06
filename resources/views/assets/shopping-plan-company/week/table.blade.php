@@ -56,7 +56,7 @@
                                     {{-- xem chi tiet --}}
                                     <button class="border-0 bg-body"
                                             @click="handleShowModal(value.id, 'view')">
-                                        <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                     </button>
                                     <template x-for="configBtnTable in configButtonsTable">
                                         <template x-if="configBtnTable.condition(+value.status)">
