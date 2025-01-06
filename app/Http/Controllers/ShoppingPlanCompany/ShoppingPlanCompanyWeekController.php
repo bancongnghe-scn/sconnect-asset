@@ -45,7 +45,6 @@ class ShoppingPlanCompanyWeekController extends Controller
 
             return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();
@@ -54,7 +53,7 @@ class ShoppingPlanCompanyWeekController extends Controller
 
     public function createShoppingPlanCompanyWeek(CreateShoppingPlanCompanyWeekRequest $request)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.week.crud');
 
         try {
             $data         = $request->validated();
@@ -75,7 +74,7 @@ class ShoppingPlanCompanyWeekController extends Controller
 
     public function updateShoppingPlanCompanyWeek(CreateShoppingPlanCompanyWeekRequest $request, string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.week.crud');
 
         try {
             $data         = $request->validated();
@@ -96,7 +95,7 @@ class ShoppingPlanCompanyWeekController extends Controller
 
     public function handleShopping(string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.handle_shopping');
+        Auth::user()->canPer('shopping_plan_company.week.handle_shopping');
 
         try {
             $result = $this->planCompanyService->handleShoppingPlanWeek($id);
@@ -186,6 +185,49 @@ class ShoppingPlanCompanyWeekController extends Controller
             }
 
             return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function deleteShoppingPlanCompanyWeek(string $id)
+    {
+        Auth::user()->canPer('shopping_plan_company.week.crud');
+
+        try {
+            $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function sentNotificationRegisterWeek(Request $request)
+    {
+        $request->validate([
+            'id'              => 'required|integer',
+            'organizations'   => 'nullable|array',
+            'organizations.*' => 'integer',
+        ]);
+
+        Auth::user()->canPer('shopping_plan_company.week.sent_notification_register');
+
+        try {
+            $result = $this->planCompanyService->sentNotificationRegister($request->all());
+
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
         } catch (\Throwable $exception) {
             report($exception);
 

@@ -7,7 +7,7 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            @can('shopping_plan_company.crud')
+                            @can('shopping_plan_company.week.crud')
                                 <th class="text-center">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
@@ -22,7 +22,7 @@
                         <tbody>
                         <template x-for="(value,index) in dataTable" :key="index">
                             <tr>
-                                @can('shopping_plan_company.crud')
+                                @can('shopping_plan_company.week.crud')
                                     <td class="text-center align-middle" x-show="+value.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                     </td>
@@ -58,40 +58,17 @@
                                             @click="handleShowModal(value.id, 'view')">
                                         <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                                     </button>
-
-                                    {{-- xoa --}}
-                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        @can('shopping_plan_company.crud')
-                                            <button class="border-0 bg-body"
-                                                    @click="$dispatch('remove', { id: value.id })">
-                                                <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
-                                            </button>
-                                        @endcan
-                                    </template>
-
-                                    @can('shopping_plan_company.handle_shopping')
-                                        <button class="border-0 bg-body"
-                                                @click="handleShowModal(value.id, 'update')">
-                                            <i class="fa-regular fa-pen-to-square color-sc"></i>
-                                        </button>
-                                    @endcan
-
-                                    {{-- ke toan va giam doc duyet --}}
-                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                                        @can('shopping_plan_company.accounting_approval')
-                                            <button class="border-0 bg-body"
-                                                    @click="handleShowModal(value.id, 'update')">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
-                                            </button>
-                                        @endcan
-                                    </template>
-                                    <template x-if="+value.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                                        @can('shopping_plan_company.general_approval')
-                                            <button class="border-0 bg-body"
-                                                    @click="handleShowModal(value.id, 'update')">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
-                                            </button>
-                                        @endcan
+                                    <template x-for="configBtnTable in configButtonsTable">
+                                        <template x-if="configBtnTable.condition(+value.status)">
+                                            <template x-if="permission.includes(configBtnTable.permission)">
+                                                <template x-for="configBtn in configBtnTable.buttons">
+                                                    <button class="border-0 bg-body"
+                                                            @click="configBtn.action(value.id)">
+                                                        <i :class="configBtn.icon"></i>
+                                                    </button>
+                                                </template>
+                                            </template>
+                                        </template>
                                     </template>
                                 </td>
                             </tr>

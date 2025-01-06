@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
             this.getListPlanCompanyQuarter()
             this.getListSupplier()
             this.watchFilters()
+            this.setConfigButtonsTable()
         },
 
         //dataTable
@@ -50,6 +51,7 @@ document.addEventListener('alpine:init', () => {
         register: [],
         listSupplier: [],
         configButtons: [],
+        configButtonsTable: [],
         configButtonsApproval: [],
         listPlanCompanyQuarter: [],
         shoppingAssetWithAction: [],
@@ -62,8 +64,6 @@ document.addEventListener('alpine:init', () => {
             STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
             STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
         ],
-        idModalConfirmDelete: "idModalConfirmDelete",
-        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
         activeLink: {
             new: true,
             rotation: false
@@ -120,7 +120,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return;
                 }
-                $("#"+this.idModalConfirmDelete).modal('hide')
+                $("#idModalConfirmDelete").modal('hide')
                 toast.success('Xóa kế hoạch mua sắm năm thành công !')
                 this.list(this.filters)
             } catch (e) {
@@ -138,7 +138,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+                $("#idModalConfirmDeleteMultiple").modal('hide')
                 this.list(this.filters)
                 this.selectedRow = []
                 toast.success('Xóa danh sách kế hoạch mua sắm thành công !')
@@ -650,6 +650,55 @@ document.addEventListener('alpine:init', () => {
             ]
         },
 
+        setConfigButtonsTable() {
+            this.configButtonsTable = [
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                    permission: 'shopping_plan_company.week.crud',
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) => this.handleShowModal(id, 'update'),
+                        },
+                        {
+                            icon: 'bi bi-trash text-red',
+                            action: (id) => this.confirmRemove(id),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => true,
+                    permission: 'shopping_plan_company.handle_shopping',
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'fa-solid fa-pen-to-square',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'fa-solid fa-pen-to-square',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
+                        },
+                    ],
+                },
+            ]
+        },
+
         watchFilters() {
             this.$watch('filters', (value) => {
                 const watchedKeys = ['plan_quarter_id', 'status', 'time'];
@@ -668,7 +717,7 @@ document.addEventListener('alpine:init', () => {
                 return
             }
 
-            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            $("#idModalConfirmDeleteMultiple").modal('show');
             this.id = ids
         },
 
@@ -706,7 +755,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         confirmRemove(id) {
-            $("#"+this.idModalConfirmDelete).modal('show');
+            $("#idModalConfirmDelete").modal('show');
             this.id = id
         },
     }));

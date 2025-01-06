@@ -1,5 +1,5 @@
 <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen" x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}" x-effect="console.log(permission)">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Cập nhật kế hoạch</h4>
@@ -101,7 +101,7 @@
                         <template x-if="data.status !== null && statusShowDetail.includes(+data.status)">
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                                <div class="tw-max-h-dvh overflow-scroll custom-scroll">
+                                <div>
                                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         @include('component.shopping_plan_company.table_synthetic_organization_register')
                                     </template>
@@ -165,16 +165,6 @@
 
                 {{-- modal--}}
                 <div>
-                    <div
-                        x-data="{
-                                modalId: idModalConfirmDelete,
-                                contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
-                            }"
-                        @ok="remove"
-                    >
-                        @include('common.modal-confirm')
-                    </div>
-
                     <div @ok="approvalShoppingAsset(statusDisapproval)">
                         @include('common.modal-note', ['id' => 'modalNoteDisapproval', 'model' => 'note_disapproval'])
                     </div>

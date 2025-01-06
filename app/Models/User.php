@@ -19,6 +19,7 @@ class User extends Authenticatable
     use HasRoles;
     use MigrateAuthorize;
     public const STATUS_ACTIVE = 1;
+    protected $guard_name      = 'web';
 
     /**
      * The attributes that are mass assignable.
