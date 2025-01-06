@@ -91,7 +91,7 @@ document.addEventListener('alpine:init', () => {
             this.action = action
             this.id = id
             try {
-                await this.getInfo()
+                this.getInfo()
                 this.getRegisterAsset()
                 if (action === 'view') {
                     $('#modalDetailOrganization').modal('show');
