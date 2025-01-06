@@ -11,7 +11,7 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        Auth::loginUsingId(2);
+        Auth::loginUsingId(333);
         //                dd(Auth::user()->getAllPermissions()->pluck('name')->toArray());
 
         return $next($request);

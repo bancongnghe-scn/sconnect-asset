@@ -98,6 +98,10 @@ textarea.form-control {
     background-color: white;
 }
 
+.card-body {
+    color: black;
+}
+
 .select2-selection__choice {
     color: black!important;
 }
