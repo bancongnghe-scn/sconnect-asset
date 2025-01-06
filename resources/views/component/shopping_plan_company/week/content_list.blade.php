@@ -34,6 +34,9 @@
     @include('assets.shopping-plan-company.week.modalInsert')
     @include('assets.shopping-plan-company.week.detail')
     @include('assets.shopping-plan-company.week.update')
+    <div x-data="{data: [], registers: []}" x-effect="data = dataOrganization, registers = registersOrganization">
+        @include('assets.shopping_plan_organization.week.detail')
+    </div>
     <div
         x-data="{
               modalId: 'idModalConfirmDelete',

@@ -47,6 +47,8 @@ document.addEventListener('alpine:init', () => {
             monitor_ids: [],
             status: null,
         },
+        dataOrganization: [],
+        registersOrganization: [],
         listUser: [],
         register: [],
         listSupplier: [],
@@ -55,6 +57,8 @@ document.addEventListener('alpine:init', () => {
         configButtonsApproval: [],
         listPlanCompanyQuarter: [],
         shoppingAssetWithAction: [],
+        list_asset_type: [],
+        list_job: [],
         id: null,
         action: null,
         checkedAll: false,
@@ -115,7 +119,7 @@ document.addEventListener('alpine:init', () => {
         async remove() {
             this.loading = true
             try {
-                const response = await window.apiRemoveShoppingPlanCompany(this.id)
+                const response = await window.apiRemoveShoppingPlanCompanyWeek(this.id)
                 if (!response.success) {
                     toast.error(response.message)
                     return;
@@ -240,6 +244,95 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getInfoPlanOrganization(id){
+            this.loading = true
+            try {
+                const response = await window.apiGetInfoShoppingPlanOrganization(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.dataOrganization = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getJobs(){
+            this.loading = true
+            try {
+                const response = await window.apiGetListJob({})
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.list_job = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getRegisterAsset(id){
+            this.loading = true
+            try {
+                const response = await window.apiGetRegisterShoppingPlanOrganization(id)
+                if (response.success) {
+                    this.registersOrganization = response.data
+                    this.registersOrganization = this.registersOrganization.map(register => ({
+                        ...register,
+                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                    }))
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.list_asset_type = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        handleShowModalDetailOrganization(id) {
+            this.loading = true
+            try {
+                this.dataOrganization = []
+                this.registersOrganization = []
+                this.getInfoPlanOrganization(id)
+                this.getRegisterAsset(id)
+                if (this.list_asset_type.length === 0) {
+                    this.getListAssetType()
+                }
+                if (this.list_job.length === 0) {
+                    this.getJobs()
+                }
+                $('#modalDetailOrganization').modal('show')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async getListSupplier() {
             this.loading = true
             try {
@@ -260,7 +353,7 @@ document.addEventListener('alpine:init', () => {
         async sentNotificationRegister() {
             this.loading = true
             try {
-                const response = await window.apiSentNotificationRegister(this.id)
+                const response = await window.apiSentNotificationRegisterWeek(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
@@ -550,7 +643,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notification_register'
+                            permission: 'shopping_plan_company.week.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
@@ -667,7 +760,11 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
                 {
-                    condition: (status) => true,
+                    condition: (status) => [
+                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE,
+                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
+                    ].includes(status),
                     permission: 'shopping_plan_company.week.handle_shopping',
                     buttons: [
                         {
@@ -688,7 +785,7 @@ document.addEventListener('alpine:init', () => {
                 },
                 {
                     condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                    permission: 'shopping_plan_company.accounting_approval',
+                    permission: 'shopping_plan_company.general_approval',
                     buttons: [
                         {
                             icon: 'fa-solid fa-pen-to-square',

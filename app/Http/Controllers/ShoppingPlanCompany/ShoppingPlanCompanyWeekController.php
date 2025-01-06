@@ -121,7 +121,6 @@ class ShoppingPlanCompanyWeekController extends Controller
             'shopping_assets.*.id'     => 'required|integer',
             'shopping_assets.*.action' => 'nullable|integer',
         ]);
-
         Auth::user()->canPer('shopping_plan_company.week.synthetic_shopping');
 
         try {

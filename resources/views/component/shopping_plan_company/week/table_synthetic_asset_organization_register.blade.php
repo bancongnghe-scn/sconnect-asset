@@ -38,7 +38,7 @@
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
-                    <button @click="window.location.href = `/shopping-plan-organization/week/view/${organization.id}`" class="border-0 bg-body">
+                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-body">
                         <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
                     </button>
 

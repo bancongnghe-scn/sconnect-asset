@@ -11,8 +11,8 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        Auth::loginUsingId(466);
-        //        dd(Auth::user()->getAllPermissions()->pluck('name')->toArray());
+        Auth::loginUsingId(851);
+        //                dd(Auth::user()->getAllPermissions()->pluck('name')->toArray());
 
         return $next($request);
         $secretKey     = env('SECRET_KEY');
