@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}">
+    <div x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}" class="text-primary">
         @include('component.shopping_plan_company.week.content_list')
     </div>
 @endsection

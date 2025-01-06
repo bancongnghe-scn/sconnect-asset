@@ -774,11 +774,21 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
                 {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                    permission: 'shopping_asset.hr_manager_approval',
+                    buttons: [
+                        {
+                            icon: 'bi bi-box-arrow-in-up-right text-primary',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
+                        },
+                    ],
+                },
+                {
                     condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                     permission: 'shopping_plan_company.accounting_approval',
                     buttons: [
                         {
-                            icon: 'fa-solid fa-pen-to-square',
+                            icon: 'bi bi-box-arrow-in-up-right text-primary',
                             action: (id) =>  this.handleShowModal(id, 'update'),
                         },
                     ],
@@ -788,7 +798,7 @@ document.addEventListener('alpine:init', () => {
                     permission: 'shopping_plan_company.general_approval',
                     buttons: [
                         {
-                            icon: 'fa-solid fa-pen-to-square',
+                            icon: 'bi bi-box-arrow-in-up-right text-primary',
                             action: (id) =>  this.handleShowModal(id, 'update'),
                         },
                     ],
