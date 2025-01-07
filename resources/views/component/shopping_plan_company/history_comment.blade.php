@@ -1,16 +1,16 @@
 <div x-data="history_comment">
     <div class="container d-flex tw-gap-x-4 mt-3">
         <a class="tw-no-underline hover:tw-text-green-500"
-           :class="activeLink.history ? 'active-link' : 'inactive-link'"
-           @click="handleShowActive('history')"
-        >
-            Lịch sử
-        </a>
-        <a class="tw-no-underline hover:tw-text-green-500"
            :class="activeLink.comment ? 'active-link' : 'inactive-link'"
            @click="handleShowActive('comment')"
         >
             Bình luận
+        </a>
+        <a class="tw-no-underline hover:tw-text-green-500"
+           :class="activeLink.history ? 'active-link' : 'inactive-link'"
+           @click="handleShowActive('history')"
+        >
+            Lịch sử
         </a>
     </div>
     <div class="mt-3 tw-h-[73dvh] overflow-y-scroll overflow-x-hidden custom-scroll" style="border-top: 1px solid" x-show="activeLink.history">

@@ -98,6 +98,10 @@ textarea.form-control {
     background-color: white;
 }
 
+.card-body {
+    color: black;
+}
+
 .select2-selection__choice {
     color: black!important;
 }
@@ -169,4 +173,8 @@ html {
 
 .table-bordered > :not(caption) > * > * {
     border-width: thin !important;
+}
+
+.air-datepicker {
+    z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
 }
