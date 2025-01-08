@@ -33,7 +33,7 @@ class AssetLostService
                 'location',
             ],
             [
-                'user:id,name',
+                'user:id,name,avatar,code',
                 'assetHistory' => function ($query) {
                     $query->select('asset_id', 'date', 'description')
                         ->where('action', Asset::STATUS_LOST)
@@ -64,7 +64,10 @@ class AssetLostService
                 'status',
                 'user_id',
             ]
-        )->load('user:id,name');
+        )->load([
+            'user:id,name',
+            'assetType:id,name',
+        ]);
 
         if (empty($assetLost)) {
             return [];

@@ -8,9 +8,9 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetDamaged', () => ({
         init() {
+            this.list({ page: 1, limit: 25 })
             window.initSelect2Modal(this.idModalRepair)
             this.onChangeSelect2()
-            this.list({ page: 1, limit: 10 })
             this.initDatePicker()
             this.closeModalRepair()
         },
@@ -38,13 +38,13 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
 
         //data
         filters: {
             name_code: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {
@@ -135,7 +135,7 @@ document.addEventListener('alpine:init', () => {
                 this.currentPage = data.data.current_page
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
-                this.to = data.data.to ?? 0
+                this.to = data.data.to ?? 0             
             } else {
                 toast.error(response.message)
             }
@@ -199,7 +199,7 @@ document.addEventListener('alpine:init', () => {
             $('#' + this.idModalRepair).modal('hide')
 
             // Reset lại bảng repair
-            Alpine.store('listAssetRepair').instance.list({ page: 1, limit: 10 })
+            Alpine.store('listAssetRepair').instance.list({ page: 1, limit: 25 })
 
             this.loading = false
         },

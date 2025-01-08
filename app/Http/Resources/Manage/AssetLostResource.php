@@ -15,12 +15,15 @@ class AssetLostResource extends JsonResource
                 'code'              => $item?->code,
                 'name'              => $item?->name,
                 'user_name'         => $item?->user?->name,
-                'status'            => Asset::STATUS_NAME[$item?->status],
+                'avatar'            => $item?->user?->avatar,
+                'code'              => $item?->user?->code,
+                'status'            => $item?->status,
                 'date'              => $item?->assetHistory?->first()?->date,
                 'reason'            => $item?->assetHistory?->first()?->description,
                 'location'          => Asset::LOCATION_NAME[$item?->location],
             ];
         });
+
         $result = $this->resource->toArray();
         if (isset($result['total'])) {
             $result['data'] = $data->toArray();

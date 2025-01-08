@@ -5,11 +5,13 @@
     </div>
     <div class="col-2">
         <div class="row align-items-center">
-            <div style="max-width: fit-content">
-                <span>Đã chọn (<span id="numberShow"></span>)</span>
-            </div>
-            <div style="max-width: fit-content">
-                <button class="border-0 btn tw-text-red-400" @click="unselectedAll()">Bỏ chọn</button>
+            <div class="d-flex">
+                <div class="align-content-center mr-3" style="min-height: 35px;">
+                    <span>Đã chọn (<span id="numberShow">0</span>)</span>
+                </div>
+                <div>
+                    <button x-show="showButton" class="border-0 btn tw-text-red-400" @click="unselectedAll()">Bỏ chọn</button>
+                </div>
             </div>
         </div>
     </div>

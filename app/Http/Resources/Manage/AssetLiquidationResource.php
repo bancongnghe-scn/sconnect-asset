@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Manage;
 
-use App\Models\Asset;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AssetLiquidationResource extends JsonResource
@@ -14,19 +13,21 @@ class AssetLiquidationResource extends JsonResource
                 'id'                    => $item?->id,
                 'code'                  => $item?->code,
                 'name'                  => $item?->name,
-                'status'                => Asset::STATUS_NAME[$item?->status],
+                'status'                => $item?->status,
                 'date'                  => $item?->assetHistory?->first()?->date,
                 'reason'                => $item?->assetHistory?->first()?->description,
                 'price_liquidation'     => $item?->assetHistory?->first()?->price,
             ];
         });
 
-        return [
-            'data'         => $data->toArray(),
-            'current_page' => $this->resource->currentPage(),
-            'last_page'    => $this->resource->lastPage(),
-            'per_page'     => $this->resource->perPage(),
-            'total'        => $this->resource->total(),
-        ];
+
+        $result = $this->resource->toArray();
+        if (isset($result['total'])) {
+            $result['data'] = $data->toArray();
+
+            return $result;
+        }
+
+        return $data;
     }
 }

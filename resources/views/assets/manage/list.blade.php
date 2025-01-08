@@ -5,7 +5,7 @@
 @endsection
 
 @extends('layouts.app',[
-    'title' => 'Mất-Hủy-Thanh lý'
+    'title' => 'Mất - Hủy - Thanh lý'
 ])
 
 @section('content')

@@ -11,50 +11,73 @@
                     <div class="mb-3 active-link tw-w-fit">Thông tin tài sản</div>
                     <div class="row mb-3 d-flex">
                         <div class="col-6 mb-3">
-                            <label class="form-label">Mã tài sản</label>
-                            <span x-text="data.code"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Mã tài sản</label>
+                                <span x-text="data.code" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Giá trị tài sản</label>
-                            <span x-text="data.price"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Giá trị tài sản</label>
+                                <span x-text="data.price" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Tên tài sản</label>
-                            <span x-text="data.name"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Tên tài sản</label>
+                                <span x-text="data.name" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Giá trị còn lại</label>
-                            <span x-text="data.price"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Giá trị còn lại</label>
+                                <span x-text="data.price" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Loại tài sản</label>
-                            <span x-text="data.asset_type_id"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Loại tài sản</label>
+                                <span x-text="data.asset_type ? data.asset_type.name : 'Chưa xác định'" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Vị trí</label>
-                            <span x-text="data.code"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Vị trí</label>
+                                <span x-text="data.code" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Ngày mua</label>
-                            <span x-text="data.created_at"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Ngày mua</label>
+                                <span x-text="formatDate(data.created_at)" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Người sử dụng</label>
-                            <span x-text="data.code"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Người sử dụng</label>
+                                <span x-text="data.user ? data.user.name : ''" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Hạn bảo hành</label>
-                            <span x-text="data.code"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Hạn bảo hành</label>
+                                <span x-text="data.code" class="col-7"></span>
+                            </div>
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="form-label">Trạng thái</label>
-                            <span x-text="data.status"></span>
+                            <div class="row">
+                                <label class="form-label col-5">Trạng thái</label>
+                                <span x-text="listStatus[data.status]" class="col-7"></span>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-3 active-link tw-w-fit">Thông tin ghi nhận tài sản được tìm thấy</div>
                     <div class="row mb-3">
                         <div class="col-8">
-                            <label class="tw-font-bold">Ngày tìm thấy</label>
+                            <span>
+                                <label class="tw-font-bold">Ngày tìm thấy </label>
+                            </span>
+                            <span class="text-danger">*</span>
                             <div class="input-group">
                                 <input type="text" class="form-control datepicker" id="selectSigningDate"
                                        placeholder="Lựa chọn ngày" autocomplete="off">
@@ -71,7 +94,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>

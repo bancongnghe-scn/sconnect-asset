@@ -32,7 +32,7 @@ class PlanLiquidationService
             $dataPlanLiquidation = [
                 'name'           => $data['name'],
                 'code'           => $data['code'],
-                'note'           => $data['note'],
+                'note'           => $data['note'] ?? '',
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
                 'created_at'     => new \DateTime(),
