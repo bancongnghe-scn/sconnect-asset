@@ -9,11 +9,17 @@
                 <div class="container mb-3">
                     <div class="row mb-3">
                         <div class="col-6 mb-3">
-                            <label class="tw-font-bold">Mã kế hoạch</label>
+                            <span>
+                                <label class="tw-font-bold">Mã kế hoạch</label>
+                            </span>
+                            <span class="text-danger">*</span>
                             <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
                         </div>
                         <div class="col-6 mb-3">
-                            <label class="tw-font-bold">Tên kế hoạch</label>
+                            <span>
+                                <label class="tw-font-bold">Tên kế hoạch</label>
+                            </span>
+                            <span class="text-danger">*</span>
                             <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên kế hoạch">
                         </div>
                         <div class="col-6 mb-3">
@@ -40,7 +46,7 @@
                         <thead>
                         <tr>
                             <template x-for="(columnName, key) in dataColumnsMulti">
-                                <th rowspan="1" colspan="1" x-text="columnName"></th>
+                                <th rowspan="1" colspan="1" x-text="columnName" :class="key == 'price_liquidation' ? 'text-right' : ''"></th>
                             </template>
                             <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
                         </tr>
@@ -49,12 +55,15 @@
                         <template x-for="(data,index) in $store.globalData.dataPlanLiquidation" x-data="{line: 1}">
                             <tr>
                                 <template x-for="(columnName, key) in dataColumnsMulti">
-                                    <td>
-                                        <template x-if="key !== 'find_reason' && key !== 'status'">
+                                    <td :class="key == 'price_liquidation' ? 'text-right' : ''">
+                                        <template x-if="key !== 'find_reason' && key !== 'status' && key !== 'price_liquidation'">
                                             <span x-text="data[key]"></span>
                                         </template>
                                         <template x-if="key == 'find_reason'">
                                             <textarea x-model="data[key]" placeholder="Nhập mô tả" class="border-0 rounded-1 w-100"></textarea>
+                                        </template>
+                                        <template x-if="key == 'price_liquidation'">
+                                            <span x-text="formatPrice(data[key])" class="text-right"></span>
                                         </template>
                                     </td>
                                 </template>

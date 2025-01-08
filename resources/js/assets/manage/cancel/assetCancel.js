@@ -4,7 +4,7 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetCancel', () => ({
         init() {
-            this.list({page: 1, limit: 10}),
+            this.list({page: 1, limit: 25}),
             Alpine.store('assetCancelStore').instance = this;
         },
 
@@ -27,13 +27,13 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
 
         //data
         filters: {
             name_code: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {

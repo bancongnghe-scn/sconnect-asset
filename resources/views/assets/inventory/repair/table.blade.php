@@ -5,7 +5,7 @@
                 <table id="" class="table table-bordered table-hover dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
-                    <tr>
+                    <tr :class="'position-sticky tw-top-0'">
                         <th class="text-center">
                             <input type="checkbox" id="selectedAll" @click="selectedAll" @change="count()">
                         </th>
@@ -42,7 +42,14 @@
                                         </div>
                                     </template>
                                     <template x-if="key === 'status_repair'">
-                                        @include('common.table-status-asset')
+                                        <div class="d-flex justify-content-center">
+                                            <span x-text="data[key]" class="rounded tw-p-1" style="border: 1px solid;font-size:11px;"
+                                                :class="{
+                                                    'tw-text-yellow-500 tw-bg-yellow-100':  data[key] === 'Đang sửa chữa',
+                                                    'tw-text-green-500 tw-bg-green-100':    data[key] === 'Hoàn thành sửa chữa',
+                                                }"
+                                            ></span>
+                                        </div>
                                     </template>
                                     <template x-if="key === 'date'">
                                         <span x-text="data.date ? formatDate(data.date) : ''"></span>

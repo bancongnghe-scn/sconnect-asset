@@ -5,12 +5,12 @@
                 <table id="" class="table table-bordered table-hover dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
-                    <tr>
+                    <tr :class="'position-sticky tw-top-0'">
                         <th class="text-center">
                             <input type="checkbox" id="selectedAllLiquidation" @click="selectedAllLiquidation" @change="countLiquidation()">
                         </th>
                         <template x-for="(columnName, key) in columns">
-                            <th rowspan="1" colspan="1" x-text="columnName"></th>
+                            <th rowspan="1" colspan="1" x-text="columnName" :class="key === 'status' ? 'text-center' : key === 'price_liquidation' ? 'text-right' : ''"></th>
                         </template>
                     </tr>
                     </thead>
@@ -21,7 +21,7 @@
                                 <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]" @change="countLiquidation()">
                             </td>
                             <template x-for="(columnName, key) in columns">
-                                <td>
+                                <td :class="key == 'price_liquidation' ? 'text-right' : ''">
                                     <template x-if="key !== 'validity' && key !== 'status' && key !== 'price_liquidation' && key !== 'date'">
                                         <span x-text="data[key]"></span>
                                     </template>
