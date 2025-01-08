@@ -10,7 +10,6 @@
                 });
                 this.$watch(`{{$options}}`, (newValue) => {
                     this.options = newValue;
-                    this.selected = [];
                 });
             },
             open: false,

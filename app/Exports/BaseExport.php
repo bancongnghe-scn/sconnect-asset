@@ -85,11 +85,6 @@ class BaseExport implements WithTitle, WithDrawings
             $sheet->getColumnDimension($item)->setWidth(30);
         }
 
-        //Định dạng font chữ
-        foreach (['C1', 'C7'] as $item) {
-            $sheet->getStyle($item)->getFont()->setBold(true)->setSize(16);
-        }
-
         // style
         $highestRow = $sheet->getHighestRow();
 
@@ -99,6 +94,11 @@ class BaseExport implements WithTitle, WithDrawings
                 'size' => 12,
             ],
         ]);
+
+        //Định dạng font chữ
+        foreach (['C1', 'C7'] as $item) {
+            $sheet->getStyle($item)->getFont()->setBold(true)->setSize(16);
+        }
 
         $sheet->getStyle("A1:{$this->heightColumns}6")->applyFromArray([
             'borders' => [

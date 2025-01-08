@@ -8,6 +8,7 @@ document.addEventListener('alpine:init', () => {
             this.action = split.at(5)
             this.feetData()
             this.setConfigButtons()
+            this.setConfigButtonsApproval()
         },
 
         //data
@@ -37,14 +38,17 @@ document.addEventListener('alpine:init', () => {
         shoppingAssetWithAction: [],
         statusDisapproval: null,
         configButtons: [],
+        configButtonsApproval: [],
 
         //methods
-        async feetData() {
-            await this.getListSupplier()
-            this.getOrganizationRegisterWeek()
-            await this.getListPlanCompanyQuarter()
-            await this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
+        feetData() {
             this.getInfoShoppingPlanCompanyWeek()
+            this.getOrganizationRegisterWeek()
+            this.getListPlanCompanyQuarter()
+            this.getListSupplier()
+            this.getListUser({'dept_id' : DEPT_IDS_FOLLOWERS})
+            this.setConfigButtons()
+            this.setConfigButtonsApproval()
         },
 
         async getInfoShoppingPlanCompanyWeek() {
@@ -398,6 +402,65 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
+        setConfigButtonsApproval() {
+           this.configButtonsApproval = [
+               {
+                   condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                   permission: 'shopping_asset.hr_manager_approval',
+                   buttons: [
+                       {
+                           text: 'Duyệt',
+                           class: 'btn bg-sc text-white',
+                           action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_APPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                       {
+                           text: 'Từ chối',
+                           class: 'btn bg-red',
+                           action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                   ]
+               },
+               {
+                   condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                   permission: 'shopping_plan_company.accounting_approval',
+                   buttons: [
+                       {
+                           text: 'Duyệt',
+                           class: 'btn bg-sc text-white',
+                           action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                       {
+                           text: 'Từ chối',
+                           class: 'btn bg-red',
+                           action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                   ]
+               },
+               {
+                   condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                   permission: 'shopping_asset.general_approval',
+                   buttons: [
+                       {
+                           text: 'Duyệt',
+                           class: 'btn bg-sc text-white',
+                           action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_APPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                       {
+                           text: 'Từ chối',
+                           class: 'btn bg-red',
+                           action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL),
+                           disabled: () => window.checkDisableSelectRow
+                       },
+                   ]
+               }
+           ]
+        },
+
         setConfigButtons() {
             this.configButtons = [
                 {
@@ -407,7 +470,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notifi_register'
+                            permission: 'shopping_plan_company.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
@@ -441,7 +504,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Lưu',
                             class: 'btn btn-sc',
                             action: () => this.sentInfoShoppingAsset(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -454,7 +517,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Xử lý',
                             class: 'btn btn-primary',
                             action: () => this.handleShopping(),
-                            permission: 'shopping_plan_company.handle_shopping'
+                            permission: 'shopping_plan_company.week.handle_shopping'
                         },
                     ],
                 },
@@ -467,7 +530,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Tổng hợp',
                             class: 'btn btn-primary',
                             action: () => this.syntheticShopping(),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
@@ -478,7 +541,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi duyệt',
                             class: 'btn btn-primary',
                             action: () => this.sendApprovalWeek(STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR),
-                            permission: 'shopping_plan_company.synthetic_shopping'
+                            permission: 'shopping_plan_company.week.synthetic_shopping'
                         },
                     ],
                 },
