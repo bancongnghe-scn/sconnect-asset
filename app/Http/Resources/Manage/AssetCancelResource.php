@@ -14,7 +14,7 @@ class AssetCancelResource extends JsonResource
                 'code'                  => $item?->code,
                 'name'                  => $item?->name,
                 'avatar'                => $item?->user?->avatar,
-                'code'                  => $item?->user?->code,
+                'user_code'             => $item?->user?->code,
                 'user_name'             => $item?->user?->name,
                 'status'                => $item?->status,
                 'date'                  => $item?->assetHistory?->first()?->date,

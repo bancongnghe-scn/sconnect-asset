@@ -1,8 +1,7 @@
 <div class="d-flex align-items-end mt-3 mb-3">
     <div class="col-3 d-flex position-relative">
-        <input type="text" class="form-control" x-model="filters.name_code" placeholder="Tên/mã tài sản"  @keydown.enter="list(filters)"
-        >
-        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
+        <input type="text" class="form-control" x-model="filters.name_code" placeholder="Tên/mã tài sản" @keydown.enter="list(filters)">
+        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;cursor: pointer;" x-on:click="list(filters)"></i>
     </div>
 
     {{-- <div class="col-2">
@@ -27,7 +26,7 @@
     </div>
 
     <div class="col-7 text-right">
-        <button type="button" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.complete ?? true" @click="$dispatch('complete')" :disabled="window.checkDisableSelectRow">
+        <button type="button" class="btn tw-bg-green-500 tw-text-white" style="line-height: 20.6px;"  x-show="showAction.complete ?? true" @click="$dispatch('complete')" :disabled="window.checkDisableSelectRow">
             <span>
                 Hoàn thành
             </span>

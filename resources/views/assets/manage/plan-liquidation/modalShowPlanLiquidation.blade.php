@@ -67,7 +67,7 @@
                                                 </button>
                                             </div>
                                             <div class="col-3 text-end">
-                                                <button type="button" style="background-color: #fce5e6 !important;" class="btn tw-text-black" @click="handleUpdateAssetOfPlanMulti('cancel')" :disabled="window.checkDisableSelectRowOfModalShowPlan">
+                                                <button type="button" style="background-color: #fce5e6 !important;" class="btn tw-text-black" @click="showCancel('', true)" :disabled="window.checkDisableSelectRowOfModalShowPlan">
                                                     <i class="fa-solid fa-xmark" style="color: #ea5455;">&#xF117;</i>
                                                     <span>
                                                         Từ chối
@@ -106,7 +106,7 @@
                                                 <span x-text="data.asset.name"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.asset.reason"></span>
+                                                <span x-text="data.asset?.asset_history[0].description"></span>
                                             </td>
                                             <td>
                                                 <span x-text="data.price"></span>
@@ -118,12 +118,17 @@
                                                     'tw-text-green-500 tw-bg-green-100':    listStatusAssetOfPlan[data.status] === 'Đã duyệt',
                                                     'tw-text-red-500 tw-bg-red-100':    listStatusAssetOfPlan[data.status] === 'Từ chối',
                                                 }"></span>
+                                                <button x-show="listStatusAssetOfPlan[data.status] === 'Từ chối'" class="border-0 position-relative" style="background-color: unset;">
+                                                    <i class="bi bi-exclamation-circle"></i>
+                                                    <span class="tooltip-text" x-text="data?.note"></span>
+                                                </button>
                                             </td>
                                             <td class="text-center align-middle" x-show="listStatusAssetOfPlan[data.status] === 'Chưa duyệt'">
                                                 <button class="border-0 bg-body" x-show="showAction.approve ?? true" @click="$dispatch('approve', { id: data.id })">
                                                     <i class="fa-solid fa-check" style="color: #28c76f;;"></i>
                                                 </button>
-                                                <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })">
+                                                {{-- <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })"> --}}
+                                                <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="showCancel(data.id)">
                                                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                                                 </button>
                                             </td>
@@ -131,6 +136,10 @@
                                     </template>
                                     </tbody>
                                 </table>
+
+                                <div>
+                                    @include('assets.manage.plan-liquidation.showCancel')
+                                </div>
 
                                 
                                 <div
