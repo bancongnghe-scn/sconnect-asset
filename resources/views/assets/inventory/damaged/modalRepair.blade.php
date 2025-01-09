@@ -10,7 +10,7 @@
                 <div class="container mb-3">
                     <div class="row mb-3 d-flex">
                         <div class="col-6 mb-3">
-                            <label class="form-label">Ngày sửa chữa</label>
+                            <label class="form-label">Ngày sửa chữa <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <input type="text" class="form-control datepicker" id="dateRepair"
                                        placeholder="Lựa chọn ngày" autocomplete="off">
@@ -78,7 +78,7 @@
                     <label class="modal-title">Tài sản sửa chữa</label>
                     <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent tw-text-green-600" @click="getAssetDamagedModal('repair')">+ Thêm</button>
                 </div>
-                <div>
+                <div class="tw-overflow-y-auto tw-max-h-96">
                     <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
@@ -102,7 +102,7 @@
                                     <span x-text="data.price"></span>
                                 </td>
                                 <td class="align-content-center">
-                                    <span x-text="data.date"></span>
+                                    <span x-text="formatDate(data.date)"></span>
                                 </td>
                                 <td class="align-content-center">
                                     <input type="text" class="form-control" placeholder="--Nhập--"

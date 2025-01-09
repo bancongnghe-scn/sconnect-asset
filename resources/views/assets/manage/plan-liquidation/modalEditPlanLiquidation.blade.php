@@ -129,8 +129,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button @click="data.id ? updatePlan(data.id ) : createPlan()" type="button" class="btn tw-bg-blue-500">Lưu</button>
-                <button type="button" class="btn btn-sc" data-bs-dismiss="modal" x-show="data.id" @click="sendForApproval(data.id)">Gửi duyệt</button>
+                <button @click="checkCreate ? createPlan() : updatePlan(data.id )" type="button" class="btn tw-bg-blue-500">Lưu</button>
+                <button type="button" class="btn btn-sc" data-bs-dismiss="modal" x-show="!checkCreate" @click="sendForApproval(data.id)">Gửi duyệt</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>

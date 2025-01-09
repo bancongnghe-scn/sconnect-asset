@@ -44,7 +44,7 @@
                                                     style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
                                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
                                                 <span x-text="data.user_name ?? ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                <span x-text="data.code ? 'Mã nhân sự:' + data.code : ''" style="color: #706f6f;"></span>
+                                                <span x-text="data.user_code ? 'Mã nhân sự:' + data.user_code : ''" style="color: #706f6f;"></span>
                                             </div>
                                         </div>
                                     </template>

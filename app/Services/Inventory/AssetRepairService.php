@@ -45,8 +45,8 @@ class AssetRepairService
                     'address'               => $data['address'] ?? '',
                     'address_repair'        => $addressRepair,
                     'performer_supplier'    => $performerSupplier,
-                    'cost_repair'           => $asset['cost_repair'],
-                    'note_repair'           => $asset['note_repair'],
+                    'cost_repair'           => $asset['cost_repair'] ?? '',
+                    'note_repair'           => $asset['note_repair'] ?? '',
                     'created_at'            => new \DateTime(),
                     'status'                => AssetRepair::STATUS_NOT_COMPLETE,
                 ];

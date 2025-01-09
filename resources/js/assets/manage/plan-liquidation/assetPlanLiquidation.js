@@ -98,6 +98,10 @@ document.addEventListener('alpine:init', () => {
             price_liquidation: 'Giá đề xuất thanh lý',
         },
         selectedRowAssetToPlan: [],
+        reasonCancel: "",
+        idCancel: "",
+        multiCancel: false,
+        checkCreate: false,
 
         assetsLiquidationCount: "assetsLiquidationCount",
 
@@ -229,6 +233,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
 
             this.id = null
+            this.checkCreate = true
             $('#' + this.idModalEditPlanLiquidation).modal('show')
             this.dataTbodyListAssetLiqui = []
 
@@ -281,6 +286,7 @@ document.addEventListener('alpine:init', () => {
             Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation = []
             this.list(this.filters)
             $('#' + this.idModalEditPlanLiquidation).modal('hide');
+            this.checkCreate = false
             this.loading = false
         },
 
@@ -298,6 +304,7 @@ document.addEventListener('alpine:init', () => {
             }
             this.list(this.filters)
             this.id = null
+            $('#' + this.idModalEditPlanLiquidation).modal('hide');
             this.loading = false
         },
 
@@ -374,6 +381,15 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async showCancel(id, multi = false) {
+            this.idCancel = id
+            if (multi) {
+                this.multiCancel = true
+            }
+
+            $('#idshowCancel').modal('show');
+        },
+
         async handleUpdateAssetOfPlan(id, status_name) {
             this.loading = true
 
@@ -383,7 +399,8 @@ document.addEventListener('alpine:init', () => {
 
             const approve = {
                 id: id,
-                status: status_asset
+                status: status_asset,
+                reason_cancel: this.reasonCancel
             }
 
             const response = await window.apiUpdatePlanLiquidationAsset(approve)
@@ -397,7 +414,8 @@ document.addEventListener('alpine:init', () => {
                     item.status = status_asset;
                 }
             });
-
+            this.reasonCancel = ""
+            this.idCancel = ""
             this.loading = false
         },
 
@@ -410,7 +428,8 @@ document.addEventListener('alpine:init', () => {
             const ids = Object.keys(this.selectedRowOfModalShowPlan).filter(key => this.selectedRowOfModalShowPlan[key] === true)
             const dataUpdate = {
                 ids: ids,
-                status: status_asset
+                status: status_asset,
+                reason_cancel: this.reasonCancel
             }
 
             const response = await window.apiUpdateMultiAssetOfPlan(dataUpdate)
@@ -421,7 +440,8 @@ document.addEventListener('alpine:init', () => {
 
             this.dataTbodyListAssetLiqui.forEach(item => {
                 if (ids.map(Number).includes(item.id)) {
-                    item.status = status_asset;
+                    item.status = status_asset
+                    item.note   = this.reasonCancel
                 }
             });
             this.selectedRowOfModalShowPlan = []
@@ -429,6 +449,8 @@ document.addEventListener('alpine:init', () => {
                 $('.manage_assets #selectedAllAssetOfPlanLiqui').click();
             }
 
+            this.reasonCancel = ""
+            this.multiCancel = false
             this.loading = false
         },
 
