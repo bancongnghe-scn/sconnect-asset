@@ -558,8 +558,6 @@ document.addEventListener('alpine:init', () => {
                 this.filters.signing_date = date != null ? format(date, 'yyyy-MM') : null;
             } else if (el.id === 'filterFrom') {
                 this.filters.from = storageFormat
-            } else if (el.id === 'selectSigningDate') {
-                this.data.signing_date = storageFormat
             } else if (el.id === 'selectFrom') {
                 this.data.from = storageFormat
             } else if (el.id === 'selectTo') {
