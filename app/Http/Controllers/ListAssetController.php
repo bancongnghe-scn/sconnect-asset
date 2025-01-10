@@ -32,8 +32,8 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
-                'listOrg' => Org::with('deptType')->where('parent_id', 1)->get(),
-                'listUser' => User::where('status', 1)->limit(2000)->get()
+                'listOrg'       => Org::with('deptType')->where('parent_id', 1)->get(),
+                'listUser'      => User::where('status', 1)->limit(2000)->get(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -120,7 +120,7 @@ class ListAssetController extends Controller
             $listOrg = $this->assetService->getListOrgAsset($request);
 
             return response_success([
-                'listOrg' => $listOrg,
+                'listOrg'       => $listOrg,
                 'listUnit'      => Org::with('deptType')->where('parent_id', 1)->get(),
                 'listAssetType' => AssetType::all(),
             ]);
