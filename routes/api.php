@@ -229,8 +229,16 @@ Route::prefix('report')->group(function () {
 Route::prefix('asset')->group(function () {
     Route::get('/get-data-list-asset', [ListAssetController::class, 'getListAsset'])->name('assets.getListAsset');
     Route::get('/get-data-list-user-asset', [ListAssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
+    Route::get('/get-data-list-org-asset', [ListAssetController::class, 'getListOrgAsset'])->name('assets.getListOrgAsset');
 
     Route::get('/get-list-asset-of-user', [ListAssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
+    Route::get('/get-list-asset-of-org', [ListAssetController::class, 'getListAssetOfOrg'])->name('assets.getListAssetOfOrg');
 
     Route::post('/allocate-asset', [ListAssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
+    Route::post('/recovery-asset', [ListAssetController::class, 'recoveryAsset'])->name('assets.recoveryAsset');
+
+    Route::post('/allocate-asset-org', [ListAssetController::class, 'allocateAssetOrg'])->name('assets.allocateAssetOrg');
+    Route::post('/recovery-asset-org', [ListAssetController::class, 'recoveryAssetOrg'])->name('assets.recoveryAssetOrg');
+
+    Route::get('/get-user-by-unit', [ListAssetController::class, 'getUserByUnit'])->name('assets.getUserByUnit');
 });

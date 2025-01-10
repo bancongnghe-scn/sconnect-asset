@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssetType;
 use App\Models\Org;
+use App\Models\User;
 use App\Services\ListAssetService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
@@ -31,6 +32,8 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
+                'listOrg' => Org::with('deptType')->where('parent_id', 1)->get(),
+                'listUser' => User::where('status', 1)->limit(2000)->get()
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -83,6 +86,103 @@ class ListAssetController extends Controller
 
             return response_success([
                 'listAssetOfUser' => $listAssetOfUser,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function recoveryAsset(Request $request): JsonResponse
+    {
+        try {
+            $listAssetOfUser = $this->assetService->recoveryAsset($request);
+
+            return response_success([
+                'listAssetOfUser' => $listAssetOfUser,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function listOrgAsset(): View
+    {
+        return view('assets.asset.list-org');
+    }
+
+    public function getListOrgAsset(Request $request): JsonResponse
+    {
+        try {
+            $listOrg = $this->assetService->getListOrgAsset($request);
+
+            return response_success([
+                'listOrg' => $listOrg,
+                'listUnit'      => Org::with('deptType')->where('parent_id', 1)->get(),
+                'listAssetType' => AssetType::all(),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListAssetOfOrg(Request $request): JsonResponse
+    {
+        try {
+            $listAssetOfOrg = $this->assetService->getListAssetOfOrg($request->orgId);
+
+            return response_success([
+                'listAssetOfOrg' => $listAssetOfOrg,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function allocateAssetOrg(Request $request): JsonResponse
+    {
+        try {
+            $listAssetOfOrg = $this->assetService->allocateAssetOrg($request);
+
+            return response_success([
+                'listAssetOfOrg' => $listAssetOfOrg,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function recoveryAssetOrg(Request $request): JsonResponse
+    {
+        try {
+            $listAssetOfUser = $this->assetService->recoveryAssetOrg($request);
+
+            return response_success([
+                'listAssetOfOrg' => $listAssetOfUser,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getUserByUnit(Request $request): JsonResponse
+    {
+        try {
+            $listUser = $this->assetService->getUserByUnit($request);
+
+            return response_success([
+                'listUser' => $listUser,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
