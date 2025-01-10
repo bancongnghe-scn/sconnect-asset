@@ -7,7 +7,7 @@
                         @include('component.shopping_plan_company.week.filter')
                     </div>
 
-                    @can('shopping_plan_company.crud')
+                    @can('shopping_plan_company.week.crud')
                         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
                             <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#idModalInsert').modal('show')">
                                 <span>+ Thêm</span>
@@ -32,9 +32,14 @@
 
     {{--  modal--}}
     @include('assets.shopping-plan-company.week.modalInsert')
+    @include('assets.shopping-plan-company.week.detail')
+    @include('assets.shopping-plan-company.week.update')
+    <div x-data="{data: [], registers: []}" x-effect="data = dataOrganization, registers = registersOrganization">
+        @include('assets.shopping_plan_organization.week.detail')
+    </div>
     <div
         x-data="{
-              modalId: idModalConfirmDelete,
+              modalId: 'idModalConfirmDelete',
               contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
         }"
         @ok="remove"
@@ -44,7 +49,7 @@
 
     <div
         x-data="{
-             modalId: idModalConfirmDeleteMultiple,
+             modalId: 'idModalConfirmDeleteMultiple',
              contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
         }"
         @ok="removeMultiple"

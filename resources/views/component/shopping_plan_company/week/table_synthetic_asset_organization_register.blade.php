@@ -1,6 +1,6 @@
 <table id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
     <tr>
         <th class="text-center">Đơn vị</th>
         <th class="text-center">Loại tài sản</th>
@@ -38,8 +38,8 @@
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
-                    <button @click="window.location.href = `/shopping-plan-organization/week/view/${organization.id}`" class="border-0 bg-body">
-                        <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-body">
+                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
                     </button>
 
                     {{-- button duyet --}}

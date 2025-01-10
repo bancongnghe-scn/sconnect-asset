@@ -18,8 +18,10 @@ class AssetRepairResource extends JsonResource
                 'asset_reason'          => $data?->asset?->assetHistory?->first()?->description,
                 'status_repair'         => AssetRepair::STATUS_NAME[$data->status],
                 'date_repair'           => $data->date_repair,
+                'date'                  => $data?->asset?->assetHistory?->first()?->date,
             ];
         });
+
         $result = $this->resource->toArray();
         if (isset($result['total'])) {
             $result['data'] = $data->toArray();

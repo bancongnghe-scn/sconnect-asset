@@ -37,7 +37,7 @@ class AssetDamagedService
                 'location',
             ],
             [
-                'user:id,name',
+                'user:id,name,code,avatar',
                 'assetHistory' => function ($query) {
                     $query->select('asset_id', 'date', 'description')
                         ->where('action', Asset::STATUS_DAMAGED)

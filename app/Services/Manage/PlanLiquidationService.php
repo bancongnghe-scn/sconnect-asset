@@ -32,7 +32,7 @@ class PlanLiquidationService
             $dataPlanLiquidation = [
                 'name'           => $data['name'],
                 'code'           => $data['code'],
-                'note'           => $data['note'],
+                'note'           => $data['note'] ?? '',
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
                 'created_at'     => new \DateTime(),
@@ -136,8 +136,13 @@ class PlanLiquidationService
                 'created_by',
             ]
         )->load([
-            'planMaintainAsset:id,asset_id,plan_maintain_id,price,status',
+            'planMaintainAsset:id,asset_id,plan_maintain_id,price,status,note',
             'planMaintainAsset.asset:id,name,code',
+            'planMaintainAsset.asset.assetHistory' => function ($query) {
+                $query->select('asset_id', 'date', 'description')
+                    ->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
+                    ->orderBy('date', 'desc');
+            },
             'user:id,name',
         ]);
 
@@ -155,14 +160,23 @@ class PlanLiquidationService
         $assetIds = $data['asset_ids'];
 
         $dataPlanLiquidationAsset = [];
-        $assets                   = $this->assetRepository->getElementAssetByIds($assetIds, ['id', 'price_liquidation']);
+        $assets                   = $this->assetRepository->getElementAssetByIds(
+            $assetIds,
+            ['id'],
+            ['assetHistory' => function ($query) {
+                $query->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
+                    ->orderBy('date', 'desc');
+            },
+            ]
+        );
 
         foreach ($assets as $asset) {
             $dataPlanLiquidationAsset[] = [
                 'plan_maintain_id' => $planId,
                 'asset_id'         => $asset->id,
-                'price'            => $asset->price_liquidation,
+                'price'            => $asset->assetHistory->first()->price ?? 1,
                 'status'           => PlanMaintainAsset::STATUS_NEW,
+                'created_by'       => Auth::id() ?? 1,
             ];
         }
         try {
@@ -440,7 +454,7 @@ class PlanLiquidationService
         }
     }
 
-    public function updatePlanMaintainAsset($id, $status)
+    public function updatePlanMaintainAsset($id, $status, $note = '')
     {
         $planMaintainAsset = $this->planMaintainAssetRepository->find($id);
         if (is_null($planMaintainAsset)) {
@@ -452,6 +466,11 @@ class PlanLiquidationService
 
         $updateStatus = ['status' => $status];
         $planMaintainAsset->fill($updateStatus);
+
+        if (!empty($note)) {
+            $planMaintainAsset->fill(['note' => $note]);
+        }
+
         if (!$planMaintainAsset->save()) {
             return [
                 'success'    => false,
@@ -464,9 +483,12 @@ class PlanLiquidationService
         ];
     }
 
-    public function updateMultiPlanMaintainAsset($ids, $status)
+    public function updateMultiPlanMaintainAsset($ids, $status, $note = '')
     {
-        $updateStatus = ['status' => $status];
+        $updateStatus = [
+            'status' => $status,
+            'note'   => $note,
+        ];
 
         DB::beginTransaction();
         try {
