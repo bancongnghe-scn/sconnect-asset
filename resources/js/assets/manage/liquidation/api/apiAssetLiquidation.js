@@ -1,9 +1,7 @@
 window.apiGetAssetLiquidation = async function (filters) {
     try {
 
-        const res = await axios.get("/api/manage-asset-liquidation", {
-            params: filters
-        })
+        const res = await axios.post("/api/manage-asset-liquidation", filters)
 
         const data = res.data;
         if (!data.success) {

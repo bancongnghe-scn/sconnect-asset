@@ -5,21 +5,21 @@
     </div>
 
     <div class="col-9 text-right">
-        <button type="button" class="btn tw-bg-orange-400 tw-text-white" style="line-height: 20.6px;" 
+        <button type="button" class="btn tw-text-white border-0" style="line-height: 20.6px;background-color: #379237;" 
             @click="modalRepairMultiUI" 
             x-show="true" :disabled="window.checkDisableSelectRow">
             <span>
                 Sửa chữa
             </span>
         </button>
-        <button type="button" class="btn tw-bg-red-400 tw-text-white" style="line-height: 20.6px;" 
+        <button type="button" class="btn tw-text-white border-0" style="line-height: 20.6px; background-color:rgb(232 65 65);" 
             @click="modalCancelMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
             <span>
                 Hủy
             </span>
         </button>
-        <button type="button" class="btn tw-bg-yellow-400 tw-text-white" style="line-height: 20.6px;" 
+        <button type="button" class="btn tw-text-white border-0" style="line-height: 20.6px;background-color: #ff953c;" 
             @click="modalLiquidationMultiUI"
             x-show="true" :disabled="window.checkDisableSelectRow">
             <span>

@@ -51,10 +51,10 @@ window.apiShowPlanLiquidation = async function (id) {
     }
 }
 
-window.apiGetAssetLiquidationForModal = async function () {
+window.apiGetAssetLiquidationForModal = async function (search) {
     try {
 
-        const res = await axios.get("/api/manage-asset-liquidation", {})
+        const res = await axios.post("/api/manage-asset-liquidation", search)
 
         const data = res.data;
         if (!data.success) {

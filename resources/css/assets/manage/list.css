@@ -23,6 +23,7 @@
     white-space: nowrap;
     opacity: 0;
     transition: opacity 0.3s;
+    border: 1px solid #a4d1ff;
 }
 
 .tooltip-text::after {
@@ -63,10 +64,6 @@ button:hover .tooltip-text {
     list-style: none;
 }
 
-.manage_assets .btn:hover {
-    color: black;
-}
-
 #ul-tab li .active {
     color: #217121;
     font-weight: 700;
@@ -81,4 +78,44 @@ button:hover .tooltip-text {
 #ul-tab li a {
     color: #666;
     text-decoration: none;
+}
+
+.btn-outline-success{
+    --bs-btn-color: #379237;
+    --bs-btn-border-color: #379237;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #379237;
+    --bs-btn-hover-border-color: #379237;
+    --bs-btn-focus-shadow-rgb: 25, 135, 84;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #379237;
+    --bs-btn-active-border-color: #379237;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #379237;
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: #379237;
+    --bs-gradient: none;
+}
+
+.btn-success{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #379237;
+    --bs-btn-border-color: #379237;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #379237;
+    --bs-btn-hover-border-color: #379237;
+    --bs-btn-focus-shadow-rgb: 60, 153, 110;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #379237;
+    --bs-btn-active-border-color: #379237;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #379237;
+    --bs-btn-disabled-border-color: #379237;
+}
+.custom-backdrop {
+    z-index: 1060 !important;
+}
+.modal-2{
+    --bs-modal-zindex: 1100 !important;
 }

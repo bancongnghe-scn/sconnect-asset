@@ -35,7 +35,7 @@
                                     <div class="col-3 mb-3">
                                         <label class="tw-font-bold">Được tạo bởi</label>
                                         <input type="hidden" id="authUserName" value="{{ Auth::user()?->name }}">
-                                        <input disabled type="text" class="form-control" :value="data.user ? data.user.name : $('#authUserName').val()">
+                                        <input disabled type="text" class="form-control" :value="data.user ? data.user.code + ' - ' + data.user.name : $('#authUserName').val()">
                                     </div>
                                     <div class="col-4 mb-3">
                                         <label class="tw-font-bold">Ngày tạo</label>
@@ -85,7 +85,7 @@
                                             <input type="checkbox" id="selectedAllAssetOfPlanLiqui" @click="selectedAllAssetOfPlanLiqui">
                                         </th>
                                         <template x-for="(columnName, key) in dataTheadListAssetLiqui">
-                                            <th rowspan="1" colspan="1" x-text="columnName"></th>
+                                            <th rowspan="1" colspan="1" x-text="columnName" :class="key == 'price' ? 'text-right' : ''"></th>
                                         </template>
                                         <th rowspan="1" colspan="1" class="text-center">Thao tác</th>
                                     </tr>
@@ -108,8 +108,8 @@
                                             <td>
                                                 <span x-text="data.asset?.asset_history[0].description"></span>
                                             </td>
-                                            <td>
-                                                <span x-text="data.price"></span>
+                                            <td class="text-right">
+                                                <span x-text="data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
                                             </td>
                                             <td>
                                                 <span x-text="listStatusAssetOfPlan[data.status]" class="pl-2 pr-2 border rounded" 

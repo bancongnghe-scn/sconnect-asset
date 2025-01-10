@@ -13,6 +13,9 @@ document.addEventListener('alpine:init', () => {
             Alpine.store('assetPlanLiquidation').instance = this
             this.initDatePicker()
             this.filterPlanLiquidation()
+            $('#idModalEditPlanLiquidation').on('hidden.bs.modal', () => {
+                this.loading = false;
+            });
         },
 
         dataTable: [],
@@ -40,6 +43,14 @@ document.addEventListener('alpine:init', () => {
         to: 0,
         limit: 25,
         selectedRow: [],
+
+        //pagination more
+        totalPagesMore: null,
+        currentPageMore: 1,
+        totalMore: 0,
+        fromMore: 0,
+        toMore: 0,
+        limitMore: 25,
 
         //data
         filters: {
@@ -104,6 +115,11 @@ document.addEventListener('alpine:init', () => {
         checkCreate: false,
 
         assetsLiquidationCount: "assetsLiquidationCount",
+        filterMore: {
+            name_code: null,
+            limitMore: 25,
+            pageMore: 1
+        },
 
         //methods
         async list(filters) {
@@ -152,10 +168,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         // Open modal select asset to plan liquidation
-        async modalSelectAsset() {
-            const response = await window.apiGetAssetLiquidationForModal()
+        async modalSelectAsset(filter) {            
+            const response = await window.apiGetAssetLiquidationForModal(filter)
 
-            this.dataTbodySelectAsset = response.data.data
+
+            this.dataTbodySelectAsset = response.data.data.data
+            this.totalPagesMore = response.data.data.last_page
+            this.currentPageMore = response.data.data.current_page
+            this.totalMore = response.data.data.total ?? 0
+            this.fromMore = response.data.data.from ?? 0
+            this.toMore = response.data.data.to ?? 0
 
             if (!this.id && Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation) {
                 const ids_selected_pre = Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation.map(item => item.id)
@@ -163,6 +185,10 @@ document.addEventListener('alpine:init', () => {
             }
 
             $('#' + this.idModalSelectAsset).modal('show');
+            
+            if ($('.modal-backdrop').length > 1) {
+                $('.modal-backdrop')[1].classList.add('custom-backdrop');
+            }
         },
 
         // Update asset to plan liquidation
@@ -481,6 +507,11 @@ document.addEventListener('alpine:init', () => {
         changeLimit() {
             this.filters.limit = this.limit
             this.list(this.filters)
+        },
+
+        changeLimitMore() {
+            this.filterMore.limitMore = this.limitMore
+            this.modalSelectAsset(this.filterMore)
         },
 
         initDatePicker() {
