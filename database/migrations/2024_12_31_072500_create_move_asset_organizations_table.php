@@ -12,6 +12,12 @@ return new class () extends Migration {
     {
         Schema::create('move_asset_organizations', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
+            $table->tinyInteger('type');
+            $table->integer('org_id');
+            $table->integer('asset_id');
+            $table->tinyInteger('is_rotation');
+            $table->string('description', 700);
             $table->timestamps();
         });
     }
