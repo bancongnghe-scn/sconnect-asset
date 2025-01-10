@@ -515,7 +515,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         initDatePicker() {
-            document.querySelectorAll('.datepicker').forEach(el => {
+            document.querySelectorAll('#tableAssetPlanLiquidation .datepicker').forEach(el => {
                 new AirDatepicker(el, {
                     autoClose: true,
                     clearButton: true,
