@@ -235,7 +235,7 @@
                                         </svg>
                                         <span class="title-menu">Chỉnh sửa</span>   
                                     </a>
-                                    <a class="d-flex item-menu" href="#">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" style="cursor: pointer;">
                                         <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z" fill="#344054"/>
                                         </svg> 
@@ -609,8 +609,58 @@
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {{-- @include('assets.asset.common.modal-asset') --}}
+                    <div class="modal fade" id="modalAllocationConfirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="mb-0" style="font-weight: bold; color: #379237">Cấp phát tài sản <span x-model="asset.name"></span></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h6 class="text-bold">Thông tin nhân sự cấp phát tài sản</h6>
+                                    <div class="col-12">
+                                        <div class="mb-3">
+                                            <span>Theo</span>
+                                            <div class="d-flex" style="gap: 30px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" :checked="tabAllocation === 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="tabAllocation='allocation-tab'">
+                                                    <label class="form-check-label" for="defaultCheck1">
+                                                        Nhân viên
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" :checked="tabAllocation === 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="tabAllocation='recovery-tab'">
+                                                    <label class="form-check-label" for="defaultCheck2">
+                                                        Đơn vị
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span>Đơn vị</span>
+                                            <select class="form-control select2" data-placeholder="Đơn vị" id="unitSelect">
+                                                <option value="" selected>Đơn vị</option>
+                                                <template x-for="(org, key) in listOrg">
+                                                    <option :value="org.id" x-text="org.name"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <span>Nhân viên</span>
+                                            <select class="form-control select2" data-placeholder="Người dùng" id="userSelect">
+                                                <option value="" selected>Người dùng</option>
+                                                <template x-for="(user, key) in listUser">
+                                                    <option :value="user.id" x-text="user.code + ' - ' + user.name"></option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                
+                                </div>
+                            </div>
+                        </div>
                     </div>
             </div>
         </div>
@@ -709,14 +759,25 @@
             listLocation: [],
             listStatus: [],
             tab: 'general-tab',
+            tabAllocation: 'allocation-tab',
             assetName: '',
             assetStatus: 1,
             assetObj: {},
             pageParam: 1,
             limitParam: 10,
+            listOrg: [],
+            listUser: [],
 
             init (){
+                window.initSelect2Modal('modalAllocationConfirm');
+
                 this.fetchData();
+
+                const select = $('#unitSelect').select2();
+          
+                select.on('change', (event) => {                  
+                    this.getUserByUnit($(event.target).val());
+                });
 
                 window.addEventListener('change-page', (event) => {
                     this.pageParam = event.detail.page;
@@ -770,8 +831,22 @@
                     this.listStatus = data.data.listStatus;
                     this.totalPages = data.data.listAsset.last_page;
                     this.currentPage = data.data.listAsset.current_page;
-                    console.log(data.data.listAsset);
-                                      
+                    this.listOrg = data.data.listOrg; 
+                    this.listUser = data.data.listUser;                                      
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+
+            async getUserByUnit(unitId) {
+                try {
+                    let urlSearch = '/api/asset/get-user-by-unit?orgId=' + unitId;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listUser = data.data.listUser;  
+                    console.log(data.data.listUser);
+                                                        
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
