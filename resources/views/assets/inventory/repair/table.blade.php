@@ -60,13 +60,15 @@
                                 </td>
                             </template>
                             <td class="text-center align-middle" x-show="data.status_repair === 'Đang sửa chữa'">
-                                <button class="border-0 bg-body" @click="clickRepaired(data.id)">
+                                <button class="border-0 position-relative" @click="clickRepaired(data.id)">
                                     <i class="fa-solid fa-check tw-text-green-600">&#xF117;</i>
+                                    <span class="tooltip-text">Chi tiết</span>
                                 </button>
                             </td>
                             <td class="text-center align-middle" x-show="data.status_repair === 'Hoàn thành sửa chữa'">
-                                <button class="border-0 bg-body" @click="clickShowRepaired(data.id)">
+                                <button class="border-0 position-relative" @click="clickShowRepaired(data.id)">
                                     <i class="fa-solid fa-eye">&#xF117;</i>
+                                    <span class="tooltip-text">Xem</span>
                                 </button>
                             </td>
                         </tr>

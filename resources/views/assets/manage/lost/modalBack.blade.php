@@ -12,61 +12,61 @@
                     <div class="row mb-3 d-flex">
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Mã tài sản</label>
+                                <label class="form-label col-5">Mã tài sản :</label>
                                 <span x-text="data.code" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Giá trị tài sản</label>
+                                <label class="form-label col-5">Giá trị tài sản :</label>
                                 <span x-text="data.price" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Tên tài sản</label>
+                                <label class="form-label col-5">Tên tài sản :</label>
                                 <span x-text="data.name" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Giá trị còn lại</label>
+                                <label class="form-label col-5">Giá trị còn lại :</label>
                                 <span x-text="data.price" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Loại tài sản</label>
+                                <label class="form-label col-5">Loại tài sản :</label>
                                 <span x-text="data.asset_type ? data.asset_type.name : 'Chưa xác định'" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Vị trí</label>
+                                <label class="form-label col-5">Vị trí :</label>
                                 <span x-text="data.code" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Ngày mua</label>
+                                <label class="form-label col-5">Ngày mua :</label>
                                 <span x-text="formatDate(data.created_at)" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Người sử dụng</label>
+                                <label class="form-label col-5">Người sử dụng :</label>
                                 <span x-text="data.user ? data.user.name : ''" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Hạn bảo hành</label>
+                                <label class="form-label col-5">Hạn bảo hành :</label>
                                 <span x-text="data.code" class="col-7"></span>
                             </div>
                         </div>
                         <div class="col-6 mb-3">
                             <div class="row">
-                                <label class="form-label col-5">Trạng thái</label>
+                                <label class="form-label col-5">Trạng thái :</label>
                                 <span x-text="listStatus[data.status]" class="col-7"></span>
                             </div>
                         </div>

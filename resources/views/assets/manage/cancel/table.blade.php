@@ -16,7 +16,7 @@
                         <tr>
                             <template x-for="(columnName, key) in columns">
                                 <td :class="'align-content-center'">
-                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'created_at' && key !== 'user_name' ">
+                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'date' && key !== 'user_name' ">
                                         <span x-text="data[key]"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
@@ -30,7 +30,7 @@
                                     <template x-if="key === 'status'">
                                         @include('common.table-status-asset')
                                     </template>
-                                    <template x-if="key === 'created_at'">
+                                    <template x-if="key === 'date'">
                                         <span x-text="formatDate(data.date)"></span>
                                     </template>
                                     <template x-if="key === 'user_name'">
