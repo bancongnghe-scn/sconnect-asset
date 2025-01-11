@@ -87,7 +87,7 @@ document.addEventListener('alpine:init', () => {
 
         idModalShowPlanLiquidation: "idModalShowPlanLiquidation",
         statusPlanLiquidation: "statusPlanLiquidation",
-        filterSigningDate: "filterSigningDate",
+        filterSigningDatePlan: "filterSigningDatePlan",
 
         // Modal plan
         dataTbodyListAssetLiqui: [],
@@ -524,7 +524,7 @@ document.addEventListener('alpine:init', () => {
                     minView: 'months',
                     dateFormat: 'MMMM yyyy',
                     onSelect: ({ date }) => {
-                        const created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
+                        const created_at = $('#tableAssetPlanLiquidation #filterSigningDatePlan').val();
                         const created_at_format = created_at
                             ? format(parse(created_at, 'MMMM yyyy', new Date()), 'yyyy-MM')
                             : null;
@@ -554,7 +554,7 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'yyyy-MM-dd') : null
-            if (el.id === 'filterSigningDate') {
+            if (el.id === 'filterSigningDatePlan') {
                 this.filters.signing_date = date != null ? format(date, 'yyyy-MM') : null;
             } else if (el.id === 'filterFrom') {
                 this.filters.from = storageFormat
@@ -576,10 +576,10 @@ document.addEventListener('alpine:init', () => {
         },
 
         filterPlanLiquidation() {
-            $('#tableAssetPlanLiquidation #' + this.statusPlanLiquidation + ', #tableAssetPlanLiquidation #' + this.filterSigningDate).on('change', function () {
+            $('#tableAssetPlanLiquidation #' + this.statusPlanLiquidation + ', #tableAssetPlanLiquidation #' + this.filterSigningDatePlan).on('change', function () {
                 let name_code = $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val();
                 let status = $('#tableAssetPlanLiquidation #statusPlanLiquidation').val();
-                let created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
+                let created_at = $('#tableAssetPlanLiquidation #filterSigningDatePlan').val();
                 const created_at_format = created_at
                     ? format(parse(created_at, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
                     : null;

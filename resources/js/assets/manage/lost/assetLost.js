@@ -254,25 +254,27 @@ document.addEventListener('alpine:init', () => {
 
         initDatePicker() {
             document.querySelectorAll('.datepicker').forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    clearButton: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({ date }) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
+                if (!el.closest('#tableAssetPlanLiquidation')) {
+                    new AirDatepicker(el, {
+                        autoClose: true,
+                        clearButton: true,
+                        locale: localeEn,
+                        dateFormat: 'dd/MM/yyyy',
+                        onSelect: ({ date }) => {
+                            this.onChangeDatePicker(el, date)
+                        }
+                    });
 
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.onChangeDatePicker(el, null);
-                            }
-                        }, 0);
-                    }
-                });
+                    el.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' || e.key === 'Delete') {
+                            setTimeout(() => {
+                                if (!el.value) {
+                                    this.onChangeDatePicker(el, null);
+                                }
+                            }, 0);
+                        }
+                    });
+                }
             });
         },
 
