@@ -16,7 +16,7 @@
 
     <div class="col-3">
         <div class="input-group">
-            <input type="text" class="form-control datepicker" id="filterSigningDate"
+            <input type="text" class="form-control datepicker" id="filterSigningDatePlan"
                    placeholder="Tháng tạo" autocomplete="off">
             <span class="input-group-text">
                 <i class="fa-regular fa-calendar-days"></i>
