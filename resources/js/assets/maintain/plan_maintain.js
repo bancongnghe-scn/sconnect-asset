@@ -53,7 +53,8 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiGetPlanMaintain(filters)
                 if (!response.success) {
-                    return toast.error(response.message)
+                    toast.error(response.message)
+                    return
                 }
 
                 const data = response.data.data
@@ -64,6 +65,24 @@ document.addEventListener('alpine:init', () => {
                 this.from = data.from ?? 0
                 this.to = data.to ?? 0
                 this.$dispatch('total-plan-maintain', data.total ?? 0)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async create() {
+            this.loading = true
+            try {
+                const response = await window.apiCreatePlanMaintain(this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                $('#modalUIPlanMaintain').modal('hide')
+                this.list(this.filters)
+                toast.success('Tạo kế hoạch bảo dưỡng thành công !')
             } catch (e) {
                 toast.error(e)
             } finally {

@@ -100,6 +100,10 @@ class AppErrorCode
     public const CODE_2093 = 2093; //  Xóa đơn hàng thất bại !
     public const CODE_2094 = 2094; //  Cấu hình định mức đã tồn tại !
     public const CODE_2095 = 2095; //  Tạo định mức thất bại !
+    public const CODE_2096 = 2096; //  Gắn đơn vị bảo dưỡng cho kế hoạch thất bại !
+    public const CODE_2097 = 2097; //  Gắn đơn vị thực hiện bảo dưỡng cho kế hoạch thất bại !
+    public const CODE_2098 = 2098; //  Gắn người phụ trách cho kế hoạch thất bại !
+    public const CODE_2099 = 2099; //  Tạo kế hoạch bảo dưỡng thành công !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

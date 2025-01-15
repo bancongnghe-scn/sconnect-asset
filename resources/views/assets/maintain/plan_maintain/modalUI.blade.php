@@ -47,7 +47,7 @@
                                 <label class="tw-font-bold">Người tham gia</label>
                                 @include('common.select_custom.extent.select_multiple', [
                                     'placeholder' => 'Chọn người tham gia',
-                                    'options' => 'listSupplier',
+                                    'options' => 'listUser',
                                     'selected' => 'data.user_ids'
                                 ])
                             </div>
@@ -131,6 +131,10 @@
                                                 </template>
                                             </tbody>
                                         </table>
+                                    </div>
+                                    <div class="d-flex justify-content-end tw-gap-x-3">
+                                        <button class="btn border-success color-sc" data-bs-dismiss="modal">Hủy</button>
+                                        <button x-show="action === 'create'" class="btn btn-sc" @click="action === 'create' ? create() : edit()">Tạo lịch bảo dưỡng</button>
                                     </div>
                                 </div>
                             </div>

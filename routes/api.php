@@ -227,6 +227,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('getAssetNeedMaintainWithMonth', 'getAssetNeedMaintainWithMonth');
         Route::get('getAssetMaintaining', 'getAssetMaintaining');
         Route::get('getPlanMaintain', 'getPlanMaintain');
+        Route::post('createPlanMaintain', 'createPlanMaintain');
     });
 });
 

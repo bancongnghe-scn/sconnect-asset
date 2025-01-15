@@ -48,7 +48,7 @@ class AssetRepository extends BaseRepository
         $query = $this->_model->select($columns)
             ->whereDate('next_maintenance_date', '<=', $date)
             ->whereIn('status', [Asset::STATUS_PENDING, Asset::STATUS_ACTIVE])
-            ->whereNotIn('asset_id', $assetMaintainingIds)
+            ->whereNotIn('id', $assetMaintainingIds)
             ->orderBy('created_at', 'desc')
             ->newQuery();
 

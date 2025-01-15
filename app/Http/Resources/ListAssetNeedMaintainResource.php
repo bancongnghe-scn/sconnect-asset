@@ -43,7 +43,6 @@ class ListAssetNeedMaintainResource extends JsonResource
         foreach ($this->resource as $asset) {
             $data[] = [
                 'id'                      => $asset->id,
-                'asset_id'                => $asset->id,
                 'name'                    => $asset->name,
                 'code'                    => $asset->code,
                 'asset_type_name'         => $assetTypes[$asset->asset_type_id]['name'] ?? '',

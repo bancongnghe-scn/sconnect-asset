@@ -22,7 +22,7 @@
                                 <tr>
                                     <td x-text="value.code"></td>
                                     <td x-text="value.name"></td>
-                                    <td x-text="value.asset_type"></td>
+                                    <td x-text="value.asset_type_name"></td>
                                     <td>
                                             <span x-data="{data: value, key: 'user'}">
                                                 @include('common.user_info')

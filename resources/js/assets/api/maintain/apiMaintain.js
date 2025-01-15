@@ -111,3 +111,31 @@ window.apiGetPlanMaintain = async function (filters) {
     }
 }
 
+
+window.apiCreatePlanMaintain = async function (dataCreate) {
+    try {
+        let dataFormat = JSON.parse(JSON.stringify(dataCreate))
+        dataFormat.start_time = dataFormat.start_time ? formatDate(dataFormat.start_time) : null
+        dataFormat.end_time = dataFormat.end_time ? formatDate(dataFormat.end_time) : null
+        const response = await axios.post("/api/maintain/createPlanMaintain", dataFormat)
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+

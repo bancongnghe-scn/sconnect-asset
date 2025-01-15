@@ -99,6 +99,10 @@ return [
     AppErrorCode::CODE_2093 => 'Xóa đơn hàng thất bại !',
     AppErrorCode::CODE_2094 => 'Cấu hình định mức đã tồn tại !',
     AppErrorCode::CODE_2095 => 'Tạo định mức thất bại !',
+    AppErrorCode::CODE_2096 => 'Gắn đơn vị bảo dưỡng cho kế hoạch thất bại !',
+    AppErrorCode::CODE_2097 => 'Gắn đơn vị thực hiện bảo dưỡng cho kế hoạch thất bại !',
+    AppErrorCode::CODE_2098 => 'Gắn người phụ trách cho kế hoạch thất bại !',
+    AppErrorCode::CODE_2099 => 'Tạo kế hoạch bảo dưỡng thành công !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

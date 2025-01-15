@@ -28,7 +28,7 @@ class ListAssetMaintainingResource extends JsonResource
                 'id'                      => $asset->id,
                 'name'                    => $asset->name,
                 'code'                    => $asset->code,
-                'asset_type'              => $asset->asset_type,
+                'asset_type_name'         => $asset->asset_type_name,
                 'user'                    => $users[$asset->user_id] ?? [],
                 'start_date_maintain'     => $asset->start_date_maintain,
                 'complete_date_maintain'  => $asset->complete_date_maintain,

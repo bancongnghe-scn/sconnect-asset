@@ -15,10 +15,13 @@ class PlanMaintain extends Model
     protected $table    = 'plan_maintain';
     protected $fillable = [
         'name',
-        'status',
+        'code',
         'type',
-        'code',             //thêm
-        'note',             //thêm
+        'status',
+        'note',
+        'start_time',
+        'end_time',
+        'maintain_costs',
         'created_at',
         'created_by',
         'updated_at',

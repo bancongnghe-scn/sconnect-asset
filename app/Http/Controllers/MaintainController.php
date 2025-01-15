@@ -96,6 +96,7 @@ class MaintainController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();
@@ -104,6 +105,19 @@ class MaintainController extends Controller
 
     public function createPlanMaintain(CreatePlanMaintainRequest $request)
     {
+        try {
+            $result = $this->maintainService->createPlanMaintain($request->validated());
 
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            dd($exception);
+            report($exception);
+
+            return response_error();
+        }
     }
 }
