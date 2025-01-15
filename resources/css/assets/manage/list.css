@@ -1,0 +1,84 @@
+@media (min-width: 1400px) {
+    .modal-xl {
+        --bs-modal-width: 1340px;
+    }
+}
+
+.position-relative {
+    position: relative;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+button:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+.manage_assets_tab button {
+    padding: 10px 15px;
+    border: none;
+    background-color: unset;
+}
+
+.manage_assets_tab button.active {
+    border-bottom: 2px solid rgba(55, 146, 55, 1);
+    padding-bottom: 12px;
+    border-radius: 0;
+    color: rgba(55, 146, 55, 1);
+}
+
+.manage_assets_tab {
+    border-bottom: 1px solid #e3e3e3;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.manage_assets .btn:hover {
+    color: black;
+}
+
+#ul-tab li .active {
+    color: #217121;
+    font-weight: 700;
+    border-bottom: 2px solid #217121;
+    padding-bottom: 13px;
+}
+
+#ul-tab li {
+    padding: 10px 15px;
+}
+
+#ul-tab li a {
+    color: #666;
+    text-decoration: none;
+}

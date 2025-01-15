@@ -1,0 +1,21 @@
+
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+@tailwind components;
+@tailwind utilities;
+
+@import "../css/fonts/font-Inter.css";
+@import "../css/adminlte.min.css";
+@import "../css/OverlayScrollbars.min.css";
+
+@import 'select2/dist/css/select2.min.css';
+@import '@fortawesome/fontawesome-free/css/all.css';
+@import 'air-datepicker/air-datepicker.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+

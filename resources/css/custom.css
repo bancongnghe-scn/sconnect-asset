@@ -1,0 +1,184 @@
+.active-link {
+    color: #28a745; /* Màu xanh lá */
+    font-weight: bold;
+    position: relative;
+}
+.active-link::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #28a745;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+}
+.inactive-link {
+    color: #6c757d; /* Màu xám */
+    position: relative;
+}
+.inactive-link:hover {
+    color: #28a745; /* Màu xanh lá khi hover */
+    font-weight: bold;
+}
+.inactive-link:hover::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #28a745;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+}
+.form-control {
+    background: white;
+}
+
+.bg-sc {
+    background: #379237 !important;
+}
+
+.btn-sc {
+    background: #379237;
+    color: white;
+}
+
+.btn-sc:hover {
+    background: #379237;
+    color: white;
+    opacity: 0.9;
+}
+
+.color-sc {
+    color: #379237 !important;
+}
+
+textarea.form-control {
+    min-height: 10rem;
+}
+
+/* Icon dropdown cho select2 */
+.select2-container--default .select2-selection--multiple {
+    position: relative;
+    padding-right: 30px; /* Tạo khoảng trống cho icon */
+}
+
+.select2-container--default .select2-selection--multiple::after {
+    content: "\25BC"; /* Ký tự mũi tên xuống */
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa; /* Màu mũi tên */
+    pointer-events: none;
+}
+
+.select2-container .select2-selection--single {
+    height: calc(2.25rem + 2px);
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #dee2e6;
+}
+.select2-container--default .select2-selection--multiple {
+    border: 1px solid #dee2e6;
+}
+
+.select2-container--default {
+    width: 100% !important;
+}
+
+.form-select {
+    background-color: white;
+}
+
+.card {
+    background-color: white;
+}
+
+.card-body {
+    color: black;
+}
+
+.select2-selection__choice {
+    color: black!important;
+}
+
+.disc {
+    list-style-type: disc !important;
+}
+
+
+.bg-white-opacity-10-hover:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.bg-white-opacity-10 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pl-10 {
+    padding-left: 2.5rem !important;
+}
+
+.color-red {
+    color: red;
+}
+
+.modal-body {
+    background-color: white;
+}
+
+.modal-title {
+    color: #2B850B;
+    font-weight: 700 !important;
+    font-size: 1.5rem;
+}
+th {
+    background-color: #E4F0E6 !important;
+}
+
+td {
+    background-color: white !important;
+}
+
+.custom-scroll {
+    scrollbar-width: auto;
+}
+
+/* Chrome, Edge, Safari */
+.custom-scroll::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 100px;
+}
+
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+.custom-scroll::-webkit-scrollbar-track {
+    background: #ddd;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.table-bordered > :not(caption) > * > * {
+    border-width: thin !important;
+}
+
+.air-datepicker {
+    z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
+}
+
+.w-1-7 {
+    width: 14.2%;
+}
