@@ -43,7 +43,10 @@ document.addEventListener('alpine:init', () => {
         listSupplier: [],
         listOrganization: [],
         listUser: [],
+        checkedAll: false,
         selectedRow: [],
+        selectedRowAssetMaintain: [],
+        checkedAllAssetMaintain: false,
         title: null,
         action: null,
         id: null,
@@ -80,7 +83,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                $('#modalUIPlanMaintain').modal('hide')
+                $('#modalInsertPlanMaintain').modal('hide')
                 this.list(this.filters)
                 toast.success('Tạo kế hoạch bảo dưỡng thành công !')
             } catch (e) {
@@ -169,15 +172,35 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getInfoPlanMaintain() {
+            this.loading = true
+            try {
+                const response = await window.apiGetInfoPlanMaintain(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.data = response.data.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModalUI(action, id = null) {
             this.action = action
             this.id = id
             this.resetData()
 
             if (action === 'create') {
-                this.title = 'Thêm mới'
+                $('#modalInsertPlanMaintain').modal('show')
+            } else {
+                await this.getInfoPlanMaintain()
+                this.title = action === 'update' ? 'Cập nhật' : 'Chi tiết'
+                $('#modalUpdatePlanMaintain').modal('show')
             }
-            $('#modalUIPlanMaintain').modal('show')
         },
 
         watchFilters() {
@@ -243,5 +266,10 @@ document.addEventListener('alpine:init', () => {
             this.filters.limit = this.limit
             this.list(this.filters)
         },
+
+        selectedAllAssetMaintain() {
+            this.checkedAllAssetMaintain = !this.checkedAllAssetMaintain
+            this.data.assets_maintain.forEach((item) => this.selectedRowAssetMaintain[item.id] = this.checkedAllAssetMaintain)
+        }
     }));
 });

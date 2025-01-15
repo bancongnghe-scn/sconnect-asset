@@ -138,10 +138,12 @@ textarea.form-control {
 }
 th {
     background-color: #E4F0E6 !important;
+    white-space: nowrap;
 }
 
 td {
     background-color: white !important;
+    white-space: nowrap;
 }
 
 .custom-scroll {

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\InfoPlanMaintainResource;
 use App\Http\Resources\ListAssetMaintainingResource;
 use App\Http\Resources\ListAssetNeedMaintainResource;
 use App\Http\Resources\ListPlanMaintainResource;
@@ -216,7 +217,6 @@ class MaintainService
             ];
 
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
             report($exception);
 
@@ -225,5 +225,21 @@ class MaintainService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function getInfoPlanMaintain($id)
+    {
+        $planMaintain = $this->planMaintainRepository->find($id)->load([
+            'planMaintainAsset',
+            'planMaintainOrganizations',
+            'planMaintainSuppliers',
+            'planMaintainCharge',
+        ]);
+
+        if (empty($planMaintain)) {
+            return [];
+        }
+
+        return InfoPlanMaintainResource::make($planMaintain)->resolve();
     }
 }

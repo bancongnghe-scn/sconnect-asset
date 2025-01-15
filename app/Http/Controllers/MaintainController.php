@@ -33,7 +33,6 @@ class MaintainController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();
@@ -96,7 +95,6 @@ class MaintainController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();
@@ -114,7 +112,19 @@ class MaintainController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
-            dd($exception);
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getInfoPlanMaintain(string $id)
+    {
+        try {
+            $result = $this->maintainService->getInfoPlanMaintain($id);
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
             report($exception);
 
             return response_error();

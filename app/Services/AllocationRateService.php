@@ -176,7 +176,6 @@ class AllocationRateService
             ];
         } catch (\Throwable $exception) {
             report($exception);
-            dd($exception);
             DB::rollBack();
 
             return [

@@ -2,7 +2,7 @@
     <div class="col-12">
         <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
             <div class="row">
-                <div class="col-sm-12 table-responsive custom-scroll">
+                <div class="table-responsive custom-scroll">
                     <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
                            aria-describedby="example2_info">
                         <thead>
@@ -38,7 +38,7 @@
                                     <template x-if="value.status === STATUS_MAINTAINING">
                                         <span>
                                             <span class="tw-cursor-pointer mr-1">
-                                                <i class="bi bi-pencil-square color-sc"></i>
+                                                <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
                                             </span>
                                             <span class="tw-cursor-pointer">
                                                 <i class="bi bi-trash3 text-red"></i>
@@ -58,7 +58,5 @@
 </div>
 
 @include('assets.asset.common.commonSvg')
-
-
 
 

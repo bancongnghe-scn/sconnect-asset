@@ -68,4 +68,9 @@ class PlanMaintain extends Model
     {
         return $this->hasMany(PlanMaintainSupplier::class, 'plan_maintain_id');
     }
+
+    public function planMaintainCharge(): HasMany
+    {
+        return $this->hasMany(PlanMaintainCharge::class, 'plan_maintain_id');
+    }
 }

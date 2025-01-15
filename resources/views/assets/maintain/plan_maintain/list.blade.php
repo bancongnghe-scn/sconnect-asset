@@ -10,7 +10,8 @@
         @include('assets.maintain.plan_maintain.table')
     </div>
 
-    @include('assets.maintain.plan_maintain.modalUI')
+    @include('assets.maintain.plan_maintain.modalInsert')
+    @include('assets.maintain.plan_maintain.modalUpdate')
 </div>
 @vite([
     'resources/js/assets/maintain/plan_maintain.js',
