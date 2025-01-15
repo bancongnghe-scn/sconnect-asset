@@ -130,4 +130,27 @@ class MaintainController extends Controller
             return response_error();
         }
     }
+
+    public function completeAssetMaintain(Request $request)
+    {
+        $request->validate([
+            'configs'        => 'required|array',
+            'configs.*'      => 'required|array',
+            'configs.*.id'   => 'required|integer',
+            'configs.*.note' => 'nullable|string',
+        ]);
+
+        try {
+            $result = $this->maintainService->completeAssetMaintain($request->get('configs'));
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

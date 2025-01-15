@@ -203,6 +203,28 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async completeAssetMaintain() {
+            const ids = Object.keys(this.selectedRowAssetMaintain).filter(key => this.selectedRowAssetMaintain[key] === true)
+            if (ids.length < 1) {
+                toast.error('Bạn phải chọn tài sản cần hoàn thành bảo dưỡng')
+                return
+            }
+            this.loading = true
+            try {
+                let configs = this.data.assets_maintain.filter((item) => ids.includes(String(item.id)))
+                const response = await window.apiCompleteAssetMaintain(configs)
+                if (!response.success) {
+                    toast.error(response.message)
+                }
+
+                configs.filter((item) => item.status = STATUS_ASSET_MAINTAIN_COMPLETE)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         watchFilters() {
             this.$watch('filters.start_time', (value) => {
                 if (value !== null && this.filters.end_time !== null) {

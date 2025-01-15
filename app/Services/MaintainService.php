@@ -242,4 +242,29 @@ class MaintainService
 
         return InfoPlanMaintainResource::make($planMaintain)->resolve();
     }
+
+    public function completeAssetMaintain($configs)
+    {
+        try {
+            foreach ($configs as $config) {
+                $this->planMaintainAssetRepository->update($config['id'], [
+                    'status' => PlanMaintainAsset::STATUS_COMPLETE_MAINTAINING,
+                    'note'   => $config['note'] ?? null,
+                ]);
+            }
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
 }

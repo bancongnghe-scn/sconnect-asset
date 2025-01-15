@@ -67,7 +67,7 @@
                                 </a>
                                 <div>
                                     <button class="btn btn-sm btn-sc">Lưu</button>
-                                    <button class="btn btn-sm border-success color-sc">
+                                    <button class="btn btn-sm border-success color-sc" @click="completeAssetMaintain()">
                                         <i class="bi bi-check-lg"></i> Hoàn thành
                                     </button>
                                 </div>
@@ -121,7 +121,9 @@
                                                         ])
                                                     </td>
                                                     <td class="align-middle">
-                                                        <input type="text" class="border-0 w-100 tw-outline-0 border-bottom" x-model="data.description" placeholder="Nhập ghi chú">
+                                                        <input type="text" class="border-0 w-100 tw-outline-0 border-bottom" x-model="value.note"
+                                                               placeholder="Nhập ghi chú"
+                                                        >
                                                     </td>
                                                 </tr>
                                             </template>

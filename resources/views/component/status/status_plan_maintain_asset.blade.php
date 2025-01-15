@@ -8,11 +8,11 @@
                     border: '1px solid #FFE58F'
                 };
             }
-            if (status === STATUS_ASSET_NOT_MAINTAINED) {
+            else if (status === STATUS_ASSET_MAINTAIN_COMPLETE) {
                 return {
-                    color: '#667085',
-                    backgroundColor: '#6670851A',
-                    border: '1px solid #6670851A'
+                    color: '#52C41A',
+                    backgroundColor: '#F6FFED',
+                    border: '1px solid #52C41A'
                 };
             }
             return {};

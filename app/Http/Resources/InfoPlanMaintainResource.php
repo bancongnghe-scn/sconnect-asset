@@ -22,7 +22,7 @@ class InfoPlanMaintainResource extends JsonResource
             'id'                => $this->resource->id,
             'name'              => $this->resource->name,
             'code'              => $this->resource->code,
-            'description'       => $this->resource->description,
+            'note'              => $this->resource->note,
             'status'            => $this->resource->status,
             'start_time'        => $this->resource->start_time,
             'end_time'          => $this->resource->end_time,

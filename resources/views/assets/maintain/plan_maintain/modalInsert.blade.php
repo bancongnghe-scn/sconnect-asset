@@ -22,7 +22,11 @@
                         </div>
                         <div class="tw-col-span-2">
                             <label class="tw-font-bold">Đơn vị bảo dưỡng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                            <div x-init="$watch('data.organization_ids', (newValue, oldValue) => getAssetMaintainForOrganization(newValue, oldValue))">
+                            <div x-init="$watch('data.organization_ids', (newValue, oldValue) => {
+                                if (action === 'create') {
+                                    getAssetMaintainForOrganization(newValue, oldValue)
+                                }
+                            })">
                                 @include('common.select_custom.extent.select_multiple', [
                                     'placeholder' => 'Chọn đơn vị bảo dưỡng',
                                     'options' => 'listOrganization',
