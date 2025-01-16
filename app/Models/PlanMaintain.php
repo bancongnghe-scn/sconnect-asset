@@ -22,6 +22,7 @@ class PlanMaintain extends Model
         'start_time',
         'end_time',
         'maintain_costs',
+        'sent_notification',
         'created_at',
         'created_by',
         'updated_at',

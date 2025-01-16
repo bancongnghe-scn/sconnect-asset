@@ -7,23 +7,24 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class ShoppingPlanCommentEvent implements ShouldBroadcast
+class PlanMaintainCommentEvent implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(protected $data)
-    {
+    public function __construct(
+        protected $data,
+    ) {
     }
 
     public function broadcastOn()
     {
-        return new Channel('channel_shopping_plan_'.$this->data['target_id']);
+        return new Channel('channel_plan_maintain_'.$this->data['target_id']);
     }
 
     public function broadcastAs()
     {
-        return 'ShoppingPlanCommentEvent';
+        return 'PlanMaintainCommentEvent';
     }
 
     public function broadcastWith()

@@ -12,19 +12,13 @@ class ShoppingPlanOrganizationCommentEvent implements ShouldBroadcast
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(
-        protected $shoppingPlanId,
-        protected $id,
-        protected $message,
-        protected $createdBy,
-        protected $createdAt,
-        protected $userCreated,
-    ) {
+    public function __construct(protected $data)
+    {
     }
 
     public function broadcastOn()
     {
-        return new Channel('channel_shopping_plan_organization'.$this->shoppingPlanId);
+        return new Channel('channel_shopping_plan_organization'.$this->data['target_id']);
     }
 
     public function broadcastAs()
@@ -35,11 +29,11 @@ class ShoppingPlanOrganizationCommentEvent implements ShouldBroadcast
     public function broadcastWith()
     {
         return [
-            'id'            => $this->id,
-            'message'       => $this->message,
-            'user_created'  => $this->userCreated,
-            'created_by'    => $this->createdBy,
-            'created_at'    => $this->createdAt,
+            'id'            => $this->data['comment_id'],
+            'message'       => $this->data['message'],
+            'user_created'  => $this->data['user_name'],
+            'created_by'    => $this->data['user_id'],
+            'created_at'    => $this->data['time'],
         ];
     }
 }
