@@ -20,7 +20,7 @@
                         <template x-for="(value, index) in dataTable" :key="index">
                             <tr>
                                 <td>
-                                    <a x-text="value.code" class="tw-cursor-pointer"></a>
+                                    <a x-text="value.code" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
                                 </td>
                                 <td x-text="value.name">
                                 <td x-text="value.suppliers.join(', ')">
@@ -31,7 +31,7 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
-                                        <span class="tw-cursor-pointer">
+                                        <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
                                             <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                         </span>
                                     </template>

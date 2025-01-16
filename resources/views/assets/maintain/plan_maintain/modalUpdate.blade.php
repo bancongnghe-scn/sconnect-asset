@@ -12,7 +12,7 @@
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" x-data="{disabled: false}" x-effect="disabled = action === 'view'">
                 <div class="d-flex tw-gap-x-3">
                     <div class="flex-grow-1">
                         <div class="tw-grid tw-grid-cols-5 gap-3 align-items-end">
@@ -44,23 +44,25 @@
                                     'placeholder' => 'Chọn đơn vị thực hiện bảo dưỡng',
                                     'options' => 'listSupplier',
                                     'selected' => 'data.supplier_ids',
+                                    'disabled' => "disabled"
                                 ])
                             </div>
                             <div>
                                 <label class="tw-font-bold">Chi phí bảo dưỡng</label>
-                                <input class="form-control" type="text" x-model="data.maintain_costs" placeholder="Nhập chi phí bảo dưỡng">
+                                <input class="form-control" type="text" x-model="data.maintain_costs" placeholder="Nhập chi phí bảo dưỡng" :disabled="disabled">
                             </div>
                             <div class="tw-col-span-2">
                                 <label class="tw-font-bold">Người tham gia</label>
                                 @include('common.select_custom.extent.select_multiple', [
                                     'placeholder' => 'Chọn người tham gia',
                                     'options' => 'listUser',
-                                    'selected' => 'data.user_ids'
+                                    'selected' => 'data.user_ids',
+                                    'disabled' => "disabled"
                                 ])
                             </div>
                             <div class="tw-col-span-3">
                                 <label class="tw-font-bold">Mô tả</label>
-                                <input class="form-control" type="text" x-model="data.note" placeholder="Nhập mô tả">
+                                <input class="form-control" type="text" x-model="data.note" placeholder="Nhập mô tả" :disabled="disabled">
                             </div>
                             <div>
                                 <input type="checkbox" class="" id="exampleCheck1" x-model="data.sent_notification" disabled>
@@ -72,7 +74,7 @@
                                 <a href="#" class="tw-no-underline hover:tw-text-green-500 active-link"
                                    x-text="`Danh sách tài sản bảo dưỡng (${data.assets_maintain?.length})`">
                                 </a>
-                                <div>
+                                <div x-show="!disabled">
                                     <button class="btn btn-sm border-success color-sc" @click="completeAssetMaintain()">
                                         <i class="bi bi-check-lg"></i> Hoàn thành
                                     </button>
@@ -85,7 +87,7 @@
                                         <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
                                                 <tr>
-                                                    <th class="text-center">
+                                                    <th x-show="!disabled" class="text-center">
                                                         <input type="checkbox" @click="selectedAllAssetMaintain()">
                                                     </th>
                                                     <th rowspan="1" colspan="1" class="text-center">Mã tài sản</th>
@@ -102,7 +104,7 @@
                                             <tbody>
                                             <template x-for="(value, key) in data.assets_maintain">
                                                 <tr>
-                                                    <td class="text-center align-middle">
+                                                    <td x-show="!disabled" class="text-center align-middle">
                                                         <input type="checkbox" x-model="selectedRowAssetMaintain[value.id]"
                                                                x-bind:checked="selectedRowAssetMaintain[value.id]"
                                                                :disabled="value.status === STATUS_ASSET_MAINTAIN_COMPLETE">
@@ -129,8 +131,7 @@
                                                     </td>
                                                     <td class="align-middle">
                                                         <input type="text" class="border-0 w-100 tw-outline-0 border-bottom" x-model="value.note"
-                                                               placeholder="Nhập ghi chú"
-                                                        >
+                                                               placeholder="Nhập ghi chú" :disabled="disabled">
                                                     </td>
                                                 </tr>
                                             </template>
@@ -138,11 +139,11 @@
                                         </table>
                                     </div>
                                     <div class="d-flex justify-content-end tw-gap-x-3">
-                                        <button class="btn btn-sm border-success color-sc">Hủy lịch bảo dưỡng</button>
-                                        <button class="btn btn-sm btn-sc" @click="$('#modalConfirmCompletePlan').modal('show')">
+                                        <button x-show="!disabled" class="btn btn-sm border-success color-sc" @click="handleShowModalConfirmDelete()">Hủy lịch bảo dưỡng</button>
+                                        <button x-show="!disabled" class="btn btn-sm btn-sc" @click="$('#modalConfirmCompletePlan').modal('show')">
                                             Hoàn thành kế hoạch
                                         </button>
-                                        <button class="btn btn-sm btn-primary" @click="updatePlanMaintain()">Lưu</button>
+                                        <button x-show="!disabled" class="btn btn-sm btn-primary" @click="updatePlanMaintain()">Lưu</button>
                                     </div>
                                 </div>
                             </div>

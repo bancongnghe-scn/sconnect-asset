@@ -38,6 +38,10 @@ class AssetRepository extends BaseRepository
             $query->where('import_warehouse_id', $filters['import_warehouse_id']);
         }
 
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
         return $query->get();
     }
 

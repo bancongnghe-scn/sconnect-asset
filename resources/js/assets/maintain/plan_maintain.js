@@ -182,6 +182,7 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 this.data = response.data.data
+                this.data.sent_notification = Boolean(this.data.sent_notification)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -260,8 +261,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        handleShowModalConfirmDelete(id) {
-           this.id = id
+        handleShowModalConfirmDelete(id = null) {
+           if (id !== null) {
+               this.id = id
+           }
            $('#modalConfirmDelete').modal('show')
         },
 

@@ -29,9 +29,9 @@
             <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModalUI('create')">
                 <span>+ Thêm</span>
             </button>
-            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmDeleteMultiple" :disabled="window.checkDisableSelectRow">
-                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
-            </button>
+{{--            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmDeleteMultiple" :disabled="window.checkDisableSelectRow">--}}
+{{--                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>--}}
+{{--            </button>--}}
         </div>
     </div>
 </div>
