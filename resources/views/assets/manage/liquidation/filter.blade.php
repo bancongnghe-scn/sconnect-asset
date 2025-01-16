@@ -1,7 +1,7 @@
 <div class="d-flex align-items-end mt-3 mb-3">
     <div class="col-3 d-flex position-relative">
         <input type="text" class="form-control" x-model="filters.name_code" placeholder="Tên/mã tài sản" @keydown.enter="list(filters)">
-        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
+        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;" x-on:click="list(filters)"></i>
     </div>
     <div class="col-2">
         <div class="row align-items-center">
@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="col-7 text-right">
-        <button type="button" style="border:1px solid #ddd;" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.create ?? true" @click="$dispatch('create')" :disabled="window.checkDisableSelectRow">
+        <button type="button" style="border:1px solid #ddd; line-height: 20.6px;" class="btn tw-bg-green-500 tw-text-white" x-show="showAction.create ?? true" @click="$dispatch('create')" :disabled="window.checkDisableSelectRow">
             <i class="fa-solid fa-plus" style="">&#xF117;</i>
             <span>
                 Tạo kế hoạch đề xuất
@@ -22,3 +22,9 @@
         </button>
     </div>
 </div>
+<style>
+    /* Hiệu ứng khi hover */
+    .fa-magnifying-glass:hover {
+        cursor: pointer;
+    }
+</style>

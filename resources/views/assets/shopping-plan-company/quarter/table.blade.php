@@ -54,7 +54,7 @@
                                     {{-- xem chi tiet --}}
                                     <button class="border-0 bg-body"
                                             @click="window.location.href = `/shopping-plan-company/quarter/view/${data.id}`">
-                                        <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                     </button>
 
                                     {{-- sua va xoa --}}

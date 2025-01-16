@@ -13,8 +13,10 @@ class AssetCancelResource extends JsonResource
             return [
                 'code'                  => $item?->code,
                 'name'                  => $item?->name,
+                'avatar'                => $item?->user?->avatar,
+                'user_code'             => $item?->user?->code,
                 'user_name'             => $item?->user?->name,
-                'status'                => Asset::STATUS_NAME[$item?->status],
+                'status'                => $item?->status,
                 'date'                  => $item?->assetHistory?->first()?->date,
                 'reason'                => $item?->assetHistory?->first()?->description,
                 'location'              => Asset::LOCATION_NAME[$item?->location],

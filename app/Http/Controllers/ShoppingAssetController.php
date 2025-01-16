@@ -16,7 +16,7 @@ class ShoppingAssetController extends Controller
 
     public function sentInfoShoppingAsset(SentInfoShoppingAssetRequest $request)
     {
-        Auth::user()->canPer('shopping_plan_company.synthetic_shopping');
+        Auth::user()->canPer('shopping_plan_company.week.synthetic_shopping');
 
         try {
             $result = $this->shoppingAssetService->sentInfoShoppingAsset($request->validated());

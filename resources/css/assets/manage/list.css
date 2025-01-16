@@ -10,8 +10,8 @@
 
 .tooltip-text {
     visibility: hidden;
-    background-color: #333;
-    color: #fff;
+    background-color: #e5f2ff;
+    color: #007aff;
     text-align: center;
     padding: 5px;
     border-radius: 4px;
@@ -33,7 +33,7 @@
     transform: translateX(-50%);
     border-width: 5px;
     border-style: solid;
-    border-color: #333 transparent transparent transparent;
+    border-color: #a4d1ff transparent transparent transparent;
 }
 
 button:hover .tooltip-text {
@@ -42,7 +42,7 @@ button:hover .tooltip-text {
 }
 
 .manage_assets_tab button {
-    padding: 10px 15px;
+    padding: 0 15px;
     border: none;
     background-color: unset;
 }

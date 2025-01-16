@@ -1,6 +1,6 @@
 <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
     <tr>
         <th rowspan="1" colspan="1" class="tw-w-fit">STT</th>
         <th rowspan="1" colspan="1" class="text-center">Đơn vị</th>

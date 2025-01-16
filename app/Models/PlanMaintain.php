@@ -32,10 +32,10 @@ class PlanMaintain extends Model
     public const TYPE_MAINTAIN    = 2;
     public const TYPE_LIQUIDATION = 3;
 
-    public const STATUS_NEW             = 0;
-    public const STATUS_PENDING         = 1;
-    public const STATUS_APPROVAL        = 2;
-    public const STATUS_REJECT          = 3;
+    public const STATUS_NEW             = 1;
+    public const STATUS_PENDING         = 2;
+    public const STATUS_APPROVAL        = 3;
+    public const STATUS_REJECT          = 4;
 
     public const STATUS_NAME = [
         self::STATUS_NEW            => 'Mới tạo',

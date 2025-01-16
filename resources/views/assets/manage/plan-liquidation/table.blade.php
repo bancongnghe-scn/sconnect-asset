@@ -5,12 +5,12 @@
                 <table id="" class="table table-bordered table-hover dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
-                    <tr>
+                    <tr :class="'position-sticky tw-top-0'">
                         <th class="text-center">
                             <input type="checkbox" id="selectedAllLiquidation" @click="selectedAllLiquidation">
                         </th>
                         <template x-for="(columnName, key) in columns">
-                            <th rowspan="1" colspan="1" x-text="columnName"></th>
+                            <th rowspan="1" colspan="1" x-text="columnName" :class="key === 'status' ? 'text-center' : ''"></th>
                         </template>
                         <th rowspan="1" colspan="1" class="text-center">Thao tác</th>
                     </tr>
@@ -35,7 +35,16 @@
                                         </div>
                                     </template>
                                     <template x-if="key === 'status'">
-                                        @include('common.table-status-asset')
+                                        <div class="d-flex justify-content-center">
+                                            <span x-text="data[key]" class="rounded tw-p-1" style="border: 1px solid;font-size:11px;"
+                                                :class="{
+                                                    'tw-text-slate-500 tw-bg-slate-100':  data[key] === 'Mới tạo',
+                                                    'tw-text-yellow-500 tw-bg-yellow-100':  data[key] === 'Chờ duyệt',
+                                                    'tw-text-green-500 tw-bg-green-100':    data[key] === 'Đã duyệt',
+                                                    'tw-text-red-500 tw-bg-red-100':    data[key] === 'Từ chối',
+                                                }"
+                                            ></span>
+                                        </div>
                                     </template>
                                     <template x-if="key === 'date'">
                                         <span x-text="formatDate(data.date)"></span>

@@ -25,7 +25,10 @@ class PlanMaintainRepository extends BaseRepository
         }
 
         if (!empty($filters['created_at'])) {
-            $query->whereDate('created_at', $filters['created_at']);
+            $year  = date('Y', strtotime($filters['created_at']));
+            $month = date('m', strtotime($filters['created_at']));
+            $query->whereYear('created_at', '=', $year)
+                ->whereMonth('created_at', '=', $month);
         }
 
         if (!empty($filters['status'])) {

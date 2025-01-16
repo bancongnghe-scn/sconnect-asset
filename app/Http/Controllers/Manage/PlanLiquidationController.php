@@ -120,11 +120,12 @@ class PlanLiquidationController extends Controller
     {
         try {
             $request->validate([
-                'id'        => 'required|integer',
-                'status'    => 'required|integer|max:200',
+                'id'                => 'required|integer',
+                'status'            => 'required|integer|max:200',
+                'reason_cancel'     => 'nullable|string',
             ]);
 
-            $result = $this->planLiquidationService->updatePlanMaintainAsset($request->get('id'), $request->integer('status'));
+            $result = $this->planLiquidationService->updatePlanMaintainAsset($request->get('id'), $request->integer('status'), $request?->reason_cancel);
 
             if (!$result['success']) {
                 return response_error($result['error_code']);
@@ -139,11 +140,12 @@ class PlanLiquidationController extends Controller
     public function changeStatusMultiAssetOfPlan(Request $request)
     {
         $request->validate([
-            'ids'       => 'required|array',
-            'status'    => 'required|integer|max:200',
+            'ids'               => 'required|array',
+            'status'            => 'required|integer|max:200',
+            'reason_cancel'     => 'nullable|string',
         ]);
         try {
-            $result = $this->planLiquidationService->updateMultiPlanMaintainAsset($request->get('ids'), $request->integer('status'));
+            $result = $this->planLiquidationService->updateMultiPlanMaintainAsset($request->get('ids'), $request->integer('status'), $request?->reason_cancel);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

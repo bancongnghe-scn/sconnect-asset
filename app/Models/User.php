@@ -19,14 +19,13 @@ class User extends Authenticatable
     use HasRoles;
     use MigrateAuthorize;
     public const STATUS_ACTIVE = 1;
+    protected $guard_name      = 'web';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $connection = 'db_dev';
-
     protected $fillable = [
         'name',
         'email',
@@ -85,8 +84,8 @@ class User extends Authenticatable
         if (1 != $this->dept_id) {
             $departments = Org::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
                 ->selectRaw(
-                    'organizations.id, 
-        organizations.parent_id, 
+                    'organizations.id,
+        organizations.parent_id,
         CONCAT(cfOrg.cfg_key, " ",organizations.name) AS org_name'
                 )
                 ->orderBy('id')->get();
@@ -95,7 +94,7 @@ class User extends Authenticatable
 
             $deptId = Org::getLastParentId($this->dept_id, $departmentsCollection, 1);
 
-            if ($deptId === null) {
+            if (null === $deptId) {
                 return null;
             }
 

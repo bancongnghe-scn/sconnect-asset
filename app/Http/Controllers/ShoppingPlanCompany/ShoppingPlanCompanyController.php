@@ -39,7 +39,7 @@ class ShoppingPlanCompanyController extends Controller
             'organizations.*' => 'integer',
         ]);
 
-        Auth::user()->canPer('shopping_plan_company.sent_notifi_register');
+        Auth::user()->canPer('shopping_plan_company.sent_notification_register');
 
         try {
             $result = $this->planCompanyService->sentNotificationRegister($request->all());

@@ -2,15 +2,15 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
+                <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="`${data.code} - ${data.name}`"></h4>
                 <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
                     <span x-text="listStatusPlanLiquidation[data.status]" 
                         class="pl-2 pr-2 border-none rounded" 
                         :class="{
-                            'tw-text-blue-400 tw-bg-blue-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
+                            'tw-text-slate-500 tw-bg-slate-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
                             'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ duyệt',
-                            'tw-text-green-400 tw-bg-green-200':    listStatusPlanLiquidation[data.status] === 'Đã duyệt',
+                            'tw-text-green-500 tw-bg-green-100':    listStatusPlanLiquidation[data.status] === 'Đã duyệt',
                             'tw-text-red-500 tw-bg-red-100':    listStatusPlanLiquidation[data.status] === 'Từ chối',
                         }"
                     ></span>
@@ -25,11 +25,17 @@
                                 <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                                 <div class="row mb-3">
                                     <div class="col-2 mb-3">
-                                        <label class="tw-font-bold">Mã kế hoạch</label>
+                                        <span>
+                                            <label class="tw-font-bold">Mã kế hoạch</label>
+                                        </span>
+                                        <span class="text-danger">*</span>
                                         <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
                                     </div>
                                     <div class="col-3 mb-3">
-                                        <label class="tw-font-bold">Tên kế hoạch</label>
+                                        <span>
+                                            <label class="tw-font-bold">Tên kế hoạch</label>
+                                        </span>
+                                        <span class="text-danger">*</span>
                                         <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên kế hoạch">
                                     </div>
                                     <div class="col-3 mb-3">
@@ -123,8 +129,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button @click="data.id ? updatePlan(data.id ) : createPlan()" type="button" class="btn tw-bg-blue-500" data-bs-dismiss="modal">Lưu</button>
-                <button type="button" class="btn btn-sc" data-bs-dismiss="modal" x-show="data.id" @click="sendForApproval(data.id)">Gửi duyệt</button>
+                <button @click="checkCreate ? createPlan() : updatePlan(data.id )" type="button" class="btn tw-bg-blue-500">Lưu</button>
+                <button type="button" class="btn btn-sc" data-bs-dismiss="modal" x-show="!checkCreate" @click="sendForApproval(data.id)">Gửi duyệt</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>

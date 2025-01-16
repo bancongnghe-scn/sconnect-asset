@@ -1,6 +1,6 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
-import {format, parse, isValid} from "date-fns";
+import { format, parse, isValid } from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.store('globalData', {
@@ -9,7 +9,7 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetLost', () => ({
         init() {
-            this.list({page: 1, limit: 10})
+            this.list({ page: 1, limit: 25 })
             this.initDatePicker()
         },
 
@@ -30,14 +30,17 @@ document.addEventListener('alpine:init', () => {
             back: true,
         },
 
+        dateValue: '',
+
         //pagination
         totalPages: null,
         currentPage: 1,
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
+        showButton: false,
 
         // Bảng con multi back
         dataSelectMulti: [],
@@ -60,7 +63,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {
@@ -82,8 +85,8 @@ document.addEventListener('alpine:init', () => {
         },
 
         assets: {
-            'Hoạt động' : 1,
-            'Đã hủy' : 5,
+            'Hoạt động': 1,
+            'Đã hủy': 5,
         },
 
         id: null,
@@ -116,7 +119,7 @@ document.addEventListener('alpine:init', () => {
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
 
-                $('#'+this.assetsLostCount).text(`(${data.data.total ?? 0})`)
+                $('#' + this.assetsLostCount).text(`(${data.data.total ?? 0})`)
             } else {
                 toast.error(response.message)
             }
@@ -152,7 +155,7 @@ document.addEventListener('alpine:init', () => {
             this.data = response.data.data
 
             $('#filterSigningDate').val(null).change()
-            $('#'+this.idModalBackUI).modal('show');
+            $('#' + this.idModalBackUI).modal('show');
             this.loading = false
         },
 
@@ -167,37 +170,37 @@ document.addEventListener('alpine:init', () => {
             this.data = response.data.data
 
             $('#filterSigningDate').val(null).change()
-            $('#'+this.idModalCancelUI).modal('show');
+            $('#' + this.idModalCancelUI).modal('show');
 
             // Reset lại bảng cancel
-            Alpine.store('assetCancelStore').instance.list({page: 1, limit: 10});
+            Alpine.store('assetCancelStore').instance.list({ page: 1, limit: 25 });
             this.loading = false
         },
 
         async handleBackMultiModalUI() {
             this.loading = true
 
-            const ids = Object.keys(this.selectedRow).filter( key => this.selectedRow[key] === true )
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
 
             this.dataSelectMulti = this.dataTable
             this.dataSelectMulti = this.dataSelectMulti.filter(item => ids.includes(item.id.toString())).map(item => Object.assign({}, item));
             Alpine.store('globalData').dataSelectMulti = this.dataSelectMulti;
 
-            $('#'+this.numbAssetLost).text(ids.length);
-            $("#"+this.idModalBackMultiple).modal('show');
+            $('#' + this.numbAssetLost).text(ids.length);
+            $("#" + this.idModalBackMultiple).modal('show');
             this.loading = false
         },
 
         async handleCancelMultiModalUI() {
             this.loading = true
 
-            const ids = Object.keys(this.selectedRow).filter( key => this.selectedRow[key] === true )
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             this.dataSelectMulti = this.dataTable
             this.dataSelectMulti = this.dataSelectMulti.filter(item => ids.includes(item.id.toString())).map(item => Object.assign({}, item));
             Alpine.store('globalData').dataSelectMulti = this.dataSelectMulti;
 
-            $('#'+this.numbAssetCancel).text(ids.length);
-            $("#"+this.idModalCancelMultiple).modal("show");
+            $('#' + this.numbAssetCancel).text(ids.length);
+            $("#" + this.idModalCancelMultiple).modal("show");
             this.loading = false
         },
 
@@ -212,9 +215,9 @@ document.addEventListener('alpine:init', () => {
                 }
             )
 
-            $('#'+this.numbAssetLost).text(this.dataSelectMulti.length);
+            $('#' + this.numbAssetLost).text(this.dataSelectMulti.length);
             if (this.dataSelectMulti.length == 0) {
-                $("#"+this.idModalBackMultiple).modal('hide');
+                $("#" + this.idModalBackMultiple).modal('hide');
             }
         },
 
@@ -229,24 +232,23 @@ document.addEventListener('alpine:init', () => {
                 }
             )
 
-            $('#'+this.numbAssetCancel).text(this.dataSelectMulti.length);
+            $('#' + this.numbAssetCancel).text(this.dataSelectMulti.length);
             if (this.dataSelectMulti.length == 0) {
-                $("#"+this.idModalCancelMultiple).modal('hide');
+                $("#" + this.idModalCancelMultiple).modal('hide');
             }
         },
 
         async confirmBackMultiple() {
             const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             if (ids.length === 0) {
-                toast.error('Vui lòng chọn ngành hàng cần xóa !')
+                toast.error('Vui lòng chọn tài sản !')
                 return
             }
 
 
-            $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+            $("#" + this.idModalConfirmDeleteMultiple).modal('hide')
             await this.list(this.filters)
             this.selectedRow = []
-            toast.success('Xóa danh sách hợp đồng thành công !')
             this.loading = false
         },
 
@@ -257,7 +259,7 @@ document.addEventListener('alpine:init', () => {
                     clearButton: true,
                     locale: localeEn,
                     dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
+                    onSelect: ({ date }) => {
                         this.onChangeDatePicker(el, date)
                     }
                 });
@@ -276,15 +278,15 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'filterSigningDate') {
+            if (el.id === 'filterSigningDate') {
                 this.filters.signing_date = storageFormat
-            } else if(el.id === 'filterFrom') {
+            } else if (el.id === 'filterFrom') {
                 this.filters.from = storageFormat
-            } else if(el.id === 'selectSigningDate') {
+            } else if (el.id === 'selectSigningDate') {
                 this.data.signing_date = storageFormat
-            } else if(el.id === 'selectFrom') {
+            } else if (el.id === 'selectFrom') {
                 this.data.from = storageFormat
-            } else if(el.id === 'selectTo') {
+            } else if (el.id === 'selectTo') {
                 this.data.to = storageFormat
             }
         },
@@ -295,29 +297,31 @@ document.addEventListener('alpine:init', () => {
 
             // Chuyển về trạng thái hoạt động
             this.data.status = this.assets['Hoạt động'];
-            let signing_date = $('#'+this.idModalBackUI+' #'+this.selectSigningDate).val()
-            
-            if (signing_date != null) {
+            let signing_date = $('#' + this.idModalBackUI + ' #' + this.selectSigningDate).val()
+
+            if (signing_date) {
                 const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.data.signing_date = formattedDate;
-            }
 
-            const statusUpdate = {
-                update_status_assets : [this.data]
-            }
+                const statusUpdate = {
+                    update_status_assets: [this.data]
+                }
 
-            const response = await window.apiRevertAsset(statusUpdate)
-            
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
+                const response = await window.apiRevertAsset(statusUpdate)
 
-            toast.success('Cập nhập tài sản thành công !')
-            $('#'+this.idModalBackUI).modal('hide');
-            this.resetData()
-            await this.list(this.filters)
+                if (!response.success) {
+                    this.loading = false
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Cập nhập tài sản thành công !')
+                $('#' + this.idModalBackUI).modal('hide');
+                this.resetData()
+                await this.list(this.filters)
+            } else {
+                toast.error('Vui lòng chọn ngày tìm thấy!');
+            }
 
             this.loading = false
         },
@@ -325,34 +329,36 @@ document.addEventListener('alpine:init', () => {
         async revertMulti() {
             this.loading = true
 
-            let signing_date = $('#'+this.idModalBackMultiple+' #'+this.selectSigningDate).val()
-            if (signing_date != null) {
+            let signing_date = $('#' + this.idModalBackMultiple + ' #' + this.selectSigningDate).val()
+            if (signing_date) {
                 const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.dataSelectMulti.forEach(item => {
                     item.signing_date = formattedDate;
                 });
+
+                // Revert assets về status = 1
+                this.dataSelectMulti.forEach(item => {
+                    item.status = this.assets['Hoạt động'];
+                });
+
+                const statusUpdate = {
+                    update_status_assets: this.dataSelectMulti
+                }
+
+                const response = await window.apiRevertAsset(statusUpdate)
+                if (!response.success) {
+                    this.loading = false
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Cập nhập tài sản thành công !')
+                $("#" + this.idModalBackMultiple).modal('hide');
+                this.resetData()
+                await this.list(this.filters)
+            } else {
+                toast.error('Vui lòng chọn ngày tìm thấy!');
             }
-
-            // Revert assets về status = 1
-            this.dataSelectMulti.forEach(item => {
-                item.status = this.assets['Hoạt động'];
-            });
-
-            const statusUpdate = {
-                update_status_assets : this.dataSelectMulti
-            }
-
-            const response = await window.apiRevertAsset(statusUpdate)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-
-            toast.success('Cập nhập tài sản thành công !')
-            $("#"+this.idModalBackMultiple).modal('hide');
-            this.resetData()
-            await this.list(this.filters)
 
             this.loading = false
         },
@@ -364,29 +370,31 @@ document.addEventListener('alpine:init', () => {
 
             // Trạng thái hủy = 5
             this.data.status = this.assets['Đã hủy'];
-            let signing_date = $('#'+this.idModalCancelUI+' #'+this.selectSigningDate).val()
-            
-            if (signing_date != null) {
+            let signing_date = $('#' + this.idModalCancelUI + ' #' + this.selectSigningDate).val()
+
+            if (signing_date) {
                 const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.data.signing_date = formattedDate;
-            }
 
-            const statusUpdate = {
-                update_status_assets : [this.data]
-            }
+                const statusUpdate = {
+                    update_status_assets: [this.data]
+                }
 
-            const response = await window.apiCanceltAsset(statusUpdate)
-            
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
+                const response = await window.apiCanceltAsset(statusUpdate)
 
-            toast.success('Cập nhập tài sản thành công !')
-            $('#'+this.idModalCancelUI).modal('hide');
-            this.resetData()
-            await this.list(this.filters)
+                if (!response.success) {
+                    this.loading = false
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Cập nhập tài sản thành công !')
+                $('#' + this.idModalCancelUI).modal('hide');
+                this.resetData()
+                await this.list(this.filters)
+            } else {
+                toast.error('Vui lòng chọn ngày hủy!');
+            }
 
             this.loading = false
         },
@@ -394,39 +402,42 @@ document.addEventListener('alpine:init', () => {
         async cancelMulti() {
             this.loading = true
 
-            const signing_date = $('#'+this.idModalCancelMultiple+' #'+this.selectSigningDate).val()
-            const description = $('#'+this.idModalCancelMultiple+' #'+this.reasonCancel).val()
+            const signing_date = $('#' + this.idModalCancelMultiple + ' #' + this.selectSigningDate).val()
+            const description = $('#' + this.idModalCancelMultiple + ' #' + this.reasonCancel).val()
 
-            if (signing_date != null) {
+            if (signing_date) {
                 const formattedDate = format(parse(signing_date, 'dd/MM/yyyy', new Date()), 'y-M-d');
                 this.dataSelectMulti.forEach(item => {
                     item.signing_date = formattedDate;
                 });
+
+                // Cancel assets về status = 5
+                this.dataSelectMulti.forEach(item => {
+                    item.status = this.assets['Đã hủy'];
+                    item.description = description
+                });
+
+                const statusUpdate = {
+                    update_status_assets: this.dataSelectMulti
+                }
+
+                const response = await window.apiRevertAsset(statusUpdate)
+                if (!response.success) {
+                    this.loading = false
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Cập nhập tài sản thành công !')
+                $("#" + this.idModalCancelMultiple).modal('hide');
+                this.resetData()
+                await this.list(this.filters)
+
+                Alpine.store('assetCancelStore').instance.list({ page: 1, limit: 25 });
+            } else {
+                toast.error('Vui lòng chọn ngày hủy!');
             }
 
-            // Cancel assets về status = 5
-            this.dataSelectMulti.forEach(item => {
-                item.status = this.assets['Đã hủy'];
-                item.description = description
-            });
-
-            const statusUpdate = {
-                update_status_assets : this.dataSelectMulti
-            }
-
-            const response = await window.apiRevertAsset(statusUpdate)
-            if (!response.success) {
-                this.loading = false
-                toast.error(response.message)
-                return
-            }
-
-            toast.success('Cập nhập tài sản thành công !')
-            $("#"+this.idModalCancelMultiple).modal('hide');
-            this.resetData()
-            await this.list(this.filters)
-
-            Alpine.store('assetCancelStore').instance.list({page: 1, limit: 10});
             this.loading = false
         },
 
@@ -444,17 +455,21 @@ document.addEventListener('alpine:init', () => {
         },
 
         count() {
-            const ids = Object.keys(this.selectedRow).filter( key => this.selectedRow[key] === true )
-            
-            $('#'+this.numberShow).text(ids.length);
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+            if (ids.length) {
+                this.showButton = true
+            } else {
+                this.showButton = false
+            }
+            $('#' + this.numberShow).text(ids.length);
         },
 
         unselectedAll() {
             this.selectedRow = [];
-            $('#'+this.numberShow).text(0);
+            $('#' + this.numberShow).text(0);
 
-            if ($('.manage_assets #'+this.selectedAll).is(':checked')) {
-                $('.manage_assets #'+this.selectedAll).click();
+            if ($('.manage_assets #' + this.selectedAll).is(':checked')) {
+                $('.manage_assets #' + this.selectedAll).click();
             }
         }
     }))

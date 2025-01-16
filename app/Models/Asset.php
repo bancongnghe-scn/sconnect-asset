@@ -91,7 +91,7 @@ class Asset extends Model
     protected function locationText(): Attribute
     {
         return Attribute::make(
-            get: fn () => self::LOCATION_NAME[$this->location],
+            get: fn () => $this->location ? self::LOCATION_NAME[$this->location] : null,
         );
     }
 

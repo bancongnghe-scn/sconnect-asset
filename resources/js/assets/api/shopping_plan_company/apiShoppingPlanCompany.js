@@ -72,7 +72,7 @@ window.apiShowShoppingPlanCompany = async function (id) {
 
 window.apiSentNotificationRegister = async function (id, organization = []) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/sent-notification-register/", {
+        const response = await axios.post("/api/shopping-plan-company/sent-notification-register", {
             id: id, organization: organization
         })
 

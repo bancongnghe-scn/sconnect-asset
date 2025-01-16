@@ -1,6 +1,6 @@
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
-import {format, parse, isValid} from "date-fns";
+import { format, parse, isValid } from "date-fns";
 
 document.addEventListener('alpine:init', () => {
     Alpine.store('assetPlanLiquidation', {
@@ -9,7 +9,7 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetPlanLiquidation', () => ({
         init() {
-            this.list({page: 1, limit: 10})
+            this.list({ page: 1, limit: 10 })
             Alpine.store('assetPlanLiquidation').instance = this
             this.initDatePicker()
             this.filterPlanLiquidation()
@@ -38,7 +38,7 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
 
         //data
@@ -46,7 +46,7 @@ document.addEventListener('alpine:init', () => {
             name_code: null,
             status: null,
             date: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {
@@ -59,14 +59,15 @@ document.addEventListener('alpine:init', () => {
         },
         listStatusPlanLiquidation: {
             0: 'Chọn trạng thái',
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
-            3: 'Từ chối',
+            1: 'Mới tạo',
+            2: 'Chờ duyệt',
+            3: 'Đã duyệt',
+            4: 'Từ chối',
         },
         listStatusAssetOfPlan: {
-            1 : 'Chưa duyệt',
-            2 : 'Đã duyệt',
-            3 : 'Từ chối'
+            1: 'Chưa duyệt',
+            2: 'Đã duyệt',
+            3: 'Từ chối'
         },
         id: null,
         selectedValue: null,
@@ -78,8 +79,8 @@ document.addEventListener('alpine:init', () => {
         filterSigningDate: "filterSigningDate",
 
         // Modal plan
-        dataTbodyListAssetLiqui : [],
-        dataTheadListAssetLiqui : {
+        dataTbodyListAssetLiqui: [],
+        dataTheadListAssetLiqui: {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             reason: 'Lý do thanh lý',
@@ -89,14 +90,18 @@ document.addEventListener('alpine:init', () => {
         selectedRowOfModalShowPlan: [],
 
         // Modal select asset
-        dataTbodySelectAsset : [],
-        dataTheadSelectAsset : {
+        dataTbodySelectAsset: [],
+        dataTheadSelectAsset: {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             reason: 'Lý do thanh lý',
             price_liquidation: 'Giá đề xuất thanh lý',
         },
         selectedRowAssetToPlan: [],
+        reasonCancel: "",
+        idCancel: "",
+        multiCancel: false,
+        checkCreate: false,
 
         assetsLiquidationCount: "assetsLiquidationCount",
 
@@ -113,8 +118,8 @@ document.addEventListener('alpine:init', () => {
                 this.total = data.data.total ?? 0
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
-                
-                $('#'+this.assetsLiquidationCount).text(`(${data.data.total ?? 0})`)
+
+                $('#' + this.assetsLiquidationCount).text(`(${data.data.total ?? 0})`)
             } else {
                 toast.error(response.message)
             }
@@ -142,7 +147,7 @@ document.addEventListener('alpine:init', () => {
             this.data = response.data.data
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
 
-            $('#'+this.idModalEditPlanLiquidation).modal('show');
+            $('#' + this.idModalEditPlanLiquidation).modal('show');
             this.loading = false
         },
 
@@ -157,12 +162,12 @@ document.addEventListener('alpine:init', () => {
                 this.dataTbodySelectAsset = this.dataTbodySelectAsset.filter(item => !ids_selected_pre.map(Number).includes(item.id))
             }
 
-            $('#'+this.idModalSelectAsset).modal('show');
+            $('#' + this.idModalSelectAsset).modal('show');
         },
 
         // Update asset to plan liquidation
         async addAssetToPlanLiquidation() {
-            const asset_ids = Object.keys(this.selectedRowAssetToPlan).filter( key => this.selectedRowAssetToPlan[key] === true )
+            const asset_ids = Object.keys(this.selectedRowAssetToPlan).filter(key => this.selectedRowAssetToPlan[key] === true)
             const dataUpdate = {
                 'plan_id': this.id,
                 'asset_ids': asset_ids
@@ -175,7 +180,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-    
+
                 // Update modal select asset
                 const res = await window.apiShowPlanLiquidation(this.id)
                 if (!res.success) {
@@ -201,7 +206,7 @@ document.addEventListener('alpine:init', () => {
 
             this.selectedRowAssetToPlan = []
 
-            $('#'+this.idModalSelectAsset).modal('hide');
+            $('#' + this.idModalSelectAsset).modal('hide');
         },
 
         async modalRemoveSelectAsset(id) {
@@ -216,7 +221,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
             } else {
-                Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation = 
+                Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation =
                     Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation
                         .filter(item => item.id !== plan_maintain_asset_id)
             }
@@ -227,9 +232,9 @@ document.addEventListener('alpine:init', () => {
         async handleShowModalCreatePlan() {
             this.loading = true
 
-            this.id = null     
-            $('#'+this.idModalEditPlanLiquidation).modal('show')
-            this.data = []
+            this.id = null
+            this.checkCreate = true
+            $('#' + this.idModalEditPlanLiquidation).modal('show')
             this.dataTbodyListAssetLiqui = []
 
             this.loading = false
@@ -240,30 +245,48 @@ document.addEventListener('alpine:init', () => {
 
             const data_asset_liquidation_prev = Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation
             let response
-            
+
             if (data_asset_liquidation_prev && data_asset_liquidation_prev.length > 0) {
-                const assets_id = { assets_id: data_asset_liquidation_prev.map(item => ({
-                    id: item.id,
-                    price_liquidation: item.price_liquidation
-                }))};
+                const assets_id = {
+                    assets_id: data_asset_liquidation_prev.map(item => ({
+                        id: item.id,
+                        price_liquidation: item.price_liquidation
+                    }))
+                };
 
                 response = await window.apiCreatePlanLiquidation({
                     ...assets_id,
                     ...this.data
                 })
             } else {
-                response = await window.apiCreatePlanLiquidation(this.data)
+                if (this.data.code && this.data.name) {
+                    response = await window.apiCreatePlanLiquidation(this.data)
+                } else {
+                    if (!this.data.code && !this.data.name) {
+                        toast.error('Vui lòng điền mã và tên kế hoạch thanh lý!')
+                    } else {
+                        if (!this.data.code) {
+                            toast.error('Vui lòng điền mã kế hoạch thanh lý!')
+                        }
+                        if (!this.data.name) {
+                            toast.error('Vui lòng điền tên kế hoạch thanh lý!')
+                        }
+                    }
+                    return
+                }
             }
-            
+
             if (!response.success) {
                 toast.error(response.message)
+                this.loading = false
                 return
             }
 
             this.dataTbodyListAssetLiqui = []
             Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation = []
             this.list(this.filters)
-
+            $('#' + this.idModalEditPlanLiquidation).modal('hide');
+            this.checkCreate = false
             this.loading = false
         },
 
@@ -281,13 +304,14 @@ document.addEventListener('alpine:init', () => {
             }
             this.list(this.filters)
             this.id = null
+            $('#' + this.idModalEditPlanLiquidation).modal('hide');
             this.loading = false
         },
 
         async confirmRemoveMultiplePlan() {
             this.loading = true
 
-            const ids = Object.keys(this.selectedRow).filter( key => this.selectedRow[key] === true )
+            const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
 
             const dataRemove = {
                 plan_ids: ids
@@ -318,7 +342,7 @@ document.addEventListener('alpine:init', () => {
             this.dataTable = this.dataTable.filter(item => item.id !== id);
 
             this.loading = false
-            
+
         },
 
         async sendForApproval(planId) {
@@ -329,7 +353,7 @@ document.addEventListener('alpine:init', () => {
                 note: this.data['note'] ?? '',
                 status: +Object.entries(this.listStatusPlanLiquidation).find(([key, value]) => value === 'Chờ duyệt')?.[0]
             }
-            
+
             const response = await window.apiUpdatePlanLiquidation(planId, _data)
             if (!response.success) {
                 toast.error(response.message)
@@ -340,7 +364,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async showPlanLiquidation (planId) {
+        async showPlanLiquidation(planId) {
             this.loading = true
 
             this.id = planId
@@ -352,12 +376,21 @@ document.addEventListener('alpine:init', () => {
             this.data = response.data.data
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
 
-            $('#'+this.idModalShowPlanLiquidation).modal('show');
+            $('#' + this.idModalShowPlanLiquidation).modal('show');
 
             this.loading = false
         },
 
-        async handleUpdateAssetOfPlan (id, status_name) {
+        async showCancel(id, multi = false) {
+            this.idCancel = id
+            if (multi) {
+                this.multiCancel = true
+            }
+
+            $('#idshowCancel').modal('show');
+        },
+
+        async handleUpdateAssetOfPlan(id, status_name) {
             this.loading = true
 
             const status_asset = Number(Object.keys(this.listStatusAssetOfPlan).find(
@@ -366,9 +399,10 @@ document.addEventListener('alpine:init', () => {
 
             const approve = {
                 id: id,
-                status: status_asset
+                status: status_asset,
+                reason_cancel: this.reasonCancel
             }
-            
+
             const response = await window.apiUpdatePlanLiquidationAsset(approve)
             if (!response.success) {
                 toast.error(response.message)
@@ -380,21 +414,22 @@ document.addEventListener('alpine:init', () => {
                     item.status = status_asset;
                 }
             });
-
+            this.reasonCancel = ""
+            this.idCancel = ""
             this.loading = false
         },
 
-        async handleUpdateAssetOfPlanMulti(action)
-        {
+        async handleUpdateAssetOfPlanMulti(action) {
             this.loading = true
 
             const status_asset = Number(Object.keys(this.listStatusAssetOfPlan).find(
                 k => this.listStatusAssetOfPlan[k] === (action == 'approve' ? 'Đã duyệt' : 'Từ chối')
             ))
-            const ids = Object.keys(this.selectedRowOfModalShowPlan).filter( key => this.selectedRowOfModalShowPlan[key] === true )
+            const ids = Object.keys(this.selectedRowOfModalShowPlan).filter(key => this.selectedRowOfModalShowPlan[key] === true)
             const dataUpdate = {
                 ids: ids,
-                status: status_asset
+                status: status_asset,
+                reason_cancel: this.reasonCancel
             }
 
             const response = await window.apiUpdateMultiAssetOfPlan(dataUpdate)
@@ -405,7 +440,8 @@ document.addEventListener('alpine:init', () => {
 
             this.dataTbodyListAssetLiqui.forEach(item => {
                 if (ids.map(Number).includes(item.id)) {
-                    item.status = status_asset;
+                    item.status = status_asset
+                    item.note   = this.reasonCancel
                 }
             });
             this.selectedRowOfModalShowPlan = []
@@ -413,6 +449,8 @@ document.addEventListener('alpine:init', () => {
                 $('.manage_assets #selectedAllAssetOfPlanLiqui').click();
             }
 
+            this.reasonCancel = ""
+            this.multiCancel = false
             this.loading = false
         },
 
@@ -430,7 +468,7 @@ document.addEventListener('alpine:init', () => {
                 return
             }
             this.list(this.filters);
-            $('#'+this.idModalShowPlanLiquidation).modal('hide');
+            $('#' + this.idModalShowPlanLiquidation).modal('hide');
 
             this.loading = false
         },
@@ -451,20 +489,22 @@ document.addEventListener('alpine:init', () => {
                     autoClose: true,
                     clearButton: true,
                     locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
+                    view: 'months',
+                    minView: 'months',
+                    dateFormat: 'MMMM yyyy',
+                    onSelect: ({ date }) => {
                         const created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
                         const created_at_format = created_at
-                            ? format(parse(created_at, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd')
+                            ? format(parse(created_at, 'MMMM yyyy', new Date()), 'yyyy-MM')
                             : null;
                         this.list({
                             page: 1,
-                            limit: 10,
+                            limit: 25,
                             name_code: $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val(),
                             status: $('#tableAssetPlanLiquidation #statusPlanLiquidation').val(),
                             created_at: created_at_format,
                         })
-                        
+
                         this.onChangeDatePicker(el, date)
                     }
                 });
@@ -483,15 +523,15 @@ document.addEventListener('alpine:init', () => {
 
         onChangeDatePicker(el, date) {
             const storageFormat = date != null ? format(date, 'yyyy-MM-dd') : null
-            if(el.id === 'filterSigningDate') {
-                this.filters.signing_date = storageFormat
-            } else if(el.id === 'filterFrom') {
+            if (el.id === 'filterSigningDate') {
+                this.filters.signing_date = date != null ? format(date, 'yyyy-MM') : null;
+            } else if (el.id === 'filterFrom') {
                 this.filters.from = storageFormat
-            } else if(el.id === 'selectSigningDate') {
+            } else if (el.id === 'selectSigningDate') {
                 this.data.signing_date = storageFormat
-            } else if(el.id === 'selectFrom') {
+            } else if (el.id === 'selectFrom') {
                 this.data.from = storageFormat
-            } else if(el.id === 'selectTo') {
+            } else if (el.id === 'selectTo') {
                 this.data.to = storageFormat
             }
         },
@@ -500,14 +540,14 @@ document.addEventListener('alpine:init', () => {
             if (!date) {
                 date = new Date();
             }
-        
+
             // Tạo đối tượng Date và định dạng theo d/m/Y ngắn gọn
             const parsedDate = new Date(date);
             return isNaN(parsedDate) ? '' : parsedDate.toLocaleDateString('en-GB');
         },
 
         filterPlanLiquidation() {
-            $('#tableAssetPlanLiquidation #'+this.statusPlanLiquidation+', #tableAssetPlanLiquidation #'+this.filterSigningDate).on('change', function () {
+            $('#tableAssetPlanLiquidation #' + this.statusPlanLiquidation + ', #tableAssetPlanLiquidation #' + this.filterSigningDate).on('change', function () {
                 let name_code = $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val();
                 let status = $('#tableAssetPlanLiquidation #statusPlanLiquidation').val();
                 let created_at = $('#tableAssetPlanLiquidation #filterSigningDate').val();
@@ -516,7 +556,7 @@ document.addEventListener('alpine:init', () => {
                     : null;
                 Alpine.store('assetPlanLiquidation').instance.list({
                     page: 1,
-                    limit: 10,
+                    limit: 25,
                     name_code: name_code,
                     status: status,
                     created_at: created_at_format

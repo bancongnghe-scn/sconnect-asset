@@ -1,6 +1,6 @@
 <table id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
     <tr>
         <th class="text-center">Đơn vị</th>
         <th class="text-center">Loại tài sản</th>

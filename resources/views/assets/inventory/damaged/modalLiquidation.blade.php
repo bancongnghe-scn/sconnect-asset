@@ -19,10 +19,10 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <label class="tw-font-bold">Lý do thanh lý</label>
+                        <div class="col-8">
+                            <label class="tw-font-bold">Lý do thanh lý <span class="text-danger">*</span></label>
                             <div class="input-group">
-                                <textarea type="text" class="form-control tw-min-h-8" id="reasonLiquidation" placeholder="Nhập lý do"></textarea>
+                                <input type="text" class="form-control tw-min-h-8" id="reasonLiquidation" placeholder="Nhập lý do"></input>
                             </div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                         <thead>
                         <tr>
                             <template x-for="(columnName, key) in dataColumnsLiquidation">
-                                <th rowspan="1" colspan="1" x-text="columnName"></th>
+                                <th rowspan="1" colspan="1" x-text="columnName" :class="{ 'text-end': key === 'price_liquidation' }"></th>
                             </template>
                             <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
                         </tr>
@@ -55,7 +55,8 @@
                                                 placeholder="Nhập giá trị thanh lý" 
                                                 class="form-control"
                                                 :value="formattedPrice"
-                                                @input="formatPrice">
+                                                @input="formatPrice"
+                                                @keydown="preventNonNumeric">
                                         </template>
                                         <template x-if="key == 'find_reason'">
                                             <textarea x-model="data[key]" placeholder="Nhập mô tả" class="border-0 rounded-1"></textarea>

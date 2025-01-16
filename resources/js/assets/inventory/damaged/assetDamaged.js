@@ -8,9 +8,9 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetDamaged', () => ({
         init() {
+            this.list({ page: 1, limit: 25 })
             window.initSelect2Modal(this.idModalRepair)
             this.onChangeSelect2()
-            this.list({ page: 1, limit: 10 })
             this.initDatePicker()
             this.closeModalRepair()
         },
@@ -38,13 +38,13 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
 
         //data
         filters: {
             name_code: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {
@@ -91,6 +91,11 @@ document.addEventListener('alpine:init', () => {
             code: 'Mã tài sản',
             name: 'Tên tài sản',
             date: 'Ngày hỏng',
+        },
+        filterMore: {
+            name_code: null,
+            limit: 25,
+            page: 1
         },
         dataModalDamagedMore: [],
         selectedDamagedMore: [],
@@ -158,6 +163,16 @@ document.addEventListener('alpine:init', () => {
             this.data.price_liquidation = rawValue;
         },
 
+        preventNonNumeric(event) {
+            if (!/^\d$/.test(event.key) &&
+                event.key !== 'Backspace' &&
+                event.key !== 'ArrowLeft' &&
+                event.key !== 'ArrowRight' &&
+                event.key !== 'Delete') {
+                event.preventDefault();
+            }
+        },
+
         formatDate(date) {
             const d = new Date(date);
             const day = String(d.getDate()).padStart(2, '0');
@@ -185,6 +200,11 @@ document.addEventListener('alpine:init', () => {
             this.data.date_repair = $('#dateRepair').val() ? format(parse($('#dateRepair').val(), 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : null
             this.data.date_repaired = $('#dateRepaired').val() ? format(parse($('#dateRepaired').val(), 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd') : null
 
+            // Required
+            if (!this.data.date_repair) {
+                return toast.error('Vui lòng nhập ngày sửa chữa!');
+            }
+
             const dataUpdate = {
                 ...this.data,
                 assets: this.dataRepair
@@ -199,7 +219,7 @@ document.addEventListener('alpine:init', () => {
             $('#' + this.idModalRepair).modal('hide')
 
             // Reset lại bảng repair
-            Alpine.store('listAssetRepair').instance.list({ page: 1, limit: 10 })
+            Alpine.store('listAssetRepair').instance.list({ page: 1, limit: 25 })
 
             this.loading = false
         },
@@ -220,7 +240,7 @@ document.addEventListener('alpine:init', () => {
         async getAssetDamagedModal(type) {
 
             const response = await window.apiGetAssetDamaged({
-                name_code: null
+                name_code: this.filterMore.name_code
             })
 
             if (type == 'repair') {
@@ -358,6 +378,9 @@ document.addEventListener('alpine:init', () => {
         async completeLiquidation() {
             const dateLiquidation = $('#' + this.dateLiquidation).val()
             const reasonLiquidation = $('#' + this.reasonLiquidation).val()
+            if (!reasonLiquidation) {
+                return toast.error('Yêu cầu nhập lý do!');
+            }
             const assetsLiquidation = this.dataLiquidation.map(item => ({
                 id: item.id,
                 price_liquidation: item.price_liquidation,

@@ -8,7 +8,7 @@
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                 <div class="d-flex gap-2">
-                    @can('shopping_plan_company.sent_notifi_register')
+                    @can('shopping_plan_company.sent_notification_register')
                         <button class="btn btn-primary" @click="sentNotificationRegister()">Gửi thông báo</button>
                     @endcan
                     @can('shopping_plan_company.crud')

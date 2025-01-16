@@ -39,7 +39,7 @@
                                 </template>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-body" @click="window.location.href = `/shopping-plan-organization/year/view/${data.id}`">
-                                        <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                     </button>
                                     <template x-if="new Date() >= new Date(window.formatDate(data.start_time))
                                                       && new Date() <= new Date(window.formatDate(data.end_time))">

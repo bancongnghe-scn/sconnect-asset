@@ -1,7 +1,7 @@
 <table x-data="{can_handle: {{ json_encode(Auth::check() && Auth::user()->can('shopping_plan_company.handle_shopping')) }}}"
        id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
     <tr>
         <th class="text-center"
             x-show="action === 'update' && [
@@ -88,25 +88,21 @@
                     >
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.price"
+                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price"
                            :disabled="isDisabled">
                 </td>
                 <td>
-                    <input class="form-control tw-w-fit" type="number" min="1" x-model="assetRegister.tax_money"
+                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"
                            :disabled="isDisabled">
                 </td>
                 <td x-text="total ?? '-'" class="text-center"></td>
                 <td>
-                        <span x-data="{
-                             model: assetRegister.supplier_id,
-                             init() {this.$watch('assetRegister.supplier_id', (newValue) => {if (this.model !== newValue) {this.model = newValue}})}
-                        }" @select-change="assetRegister.supplier_id = $event.detail">
-                                    @include('common.select2.extent.select2', [
-                                          'placeholder' => 'Chọn NCC',
-                                          'values' => 'listSupplier',
-                                          'disabled' => "isDisabled"
-                                    ])
-                        </span>
+                    @include('common.select_custom.extent.select_single', [
+                        'selected' => 'assetRegister.supplier_id',
+                        'options' => 'listSupplier',
+                        'placeholder' => 'Chọn NCC',
+                        'disabled' => "isDisabled"
+                    ])
                 </td>
                 <td>
                     <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link"
@@ -116,9 +112,9 @@
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"
                     class="text-center align-middle">
                     {{-- button view --}}
-                    <button @click="window.location.href = `/shopping-plan-organization/week/view/${organization.id}`"
+                    <button @click="handleShowModalDetailOrganization(organization.id)"
                             class="border-0 bg-body">
-                        <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
                     </button>
                 </td>
             </tr>

@@ -6,7 +6,7 @@ document.addEventListener('alpine:init', () => {
     });
     Alpine.data('tableAssetLiquidation', () => ({
         init() {
-            this.list({page: 1, limit: 10})
+            this.list({page: 1, limit: 25})
             this.disabledDatePicker()
         },
 
@@ -29,7 +29,7 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
+        limit: 25,
         selectedRow: [],
 
         // Bảng con multi back
@@ -44,7 +44,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            limit: 10,
+            limit: 25,
             page: 1
         },
         data: {
@@ -132,7 +132,7 @@ document.addEventListener('alpine:init', () => {
         resetFilters() {
             this.filters = {
                 name_code: null,
-                limit: 10,
+                limit: 25,
                 page: 1
             }
         },
@@ -180,6 +180,8 @@ document.addEventListener('alpine:init', () => {
             if (this.dataPlanLiquidation.length == 0) {
                 $("#"+this.idModalCreatePlan).modal('hide');
             }
+
+            $('#'+this.numberLiquidation).text(this.dataPlanLiquidation.length);
         },
 
         disabledDatePicker() {
@@ -219,7 +221,7 @@ document.addEventListener('alpine:init', () => {
             this.reloadPage()
 
             // Reset lại bảng plan
-            Alpine.store('assetPlanLiquidation').instance.list({page: 1, limit: 10});
+            Alpine.store('assetPlanLiquidation').instance.list({page: 1, limit: 25});
 
             this.loading = false
         }

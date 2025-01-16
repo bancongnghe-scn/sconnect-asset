@@ -8,7 +8,6 @@
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
                     this.options = newValue
-                    this.selected = null
                 })
             },
             open: false,
@@ -39,7 +38,7 @@
         class="form-select tw-w-full"
         type="button"
         :class="selected? '' : 'tw-text-gray-500'"
-        x-text="selected ? options.find((item) => +item.id === +selected)?.name : '{{ $placeholder ?? 'Chọn ...' }}'"
+        x-text="options.find(item => +item.id === +selected)?.name || '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >

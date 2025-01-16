@@ -23,7 +23,6 @@
                              alt="User Avatar">
                         <span class="display-name-u ms-2">
                             {{ \Illuminate\Support\Facades\Auth::user()?->name }}
-                            <i class="bi-caret-down-fill"></i>
                         </span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

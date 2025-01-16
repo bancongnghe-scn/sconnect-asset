@@ -88,6 +88,8 @@ Route::middleware('checkAuth')->group(function () {
             Route::post('send-approval', 'sendApprovalWeek');
             Route::get('supplier/{id}', 'getSupplierOfShoppingPlanWeek');
             Route::get('complete/{id}', 'completeShoppingPlanWeek');
+            Route::post('sent-notification-register', 'sentNotificationRegisterWeek');
+            Route::delete('delete/{id}', 'deleteShoppingPlanCompanyWeek');
         });
     });
 
