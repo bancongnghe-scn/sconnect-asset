@@ -103,6 +103,11 @@ return [
     AppErrorCode::CODE_2097 => 'Gắn đơn vị thực hiện bảo dưỡng cho kế hoạch thất bại !',
     AppErrorCode::CODE_2098 => 'Gắn người phụ trách cho kế hoạch thất bại !',
     AppErrorCode::CODE_2099 => 'Tạo kế hoạch bảo dưỡng thành công !',
+    AppErrorCode::CODE_2100 => 'Kế hoạch bảo dưỡng không tồn tai !',
+    AppErrorCode::CODE_2101 => 'Lưu kế hoạch bảo dưỡng thất bại !',
+    AppErrorCode::CODE_2102 => 'Xóa kế hoạch bảo dưỡng thất bại !',
+    AppErrorCode::CODE_2103 => 'Trạng thái kế hoạch bảo dưỡng không hợp lệ !',
+    AppErrorCode::CODE_2104 => 'Cập nhật thời gian bảo dưỡng cho tài sản thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

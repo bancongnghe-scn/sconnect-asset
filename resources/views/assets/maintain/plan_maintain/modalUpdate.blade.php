@@ -2,11 +2,18 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="title + ' kế hoạch bảo dưỡng'"></h4>
+                <div class="d-flex align-items-center tw-gap-x-3">
+                    <h4 class="modal-title" x-text="title + ' kế hoạch bảo dưỡng'"></h4>
+                    <div class="tw-h-fit">
+                        @include('component.status.status_plan_maintain', [
+                          'status' => 'data.status'
+                        ])
+                    </div>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="d-flex">
+                <div class="d-flex tw-gap-x-3">
                     <div class="flex-grow-1">
                         <div class="tw-grid tw-grid-cols-5 gap-3 align-items-end">
                             <div class="tw-col-span-2">
@@ -66,7 +73,6 @@
                                    x-text="`Danh sách tài sản bảo dưỡng (${data.assets_maintain?.length})`">
                                 </a>
                                 <div>
-                                    <button class="btn btn-sm btn-sc">Lưu</button>
                                     <button class="btn btn-sm border-success color-sc" @click="completeAssetMaintain()">
                                         <i class="bi bi-check-lg"></i> Hoàn thành
                                     </button>
@@ -98,7 +104,8 @@
                                                 <tr>
                                                     <td class="text-center align-middle">
                                                         <input type="checkbox" x-model="selectedRowAssetMaintain[value.id]"
-                                                               x-bind:checked="selectedRowAssetMaintain[value.id]">
+                                                               x-bind:checked="selectedRowAssetMaintain[value.id]"
+                                                               :disabled="value.status === STATUS_ASSET_MAINTAIN_COMPLETE">
                                                     </td>
                                                     <td class="text-center align-middle" x-text="value.code"></td>
                                                     <td class="align-middle" x-text="value.name"></td>
@@ -132,7 +139,10 @@
                                     </div>
                                     <div class="d-flex justify-content-end tw-gap-x-3">
                                         <button class="btn btn-sm border-success color-sc">Hủy lịch bảo dưỡng</button>
-                                        <button class="btn btn-sm btn-sc" @click="">Hoàn thành kế hoạch</button>
+                                        <button class="btn btn-sm btn-sc" @click="$('#modalConfirmCompletePlan').modal('show')">
+                                            Hoàn thành kế hoạch
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" @click="updatePlanMaintain()">Lưu</button>
                                     </div>
                                 </div>
                             </div>

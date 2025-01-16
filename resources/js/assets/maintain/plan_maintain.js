@@ -189,6 +189,63 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async updatePlanMaintain() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdatePlanMaintain(this.id, this.data)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Cập nhật kế hoạch bảo dưỡng thành công !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async deletePlanMaintain() {
+            this.loading = true
+            try {
+                const response = await window.apiDeletePlanMaintain(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                toast.success('Xóa kế hoạch bảo dưỡng thành công !')
+                this.dataTable = this.dataTable.filter((item) => +item.id !== +this.id)
+                $('#modalUpdatePlanMaintain').modal('hide')
+                $('#modalConfirmDelete').modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async completePlanMaintain() {
+            this.loading = true
+            try {
+                const response = await window.apiCompletePlanMaintain(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+
+                this.list(this.filters)
+                $('#modalUpdatePlanMaintain').modal('hide')
+                $('#modalConfirmCompletePlan').modal('hide')
+                toast.success('Hoàn thành kế hoạch bảo dưỡng thành công !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModalUI(action, id = null) {
             this.action = action
             this.id = id
@@ -201,6 +258,11 @@ document.addEventListener('alpine:init', () => {
                 this.title = action === 'update' ? 'Cập nhật' : 'Chi tiết'
                 $('#modalUpdatePlanMaintain').modal('show')
             }
+        },
+
+        handleShowModalConfirmDelete(id) {
+           this.id = id
+           $('#modalConfirmDelete').modal('show')
         },
 
         async completeAssetMaintain() {
@@ -218,6 +280,8 @@ document.addEventListener('alpine:init', () => {
                 }
 
                 configs.filter((item) => item.status = STATUS_ASSET_MAINTAIN_COMPLETE)
+                toast.success('Hoàn thành tài sản bảo dưỡng thành công !')
+                this.selectedRowAssetMaintain = []
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -291,7 +355,11 @@ document.addEventListener('alpine:init', () => {
 
         selectedAllAssetMaintain() {
             this.checkedAllAssetMaintain = !this.checkedAllAssetMaintain
-            this.data.assets_maintain.forEach((item) => this.selectedRowAssetMaintain[item.id] = this.checkedAllAssetMaintain)
+            this.data.assets_maintain.forEach((item) => {
+                if (+item.status === STATUS_ASSET_MAINTAINING) {
+                    this.selectedRowAssetMaintain[item.id] = this.checkedAllAssetMaintain
+                }
+            })
         }
     }));
 });

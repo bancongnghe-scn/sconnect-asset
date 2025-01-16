@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePlanMaintainRequest;
+use App\Http\Requests\UpdatePlanMaintainRequest;
 use App\Services\MaintainService;
 use Illuminate\Http\Request;
 
@@ -142,6 +143,54 @@ class MaintainController extends Controller
 
         try {
             $result = $this->maintainService->completeAssetMaintain($request->get('configs'));
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function updatePlanMaintain(string $id, UpdatePlanMaintainRequest $request)
+    {
+        try {
+            $result = $this->maintainService->updatePlanMaintain($id, $request->validated());
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function completePlanMaintain(string $id)
+    {
+        try {
+            $result = $this->maintainService->completePlanMaintain($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function deletePlanMaintain(string $id)
+    {
+        try {
+            $result = $this->maintainService->deletePlanMaintain($id);
             if (!$result['success']) {
                 return response_error($result['error_code']);
             }

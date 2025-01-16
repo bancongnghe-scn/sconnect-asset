@@ -15,6 +15,13 @@
                     border: '1px solid #52C41A'
                 };
             }
+            else if (status === STATUS_ASSET_NOT_MAINTAINED) {
+                return {
+                    color: '#667085',
+                    backgroundColor: '#6670851A',
+                    border: '1px solid #667085'
+                };
+            }
             return {};
         }
     }"

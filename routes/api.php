@@ -230,6 +230,9 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('createPlanMaintain', 'createPlanMaintain');
         Route::get('getInfoPlanMaintain/{id}', 'getInfoPlanMaintain');
         Route::post('completeAssetMaintain', 'completeAssetMaintain');
+        Route::post('updatePlanMaintain/{id}', 'updatePlanMaintain');
+        Route::get('completePlanMaintain/{id}', 'completePlanMaintain');
+        Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
     });
 });
 

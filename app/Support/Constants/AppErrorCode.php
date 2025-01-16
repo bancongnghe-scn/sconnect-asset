@@ -104,6 +104,11 @@ class AppErrorCode
     public const CODE_2097 = 2097; //  Gắn đơn vị thực hiện bảo dưỡng cho kế hoạch thất bại !
     public const CODE_2098 = 2098; //  Gắn người phụ trách cho kế hoạch thất bại !
     public const CODE_2099 = 2099; //  Tạo kế hoạch bảo dưỡng thành công !
+    public const CODE_2100 = 2100; //  Kế hoạch bảo dưỡng không tồn tai !
+    public const CODE_2101 = 2101; //  Lưu kế hoạch bảo dưỡng thất bại !
+    public const CODE_2102 = 2102; //  Xóa kế hoạch bảo dưỡng thất bại !
+    public const CODE_2103 = 2103; //  Trạng thái kế hoạch bảo dưỡng không hợp lệ !
+    public const CODE_2104 = 2104; //  Cập nhật thời gian bảo dưỡng cho tài sản thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

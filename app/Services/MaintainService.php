@@ -9,6 +9,7 @@ use App\Http\Resources\ListPlanMaintainResource;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainAsset;
 use App\Repositories\AssetRepository;
+use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainAssetRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\PlanMaintainChargeRepository;
@@ -32,6 +33,7 @@ class MaintainService
         protected PlanMaintainOrganizationRepository $planMaintainOrganizationRepository,
         protected PlanMaintainSupplierRepository $planMaintainSupplierRepository,
         protected PlanMaintainChargeRepository $planMaintainChargeRepository,
+        protected AssetTypeRepository $assetTypeRepository,
     ) {
 
     }
@@ -195,9 +197,9 @@ class MaintainService
                     'status'                 => PlanMaintainAsset::STATUS_MAINTAINING,
                     'created_by'             => $userId,
                 ];
+                unset($assetMaintain['id']);
                 $dataInsert[] = array_merge($dataAssetMaintain, $assetMaintain);
             }
-
             if (!empty($dataInsert)) {
                 $insert = $this->planMaintainAssetRepository->insert($dataInsert);
                 if (!$insert) {
@@ -209,7 +211,6 @@ class MaintainService
                     ];
                 }
             }
-
             DB::commit();
 
             return [
@@ -217,6 +218,7 @@ class MaintainService
             ];
 
         } catch (\Throwable $exception) {
+            dd($exception);
             DB::rollBack();
             report($exception);
 
@@ -260,6 +262,172 @@ class MaintainService
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function updatePlanMaintain($id, $data)
+    {
+        $planMaintain = $this->planMaintainRepository->find($id);
+        if (empty($planMaintain)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2100,
+            ];
+        }
+
+        $planMaintain->fill($data);
+        try {
+            if (!$planMaintain->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2101,
+                ];
+            }
+
+            $updatePlanMaintainSupplier = resolve(PlanMaintainSupplierService::class)
+                ->updatePlanMaintainSupplier($data['supplier_ids'], $planMaintain->id);
+            if (!$updatePlanMaintainSupplier['success']) {
+                DB::rollBack();
+
+                return $updatePlanMaintainSupplier;
+            }
+
+            $updatePlanMaintainCharge = resolve(PlanMaintainChargeService::class)
+                ->updatePlanMaintainCharge($data['user_ids'] ?? [], $planMaintain->id);
+            if (!$updatePlanMaintainCharge['success']) {
+                DB::rollBack();
+
+                return $updatePlanMaintainCharge;
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            dd($exception);
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function completePlanMaintain($id)
+    {
+        $planMaintain = $this->planMaintainRepository->find($id);
+        if (empty($planMaintain)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2100,
+            ];
+        }
+
+        $planMaintain->status = PlanMaintain::STATUS_COMPLETE_MAINTAIN;
+        try {
+            if (!$planMaintain->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2101,
+                ];
+            }
+
+            $this->planMaintainAssetRepository->deleteByCondition(['plan_maintain_id' => $id, 'status' => PlanMaintainAsset::STATUS_MAINTAINING]);
+            $assetMaintainComplete = $this->planMaintainAssetRepository->getListing([
+                'plan_maintain_id' => $id,
+                'status'           => PlanMaintainAsset::STATUS_COMPLETE_MAINTAINING,
+            ]);
+            $assetIds = $assetMaintainComplete->pluck('asset_id')->toArray();
+            if (!empty($assetIds)) {
+                $assets       = $this->assetRepository->getListing(['id' => $assetIds]);
+                $assetTypeIds = $assets->pluck('asset_type_id')->toArray();
+                $assetTypes   = [];
+                if (!empty($assetTypeIds)) {
+                    $assetTypes = $this->assetTypeRepository->getListAssetType(['id' => $assetTypeIds])->keyBy('id')->toArray();
+                }
+                foreach ($assets as $asset) {
+                    $asset->recent_maintenance_date = Carbon::now();
+                    $asset->next_maintenance_date   = Carbon::now()->addMonths($assetTypes[$asset->asset_type_id]['maintenance_months'] ?? 3);
+                    if (!$asset->save()) {
+                        DB::rollBack();
+
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2104,
+                        ];
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function deletePlanMaintain($id)
+    {
+        $planMaintain = $this->planMaintainRepository->find($id);
+        if (empty($planMaintain)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2100,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_MAINTAINING !== $planMaintain->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2103,
+            ];
+        }
+        DB::beginTransaction();
+        try {
+            if (!$planMaintain->delete()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2102,
+                ];
+            }
+
+            $this->planMaintainSupplierRepository->deleteByCondition(['plan_maintain_id' => $id]);
+            $this->planMaintainOrganizationRepository->deleteByCondition(['plan_maintain_id' => $id]);
+            $this->planMaintainChargeRepository->deleteByCondition(['plan_maintain_id' => $id]);
+            $this->planMaintainAssetRepository->deleteByCondition(['plan_maintain_id' => $id]);
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
 
             return [
                 'success'    => false,

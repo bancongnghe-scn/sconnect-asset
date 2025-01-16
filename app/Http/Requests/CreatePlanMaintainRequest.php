@@ -20,6 +20,7 @@ class CreatePlanMaintainRequest extends FormRequest
             'user_ids'                                  => 'nullable|array',
             'user_ids.*'                                => 'integer',
             'sent_notification'                         => 'nullable|integer',
+            'note'                                      => 'nullable|string',
             'assets_maintain'                           => 'required|array',
             'assets_maintain.*'                         => 'array',
             'assets_maintain.*.id'                      => 'required|integer',

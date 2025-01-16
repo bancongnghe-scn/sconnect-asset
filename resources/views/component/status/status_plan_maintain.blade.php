@@ -6,7 +6,7 @@
                 return {
                     color: '#1890FF',
                     backgroundColor: '#E6F7FF',
-                    border: '1px solid #E6F7FF'
+                    border: '1px solid #1890FF'
                 };
             }
             if (status === STATUS_COMPLETE_MAINTAIN) {

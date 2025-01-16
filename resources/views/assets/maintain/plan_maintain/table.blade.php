@@ -40,7 +40,7 @@
                                             <span class="tw-cursor-pointer mr-1">
                                                 <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
                                             </span>
-                                            <span class="tw-cursor-pointer">
+                                            <span class="tw-cursor-pointer" @click="handleShowModalConfirmDelete(value.id)">
                                                 <i class="bi bi-trash3 text-red"></i>
                                             </span>
                                         </span>

@@ -11,4 +11,14 @@ class PlanMaintainSupplierRepository extends BaseRepository
     {
         return PlanMaintainSupplier::class;
     }
+
+    public function deleteByCondition($filters)
+    {
+        $query = $this->_model->newQuery();
+        if ($filters['plan_maintain_id']) {
+            $query->where('plan_maintain_id', $filters['plan_maintain_id']);
+        }
+
+        return $query->delete();
+    }
 }

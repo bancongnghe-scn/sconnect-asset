@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PlanMaintainAsset extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     public $timestamps  = false;
     protected $table    = 'plan_maintain_asset';
     protected $fillable = [
