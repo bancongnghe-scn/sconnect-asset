@@ -1,6 +1,6 @@
 window.apiGetOrganization = async function (filters) {
     try {
-        const response = await axios.get("/api/organization/list", {
+        const response = await axios.get("/api/service/organization/list", {
             params: filters
         })
 

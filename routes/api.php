@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AllocationRateController;
 use App\Http\Controllers\ListAssetController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
 use App\Http\Controllers\ImportWarehouse\ImportWarehouseController;
+use App\Http\Controllers\MaintainController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\Rbac\RoleController;
 use App\Http\Controllers\ShoppingAssetOrderController;
@@ -157,7 +159,7 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::get('manage-asset-cancel', [App\Http\Controllers\Manage\AssetCancelController::class, 'getListAssetCancel']);
-    Route::get('manage-asset-liquidation', [App\Http\Controllers\Manage\AssetLiquidationController::class, 'getListAssetLiquidation']);
+    Route::post('manage-asset-liquidation', [App\Http\Controllers\Manage\AssetLiquidationController::class, 'getListAssetLiquidation']);
 
     Route::prefix('manage-plan-liquidation')->controller(App\Http\Controllers\Manage\PlanLiquidationController::class)->group(function () {
         Route::post('create', 'createPlan');
@@ -213,6 +215,26 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('update/{id}', 'updateImportWarehouse');
         Route::get('delete/{id}', 'deleteImportWarehouse');
         Route::get('export', 'exportImportWarehouse');
+    });
+
+    Route::prefix('allocation-rate')->controller(AllocationRateController::class)->group(function () {
+        Route::get('getListAllocationRate', 'getListAllocationRate');
+        Route::post('createAllocationRate', 'createAllocationRate');
+        Route::post('updateAllocationRate', 'updateAllocationRate');
+        Route::post('deleteAllocationRate', 'deleteAllocationRate');
+    });
+
+    Route::prefix('maintain')->controller(MaintainController::class)->group(function () {
+        Route::get('getAssetNeedMaintain', 'getAssetNeedMaintain');
+        Route::get('getAssetNeedMaintainWithMonth', 'getAssetNeedMaintainWithMonth');
+        Route::get('getAssetMaintaining', 'getAssetMaintaining');
+        Route::get('getPlanMaintain', 'getPlanMaintain');
+        Route::post('createPlanMaintain', 'createPlanMaintain');
+        Route::get('getInfoPlanMaintain/{id}', 'getInfoPlanMaintain');
+        Route::post('completeAssetMaintain', 'completeAssetMaintain');
+        Route::post('updatePlanMaintain/{id}', 'updatePlanMaintain');
+        Route::get('completePlanMaintain/{id}', 'completePlanMaintain');
+        Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
     });
 });
 

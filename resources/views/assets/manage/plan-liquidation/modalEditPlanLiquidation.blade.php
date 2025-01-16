@@ -1,4 +1,4 @@
-<div class="modal fade" id="idModalEditPlanLiquidation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" x-init="$store.globalData.dataAssetDraftForCreatePlanLiquidation">
+<div class="modal fade" id="idModalEditPlanLiquidation" tabindex="-1" aria-labelledby="idModalEditPlanLiquidation" aria-hidden="true" x-init="$store.globalData.dataAssetDraftForCreatePlanLiquidation" role="dialog" aria-modal="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,7 +41,7 @@
                                     <div class="col-3 mb-3">
                                         <label class="tw-font-bold">Được tạo bởi</label>
                                         <input type="hidden" id="authUserName" value="{{ Auth::user()?->name }}">
-                                        <input disabled type="text" class="form-control" :value="data.user ? data.user.name : $('#authUserName').val()">
+                                        <input disabled type="text" class="form-control" :value="data.user ? data.user.code + ' - ' + data.user.name : $('#authUserName').val()">
                                     </div>
                                     <div class="col-4 mb-3">
                                         <label class="tw-font-bold">Ngày tạo</label>
@@ -63,7 +63,7 @@
                                     <thead>
                                     <tr>
                                         <template x-for="(columnName, key) in dataTheadListAssetLiqui">
-                                            <th rowspan="1" colspan="1" x-text="columnName"></th>
+                                            <th rowspan="1" colspan="1" x-text="columnName" :class="key == 'price' ? 'text-right' : ''"></th>
                                         </template>
                                         <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
                                     </tr>
@@ -80,8 +80,8 @@
                                             <td>
                                                 <span x-text="data.id ? dataAsset.asset.reason : dataAsset.reason"></span>
                                             </td>
-                                            <td>
-                                                <span x-text="data.id ? dataAsset.price : dataAsset.price_liquidation"></span>
+                                            <td class="text-right">
+                                                <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : dataAsset.price_liquidation.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
                                             </td>
                                             <td>
                                                 <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : dataAsset.status" class="pl-2 pr-2 border rounded" 
@@ -101,11 +101,8 @@
                                     </tbody>
                                 </table>
 
-                                <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent" x-show="showAction.get ?? true" @click="$dispatch('get')">+ Thêm</button>
-                                
-                                <div>
-                                    @include('assets.manage.plan-liquidation.modalSelectAsset')
-                                </div>
+                                <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent" x-show="showAction.get ?? true" @click="$dispatch('post')">+ Thêm</button>
+                                                                
             
                             </div>
                         </div>
@@ -129,9 +126,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button @click="checkCreate ? createPlan() : updatePlan(data.id )" type="button" class="btn tw-bg-blue-500">Lưu</button>
-                <button type="button" class="btn btn-sc" data-bs-dismiss="modal" x-show="!checkCreate" @click="sendForApproval(data.id)">Gửi duyệt</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button @click="checkCreate ? createPlan() : updatePlan(data.id )" type="button" class="btn btn-success">Lưu</button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" x-show="!checkCreate" @click="sendForApproval(data.id)">Gửi duyệt</button>
+                <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
     </div>
@@ -141,4 +138,9 @@
         z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
     }
 </style>
+<script>
+    $('#idModalEditPlanLiquidation').on('hidden.bs.modal', () => {
+    this.loading = false;
+  });
+</script>
 

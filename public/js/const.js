@@ -98,6 +98,7 @@ ORGANIZATION_TYPE_DISAPPROVAL = 'disapproval';
 //COMMENT
 TYPE_COMMENT_SHOPPING_PLAN_COMPANY = 1;
 TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION = 2;
+TYPE_COMMENT_PLAN_MAINTAIN = 3;
 
 // USERS
 DEPT_IDS_FOLLOWERS = [7, 8, 9, 10, 11, 12, 41, 42, 149, 160]
@@ -160,6 +161,64 @@ LIST_STATUS_SUPPLIER = {
     [STATUS_SUPPLIER_PENDING_APPROVAL]: 'Chờ phê duyệt',
 }
 
+//ALLOCATION_RATE
+TYPE_ALLOCATION_RATE_POSITION = 1
+TYPE_ALLOCATION_RATE_ORGANIZATION = 2
+LEVEL_ALLOCATION_RATE = {
+    1: 'Hạng A',
+    2: 'Hạng B',
+    3: 'Hạng C',
+    4: 'Hạng D',
+    5: 'Hạng E',
+    6: 'Hạng F',
+}
+
+// ASSET
+LIST_LOCATION_ASSET = {
+    1: 'HN_Tầng 1',
+    2: 'HN_Tầng 2',
+    3: 'HN_Tầng 3',
+    4: 'HN_Tầng 4',
+    5: 'HN_Tầng 5',
+    6: 'HN_Tầng 6',
+    7: 'HN_Tầng 7',
+    8: 'HCM',
+}
+
+ASSET_STATUS_ACTIVE                  = 1;
+ASSET_STATUS_PENDING                 = 2;
+ASSET_STATUS_NEW                     = 3;
+ASSET_STATUS_LOST                    = 4;
+ASSET_STATUS_CANCEL                  = 5;
+ASSET_STATUS_PROPOSAL_LIQUIDATION    = 6;
+ASSET_STATUS_IN_LIQUIDATION          = 7;
+ASSET_STATUS_LIQUIDATED              = 8;
+ASSET_STATUS_DAMAGED                 = 9;
+ASSET_STATUS_REPAIR                  = 10;
+ASSET_STATUS_MAINTAIN                = 11;
+
+// MAINTAIN
+LIST_STATUS_MAINTAIN = {
+    [ASSET_STATUS_ACTIVE]  : 'Đang sử dụng',
+    [ASSET_STATUS_PENDING] : 'Chưa sử dụng',
+}
+
+STATUS_ASSET_NOT_MAINTAINED = 0
+STATUS_ASSET_MAINTAINING = 4
+STATUS_ASSET_MAINTAIN_COMPLETE = 5
+LIST_STATUS_ASSET_MAINTAIN = {
+    [STATUS_ASSET_NOT_MAINTAINED]: 'Chưa bảo dưỡng',
+    [STATUS_ASSET_MAINTAINING]: 'Đang bảo dưỡng',
+    [STATUS_ASSET_MAINTAIN_COMPLETE]: 'Hoàn thành'
+}
+
+STATUS_MAINTAINING = 4
+STATUS_COMPLETE_MAINTAIN = 5
+LIST_STATUS_PLAN_MAINTAIN = {
+    [STATUS_MAINTAINING]: 'Đang thực hiện',
+    [STATUS_COMPLETE_MAINTAIN]: 'Hoàn thành'
+}
+
 // OTHER
 LIST_QUARTER = {
     1: 'Quý 1',
@@ -189,3 +248,23 @@ LIST_MONTHS = {
     11: 'Tháng 11',
     12: 'Tháng 12',
 }
+
+//config tieng viet cho datepicker
+localeVi = {
+    days: ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'],
+    daysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+    daysMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
+    months: [
+        'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+        'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+    ],
+    monthsShort: [
+        'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+        'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+    ],
+    today: 'Hôm nay',
+    clear: 'Xóa',
+    dateFormat: 'dd/MM/yyyy',
+    timeFormat: 'HH:mm',
+    firstDay: 1 // Thứ Hai là ngày đầu tuần
+};

@@ -37,23 +37,25 @@
                                                     @include('common.user_info')
                                                 </template>
                                                 <template x-if="key === 'status'">
-                                                    @include('component.status_import_warehouse', ['status' => 'value.status'])
+                                                    @include('component.status.status_import_warehouse', ['status' => 'value.status'])
                                                 </template>
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
                                             <button
-                                                x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"
-                                                class="border-0 bg-body" @click="handleShowModalUI('update', value.id)">
+                                                    x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"
+                                                    class="border-0 bg-body"
+                                                    @click="handleShowModalUI('update', value.id)">
                                                 <i class="fa-regular fa-pen-to-square color-sc"></i>
                                             </button>
                                             <button
-                                                x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"
-                                                class="border-0 bg-body" @click="confirmRemove(value.id)">
+                                                    x-show="+value.status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE"
+                                                    class="border-0 bg-body" @click="confirmRemove(value.id)">
                                                 <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                             </button>
                                             <a :href="`/api/import-warehouse/export?ids[]=${value.id}`" download>
-                                                <button x-show="+value.status === STATUS_IMPORT_WAREHOUSE_COMPLETE" class="border-0 bg-body">
+                                                <button x-show="+value.status === STATUS_IMPORT_WAREHOUSE_COMPLETE"
+                                                        class="border-0 bg-body">
                                                     <i class="fa-solid fa-print"></i>
                                                 </button>
                                             </a>

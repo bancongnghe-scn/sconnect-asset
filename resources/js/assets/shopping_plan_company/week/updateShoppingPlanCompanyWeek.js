@@ -68,10 +68,13 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
-                if (![
-                    STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                    STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                    STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE
+                if ([
+                    STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                    STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
                 ].includes(+this.data.status)) {
                     this.syntheticShoppingAssetWithAction()
                 }

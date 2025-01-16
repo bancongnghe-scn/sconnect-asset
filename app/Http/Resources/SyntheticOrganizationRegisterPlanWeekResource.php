@@ -2,11 +2,19 @@
 
 namespace App\Http\Resources;
 
-use App\Services\ScApiService;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\Service\Repositories\JobTitleRepository;
 
 class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
 {
+    protected $jobTitleRepository;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+        $this->jobTitleRepository = new JobTitleRepository();
+    }
+
     public function toArray($request)
     {
         $shoppingPlanCompany = $this->resource;
@@ -19,10 +27,11 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
         foreach ($shoppingPlanCompany->shoppingPlanOrganizations as $shoppingPlanOrganization) {
             $assetRegister = [];
             foreach ($shoppingPlanOrganization->shoppingAssets as $shoppingAsset) {
+                $jobTitle        = $this->jobTitleRepository->getJobs(['id' => $shoppingAsset->job_id]);
                 $assetRegister[] = [
                     'id'                       => $shoppingAsset->id,
                     'asset_type_name'          => $shoppingAsset->assetType?->name,
-                    'job_name'                 => !is_null($shoppingAsset->job_id) ? ScApiService::getJobByIds($shoppingAsset->job_id)->first()['name'] : null,
+                    'job_name'                 => !is_null($shoppingAsset->job_id) ? $jobTitle->first()['name'] : null,
                     'quantity_registered'      => $shoppingAsset->quantity_registered,
                     'quantity_approved'        => $shoppingAsset->quantity_approved,
                     'receiving_time'           => $shoppingAsset->receiving_time,

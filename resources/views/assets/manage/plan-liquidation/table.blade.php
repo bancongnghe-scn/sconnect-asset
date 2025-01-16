@@ -23,7 +23,7 @@
                             </td>
                             <template x-for="(columnName, key) in columns" x-data="{line: 1}">
                                 <td>
-                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'date'">
+                                    <template x-if="key !== 'validity' && key !== 'status' && key !== 'date' && key !== 'total_price_liquidation'">
                                         <span x-text="data[key]"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
@@ -49,20 +49,26 @@
                                     <template x-if="key === 'date'">
                                         <span x-text="formatDate(data.date)"></span>
                                     </template>
+                                    <template x-if="key === 'total_price_liquidation'">
+                                        <span x-text="data[key].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
+                                    </template>
                                 </td>
                             </template>
                             <td class="text-center align-middle" x-show="data.status === 'Mới tạo'">
-                                <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
+                                <button class="border-0 position-relative" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
                                     <i class="fa-solid fa-pencil">&#xF117;</i>
+                                    <span class="tooltip-text">Chỉnh sửa</span>
                                 </button>
-                                <button class="border-0 bg-body" @click="removeOnePlan(data.id)"
+                                <button class="border-0 position-relative" @click="removeOnePlan(data.id)"
                                 >
                                     <i class="fa-solid fa-trash" style="color: #db4554;"></i>
+                                    <span class="tooltip-text">Xóa</span>
                                 </button>
                             </td>
                             <td class="text-center align-middle" x-show="data.status !== 'Mới tạo'">
-                                <button class="border-0 bg-body" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
+                                <button class="border-0 position-relative" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
                                     <i class="fa-solid fa-eye">&#xF117;</i>
+                                    <span class="tooltip-text">Xem</span>
                                 </button>
                             </td>
                         </tr>

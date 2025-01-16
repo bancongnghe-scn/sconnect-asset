@@ -32,6 +32,10 @@ class AssetLiquidationRepository extends BaseRepository
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }
 
+        if (!empty($filters['limitMore'])) {
+            return $query->paginate($filters['limitMore'], page: $filters['pageMore'] ?? 1);
+        }
+
         return $query->get();
     }
 }

@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-6 mb-3">
                             <label class="tw-font-bold">Được tạo bởi</label>
-                            <input disabled type="text" class="form-control" value="{{ Auth::user()->name ?? '' }}">
+                            <input disabled type="text" class="form-control" value="{{ Auth::user()?->code . ' - ' . Auth::user()?->name ?? '' }}">
                         </div>
                         <div class="col-6 mb-3">
                             <label class="tw-font-bold">Ngày tạo</label>

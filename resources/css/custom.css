@@ -138,10 +138,12 @@ textarea.form-control {
 }
 th {
     background-color: #E4F0E6 !important;
+    white-space: nowrap;
 }
 
 td {
     background-color: white !important;
+    white-space: nowrap;
 }
 
 .custom-scroll {
@@ -177,4 +179,8 @@ html {
 
 .air-datepicker {
     z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
+}
+
+.w-1-7 {
+    width: 14.2%;
 }

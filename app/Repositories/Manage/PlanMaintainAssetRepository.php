@@ -27,4 +27,52 @@ class PlanMaintainAssetRepository extends BaseRepository
             ->whereIn('id', $ids)
             ->update($data);
     }
+
+    public function getListing($filters, $columns = ['*'])
+    {
+        $query = $this->_model->select($columns)->newQuery();
+
+        if (!empty($filters['name_code'])) {
+            $query->where('name', 'like', '%' . $filters['name_code'] . '%')
+                ->orWhere('code', 'like', '%' . $filters['name_code'] . '%');
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['plan_maintain_id'])) {
+            $query->where('plan_maintain_id', $filters['plan_maintain_id']);
+        }
+
+        if (!empty($filters['start_date_maintain']) && !empty($filters['complete_date_maintain'])) {
+            $query->where('start_date_maintain', '>=', $filters['start_date_maintain'])
+                ->where('complete_date_maintain', '<=', $filters['complete_date_maintain']);
+        }
+
+        if (!empty($filters['location'])) {
+            $query->where('location', $filters['location']);
+        }
+
+        if (!empty($filters['limit'])) {
+            return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
+        }
+
+        return $query->get();
+    }
+
+    public function deleteByCondition($filters)
+    {
+        $query = $this->_model->newQuery();
+
+        if (!empty($filters['plan_maintain_id'])) {
+            $query->where('plan_maintain_id', $filters['plan_maintain_id']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        return $query->delete();
+    }
 }

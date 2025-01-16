@@ -39,7 +39,7 @@
                                             @include('common.user_info')
                                         </template>
                                         <template x-if="key === 'status'">
-                                            @include('component.status_order', ['status' => 'value.status'])
+                                            @include('component.status.status_order', ['status' => 'value.status'])
                                         </template>
                                         <template x-if="key === 'name'">
                                             <a x-text="value[key]" class="tw-cursor-pointer"

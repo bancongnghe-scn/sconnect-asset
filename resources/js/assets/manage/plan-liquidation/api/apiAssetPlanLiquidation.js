@@ -6,7 +6,7 @@ window.apiGetPlanLiquidation = async function (filters) {
         })
 
         const data = res.data;
-        
+
         if (!data.success) {
             return {
                 success: false,
@@ -51,10 +51,10 @@ window.apiShowPlanLiquidation = async function (id) {
     }
 }
 
-window.apiGetAssetLiquidationForModal = async function () {
+window.apiGetAssetLiquidationForModal = async function (search) {
     try {
 
-        const res = await axios.get("/api/manage-asset-liquidation", {})
+        const res = await axios.post("/api/manage-asset-liquidation", search)
 
         const data = res.data;
         if (!data.success) {
@@ -125,7 +125,7 @@ window.apiRemoveAssetFromPlanLiquidation = async function (plan_maintain_asset_i
 }
 
 window.apiRemoveMultiPlanLiquidation = async function (planIds) {
-    
+
     try {
         const response = await axios.post("/api/manage-plan-liquidation/delete-multi",planIds)
 

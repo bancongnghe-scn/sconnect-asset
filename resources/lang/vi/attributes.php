@@ -30,4 +30,5 @@ return [
     'quantity_registered'      => 'số lượng đăng ký',
     'purchasing_manager_id'    => 'người phụ trách mua sắm',
     'shopping_plan_company_id' => 'kế hoạch mua sắm',
+    'organization_id'          => 'đơn vị',
 ];

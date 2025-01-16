@@ -118,7 +118,7 @@ class ListAssetController extends Controller
             $listOrg = $this->assetService->getListOrgAsset($request);
 
             return response_success([
-                'listOrg' => $listOrg,
+                'listOrg'       => $listOrg,
                 'listUnit'      => Org::with('deptType')->where('parent_id', 1)->get(),
                 'listAssetType' => AssetType::all(),
             ]);

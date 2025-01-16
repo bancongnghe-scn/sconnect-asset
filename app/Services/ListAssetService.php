@@ -11,7 +11,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Modules\Service\Models\Organization;
 
 class ListAssetService
 {
@@ -32,8 +31,8 @@ class ListAssetService
         }
 
         if ($request->nameCodeAsset) {
-            $query->whereRaw("LOWER(name) LIKE ?", ["%" . strtolower($request->nameCodeAsset) . "%"])
-                ->orWhereRaw("LOWER(code) LIKE ?", ["%" . strtolower($request->nameCodeAsset) . "%"]);
+            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%'])
+                ->orWhereRaw('LOWER(code) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%']);
         }
 
         if ($request->userId) {
@@ -81,13 +80,13 @@ class ListAssetService
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
-                'user_id'    => $request->user['id'],
-                'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'asset_id'   => $asset['id'],
-                'type'       => 1,
+                'user_id'           => $request->user['id'],
+                'org_id'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'asset_id'          => $asset['id'],
+                'type'              => 1,
                 'description'       => $request->description,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
             ];
 
             $arrAssetId[] = $asset['id'];
@@ -118,13 +117,13 @@ class ListAssetService
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
-                'user_id'    => $request->user['id'],
-                'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'asset_id'   => $asset['id'],
-                'type'       => 2,
+                'user_id'     => $request->user['id'],
+                'org_id'      => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'asset_id'    => $asset['id'],
+                'type'        => 2,
                 'description' => $request->description,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
             ];
 
             $arrAssetId[] = $asset['id'];
@@ -175,14 +174,14 @@ class ListAssetService
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
-                'user_id'    => null,
-                'org_id'     => $request->org['id'],
-                'asset_id'   => $asset['id'],
-                'type'       => 1,
+                'user_id'     => null,
+                'org_id'      => $request->org['id'],
+                'asset_id'    => $asset['id'],
+                'type'        => 1,
                 'is_rotation' => 1,
                 'description' => $request->description,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
             ];
 
             $arrAssetId[] = $asset['id'];
@@ -201,7 +200,7 @@ class ListAssetService
         Asset::where('id', $arrAssetId)->update([
             'status' => Asset::STATUS_ACTIVE,
             'organization_id' => $request->org['id'],
-            'user_id' => null,
+            'user_id'         => null,
         ]);
 
         return $this->getListAssetOfOrg($request->org['id']);
@@ -214,14 +213,14 @@ class ListAssetService
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
-                'user_id'    => null,
-                'org_id'     => $request->org['id'],
-                'asset_id'   => $asset['id'],
-                'type'       => 2,
+                'user_id'     => null,
+                'org_id'      => $request->org['id'],
+                'asset_id'    => $asset['id'],
+                'type'        => 2,
                 'is_rotation' => 1,
                 'description' => $request->description,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at'  => Carbon::now(),
+                'updated_at'  => Carbon::now(),
             ];
 
             $arrAssetId[] = $asset['id'];

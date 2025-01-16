@@ -143,7 +143,7 @@ class PlanLiquidationService
                     ->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
                     ->orderBy('date', 'desc');
             },
-            'user:id,name',
+            'user:id,name,code',
         ]);
 
         if (empty($planLiquidation)) {
