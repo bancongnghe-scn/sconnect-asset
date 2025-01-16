@@ -67,7 +67,7 @@ class User extends Authenticatable
 
     public function listAssetUse()
     {
-        return $this->hasMany(MoveAssetUser::class, 'user_id', 'id');
+        return $this->hasMany(Asset::class, 'user_id', 'id');
     }
 
     //code cũ

@@ -287,7 +287,7 @@
             tab: 'general-tab',
             userObj: false,
             orgObj: {},
-            listAsset: [],
+            listAssetSelect: [],
             listAssetAllocate: [],
             listAssetOfUser: [],
             tabAllocation: 'allocation-tab',
@@ -298,6 +298,7 @@
             limitParam: 25,
             description: '',
             listAssetRecovery: [],
+            listHistory: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -348,7 +349,7 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listAsset = data.data.listAsset.data;
+                    this.listAssetSelect = data.data.listAsset.data;
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -359,14 +360,26 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfOrg;                   
+                    this.listAssetOfUser = data.data.listAssetOfObj;                   
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async getDataHistoryOfOrg() {
+                try {
+                    let urlSearch = '/api/asset/get-list-history?orgId=' + this.orgObj.id;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listHistory = data.data.listHistory;                   
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
             },
             fillData(org) {
                 this.orgObj = org;
-                this.getDataAssetOfUser();
+                this.getDataHistoryOfOrg();
+                this.getDataHistoryOfOrg();
             },
             toggleSelection(asset, isChecked) {
                 if (isChecked) {
@@ -404,7 +417,7 @@
                     });
 
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfOrg;
+                    this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetAllocate = [];
                     this.description = '';
 
@@ -428,7 +441,7 @@
                     });
 
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfOrg;
+                    this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRecovery = [];
                     this.description = '';
 

@@ -6,6 +6,7 @@ use App\Models\Asset;
 use App\Models\MoveAssetOrg;
 use App\Models\MoveAssetUser;
 use App\Models\Org;
+use App\Models\TransferAsset;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -76,6 +77,7 @@ class ListAssetService
     public function allocateAsset($request)
     {
         $arrAllocationAsset = [];
+        $arrAssetId = [];
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
@@ -87,11 +89,21 @@ class ListAssetService
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
+
+            $arrAssetId[] = $asset['id'];
         }
+
+        TransferAsset::create([
+            'user_id'    => $request->user['id'],
+            'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+            'type'       => 1,
+            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'description'       => $request->description,
+        ]);
 
         MoveAssetUser::insert($arrAllocationAsset);
 
-        Asset::where('id', $asset['id'])->update([
+        Asset::where('id', $arrAssetId)->update([
             'status' => Asset::STATUS_ACTIVE,
             'user_id' => $request->user['id'],
         ]);
@@ -102,6 +114,7 @@ class ListAssetService
     public function recoveryAsset($request)
     {
         $arrRecoveryAsset = [];
+        $arrAssetId = [];
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
@@ -113,11 +126,21 @@ class ListAssetService
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
+
+            $arrAssetId[] = $asset['id'];
         }
+
+        TransferAsset::create([
+            'user_id'    => $request->user['id'],
+            'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+            'type'       => 2,
+            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'description' => $request->description,
+        ]);
 
         MoveAssetUser::insert($arrRecoveryAsset);
 
-        Asset::where('id', $asset['id'])->update([
+        Asset::where('id', $arrAssetId)->update([
             'status' => Asset::STATUS_PENDING,
             'user_id' => null,
         ]);
@@ -142,12 +165,13 @@ class ListAssetService
     {
         $query = Org::query();
 
-        return $query->whereIn('parent_id', [0,1])->with(['manager'])->paginate($request->limit);
+        return $query->whereIn('parent_id', [0, 1])->with(['manager'])->paginate($request->limit);
     }
 
     public function allocateAssetOrg($request)
     {
         $arrAllocationAsset = [];
+        $arrAssetId = [];
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
@@ -160,11 +184,21 @@ class ListAssetService
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
+
+            $arrAssetId[] = $asset['id'];
         }
+
+        TransferAsset::create([
+            'user_id'    => null,
+            'org_id'     => $request->org['id'],
+            'type'       => 1,
+            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'description' => $request->description,
+        ]);
 
         MoveAssetOrg::insert($arrAllocationAsset);
 
-        Asset::where('id', $asset['id'])->update([
+        Asset::where('id', $arrAssetId)->update([
             'status' => Asset::STATUS_ACTIVE,
             'organization_id' => $request->org['id'],
             'user_id' => null,
@@ -176,6 +210,7 @@ class ListAssetService
     public function recoveryAssetOrg($request)
     {
         $arrRecoveryAsset = [];
+        $arrAssetId = [];
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
@@ -188,11 +223,21 @@ class ListAssetService
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ];
+
+            $arrAssetId[] = $asset['id'];
         }
+
+        TransferAsset::create([
+            'user_id'    => null,
+            'org_id'     => $request->org['id'],
+            'type'       => 2,
+            'description' => $request->description,
+            'created_by' => auth()->user() ? auth()->user()->id : null,
+        ]);
 
         MoveAssetOrg::insert($arrRecoveryAsset);
 
-        Asset::where('id', $asset['id'])->update([
+        Asset::where('id', $arrAssetId)->update([
             'status' => Asset::STATUS_PENDING,
             'organization_id' => null,
         ]);
@@ -228,5 +273,22 @@ class ListAssetService
         }
 
         return $query->limit(2000)->get();
+    }
+
+    public function getListHistory($request)
+    {
+        if ($request->userId) {
+            return TransferAsset::where('user_id', $request->userId)->with(['user', 'organization.manager', 'organization.deptType'])->get();
+        }
+
+        if ($request->orgId) {
+            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with(['user', 'organization.manager', 'organization.deptType'])->get();
+        }
+    }
+
+    public function rotationAsset($request)
+    {
+
+        dd($request->all());
     }
 }
