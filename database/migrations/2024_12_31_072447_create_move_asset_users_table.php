@@ -16,6 +16,7 @@ return new class () extends Migration {
             $table->tinyInteger('type');
             $table->integer('org_id');
             $table->integer('asset_id');
+            $table->string('description', 700)->nullable();
             $table->timestamps();
         });
     }

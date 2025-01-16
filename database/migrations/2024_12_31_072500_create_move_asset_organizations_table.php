@@ -17,7 +17,7 @@ return new class () extends Migration {
             $table->integer('org_id');
             $table->integer('asset_id');
             $table->tinyInteger('is_rotation');
-            $table->string('description', 700);
+            $table->string('description', 700)->nullable();
             $table->timestamps();
         });
     }

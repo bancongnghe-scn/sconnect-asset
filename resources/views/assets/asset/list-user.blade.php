@@ -317,8 +317,8 @@
             listAssetType: [],
             tab: 'general-tab',
             userObj: {},
-            orgObj: false,
-            listAsset: [],
+            orgObj: {},
+            listAssetSelect: [],
             listAssetAllocate: [],
             listAssetOfUser: [],
             tabAllocation: 'allocation-tab',
@@ -329,6 +329,7 @@
             limitParam: 10,
             description: '',
             listAssetRecovery: [],
+            listHistory: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -382,7 +383,7 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listAsset = data.data.listAsset.data;
+                    this.listAssetSelect = data.data.listAsset.data;
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -393,7 +394,18 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfUser;                   
+                    this.listAssetOfUser = data.data.listAssetOfObj;                   
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async getDataHistoryOfUser() {
+                try {
+                    let urlSearch = '/api/asset/get-list-history?userId=' + this.userObj.id;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listHistory = data.data.listHistory;                   
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -401,6 +413,7 @@
             fillData(user) {
                 this.userObj = user;
                 this.getDataAssetOfUser();
+                this.getDataHistoryOfUser();
             },
             toggleSelection(asset, isChecked) {
                 if (isChecked) {
@@ -438,7 +451,7 @@
                     });
 
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfUser;
+                    this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetAllocate = [];
                     this.description = '';
 
@@ -462,7 +475,7 @@
                     });
 
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfUser;
+                    this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRecovery = [];
                     this.description = '';
 

@@ -66,6 +66,49 @@
     .table-repair tr th {
         background-color: #E7E9ED !important;
     }
+
+    .btn-outline-success{
+        --bs-btn-color: #379237;
+        --bs-btn-border-color: #379237;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #379237;
+        --bs-btn-hover-border-color: #379237;
+        --bs-btn-focus-shadow-rgb: 25, 135, 84;
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: #379237;
+        --bs-btn-active-border-color: #379237;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #379237;
+        --bs-btn-disabled-bg: transparent;
+        --bs-btn-disabled-border-color: #379237;
+        --bs-gradient: none;
+    }
+
+    .btn-success{
+        --bs-btn-color: #fff;
+        --bs-btn-bg: #379237;
+        --bs-btn-border-color: #379237;
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: #379237;
+        --bs-btn-hover-border-color: #379237;
+        --bs-btn-focus-shadow-rgb: 60, 153, 110;
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: #379237;
+        --bs-btn-active-border-color: #379237;
+        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        --bs-btn-disabled-color: #fff;
+        --bs-btn-disabled-bg: #379237;
+        --bs-btn-disabled-border-color: #379237;
+    }
+    @media (min-width: 1200px) {
+        .modal-xl {
+            --bs-modal-width: 1250px !important;
+        }
+    }
+
+    .modal-2{
+        --bs-modal-zindex: 1100 !important;
+    }
     </style>
 <div x-data="listAsset">
     <div class="row" >
@@ -223,7 +266,7 @@
                                         </svg>
                                         <span class="title-menu">Bảo dưỡng</span>    
                                     </a>
-                                    <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetail" style="cursor: pointer;" @click="fillData(asset)">
+                                    <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset)">
                                         <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M23.5214 8.3106C20.9821 2.9615 17.1437 0.269531 11.9982 0.269531C6.84999 0.269531 3.01427 2.9615 0.474987 8.31328C0.373136 8.52895 0.320313 8.7645 0.320312 9.00301C0.320312 9.24152 0.373136 9.47708 0.474987 9.69275C3.01427 15.0419 6.85267 17.7338 11.9982 17.7338C17.1464 17.7338 20.9821 15.0419 23.5214 9.69007C23.7277 9.25614 23.7277 8.75257 23.5214 8.3106V8.3106ZM11.9982 15.8052C7.67767 15.8052 4.51427 13.6142 2.28302 9.00167C4.51427 4.38917 7.67767 2.1981 11.9982 2.1981C16.3187 2.1981 19.4821 4.38917 21.7134 9.00167C19.4848 13.6142 16.3214 15.8052 11.9982 15.8052ZM11.8911 4.28739C9.28749 4.28739 7.17677 6.3981 7.17677 9.00167C7.17677 11.6052 9.28749 13.716 11.8911 13.716C14.4946 13.716 16.6053 11.6052 16.6053 9.00167C16.6053 6.3981 14.4946 4.28739 11.8911 4.28739ZM11.8911 12.0017C10.233 12.0017 8.89106 10.6597 8.89106 9.00167C8.89106 7.34364 10.233 6.00167 11.8911 6.00167C13.5491 6.00167 14.8911 7.34364 14.8911 9.00167C14.8911 10.6597 13.5491 12.0017 11.8911 12.0017Z" fill="#344054"/>
                                         </svg>
@@ -235,19 +278,19 @@
                                         </svg>
                                         <span class="title-menu">Chỉnh sửa</span>   
                                     </a>
-                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" style="cursor: pointer;">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" @click="getUser(); assetSelect = asset;" style="cursor: pointer;">
                                         <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z" fill="#344054"/>
                                         </svg> 
                                         <span class="title-menu">Cấp phát</span>   
                                     </a>
-                                    <a class="d-flex item-menu" href="#">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" @click="assetSelect = asset; fillDataModalAllocation('recovery');">
                                         <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M15.4523 14.8377C16.1005 14.4895 16.8425 14.2913 17.6327 14.2913H17.6353C17.7157 14.2913 17.7532 14.1949 17.6943 14.1413C16.8725 13.4038 15.9338 12.8082 14.9166 12.3788C14.9059 12.3734 14.8952 12.3708 14.8844 12.3654C16.5478 11.1574 17.63 9.19397 17.63 6.9788C17.63 3.30915 14.6621 0.335938 11.0005 0.335938C7.33891 0.335938 4.37373 3.30915 4.37373 6.9788C4.37373 9.19397 5.45587 11.1574 7.12194 12.3654C7.11123 12.3708 7.10051 12.3734 7.0898 12.3788C5.89248 12.885 4.81837 13.6109 3.89426 14.5377C2.97549 15.4548 2.24403 16.542 1.74069 17.7386C1.24546 18.9104 0.978187 20.1658 0.953192 21.4377C0.952477 21.4663 0.957491 21.4948 0.96794 21.5214C0.978388 21.548 0.994059 21.5723 1.01403 21.5927C1.034 21.6132 1.05786 21.6295 1.08422 21.6406C1.11057 21.6517 1.13888 21.6574 1.16748 21.6574H2.77194C2.88712 21.6574 2.98355 21.5636 2.98623 21.4484C3.0398 19.3806 3.86748 17.444 5.33266 15.9761C6.84605 14.4574 8.86034 13.6217 11.0032 13.6217C12.5219 13.6217 13.9791 14.0422 15.2353 14.8297C15.2676 14.85 15.3047 14.8614 15.3427 14.8628C15.3808 14.8642 15.4186 14.8556 15.4523 14.8377V14.8377ZM11.0032 11.5859C9.77641 11.5859 8.62194 11.1065 7.75141 10.2359C7.32309 9.80873 6.98353 9.301 6.7523 8.74199C6.52106 8.18298 6.40272 7.58374 6.40409 6.9788C6.40409 5.74933 6.88355 4.59219 7.75141 3.72165C8.61926 2.85112 9.77373 2.37165 11.0032 2.37165C12.2327 2.37165 13.3844 2.85112 14.255 3.72165C14.6833 4.14886 15.0229 4.65659 15.2541 5.2156C15.4853 5.77461 15.6037 6.37385 15.6023 6.9788C15.6023 8.20826 15.1228 9.3654 14.255 10.2359C13.3844 11.1065 12.23 11.5859 11.0032 11.5859ZM20.855 17.9609H14.4264C14.3086 17.9609 14.2121 18.0574 14.2121 18.1752V19.6752C14.2121 19.7931 14.3086 19.8895 14.4264 19.8895H20.855C20.9728 19.8895 21.0693 19.7931 21.0693 19.6752V18.1752C21.0693 18.0574 20.9728 17.9609 20.855 17.9609Z" fill="#344054"/>
                                         </svg>                                            
                                         <span class="title-menu">Thu hồi</span>   
                                     </a>
-                                    <a class="d-flex item-menu" href="#">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" @click="fillDataModalRotation(); assetSelect = asset;">
                                         <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M17.6173 7.25223C17.6173 3.58259 14.644 0.609375 10.9744 0.609375C7.30475 0.609375 4.33154 3.58259 4.33154 7.25223C4.33154 9.47009 5.41904 11.4362 7.09047 12.6415C7.07975 12.6469 7.07172 12.6496 7.06636 12.6522C5.86904 13.1585 4.79493 13.8844 3.87083 14.8112C2.95206 15.7283 2.22059 16.8154 1.71725 18.0121C1.22202 19.1838 0.95475 20.4393 0.929754 21.7112C0.92904 21.7397 0.934054 21.7682 0.944502 21.7948C0.954951 21.8214 0.970621 21.8457 0.990591 21.8662C1.01056 21.8866 1.03443 21.9029 1.06078 21.914C1.08713 21.9251 1.11544 21.9308 1.14404 21.9308H2.7485C2.86368 21.9308 2.96011 21.8371 2.96279 21.7219C3.01636 19.654 3.84404 17.7174 5.30922 16.2496C6.82261 14.7308 8.83154 13.8951 10.9744 13.8951C14.644 13.8951 17.6173 10.9219 17.6173 7.25223ZM10.9744 11.8594C8.42975 11.8594 6.36725 9.79687 6.36725 7.25223C6.36725 4.70759 8.42975 2.64509 10.9744 2.64509C13.519 2.64509 15.5815 4.70759 15.5815 7.25223C15.5815 9.79687 13.519 11.8594 10.9744 11.8594ZM13.7869 17.779H20.8583C20.9762 17.779 21.0726 17.6826 21.0726 17.5647V16.0647C21.0726 15.9469 20.9762 15.8504 20.8583 15.8504H16.1306L17.3949 14.2406C17.4241 14.203 17.4401 14.1569 17.4405 14.1094C17.4405 13.9915 17.344 13.8951 17.2262 13.8951H15.2815C15.1503 13.8951 15.0271 13.9567 14.944 14.0585L13.1092 16.3915C12.9914 16.5415 12.9271 16.729 12.9271 16.9219C12.9298 17.396 13.3128 17.779 13.7869 17.779ZM20.2155 19.4933H13.144C13.0262 19.4933 12.9298 19.5897 12.9298 19.7076V21.2076C12.9298 21.3254 13.0262 21.4219 13.144 21.4219H17.8717L16.6074 23.0317C16.5783 23.0693 16.5623 23.1154 16.5619 23.1629C16.5619 23.2808 16.6583 23.3772 16.7762 23.3772H18.7208C18.8521 23.3772 18.9753 23.3156 19.0583 23.2138L20.8931 20.8808C21.011 20.7308 21.0753 20.5433 21.0753 20.3504C21.0726 19.8763 20.6896 19.4933 20.2155 19.4933Z" fill="#344054"/>
                                         </svg>                                           
@@ -311,7 +354,7 @@
               </table>
               @include('common.pagination')
                 <!-- Modal -->
-                    <div class="modal fade" id="modalDetail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -322,13 +365,13 @@
                                     <div class="row">
                                         <div class="col-4" style="padding-right: 60px;">
                                             <ul class="sidebar-tab" style="padding: 0;">
-                                                <li @click="tab='general-tab'" :class="tab == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
-                                                <li @click="tab='guarantee-tab'" :class="tab == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
-                                                <li @click="tab='change-tab'" :class="tab == 'change-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi/Luân chuyển</li>
-                                                <li @click="tab='maintain-tab'" :class="tab == 'maintain-tab' ? 'active-sidebar' : ''">Bảo dưỡng</li>
-                                                <li @click="tab='allocation-tab'" :class="tab == 'allocation-tab' ? 'active-sidebar' : ''">Phân bổ</li>
-                                                <li @click="tab='repair-tab'" :class="tab == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa</li>
-                                                <li @click="tab='lost-tab'" :class="tab == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
+                                                <li @click="tabDetail='general-tab'" :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
+                                                <li @click="tabDetail='guarantee-tab'" :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
+                                                <li @click="tabDetail='change-tab'" :class="tabDetail == 'change-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi/Luân chuyển</li>
+                                                <li @click="tabDetail='maintain-tab'" :class="tabDetail == 'maintain-tab' ? 'active-sidebar' : ''">Bảo dưỡng</li>
+                                                <li @click="tabDetail='allocation-tab'" :class="tabDetail == 'allocation-tab' ? 'active-sidebar' : ''">Phân bổ</li>
+                                                <li @click="tabDetail='repair-tab'" :class="tabDetail == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa</li>
+                                                <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
                                             </ul>
                                             <span>Mã QR</span>
                                             <img src="https://media.istockphoto.com/id/1095468748/vi/vec-to/m%C3%A3-qr-m%E1%BA%ABu-m%C3%A3-v%E1%BA%A1ch-hi%E1%BB%87n-%C4%91%E1%BA%A1i-vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BB%83-qu%C3%A9t-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-th%C3%B4ng-minh-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=nCjpoa8qW4lREJGqVCQZsWcrKGOcKKuy5RSsSVzqlL8=" alt="" style="width: 100%;">
@@ -338,7 +381,7 @@
                                                 <h5 class="text-bold" x-text="assetName"></h5>
                                                 <span x-html="arrSvgStatus[assetStatus]"></span>
                                             </div>
-                                            <div class="general-tab" x-show="tab == 'general-tab'">
+                                            <div class="general-tab" x-show="tabDetail == 'general-tab'">
                                                 <h6 class="text-bold">Thông tin chung</h6>
                                                 <div class="row">
                                                     <div class="col-6">
@@ -425,7 +468,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="guarantee-tab" x-show="tab == 'guarantee-tab'">
+                                            <div class="guarantee-tab" x-show="tabDetail == 'guarantee-tab'">
                                                 <h6 class="text-bold">
                                                     Bảo hành
                                                 </h6>
@@ -451,7 +494,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="change-tab" x-show="tab == 'change-tab'">
+                                            <div class="change-tab" x-show="tabDetail == 'change-tab'">
                                                 <h6 class="text-bold">
                                                     Cấp phát/Thu hồi/Luân chuyển
                                                 </h6>
@@ -490,7 +533,7 @@
                                                     
                                                 </div>
                                             </div>
-                                            <div class="maintain-tab" x-show="tab == 'maintain-tab'">
+                                            <div class="maintain-tab" x-show="tabDetail == 'maintain-tab'">
                                                 <h6 class="text-bold">
                                                     Bảo dưỡng
                                                 </h6>
@@ -509,7 +552,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="allocation-tab" x-show="tab == 'allocation-tab'">
+                                            <div class="allocation-tab" x-show="tabDetail == 'allocation-tab'">
                                                 <h6 class="text-bold">
                                                     Phân bổ
                                                 </h6>
@@ -540,7 +583,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="repair-tab" x-show="tab == 'repair-tab'">
+                                            <div class="repair-tab" x-show="tabDetail == 'repair-tab'">
                                                 <h6 class="text-bold">
                                                     Sửa chữa
                                                 </h6>
@@ -572,7 +615,7 @@
                                                     
                                                 </div>
                                             </div>
-                                            <div class="lost-tab" x-show="tab == 'lost-tab'">
+                                            <div class="lost-tab" x-show="tabDetail == 'lost-tab'">
                                                 <h6 class="text-bold">
                                                     Mất - hủy - thanh lý
                                                 </h6>
@@ -617,35 +660,35 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <h6 class="text-bold">Thông tin nhân sự cấp phát tài sản</h6>
+                                    <h6 class="text-bold">Thông tin cấp phát tài sản</h6>
                                     <div class="col-12">
                                         <div class="mb-3">
                                             <span>Theo</span>
                                             <div class="d-flex" style="gap: 30px;">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation === 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="tabAllocation='allocation-tab'">
+                                                    <input class="form-check-input" :checked="defaultCheck == 'employee'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="defaultCheck='employee'">
                                                     <label class="form-check-label" for="defaultCheck1">
                                                         Nhân viên
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation === 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="tabAllocation='recovery-tab'">
+                                                    <input class="form-check-input" :checked="defaultCheck == 'unit'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="defaultCheck='unit'">
                                                     <label class="form-check-label" for="defaultCheck2">
                                                         Đơn vị
                                                     </label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-3" x-show="defaultCheck == 'unit'">
                                             <span>Đơn vị</span>
                                             <select class="form-control select2" data-placeholder="Đơn vị" id="unitSelect">
                                                 <option value="" selected>Đơn vị</option>
                                                 <template x-for="(org, key) in listOrg">
-                                                    <option :value="org.id" x-text="org.name"></option>
+                                                    <option :value="org.id" x-text="org.dept_type.cfg_key + ' ' + org.name"></option>
                                                 </template>
                                             </select>
                                         </div>
-                                        <div class="mb-3">
+                                        <div class="mb-3" x-show="defaultCheck == 'employee'">
                                             <span>Nhân viên</span>
                                             <select class="form-control select2" data-placeholder="Người dùng" id="userSelect">
                                                 <option value="" selected>Người dùng</option>
@@ -657,11 +700,13 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close" @click="fillDataModalAllocation('allocation');">Xác nhận</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @include('assets.asset.common.modal-asset')
+                    @include('assets.asset.common.modal-rotation')
             </div>
         </div>
     </div>
@@ -678,76 +723,24 @@
 
 @section('js')
 <script>
+    function openModal(modalId) {
+        const modal = new bootstrap.Modal(document.querySelector(modalId));
+        modal.show();
+
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        if (backdrops.length > 1) {
+            backdrops[1].classList.add('custom-backdrop');
+        }
+    }
+
+    function closeModal(modalId) {
+        const modal = new bootstrap.Modal(document.querySelector(modalId));
+        modal.hide();
+    }
+
     function formatCurrency(value) {
         return value.toLocaleString('vi-VN') + 'đ';
     }
-
-    // function fetchDataComponent() {
-    //     return {
-    //         listAsset: [],
-    //         assetType: [],
-    //         listLocation: [],
-    //         listStatus: [],
-    //         tab: 'general-tab',
-    //         assetName: '',
-    //         assetStatus: 1,
-    //         assetObj: {},
-    //         pageParam: 1,
-
-    //         async fetchData(status = '' ,location = '' ,type ='', nameCodeAsset = '', nameUser = '') {
-    //             try {
-    //                 let urlSearch = '/api/asset/get-data-list-asset?';
-
-    //                 if (this.pageParam) {
-    //                     urlSearch += 'page=' + this.pageParam + '&';
-    //                 }
-
-    //                 if (status) {
-    //                     urlSearch += 'status=' + status + '&';
-    //                 }
-
-    //                 if (location) {
-    //                     urlSearch += 'location=' + location + '&';
-    //                 }
-
-    //                 if (type) {
-    //                     urlSearch += 'type=' + type + '&';
-    //                 }
-
-    //                 if (nameCodeAsset) {
-    //                     urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
-    //                 }
-
-    //                 if (nameUser) {
-    //                     urlSearch += 'nameUser=' + nameUser + '&';
-    //                 }
-
-    //                 const response = await axios.get(urlSearch);
-    //                 const data = response.data;
-    //                 this.listAsset = data.data.listAsset.data;
-    //                 this.assetType = data.data.listAssetType;
-    //                 this.listLocation = data.data.listLocation;
-    //                 this.listStatus = data.data.listStatus;
-    //                 this.totalPages = data.data.listAsset.total;
-    //                 this.currentPage = data.data.listAsset.current_page;
-    //                 console.log(data.data.listAsset);
-                                      
-    //             } catch (error) {
-    //                 console.error('Lỗi khi gọi API:', error);
-    //             }
-    //         },
-
-    //         fillData(asset) {
-    //             this.assetName = asset.name;
-    //             this.assetStatus = asset.status;
-    //             this.assetObj = asset;
-    //             console.log(this.assetName);
-                
-    //             console.log(this.asset);
-                
-    //         }
-    //     };
-    // }
 
     document.addEventListener('alpine:init', () => {
         Alpine.data('listAsset', () => ({
@@ -758,6 +751,7 @@
             assetType: [],
             listLocation: [],
             listStatus: [],
+            tabDetail: 'general-tab',
             tab: 'general-tab',
             tabAllocation: 'allocation-tab',
             assetName: '',
@@ -767,16 +761,62 @@
             limitParam: 10,
             listOrg: [],
             listUser: [],
+            defaultCheck: 'employee',
+            userObj: {},
+            orgObj: {},
+            listAssetOfUser: [],
+            listAssetAllocate: [],
+            listAssetRecovery: [],
+            listHistory: [],
+            unitSelect: 0,
+            userSelect: 0,
+            assetSelect: {},
+            listAssetSelect: [],
+            description: '',
+            defaultCheckRotation: 'employee',
+            listAssetRotation: [],
+            descriptionRotation: '',
+            rotationToType: 'employee',
+            rotationTo: 0,
+            unitToSelect: 0,
+            userToSelect: 0,
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
+                window.initSelect2Modal('modalRotation');
 
                 this.fetchData();
+                this.getListOrg();
 
-                const select = $('#unitSelect').select2();
+                // const select = $('#unitSelect').select2();
           
-                select.on('change', (event) => {                  
-                    this.getUserByUnit($(event.target).val());
+                // select.on('change', (event) => {  
+                //     this.unitSelect = $(event.target).val();               
+                //     this.getUserByUnit($(event.target).val());
+                // });
+
+                const userSelect = $('#userSelect').select2();
+          
+                userSelect.on('change', (event) => {  
+                    this.userSelect = $(event.target).val();               
+                });
+
+                const unitSelect = $('#unitSelect').select2();
+          
+                unitSelect.on('change', (event) => {  
+                    this.unitSelect = $(event.target).val();               
+                });
+
+                const userToSelect = $('#userToSelect').select2();
+          
+                userToSelect.on('change', (event) => {  
+                    this.userToSelect = $(event.target).val();               
+                });
+
+                const unitToSelect = $('#unitToSelect').select2();
+          
+                unitToSelect.on('change', (event) => {  
+                    this.unitToSelect = $(event.target).val();               
                 });
 
                 window.addEventListener('change-page', (event) => {
@@ -789,6 +829,19 @@
                     this.limitParam = event.target.value;
                     this.fetchData();
                 });
+            },
+
+            async getListOrg() {
+                try {
+                    let urlSearch = '/api/asset/get-data-list-org';
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listOrg = data.data.listOrg; 
+                                                        
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
             },
 
             async fetchData(status = '' ,location = '' ,type ='', nameCodeAsset = '', nameUser = '') {
@@ -830,23 +883,64 @@
                     this.listLocation = data.data.listLocation;
                     this.listStatus = data.data.listStatus;
                     this.totalPages = data.data.listAsset.last_page;
-                    this.currentPage = data.data.listAsset.current_page;
-                    this.listOrg = data.data.listOrg; 
-                    this.listUser = data.data.listUser;                                      
+                    this.currentPage = data.data.listAsset.current_page;                                   
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
             },
 
-            async getUserByUnit(unitId) {
+            async getDataAsset(type = '', nameCodeAsset = '') {
                 try {
-                    let urlSearch = '/api/asset/get-user-by-unit?orgId=' + unitId;
+                    let urlSearch = '/api/asset/get-data-list-asset?status=2&';
+
+                    if (type) {
+                        urlSearch += 'type=' + type + '&';
+                    }
+
+                    if (nameCodeAsset) {
+                        urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
+                    }
+
+                    urlSearch += 'userId=' + this.userObj.id + '&';
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listUser = data.data.listUser;  
-                    console.log(data.data.listUser);
-                                                        
+                    this.listAssetSelect = data.data.listAsset.data;
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+
+            // async getUserByUnit(unitId) {
+            //     try {
+            //         let urlSearch = '/api/asset/get-user-by-unit?orgId=' + unitId;
+
+            //         const response = await axios.get(urlSearch);
+            //         const data = response.data;
+            //         this.listUser = data.data.listUser;  
+                    
+            //         this.$nextTick(() => {
+            //             const modalElement = document.querySelector('#modalAllocationConfirm');
+            //             $(modalElement).on('shown.bs.modal', () => {
+            //                 const selectElement = document.querySelector('#userSelect');
+            //                 if (selectElement) {
+            //                     $(selectElement).select2();
+            //                     $(selectElement).val('').trigger('change');
+            //                 }
+            //             });
+            //         });                                 
+            //     } catch (error) {
+            //         console.error('Lỗi khi gọi API:', error);
+            //     }
+            // },
+
+            async getUser() {
+                try {
+                    let urlSearch = '/api/asset/get-user?';
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listUser = data.data.listUser;                                
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -855,11 +949,226 @@
             fillData(asset) {
                 this.assetName = asset.name;
                 this.assetStatus = asset.status;
-                this.assetObj = asset;
-                console.log(this.assetName);
+                this.assetObj = asset;           
+            },
+            async getDataAssetOf() {
+                try {
+                    let urlSearch = '/api/asset/get-list-asset-of-' + (this.defaultCheck == 'employee' ? 'user' : 'org') + '?' + (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=')  + this.obj.id;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listAssetOfUser = data.data.listAssetOfObj;               
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async getDataHistoryOf() {
+                try {
+                    let urlSearch = '/api/asset/get-list-history?'+ (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=')  + this.obj.id;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listHistory = data.data.listHistory;                                    
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            fillDataModalAllocation(type) {
+                if (type == 'allocation') {
+                    let obj;
+
+                    if (this.defaultCheck == 'employee') {
+                        obj = this.listUser.find(user => user.id == this.userSelect);
+                        this.userObj = obj;
+                    }
+
+                    if (this.defaultCheck == 'unit') {
+                        obj = this.listOrg.find(user => user.id == this.unitSelect);
+                        this.orgObj = obj;
+                    }
+
+                    this.obj = obj;
+                    this.listAssetAllocate = [];
+                    this.listAssetAllocate.push(this.assetSelect);
+                    
+                    this.getDataAssetOf();
+                    this.getDataHistoryOf();
+                    this.tab = 'allocation-tab'; 
+                    this.tabAllocation = 'allocation-tab';
+                } else {
+                    let obj;
+
+                    if (this.assetSelect.user) {
+                        obj = this.assetSelect.user;
+                        this.userObj = obj;
+                        this.defaultCheck = 'employee';
+                    }
+
+                    if (this.assetSelect.organization) {
+                        obj = this.assetSelect.organization;
+                        this.orgObj = obj;
+                        this.defaultCheck = 'unit';
+                    }
+
+                    this.obj = obj;
+
+                    console.log(this.assetSelect);
+                    
+
+                    this.listAssetRecovery = [];
+                    this.listAssetRecovery.push(this.assetSelect);
+                    this.getDataAssetOf();
+                    this.getDataHistoryOf();
+                    this.tab = 'allocation-tab'; 
+                    this.tabAllocation = 'recovery-tab';
+                }
                 
-                console.log(this.asset);
-                
+                const modal = new bootstrap.Modal(document.querySelector('#modalDetail'));
+                modal.show();
+            },
+            toggleSelection(asset, isChecked) {
+                if (isChecked) {
+                    if (!this.listAssetAllocate.some(selected => selected.id === asset.id)) {
+                        this.listAssetAllocate.push(asset);
+                    }
+                } else {
+                    this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== asset.id);
+                }
+            },
+            deleteSelection(assetId){
+                this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetId);
+            },
+            toggleSelectionRecovery(asset, isChecked) {
+                if (isChecked) {
+                    if (!this.listAssetRecovery.some(selected => selected.id === asset.id)) {
+                        this.listAssetRecovery.push(asset);
+                    }
+                } else {
+                    this.listAssetRecovery = this.listAssetRecovery.filter(assetAllocate => assetAllocate.id !== asset.id);
+                }
+            },
+            async allocateAsset(){
+                try {
+                    if (this.defaultCheck == 'employee') {
+                        let urlSearch = '/api/asset/allocate-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            listAssetAllocate: this.listAssetAllocate,
+                            user: this.userObj,
+                            description: this.description
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                        this.listAssetAllocate = [];
+                        this.description = '';
+
+                        openModal('#successAllocateModal');
+                    } else {
+                        let urlSearch = '/api/asset/allocate-asset-org';
+
+                        const response = await axios.post(urlSearch, {
+                            listAssetAllocate: this.listAssetAllocate,
+                            org: this.orgObj,
+                            description: this.description
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                        this.listAssetAllocate = [];
+                        this.description = '';
+
+                        openModal('#successAllocateModal');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async recoveryAsset(){
+                try {
+                    if (this.defaultCheck == 'employee') {
+                        let urlSearch = '/api/asset/recovery-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            listAssetRecovery: this.listAssetRecovery,
+                            user: this.userObj,
+                            description: this.description
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                        this.listAssetRecovery = [];
+                        this.description = '';
+
+                        openModal('#successAllocateModal');
+                    } else {
+                        let urlSearch = '/api/asset/recovery-asset-org';
+
+                        const response = await axios.post(urlSearch, {
+                            listAssetRecovery: this.listAssetRecovery,
+                            org: this.orgObj,
+                            description: this.description
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                        this.listAssetRecovery = [];
+                        this.description = '';
+
+                        openModal('#successAllocateModal');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            fillDataModalRotation(){
+                this.getUser();
+                const modal = new bootstrap.Modal(document.querySelector('#modalRotation'));
+                modal.show();
+            },
+            async rotationAsset(){
+                try {
+                    let urlSearch = '/api/asset/rotation-asset';
+
+                    this.listAssetRotation.push(this.assetSelect);
+
+                    const response = await axios.post(urlSearch, {
+                        listAssetRotation: this.listAssetRotation,
+                        rotationToId: this.rotationTo,
+                        rotationToType: this.rotationToType,
+                        descriptionRotation: this.descriptionRotation
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    const data = response.data;
+                    this.listAssetOfUser = data.data.listAssetOfObj;
+                    this.listAssetRotation = [];
+                    this.descriptionRotation = '';
+
+                    closeModal('#modalRotation');
+                    openModal('#successRotationModal');
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
             }
         }));
     });

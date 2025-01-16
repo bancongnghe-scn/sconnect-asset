@@ -12,7 +12,7 @@
                             <ul class="sidebar-tab" style="padding: 0;">
                                 <li @click="tab='general-tab'" :class="tab == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
                                 <li @click="tab='allocation-tab'" :class="tab == 'allocation-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi</li>
-                                <li @click="tab='asset-tab'" :class="tab == 'asset-tab' ? 'active-sidebar' : ''" x-show="userObj">Tài sản đang đại diện</li>
+                                <li @click="tab='asset-tab'" :class="tab == 'asset-tab' ? 'active-sidebar' : ''" x-show="Object.keys(orgObj).length == 0">Tài sản đang đại diện</li>
                                 <li @click="tab='history-tab'" :class="tab == 'history-tab' ? 'active-sidebar' : ''">Lịch sử</li>
                             </ul>
                         </div>
@@ -20,7 +20,7 @@
                             <div class="name-asset d-flex" style="gap: 10px;">
                                 <h5 class="text-bold"></h5>
                             </div>
-                            <div class="general-tab" x-show="tab == 'general-tab' && userObj">
+                            <div class="general-tab" x-show="tab == 'general-tab' && Object.keys(orgObj).length == 0">
                                 <h6 class="text-bold">Thông tin chung</h6>
                                 <div class="row">
                                     <div class="col-6">
@@ -92,7 +92,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="general-tab" x-show="tab == 'general-tab' && orgObj">
+                            <div class="general-tab" x-show="tab == 'general-tab' && Object.keys(orgObj).length != 0">
                                 <h6 class="text-bold">Thông tin chung</h6>
                                 <div class="row">
                                     <div class="col-6">
@@ -134,13 +134,13 @@
                                             <span>Thao tác</span>
                                             <div class="d-flex" style="gap: 30px;">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation === 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="tabAllocation='allocation-tab'">
+                                                    <input class="form-check-input" :checked="tabAllocation == 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="tabAllocation='allocation-tab'">
                                                     <label class="form-check-label" for="defaultCheck1">
                                                         Cấp phát
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation === 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="tabAllocation='recovery-tab'">
+                                                    <input class="form-check-input" :checked="tabAllocation == 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="tabAllocation='recovery-tab'">
                                                     <label class="form-check-label" for="defaultCheck2">
                                                         Thu hồi
                                                     </label>
@@ -274,7 +274,7 @@
                                                     <tr>
                                                         <td class="text-center">
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" @click="toggleSelectionRecovery(asset, $event.target.checked)">
+                                                                <input :checked="listAssetRecovery.some(selected => selected.id === asset.id)" class="form-check-input" type="checkbox" @click="toggleSelectionRecovery(asset, $event.target.checked)">
                                                             </div>
                                                         </td>
                                                         <td x-text="asset.code"></td>
@@ -302,34 +302,56 @@
                                     Lịch sử cấp phát/Thu hồi/Luân chuyển
                                 </h6>
                                 <div class="row">
-                                    <div class="col-12">
-                                        <table class="table table-bordered">
+                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%;">
+                                        <table class="table table-bordered table-repair" style="width: 1000px;">
                                             <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">First</th>
-                                                <th scope="col">Last</th>
-                                                <th scope="col">Handle</th>
+                                            <tr style="font-size: 14px;">
+                                                <th scope="col">Ngày</th>
+                                                <th scope="col">Hành động</th>
+                                                <th scope="col">Biên bản</th>
+                                                <th scope="col">Người thực hiện</th>
+                                                <th scope="col">Bàn giao cho</th>
+                                                <th scope="col">Cá nhân/Đại diện</th>
+                                                <th scope="col">Đơn vị</th>
+                                                <th scope="col">Nội dung</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Jacob</td>
-                                                <td>Thornton</td>
-                                                <td>@fat</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3</th>
-                                                <td colspan="2">Larry the Bird</td>
-                                                <td>@twitter</td>
-                                            </tr>
+                                            <template x-for="history in listHistory">
+                                                <tr>
+                                                    <td x-text="formatDateVN(history.created_at)"></td>
+                                                    <td x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
+                                                    <td>
+                                                        <span class="text-primary">BB001</span>
+                                                    </td>
+                                                    <td>Mark</td>
+                                                    <td>
+                                                        <button x-show="history.user_id" type="button" class="btn btn-outline-success">
+                                                            Cá nhân
+                                                        </button>
+                                                        <button x-show="!history.user_id" type="button" class="btn btn-outline-success">
+                                                            Đơn vị
+                                                        </button>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <img x-show="history.user_id" x-bind:src="history.user && history.user.avatar 
+                                                                    ? (history.user.avatar.includes('/uploads/') 
+                                                                        ? 'https://office.sconnect.com.vn' + history.user.avatar 
+                                                                        : history.user.avatar) 
+                                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                    alt="" 
+                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                <span x-text="history.user ? history.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                <span x-text="history.user ? 'Mã nhân sự:' + history.user.code : ''" style="color: #706f6f;"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td x-text="history.organization.dept_type.cfg_key + ' ' + history.organization.name"></td>
+                                                    <td x-text="history.description"></td>
+                                                </tr>
+                                            </template>
                                             </tbody>
                                         </table>
                                     </div>
@@ -580,7 +602,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template x-for="(asset, index) in listAsset" :key="asset.id">
+                        <template x-for="(asset, index) in listAssetSelect" :key="asset.id">
                             <tr>
                                 <td>
                                     <div class="form-check">

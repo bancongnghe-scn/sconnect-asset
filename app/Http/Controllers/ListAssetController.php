@@ -32,8 +32,6 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
-                'listOrg'       => Org::with('deptType')->where('parent_id', 1)->get(),
-                'listUser'      => User::where('status', 1)->limit(2000)->get(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -67,10 +65,10 @@ class ListAssetController extends Controller
     public function getListAssetOfUser(Request $request): JsonResponse
     {
         try {
-            $listAssetOfUser = $this->assetService->getListAssetOfUser($request->userId);
+            $listAssetOfObj = $this->assetService->getListAssetOfUser($request->userId);
 
             return response_success([
-                'listAssetOfUser' => $listAssetOfUser,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -82,10 +80,10 @@ class ListAssetController extends Controller
     public function allocateAsset(Request $request): JsonResponse
     {
         try {
-            $listAssetOfUser = $this->assetService->allocateAsset($request);
+            $listAssetOfObj = $this->assetService->allocateAsset($request);
 
             return response_success([
-                'listAssetOfUser' => $listAssetOfUser,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -97,10 +95,10 @@ class ListAssetController extends Controller
     public function recoveryAsset(Request $request): JsonResponse
     {
         try {
-            $listAssetOfUser = $this->assetService->recoveryAsset($request);
+            $listAssetOfObj = $this->assetService->recoveryAsset($request);
 
             return response_success([
-                'listAssetOfUser' => $listAssetOfUser,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -134,10 +132,10 @@ class ListAssetController extends Controller
     public function getListAssetOfOrg(Request $request): JsonResponse
     {
         try {
-            $listAssetOfOrg = $this->assetService->getListAssetOfOrg($request->orgId);
+            $listAssetOfObj = $this->assetService->getListAssetOfOrg($request->orgId);
 
             return response_success([
-                'listAssetOfOrg' => $listAssetOfOrg,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -149,10 +147,10 @@ class ListAssetController extends Controller
     public function allocateAssetOrg(Request $request): JsonResponse
     {
         try {
-            $listAssetOfOrg = $this->assetService->allocateAssetOrg($request);
+            $listAssetOfObj = $this->assetService->allocateAssetOrg($request);
 
             return response_success([
-                'listAssetOfOrg' => $listAssetOfOrg,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -164,10 +162,10 @@ class ListAssetController extends Controller
     public function recoveryAssetOrg(Request $request): JsonResponse
     {
         try {
-            $listAssetOfUser = $this->assetService->recoveryAssetOrg($request);
+            $listAssetOfObj = $this->assetService->recoveryAssetOrg($request);
 
             return response_success([
-                'listAssetOfOrg' => $listAssetOfUser,
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -183,6 +181,62 @@ class ListAssetController extends Controller
 
             return response_success([
                 'listUser' => $listUser,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListHistory(Request $request)
+    {
+        try {
+            $listHistory = $this->assetService->getListHistory($request);
+
+            return response_success([
+                'listHistory' => $listHistory,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListOrg()
+    {
+        try {
+            return response_success([
+                'listOrg' => Org::with(['deptType', 'manager'])->where('parent_id', 1)->get(),
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getUser(): JsonResponse
+    {
+        try {
+            return response_success([
+                'listUser' => User::where('status', 1)->limit(2000)->get()
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function rotationAsset(Request $request): JsonResponse
+    {
+        try {
+            $listAssetOfObj = $this->assetService->rotationAsset($request);
+
+            return response_success([
+                'listAssetOfObj' => $listAssetOfObj,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
