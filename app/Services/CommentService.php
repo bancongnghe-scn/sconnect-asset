@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\PlanMaintainCommentEvent;
 use App\Events\ShoppingPlanCommentEvent;
 use App\Events\ShoppingPlanOrganizationCommentEvent;
 use App\Http\Resources\ListCommentResource;
@@ -40,28 +41,24 @@ class CommentService
         $data['created_at'] = date('Y-m-d H:i:s');
         $data['created_by'] = $user['id'];
 
-        $comment = $this->commentRepository->create($data);
-
+        $comment     = $this->commentRepository->create($data);
+        $dataComment = [
+            'target_id'  => $data['target_id'],
+            'comment_id' => $comment->id,
+            'message'    => $data['message'],
+            'user_id'    => $user['id'],
+            'time'       => date('H:i d/m/Y', strtotime($data['created_at'])),
+            'user_name'  => $user['name'],
+        ];
         switch ($data['type']) {
             case Comment::TYPE_SHOPPING_PLAN_COMPANY:
-                ShoppingPlanCommentEvent::dispatch(
-                    $data['target_id'],
-                    $comment->id,
-                    $data['message'],
-                    $user['id'],
-                    date('H:i d/m/Y', strtotime($data['created_at'])),
-                    $user['name']
-                );
+                ShoppingPlanCommentEvent::dispatch($dataComment);
                 break;
             case Comment::TYPE_SHOPPING_PLAN_ORGANIZATION:
-                ShoppingPlanOrganizationCommentEvent::dispatch(
-                    $data['target_id'],
-                    $comment->id,
-                    $data['message'],
-                    $user['id'],
-                    date('H:i d/m/Y', strtotime($data['created_at'])),
-                    $user['name']
-                );
+                ShoppingPlanOrganizationCommentEvent::dispatch($dataComment);
+                break;
+            case Comment::TYPE_PLAN_MAINTAIN:
+                PlanMaintainCommentEvent::dispatch($dataComment);
                 break;
             default:
         }

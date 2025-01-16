@@ -6,7 +6,7 @@ window.apiGetPlanLiquidation = async function (filters) {
         })
 
         const data = res.data;
-        
+
         if (!data.success) {
             return {
                 success: false,
@@ -125,7 +125,7 @@ window.apiRemoveAssetFromPlanLiquidation = async function (plan_maintain_asset_i
 }
 
 window.apiRemoveMultiPlanLiquidation = async function (planIds) {
-    
+
     try {
         const response = await axios.post("/api/manage-plan-liquidation/delete-multi",planIds)
 

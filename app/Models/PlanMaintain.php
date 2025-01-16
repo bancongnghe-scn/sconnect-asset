@@ -15,10 +15,14 @@ class PlanMaintain extends Model
     protected $table    = 'plan_maintain';
     protected $fillable = [
         'name',
-        'status',
+        'code',
         'type',
-        'code',             //thêm
-        'note',             //thêm
+        'status',
+        'note',
+        'start_time',
+        'end_time',
+        'maintain_costs',
+        'sent_notification',
         'created_at',
         'created_by',
         'updated_at',
@@ -32,10 +36,12 @@ class PlanMaintain extends Model
     public const TYPE_MAINTAIN    = 2;
     public const TYPE_LIQUIDATION = 3;
 
-    public const STATUS_NEW             = 1;
-    public const STATUS_PENDING         = 2;
-    public const STATUS_APPROVAL        = 3;
-    public const STATUS_REJECT          = 4;
+    public const STATUS_NEW                        = 0;
+    public const STATUS_PENDING                    = 1;
+    public const STATUS_APPROVAL                   = 2;
+    public const STATUS_REJECT                     = 3;
+    public const STATUS_MAINTAINING                = 4;
+    public const STATUS_COMPLETE_MAINTAIN          = 5;
 
     public const STATUS_NAME = [
         self::STATUS_NEW            => 'Mới tạo',
@@ -52,5 +58,20 @@ class PlanMaintain extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function planMaintainOrganizations(): HasMany
+    {
+        return $this->hasMany(PlanMaintainOrganization::class, 'plan_maintain_id');
+    }
+
+    public function planMaintainSuppliers(): HasMany
+    {
+        return $this->hasMany(PlanMaintainSupplier::class, 'plan_maintain_id');
+    }
+
+    public function planMaintainCharge(): HasMany
+    {
+        return $this->hasMany(PlanMaintainCharge::class, 'plan_maintain_id');
     }
 }

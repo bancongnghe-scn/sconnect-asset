@@ -9,7 +9,7 @@
                     multipleDatesSeparator: ' - ',
                     autoClose: true,
                     clearButton: true,
-                    locale: localeEn,
+                    locale: localeVi,
                     dateFormat: 'dd/MM/yyyy',
                     selectedDates: [{{$start}} !== null ? formatDate({{$start}}) : '', {{$end}} !== null ? formatDate({{$end}}) : ''],
                     onSelect: (selectedDates) => {

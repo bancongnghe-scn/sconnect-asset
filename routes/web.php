@@ -94,6 +94,12 @@ Route::middleware('checkAuth')->group(function () {
     });
     Route::view('/assets/manage/list', 'assets.manage.list')->name('assets.manage.list');
     Route::view('/assets/inventory/list', 'assets.inventory.list');
+    Route::prefix('allocation-rate')->group(function () {
+        Route::view('list', 'assets.allocation_rate.list');
+    });
+    Route::prefix('maintain')->group(function () {
+        Route::view('list', 'assets.maintain.list');
+    });
 });
 
 Route::prefix('report')->group(function () {

@@ -74,7 +74,7 @@
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
                     ].includes(+data.status)"
                 >
-                    @include('component.status_shopping_asset', [
+                    @include('component.status.status_shopping_asset', [
                         'status' => 'assetRegister.status', 'tooltip' => 'assetRegister.reason'
                     ])
                 </td>

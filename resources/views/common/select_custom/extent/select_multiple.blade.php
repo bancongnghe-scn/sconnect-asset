@@ -28,7 +28,7 @@
                 if (this.selected.includes(value)) {
                     this.selected = this.selected.filter(item => item !== value);
                 } else {
-                    this.selected.push(value);
+                    this.selected = [...this.selected, value];
                 }
             },
             isSelected(value) {

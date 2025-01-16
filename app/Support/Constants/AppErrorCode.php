@@ -98,6 +98,17 @@ class AppErrorCode
     public const CODE_2091 = 2091; //  Lưu thông tin đơn hàng thất bại !
     public const CODE_2092 = 2092; //  Đã tồn tại đơn hàng này !
     public const CODE_2093 = 2093; //  Xóa đơn hàng thất bại !
+    public const CODE_2094 = 2094; //  Cấu hình định mức đã tồn tại !
+    public const CODE_2095 = 2095; //  Tạo định mức thất bại !
+    public const CODE_2096 = 2096; //  Gắn đơn vị bảo dưỡng cho kế hoạch thất bại !
+    public const CODE_2097 = 2097; //  Gắn đơn vị thực hiện bảo dưỡng cho kế hoạch thất bại !
+    public const CODE_2098 = 2098; //  Gắn người phụ trách cho kế hoạch thất bại !
+    public const CODE_2099 = 2099; //  Tạo kế hoạch bảo dưỡng thành công !
+    public const CODE_2100 = 2100; //  Kế hoạch bảo dưỡng không tồn tai !
+    public const CODE_2101 = 2101; //  Lưu kế hoạch bảo dưỡng thất bại !
+    public const CODE_2102 = 2102; //  Xóa kế hoạch bảo dưỡng thất bại !
+    public const CODE_2103 = 2103; //  Trạng thái kế hoạch bảo dưỡng không hợp lệ !
+    public const CODE_2104 = 2104; //  Cập nhật thời gian bảo dưỡng cho tài sản thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

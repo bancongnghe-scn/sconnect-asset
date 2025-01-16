@@ -1,7 +1,7 @@
 const domain = import.meta.env.VITE_SC_API_DOMAIN
 window.apiGetAllJob = async function () {
     try {
-        const response = await axios.get('/api/job/getJobs', {params: {}})
+        const response = await axios.get('/api/service/job-title/list', {params: {}})
 
         const data = response.data;
         if (!data.success) {
@@ -25,7 +25,7 @@ window.apiGetAllJob = async function () {
 
 window.apiGetListJob = async function (filters) {
     try {
-        const response = await axios.get(domain + '/api/job/getJobs', {
+        const response = await axios.get('/api/service/job-title/list', {
             params: filters,
         })
         const data = response.data;

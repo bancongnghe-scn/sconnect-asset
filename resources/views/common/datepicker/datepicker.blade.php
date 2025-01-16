@@ -7,7 +7,7 @@
             const datepicker = new AirDatepicker($el, {
                     autoClose: true,
                     clearButton: true,
-                    locale: localeEn,
+                    locale: localeVi,
                     dateFormat: 'dd/MM/yyyy',
                     onSelect: ({date}) => {
                         {{$model}} = date != null ? format(date, 'dd/MM/yyyy') : null

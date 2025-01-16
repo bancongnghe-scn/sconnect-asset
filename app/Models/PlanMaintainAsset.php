@@ -6,35 +6,38 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PlanMaintainAsset extends Model
 {
     use HasFactory;
+    use SoftDeletes;
     public $timestamps  = false;
     protected $table    = 'plan_maintain_asset';
     protected $fillable = [
         'plan_maintain_id',
         'asset_id',
         'name',
-        'asset_type',
+        'asset_type_name',
         'code',
-        'status',       //thêm sửa bỏ requi
-        'price',        //thêm sửa bỏ requi
-        'created_at',   //thêm sửa bỏ requi
-        'created_by',   //thêm sửa bỏ requi
-
-        'note',         //thêm tình trạng sửa
+        'status',
+        'price',
+        'created_at',
+        'created_by',
+        'note',
         'deleted_at',
         'deleted_by',
     ];
 
-    public const STATUS_NEW                 = 1;
-    public const STATUS_APPROVEL            = 2;
-    public const STATUS_CANCEL              = 3;
+    public const STATUS_NEW                     = 1;
+    public const STATUS_APPROVAL                = 2;
+    public const STATUS_CANCEL                  = 3;
+    public const STATUS_MAINTAINING             = 4;
+    public const STATUS_COMPLETE_MAINTAINING    = 5;
 
     public const STATUS_NAME = [
         self::STATUS_NEW                    => 'Chưa duyệt',
-        self::STATUS_APPROVEL               => 'Đã duyệt',
+        self::STATUS_APPROVAL               => 'Đã duyệt',
         self::STATUS_CANCEL                 => 'Từ chối',
 
     ];
