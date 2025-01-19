@@ -1,4 +1,4 @@
-<div>
+<div x-data="history_comment">
     <div class="container d-flex tw-gap-x-4 mt-3">
         <a class="tw-no-underline hover:tw-text-green-500"
            :class="activeLink.comment ? 'active-link' : 'inactive-link'"
@@ -89,7 +89,3 @@
     </div>
 </div>
 
-@vite([
-    'resources/js/assets/history_comment/plan_maintain/history_comment_plan_maintain.js',
-    'resources/js/assets/api/apiComment.js'
-])

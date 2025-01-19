@@ -108,4 +108,5 @@ document.addEventListener('alpine:init', () => {
                 this.$refs.input_message.focus();
             }
         })
-    )})
+    )
+})
