@@ -6,6 +6,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Support\Facades\Log;
 
 class PlanMaintainCommentEvent implements ShouldBroadcast
 {
@@ -15,6 +16,7 @@ class PlanMaintainCommentEvent implements ShouldBroadcast
     public function __construct(
         protected $data,
     ) {
+        Log::info($this->data);
     }
 
     public function broadcastOn()
