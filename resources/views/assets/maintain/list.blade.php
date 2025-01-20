@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="maintain">
+    <div class="card card-body" x-data="maintain">
         <div class="d-flex tw-gap-x-4"
              x-data="{total_need_maintain: 0, total_plan_maintain: 0, total_maintaining: 0}"
         >
