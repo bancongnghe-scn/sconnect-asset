@@ -67,7 +67,7 @@
                         <div class="col-6 mb-3">
                             <div class="row">
                                 <label class="form-label col-5">Trạng thái :</label>
-                                @include('common.table-status-asset', ['status' => "data.status"])
+                                @include('common.table-status-asset-more', ['status' => "data.status"])
                             </div>
                         </div>
                     </div>
