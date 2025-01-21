@@ -76,7 +76,7 @@ class ListAssetService
     public function allocateAsset($request)
     {
         $arrAllocationAsset = [];
-        $arrAssetId = [];
+        $arrAssetId         = [];
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
@@ -93,17 +93,17 @@ class ListAssetService
         }
 
         TransferAsset::create([
-            'user_id'    => $request->user['id'],
-            'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-            'type'       => 1,
-            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'user_id'           => $request->user['id'],
+            'org_id'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+            'type'              => 1,
+            'created_by'        => auth()->user() ? auth()->user()->id : null,
             'description'       => $request->description,
         ]);
 
         MoveAssetUser::insert($arrAllocationAsset);
 
         Asset::where('id', $arrAssetId)->update([
-            'status' => Asset::STATUS_ACTIVE,
+            'status'  => Asset::STATUS_ACTIVE,
             'user_id' => $request->user['id'],
         ]);
 
@@ -113,7 +113,7 @@ class ListAssetService
     public function recoveryAsset($request)
     {
         $arrRecoveryAsset = [];
-        $arrAssetId = [];
+        $arrAssetId       = [];
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
@@ -130,17 +130,17 @@ class ListAssetService
         }
 
         TransferAsset::create([
-            'user_id'    => $request->user['id'],
-            'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-            'type'       => 2,
-            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'user_id'     => $request->user['id'],
+            'org_id'      => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+            'type'        => 2,
+            'created_by'  => auth()->user() ? auth()->user()->id : null,
             'description' => $request->description,
         ]);
 
         MoveAssetUser::insert($arrRecoveryAsset);
 
         Asset::where('id', $arrAssetId)->update([
-            'status' => Asset::STATUS_PENDING,
+            'status'  => Asset::STATUS_PENDING,
             'user_id' => null,
         ]);
 
@@ -170,7 +170,7 @@ class ListAssetService
     public function allocateAssetOrg($request)
     {
         $arrAllocationAsset = [];
-        $arrAssetId = [];
+        $arrAssetId         = [];
 
         foreach ($request->listAssetAllocate as $asset) {
             $arrAllocationAsset[] = [
@@ -188,17 +188,17 @@ class ListAssetService
         }
 
         TransferAsset::create([
-            'user_id'    => null,
-            'org_id'     => $request->org['id'],
-            'type'       => 1,
-            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'user_id'     => null,
+            'org_id'      => $request->org['id'],
+            'type'        => 1,
+            'created_by'  => auth()->user() ? auth()->user()->id : null,
             'description' => $request->description,
         ]);
 
         MoveAssetOrg::insert($arrAllocationAsset);
 
         Asset::where('id', $arrAssetId)->update([
-            'status' => Asset::STATUS_ACTIVE,
+            'status'          => Asset::STATUS_ACTIVE,
             'organization_id' => $request->org['id'],
             'user_id'         => null,
         ]);
@@ -209,7 +209,7 @@ class ListAssetService
     public function recoveryAssetOrg($request)
     {
         $arrRecoveryAsset = [];
-        $arrAssetId = [];
+        $arrAssetId       = [];
 
         foreach ($request->listAssetRecovery as $asset) {
             $arrRecoveryAsset[] = [
@@ -227,17 +227,17 @@ class ListAssetService
         }
 
         TransferAsset::create([
-            'user_id'    => null,
-            'org_id'     => $request->org['id'],
-            'type'       => 2,
+            'user_id'     => null,
+            'org_id'      => $request->org['id'],
+            'type'        => 2,
             'description' => $request->description,
-            'created_by' => auth()->user() ? auth()->user()->id : null,
+            'created_by'  => auth()->user() ? auth()->user()->id : null,
         ]);
 
         MoveAssetOrg::insert($arrRecoveryAsset);
 
         Asset::where('id', $arrAssetId)->update([
-            'status' => Asset::STATUS_PENDING,
+            'status'          => Asset::STATUS_PENDING,
             'organization_id' => null,
         ]);
 

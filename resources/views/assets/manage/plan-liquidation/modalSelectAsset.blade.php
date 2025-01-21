@@ -9,8 +9,9 @@
                 <div class="container mb-3">
                     <div class="row mb-3">
                         <div class="col-5 fw-bold" style="text-decoration: underline;color: #28a745;">Danh sách tài sản đề nghị thanh lý</div>
-                        <div class="col-7">
+                        <div class="col-7 d-flex position-relative">
                             <input type="text" class="form-control" x-model="filterMore.name_code" placeholder="Tên/mã tài sản" @keydown.enter="modalSelectAsset(filterMore)">
+                            <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-1 tw-w-3" style="height: -webkit-fill-available;" x-on:click="modalSelectAsset(filterMore)"></i>
                         </div>
                     </div>
                     <table id="" class="table table-bordered table-hover dataTable dtr-inline"
@@ -33,7 +34,7 @@
                                 </td>
                                 <template x-for="(columnName, key) in dataTheadSelectAsset">
                                     <td>
-                                        <template x-if="key !== 'validity' && key !== 'status'">
+                                        <template x-if="key !== 'validity' && key !== 'status' && key !== 'price_liquidation'">
                                             <span x-text="data[key]"></span>
                                         </template>
                                         <template x-if="key === 'validity'">
@@ -43,6 +44,9 @@
                                                         x-text="data[key] ? 'On' : 'Off'">
                                                 </span>
                                             </div>
+                                        </template>
+                                        <template x-if="key == 'price_liquidation'">
+                                            <span x-text="formatPrice(data[key])" class="text-right"></span>
                                         </template>
                                     </td>
                                 </template>

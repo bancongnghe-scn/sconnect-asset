@@ -221,6 +221,7 @@ class MaintainService
             );
             if (!$insertLog) {
                 DB::rollBack();
+
                 return [
                     'success'    => false,
                     'error_code' => AppErrorCode::CODE_2105,

@@ -3,14 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Services\PlanMaintainLogService;
-use Illuminate\Http\Request;
 
 class PlanMaintainLogController extends Controller
 {
     public function __construct(
-        protected PlanMaintainLogService $planMaintainLogService
-    )
-    {
+        protected PlanMaintainLogService $planMaintainLogService,
+    ) {
 
     }
 
@@ -18,9 +16,11 @@ class PlanMaintainLogController extends Controller
     {
         try {
             $result = $this->planMaintainLogService->getPlanMaintainLogById($id);
+
             return response_success($result);
         } catch (\Throwable $e) {
             report($e);
+
             return response_error();
         }
     }

@@ -3,6 +3,7 @@
 namespace App\Services\Manage;
 
 use App\Models\Asset;
+use Illuminate\Support\Str;
 use App\Models\PlanMaintain;
 use App\Support\Constants\AppErrorCode;
 use App\Models\PlanMaintainAsset;
@@ -111,7 +112,7 @@ class PlanLiquidationService
                 'status',
             ],
             [
-                'planMaintainAsset:id,plan_maintain_id,price',
+                'planMaintainAsset:id,plan_maintain_id,price,status',
             ]
         );
 
@@ -176,9 +177,11 @@ class PlanLiquidationService
                 'asset_id'         => $asset->id,
                 'price'            => $asset->assetHistory->first()->price ?? 1,
                 'status'           => PlanMaintainAsset::STATUS_NEW,
+                'code'             => Str::random(6),
                 'created_by'       => Auth::id() ?? 1,
             ];
         }
+
         try {
             DB::beginTransaction();
             $insertplanLiquidationAsset = $this->planMaintainAssetRepository->insert($dataPlanLiquidationAsset);
