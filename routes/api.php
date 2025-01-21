@@ -123,7 +123,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
     });
 
-    Route::prefix('plan-maintain-log')->controller(\App\Http\Controllers\PlanMaintainLogController::class)->group(function () {
+    Route::prefix('plan-maintain-log')->controller(App\Http\Controllers\PlanMaintainLogController::class)->group(function () {
         Route::get('getPlanMaintainLogById/{id}', 'getPlanMaintainLogById');
     });
 

@@ -14,6 +14,7 @@ class PlanMaintainLogService
     public function getPlanMaintainLogById($id)
     {
         $logs = $this->planMaintainLogRepository->getListing(['plan_maintain_id' => $id]);
+
         return $logs->toArray();
     }
 }
