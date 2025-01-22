@@ -79,7 +79,6 @@ class MaintainService
 
     public function getAssetMaintaining($filters)
     {
-        $filters['status'] = PlanMaintainAsset::STATUS_MAINTAINING;
         $result            = $this->planMaintainAssetRepository->getListing($filters);
         if ($result->isEmpty()) {
             return [];

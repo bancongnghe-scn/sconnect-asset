@@ -238,6 +238,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('completePlanMaintain/{id}', 'completePlanMaintain');
         Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
     });
+
+    Route::prefix('inventory')->controller(\App\Http\InventoryController::class)->group(function () {
+        Route::get('getPlanInventory', 'getPlanInventory');
+    });
 });
 
 Route::prefix('report')->group(function () {
