@@ -16,12 +16,12 @@ class PlanMaintainLogRepository extends BaseRepository
     public function insertPlanMaintainLog($action, $planMaintainId, $newValue = [], $oldValue = [], $desc = null)
     {
         return $this->_model->insert([
-            'action' => $action,
+            'action'           => $action,
             'plan_maintain_id' => $planMaintainId,
-            'new_value' => json_encode($newValue),
-            'old_value' => json_encode($oldValue),
-            'desc'       => $desc ?? __('plan_maintain_log.' . $action),
-            'created_by' => Auth::id()
+            'new_value'        => json_encode($newValue),
+            'old_value'        => json_encode($oldValue),
+            'desc'             => $desc ?? __('plan_maintain_log.' . $action),
+            'created_by'       => Auth::id(),
         ]);
     }
 

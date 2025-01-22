@@ -78,7 +78,7 @@
                                                 <span x-text="data.id ? dataAsset.asset.name : dataAsset.name"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.id ? dataAsset.asset.reason : dataAsset.reason"></span>
+                                                <span x-text="dataAsset.asset.asset_history[0].description ?? ''"></span>
                                             </td>
                                             <td class="text-right">
                                                 <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : dataAsset.price_liquidation.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
