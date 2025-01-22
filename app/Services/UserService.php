@@ -15,6 +15,9 @@ class UserService
     public function getListUser(array $filters)
     {
         $users = $this->userRepository->getListing($filters);
+        foreach ($users as $user) {
+            $user->name = $user->name .' - '. $user->code;
+        }
 
         return $users->toArray();
     }
