@@ -302,7 +302,7 @@
                                         </svg>                                                                                        
                                         <span class="title-menu">Sửa chữa</span>   
                                     </a>
-                                    <a class="d-flex item-menu" href="#">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLiquidation" @click="assetSelect = asset;">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_13695_31778)">
                                             <path d="M9 21H4.714C3.767 21 3 20.233 3 19.286V15" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -322,12 +322,26 @@
                                         </svg>                                            
                                         <span class="title-menu">Đề xuất thanh lý</span>   
                                     </a>
-                                    <a class="d-flex item-menu" href="#">
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalCancel" @click="assetSelect = asset;">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M16.6443 7.76409C16.6443 7.64623 16.5478 7.5498 16.43 7.5498L14.6621 7.55784L11.9996 10.7319L9.3398 7.56052L7.56927 7.55248C7.45141 7.55248 7.35498 7.64623 7.35498 7.76677C7.35498 7.81766 7.37373 7.86588 7.40587 7.90606L10.8907 12.0578L7.40587 16.2069C7.37351 16.2462 7.35555 16.2954 7.35498 16.3462C7.35498 16.4641 7.45141 16.5605 7.56927 16.5605L9.3398 16.5525L11.9996 13.3784L14.6594 16.5498L16.4273 16.5578C16.5452 16.5578 16.6416 16.4641 16.6416 16.3436C16.6416 16.2927 16.6228 16.2444 16.5907 16.2043L13.1112 12.0552L16.5961 7.90338C16.6282 7.86588 16.6443 7.81498 16.6443 7.76409Z" fill="#344054"/>
                                             <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
                                         </svg>                                                                                        
                                         <span class="title-menu">Hủy tài sản</span>   
+                                    </a>
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalBroken" @click="assetSelect = asset;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
+                                            <path d="M10.7139 16.7143C10.7139 17.0553 10.8493 17.3823 11.0904 17.6234C11.3316 17.8645 11.6586 18 11.9996 18C12.3406 18 12.6676 17.8645 12.9087 17.6234C13.1498 17.3823 13.2853 17.0553 13.2853 16.7143C13.2853 16.3733 13.1498 16.0463 12.9087 15.8051C12.6676 15.564 12.3406 15.4286 11.9996 15.4286C11.6586 15.4286 11.3316 15.564 11.0904 15.8051C10.8493 16.0463 10.7139 16.3733 10.7139 16.7143ZM11.3567 13.7143H12.6424C12.7603 13.7143 12.8567 13.6179 12.8567 13.5V6.21429C12.8567 6.09643 12.7603 6 12.6424 6H11.3567C11.2389 6 11.1424 6.09643 11.1424 6.21429V13.5C11.1424 13.6179 11.2389 13.7143 11.3567 13.7143Z" fill="#344054"/>
+                                        </svg>                                                                                   
+                                        <span class="title-menu">Đánh dấu hỏng</span>   
+                                    </a>
+                                    <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLost" @click="assetSelect = asset;">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M16.9284 11.1416H7.07122C6.95336 11.1416 6.85693 11.238 6.85693 11.3559V12.6416C6.85693 12.7595 6.95336 12.8559 7.07122 12.8559H16.9284C17.0462 12.8559 17.1427 12.7595 17.1427 12.6416V11.3559C17.1427 11.238 17.0462 11.1416 16.9284 11.1416Z" fill="#344054"/>
+                                            <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
+                                        </svg>                                                                                   
+                                        <span class="title-menu">Đánh dấu mất</span>   
                                     </a>
                                     <a class="d-flex item-menu" href="#">
                                         <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -355,6 +369,308 @@
               @include('common.pagination')
                 <!-- Modal -->
                     <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="mb-0" style="font-weight: bold; color: #379237">Xem chi tiết tài sản</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-4" style="padding-right: 60px;">
+                                            <ul class="sidebar-tab" style="padding: 0;">
+                                                <li @click="tabDetail='general-tab'" :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
+                                                <li @click="tabDetail='guarantee-tab'" :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
+                                                <li @click="tabDetail='change-tab'" :class="tabDetail == 'change-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi/Luân chuyển</li>
+                                                <li @click="tabDetail='maintain-tab'" :class="tabDetail == 'maintain-tab' ? 'active-sidebar' : ''">Bảo dưỡng</li>
+                                                <li @click="tabDetail='allocation-tab'" :class="tabDetail == 'allocation-tab' ? 'active-sidebar' : ''">Phân bổ</li>
+                                                <li @click="tabDetail='repair-tab'" :class="tabDetail == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa</li>
+                                                <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
+                                            </ul>
+                                            <span>Mã QR</span>
+                                            <img src="https://media.istockphoto.com/id/1095468748/vi/vec-to/m%C3%A3-qr-m%E1%BA%ABu-m%C3%A3-v%E1%BA%A1ch-hi%E1%BB%87n-%C4%91%E1%BA%A1i-vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BB%83-qu%C3%A9t-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-th%C3%B4ng-minh-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=nCjpoa8qW4lREJGqVCQZsWcrKGOcKKuy5RSsSVzqlL8=" alt="" style="width: 100%;">
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="name-asset d-flex" style="gap: 10px;">
+                                                <h5 class="text-bold" x-text="assetName"></h5>
+                                                <span x-html="arrSvgStatus[assetStatus]"></span>
+                                            </div>
+                                            <div class="general-tab" x-show="tabDetail == 'general-tab'">
+                                                <h6 class="text-bold">Thông tin chung</h6>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Loại tài sản</span>
+                                                            {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
+                                                            <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAsetSelect" x-model="assetObj.asset_type_id" disabled>
+                                                                <option value="0" selected>Loại tài sản</option>
+                                                                <template x-for="(value, key) in assetType">
+                                                                    <option :value="value.id" x-text="value.name"></option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Vị trí tài sản</span>
+                                                            <select class="form-control select2" data-placeholder="Vị trí" id="locationSearch" x-model="assetObj.location" disabled>
+                                                                <option value="0" selected>Vị trí</option>
+                                                                <template x-for="(value, key) in listLocation">
+                                                                    <option :value="key" x-text="value"></option>
+                                                                </template>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Mã tài sản</span>
+                                                            <input type="text" class="form-control" x-model="assetObj.code" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Ngày mua</span>
+                                                            <input type="date" class="form-control" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Tên tài sản</span>
+                                                            <input type="text" class="form-control" x-model="assetObj.name" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Nhà cung cấp</span>
+                                                            <input type="text" class="form-control" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Đơn vị tính</span>
+                                                            <input type="text" class="form-control" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Giá trị</span>
+                                                            <input type="number" class="form-control" x-model="assetObj.price" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Số lượng</span></span>
+                                                            <input type="number" class="form-control" value="1" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Số serial</span>
+                                                            <input type="text" class="form-control" disabled>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <span>Ghi chú</span>
+                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" disabled></textarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="guarantee-tab" x-show="tabDetail == 'guarantee-tab'">
+                                                <h6 class="text-bold">
+                                                    Bảo hành
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Thời gian bảo hành</span>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Hạn bảo hành</span></span>
+                                                            <input type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <span>Điều kiện bảo hành</span>
+                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" disabled></textarea>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="change-tab" x-show="tabDetail == 'change-tab'">
+                                                <h6 class="text-bold">
+                                                    Cấp phát/Thu hồi/Luân chuyển
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">First</th>
+                                                                <th scope="col">Last</th>
+                                                                <th scope="col">Handle</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td colspan="2">Larry the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="maintain-tab" x-show="tabDetail == 'maintain-tab'">
+                                                <h6 class="text-bold">
+                                                    Bảo dưỡng
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Ngày bảo dưỡng gần nhất</span>
+                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Ngày bảo dưỡng tiếp theo</span></span>
+                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="allocation-tab" x-show="tabDetail == 'allocation-tab'">
+                                                <h6 class="text-bold">
+                                                    Phân bổ
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Giá trị tính phân bổ</span>
+                                                            <input type="number" class="form-control" value="2000000">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Số kì phân bổ còn lại (tháng)</span></span>
+                                                            <input type="number" class="form-control" value="24">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Ngày bắt đầu phân bổ</span>
+                                                            <input type="date" class="form-control" value="2024-11-01">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-3">
+                                                            <span>Giá trị đã phân bổ</span></span>
+                                                            <input type="number" class="form-control" value="83333">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="repair-tab" x-show="tabDetail == 'repair-tab'">
+                                                <h6 class="text-bold">
+                                                    Sửa chữa
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-12" style="overflow-x: auto;width: 100%;">
+                                                        <table class="table table-bordered table-repair" style="width: 1000px;">
+                                                            <thead>
+                                                            <tr style="font-size: 14px;">
+                                                                <th>Ngày báo hỏng</th>
+                                                                <th>Tình trạng hỏng</th>
+                                                                <th>Ngày sửa chữa</th>
+                                                                <th>Chi phí sửa</th>
+                                                                <th>Tình trạng sửa chữa</th>
+                                                                <th>Ngày hoàn thành</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="lost-tab" x-show="tabDetail == 'lost-tab'">
+                                                <h6 class="text-bold">
+                                                    Mất - hủy - thanh lý
+                                                </h6>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <table class="table table-bordered table-repair">
+                                                            <thead>
+                                                            <tr style="font-size: 14px;">
+                                                                <th>Loại</th>
+                                                                <th>Ngày đánh dấu</th>
+                                                                <th>Người thao tác</th>
+                                                                <th>Ghi chú</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td>1</td>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="modalEditAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -707,6 +1023,7 @@
                     </div>
                     @include('assets.asset.common.modal-asset')
                     @include('assets.asset.common.modal-rotation')
+                    @include('assets.asset.common.modal-operation')
             </div>
         </div>
     </div>
@@ -780,10 +1097,15 @@
             rotationTo: 0,
             unitToSelect: 0,
             userToSelect: 0,
+            dateLiquidation: '',
+            priceLiquidation: '',
+            reasonLiquidation: '',
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
                 window.initSelect2Modal('modalRotation');
+                window.initSelect2Modal('modalDetailAsset');
+                window.initSelect2Modal('modalEditAsset');
 
                 this.fetchData();
                 this.getListOrg();
@@ -1169,7 +1491,101 @@
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
-            }
+            },
+            async liquidationAsset(){
+                try {
+                    let urlSearch = '/api/asset/liquidation-asset';
+
+                    const response = await axios.post(urlSearch, {
+                        assetSelect: this.assetSelect,
+                        dateLiquidation: this.dateLiquidation,
+                        priceLiquidation: this.priceLiquidation,
+                        reasonLiquidation: this.reasonLiquidation,
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    const data = response.data;
+                    this.dateLiquidation = '';
+                    this.priceLiquidation = '';
+                    this.reasonLiquidation = '';
+
+                    openModal('#successLiquidationModal');
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async cancelAsset(){
+                try {
+                    let urlSearch = '/api/asset/cancel-asset';
+
+                    const response = await axios.post(urlSearch, {
+                        assetSelect: this.assetSelect,
+                        dateLiquidation: this.dateLiquidation,
+                        reasonLiquidation: this.reasonLiquidation,
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    const data = response.data;
+                    this.dateLiquidation = '';
+                    this.reasonLiquidation = '';
+
+                    openModal('#successCancelModal');
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async brokenAsset(){
+                try {
+                    let urlSearch = '/api/asset/broken-asset';
+
+                    const response = await axios.post(urlSearch, {
+                        assetSelect: this.assetSelect,
+                        dateLiquidation: this.dateLiquidation,
+                        reasonLiquidation: this.reasonLiquidation,
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    const data = response.data;
+                    this.dateLiquidation = '';
+                    this.reasonLiquidation = '';
+
+                    openModal('#successBrokenModal');
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async lostAsset(){
+                try {
+                    let urlSearch = '/api/asset/lost-asset';
+
+                    const response = await axios.post(urlSearch, {
+                        assetSelect: this.assetSelect,
+                        dateLiquidation: this.dateLiquidation,
+                        reasonLiquidation: this.reasonLiquidation,
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    const data = response.data;
+                    this.dateLiquidation = '';
+                    this.reasonLiquidation = '';
+
+                    openModal('#successBrokenModal');
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
         }));
     });
 </script>
