@@ -278,4 +278,9 @@ Route::prefix('asset')->group(function () {
 
     Route::get('/get-user-by-unit', [ListAssetController::class, 'getUserByUnit'])->name('assets.getUserByUnit');
     Route::get('/get-user', [ListAssetController::class, 'getUser'])->name('assets.getUser');
+
+    Route::post('/liquidation-asset', [ListAssetController::class, 'liquidationAsset'])->name('assets.liquidationAsset');
+    Route::post('/cancel-asset', [ListAssetController::class, 'cancelAsset'])->name('assets.cancelAsset');
+    Route::post('/broken-asset', [ListAssetController::class, 'brokenAsset'])->name('assets.brokenAsset');
+    Route::post('/lost-asset', [ListAssetController::class, 'lostAsset'])->name('assets.lostAsset');
 });
