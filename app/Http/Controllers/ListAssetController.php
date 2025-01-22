@@ -244,4 +244,56 @@ class ListAssetController extends Controller
             return response_error();
         }
     }
+
+    public function liquidationAsset(Request $request): JsonResponse
+    {
+        try {
+            $this->assetService->liquidationAsset($request);
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function cancelAsset(Request $request): JsonResponse
+    {
+        try {
+            $this->assetService->cancelAsset($request);
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function brokenAsset(Request $request): JsonResponse
+    {
+        try {
+            $this->assetService->brokenAsset($request);
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function lostAsset(Request $request): JsonResponse
+    {
+        try {
+            $this->assetService->lostAsset($request);
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
 }

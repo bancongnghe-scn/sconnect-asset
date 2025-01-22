@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Asset;
+use App\Models\AssetHistory;
 use App\Models\MoveAssetOrg;
 use App\Models\MoveAssetUser;
 use App\Models\Org;
@@ -289,5 +290,66 @@ class ListAssetService
     {
 
         dd($request->all());
+    }
+
+    public function liquidationAsset($request): void
+    {
+        Asset::where('id', $request->assetSelect['id'])->update([
+            'status' => Asset::STATUS_PROPOSAL_LIQUIDATION,
+        ]);
+
+        AssetHistory::create([
+            'asset_id' => $request->assetSelect['id'],
+            'date' => $request->dateLiquidation,
+            'action' => Asset::STATUS_PROPOSAL_LIQUIDATION,
+            'description' => $request->reasonLiquidation,
+            'price' => $request->priceLiquidation,
+            'created_by' => auth()->user() ? auth()->user()->id : 1,
+        ]);
+    }
+
+    public function cancelAsset($request): void
+    {
+        Asset::where('id', $request->assetSelect['id'])->update([
+            'status' => Asset::STATUS_CANCEL,
+        ]);
+
+        AssetHistory::create([
+            'asset_id' => $request->assetSelect['id'],
+            'date' => $request->dateLiquidation,
+            'action' => Asset::STATUS_CANCEL,
+            'description' => $request->reasonLiquidation,
+            'created_by' => auth()->user() ? auth()->user()->id : 1,
+        ]);
+    }
+
+    public function brokenAsset($request): void
+    {
+        Asset::where('id', $request->assetSelect['id'])->update([
+            'status' => Asset::STATUS_DAMAGED,
+        ]);
+
+        AssetHistory::create([
+            'asset_id' => $request->assetSelect['id'],
+            'date' => $request->dateLiquidation,
+            'action' => Asset::STATUS_DAMAGED,
+            'description' => $request->reasonLiquidation,
+            'created_by' => auth()->user() ? auth()->user()->id : 1,
+        ]);
+    }
+
+    public function lostAsset($request): void
+    {
+        Asset::where('id', $request->assetSelect['id'])->update([
+            'status' => Asset::STATUS_LOST,
+        ]);
+
+        AssetHistory::create([
+            'asset_id' => $request->assetSelect['id'],
+            'date' => $request->dateLiquidation,
+            'action' => Asset::STATUS_LOST,
+            'description' => $request->reasonLiquidation,
+            'created_by' => auth()->user() ? auth()->user()->id : 1,
+        ]);
     }
 }
