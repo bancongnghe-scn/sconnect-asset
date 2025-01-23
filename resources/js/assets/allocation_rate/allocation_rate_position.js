@@ -23,7 +23,7 @@ document.addEventListener('alpine:init', () => {
             position_id: null,
             type: TYPE_ALLOCATION_RATE_POSITION,
             page: 1,
-            limit: 5,
+            limit: 10,
         },
         listPosition: [],
         data: {
