@@ -53,6 +53,7 @@ class PlanLiquidationService
                         'status'                            => PlanMaintainAsset::STATUS_NEW,
                         'created_at'                        => new \DateTime(),
                         'created_by'                        => Auth::id() ?? 1,
+                        'code'                              => Str::upper(Str::random(8)),
                     ];
                 }
 
@@ -81,6 +82,17 @@ class PlanLiquidationService
                     return [
                         'success'    => false,
                         'error_code' => AppErrorCode::CODE_5003,
+                    ];
+                }
+
+                // insert history
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($asset_ids, Asset::STATUS_IN_LIQUIDATION);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
                     ];
                 }
             }
@@ -164,10 +176,11 @@ class PlanLiquidationService
         $assets                   = $this->assetRepository->getElementAssetByIds(
             $assetIds,
             ['id'],
-            ['assetHistory' => function ($query) {
-                $query->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
-                    ->orderBy('date', 'desc');
-            },
+            [
+                'assetHistory' => function ($query) {
+                    $query->where('action', Asset::STATUS_PROPOSAL_LIQUIDATION)
+                        ->orderBy('date', 'desc');
+                },
             ]
         );
 
@@ -177,7 +190,7 @@ class PlanLiquidationService
                 'asset_id'         => $asset->id,
                 'price'            => $asset->assetHistory->first()->price ?? 1,
                 'status'           => PlanMaintainAsset::STATUS_NEW,
-                'code'             => Str::random(6),
+                'code'             => Str::upper(Str::random(8)),
                 'created_by'       => Auth::id() ?? 1,
             ];
         }
@@ -376,13 +389,19 @@ class PlanLiquidationService
                             ];
                         }
 
-                        foreach ($assetIdsToUpdate as $assetId) {
+                        $assets = Asset::whereIn('id', $assetIdsToUpdate)
+                            ->get()
+                            ->load(['user' => function ($query) {
+                                $query->select('id', 'dept_id');
+                            }]);
+                        foreach ($assets as $asset) {
                             $historyAsset[] = [
-                                'asset_id'              => $assetId,
+                                'asset_id'              => $asset->id,
                                 'action'                => $newAssetStatus,
                                 'date'                  => new \DateTime(),
                                 'created_at'            => new \DateTime(),
                                 'created_by'            => Auth::id(),
+                                'org_id'                => $asset?->user?->getOrgLastParentAttribute()?->id ?? null,
                             ];
                         }
                     }
@@ -402,13 +421,20 @@ class PlanLiquidationService
                             ];
                         }
 
-                        foreach ($assetIdsToUpdate as $assetId) {
+                        $assets = Asset::whereIn('id', $assetIdsToUpdate)
+                            ->get()
+                            ->load(['user' => function ($query) {
+                                $query->select('id', 'dept_id');
+                            }]);
+
+                        foreach ($assets as $asset) {
                             $historyAsset[] = [
-                                'asset_id'              => $assetId,
+                                'asset_id'              => $asset->id,
                                 'action'                => $newAssetStatus,
                                 'date'                  => new \DateTime(),
                                 'created_at'            => new \DateTime(),
                                 'created_by'            => Auth::id(),
+                                'org_id'                => $asset?->user?->getOrgLastParentAttribute()?->id ?? null,
                             ];
                         }
                     }
