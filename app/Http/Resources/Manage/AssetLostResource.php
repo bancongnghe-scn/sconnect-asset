@@ -20,7 +20,7 @@ class AssetLostResource extends JsonResource
                 'status'                 => $item?->status,
                 'date'                   => $item?->assetHistory?->first()?->date,
                 'reason'                 => $item?->assetHistory?->first()?->description,
-                'location'               => Asset::LOCATION_NAME[$item?->location],
+                'location'               => $item?->location ? Asset::LOCATION_NAME[$item?->location] : '',
             ];
         });
 

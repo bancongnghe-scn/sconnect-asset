@@ -116,7 +116,7 @@ class AssetLostService
                 'error_code' => AppErrorCode::CODE_5000,
             ];
         }
-        $data['updated_by'] = Auth::id();
+        $data['updated_by'] = Auth::id() ?? 1;
         $updateStatus       = ['status' => $data['status']];
         $assetLost->fill($updateStatus);
         if (!$assetLost->save()) {
@@ -133,7 +133,7 @@ class AssetLostService
             'date'                  => $data['signing_date'] ?? new \DateTime(),
             'description'           => $data['description'] ?? '',
             'created_at'            => new \DateTime(),
-            'created_by'            => Auth::id(),
+            'created_by'            => Auth::id() ?? 1,
         ];
 
         $historyAsset = $this->assetHistoryRepository->insert($dataHistory);
