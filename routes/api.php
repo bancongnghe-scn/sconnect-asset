@@ -241,7 +241,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
     });
 
-    Route::prefix('inventory')->controller(\App\Http\InventoryController::class)->group(function () {
+    Route::prefix('inventory')->controller(App\Http\InventoryController::class)->group(function () {
         Route::get('getPlanInventory', 'getPlanInventory');
     });
 });

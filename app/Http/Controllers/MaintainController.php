@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePlanMaintainRequest;
 use App\Http\Requests\UpdatePlanMaintainRequest;
-use App\Models\PlanMaintain;
 use App\Models\PlanMaintainAsset;
 use App\Services\MaintainService;
 use Illuminate\Http\Request;
@@ -18,7 +17,6 @@ class MaintainController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * Lay danh sach tai san can bao duong
      */
@@ -48,7 +46,6 @@ class MaintainController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * Lay danh sach tai san can bao duong theo thang
      */
@@ -70,7 +67,6 @@ class MaintainController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * Lay danh sach tai san dang bao duong
      */
@@ -86,9 +82,9 @@ class MaintainController extends Controller
         ]);
 
         try {
-            $filters = $request->all();
+            $filters           = $request->all();
             $filters['status'] = PlanMaintainAsset::STATUS_MAINTAINING;
-            $result = $this->maintainService->getAssetMaintaining($filters);
+            $result            = $this->maintainService->getAssetMaintaining($filters);
 
             return response_success($result);
         } catch (\Throwable $exception) {
@@ -99,7 +95,6 @@ class MaintainController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      * Lay danh sach ke hoach bao tri
      */
@@ -128,6 +123,7 @@ class MaintainController extends Controller
 
     /**
      * @param Request $request
+     *
      * @return \Illuminate\Http\JsonResponse
      * Tao ke hoach bao duong
      */
