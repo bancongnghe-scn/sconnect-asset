@@ -575,6 +575,23 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
+        async completeShoppingPlan() {
+            this.loading = true
+            try {
+                const response = await window.apiCompleteShoppingPlanWeek(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data.status = STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                toast.success('Hoàn thành kế hoạch mua sắm tuần thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         setConfigButtonsApproval() {
             this.configButtonsApproval = [
                 {
