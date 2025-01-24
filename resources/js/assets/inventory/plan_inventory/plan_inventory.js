@@ -2,6 +2,9 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('plan_inventory', () => ({
         init() {
             this.list({page: 1, limit: 10})
+            this.getListOrganization()
+            this.getListAssetType()
+            this.getListUser()
             this.watchFilters()
         },
 
@@ -27,10 +30,23 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-        data: [],
+        data: {
+            name: null,
+            start_time: null,
+            end_time: null,
+            type_inventory: TYPE_INVENTORY_NOT_AUTO,
+            note: null,
+            sent_notification: null,
+            organization_ids: [],
+            asset_type_ids: [],
+            user_ids: []
+        },
         title: null,
         action: null,
         id: null,
+        listOrganization: [],
+        listAssetType: [],
+        listUser: [],
 
         //methods
         async list(filters){
@@ -95,11 +111,58 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async getListOrganization() {
+            this.loading = true
+            try {
+                const response = await window.apiGetOrganization({})
+                if (response.success) {
+                    this.listOrganization = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách đơn vị thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListUser(){
+            this.loading = true
+            try {
+                const response = await window.apiGetUser({})
+                if (response.success) {
+                    this.listUser = response.data.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.listAssetType = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModalUI(action, id = null) {
             this.loading = true
             this.action = action
             if (action === 'create') {
-                this.title = 'Thêm mới'
                 this.resetData()
             } else {
                 this.title = 'Cập nhật'
@@ -112,7 +175,7 @@ document.addEventListener('alpine:init', () => {
                 this.data = this.formatDateAppendix(response.data.data)
             }
 
-            $('#'+this.idModalUI).modal('show');
+            $('#modalCreatePlanInventory').modal('show');
             this.loading = false
         },
 
@@ -148,15 +211,15 @@ document.addEventListener('alpine:init', () => {
 
         resetData() {
             this.data = {
-                contract_id: null,
-                code: null,
                 name: null,
-                signing_date: null,
-                from: null,
-                to: null,
-                user_ids: [],
-                description: null,
-                files: [],
+                start_time: null,
+                end_time: null,
+                type_inventory: null,
+                note: null,
+                sent_notification: TYPE_INVENTORY_NOT_AUTO,
+                organization_ids: [],
+                asset_type_ids: [],
+                user_ids: []
             }
         },
 
