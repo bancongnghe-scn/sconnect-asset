@@ -109,6 +109,7 @@ class AppErrorCode
     public const CODE_2102 = 2102; //  Xóa kế hoạch bảo dưỡng thất bại !
     public const CODE_2103 = 2103; //  Trạng thái kế hoạch bảo dưỡng không hợp lệ !
     public const CODE_2104 = 2104; //  Cập nhật thời gian bảo dưỡng cho tài sản thất bại !
+    public const CODE_2105 = 2105; //  Lưu lịch sử kế bảo dưỡng thất bại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

@@ -42,6 +42,16 @@ button:hover .tooltip-text {
     opacity: 1;
 }
 
+.btn:hover {
+    background: #379237;
+    color: #fff;
+    opacity: .9;
+}
+
+.btn-red:hover {
+    background: #ad3c2d;
+}
+
 .manage_assets_tab button {
     padding: 0 15px;
     border: none;

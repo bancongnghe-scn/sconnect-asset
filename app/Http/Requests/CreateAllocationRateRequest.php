@@ -16,7 +16,7 @@ class CreateAllocationRateRequest extends FormRequest
             'configs'                 => 'required|array',
             'configs.*.asset_type_id' => 'required|integer',
             'configs.*.level'         => 'nullable|integer',
-            'configs.*.description'   => 'nullable|integer',
+            'configs.*.description'   => 'nullable|string',
             'configs.*.price'         => 'required|string',
         ];
     }

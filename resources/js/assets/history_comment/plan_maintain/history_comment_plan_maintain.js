@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
             init() {
                 this.$watch('id', (newValue) => {
                     if (newValue !== null) {
-                        // this.getLogByRecordId()
+                        this.getLogByRecordId()
                         this.listComment()
                         this.handleComment()
                     }
@@ -57,7 +57,7 @@ document.addEventListener('alpine:init', () => {
             },
             //methods
             async getLogByRecordId() {
-                const response = await window.getShoppingPlanLogByRecordId(this.id)
+                const response = await window.apiGetPlanMaintainLogById(this.id)
                 if (response.success) {
                     this.logs = response.data.data
                     return
@@ -108,4 +108,5 @@ document.addEventListener('alpine:init', () => {
                 this.$refs.input_message.focus();
             }
         })
-    )})
+    )
+})

@@ -46,6 +46,10 @@ class OrderService
                     'error_code' => AppErrorCode::CODE_2092,
                 ];
             }
+        } else {
+            foreach ($data['shopping_assets_order'] as &$item) {
+                $item['supplier_id'] = $data['supplier_id'];
+            }
         }
 
         $data['code']       = $this->generalCodeOrder();

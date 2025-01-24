@@ -445,12 +445,12 @@ class ListAssetService
         ]);
 
         AssetHistory::create([
-            'asset_id' => $request->assetSelect['id'],
-            'date' => $request->dateLiquidation,
-            'action' => Asset::STATUS_PROPOSAL_LIQUIDATION,
+            'asset_id'    => $request->assetSelect['id'],
+            'date'        => $request->dateLiquidation,
+            'action'      => Asset::STATUS_PROPOSAL_LIQUIDATION,
             'description' => $request->reasonLiquidation,
-            'price' => $request->priceLiquidation,
-            'created_by' => auth()->user() ? auth()->user()->id : 1,
+            'price'       => $request->priceLiquidation,
+            'created_by'  => auth()->user() ? auth()->user()->id : 1,
         ]);
     }
 
@@ -461,11 +461,11 @@ class ListAssetService
         ]);
 
         AssetHistory::create([
-            'asset_id' => $request->assetSelect['id'],
-            'date' => $request->dateLiquidation,
-            'action' => Asset::STATUS_CANCEL,
+            'asset_id'    => $request->assetSelect['id'],
+            'date'        => $request->dateLiquidation,
+            'action'      => Asset::STATUS_CANCEL,
             'description' => $request->reasonLiquidation,
-            'created_by' => auth()->user() ? auth()->user()->id : 1,
+            'created_by'  => auth()->user() ? auth()->user()->id : 1,
         ]);
     }
 
@@ -476,11 +476,11 @@ class ListAssetService
         ]);
 
         AssetHistory::create([
-            'asset_id' => $request->assetSelect['id'],
-            'date' => $request->dateLiquidation,
-            'action' => Asset::STATUS_DAMAGED,
+            'asset_id'    => $request->assetSelect['id'],
+            'date'        => $request->dateLiquidation,
+            'action'      => Asset::STATUS_DAMAGED,
             'description' => $request->reasonLiquidation,
-            'created_by' => auth()->user() ? auth()->user()->id : 1,
+            'created_by'  => auth()->user() ? auth()->user()->id : 1,
         ]);
     }
 
@@ -491,11 +491,11 @@ class ListAssetService
         ]);
 
         AssetHistory::create([
-            'asset_id' => $request->assetSelect['id'],
-            'date' => $request->dateLiquidation,
-            'action' => Asset::STATUS_LOST,
+            'asset_id'    => $request->assetSelect['id'],
+            'date'        => $request->dateLiquidation,
+            'action'      => Asset::STATUS_LOST,
             'description' => $request->reasonLiquidation,
-            'created_by' => auth()->user() ? auth()->user()->id : 1,
+            'created_by'  => auth()->user() ? auth()->user()->id : 1,
         ]);
     }
 }

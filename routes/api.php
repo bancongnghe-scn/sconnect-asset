@@ -123,6 +123,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
     });
 
+    Route::prefix('plan-maintain-log')->controller(App\Http\Controllers\PlanMaintainLogController::class)->group(function () {
+        Route::get('getPlanMaintainLogById/{id}', 'getPlanMaintainLogById');
+    });
+
     Route::prefix('comment')->controller(App\Http\Controllers\CommentController::class)->group(function () {
         Route::get('list', 'getListComment');
         Route::post('sent', 'sentComment');
@@ -235,6 +239,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('updatePlanMaintain/{id}', 'updatePlanMaintain');
         Route::get('completePlanMaintain/{id}', 'completePlanMaintain');
         Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
+    });
+
+    Route::prefix('inventory')->controller(App\Http\InventoryController::class)->group(function () {
+        Route::get('getPlanInventory', 'getPlanInventory');
     });
 });
 

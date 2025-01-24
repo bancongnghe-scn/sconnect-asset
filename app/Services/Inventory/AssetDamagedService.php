@@ -17,7 +17,6 @@ class AssetDamagedService
         protected AssetDamagedRepository $assetDamagedRepository,
         protected AssetHistoryRepository $assetHistoryRepository,
     ) {
-
     }
 
     public function list(array $filters = [])
@@ -57,7 +56,7 @@ class AssetDamagedService
     {
         DB::beginTransaction();
         try {
-            $dataHistory = [];
+            $assetIds = array_column($data, 'id');
             foreach ($data as $asset) {
                 $result = $this->updateAsset($asset, $status);
                 if (!$result['success']) {
@@ -68,19 +67,9 @@ class AssetDamagedService
                         'error_code'    => AppErrorCode::CODE_5001,
                     ];
                 }
-
-                $dataHistory[] = [
-                    'asset_id'              => $asset['id'],
-                    'action'                => $status,
-                    'date'                  => new \DateTime(),
-                    'description'           => $asset['reason'] ?? '',
-                    'created_at'            => new \DateTime(),
-                    'created_by'            => Auth::id() ?? 1,
-                    'price'                 => $asset['price_liquidation'] ?? '',
-                ];
             }
 
-            $historyAsset = $this->assetHistoryRepository->insert($dataHistory);
+            $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, $status);
             if (!$historyAsset) {
                 DB::rollBack();
 
@@ -89,6 +78,7 @@ class AssetDamagedService
                     'error_code' => AppErrorCode::CODE_5011,
                 ];
             }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
