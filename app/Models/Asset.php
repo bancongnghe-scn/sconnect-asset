@@ -119,4 +119,9 @@ class Asset extends Model
     {
         return $this->hasOne(Org::class, 'id', 'organization_id');
     }
+
+    public function listHistory(): HasMany
+    {
+        return $this->hasMany(TransferAsset::class, 'asset_id');
+    }
 }
