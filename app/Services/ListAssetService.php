@@ -78,7 +78,7 @@ class ListAssetService
     public function allocateAsset($request)
     {
         DB::beginTransaction();
-            try {
+        try {
             $arrAllocationAsset = [];
             $arrAssetId = [];
 
@@ -107,7 +107,7 @@ class ListAssetService
 
             MoveAssetUser::insert($arrAllocationAsset);
 
-            Asset::where('id', $arrAssetId)->update([
+            Asset::whereIn('id', $arrAssetId)->update([
                 'status' => Asset::STATUS_ACTIVE,
                 'user_id' => $request->user['id'],
                 'organization_id' => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
@@ -162,7 +162,7 @@ class ListAssetService
 
             MoveAssetUser::insert($arrRecoveryAsset);
 
-            Asset::where('id', $arrAssetId)->update([
+            Asset::whereIn('id', $arrAssetId)->update([
                 'status' => Asset::STATUS_PENDING,
                 'user_id' => null,
                 'organization_id' => $orgIdAfter,
@@ -195,6 +195,7 @@ class ListAssetService
         try {
             $arrAllocationAsset = [];
             $arrAssetId = [];
+            $arrAllocationAssetUser = [];
 
             $transferAsset = TransferAsset::create([
                 'user_id'    => null,
@@ -234,7 +235,7 @@ class ListAssetService
 
             MoveAssetUser::insert($arrAllocationAssetUser);
 
-            Asset::where('id', $arrAssetId)->update([
+            Asset::whereIn('id', $arrAssetId)->update([
                 'status' => Asset::STATUS_ACTIVE,
                 'organization_id' => $request->org['id'],
                 'user_id'         => null,
@@ -255,6 +256,7 @@ class ListAssetService
         try {
             $arrRecoveryAsset = [];
             $arrAssetId = [];
+            $arrAllocationAssetUser = [];
 
             $transferAsset = TransferAsset::create([
                 'user_id'    => null,
@@ -295,7 +297,7 @@ class ListAssetService
 
             MoveAssetUser::insert($arrAllocationAssetUser);
 
-            Asset::where('id', $arrAssetId)->update([
+            Asset::whereIn('id', $arrAssetId)->update([
                 'status' => Asset::STATUS_PENDING,
                 'organization_id' => null,
                 'user_id' => null,
@@ -312,14 +314,6 @@ class ListAssetService
 
     public function getListAssetOfOrg(int $orgId)
     {
-        // $arrAssetIdOfOrg = MoveAssetOrg::where('org_id', $orgId)
-        //     ->select('asset_id', \DB::raw('MAX(id) as latest_move_id'))
-        //     ->groupBy('asset_id');
-
-        // $issuedAssetIds = MoveAssetOrg::whereIn('id', $arrAssetIdOfOrg->pluck('latest_move_id'))
-        //     ->where('type', 1)
-        //     ->pluck('asset_id');
-
         return Asset::whereNull('user_id')->where('organization_id', $orgId)->get();
     }
 
@@ -347,14 +341,101 @@ class ListAssetService
         }
 
         if ($request->orgId) {
-            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with(['user', 'organization.manager', 'organization.deptType'])->get();
+            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with(['user', 'organization.manager', 'organization.deptType', 'createBy'])->get();
+        }
+
+        if ($request->assetId) {
+            return MoveAssetUser::where('asset_id', $request->assetId)->with(['transferAsset', 'transferAsset.user', 'transferAsset.organization.manager', 'transferAsset.organization.deptType', 'transferAsset.createBy'])->get();
         }
     }
 
     public function rotationAsset($request)
     {
+        DB::beginTransaction();
+        try {
+            foreach ($request->listAssetRotation as $assetRotation) {
+                $orgId = null;
+                $userId = null;
 
-        dd($request->all());
+                $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
+
+                $orgId = $request->rotationToType == 'unit' ?  $request->rotationToId : $orgLastParentId;
+                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId;
+
+                $transferAsset = TransferAsset::create([
+                    'user_id'    => $assetRotation['user_id'],
+                    'org_id'     => $assetRotation['organization_id'],
+                    'type'       => 3,
+                    'to_user_id'    => $userId,
+                    'to_org_id'     => $orgId,
+                    'created_by' => auth()->user() ? auth()->user()->id : null,
+                    'description' => $request->descriptionRotation,
+                ]);
+
+                //thu hồi
+                if ($assetRotation['user_id'] || $assetRotation['organization_id']) {
+                    MoveAssetOrg::create([
+                        'org_id' => $assetRotation['organization_id'],
+                        'user_id' => $assetRotation['user_id'],
+                        'asset_id'    => $assetRotation['id'],
+                        'type'        => 2,
+                        'is_rotation' => 1,
+                        'description' => $request->descriptionRotation,
+                        'created_at'  => Carbon::now(),
+                        'updated_at'  => Carbon::now(),
+                    ]);
+
+                    MoveAssetUser::create([
+                        'user_id_after' => null,
+                        'org_id_after' => null,
+                        'asset_id' => $assetRotation['id'],
+                        'type' => 2,
+                        'org_id' => $assetRotation['organization_id'],
+                        'user_id' => $assetRotation['user_id'],
+                        'transfer_asset_id'    => $transferAsset->id,
+                        'description' => $request->descriptionRotation,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ]);
+                }
+
+                //cấp phát
+                MoveAssetOrg::create([
+                    'user_id'     => $userId,
+                    'org_id'      => $orgId,
+                    'asset_id'    => $assetRotation['id'],
+                    'type'        => 1,
+                    'is_rotation' => 1,
+                    'description' => $request->descriptionRotation,
+                    'created_at'  => Carbon::now(),
+                    'updated_at'  => Carbon::now(),
+                ]);
+
+                MoveAssetUser::create([
+                    'user_id_after' => $userId,
+                    'org_id_after' => $orgId,
+                    'asset_id' => $assetRotation['id'],
+                    'type' => 1,
+                    'transfer_asset_id'    => $transferAsset->id,
+                    'description' => $request->descriptionRotation,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+
+                Asset::where('id', $assetRotation['id'])->update([
+                    'status' => Asset::STATUS_ACTIVE,
+                    'organization_id' => $orgId,
+                    'user_id'         => $userId,
+                ]);
+            }
+
+            DB::commit();
+            return true;
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+
+            throw $exception;
+        }
     }
 
     public function liquidationAsset($request): void
