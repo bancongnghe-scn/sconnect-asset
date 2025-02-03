@@ -24,16 +24,11 @@
                     <template x-if="listUser.length > 0">
                         <div>
                             <label class="form-label">Người quan sát</label>
-                            <select class="form-select select2" x-model="data.monitor_ids"
-                                    multiple="multiple" data-placeholder="Chọn người quan sát"
-                                    x-init="$nextTick(() => {
-                                        $($el).on('change', () => {data.monitor_ids = $($el).val()});
-                                    })"
-                            >
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            @include('common.select_custom.extent.select_multiple', [
+                                'placeholder' => 'Chọn người quan sát',
+                                'options' => 'listUser',
+                                'selected' => 'data.monitor_ids'
+                            ])
                         </div>
                     </template>
                 </div>
