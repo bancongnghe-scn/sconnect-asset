@@ -28,7 +28,7 @@
                                         </template>
                                         <template x-if="key === 'status'">
                                             <div class="d-flex justify-content-center">
-                                                @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
+                                                @include('component.status.status_shopping_plan_organization', ['status' => 'data.status'])
                                             </div>
                                         </template>
                                         <template x-if="key === 'user'">
@@ -48,7 +48,7 @@
                                                         <button class="border-0 bg-body"
                                                                 @click="window.location.href = `/shopping-plan-organization/quarter/register/${data.id}`"
                                                         >
-                                                            <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                            <i class="bi bi-pencil-square color-sc" style="color: #74C0FC;"></i>
                                                         </button>
                                                     </template>
                                                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED">

@@ -34,7 +34,7 @@
                                     <td class="text-center align-middle" x-text="from + index"></td>
                                     <td class="align-middle" x-text="value.name"></td>
                                     <td class="text-center align-middle"
-                                        :class="!value.status_register ? 'tw-text-red-500': ''"
+                                        :class="!value.status_register ? 'text-red': ''"
                                         x-text="value.start_time + ' - ' + value.end_time">
                                     </td>
                                     <td x-data="{data: value, key: 'user'}">
