@@ -41,7 +41,7 @@
                                         </template>
                                         <template x-if="key === 'status'">
                                             <div class="d-flex justify-content-center">
-                                                @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                                @include('component.status.status_shopping_plan_company', ['status' => 'data.status'])
                                             </div>
                                         </template>
                                         <template x-if="key === 'user'">

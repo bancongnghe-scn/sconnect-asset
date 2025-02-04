@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
             window.initSelect2Modal('idModalInsert')
             this.watchFilters()
+            this.setConfigButtonsTable()
         },
 
         //dataTable
@@ -38,6 +39,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalConfirmDelete: "idModalConfirmDelete",
         idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        configButtonsTable: [],
 
         //methods
         async list(filters){
@@ -128,6 +130,51 @@ document.addEventListener('alpine:init', () => {
             } finally {
                 this.loading = false
             }
+        },
+
+        setConfigButtonsTable() {
+            this.configButtonsTable = [
+                {
+                    condition: (status) => [STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status),
+                    permission: 'shopping_plan_company.crud',
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) => window.location.href = `/shopping-plan-company/year/update/${id}`,
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                    permission: 'shopping_plan_company.crud',
+                    buttons: [
+                        {
+                            icon: 'bi bi-trash text-red',
+                            action: (id) => this.confirmRemove(id),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'fa-solid fa-pen-to-square',
+                            action: (id) =>  window.location.href = `/shopping-plan-company/year/update/${id}`,
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                    permission: 'shopping_plan_company.general_approval',
+                    buttons: [
+                        {
+                            icon: 'fa-solid fa-pen-to-square',
+                            action: (id) =>  window.location.href = `/shopping-plan-company/year/update/${id}`,
+                        },
+                    ],
+                },
+            ]
         },
 
         watchFilters() {

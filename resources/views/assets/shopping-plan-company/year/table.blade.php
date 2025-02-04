@@ -3,7 +3,7 @@
         <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
             <div class="row">
                 <div class="col-sm-12 table-responsive custom-scroll">
-                    <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                    <table id="example2" class="table table-bordered dataTable dtr-inline"
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -42,47 +42,25 @@
                                     </td>
                                     <td class="text-center align-middle" x-text="value.created_at"></td>
                                     <td class="text-center align-middle">
-                                        @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'value.status'])
+                                        @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        {{-- xem chi tiet --}}
-                                        <button class="border-0 bg-body"
+                                        <button class="border-0 bg-white"
                                                 @click="window.location.href = `/shopping-plan-company/year/view/${data.id}`">
                                             <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                         </button>
 
-                                        {{-- sua va xoa --}}
-                                        @can('shopping_plan_company.crud')
-                                            <template x-if="[STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status)">
-                                                <button class="border-0 bg-body"
-                                                        @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
-                                                    <i class="fa-regular fa-pen-to-square color-sc"></i>
-                                                </button>
+                                        <template x-for="configBtnTable in configButtonsTable">
+                                            <template x-if="configBtnTable.condition(+value.status)">
+                                                <template x-if="permission.includes(configBtnTable.permission) || configBtnTable.permission">
+                                                    <template x-for="configBtn in configBtnTable.buttons">
+                                                        <button class="border-0 bg-white"
+                                                                @click="configBtn.action(value.id)">
+                                                            <i :class="configBtn.icon"></i>
+                                                        </button>
+                                                    </template>
+                                                </template>
                                             </template>
-                                            <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                                <button class="border-0 bg-body"
-                                                        @click="$dispatch('remove', { id: data.id })">
-                                                    <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
-                                                </button>
-                                            </template>
-                                        @endcan
-
-                                        {{-- ke toan va giam doc duyet --}}
-                                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                                            @can('shopping_plan_company.accounting_approval')
-                                                <button class="border-0 bg-body"
-                                                        @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
-                                                    <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
-                                                </button>
-                                            @endcan
-                                        </template>
-                                        <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL">
-                                            @can('shopping_plan_company.general_approval')
-                                                <button class="border-0 bg-body"
-                                                        @click="window.location.href = `/shopping-plan-company/year/update/${data.id}`">
-                                                    <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
-                                                </button>
-                                            @endcan
                                         </template>
                                     </td>
                                 </tr>
