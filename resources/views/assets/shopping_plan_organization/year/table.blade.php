@@ -38,8 +38,8 @@
                                         <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                     </button>
 
-                                    <template x-if="new Date() >= new Date(window.formatDate(data.start_time))
-                                        && new Date() <= new Date(window.formatDate(data.end_time))">
+                                    <template x-if="new Date() >= new Date(window.formatDate(value.start_time))
+                                        && new Date() <= new Date(window.formatDate(value.end_time))">
                                         <template x-for="configBtnTable in configButtonsTable">
                                             <template x-if="configBtnTable.condition(+value.status)">
                                                 <template x-for="configBtn in configBtnTable.buttons">
