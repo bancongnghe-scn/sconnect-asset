@@ -38,9 +38,13 @@ document.addEventListener('alpine:init', () => {
         },
 
         id: null,
+        note_disapproval: null,
         listUser: [],
         register: [],
+        configButtons: [],
         configButtonsTable: [],
+        configButtonsApproval: [],
+        configApprovalOrganization: [],
 
         //methods
         async list(filters){
@@ -114,28 +118,6 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async handleShowModal(id, action) {
-            this.loading = true
-            try {
-                this.id = id
-                this.action = action
-                this.resetData()
-                await this.getOrganizationRegisterYear()
-                await this.getInfoShoppingPlanCompanyYear()
-                if (action === 'view') {
-                    $('#modalDetail').modal('show')
-                } else {
-                    this.setConfigButtons()
-                    this.setConfigButtonsApproval()
-                    $('#modalUpdate').modal('show')
-                }
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async getOrganizationRegisterYear() {
             this.loading = true
             try {
@@ -194,6 +176,287 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async sentNotificationRegister() {
+            this.loading = true
+            try {
+                const response = await window.apiSentNotificationRegister(this.id)
+                if (response.success) {
+                    toast.success('Gửi thông báo thành công !')
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
+                    this.getOrganizationRegisterYear()
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async updatePlanYear() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdateShoppingPlanCompanyYear(this.data, this.id)
+                if (response.success) {
+                    toast.success('Cập nhật kế hoạch mua sắm năm thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sendAccountantApproval() {
+            this.loading = true
+            try {
+                const response = await window.apiSendAccountantApproval(this.id)
+                if (response.success) {
+                    toast.success('Gửi duyệt thành công !')
+                    window.location.href = `/shopping-plan-company/year/list`
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sendManagerApproval() {
+            this.loading = true
+            try {
+                const response = await window.apiSendManagerApproval(this.id)
+                if (response.success) {
+                    toast.success('Gửi duyệt thành công !')
+                    window.location.href = `/shopping-plan-company/year/list`
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async generalApprovalShoppingPlanCompany(type) {
+            this.loading = true
+            try {
+                const response = await window.apiGeneralApprovalShoppingPlanCompany(this.id, type, this.note_disapproval)
+                if (response.success) {
+                    toast.success('Bạn đã duyệt thành công !')
+                    if (type === GENERAL_TYPE_APPROVAL_COMPANY) {
+                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_APPROVAL
+                    } else {
+                        this.data.status = STATUS_SHOPPING_PLAN_COMPANY_CANCEL
+                        $("#modalNoteDisapprovalPlanCompany").modal('hide')
+                    }
+                    this.getOrganizationRegisterYear()
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async accountApprovalMultipleShoppingPlanOrganization(type) {
+            this.loading = true
+            try {
+                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+                ids = ids.map(Number);
+                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type, this.note_disapproval)
+                if (response.success) {
+                    this.register.organizations.filter(function (item) {
+                        if (ids.includes(item.id)) {
+                            item.status = type === ORGANIZATION_TYPE_APPROVAL
+                                ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                        }
+                    });
+                    this.selectedRow = []
+                    if ( type === ORGANIZATION_TYPE_DISAPPROVAL) {
+                        $("#modalNoteDisapprovalMultiple").modal('hide')
+                    }
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async accountApprovalShoppingPlanOrganization(id, type) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type, this.note_disapproval)
+                if (response.success) {
+                    let organization = this.register.organizations.find((item) => +item.id === +id);
+                    if (type === ORGANIZATION_TYPE_APPROVAL) {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    } else {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                        $("#modalNoteDisapproval").modal('hide')
+                    }
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShowModal(id, action) {
+            this.loading = true
+            try {
+                this.id = id
+                this.action = action
+                this.resetData()
+                await this.getOrganizationRegisterYear()
+                await this.getInfoShoppingPlanCompanyYear()
+                if (action === 'view') {
+                    $('#modalDetail').modal('show')
+                } else {
+                    this.setConfigButtons()
+                    this.setConfigButtonsApproval()
+                    this.setConfigApprovalOrganizations()
+                    $('#modalUpdate').modal('show')
+                }
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        setConfigButtonsApproval() {
+            this.configButtonsApproval = [
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    permission: 'shopping_asset.accounting_approval',
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: () => this.accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.showModalNoteDisapprovalMultiple(),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                    ]
+                },
+            ]
+        },
+
+        setConfigButtons() {
+            this.configButtons = [
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
+                    buttons: [
+                        {
+                            text: 'Gửi thông báo',
+                            class: 'btn btn-primary',
+                            action: () => this.sentNotificationRegister(),
+                            permission: 'shopping_plan_company.sent_notification_register'
+                        },
+                        {
+                            text: 'Xóa',
+                            class: 'btn btn-danger',
+                            action: () => this.confirmRemove(),
+                            permission: 'shopping_plan_company.crud'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [+STATUS_SHOPPING_PLAN_COMPANY_NEW, +STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-sc',
+                            action: () => this.updatePlanYear(),
+                            permission: 'shopping_plan_company.crud'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_REGISTER &&
+                        new Date() > new Date(window.formatDate(this.data.end_time)),
+                    buttons: [
+                        {
+                            text: 'Gửi duyệt',
+                            class: 'btn btn-primary',
+                            action: () => this.sendAccountantApproval(),
+                            permission: 'shopping_plan_company.sent_account_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                    buttons: [
+                        {
+                            text: 'Gửi duyệt',
+                            class: 'btn btn-primary',
+                            action: () => this.sendManagerApproval(),
+                            permission: 'shopping_plan_company.sent_manager_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () =>
+                        [
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
+                        ].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn btn-sc',
+                            action: () => this.generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY),
+                            permission: 'shopping_plan_company.general_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () =>
+                        [
+                            STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                            STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
+                        ].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.showModalNoteDisapprovalShoppingCompany(),
+                            permission: 'shopping_plan_company.general_approval'
+                        },
+                    ],
+                },
+            ]
+        },
+
         setConfigButtonsTable() {
             this.configButtonsTable = [
                 {
@@ -202,7 +465,7 @@ document.addEventListener('alpine:init', () => {
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
-                            action: (id) => window.location.href = `/shopping-plan-company/year/update/${id}`,
+                            action: (id) => this.handleShowModal(id, 'update'),
                         },
                     ],
                 },
@@ -221,8 +484,8 @@ document.addEventListener('alpine:init', () => {
                     permission: 'shopping_plan_company.accounting_approval',
                     buttons: [
                         {
-                            icon: 'fa-solid fa-pen-to-square',
-                            action: (id) =>  window.location.href = `/shopping-plan-company/year/update/${id}`,
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
                         },
                     ],
                 },
@@ -231,12 +494,50 @@ document.addEventListener('alpine:init', () => {
                     permission: 'shopping_plan_company.general_approval',
                     buttons: [
                         {
-                            icon: 'fa-solid fa-pen-to-square',
-                            action: (id) =>  window.location.href = `/shopping-plan-company/year/update/${id}`,
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) =>  this.handleShowModal(id, 'update'),
                         },
                     ],
                 },
             ]
+        },
+
+        setConfigApprovalOrganizations() {
+            this.configApprovalOrganization = [
+                {
+                    condition: (status) => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL].includes(status),
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'bi bi-check fs-4 color-sc',
+                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL].includes(status),
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'bi bi-x fs-4 text-red',
+                            action: (id) => this.showModalNoteDisapproval(id),
+                        },
+                    ],
+                },
+            ]
+        },
+
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.register.organizations.forEach((item) => {
+                this.selectedRow[item.id] = this.checkedAll
+            })
         },
 
         watchFilters() {
@@ -259,6 +560,17 @@ document.addEventListener('alpine:init', () => {
 
             $("#idModalConfirmDeleteMultiple").modal('show');
             this.id = ids
+        },
+
+        showModalNoteDisapprovalMultiple() {
+            this.note_disapproval = null
+            $("#modalNoteDisapprovalMultiple").modal('show')
+        },
+
+        showModalNoteDisapproval(id) {
+            this.id_organization = id
+            this.note_disapproval = null
+            $("#modalNoteDisapproval").modal('show')
         },
 
         changePage(page) {
@@ -295,6 +607,11 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#idModalConfirmDelete").modal('show');
             this.id = id
+        },
+
+        showModalNoteDisapprovalShoppingCompany() {
+            this.note_disapproval = null
+            $("#modalNoteDisapprovalPlanCompany").modal('show')
         },
     }));
 });

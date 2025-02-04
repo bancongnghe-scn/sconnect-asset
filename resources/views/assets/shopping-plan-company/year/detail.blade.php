@@ -37,14 +37,12 @@
 
                                 <div class="tw-col-span-3">
                                     <label class="form-label">Người quan sát</label>
-                                    <div>
-                                        @include('common.select_custom.extent.select_multiple', [
+                                    @include('common.select_custom.extent.select_multiple', [
                                             'placeholder' => 'Chọn người tham gia',
                                             'options' => 'listUser',
                                             'selected' => 'data.monitor_ids',
                                             'disabled' => true
-                                        ])
-                                    </div>
+                                    ])
                                 </div>
                             </div>
                         </div>
@@ -92,6 +90,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card col-2" x-data="comment_shopping_plan">
                         @include('component.shopping_plan_company.history_comment')
                     </div>
@@ -100,4 +99,6 @@
         </div>
     </div>
 </div>
+
+
 

@@ -43,42 +43,25 @@
                 <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                     {{-- button view --}}
-                    <button @click="window.location.href = `/shopping-plan-organization/year/view/${organization.id}`" class="border-0 bg-body">
+                    <button @click="window.location.href = `/shopping-plan-organization/year/view/${organization.id}`"
+                            class="border-0 bg-white">
                         <i class="bi bi-eye" style="color: #63E6BE;"></i>
                     </button>
 
                     {{-- button duyet --}}
                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">
-                        @can('shopping_plan_company.accounting_approval')
-                            <span>
-                                    <template x-if="
-                                        [
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                                        ].includes(+organization.status)"
-                                    >
-                                        <button class="border-0 bg-body"
-                                                @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_APPROVAL)"
-                                        >
-                                            <i class="fa-solid fa-thumbs-up" style="color: #125fe2;"></i>
+                        <template x-for="configApproval in configApprovalOrganization">
+                            <template x-if="configApproval.condition(+organization.status)">
+                                <template x-if="permission.includes(configApproval.permission) || configApproval.permission">
+                                    <template x-for="configBtn in configApproval.buttons">
+                                        <button class="border-0 bg-white"
+                                                @click="configBtn.action(organization.id)">
+                                            <i :class="configBtn.icon"></i>
                                         </button>
                                     </template>
-                                    <template x-if="
-                                        [
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                                        ].includes(+organization.status)"
-                                    >
-                                        <button class="border-0 bg-body"
-                                                @click="showModalNoteDisapproval(organization.id)"
-                                        >
-                                            <i class="fa-solid fa-thumbs-down" style="color: #727479;"></i>
-                                        </button>
-                                    </template>
-                                </span>
-                        @endcan
+                                </template>
+                            </template>
+                        </template>
                     </template>
                 </td>
             </tr>

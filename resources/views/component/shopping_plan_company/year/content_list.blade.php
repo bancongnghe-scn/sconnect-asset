@@ -52,4 +52,5 @@
     </div>
 
     @include('assets.shopping-plan-company.year.detail')
+    @include('assets.shopping-plan-company.year.update')
 </div>

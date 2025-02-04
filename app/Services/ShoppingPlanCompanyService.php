@@ -189,6 +189,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
             DB::rollBack();
 
@@ -219,8 +220,7 @@ class ShoppingPlanCompanyService
             ]),
             default => [],
         };
-
-        $check = 'create' === $action ? !empty($shoppingPlanCompany) : $shoppingPlanCompany->id !== $data['id'];
+        $check = 'create' === $action ? !empty($shoppingPlanCompany) : (!empty($shoppingPlanCompany) && $shoppingPlanCompany->id !== $data['id']);
 
         if ($check) {
             return [

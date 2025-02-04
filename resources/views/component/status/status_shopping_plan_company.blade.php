@@ -22,9 +22,9 @@
                 };
             } else if (status === STATUS_SHOPPING_PLAN_COMPANY_APPROVAL || status === STATUS_SHOPPING_PLAN_COMPANY_COMPLETE) {
                 return {
-                    color: '#B7EB8F',
+                    color: '#52C41A',
                     backgroundColor: '#F6FFED',
-                    border: '1px solid #B7EB8F'
+                    border: '1px solid #52C41A'
                 };
             } else if (status === STATUS_SHOPPING_PLAN_COMPANY_CANCEL) {
                 return {
