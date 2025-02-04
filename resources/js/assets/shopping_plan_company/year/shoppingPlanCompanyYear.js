@@ -1,9 +1,10 @@
+import {format} from "date-fns";
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => ({
         init() {
             this.list({page:1, limit:10})
             this.getListUser({ 'dept_id' : DEPT_IDS_FOLLOWERS })
-            window.initSelect2Modal('idModalInsert')
             this.watchFilters()
             this.setConfigButtonsTable()
         },
@@ -27,18 +28,18 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
+
         data: {
             time: null,
+            status: null,
             start_time: null,
             end_time: null,
             monitor_ids: [],
         },
 
-        listUser: [],
-        listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         id: null,
-        idModalConfirmDelete: "idModalConfirmDelete",
-        idModalConfirmDeleteMultiple: "idModalConfirmDeleteMultiple",
+        listUser: [],
+        register: [],
         configButtonsTable: [],
 
         //methods
@@ -73,7 +74,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return;
                 }
-                $("#"+this.idModalConfirmDelete).modal('hide')
+                $("#idModalConfirmDelete").modal('hide')
                 toast.success('Xóa kế hoạch mua sắm năm thành công !')
                 this.list(this.filters)
             } catch (e) {
@@ -113,6 +114,67 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        async handleShowModal(id, action) {
+            this.loading = true
+            try {
+                this.id = id
+                this.action = action
+                this.resetData()
+                await this.getOrganizationRegisterYear()
+                await this.getInfoShoppingPlanCompanyYear()
+                if (action === 'view') {
+                    $('#modalDetail').modal('show')
+                } else {
+                    this.setConfigButtons()
+                    this.setConfigButtonsApproval()
+                    $('#modalUpdate').modal('show')
+                }
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getOrganizationRegisterYear() {
+            this.loading = true
+            try {
+                const response = await window.getOrganizationRegister(this.id)
+                if (response.success) {
+                    this.register = response.data.data
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getInfoShoppingPlanCompanyYear() {
+            this.loading = true
+            try {
+                const response = await window.apiShowShoppingPlanCompany(this.id)
+                if (response.success) {
+                    const data = response.data.data
+                    this.data.time = data.time
+                    this.data.status = data.status
+                    this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
+                    this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
+                    this.data.monitor_ids = data.monitor_ids
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async removeMultiple() {
             this.loading = true
             try {
@@ -121,7 +183,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                $("#"+this.idModalConfirmDeleteMultiple).modal('hide')
+                $("#idModalConfirmDeleteMultiple").modal('hide')
                 this.list(this.filters)
                 this.selectedRow = []
                 toast.success('Xóa danh sách kế hoạch mua sắm thành công !')
@@ -195,7 +257,7 @@ document.addEventListener('alpine:init', () => {
                 return
             }
 
-            $("#"+this.idModalConfirmDeleteMultiple).modal('show');
+            $("#idModalConfirmDeleteMultiple").modal('show');
             this.id = ids
         },
 
@@ -212,6 +274,7 @@ document.addEventListener('alpine:init', () => {
         resetData() {
             this.data = {
                 time: null,
+                status: null,
                 start_time: null,
                 end_time: null,
                 monitor_ids: [],
@@ -230,7 +293,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         confirmRemove(id) {
-            $("#"+this.idModalConfirmDelete).modal('show');
+            $("#idModalConfirmDelete").modal('show');
             this.id = id
         },
     }));

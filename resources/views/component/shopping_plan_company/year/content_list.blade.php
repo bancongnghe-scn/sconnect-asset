@@ -19,7 +19,6 @@
                     @endcan
 
                     <div
-                        @remove="confirmRemove($event.detail.id)"
                         @change-page.window="changePage($event.detail.page)"
                         @change-limit.window="changeLimit"
                     >
@@ -34,7 +33,7 @@
     @include('assets.shopping-plan-company.year.modalInsert')
     <div
             x-data="{
-                        modalId: idModalConfirmDelete,
+                        modalId: 'idModalConfirmDelete',
                         contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch mua sắm này không ?'
                     }"
             @ok="remove"
@@ -44,11 +43,13 @@
 
     <div
             x-data="{
-                modalId: idModalConfirmDeleteMultiple,
+                modalId: 'idModalConfirmDeleteMultiple',
                 contentBody: 'Bạn có chắc chắn muốn xóa danh sách kế hoạch mua sắm này không ?'
             }"
             @ok="removeMultiple"
     >
         @include('common.modal-confirm')
     </div>
+
+    @include('assets.shopping-plan-company.year.detail')
 </div>

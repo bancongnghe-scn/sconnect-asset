@@ -11,6 +11,7 @@
         'resources/js/assets/shopping_plan_company/year/shoppingPlanCompanyYear.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
+        'resources/js/assets/history_comment/comment_shopping_plan_company.js',
         'resources/js/app/api/apiUser.js',
     ])
 @endsection

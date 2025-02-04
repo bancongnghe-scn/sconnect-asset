@@ -46,7 +46,7 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <button class="border-0 bg-white"
-                                                @click="window.location.href = `/shopping-plan-company/year/view/${data.id}`">
+                                                @click="handleShowModal(value.id, 'view')">
                                             <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                         </button>
 
