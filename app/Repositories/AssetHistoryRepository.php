@@ -25,7 +25,7 @@ class AssetHistoryRepository extends BaseRepository
         foreach ($assets as $asset) {
             $dataHistory[] = [
                 'asset_id'              => $asset->id,
-                'action'                => Asset::STATUS_IN_LIQUIDATION,
+                'action'                => $status,
                 'date'                  => new \DateTime(),
                 'created_at'            => new \DateTime(),
                 'created_by'            => Auth::id(),
