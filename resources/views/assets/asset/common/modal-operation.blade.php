@@ -354,7 +354,7 @@
                             </div>
                             <div class="col-12 item-rotation-modal">
                                 <div class="col-12 mb-3">
-                                    <span>Lý do mất</span>
+                                    <span>Lý do hỏng</span>
                                     <textarea id="noteAllocation" name="" class="form-control" x-model="reasonLiquidation" style="width: 100%; min-height: 110px !important;"></textarea>
 
                                 </div>

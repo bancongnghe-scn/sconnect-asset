@@ -203,7 +203,7 @@
                     <template x-for="(org, index) in listOrg" :key="org.id">
                         <tr>
                             <td class="text-center" x-text="index + 1 + (currentPage-1)*limitParam"></td>
-                            <td class="text-left" x-text="org.name"></td>
+                            <td class="text-left" x-text="org.dept_type.cfg_key + ' ' + org.name"></td>
                             <td class="text-left" x-text="org.asset_count"></td>
                                 
                             </td>
@@ -378,6 +378,8 @@
             },
             fillData(org) {
                 this.orgObj = org;
+                console.log(this.orgObj);
+                
                 this.getDataHistoryOfOrg();
                 this.getDataHistoryOfOrg();
             },

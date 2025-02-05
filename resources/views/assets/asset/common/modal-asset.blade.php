@@ -4,6 +4,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
+                    <h5 x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -134,14 +135,14 @@
                                             <span>Thao tác</span>
                                             <div class="d-flex" style="gap: 30px;">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation == 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck1" @click="tabAllocation='allocation-tab'">
-                                                    <label class="form-check-label" for="defaultCheck1">
+                                                    <input class="form-check-input" :checked="tabAllocation == 'allocation-tab'"  type="radio" value="" name="changeTab" id="defaultCheck11" @click="tabAllocation='allocation-tab'">
+                                                    <label class="form-check-label" for="defaultCheck11">
                                                         Cấp phát
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="tabAllocation == 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck2" @click="tabAllocation='recovery-tab'">
-                                                    <label class="form-check-label" for="defaultCheck2">
+                                                    <input class="form-check-input" :checked="tabAllocation == 'recovery-tab'"  type="radio" value="" name="changeTab" id="defaultCheck22" @click="tabAllocation='recovery-tab'">
+                                                    <label class="form-check-label" for="defaultCheck22">
                                                         Thu hồi
                                                     </label>
                                                 </div>
@@ -250,6 +251,14 @@
     
                                             </div>
                                         </div>
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" :checked="recoveryCompany" type="checkbox" value="" id="defaultCheck3" @click="recoveryCompany = true;">
+                                                <label class="form-check-label" for="defaultCheck3">
+                                                    Thu hồi về công ty
+                                                </label>
+                                            </div>
+                                        </div>
                                         <span class="text-bold">Tài sản thu hồi</span>
                                         <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%; max-height: 250px;">
                                             <table class="table table-bordered table-repair">
@@ -324,7 +333,21 @@
                                                     <td>
                                                         <span class="text-primary">BB001</span>
                                                     </td>
-                                                    <td>Mark</td>
+                                                    <td>
+                                                        <div class="d-flex">
+                                                            <img x-show="history.created_by" x-bind:src="history.createBy && history.createBy.avatar 
+                                                                    ? (history.createBy.avatar.includes('/uploads/') 
+                                                                        ? 'https://office.sconnect.com.vn' + history.createBy.avatar 
+                                                                        : history.createBy.avatar) 
+                                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                    alt="" 
+                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                <span x-text="history.createBy ? history.createBy.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                <span x-text="history.createBy ? 'Mã nhân sự:' + history.createBy.code : ''" style="color: #706f6f;"></span>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td>
                                                         <button x-show="history.user_id" type="button" class="btn btn-outline-success">
                                                             Cá nhân

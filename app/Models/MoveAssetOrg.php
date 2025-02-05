@@ -12,4 +12,6 @@ class MoveAssetOrg extends Model
     protected $connection = 'mysql';
 
     protected $table = 'move_asset_organizations';
+
+    protected $guarded = [];
 }

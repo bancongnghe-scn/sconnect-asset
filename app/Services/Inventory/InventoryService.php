@@ -2,7 +2,6 @@
 
 namespace App\Services\Inventory;
 
-use App\Http\Resources\Manage\PlanMaintainResource;
 use App\Http\Resources\PlanInventoryResource;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainAsset;
@@ -23,17 +22,16 @@ class InventoryService
         protected PlanMaintainRepository $planMaintainRepository,
         protected OrganizationRepository $organizationRepository,
         protected AssetTypeRepository $assetTypeRepository,
-    )
-    {
+    ) {
     }
 
     public function getPlanInventory($filters)
     {
         $filters['type'] = PlanMaintain::TYPE_INVENTORY;
-        $data = $this->planMaintainRepository->getListing($filters, with: [
+        $data            = $this->planMaintainRepository->getListing($filters, with: [
             'planMaintainAsset',
             'planMaintainOrganizations' => ['organization'],
-            'planMaintainAssetTypes' => ['assetType']
+            'planMaintainAssetTypes'    => ['assetType'],
         ]);
 
         if (empty($data)) {

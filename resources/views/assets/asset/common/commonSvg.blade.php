@@ -61,4 +61,67 @@
 </svg>
 `,
     };
+
+function matchStatus(status, operation, asset = null) {
+    let arrStatusPass = [];  
+
+    switch (operation) {
+        case 'maintain':
+            arrStatusPass = [1,2];
+            break;
+
+        case 'detail':
+            arrStatusPass = [1,2,3,4,5,6,7,8,9,10,11];
+            break;
+
+        case 'edit':
+            arrStatusPass = [1,2];
+            break;
+
+        case 'allocation':
+            arrStatusPass = [2];
+            break;
+
+        case 'recovery':
+            arrStatusPass = [1];
+            break;
+
+        case 'rotation':
+            arrStatusPass = [1,2];
+            break;
+
+        case 'request-liquidation':
+            arrStatusPass = [1,2,9];
+            break;
+    
+        case 'repair':
+            arrStatusPass = [2,9];
+            break;
+
+        case 'cancel':
+            arrStatusPass = [1,2,9,4];
+            break;
+
+        case 'mark-damaged':
+            arrStatusPass = [1,2];
+            break;
+
+        case 'mark-lost':
+            arrStatusPass = [1,2,9];
+            break;
+
+        default:
+            break;
+    }
+    
+    if (asset && asset.organization_id && asset.status == 2) {
+        return true;
+    }
+
+    if (arrStatusPass.includes(status)) {       
+        return true;
+    }
+
+    return false;
+}
 </script>

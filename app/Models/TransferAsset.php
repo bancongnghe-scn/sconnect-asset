@@ -28,4 +28,9 @@ class TransferAsset extends Model
     {
         return $this->belongsTo(Org::class, 'org_id');
     }
+
+    public function createBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
