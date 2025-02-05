@@ -412,6 +412,8 @@
             },
             fillData(user) {
                 this.userObj = user;
+                console.log(this.userObj);
+                
                 this.getDataAssetOfUser();
                 this.getDataHistoryOfUser();
             },
