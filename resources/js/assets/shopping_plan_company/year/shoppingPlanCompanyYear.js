@@ -331,6 +331,11 @@ document.addEventListener('alpine:init', () => {
                 this.id = id
                 this.action = action
                 this.resetData()
+                if (action === 'create') {
+                    $('#idModalInsert').modal('show')
+                    return
+                }
+
                 await this.getOrganizationRegisterYear()
                 await this.getInfoShoppingPlanCompanyYear()
                 if (action === 'view') {

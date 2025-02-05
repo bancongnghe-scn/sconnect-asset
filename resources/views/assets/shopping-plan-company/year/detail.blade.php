@@ -54,24 +54,24 @@
                                     <table id="example2" class="table table-bordered dataTable dtr-inline"
                                            aria-describedby="example2_info">
                                         <thead>
-                                        <tr>
-                                            <th colspan="12" class="text-center"
-                                                x-text="`Tổng tiền theo tháng toàn công ty(${window.formatCurrencyVND(register.total_price_company)})`"
-                                            >
-                                            </th>
-                                        </tr>
-                                        <tr>
-                                            <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
-                                                <th x-text="`T` + number" class="text-center"></th>
-                                            </template>
-                                        </tr>
+                                            <tr>
+                                                <th colspan="12" class="text-center"
+                                                    x-text="`Tổng tiền theo tháng toàn công ty(${window.formatCurrencyVND(register.total_price_company)})`"
+                                                >
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
+                                                    <th x-text="`T` + number" class="text-center"></th>
+                                                </template>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <template x-for="price in register.total_price_months">
-                                                <td x-text="window.formatCurrencyVND(price)"></td>
-                                            </template>
-                                        </tr>
+                                            <tr>
+                                                <template x-for="price in register.total_price_months">
+                                                    <td x-text="window.formatCurrencyVND(price)"></td>
+                                                </template>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>

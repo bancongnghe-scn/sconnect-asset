@@ -27,7 +27,7 @@
 
                     @can('shopping_plan_company.crud')
                         <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-                            <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#idModalInsert').modal('show')">
+                            <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModal(null, 'create')">
                                 <span>+ Thêm</span>
                             </button>
                             <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
