@@ -50,7 +50,7 @@ class ListAssetService
             $query->whereNull('user_id');
         }
 
-        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('created_at', 'desc')->paginate($request->limit);
+        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('id', 'desc')->paginate($request->limit);
     }
 
     public function getListUserAsset($request): LengthAwarePaginator
@@ -186,7 +186,7 @@ class ListAssetService
     {
         $query = Org::query();
 
-        return $query->whereIn('parent_id', [0, 1])->with(['manager'])->paginate($request->limit);
+        return $query->whereIn('parent_id', [0, 1])->with(['manager', 'deptType'])->paginate($request->limit);
     }
 
     public function allocateAssetOrg($request)
@@ -347,6 +347,19 @@ class ListAssetService
         if ($request->assetId) {
             return MoveAssetUser::where('asset_id', $request->assetId)->with(['transferAsset', 'transferAsset.user', 'transferAsset.organization.manager', 'transferAsset.organization.deptType', 'transferAsset.createBy'])->get();
         }
+
+        // if ($request->assetId) {
+        //     $arrTransferAsset = MoveAssetUser::where('asset_id', $request->assetId)->pluck('transfer_asset_id');
+
+        //     return TransferAsset::whereIn('id', $arrTransferAsset)
+        //         ->with([
+        //             'user',
+        //             'organization.manager',
+        //             'organization.deptType',
+        //             'createBy'
+        //         ])
+        //         ->get();
+        // }
     }
 
     public function rotationAsset($request)
