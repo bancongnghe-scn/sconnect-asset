@@ -71,4 +71,6 @@
 
     @include('assets.shopping-plan-company.year.detail')
     @include('assets.shopping-plan-company.year.update')
+    @include('assets.shopping_plan_organization.year.detail')
 </div>
+

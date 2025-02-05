@@ -48,7 +48,7 @@ document.addEventListener('alpine:init', () => {
         id: null,
         idModalInfo: "idModalInfo",
         configButtonsTable: [],
-        configButtons: [],
+        configButtonsOrganization: [],
 
         //methods
         async list(filters){
@@ -172,7 +172,7 @@ document.addEventListener('alpine:init', () => {
                     this.getListAssetType()
                 }
                 if (action === 'view') {
-                    $('#modalDetail').modal('show')
+                    $('#modalDetailOrganization').modal('show')
                     this.setConfigButtons()
                 } else {
                     // this.setConfigButtonsApproval()
@@ -231,7 +231,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         setConfigButtons() {
-            this.configButtons = [
+            this.configButtonsOrganization = [
                 {
                     condition: () => [
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,

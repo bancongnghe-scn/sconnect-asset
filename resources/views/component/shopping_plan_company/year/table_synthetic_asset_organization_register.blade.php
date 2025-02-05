@@ -43,7 +43,7 @@
                     <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                         {{-- button view --}}
-                        <button @click="handleShowModalDetailOrganization(organization.id)"
+                        <button  @click="handleShowModalDetailOrganization(organization.id)"
                                 class="border-0 bg-white">
                             <i class="bi bi-eye" style="color: #63E6BE;"></i>
                         </button>

@@ -1,11 +1,11 @@
-<div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalDetailOrganization" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Chi tiết kế hoạch mua sắm năm</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
                     <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                        <template x-for="(config, key) in configButtons" :key="key">
+                        <template x-for="(config, key) in configButtonsOrganization" :key="key">
                             <template x-if="config.condition()">
                                 <template x-for="(button, index) in config.buttons" :key="key + index">
                                     <template x-if="!button.permission || permission.includes(button.permission)">
