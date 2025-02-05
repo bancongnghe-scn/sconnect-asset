@@ -211,7 +211,7 @@
                     <tbody>
                     <template x-for="(asset, index) in listAsset" :key="asset.id">
                         <tr>
-                            <td class="text-center" x-text="index"></td>
+                            <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
                             <td class="text-center" x-text="asset.code"></td>
                             <td class="text-left" x-text="asset.name"></td>
                             <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
@@ -250,7 +250,7 @@
                             </td>
                             <td class="text-center" x-text="asset.price ? formatCurrency(asset.price) : ''"></td>
                             <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
-                            <td class="text-center" x-text="asset.location_text"></td>
+                            <td class="text-center" x-text="LIST_LOCATION_ASSET[asset.location]"></td>
                             <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
                                 <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -280,7 +280,7 @@
                                         </a>
                                     </template>
                                     <template x-if="matchStatus(asset.status, 'edit')">
-                                        <a class="d-flex item-menu" href="#">
+                                        <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset);">
                                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z" fill="#344054"/>
                                             </svg>
@@ -456,8 +456,8 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày mua</span>
-                                                            <input type="date" class="form-control" disabled>
-
+                                                            <input type="date" class="form-control" id="locationSearch" x-model="assetObj.date_purchase" disabled>
+                    
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -470,14 +470,19 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Nhà cung cấp</span>
-                                                            <input type="text" class="form-control" disabled>
+                                                            <select class="form-control select2" data-placeholder="Vị trí" id="supplierDetail" x-model="assetObj.supplier_id" disabled>
+                                                                <option value="0" selected>Nhà cung cấp</option>
+                                                                <template x-for="(supplier, key) in listSupplier">
+                                                                    <option :value="supplier.id" x-text="supplier.name"></option>
+                                                                </template>
+                                                            </select>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Đơn vị tính</span>
-                                                            <input type="text" class="form-control" disabled>
+                                                            <input type="text" class="form-control" x-model="LIST_MEASURE[assetObj.asset_type.measure]" disabled>
 
                                                         </div>
                                                     </div>
@@ -498,14 +503,14 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số serial</span>
-                                                            <input type="text" class="form-control" disabled>
+                                                            <input type="text" class="form-control" x-model="assetObj.seri_number" disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="mb-3">
                                                             <span>Ghi chú</span>
-                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" disabled></textarea>
+                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" x-model="assetObj.description" disabled></textarea>
 
                                                         </div>
                                                     </div>
@@ -519,22 +524,22 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Thời gian bảo hành</span>
-                                                            <input type="text" class="form-control" disabled>
+                                                            <input type="date" class="form-control" x-model="assetObj.date_warranty" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Hạn bảo hành</span></span>
-                                                            <input type="text" class="form-control" disabled>
+                                                            <input type="text" class="form-control" x-model="assetObj.warranty_months" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-12">
+                                                    {{-- <div class="col-12">
                                                         <div class="mb-3">
                                                             <span>Điều kiện bảo hành</span>
                                                             <textarea name="" class="form-control" style="width: 100%" rows="3" disabled></textarea>
 
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                             <div class="change-tab" x-show="tabDetail == 'change-tab'">
@@ -620,13 +625,13 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng gần nhất</span>
-                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date">
+                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date">
+                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -639,323 +644,25 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị tính phân bổ</span>
-                                                            <input type="number" class="form-control" value="2000000">
+                                                            <input type="number" class="form-control" value="2000000" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số kì phân bổ còn lại (tháng)</span></span>
-                                                            <input type="number" class="form-control" value="24">
+                                                            <input type="number" class="form-control" value="24" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control" value="2024-11-01">
+                                                            <input type="date" class="form-control" value="2024-11-01" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị đã phân bổ</span></span>
-                                                            <input type="number" class="form-control" value="83333">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="repair-tab" x-show="tabDetail == 'repair-tab'">
-                                                <h6 class="text-bold">
-                                                    Sửa chữa
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-12" style="overflow-x: auto;width: 100%;">
-                                                        <table class="table table-bordered table-repair" style="width: 1000px;">
-                                                            <thead>
-                                                            <tr style="font-size: 14px;">
-                                                                <th>Ngày báo hỏng</th>
-                                                                <th>Tình trạng hỏng</th>
-                                                                <th>Ngày sửa chữa</th>
-                                                                <th>Chi phí sửa</th>
-                                                                <th>Tình trạng sửa chữa</th>
-                                                                <th>Ngày hoàn thành</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="lost-tab" x-show="tabDetail == 'lost-tab'">
-                                                <h6 class="text-bold">
-                                                    Mất - hủy - thanh lý
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <table class="table table-bordered table-repair">
-                                                            <thead>
-                                                            <tr style="font-size: 14px;">
-                                                                <th>Loại</th>
-                                                                <th>Ngày đánh dấu</th>
-                                                                <th>Người thao tác</th>
-                                                                <th>Ghi chú</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <td>1</td>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="modalEditAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="mb-0" style="font-weight: bold; color: #379237">Xem chi tiết tài sản</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-4" style="padding-right: 60px;">
-                                            <ul class="sidebar-tab" style="padding: 0;">
-                                                <li @click="tabDetail='general-tab'" :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
-                                                <li @click="tabDetail='guarantee-tab'" :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
-                                                <li @click="tabDetail='change-tab'" :class="tabDetail == 'change-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi/Luân chuyển</li>
-                                                <li @click="tabDetail='maintain-tab'" :class="tabDetail == 'maintain-tab' ? 'active-sidebar' : ''">Bảo dưỡng</li>
-                                                <li @click="tabDetail='allocation-tab'" :class="tabDetail == 'allocation-tab' ? 'active-sidebar' : ''">Phân bổ</li>
-                                                <li @click="tabDetail='repair-tab'" :class="tabDetail == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa</li>
-                                                <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
-                                            </ul>
-                                            <span>Mã QR</span>
-                                            <img src="https://media.istockphoto.com/id/1095468748/vi/vec-to/m%C3%A3-qr-m%E1%BA%ABu-m%C3%A3-v%E1%BA%A1ch-hi%E1%BB%87n-%C4%91%E1%BA%A1i-vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BB%83-qu%C3%A9t-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-th%C3%B4ng-minh-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=nCjpoa8qW4lREJGqVCQZsWcrKGOcKKuy5RSsSVzqlL8=" alt="" style="width: 100%;">
-                                        </div>
-                                        <div class="col-8">
-                                            <div class="name-asset d-flex" style="gap: 10px;">
-                                                <h5 class="text-bold" x-text="assetName"></h5>
-                                                <span x-html="arrSvgStatus[assetStatus]"></span>
-                                            </div>
-                                            <div class="general-tab" x-show="tabDetail == 'general-tab'">
-                                                <h6 class="text-bold">Thông tin chung</h6>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Loại tài sản <span class="text-danger">*</span></span>
-                                                            {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
-                                                            <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAsetSelect">
-                                                                <option value="0" selected>Loại tài sản</option>
-                                                                <template x-for="(value, key) in assetType">
-                                                                    <option :value="value.id" x-text="value.name"></option>
-                                                                </template>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Vị trí tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control" x-model="assetObj.location_text">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Mã tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control" x-model="assetObj.code">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Ngày mua <span class="text-danger">*</span></span>
-                                                            <input type="date" class="form-control">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Tên tài sản <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control" x-model="assetObj.name">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Nhà cung cấp <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Đơn vị tính <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Giá trị <span class="text-danger">*</span></span>
-                                                            <input type="number" class="form-control" x-model="assetObj.price">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Số lượng</span></span>
-                                                            <input type="number" class="form-control" value="1" disabled>
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Số serial <span class="text-danger">*</span></span>
-                                                            <input type="text" class="form-control">
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <span>Ghi chú</span>
-                                                            <textarea name="" class="form-control" style="width: 100%" rows="3"></textarea>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="guarantee-tab" x-show="tabDetail == 'guarantee-tab'">
-                                                <h6 class="text-bold">
-                                                    Bảo hành
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Thời gian bảo hành</span>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Hạn bảo hành</span></span>
-                                                            <input type="text" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <span>Điều kiện bảo hành</span>
-                                                            <textarea name="" class="form-control" style="width: 100%" rows="3"></textarea>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="change-tab" x-show="tabDetail == 'change-tab'">
-                                                <h6 class="text-bold">
-                                                    Cấp phát/Thu hồi/Luân chuyển
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-12">
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                            <tr>
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">First</th>
-                                                                <th scope="col">Last</th>
-                                                                <th scope="col">Handle</th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                            <tr>
-                                                                <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <th scope="row">3</th>
-                                                                <td colspan="2">Larry the Bird</td>
-                                                                <td>@twitter</td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="maintain-tab" x-show="tabDetail == 'maintain-tab'">
-                                                <h6 class="text-bold">
-                                                    Bảo dưỡng
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Ngày bảo dưỡng gần nhất</span>
-                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="allocation-tab" x-show="tabDetail == 'allocation-tab'">
-                                                <h6 class="text-bold">
-                                                    Phân bổ
-                                                </h6>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Giá trị tính phân bổ</span>
-                                                            <input type="number" class="form-control" value="2000000">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Số kì phân bổ còn lại (tháng)</span></span>
-                                                            <input type="number" class="form-control" value="24">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control" value="2024-11-01">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-3">
-                                                            <span>Giá trị đã phân bổ</span></span>
-                                                            <input type="number" class="form-control" value="83333">
+                                                            <input type="number" class="form-control" value="83333" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1082,6 +789,7 @@
                             </div>
                         </div>
                     </div>
+                    @include('assets.asset.modal.modal-edit')
                     @include('assets.asset.common.modal-asset')
                     @include('assets.asset.common.modal-rotation')
                     @include('assets.asset.common.modal-operation')
@@ -1129,6 +837,7 @@
             assetType: [],
             listLocation: [],
             listStatus: [],
+            listSupplier: [],
             tabDetail: 'general-tab',
             tab: 'general-tab',
             tabAllocation: 'allocation-tab',
@@ -1164,6 +873,7 @@
             recoveryCompany: false,
             urlSearch: '',
             listHistoryAsset: [],
+            assetEdit: {},
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
@@ -1274,6 +984,7 @@
                     this.assetType = data.data.listAssetType;
                     this.listLocation = data.data.listLocation;
                     this.listStatus = data.data.listStatus;
+                    this.listSupplier = data.data.listSupplier;
                     this.totalPages = data.data.listAsset.last_page;
                     this.currentPage = data.data.listAsset.current_page;                                   
                 } catch (error) {
@@ -1301,6 +1012,10 @@
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
+            },
+
+            fillDataEdit(assetEdit){
+                this.assetEdit = assetEdit;
             },
 
             // async getUserByUnit(unitId) {
@@ -1675,6 +1390,28 @@
                     console.error('Lỗi khi gọi API:', error);
                 }
             },
+            async updateDataAsset() {
+                try {
+                    let urlSearch = '/api/asset/update-asset';
+
+                    const response = await axios.post(urlSearch, {
+                        assetEdit: this.assetEdit,
+                        typeAsset: $('#typeAssetEditSelect').val(),
+                        location: $('#locationSearchEdit').val(),
+                        supplier: $('#supplierEdit').val(),
+                    }, {
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        }
+                    });
+
+                    toast.success('Cập nhật thông tin tài sản thành công!');
+                    this.fetchData('', '', '', '', '', this.urlSearch);
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                    toast.error('Cập nhật thông tin tài sản không thành công!')
+                }
+            }
         }));
     });
 </script>

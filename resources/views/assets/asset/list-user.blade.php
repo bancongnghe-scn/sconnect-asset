@@ -216,7 +216,7 @@
                     <tbody>
                     <template x-for="(user, index) in listUserAsset" :key="user.id">
                         <tr>
-                            <td class="text-center" x-text="index"></td>
+                            <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
                             <td class="text-center" x-text="user.code"></td>
                             <td class="text-center">
                                 <div class="d-flex">
