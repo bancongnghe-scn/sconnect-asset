@@ -24,7 +24,7 @@ document.addEventListener('alpine:init', () => {
             limit: 10,
             page: 1
         },
-        data: {
+        dataOrganization: {
             name: null,
             organization_name: null,
             organization_id: null,
@@ -33,7 +33,7 @@ document.addEventListener('alpine:init', () => {
             status: null,
             register_time: null
         },
-        registers : [
+        registersOrganization : [
             {
                 assets: [],
                 register: {total:0, price: 0},
@@ -43,6 +43,7 @@ document.addEventListener('alpine:init', () => {
         ],
         list_asset_type: [],
         table_index: [],
+        list_job: [],
 
         action: null,
         id: null,
@@ -98,12 +99,12 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.data = response.data
+                this.dataOrganization = response.data
             } catch (e) {
                 toast.error(e)
             } finally {
                 this.loading = false
-                this.getJobs([this.data.organization_id])
+                this.getJobs([this.dataOrganization.organization_id])
             }
         },
 
@@ -112,7 +113,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiGetRegisterShoppingPlanOrganization(this.id)
                 if (response.success) {
-                    this.registers = response.data
+                    this.registersOrganization = response.data
                     return
                 }
                 toast.error(response.message)
@@ -142,12 +143,12 @@ document.addEventListener('alpine:init', () => {
         async sentRegister() {
             this.loading = true
             try {
-                const response = await window.apiSentRegisterYear(this.id, this.registers)
+                const response = await window.apiSentRegisterYear(this.id, this.registersOrganization)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
                     this.getRegisterAsset()
-                    if (+this.data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
-                        this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                    if (+this.dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
+                        this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
                     }
                     return
                 }
@@ -189,10 +190,10 @@ document.addEventListener('alpine:init', () => {
         async saveReviewRegisterAsset() {
             this.loading = true
             try {
-                const response = await window.apiSaveReviewRegisterAsset(this.id, this.registers)
+                const response = await window.apiSaveReviewRegisterAsset(this.id, this.registersOrganization)
                 if (response.success) {
                     toast.success('Lưu thông tin phê duyệt thành công')
-                    this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                     return
                 }
                 toast.error(response.message)
@@ -208,7 +209,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
                 if (response.success) {
-                    this.data.status = type === ORGANIZATION_TYPE_APPROVAL
+                    this.dataOrganization.status = type === ORGANIZATION_TYPE_APPROVAL
                         ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                     toast.success('Duyệt thành công !')
                     return
@@ -236,7 +237,7 @@ document.addEventListener('alpine:init', () => {
                     condition: () => [
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.data.status),
+                    ].includes(+this.dataOrganization.status),
                     buttons: [
                         {
                             text: 'Lưu',
@@ -251,7 +252,7 @@ document.addEventListener('alpine:init', () => {
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                    ].includes(+this.data.status),
+                    ].includes(+this.dataOrganization.status),
                     buttons: [
                         {
                             text: 'Duyệt',
@@ -266,7 +267,7 @@ document.addEventListener('alpine:init', () => {
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                    ].includes(+this.data.status),
+                    ].includes(+this.dataOrganization.status),
                     buttons: [
                         {
                             text: 'Từ chối',
@@ -305,7 +306,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         resetData() {
-            this.data = {
+            this.dataOrganization = {
                 name: null,
                 organization_name: null,
                 organization_id: null,
@@ -327,7 +328,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         addRow(index) {
-            this.registers[index].assets.push({
+            this.registersOrganization[index].assets.push({
                 id_fake: Date.now() + Math.random(),
                 asset_type_id: null,
                 job_id: null,
@@ -348,25 +349,25 @@ document.addEventListener('alpine:init', () => {
         calculatePrice(index) {
             let price_register = 0
             let price_approval = 0
-            this.registers[index].assets.forEach((asset) => {
+            this.registersOrganization[index].assets.forEach((asset) => {
                 price_register += (asset.quantity_registered * asset.price)
                 price_approval += (asset.quantity_approved * asset.price)
             })
 
-            this.registers[index].approval.price = price_approval
-            this.registers[index].register.price = price_register
+            this.registersOrganization[index].approval.price = price_approval
+            this.registersOrganization[index].register.price = price_register
         },
 
         calculateRegister(index) {
             let total = 0
             let price = 0
-            this.registers[index].assets.forEach((asset) => {
+            this.registersOrganization[index].assets.forEach((asset) => {
                 total += +asset.quantity_registered
                 price += (asset.quantity_registered * asset.price)
             })
 
-            this.registers[index].register.total = total
-            this.registers[index].register.price = price
+            this.registersOrganization[index].register.total = total
+            this.registersOrganization[index].register.price = price
         },
 
         validateQuantityRegistered(value) {
@@ -376,7 +377,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         deleteRow(index, key) {
-            this.registers[index].assets.splice(key,1)
+            this.registersOrganization[index].assets.splice(key,1)
             this.calculateApproval(index)
             this.calculateRegister(index)
         },
@@ -384,13 +385,13 @@ document.addEventListener('alpine:init', () => {
         calculateApproval(index) {
             let total = 0
             let price = 0
-            this.registers[index].assets.forEach((asset) => {
+            this.registersOrganization[index].assets.forEach((asset) => {
                 total += +asset.quantity_approved
                 price += (asset.quantity_approved * asset.price)
             })
 
-            this.registers[index].approval.total = total
-            this.registers[index].approval.price = price
+            this.registersOrganization[index].approval.total = total
+            this.registersOrganization[index].approval.price = price
         },
 
         reloadPage() {

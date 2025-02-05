@@ -41,9 +41,11 @@ document.addEventListener('alpine:init', () => {
             note_disapproval: null,
             listUser: [],
             register: [],
-            registers: [],
+            registersOrganization: [],
             list_asset_type: [],
+            list_job: [],
             table_index: [],
+            dataOrganization: [],
             configButtons: [],
             configButtonsTable: [],
             configButtonsApproval: [],
@@ -357,15 +359,15 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            async getInfoOrganization() {
+            async getInfoOrganization(id) {
                 this.loading = true
                 try {
-                    const response = await window.apiGetInfoShoppingPlanOrganization(this.id)
+                    const response = await window.apiGetInfoShoppingPlanOrganization(id)
                     if (!response.success) {
                         toast.error(response.message)
                         return
                     }
-                    this.data = response.data
+                    this.dataOrganization = response.data
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -374,12 +376,12 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            async getRegisterAssetOrganization() {
+            async getRegisterAssetOrganization(id) {
                 this.loading = true
                 try {
-                    const response = await window.apiGetRegisterShoppingPlanOrganization(this.id)
+                    const response = await window.apiGetRegisterShoppingPlanOrganization(id)
                     if (response.success) {
-                        this.registers = response.data
+                        this.registersOrganization = response.data
                         return
                     }
                     toast.error(response.message)
@@ -483,8 +485,8 @@ document.addEventListener('alpine:init', () => {
                 this.loading = true
                 try {
                     this.table_index = []
-                    await this.getInfoOrganization()
-                    this.getRegisterAssetOrganization()
+                    await this.getInfoOrganization(id)
+                    this.getRegisterAssetOrganization(id)
                     if (this.list_asset_type.length === 0) {
                         this.getListAssetType()
                     }

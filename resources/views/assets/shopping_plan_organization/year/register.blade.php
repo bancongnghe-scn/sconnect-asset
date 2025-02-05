@@ -5,9 +5,9 @@
                 <h4 class="modal-title">Kế hoạch mua sắm năm</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
                     <template x-if="
-                        (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                        || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                        && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
+                        (+dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                        || +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
+                        && ( new Date() > new Date(dataOrganization.start_time) &&  new Date() < new Date(dataOrganization.end_time))">
                         <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
                     </template>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
@@ -20,27 +20,27 @@
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
                                 <div class="active-link tw-w-fit">Thông tin chung</div>
-                                @include('component.status.status_shopping_plan_organization', ['status' => 'data.status'])
+                                @include('component.status.status_shopping_plan_organization', ['status' => 'dataOrganization.status'])
                             </div>
                             <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                 <div>
                                     <label class="tw-font-bold">Tên</label>
-                                    <div class="form-control" style="background-color: #E5E7EB" x-text="data.name"></div>
+                                    <div class="form-control" style="background-color: #E5E7EB" x-text="dataOrganization.name"></div>
                                 </div>
 
                                 <div>
                                     <label class="tw-font-bold">Đơn vị</label>
-                                    <div class="form-control" style="background-color: #E5E7EB" x-text="data.organization_name"></div>
+                                    <div class="form-control" style="background-color: #E5E7EB" x-text="dataOrganization.organization_name"></div>
                                 </div>
 
                                 <div>
                                     <label class="tw-font-bold">Thời gian đăng ký</label>
-                                    <template x-if="data.start_time !== null">
+                                    <template x-if="dataOrganization.start_time !== null">
                                         @include('common.datepicker.datepicker_range', [
                                              'placeholder' => 'Chọn thời gian đăng ký',
                                              'disabled' => true,
-                                             'start' => 'data.start_time',
-                                             'end' => 'data.end_time',
+                                             'start' => 'dataOrganization.start_time',
+                                             'end' => 'dataOrganization.end_time',
                                         ])
                                     </template>
                                 </div>
@@ -51,7 +51,7 @@
                         <div class="mb-3">
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                             <div>
-                                <template x-for="(register, index) in registers" :key="index">
+                                <template x-for="(register, index) in registersOrganization" :key="index">
                                     <div class="p-4 tw-bg-[#E4F0E6] mb-3">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
