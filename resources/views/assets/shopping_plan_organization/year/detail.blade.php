@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="d-flex tw-gap-x-4 h-100">
-                    <div class="card card-body col-10 overflow-auto custom-scroll">
+                <div class="d-flex tw-gap-x-3 h-100">
+                    <div class="flex-grow-1 overflow-auto custom-scroll">
                         {{--Thông tin chung--}}
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
@@ -98,23 +98,28 @@
                                                 </thead>
                                                 <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr>
+                                                    <tr
+                                                        x-data="{
+                                                                get measure() {
+                                                                    return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
+                                                                }
+                                                        }">
                                                         <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}">
-                                                                @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn loại tài sản',
-                                                                    'disabled' => true
-                                                                ])
-                                                            </span>
+                                                            @include('common.select_custom.extent.select_single', [
+                                                               'placeholder' => 'Chọn tài sản',
+                                                               'selected' => 'asset.asset_type_id',
+                                                               'options' => 'list_asset_type',
+                                                               'disabled' => true
+                                                            ])
                                                         </td>
-                                                        <td class="align-middle" x-text="LIST_MEASURE[asset.asset_type_id]"></td>
+                                                        <td class="align-middle" x-text="measure"></td>
                                                         <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id}">
-                                                                @include('common.select2.extent.select2', [
-                                                                    'placeholder' => 'Chọn chức danh',
-                                                                    'disabled' => true
-                                                                ])
-                                                            </span>
+                                                            @include('common.select_custom.extent.select_single', [
+                                                                'placeholder' => 'Chọn chức danh',
+                                                                'selected' => 'asset.job_id',
+                                                                'options' => 'list_job',
+                                                                'disabled' => true
+                                                            ])
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                         <td>
@@ -124,9 +129,6 @@
                                                             <input
                                                                 class="form-control" type="number" x-model="asset.quantity_approved"
                                                                 @input="calculateApproval(index)"
-                                                                @cannot('shopping_plan_company.accounting_approval')
-                                                                    disabled
-                                                                @endcannot
                                                             >
                                                         </td>
                                                         <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
@@ -144,8 +146,8 @@
                         </div>
                     </div>
 
-                    <div class="card col-2" x-data="history_comment_shopping_plan_organization">
-                        @include('component.shopping_plan_company.history_comment')
+                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
+                        @include('assets.shopping_plan_organization.history_comment')
                     </div>
                 </div>
             </div>

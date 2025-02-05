@@ -38,6 +38,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             id: null,
+            idPlanOrganization: null,
             note_disapproval: null,
             listUser: [],
             register: [],
@@ -484,6 +485,7 @@ document.addEventListener('alpine:init', () => {
             async handleShowModalDetailOrganization(id) {
                 this.loading = true
                 try {
+                    this.idPlanOrganization = id
                     this.table_index = []
                     await this.getInfoOrganization(id)
                     this.getRegisterAssetOrganization(id)

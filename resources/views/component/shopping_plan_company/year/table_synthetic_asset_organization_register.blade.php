@@ -1,6 +1,6 @@
 <table id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
         <tr>
             <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                 <input type="checkbox" @click="selectedAll">

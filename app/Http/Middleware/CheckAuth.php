@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        Auth::loginUsingId(1);
+        Auth::loginUsingId(3);
         //                dd(Auth::user()->getAllPermissions()->pluck('name')->toArray());
 
         return $next($request);
@@ -22,7 +23,6 @@ class CheckAuth
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 $user = @$data['data']['user'];
                 Auth::loginUsingId($user['id']);
-
                 return $next($request);
             }
             Cookie::queue(Cookie::forget('sso-authen'));
