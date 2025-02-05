@@ -512,4 +512,22 @@ class ListAssetService
             'created_by'  => auth()->user() ? auth()->user()->id : 1,
         ]);
     }
+
+    public function updateAsset($request): void
+    {
+        Asset::where('id', $request->assetEdit['id'])->update([
+            "name" => $request->assetEdit['name'],
+            "asset_type_id" => $request->typeAsset,
+            "code" => $request->assetEdit['code'],
+            "supplier_id" => $request->supplier,
+            "price" => $request->assetEdit['price'],
+            "warranty_months" => $request->assetEdit['warranty_months'],
+            "recent_maintenance_date" => $request->assetEdit['recent_maintenance_date'],
+            "next_maintenance_date" => $request->assetEdit['next_maintenance_date'],
+            "description" => $request->assetEdit['description'],
+            "seri_number" => $request->assetEdit['seri_number'],
+            "location" => $request->location,
+            "date_purchase" => $request->assetEdit['date_purchase'],
+        ]);
+    }
 }

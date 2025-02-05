@@ -283,4 +283,6 @@ Route::prefix('asset')->group(function () {
     Route::post('/cancel-asset', [ListAssetController::class, 'cancelAsset'])->name('assets.cancelAsset');
     Route::post('/broken-asset', [ListAssetController::class, 'brokenAsset'])->name('assets.brokenAsset');
     Route::post('/lost-asset', [ListAssetController::class, 'lostAsset'])->name('assets.lostAsset');
+
+    Route::post('/update-asset', [ListAssetController::class, 'updateAsset'])->name('assets.updateAsset');
 });

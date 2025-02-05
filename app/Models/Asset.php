@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,8 +28,10 @@ class Asset extends Model
         'user_id',
         'status',
         'image',
-        'location',         //thêm
+        'location',         
         'organization_id',
+        'date_purchase',
+        'seri_number',
         'import_warehouse_id',
         'created_at',
         'created_by',
@@ -40,6 +43,7 @@ class Asset extends Model
 
     protected $appends = [
         'location_text',
+        'date_warranty'
     ];
 
     public const STATUS_ACTIVE                  = 1;
@@ -92,6 +96,13 @@ class Asset extends Model
     {
         return Attribute::make(
             get: fn () => $this->location ? self::LOCATION_NAME[$this->location] : null,
+        );
+    }
+
+    protected function dateWarranty(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->date_purchase)->addMonths($this->warranty_months)->format('Y-m-d'),
         );
     }
 
