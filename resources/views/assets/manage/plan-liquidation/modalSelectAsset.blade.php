@@ -55,18 +55,14 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 <script>
     function tableSelectAssetToPlan() {
         return {
             checkedAll: false,
 
             selectedAllAsset() {
-                
+
                 this.checkedAll = !this.checkedAll
                 this.dataTbodySelectAsset.forEach(
                     (item) => {

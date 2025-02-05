@@ -86,6 +86,7 @@ document.addEventListener('alpine:init', () => {
                         return;
                     }
                     $("#idModalConfirmDelete").modal('hide')
+                    $("#modalUpdate").modal('hide')
                     toast.success('Xóa kế hoạch mua sắm năm thành công !')
                     this.list(this.filters)
                 } catch (e) {
@@ -538,7 +539,7 @@ document.addEventListener('alpine:init', () => {
                             {
                                 text: 'Xóa',
                                 class: 'btn btn-danger',
-                                action: () => this.confirmRemove(),
+                                action: (id) => this.confirmRemove(id),
                                 permission: 'shopping_plan_company.crud'
                             },
                         ],

@@ -5,8 +5,8 @@
                 <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
                 <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
-                    <span x-text="listStatusPlanLiquidation[data.status]" 
-                        class="pl-2 pr-2 border-none rounded" 
+                    <span x-text="listStatusPlanLiquidation[data.status]"
+                        class="pl-2 pr-2 border-none rounded"
                         :class="{
                             'tw-text-blue-400 tw-bg-blue-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
                             'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ duyệt',
@@ -78,7 +78,7 @@
                                                 <span x-text="data.id ? dataAsset.price : dataAsset.price_liquidation"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : dataAsset.status" class="pl-2 pr-2 border rounded" 
+                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : dataAsset.status" class="pl-2 pr-2 border rounded"
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,
                                                     'tw-text-green-500 tw-bg-green-100':    data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Đã duyệt'    : dataAsset.status,
@@ -96,11 +96,11 @@
                                 </table>
 
                                 <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent" x-show="showAction.get ?? true" @click="$dispatch('get')">+ Thêm</button>
-                                
+
                                 <div>
                                     @include('assets.manage.plan-liquidation.modalSelectAsset')
                                 </div>
-            
+
                             </div>
                         </div>
                         <div class="col-3" x-show="data.id">
@@ -130,9 +130,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

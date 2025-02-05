@@ -9,7 +9,7 @@
                         <template x-if="config.condition()">
                             <template x-for="(button, index) in config.buttons" :key="key + index">
                                 <template x-if="!button.permission || permission.includes(button.permission)">
-                                    <button :class="button.class"  @click="button.action()">
+                                    <button :class="button.class"  @click="button.action(id)">
                                         <span x-text="button.text"></span>
                                     </button>
                                 </template>

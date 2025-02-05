@@ -5,8 +5,8 @@
                 <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="data.code"></h4>
                 <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
-                    <span x-text="listStatusPlanLiquidation[data.status]" 
-                        class="pl-2 pr-2 border-none rounded" 
+                    <span x-text="listStatusPlanLiquidation[data.status]"
+                        class="pl-2 pr-2 border-none rounded"
                         :class="{
                             'tw-text-blue-400 tw-bg-blue-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
                             'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ duyệt',
@@ -112,7 +112,7 @@
                                                 <span x-text="data.price"></span>
                                             </td>
                                             <td>
-                                                <span x-text="listStatusAssetOfPlan[data.status]" class="pl-2 pr-2 border rounded" 
+                                                <span x-text="listStatusAssetOfPlan[data.status]" class="pl-2 pr-2 border rounded"
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':  listStatusAssetOfPlan[data.status] === 'Chưa duyệt',
                                                     'tw-text-green-500 tw-bg-green-100':    listStatusAssetOfPlan[data.status] === 'Đã duyệt',
@@ -132,13 +132,13 @@
                                     </tbody>
                                 </table>
 
-                                
+
                                 <div
                                     {{-- @delete="handleDeleteOfMultiModalCancelUI($event.detail.id)" --}}
                                 >
                                     @include('assets.manage.plan-liquidation.modalSelectAsset')
                                 </div>
-            
+
                             </div>
                         </div>
                         <div class="col-3" x-show="data.id">
@@ -162,18 +162,18 @@
             </div>
             <div class="modal-footer">
                 @can('liquidation_asset.hr_manager_approval')
-                <button class="btn bg-body" 
+                <button class="btn bg-body"
                     x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
-                    @click="confirmPlan('Đã duyệt')"    
+                    @click="confirmPlan('Đã duyệt')"
                 >
                     <i class="fa-solid fa-check" style="color: #28c76f;;"></i>
                     Hoàn thành
                 </button>
-                <button class="btn bg-body" 
+                <button class="btn bg-body"
                     x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
-                    @click="confirmPlan('Từ chối')"    
+                    @click="confirmPlan('Từ chối')"
                 >
                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                     Từ chối
@@ -184,11 +184,7 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 <script>
     function tableModalShowPlanLiquidation() {
 
@@ -199,7 +195,7 @@
                 const status_new = Number(Object.keys(this.listStatusAssetOfPlan).find(
                     k => this.listStatusAssetOfPlan[k] === 'Chưa duyệt'
                 ))
-                
+
                 this.checkedAll = !this.checkedAll
                 this.dataTbodyListAssetLiqui
                     .filter((item) => item.status === status_new)

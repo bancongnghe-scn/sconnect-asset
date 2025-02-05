@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
- 
+
                 <div class="row mb-3">
                     <div class="col-4">
                         <label class="form-label">Ngày hoàn thành</label>
@@ -89,7 +89,7 @@
                                     </div>
                                 </td>
                                 <td class="align-content-center">
-                                    <input type="text" class="form-control" 
+                                    <input type="text" class="form-control"
                                         x-model.number="data.cost_repair"
                                         @input="data.cost_repair = $event.target.value.replace(/[^0-9.]/g, '')">
                                 </td>
@@ -115,7 +115,7 @@
                                                 <option :value="key" x-text="value" :selected="data.performer_supplier == key"></option>
                                             </template>
                                         </template>
-                                
+
                                         <!-- Nếu address_repair == 2, hiển thị supplier -->
                                         <template x-if="data.address_repair == 2">
                                             <template x-for="(value, key) in supplier" :key="key">
@@ -149,9 +149,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

@@ -98,12 +98,7 @@
                                                 </thead>
                                                 <tbody>
                                                 <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                    <tr
-                                                        x-data="{
-                                                                get measure() {
-                                                                    return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
-                                                                }
-                                                        }">
+                                                    <tr>
                                                         <td>
                                                             @include('common.select_custom.extent.select_single', [
                                                                'placeholder' => 'Chọn tài sản',
@@ -112,7 +107,7 @@
                                                                'disabled' => true
                                                             ])
                                                         </td>
-                                                        <td class="align-middle" x-text="measure"></td>
+                                                        <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
                                                         <td>
                                                             @include('common.select_custom.extent.select_single', [
                                                                 'placeholder' => 'Chọn chức danh',

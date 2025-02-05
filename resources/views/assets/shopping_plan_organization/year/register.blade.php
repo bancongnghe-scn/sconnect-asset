@@ -94,16 +94,13 @@
                                                         <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                             <tr class="tw-text-nowrap"
                                                                 x-data="{
-                                                                get measure() {
-                                                                    return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
-                                                                },
-                                                                get price() {
-                                                                    if (!asset.asset_type_id || !asset.job_id) {
-                                                                        return 0
+                                                                    get price() {
+                                                                        if (!asset.asset_type_id || !asset.job_id) {
+                                                                            return 0
+                                                                        }
+                                                                        asset.price = +(asset.asset_type_id + asset.job_id + 1000)
+                                                                        return +(asset.asset_type_id + asset.job_id + 1000)
                                                                     }
-                                                                    asset.price = +(asset.asset_type_id + asset.job_id + 1000)
-                                                                    return +(asset.asset_type_id + asset.job_id + 1000)
-                                                                }
                                                             }"
                                                                 x-init="$watch('asset.price', value => calculatePrice(index))"
                                                             >
@@ -114,7 +111,7 @@
                                                                             'options' => 'list_asset_type',
                                                                     ])
                                                                 </td>
-                                                                <td class="align-middle" x-text="measure"></td>
+                                                                <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
                                                                 <td>
                                                                     @include('common.select_custom.extent.select_single', [
                                                                                 'placeholder' => 'Chọn chức danh',
