@@ -7,7 +7,7 @@
             <div class="col-2">
                 @include('common.select_custom.simple.select_single', [
                     'selected' => 'filters.status',
-                    'options' => 'listStatus',
+                    'options' => 'STATUS_SHOPPING_PLAN_COMPANY',
                     'placeholder' => 'Chọn trạng thái',
                 ])
             </div>

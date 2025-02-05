@@ -20,7 +20,7 @@
                             <div class="d-flex tw-gap-x-4 mb-3">
                                 <div class="active-link tw-w-fit">Thông tin chung</div>
                                 <div x-show="data.status !== null">
-                                    @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                    @include('component.status.status_shopping_plan_company', ['status' => 'data.status'])
                                 </div>
                             </div>
 

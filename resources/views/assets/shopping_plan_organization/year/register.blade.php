@@ -1,55 +1,57 @@
-@extends('layouts.app',[
-    'title' => 'Kế hoạch mua sắm năm'
-])
+<div class="modal fade" id="modalRegister" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Kế hoạch mua sắm năm</h4>
+                <div class="mb-3 d-flex gap-2 justify-content-end">
+                    <template x-if="
+                        (+dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                        || +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
+                        && ( new Date() > new Date(dataOrganization.start_time) &&  new Date() < new Date(dataOrganization.end_time))">
+                        <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
+                    </template>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex tw-gap-x-4 h-100">
+                    <div class="card card-body col-10 overflow-auto custom-scroll">
+                        {{--Thông tin chung--}}
+                        <div class="mb-3">
+                            <div class="d-flex tw-gap-x-4 mb-3">
+                                <div class="active-link tw-w-fit">Thông tin chung</div>
+                                @include('component.status.status_shopping_plan_organization', ['status' => 'dataOrganization.status'])
+                            </div>
+                            <div class="tw-grid tw-grid-cols-3 tw-gap-4">
+                                <div>
+                                    <label class="tw-font-bold">Tên</label>
+                                    <div class="form-control" style="background-color: #E5E7EB" x-text="dataOrganization.name"></div>
+                                </div>
 
-@section('content')
-    <div x-data="register_shopping_plan_organization_year">
-        <div class="mb-3 d-flex gap-2 justify-content-end">
-            <template x-if="
-                (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
-                <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
-            </template>
-            <button class="btn btn-warning" @click="window.location.href = `/shopping-plan-company/year/list`">Quay lại</button>
-        </div>
-        <div class="d-flex">
-            <div class="card flex-grow-1 mr-3">
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="d-flex tw-gap-x-4 mb-3">
-                            <div class="active-link tw-w-fit">Thông tin chung</div>
-                            @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
+                                <div>
+                                    <label class="tw-font-bold">Đơn vị</label>
+                                    <div class="form-control" style="background-color: #E5E7EB" x-text="dataOrganization.organization_name"></div>
+                                </div>
+
+                                <div>
+                                    <label class="tw-font-bold">Thời gian đăng ký</label>
+                                    <template x-if="dataOrganization.start_time !== null">
+                                        @include('common.datepicker.datepicker_range', [
+                                             'placeholder' => 'Chọn thời gian đăng ký',
+                                             'disabled' => true,
+                                             'start' => 'dataOrganization.start_time',
+                                             'end' => 'dataOrganization.end_time',
+                                        ])
+                                    </template>
+                                </div>
+                            </div>
                         </div>
-                        <div class="tw-grid tw-grid-cols-3 tw-gap-4">
-                            <div>
-                                <label class="tw-font-bold">Tên</label>
-                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.name"></div>
-                            </div>
 
+                        {{-- Chi tiết--}}
+                        <div class="mb-3">
+                            <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                             <div>
-                                <label class="tw-font-bold">Đơn vị</label>
-                                <div class="form-control" style="background-color: #E5E7EB" x-text="data.organization_name"></div>
-                            </div>
-
-                            <div>
-                                <label class="tw-font-bold">Thời gian đăng ký</label>
-                                <template x-if="data.start_time !== null">
-                                    @include('common.datepicker.datepicker_range', [
-                                         'placeholder' => 'Chọn thời gian đăng ký',
-                                         'disabled' => true,
-                                         'start' => 'data.start_time',
-                                         'end' => 'data.end_time',
-                                    ])
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                        <template x-if="list_asset_type.length > 0 && list_job.length > 0">
-                            <div>
-                                <template x-for="(register, index) in registers" :key="index">
+                                <template x-for="(register, index) in registersOrganization" :key="index">
                                     <div class="p-4 tw-bg-[#E4F0E6] mb-3">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 d-flex align-items-center tw-gap-x-6 mr-5">
@@ -74,7 +76,7 @@
                                         </div>
 
                                         <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                            <div class="tw-max-w-full overflow-x-scroll custom-scroll">
+                                            <div class="tw-max-w-full">
                                                 <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                                     <thead>
                                                     <tr class="tw-text-nowrap">
@@ -96,45 +98,44 @@
                                                                 if (asset.asset_type_id) {
                                                                     return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
                                                                 }
+                                                            },
+                                                            get price() {
+                                                                if (!asset.asset_type_id || !asset.job_id) {
+                                                                    return 0
+                                                                }
+                                                                asset.price = +(asset.asset_type_id + asset.job_id + 1000)
+                                                                return +(asset.asset_type_id + asset.job_id + 1000)
                                                             }
                                                         }"
                                                             x-init="$watch('asset.price', value => calculatePrice(index))"
                                                         >
                                                             <td>
-                                                            <span x-data="{values: list_asset_type, model: asset.asset_type_id}"
-                                                                  @select-change="
-                                                                      asset.asset_type_id = $event.detail
-                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
-                                                                  "
-                                                            >
-                                                                @include('common.select2.extent.select2', [
-                                                                   'placeholder' => 'Chọn tài sản',
+                                                                @include('common.select_custom.extent.select_single', [
+                                                                        'placeholder' => 'Chọn tài sản',
+                                                                        'selected' => 'asset.asset_type_id',
+                                                                        'options' => 'list_asset_type',
                                                                 ])
-                                                            </span>
                                                             </td>
                                                             <td class="align-middle"
                                                                 x-text="measure"
                                                             >
                                                             </td>
                                                             <td>
-                                                            <span x-data="{values: list_job, model: asset.job_id}"
-                                                                  @select-change="
-                                                                      asset.job_id = $event.detail
-                                                                      asset.price = getPrice(asset.asset_type_id, asset.job_id)
-                                                                  "
-                                                            >
-                                                                @include('common.select2.extent.select2', ['placeholder' => 'Chọn chức danh'])
-                                                            </span>
+                                                                @include('common.select_custom.extent.select_single', [
+                                                                            'placeholder' => 'Chọn chức danh',
+                                                                            'selected' => 'asset.job_id',
+                                                                            'options' => 'list_job',
+                                                                ])
                                                             </td>
-                                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
+                                                            <td class="align-middle" x-text="window.formatCurrencyVND(price)"></td>
                                                             <td>
                                                                 <input class="form-control w-auto" type="number" min="1"
                                                                        x-model="asset.quantity_registered"
                                                                        @change="validateQuantityRegistered(asset.quantity_registered)"
                                                                        @input="
-                                                                       asset.quantity_approved = asset.quantity_registered
-                                                                       calculateRegister(index)
-                                                                   "
+                                                                           asset.quantity_approved = asset.quantity_registered
+                                                                           calculateRegister(index)
+                                                                       "
                                                                 >
                                                             </td>
                                                             <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
@@ -156,24 +157,15 @@
                                     </div>
                                 </template>
                             </div>
-                        </template>
+                        </div>
+                    </div>
+
+                    <div class="card col-2" x-data="history_comment_shopping_plan_organization">
+                        @include('component.shopping_plan_company.history_comment')
                     </div>
                 </div>
             </div>
-            <div class="card tw-w-[20%] tw-h-[80dvh]" x-data="history_comment_shopping_plan_organization">
-                @include('component.shopping_plan_company.history_comment')
-            </div>
         </div>
     </div>
-@endsection
+</div>
 
-@section('js')
-    @vite([
-       'resources/js/assets/shopping_plan_organization/year/register_shopping_plan_organization_year.js',
-       'resources/js/assets/history_comment/history_comment_shopping_plan_organization.js',
-       'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
-       'resources/js/assets/api/apiAssetType.js',
-       'resources/js/app/api/apiJob.js',
-       'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
-    ])
-@endsection

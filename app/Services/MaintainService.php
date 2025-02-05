@@ -128,64 +128,28 @@ class MaintainService
             $planMaintain = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $dataInsert = [];
-            foreach ($data['organization_ids'] as $organizationId) {
-                $dataInsert[] = [
-                    'plan_maintain_id' => $planMaintain->id,
-                    'organization_id'  => $organizationId,
-                ];
-            }
-            if (!empty($dataInsert)) {
-                $insert = $this->planMaintainOrganizationRepository->insert($dataInsert);
-                if (!$insert) {
-                    DB::rollBack();
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'],$planMaintain->id);
+            if (!$insert['success']) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2096,
-                    ];
-                }
+                return $insert;
             }
 
             // gan nha cung cap cho ke hoach
-            $dataInsert = [];
-            foreach ($data['supplier_ids'] as $supplierId) {
-                $dataInsert[] = [
-                    'plan_maintain_id' => $planMaintain->id,
-                    'supplier_id'      => $supplierId,
-                ];
-            }
-            if (!empty($dataInsert)) {
-                $insert = $this->planMaintainSupplierRepository->insert($dataInsert);
-                if (!$insert) {
-                    DB::rollBack();
+            $insert = resolve(PlanMaintainSupplierService::class)->insertPlanMaintainSupplier($data['supplier_ids'],$planMaintain->id);
+            if (!$insert['success']) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2097,
-                    ];
-                }
+                return $insert;
             }
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $dataInsert = [];
-                foreach ($data['user_ids'] as $userId) {
-                    $dataInsert[] = [
-                        'plan_maintain_id' => $planMaintain->id,
-                        'user_id'          => $userId,
-                    ];
-                }
-                if (!empty($dataInsert)) {
-                    $insert = $this->planMaintainChargeRepository->insert($dataInsert);
-                    if (!$insert) {
-                        DB::rollBack();
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'],$planMaintain->id);
+                if (!$insert['success']) {
+                    DB::rollBack();
 
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_2098,
-                        ];
-                    }
+                    return $insert;
                 }
             }
 

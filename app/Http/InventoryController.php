@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreatePlanInventoryRequest;
 use App\Services\Inventory\InventoryService;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,21 @@ class InventoryController extends Controller
             $result = $this->inventoryService->getPlanInventory($request->all());
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
+            report($exception);
+            return response_error();
+        }
+    }
+
+    public function createPlanInventory(CreatePlanInventoryRequest $request)
+    {
+        try {
+            $result = $this->inventoryService->createPlanInventory($request->validated());
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
             report($exception);
             return response_error();
         }
