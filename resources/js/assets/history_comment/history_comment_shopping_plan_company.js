@@ -1,8 +1,8 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment', () => ({
             init() {
-                this.$watch('id', (newValue, oldValue) => {
-                    if (newValue !== null && newValue !== oldValue) {
+                this.$watch('showModal', (newValue, oldValue) => {
+                    if (newValue && this.id !== null) {
                         this.getLogByRecordId()
                         this.listComment()
                         this.handleComment()

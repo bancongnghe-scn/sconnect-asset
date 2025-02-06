@@ -2,7 +2,7 @@
     <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
         <div class="row">
             <div class="col-sm-12">
-                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                <table id="example2" class="table table-bordered dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
                     <tr>
@@ -35,7 +35,7 @@
                                     </template>
                                 </td>
                             </template>
-                            
+
                         </tr>
                     </template>
                     </tbody>

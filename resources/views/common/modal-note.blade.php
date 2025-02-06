@@ -2,7 +2,7 @@
      @if(isset($id)) id="{{$id}}" @endif
      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
 >
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-confirm-index">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">{{$title ?? 'Lý do từ chối'}}</h4>

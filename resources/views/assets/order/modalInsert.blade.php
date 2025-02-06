@@ -92,7 +92,7 @@
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
                                 <div class="mt-3">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
-                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                        <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
                                             <tr>
                                                 <th>Mã</th>
@@ -132,7 +132,7 @@
                                         </table>
                                     </template>
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN">
-                                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                        <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                             <thead>
                                             <tr>
                                                 <th>Mã</th>

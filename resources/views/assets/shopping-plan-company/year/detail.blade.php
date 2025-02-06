@@ -16,7 +16,7 @@
                                 @include('component.status.status_shopping_plan_company', ['status' => 'data.status'])
                             </div>
                             <div class="tw-grid tw-grid-cols-5 tw-gap-4">
-                                <div class="tw-col-span-1">
+                                <div>
                                     <label class="tw-font-bold">Năm<span
                                             class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_year', [
@@ -25,7 +25,7 @@
                                     ])
                                 </div>
 
-                                <div class="tw-col-span-1">
+                                <div>
                                     <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',

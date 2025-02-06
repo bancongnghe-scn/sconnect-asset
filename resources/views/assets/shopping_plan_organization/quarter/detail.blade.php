@@ -102,7 +102,7 @@
 
                                         <div class="card card-body mt-3" x-show="table_index.includes(index)">
                                             <table id="example2"
-                                                   class="table table-bordered table-hover dataTable dtr-inline"
+                                                   class="table table-bordered dataTable dtr-inline"
                                                    aria-describedby="example2_info">
                                                 <thead>
                                                 <tr>

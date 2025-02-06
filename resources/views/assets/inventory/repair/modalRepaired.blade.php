@@ -25,7 +25,7 @@
                     <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent tw-right-4 tw-absolute" @click="getAssetRepair()">+ Thêm</button>
                 </div>
                 <div class="d-block overflow-x-auto tw-whitespace-nowrap">
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
+                    <table class="table table-bordered dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>

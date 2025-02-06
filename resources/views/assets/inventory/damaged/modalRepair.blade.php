@@ -79,7 +79,7 @@
                     <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent tw-text-green-600" @click="getAssetDamagedModal('repair')">+ Thêm</button>
                 </div>
                 <div>
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
+                    <table class="table table-bordered dataSelectMulti dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>

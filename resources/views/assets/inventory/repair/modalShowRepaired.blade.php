@@ -26,7 +26,7 @@
                     <label class="form-label">Tài sản sửa chữa</label>
                 </div>
                 <div class="d-block overflow-x-auto tw-whitespace-nowrap">
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
+                    <table class="table table-bordered dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>

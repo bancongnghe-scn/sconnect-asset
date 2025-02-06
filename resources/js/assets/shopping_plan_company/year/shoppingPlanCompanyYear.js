@@ -38,6 +38,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             id: null,
+            showModal: null,
             idPlanOrganization: null,
             note_disapproval: null,
             listUser: [],
@@ -335,6 +336,7 @@ document.addEventListener('alpine:init', () => {
 
             async handleShowModal(id, action) {
                 this.loading = true
+                this.showModal = true
                 try {
                     this.id = id
                     this.action = action
@@ -358,6 +360,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(e)
                 } finally {
                     this.loading = false
+                    this.showModal = false
                 }
             },
 
@@ -579,7 +582,7 @@ document.addEventListener('alpine:init', () => {
                             {
                                 text: 'Lưu',
                                 class: 'btn btn-sc',
-                                action: () => this.updatePlanYear(),
+                                action: () => this.updatePlanQuarter(),
                                 permission: 'shopping_plan_company.crud'
                             },
                         ],
@@ -666,6 +669,16 @@ document.addEventListener('alpine:init', () => {
                             {
                                 icon: 'bi bi-pencil-square color-sc',
                                 action: (id) => this.handleShowModal(id, 'update'),
+                            },
+                        ],
+                    },
+                    {
+                        condition: () => true,
+                        permission: true,
+                        buttons: [
+                            {
+                                icon: 'bi bi-eye text-info',
+                                action: (id) => this.handleShowModal(id, 'view'),
                             },
                         ],
                     },

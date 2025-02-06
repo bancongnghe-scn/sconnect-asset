@@ -4,7 +4,7 @@
             <div class="col-3 pl-0">
                 @include('common.select_custom.extent.select_single', [
                     'selected' => 'filters.plan_year_id',
-                    'options' => 'listPlanCompanyYear',
+                    'options' => 'listPlanCompanyYearComplete',
                     'placeholder' => 'Chọn kế hoạch năm',
                 ])
             </div>

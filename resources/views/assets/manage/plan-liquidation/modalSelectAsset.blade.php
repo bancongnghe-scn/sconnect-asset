@@ -8,7 +8,7 @@
             <div class="modal-body tw-overflow-y-auto tw-max-h-60">
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Danh sách tài sản đề nghị thanh lý</div>
-                    <table id="" class="table table-bordered table-hover dataTable dtr-inline"
+                    <table id="" class="table table-bordered dataTable dtr-inline"
                             aria-describedby="example2_info">
                         <thead>
                         <tr>

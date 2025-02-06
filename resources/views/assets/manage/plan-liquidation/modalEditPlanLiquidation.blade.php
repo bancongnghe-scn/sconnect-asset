@@ -52,7 +52,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3 active-link tw-w-fit">Danh sách tài sản thanh lý</div>
-                                <table class="mb-3 table table-bordered table-hover dataPlanLiquidation dtr-inline"
+                                <table class="mb-3 table table-bordered dataPlanLiquidation dtr-inline"
                                     aria-describedby="example2_info">
                                     <thead>
                                     <tr>
