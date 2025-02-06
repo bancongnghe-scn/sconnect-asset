@@ -394,6 +394,23 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
+            async saveReviewRegisterAsset() {
+                this.loading = true
+                try {
+                    const response = await window.apiSaveReviewRegisterAsset(this.idPlanOrganization, this.registers)
+                    if (response.success) {
+                        toast.success('Lưu thông tin phê duyệt thành công')
+                        this.dataOrganization.find((item) => +item.id === +this.idPlanOrganization).status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                        return
+                    }
+                    toast.error(response.message)
+                } catch (e) {
+                    toast.error(e)
+                } finally {
+                    this.loading = false
+                }
+            },
+
             setConfigButtonsOrganization() {
                 this.configButtonsOrganization = [
                     {
@@ -420,7 +437,7 @@ document.addEventListener('alpine:init', () => {
                             {
                                 text: 'Duyệt',
                                 class: 'btn bg-sc text-white',
-                                action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
+                                action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_APPROVAL),
                                 permission: 'shopping_plan_company.accounting_approval'
                             },
                         ],
@@ -435,7 +452,7 @@ document.addEventListener('alpine:init', () => {
                             {
                                 text: 'Từ chối',
                                 class: 'btn bg-red',
-                                action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_DISAPPROVAL),
+                                action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_DISAPPROVAL),
                                 permission: 'shopping_plan_company.accounting_approval'
                             },
                         ],
@@ -545,7 +562,7 @@ document.addEventListener('alpine:init', () => {
                         ],
                     },
                     {
-                        condition: () => [+STATUS_SHOPPING_PLAN_COMPANY_NEW, +STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+this.data.status),
+                        condition: () => true,
                         buttons: [
                             {
                                 text: 'Lưu',

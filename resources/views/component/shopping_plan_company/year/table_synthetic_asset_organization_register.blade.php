@@ -52,7 +52,7 @@
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">
                             <template x-for="configApproval in configApprovalOrganization">
                                 <template x-if="configApproval.condition(+organization.status)">
-                                    <template x-if="permission.includes(configApproval.permission) || configApproval.permission">
+                                    <template x-if="permission.includes(configApproval.permission)">
                                         <template x-for="configBtn in configApproval.buttons">
                                             <button class="border-0 bg-white"
                                                     @click="configBtn.action(organization.id)">
