@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AssetType;
 use App\Models\Org;
+use App\Models\Supplier;
 use App\Models\User;
 use App\Services\ListAssetService;
 use Illuminate\Contracts\View\View;
@@ -32,6 +33,7 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
+                'listSupplier' => Supplier::all(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -288,6 +290,19 @@ class ListAssetController extends Controller
     {
         try {
             $this->assetService->lostAsset($request);
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
+    public function updateAsset(Request $request): JsonResponse
+    {
+        try {
+            $this->assetService->updateAsset($request);
 
             return response_success();
         } catch (\Throwable $exception) {
