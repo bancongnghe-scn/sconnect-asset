@@ -18,7 +18,7 @@ class AssetDamagedResource extends JsonResource
                 'user_code'             => $data?->user?->code,
                 'user_name'             => $data?->user?->name,
                 'status'                => $data->status,
-                'location'              => Asset::LOCATION_NAME[$data?->location],
+                'location'              => $data->localtion ? Asset::LOCATION_NAME[$data->location] : null,
                 'date'                  => $data?->assetHistory?->first()?->date,
                 'reason'                => $data?->assetHistory?->first()?->description,
             ];

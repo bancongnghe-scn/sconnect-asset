@@ -25,6 +25,8 @@ class AssetDamagedController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }

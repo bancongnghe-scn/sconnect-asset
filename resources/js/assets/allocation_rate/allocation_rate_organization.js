@@ -22,7 +22,7 @@ document.addEventListener('alpine:init', () => {
             organization_id: null,
             type: TYPE_ALLOCATION_RATE_ORGANIZATION,
             page: 1,
-            limit: 5,
+            limit: 10,
         },
         data: {
             organization_id: null,

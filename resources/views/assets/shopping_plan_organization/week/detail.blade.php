@@ -13,7 +13,7 @@
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
                                 <div class="active-link tw-w-fit">Thông tin chung</div>
-                                @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
+                                @include('component.status.status_shopping_plan_organization', ['status' => 'data.status'])
                             </div>
                             <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                 <div>

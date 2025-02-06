@@ -1,4 +1,4 @@
-<div class="d-flex">
+<div class="d-flex justify-content-center">
     <img x-bind:src="data[key] && data[key].avatar ?
             (data[key].avatar.includes('/uploads/') ? 'https://office.sconnect.com.vn' + data[key].avatar : data[key].avatar)
             : 'https://office.sconnect.com.vn/images/avatar-default.png'"

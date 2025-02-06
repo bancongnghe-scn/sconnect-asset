@@ -123,6 +123,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
     });
 
+    Route::prefix('plan-maintain-log')->controller(App\Http\Controllers\PlanMaintainLogController::class)->group(function () {
+        Route::get('getPlanMaintainLogById/{id}', 'getPlanMaintainLogById');
+    });
+
     Route::prefix('comment')->controller(App\Http\Controllers\CommentController::class)->group(function () {
         Route::get('list', 'getListComment');
         Route::post('sent', 'sentComment');
@@ -187,6 +191,17 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('update/multi', 'updateMultiAssetRepaired');
     });
 
+    Route::prefix('comment-v1')->controller(App\Http\Controllers\CommentV1Controller::class)->group(function () {
+        Route::post('create', 'commentCreate')->name('comment-create');
+        Route::get('list', 'commentList')->name('comment-list');
+        Route::get('react', 'commentReact')->name('comment-react');
+        Route::get('del', 'commentDel')->name('comment-del');
+        Route::get('get-comment-edit', 'getCommentEdit')->name('get-comment-edit');
+        Route::get('comment-tag-list-user', 'getTagListUser')->name('comment-tag-list-user');
+        Route::get('comment-list-more', 'getCommentListMore')->name('comment-list-more');
+        Route::get('get-list-react-user', 'getListReactUser')->name('get-list-react-user');
+    });
+
     Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
         Route::post('sent-info', 'sentInfoShoppingAsset');
         Route::post('approval', 'approvalShoppingAsset');
@@ -235,6 +250,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('updatePlanMaintain/{id}', 'updatePlanMaintain');
         Route::get('completePlanMaintain/{id}', 'completePlanMaintain');
         Route::get('deletePlanMaintain/{id}', 'deletePlanMaintain');
+    });
+
+    Route::prefix('inventory')->controller(App\Http\InventoryController::class)->group(function () {
+        Route::get('getPlanInventory', 'getPlanInventory');
     });
 });
 

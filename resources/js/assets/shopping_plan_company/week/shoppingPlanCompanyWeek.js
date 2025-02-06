@@ -575,6 +575,23 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
+        async completeShoppingPlan() {
+            this.loading = true
+            try {
+                const response = await window.apiCompleteShoppingPlanWeek(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data.status = STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
+                toast.success('Hoàn thành kế hoạch mua sắm tuần thành công')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         setConfigButtonsApproval() {
             this.configButtonsApproval = [
                 {
@@ -661,6 +678,20 @@ document.addEventListener('alpine:init', () => {
                             class: 'btn btn-sc',
                             action: () => this.updatePlanWeek(),
                             permission: 'shopping_plan_company.week.crud'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [
+                        +STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
+                        +STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                    ].includes(+this.data.status),
+                    buttons: [
+                        {
+                            text: 'Hoàn thành',
+                            class: 'btn btn-sc',
+                            action: () => this.completeShoppingPlan(),
+                            permission: 'shopping_plan_company_week.complete'
                         },
                     ],
                 },

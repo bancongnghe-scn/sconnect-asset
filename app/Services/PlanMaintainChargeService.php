@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\PlanMaintainCharge;
 use App\Repositories\PlanMaintainChargeRepository;
 use App\Support\Constants\AppErrorCode;
+use Illuminate\Support\Facades\DB;
 
 class PlanMaintainChargeService
 {
@@ -44,5 +45,29 @@ class PlanMaintainChargeService
         }
 
         return ['success' => true];
+    }
+
+    public function insertPlanMaintainCharge(array $useIds, $planMaintainId)
+    {
+        $dataInsert = [];
+        foreach ($useIds as $userId) {
+            $dataInsert[] = [
+                'plan_maintain_id' => $planMaintainId,
+                'user_id'          => $userId,
+            ];
+        }
+        if (!empty($dataInsert)) {
+            $insert = $this->planMaintainChargeRepository->insert($dataInsert);
+            if (!$insert) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2098,
+                ];
+            }
+        }
+
+        return [
+            'success' => true
+        ];
     }
 }

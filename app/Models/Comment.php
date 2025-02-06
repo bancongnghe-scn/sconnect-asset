@@ -23,4 +23,5 @@ class Comment extends Model
     public const TYPE_SHOPPING_PLAN_COMPANY      = 1;
     public const TYPE_SHOPPING_PLAN_ORGANIZATION = 2;
     public const TYPE_PLAN_MAINTAIN              = 3;
+    public const TYPE_PLAN_LIQUIDATION           = 4;
 }

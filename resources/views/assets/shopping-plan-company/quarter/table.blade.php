@@ -41,7 +41,7 @@
                                         </template>
                                         <template x-if="key === 'status'">
                                             <div class="d-flex justify-content-center">
-                                                @include('component.shopping_plan_company.status_shopping_plan_company', ['status' => 'data.status'])
+                                                @include('component.status.status_shopping_plan_company', ['status' => 'data.status'])
                                             </div>
                                         </template>
                                         <template x-if="key === 'user'">
@@ -78,7 +78,7 @@
                                         @can('shopping_plan_company.accounting_approval')
                                             <button class="border-0 bg-body"
                                                     @click="window.location.href = `/shopping-plan-company/quarter/update/${data.id}`">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                <i class="bi bi-pencil-square color-sc" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan
                                     </template>
@@ -86,7 +86,7 @@
                                         @can('shopping_plan_company.general_approval')
                                             <button class="border-0 bg-body"
                                                     @click="window.location.href = `/shopping-plan-company/quarter/update/${data.id}`">
-                                                <i class="fa-solid fa-pen-to-square" style="color: #74C0FC;"></i>
+                                                <i class="bi bi-pencil-square color-sc" style="color: #74C0FC;"></i>
                                             </button>
                                         @endcan
                                     </template>

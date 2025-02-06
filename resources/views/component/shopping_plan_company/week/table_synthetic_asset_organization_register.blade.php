@@ -18,7 +18,7 @@
             <tr>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                     <span x-text="organization.name"></span>
-                    @include('component.shopping_plan_organization.status_shopping_plan_organization', [
+                    @include('component.status.status_shopping_plan_organization', [
                         'status' => 'organization.status',
                         'tooltip' => 'organization.note'
                     ])

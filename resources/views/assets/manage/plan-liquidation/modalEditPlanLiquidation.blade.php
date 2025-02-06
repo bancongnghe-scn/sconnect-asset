@@ -1,5 +1,5 @@
 <div class="modal fade" id="idModalEditPlanLiquidation" tabindex="-1" aria-labelledby="idModalEditPlanLiquidation" aria-hidden="true" x-init="$store.globalData.dataAssetDraftForCreatePlanLiquidation" role="dialog" aria-modal="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-90">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="`${data.code} - ${data.name}`"></h4>
@@ -20,7 +20,7 @@
             <div class="modal-body">
                 <div class="col-12">
                     <div class="row">
-                        <div :class="data.id ? 'col-9' : 'col-12'">
+                        <div :class="data.id ? 'col-7' : 'col-12'">
                             <div class="container mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                                 <div class="row mb-3">
@@ -72,13 +72,13 @@
                                     <template x-for="(dataAsset, index) in (data.id ? dataTbodyListAssetLiqui : $store.globalData.dataAssetDraftForCreatePlanLiquidation)" x-data="{line: 1}">
                                         <tr>
                                             <td>
-                                                <span x-text="data.id ? dataAsset.asset.code : dataAsset.code"></span>
+                                                <span x-text="data.id ? dataAsset?.asset?.code : dataAsset?.code"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.id ? dataAsset.asset.name : dataAsset.name"></span>
+                                                <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.id ? dataAsset.asset.reason : dataAsset.reason"></span>
+                                                <span x-text="dataAsset.asset.asset_history[0].description ?? ''"></span>
                                             </td>
                                             <td class="text-right">
                                                 <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : dataAsset.price_liquidation.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
@@ -106,7 +106,7 @@
             
                             </div>
                         </div>
-                        <div class="col-3" x-show="data.id">
+                        <div class="col-5" x-show="data.id">
                             <div class="container p-2" style="background: #fff;border-radius: 7px">
                                 <span id="tab-container" class="d-inline-block">
                                     <ul id="ul-tab" class="nav nav-tabs" style="background-color: #ffffff; border: 0; white-space: nowrap; flex-flow: nowrap;border-bottom:1px solid #e9ecef" role="tablist">
@@ -119,6 +119,20 @@
                                     </ul>
                                 </span>
                                 <div class="tab-content mr-3">
+                                    <div class="tab-pane fade show active" id="comments" role="tabpanel">
+                                        <div class="box-column row">
+                                            <div class="col-12 pt-3 pb-2">
+                                                <div class="form-group">
+                                                    <div class="proposal-comment">
+                                                        @include('common.form-create-comment', [
+                                                            'comment_type' => \App\Support\Constants\SOfficeConstant::TYPE_PLAN_LIQUIDATION,
+                                                            'target_id'    => ''
+                                                        ])
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

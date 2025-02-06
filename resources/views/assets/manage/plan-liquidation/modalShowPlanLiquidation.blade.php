@@ -100,10 +100,10 @@
                                                     x-bind:checked="selectedRowOfModalShowPlan[data.id]">
                                             </td>
                                             <td>
-                                                <span x-text="data.asset.code"></span>
+                                                <span x-text="data.asset.code" class="text-wrap"></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.asset.name"></span>
+                                                <span x-text="data.asset.name" class="text-wrap"></span>
                                             </td>
                                             <td>
                                                 <span x-text="data.asset?.asset_history[0].description"></span>
