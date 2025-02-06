@@ -350,8 +350,8 @@ document.addEventListener('alpine:init', () => {
                         $('#modalDetail').modal('show')
                     } else {
                         this.setConfigButtons()
-                        this.setConfigButtonsApproval()
-                        this.setConfigApprovalOrganizations()
+                        this.setConfigButtonsApprovalOrganization()
+                        this.setConfigApprovalOrganizationTable()
                         $('#modalUpdate').modal('show')
                     }
                 } catch (e) {
@@ -519,11 +519,11 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            setConfigButtonsApproval() {
+            setConfigButtonsApprovalOrganization() {
                 this.configButtonsApproval = [
                     {
                         condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        permission: 'shopping_asset.accounting_approval',
+                        permission: 'shopping_plan_company.accounting_approval',
                         buttons: [
                             {
                                 text: 'Duyệt',
@@ -596,11 +596,7 @@ document.addEventListener('alpine:init', () => {
                         ],
                     },
                     {
-                        condition: () =>
-                            [
-                                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                                STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                            ].includes(+this.data.status),
+                        condition: () => STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL === +this.data.status,
                         buttons: [
                             {
                                 text: 'Duyệt',
@@ -608,15 +604,6 @@ document.addEventListener('alpine:init', () => {
                                 action: () => this.generalApprovalShoppingPlanCompany(GENERAL_TYPE_APPROVAL_COMPANY),
                                 permission: 'shopping_plan_company.general_approval'
                             },
-                        ],
-                    },
-                    {
-                        condition: () =>
-                            [
-                                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                                STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
-                            ].includes(+this.data.status),
-                        buttons: [
                             {
                                 text: 'Từ chối',
                                 class: 'btn bg-red',
@@ -624,22 +611,12 @@ document.addEventListener('alpine:init', () => {
                                 permission: 'shopping_plan_company.general_approval'
                             },
                         ],
-                    },
+                    }
                 ]
             },
 
             setConfigButtonsTable() {
                 this.configButtonsTable = [
-                    {
-                        condition: (status) => [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status),
-                        permission: 'shopping_plan_company.crud',
-                        buttons: [
-                            {
-                                icon: 'bi bi-pencil-square color-sc',
-                                action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
                     {
                         condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
                         permission: 'shopping_plan_company.crud',
@@ -647,6 +624,16 @@ document.addEventListener('alpine:init', () => {
                             {
                                 icon: 'bi bi-trash text-red',
                                 action: (id) => this.confirmRemove(id),
+                            },
+                        ],
+                    },
+                    {
+                        condition: (status) => [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status),
+                        permission: 'shopping_plan_company.crud',
+                        buttons: [
+                            {
+                                icon: 'bi bi-pencil-square color-sc',
+                                action: (id) => this.handleShowModal(id, 'update'),
                             },
                         ],
                     },
@@ -673,41 +660,37 @@ document.addEventListener('alpine:init', () => {
                 ]
             },
 
-            setConfigApprovalOrganizations() {
+            setConfigApprovalOrganizationTable() {
                 this.configApprovalOrganization = [
                     {
                         condition: (status) => [
                             STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL].includes(status),
+                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                        ].includes(status),
                         permission: 'shopping_plan_company.accounting_approval',
                         buttons: [
                             {
                                 icon: 'bi bi-check fs-4 color-sc',
                                 action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
                             },
-                        ],
-                    },
-                    {
-                        condition: (status) => [
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL].includes(status),
-                        permission: 'shopping_plan_company.accounting_approval',
-                        buttons: [
                             {
                                 icon: 'bi bi-x fs-4 text-red',
                                 action: (id) => this.showModalNoteDisapproval(id),
                             },
                         ],
-                    },
+                    }
                 ]
             },
 
             selectedAll() {
                 this.checkedAll = !this.checkedAll
                 this.register.organizations.forEach((item) => {
-                    this.selectedRow[item.id] = this.checkedAll
+                    if ([
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    ].includes(+item.status)) {
+                        this.selectedRow[item.id] = this.checkedAll
+                    }
                 })
             },
 

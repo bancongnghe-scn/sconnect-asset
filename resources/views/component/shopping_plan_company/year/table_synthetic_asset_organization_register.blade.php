@@ -26,7 +26,12 @@
                         class="text-center align-middle"
                         x-show="stt === 0 && +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL"
                     >
-                        <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]">
+                        <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]"
+                               :disabled="![
+                                    STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                                    STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                               ].includes(+organization.status)"
+                        >
                     </td>
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                         <span x-text="organization.name"></span>
