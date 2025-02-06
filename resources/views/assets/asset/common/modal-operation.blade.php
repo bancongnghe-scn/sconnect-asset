@@ -516,7 +516,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color: #111; font-size: 20px;">Xác nhận đánh dấu hỏng tài sản</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color: #111; font-size: 20px;">Xác nhận đánh dấu mất tài sản</h5>
               <button type="button" class="close" data-bs-dismiss="modal" @click="closeModal('#confirmLostModal')">
                 <span aria-hidden="true">&times;</span>
               </button>

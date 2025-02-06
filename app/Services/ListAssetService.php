@@ -86,7 +86,7 @@ class ListAssetService
                 'user_id'    => $request->user['id'],
                 'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                 'type'       => 1,
-                'created_by' => auth()->user() ? auth()->user()->id : null,
+                'created_by' => auth()->user() ? auth()->user()->id : 1,
                 'description'       => $request->description,
             ]);
 
@@ -134,7 +134,7 @@ class ListAssetService
                 'user_id'    => $request->user['id'],
                 'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                 'type'       => 2,
-                'created_by' => auth()->user() ? auth()->user()->id : null,
+                'created_by' => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
             ]);
 
@@ -201,7 +201,7 @@ class ListAssetService
                 'user_id'    => null,
                 'org_id'     => $request->org['id'],
                 'type'       => 1,
-                'created_by' => auth()->user() ? auth()->user()->id : null,
+                'created_by' => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
             ]);
 
@@ -263,7 +263,7 @@ class ListAssetService
                 'org_id'     => $request->org['id'],
                 'type'       => 2,
                 'description' => $request->description,
-                'created_by' => auth()->user() ? auth()->user()->id : null,
+                'created_by' => auth()->user() ? auth()->user()->id : 1,
             ]);
 
             foreach ($request->listAssetRecovery as $asset) {
@@ -345,7 +345,23 @@ class ListAssetService
         }
 
         if ($request->assetId) {
-            return MoveAssetUser::where('asset_id', $request->assetId)->with(['transferAsset', 'transferAsset.user', 'transferAsset.organization.manager', 'transferAsset.organization.deptType', 'transferAsset.createBy'])->get();
+            return MoveAssetUser::whereIn('id', function ($query) use ($request) {
+                $query->selectRaw('MAX(id)')
+                      ->from('move_asset_users')
+                      ->where('asset_id', $request->assetId)
+                      ->groupBy('transfer_asset_id');
+            })
+            ->with([
+                'transferAsset',
+                'transferAsset.user',
+                'transferAsset.organization.manager',
+                'transferAsset.organization.deptType',
+                'transferAsset.userTo',
+                'transferAsset.organizationTo.manager',
+                'transferAsset.organizationTo.deptType',
+                'transferAsset.createBy'
+            ])
+            ->get();
         }
 
         // if ($request->assetId) {
@@ -373,7 +389,7 @@ class ListAssetService
                 $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
 
                 $orgId = $request->rotationToType == 'unit' ?  $request->rotationToId : $orgLastParentId;
-                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId;
+                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId*1;
 
                 $transferAsset = TransferAsset::create([
                     'user_id'    => $assetRotation['user_id'],
@@ -381,7 +397,7 @@ class ListAssetService
                     'type'       => 3,
                     'to_user_id'    => $userId,
                     'to_org_id'     => $orgId,
-                    'created_by' => auth()->user() ? auth()->user()->id : null,
+                    'created_by' => auth()->user() ? auth()->user()->id : 1,
                     'description' => $request->descriptionRotation,
                 ]);
 
