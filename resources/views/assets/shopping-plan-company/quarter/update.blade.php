@@ -63,7 +63,6 @@
                                         'placeholder' => 'Chọn người quan sát',
                                         'selected' => 'data.monitor_ids',
                                         'options' => 'listUser',
-                                        'disabled' => true
                                     ])
                                 </div>
                             </div>

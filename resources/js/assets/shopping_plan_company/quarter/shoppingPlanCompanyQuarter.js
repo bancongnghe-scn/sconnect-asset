@@ -275,6 +275,25 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async sentNotificationRegister() {
+            this.loading = true
+            try {
+                const response = await window.apiSentNotificationRegister(this.id)
+                if (response.success) {
+                    toast.success('Gửi thông báo thành công !')
+                    this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
+                    this.getOrganizationRegisterQuarter()
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModal(action, id = null) {
             this.loading = true
             this.showModal = true
