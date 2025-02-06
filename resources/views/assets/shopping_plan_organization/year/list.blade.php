@@ -8,8 +8,8 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
         'resources/js/assets/shopping_plan_organization/year/shoppingPlanOrganizationYear.js',
+        'resources/js/assets/api/shopping_plan_organization/year/apiShoppingPlanOrganizationYear.js',
         'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
         'resources/js/assets/api/apiAssetType.js',
         'resources/js/app/api/apiJob.js',

@@ -4,25 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="d-flex flex-wrap gap-3 align-items-end form-group">
-                                    <div class="col-3 pl-0">
-                                        @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
-                                    </div>
-                                    <div class="col-2">
-                                        @include('common.select_custom.simple.select_single', [
-                                            'selected' => 'filters.status',
-                                            'options' => 'STATUS_SHOPPING_PLAN_COMPANY',
-                                            'placeholder' => 'Chọn trạng thái',
-                                        ])
-                                    </div>
-                                    <div class="col-auto">
-                                        <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @include('assets.shopping-plan-company.year.filters')
                     </div>
 
                     @can('shopping_plan_company.crud')
@@ -48,7 +30,6 @@
     </div>
 
     {{--  modal--}}
-    @include('assets.shopping-plan-company.year.modalInsert')
     <div
             x-data="{
                         modalId: 'idModalConfirmDelete',
@@ -69,8 +50,11 @@
         @include('common.modal-confirm')
     </div>
 
+    @include('assets.shopping-plan-company.year.modalInsert')
     @include('assets.shopping-plan-company.year.detail')
     @include('assets.shopping-plan-company.year.update')
-    @include('assets.shopping_plan_organization.year.detail')
+    <div x-data="{id: null}" x-effect="id = idPlanOrganization">
+        @include('assets.shopping_plan_organization.year.detail')
+    </div>
 </div>
 

@@ -14,8 +14,8 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="d-flex tw-gap-x-4 h-100">
-                    <div class="card card-body col-10 overflow-auto custom-scroll">
+                <div class="d-flex tw-gap-x-3 h-100">
+                    <div class="flex-grow-1 overflow-auto custom-scroll">
                         {{--Thông tin chung--}}
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
@@ -79,76 +79,68 @@
                                             <div class="tw-max-w-full">
                                                 <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
                                                     <thead>
-                                                    <tr class="tw-text-nowrap">
-                                                        <th rowspan="1" colspan="1">Loại tài sản</th>
-                                                        <th rowspan="1" colspan="1">Đơn vị tính</th>
-                                                        <th rowspan="1" colspan="1">Chức danh</th>
-                                                        <th rowspan="1" colspan="1">Đơn giá</th>
-                                                        <th rowspan="1" colspan="1">Số lượng</th>
-                                                        <th rowspan="1" colspan="1">Tổng</th>
-                                                        <th rowspan="1" colspan="1">Mô tả</th>
-                                                        <th rowspan="1" colspan="1"></th>
-                                                    </tr>
+                                                        <tr class="tw-text-nowrap">
+                                                            <th rowspan="1" colspan="1">Loại tài sản</th>
+                                                            <th rowspan="1" colspan="1" class="tw-w-24">Đơn vị tính</th>
+                                                            <th rowspan="1" colspan="1">Chức danh</th>
+                                                            <th rowspan="1" colspan="1" class="tw-w-32">Đơn giá</th>
+                                                            <th rowspan="1" colspan="1" class="tw-w-24">Số lượng</th>
+                                                            <th rowspan="1" colspan="1" class="tw-w-48">Tổng</th>
+                                                            <th rowspan="1" colspan="1">Mô tả</th>
+                                                            <th rowspan="1" colspan="1"></th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
-                                                        <tr class="tw-text-nowrap"
-                                                            x-data="{
-                                                            get measure() {
-                                                                if (asset.asset_type_id) {
-                                                                    return list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure
-                                                                }
-                                                            },
-                                                            get price() {
-                                                                if (!asset.asset_type_id || !asset.job_id) {
-                                                                    return 0
-                                                                }
-                                                                asset.price = +(asset.asset_type_id + asset.job_id + 1000)
-                                                                return +(asset.asset_type_id + asset.job_id + 1000)
-                                                            }
-                                                        }"
-                                                            x-init="$watch('asset.price', value => calculatePrice(index))"
-                                                        >
-                                                            <td>
-                                                                @include('common.select_custom.extent.select_single', [
-                                                                        'placeholder' => 'Chọn tài sản',
-                                                                        'selected' => 'asset.asset_type_id',
-                                                                        'options' => 'list_asset_type',
-                                                                ])
-                                                            </td>
-                                                            <td class="align-middle"
-                                                                x-text="measure"
+                                                        <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
+                                                            <tr class="tw-text-nowrap"
+                                                                x-data="{
+                                                                    get price() {
+                                                                        if (!asset.asset_type_id || !asset.job_id) {
+                                                                            return 0
+                                                                        }
+                                                                        asset.price = +(asset.asset_type_id + asset.job_id + 1000)
+                                                                        return +(asset.asset_type_id + asset.job_id + 1000)
+                                                                    }
+                                                            }"
+                                                                x-init="$watch('asset.price', value => calculatePrice(index))"
                                                             >
-                                                            </td>
-                                                            <td>
-                                                                @include('common.select_custom.extent.select_single', [
-                                                                            'placeholder' => 'Chọn chức danh',
-                                                                            'selected' => 'asset.job_id',
-                                                                            'options' => 'list_job',
-                                                                ])
-                                                            </td>
-                                                            <td class="align-middle" x-text="window.formatCurrencyVND(price)"></td>
-                                                            <td>
-                                                                <input class="form-control w-auto" type="number" min="1"
-                                                                       x-model="asset.quantity_registered"
-                                                                       @change="validateQuantityRegistered(asset.quantity_registered)"
-                                                                       @input="
-                                                                           asset.quantity_approved = asset.quantity_registered
-                                                                           calculateRegister(index)
-                                                                       "
-                                                                >
-                                                            </td>
-                                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
-                                                            <td>
-                                                                <input class="form-control w-auto" x-model="asset.description" type="text">
-                                                            </td>
-                                                            <td class="text-center align-middle">
-                                                                <button class="border-0 bg-body" @click="deleteRow(index, key)">
-                                                                    <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </template>
+                                                                <td>
+                                                                    @include('common.select_custom.extent.select_single', [
+                                                                            'placeholder' => 'Chọn tài sản',
+                                                                            'selected' => 'asset.asset_type_id',
+                                                                            'options' => 'list_asset_type',
+                                                                    ])
+                                                                </td>
+                                                                <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
+                                                                <td>
+                                                                    @include('common.select_custom.extent.select_single', [
+                                                                                'placeholder' => 'Chọn chức danh',
+                                                                                'selected' => 'asset.job_id',
+                                                                                'options' => 'list_job',
+                                                                    ])
+                                                                </td>
+                                                                <td class="align-middle" x-text="window.formatCurrencyVND(price)"></td>
+                                                                <td>
+                                                                    <input class="form-control" type="number" min="1"
+                                                                           x-model="asset.quantity_registered"
+                                                                           @change="validateQuantityRegistered(asset.quantity_registered)"
+                                                                           @input="
+                                                                               asset.quantity_approved = asset.quantity_registered
+                                                                               calculateRegister(index)
+                                                                           "
+                                                                    >
+                                                                </td>
+                                                                <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
+                                                                <td>
+                                                                    <input class="form-control" x-model="asset.description" type="text">
+                                                                </td>
+                                                                <td class="text-center align-middle">
+                                                                    <button class="border-0 bg-body" @click="deleteRow(index, key)">
+                                                                        <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -160,8 +152,8 @@
                         </div>
                     </div>
 
-                    <div class="card col-2" x-data="history_comment_shopping_plan_organization">
-                        @include('component.shopping_plan_company.history_comment')
+                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
+                        @include('assets.shopping_plan_organization.history_comment')
                     </div>
                 </div>
             </div>

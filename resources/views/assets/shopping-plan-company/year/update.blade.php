@@ -9,7 +9,7 @@
                         <template x-if="config.condition()">
                             <template x-for="(button, index) in config.buttons" :key="key + index">
                                 <template x-if="!button.permission || permission.includes(button.permission)">
-                                    <button :class="button.class"  @click="button.action()">
+                                    <button :class="button.class"  @click="button.action(id)">
                                         <span x-text="button.text"></span>
                                     </button>
                                 </template>
@@ -20,8 +20,8 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="d-flex tw-gap-x-4 h-100">
-                    <div class="card card-body col-10 overflow-auto custom-scroll">
+                <div class="d-flex tw-gap-x-3 h-100">
+                    <div class="flex-grow-1 overflow-auto custom-scroll">
                         {{--Thong tin chung--}}
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
@@ -112,7 +112,7 @@
                         {{--  chi tiet--}}
                         <div class="mb-3">
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                            <div class="tw-max-h-dvh overflow-y-scroll custom-scroll">
+                            <div>
                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                     @include('component.shopping_plan_company.table_synthetic_organization_register')
                                 </template>
@@ -123,8 +123,8 @@
                         </div>
                     </div>
 
-                    <div class="card col-2" x-data="comment_shopping_plan">
-                        @include('component.shopping_plan_company.history_comment')
+                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
+                        @include('assets.shopping-plan-company.history_comment')
                     </div>
                 </div>
             </div>

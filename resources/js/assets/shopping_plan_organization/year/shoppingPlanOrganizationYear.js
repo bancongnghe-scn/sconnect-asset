@@ -160,33 +160,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async handleShowModal(id, action) {
-            this.loading = true
-            try {
-                this.id = id
-                this.action = action
-                this.table_index = []
-                this.resetData()
-                await this.getInfo()
-                this.getRegisterAsset()
-                if (this.list_asset_type.length === 0) {
-                    this.getListAssetType()
-                }
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show')
-                    this.setConfigButtons()
-                } else {
-                    // this.setConfigButtonsApproval()
-                    // this.setConfigApprovalOrganizations()
-                    $('#modalRegister').modal('show')
-                }
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async saveReviewRegisterAsset() {
             this.loading = true
             try {
@@ -223,12 +196,107 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async handleShowModal(id, action) {
+            this.loading = true
+            try {
+                this.id = id
+                this.action = action
+                this.table_index = []
+                this.resetData()
+                await this.getInfo()
+                this.getRegisterAsset()
+                console.log(this.list_asset_type)
+                if (this.list_asset_type.length === 0) {
+                    this.getListAssetType()
+                }
+                if (action === 'view') {
+                    $('#modalDetailOrganization').modal('show')
+                    this.setConfigButtons()
+                } else {
+                    // this.setConfigButtonsApproval()
+                    // this.setConfigApprovalOrganizations()
+                    $('#modalRegister').modal('show')
+                }
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         handleShowTable(index) {
             if (!this.table_index.includes(index)) {
                 this.table_index.push(index)
             } else {
                 this.table_index = this.table_index.filter(item => item !== index);
             }
+        },
+
+        addRow(index) {
+            this.registersOrganization[index].assets.push({
+                id_fake: Date.now() + Math.random(),
+                asset_type_id: null,
+                job_id: null,
+                price: null,
+                description: null,
+                quantity_registered: null,
+                quantity_approved: null
+            })
+        },
+
+        getPrice(asset_type_id, job_id) {
+            if (!asset_type_id || !job_id) {
+                return 0
+            }
+            return +(asset_type_id + job_id + 1000)
+        },
+
+        calculatePrice(index) {
+            let price_register = 0
+            let price_approval = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                price_register += (asset.quantity_registered * asset.price)
+                price_approval += (asset.quantity_approved * asset.price)
+            })
+
+            this.registersOrganization[index].approval.price = price_approval
+            this.registersOrganization[index].register.price = price_register
+        },
+
+        calculateRegister(index) {
+            let total = 0
+            let price = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                total += +asset.quantity_registered
+                price += (asset.quantity_registered * asset.price)
+            })
+
+            this.registersOrganization[index].register.total = total
+            this.registersOrganization[index].register.price = price
+        },
+
+        validateQuantityRegistered(value) {
+            if (+value < 1) {
+                toast.error('Số lượng đăng ký phải lớn hơn 0')
+            }
+        },
+
+        deleteRow(index, key) {
+            this.registersOrganization[index].assets.splice(key,1)
+            this.calculateApproval(index)
+            this.calculateRegister(index)
+        },
+
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
+
+            this.registersOrganization[index].approval.total = total
+            this.registersOrganization[index].approval.price = price
         },
 
         setConfigButtons() {
@@ -325,73 +393,6 @@ document.addEventListener('alpine:init', () => {
         changeLimit() {
             this.filters.limit = this.limit
             this.list(this.filters)
-        },
-
-        addRow(index) {
-            this.registersOrganization[index].assets.push({
-                id_fake: Date.now() + Math.random(),
-                asset_type_id: null,
-                job_id: null,
-                price: null,
-                description: null,
-                quantity_registered: null,
-                quantity_approved: null
-            })
-        },
-
-        getPrice(asset_type_id, job_id) {
-            if (!asset_type_id || !job_id) {
-                return 0
-            }
-            return +(asset_type_id + job_id + 1000)
-        },
-
-        calculatePrice(index) {
-            let price_register = 0
-            let price_approval = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                price_register += (asset.quantity_registered * asset.price)
-                price_approval += (asset.quantity_approved * asset.price)
-            })
-
-            this.registersOrganization[index].approval.price = price_approval
-            this.registersOrganization[index].register.price = price_register
-        },
-
-        calculateRegister(index) {
-            let total = 0
-            let price = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                total += +asset.quantity_registered
-                price += (asset.quantity_registered * asset.price)
-            })
-
-            this.registersOrganization[index].register.total = total
-            this.registersOrganization[index].register.price = price
-        },
-
-        validateQuantityRegistered(value) {
-            if (+value < 1) {
-                toast.error('Số lượng đăng ký phải lớn hơn 0')
-            }
-        },
-
-        deleteRow(index, key) {
-            this.registersOrganization[index].assets.splice(key,1)
-            this.calculateApproval(index)
-            this.calculateRegister(index)
-        },
-
-        calculateApproval(index) {
-            let total = 0
-            let price = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                total += +asset.quantity_approved
-                price += (asset.quantity_approved * asset.price)
-            })
-
-            this.registersOrganization[index].approval.total = total
-            this.registersOrganization[index].approval.price = price
         },
 
         reloadPage() {

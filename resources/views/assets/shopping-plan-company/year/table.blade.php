@@ -52,7 +52,7 @@
 
                                         <template x-for="configBtnTable in configButtonsTable">
                                             <template x-if="configBtnTable.condition(+value.status)">
-                                                <template x-if="permission.includes(configBtnTable.permission) || configBtnTable.permission">
+                                                <template x-if="permission.includes(configBtnTable.permission)">
                                                     <template x-for="configBtn in configBtnTable.buttons">
                                                         <button class="border-0 bg-white"
                                                                 @click="configBtn.action(value.id)">

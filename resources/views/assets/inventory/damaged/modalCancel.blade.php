@@ -51,8 +51,8 @@
                                             <span x-text="data[key]"></span>
                                         </template>
                                         <template x-if="key == 'price_liquidation'">
-                                            <input type="text" 
-                                                placeholder="Nhập giá trị thanh lý" 
+                                            <input type="text"
+                                                placeholder="Nhập giá trị thanh lý"
                                                 class="form-control"
                                                 x-model.number="data.price_liquidation"
                                                 @input="data.price_liquidation = $event.target.value.replace(/[^0-9.]/g, '')"
@@ -86,9 +86,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

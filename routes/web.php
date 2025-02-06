@@ -47,8 +47,6 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-plan-company')->group(function () {
         Route::prefix('year')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
         Route::prefix('quarter')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class, 'index']);
@@ -57,8 +55,6 @@ Route::middleware('checkAuth')->group(function () {
         });
         Route::prefix('week')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.week.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.week.detail');
         });
     });
     Route::prefix('shopping-plan-organization')->group(function () {

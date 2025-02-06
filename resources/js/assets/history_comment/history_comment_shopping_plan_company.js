@@ -22,7 +22,7 @@ document.addEventListener('alpine:init', () => {
 
             async sentComment() {
                 const param = {
-                    type: TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION,
+                    type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                     target_id: this.id,
                     message: this.comment_message,
                 }
@@ -36,7 +36,7 @@ document.addEventListener('alpine:init', () => {
 
             async listComment() {
                 const param = {
-                    type: TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION,
+                    type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                     target_id: this.id,
                 }
                 const response = await window.apiGetComment(param)

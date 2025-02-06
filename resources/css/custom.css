@@ -184,3 +184,7 @@ html {
 .w-1-7 {
     width: 14.2%;
 }
+
+.modal-confirm-index {
+    z-index: 3000;
+}

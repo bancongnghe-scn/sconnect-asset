@@ -1,6 +1,6 @@
 <table id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
-    <thead class="position-sticky z-1" style="top: -1px">
+    <thead>
         <tr>
             <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
                 <input type="checkbox" @click="selectedAll">
@@ -26,7 +26,12 @@
                         class="text-center align-middle"
                         x-show="stt === 0 && +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL"
                     >
-                        <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]">
+                        <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]"
+                               :disabled="![
+                                    STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                                    STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                               ].includes(+organization.status)"
+                        >
                     </td>
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                         <span x-text="organization.name"></span>
@@ -52,7 +57,7 @@
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">
                             <template x-for="configApproval in configApprovalOrganization">
                                 <template x-if="configApproval.condition(+organization.status)">
-                                    <template x-if="permission.includes(configApproval.permission) || configApproval.permission">
+                                    <template x-if="permission.includes(configApproval.permission)">
                                         <template x-for="configBtn in configApproval.buttons">
                                             <button class="border-0 bg-white"
                                                     @click="configBtn.action(organization.id)">
