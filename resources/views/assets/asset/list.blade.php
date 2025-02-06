@@ -182,7 +182,7 @@
                         </span>
                     </div>
                     <div class="col-2 d-flex position-relative">
-                        <span>
+                        <span @click="location.href='/asset/export-list-asset'">
                             <svg width="131" height="36" viewBox="0 0 131 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="0.5" width="130" height="35" rx="7.5" stroke="#379237"/>
                                 <path d="M30 23L35 18M35 18L30 13M35 18L23 18" stroke="#379237" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -213,7 +213,7 @@
                         <tr>
                             <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
                             <td class="text-center" x-text="asset.code"></td>
-                            <td class="text-left" x-text="asset.name"></td>
+                            <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
                             <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
                             <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '')"></td>
                             <td class="text-center">
@@ -280,7 +280,7 @@
                                         </a>
                                     </template>
                                     <template x-if="matchStatus(asset.status, 'edit')">
-                                        <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset);">
+                                        <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset); tab='general-tab';">
                                             <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z" fill="#344054"/>
                                             </svg>
@@ -585,29 +585,57 @@
                                                                         </div>
                                                                     </td>
                                                                     <td>
-                                                                        <button x-show="history.transfer_asset.user_id" type="button" class="btn btn-outline-success">
-                                                                            Cá nhân
-                                                                        </button>
-                                                                        <button x-show="!history.transfer_asset.user_id" type="button" class="btn btn-outline-success">
-                                                                            Đơn vị
-                                                                        </button>
+                                                                        <template x-if="history.transfer_asset.type != 3">
+                                                                            <button type="button" class="btn btn-outline-success" x-text="history.transfer_asset.user_id ? 'Cá nhân' : 'Đơn vị'">
+                                                                                
+                                                                            </button>
+                                                                        </template>
+                                                                        <template x-if="history.transfer_asset.type == 3">
+                                                                            <button type="button" class="btn btn-outline-success" x-text="history.transfer_asset.to_user_id ? 'Cá nhân' : 'Đơn vị'">
+                                                                                
+                                                                            </button>
+                                                                        </template>
                                                                     </td>
                                                                     <td>
-                                                                        <div class="d-flex">
-                                                                            <img x-show="history.transfer_asset.user_id" x-bind:src="history.transfer_asset.user && history.transfer_asset.user.avatar 
-                                                                                    ? (history.transfer_asset.user.avatar.includes('/uploads/') 
-                                                                                        ? 'https://office.sconnect.com.vn' + history.transfer_asset.user.avatar 
-                                                                                        : history.transfer_asset.user.avatar) 
-                                                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                                                                    alt="" 
-                                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                                                                <span x-text="history.transfer_asset.user ? history.transfer_asset.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                                <span x-text="history.transfer_asset.user ? 'Mã nhân sự:' + history.transfer_asset.user.code : ''" style="color: #706f6f;"></span>
+                                                                        <template x-if="history.transfer_asset.type != 3">
+                                                                            <div class="d-flex" x-show="history.transfer_asset.type != 3">
+                                                                                <img x-show="history.transfer_asset.user_id" x-bind:src="history.transfer_asset.user && history.transfer_asset.user.avatar 
+                                                                                        ? (history.transfer_asset.user.avatar.includes('/uploads/') 
+                                                                                            ? 'https://office.sconnect.com.vn' + history.transfer_asset.user.avatar 
+                                                                                            : history.transfer_asset.user.avatar) 
+                                                                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                                        alt="" 
+                                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                                    <span x-text="history.transfer_asset.user ? history.transfer_asset.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                                    <span x-text="history.transfer_asset.user ? 'Mã nhân sự:' + history.transfer_asset.user.code : ''" style="color: #706f6f;"></span>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </template>
+
+                                                                        <template x-if="history.transfer_asset.type == 3">
+                                                                            <div class="d-flex">
+                                                                                <img x-show="history.transfer_asset.to_user_id" x-bind:src="history.transfer_asset.user_to && history.transfer_asset.user_to.avatar 
+                                                                                        ? (history.transfer_asset.user_to.avatar.includes('/uploads/') 
+                                                                                            ? 'https://office.sconnect.com.vn' + history.transfer_asset.user_to.avatar 
+                                                                                            : history.transfer_asset.user_to.avatar) 
+                                                                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                                        alt="" 
+                                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                                    <span x-text="history.transfer_asset.user_to ? history.transfer_asset.user_to.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                                    <span x-text="history.transfer_asset.user_to ? 'Mã nhân sự:' + history.transfer_asset.user_to.code : ''" style="color: #706f6f;"></span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </template>
+                                                                        
                                                                     </td>
-                                                                    <td x-text="history.transfer_asset.organization.dept_type.cfg_key + ' ' + history.transfer_asset.organization.name"></td>
+                                                                    <template x-if="history.transfer_asset.type != 3">
+                                                                        <td x-text="history.transfer_asset.organization.dept_type.cfg_key + ' ' + history.transfer_asset.organization.name"></td>
+                                                                    </template>
+                                                                    <template x-if="history.transfer_asset.type == 3">
+                                                                        <td x-text="history.transfer_asset.organization_to.dept_type.cfg_key + ' ' + history.transfer_asset.organization_to.name"></td>
+                                                                    </template>
                                                                     <td x-text="history.transfer_asset.description"></td>
                                                                 </tr>
                                                             </template>
@@ -1317,6 +1345,7 @@
                     this.reasonLiquidation = '';
 
                     openModal('#successLiquidationModal');
+                    this.fetchData('', '', '', '', '', this.urlSearch);
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -1340,6 +1369,7 @@
                     this.reasonLiquidation = '';
 
                     openModal('#successCancelModal');
+                    this.fetchData('', '', '', '', '', this.urlSearch);
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -1363,6 +1393,7 @@
                     this.reasonLiquidation = '';
 
                     openModal('#successBrokenModal');
+                    this.fetchData('', '', '', '', '', this.urlSearch);
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -1385,7 +1416,8 @@
                     this.dateLiquidation = '';
                     this.reasonLiquidation = '';
 
-                    openModal('#successBrokenModal');
+                    openModal('#successLostModal');
+                    this.fetchData('', '', '', '', '', this.urlSearch);
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }

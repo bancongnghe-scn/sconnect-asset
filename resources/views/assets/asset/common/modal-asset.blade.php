@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
+                    <h5 class="mb-0" x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -247,7 +247,7 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <span>Nội dung thu hồi</span>
-                                                <textarea id="noteAllocation" name="" class="form-control" x-model="description" style="width: 100%; height: 60px !important;"></textarea>
+                                                <textarea id="noteAllocation" name="" class="form-control" x-model="description" style="width: 100%; height: 60px !important; min-height: 30px !important;"></textarea>
     
                                             </div>
                                         </div>

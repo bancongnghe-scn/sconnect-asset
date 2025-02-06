@@ -15,6 +15,8 @@ class TransferAsset extends Model
         'user_id',
         'org_id',
         'type',
+        'to_user_id',
+        'to_org_id',
         'created_by',
         'description',
     ];
@@ -24,9 +26,19 @@ class TransferAsset extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function userTo()
+    {
+        return $this->belongsTo(User::class, 'to_user_id');
+    }
+
     public function organization()
     {
         return $this->belongsTo(Org::class, 'org_id');
+    }
+
+    public function organizationTo()
+    {
+        return $this->belongsTo(Org::class, 'to_org_id');
     }
 
     public function createBy()

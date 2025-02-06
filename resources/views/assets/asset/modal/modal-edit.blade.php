@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
-                                        <span>Số serial <span class="text-danger">*</span></span>
+                                        <span>Số serial</span>
                                         <input type="text" class="form-control" x-model="assetEdit.seri_number">
 
                                     </div>

@@ -380,7 +380,7 @@
                 this.orgObj = org;
                 console.log(this.orgObj);
                 
-                this.getDataHistoryOfOrg();
+                this.getDataAssetOfUser();
                 this.getDataHistoryOfOrg();
             },
             toggleSelection(asset, isChecked) {
