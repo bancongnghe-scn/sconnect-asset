@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/css/custom.css',
                 'resources/css/assets/manage/list.css',
+                'resources/css/comment.css',
                 'resources/js/app.js',
                 'resources/js/bootstrap.js',
                 ...sync('resources/js/assets/**/*.js'),

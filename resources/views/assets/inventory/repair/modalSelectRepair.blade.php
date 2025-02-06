@@ -27,13 +27,13 @@
                                     <input type="checkbox" x-model="selectedRepairtMore[data.id]" x-bind:checked="selectedRepairtMore[data.id]">
                                 </td>
                                 <td>
-                                    <span x-text="data.asset.code"></span>
+                                    <span x-text="data.asset.code" class="text-wrap"></span>
                                 </td>
                                 <td>
-                                    <span x-text="data.asset.name"></span>
+                                    <span x-text="data.asset.name" class="text-wrap"></span>
                                 </td>
                                 <td>
-                                    <span x-text="data.date_repair"></span>
+                                    <span x-text="data.date_repair" class="text-wrap"></span>
                                 </td>
                             </tr>
                         </template>

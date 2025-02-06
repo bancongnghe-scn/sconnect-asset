@@ -28,7 +28,7 @@ class AssetHistoryRepository extends BaseRepository
                 'action'                => $status,
                 'date'                  => new \DateTime(),
                 'created_at'            => new \DateTime(),
-                'created_by'            => Auth::id(),
+                'created_by'            => Auth::id() ?? 1,
                 'org_id'                => $asset?->user?->getOrgLastParentAttribute()?->id ?? null,
             ];
         }

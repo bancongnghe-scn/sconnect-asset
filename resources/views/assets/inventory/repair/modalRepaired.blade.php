@@ -46,13 +46,13 @@
                         <template x-for="(data,index) in dataRepair" x-data="{line: 1}">
                             <tr>
                                 <td class="align-content-center ">
-                                    <span x-text="data.asset.code"></span>
+                                    <span x-text="data.asset.code" class="text-wrap"></span>
                                 </td>
                                 <td class="align-content-center">
-                                    <span x-text="data.asset.name"></span>
+                                    <span x-text="data.asset.name" class="text-wrap"></span>
                                 </td>
                                 <td class="align-content-center">
-                                    <span x-text="data.asset.price"></span>
+                                    <span x-text="data.asset.price" class="text-wrap"></span>
                                 </td>
                                 <td class="align-content-center">
                                     <span x-text="data.date"></span>
