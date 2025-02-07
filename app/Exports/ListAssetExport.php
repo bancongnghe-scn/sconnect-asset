@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Asset;
 use App\Models\ImportWarehouse;
 use App\Repositories\ImportWarehouse\ImportWarehouseRepository;
 use App\Repositories\UserRepository;
@@ -15,49 +16,64 @@ use Maatwebsite\Excel\Events\AfterSheet;
 class ListAssetExport implements FromArray, WithHeadings, WithEvents
 {
     use ExportStylingTrait;
-    protected $ids;
-    protected $importWarehouseRepository;
-    protected $userRepository;
 
-    public function __construct($ids)
-    {
-        $this->ids                       = $ids;
-        $this->importWarehouseRepository = new ImportWarehouseRepository();
-        $this->userRepository            = new UserRepository();
-    }
+    public function __construct() {}
 
     public function headings(): array
     {
-        return ['Mã', 'Tên phiếu', 'Mô tả', 'Trạng thái', 'Người nhập', 'Thời gian nhập'];
+        return [
+            'STT',
+            'Mã tài sản',
+            'Tên tài sản',
+            'Loại tài sản',
+            'Đơn vị',
+            'Nhân viên đang sử dụng',
+            'Người đại diện',
+            'Ngày mua',
+            'Vị trí',
+            'Số seri',
+            'Giá trị',
+            'Ngày bảo dưỡng gần nhất',
+            'Ngày bảo dưỡng tiếp theo',
+            'Hạn bảo hành',
+            'Thời gian bảo hành'
+        ];
     }
 
     public function array(): array
     {
-        $filters = [];
-        if (!empty($this->ids)) {
-            $filters['id'] = $this->ids;
-        }
+        $listAsset = Asset::with([
+            'user',
+            'user.organization',
+            'user.organization.deptType',
+            'assetType',
+            'organization',
+            'organization.manager',
+            'organization.deptType'
+        ])->orderBy('id', 'desc')->limit(10)->get();
 
-        $data    = $this->importWarehouseRepository->getListing($filters, ['code', 'name', 'description', 'status', 'created_by', 'created_at']);
-        $userIds = $data->pluck('created_by')->toArray();
-        $users   = [];
-        if (!empty($userIds)) {
-            $users = $this->userRepository->getListing(['id' => $userIds], ['id', 'name'])->keyBy('id')->toArray();
-        }
+        foreach ($listAsset as $key => $asset) {
+            $listAssetExport[] = [
+                'order' => $key + 1,
+                'code'        => $asset->code,
+                'name'        => $asset->name,
+                'type' => $asset->assetType?->name,
+                // 'org' => $asset->organization ? $asset->organization->name : $asset->user->organization->name,
+                // 'user' => $asset->user ? $asset->user->name : '',
+                // 'manager' => !$asset->user ? $asset->organization?->manager->name : '',
+                // 'date_purchase' => Carbon::parse($asset->date_purchase)->format('d/m/Y'),
+                // 'location' => $asset->location ? $asset->location_text : '',
+                // 'seri_number' => $asset->seri_number,
+                // 'price' => $asset->price,
+                // 'recent_maintenance_date' => $asset->recent_maintenance_date,
+                // 'next_maintenance_date' => $asset->next_maintenance_date,
+                // 'month_warranty' => $asset->warranty_months,
 
-        $importWarehouse = [];
-        foreach ($data as $value) {
-            $importWarehouse[] = [
-                'code'        => $value->code,
-                'name'        => $value->name,
-                'description' => $value->description,
-                'status'      => ImportWarehouse::STATUS_NAME[$value->status],
-                'created_by'  => $users[$value->created_by]['name'] ?? '',
-                'created_at'  => Carbon::parse($value->created_at)->format('d-m-Y'),
+                // 'time_warranty' => Carbon::parse($asset->date_purchase)->addMonth()->format('d/m/Y'),
             ];
         }
 
-        return $importWarehouse;
+        return $listAssetExport;
     }
 
     public function registerEvents(): array

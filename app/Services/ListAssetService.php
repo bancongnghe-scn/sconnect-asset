@@ -179,7 +179,7 @@ class ListAssetService
 
     public function getListAssetOfUser(int $userId)
     {
-        return Asset::where('user_id', $userId)->get();
+        return Asset::where('user_id', $userId)->with(['assetType'])->get();
     }
 
     public function getListOrgAsset($request): LengthAwarePaginator
@@ -356,11 +356,27 @@ class ListAssetService
     public function getListHistory($request)
     {
         if ($request->userId) {
-            return TransferAsset::where('user_id', $request->userId)->with(['user', 'organization.manager', 'organization.deptType', 'createBy'])->get();
+            return TransferAsset::where('user_id', $request->userId)->with([
+                'user',
+                'organization.manager',
+                'organization.deptType',
+                'createBy',
+                'userTo',
+                'organizationTo.manager',
+                'organizationTo.deptType',
+            ])->get();
         }
 
         if ($request->orgId) {
-            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with(['user', 'organization.manager', 'organization.deptType', 'createBy'])->get();
+            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with([
+                'user',
+                'organization.manager',
+                'organization.deptType',
+                'createBy',
+                'userTo',
+                'organizationTo.manager',
+                'organizationTo.deptType',
+            ])->get();
         }
 
         if ($request->assetId) {
