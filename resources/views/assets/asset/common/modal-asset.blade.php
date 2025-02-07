@@ -184,9 +184,9 @@
                                                         <td x-text="asset.code"></td>
                                                         <td x-text="asset.name"></td>
                                                         <td x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td x-text="asset.seri_number"></td>
+                                                        <td x-text="LIST_MEASURE[asset.asset_type.measure]"></td>
+                                                        <td x-text="asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></td> 
                                                         <td x-text="asset.location_text"></td>
                                                         <td class="text-center" style="cursor: pointer;">
                                                             
@@ -198,9 +198,9 @@
                                                         <td x-text="asset.code"></td>
                                                         <td x-text="asset.name"></td>
                                                         <td x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td x-text="asset.seri_number"></td>
+                                                        <td x-text="LIST_MEASURE[asset.asset_type.measure]"></td>
+                                                        <td x-text="asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></td> 
                                                         <td x-text="asset.location_text"></td>
                                                         <td class="text-center" style="cursor: pointer;" @click="deleteSelection(asset.id)">
                                                             <svg width="21" height="23" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -627,22 +627,22 @@
             <div class="modal-body">
                 <div class="col-12 mb-3 row">
                     <div class="col-4 d-flex position-relative">
-                        <input type="text" class="form-control" id="nameCodeAsset" placeholder="Tên/mã tài sản" @change="getDataAsset($('#unitSearch').val(), $('#nameCodeAsset').val())">
+                        <input type="text" class="form-control" id="nameCodeAssetPopup" placeholder="Tên/mã tài sản" @change="getDataAsset($('#unitSearchPopup').val(), $('#nameCodeAssetPopup').val())">
                         <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
                     </div>
                     <div class="col-4">
-                        <select class="form-control select2" data-placeholder="Đơn vị" id="unitSearch" @change="getDataAsset($('#unitSearch').val(), $('#nameCodeAsset').val())">
+                        <select class="form-control select2" data-placeholder="Đơn vị" id="unitSearchPopup" @change="getDataAsset($('#unitSearchPopup').val(), $('#nameCodeAssetPopup').val())">
                             <option value="0" selected>Chọn loại tài sản</option>
-                            <template x-for="(assetType, key) in listAssetType">
+                            <template x-for="(assetType, key) in assetType">
                                 <option :value="assetType.id" x-text="assetType.name"></option>
                             </template>
                         </select>
                     </div>
                 </div>
-                <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%;">
+                <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%; max-height: 500px;">
                     <table class="table table-bordered table-repair">
                         <thead>
-                        <tr style="font-size: 14px;">
+                        <tr class="sticky-top" style="font-size: 14px;">
                             <th></th>
                             <th>Mã tài sản</th>
                             <th>Tên tài sản</th>

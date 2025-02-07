@@ -50,7 +50,7 @@ class ListAssetExport implements FromArray, WithHeadings, WithEvents
             'organization',
             'organization.manager',
             'organization.deptType'
-        ])->orderBy('id', 'desc')->limit(10)->get();
+        ])->orderBy('id', 'desc')->get();
 
         foreach ($listAsset as $key => $asset) {
             $listAssetExport[] = [
@@ -58,18 +58,18 @@ class ListAssetExport implements FromArray, WithHeadings, WithEvents
                 'code'        => $asset->code,
                 'name'        => $asset->name,
                 'type' => $asset->assetType?->name,
-                // 'org' => $asset->organization ? $asset->organization->name : $asset->user->organization->name,
-                // 'user' => $asset->user ? $asset->user->name : '',
-                // 'manager' => !$asset->user ? $asset->organization?->manager->name : '',
-                // 'date_purchase' => Carbon::parse($asset->date_purchase)->format('d/m/Y'),
-                // 'location' => $asset->location ? $asset->location_text : '',
-                // 'seri_number' => $asset->seri_number,
-                // 'price' => $asset->price,
-                // 'recent_maintenance_date' => $asset->recent_maintenance_date,
-                // 'next_maintenance_date' => $asset->next_maintenance_date,
-                // 'month_warranty' => $asset->warranty_months,
+                'org' => $asset->organization ? $asset->organization?->name : ($asset->user ? $asset->user?->organization?->name : ''),
+                'user' => $asset->user ? $asset->user->name : '',
+                'manager' => !$asset->user ? $asset->organization?->manager->name : '',
+                'date_purchase' => Carbon::parse($asset->date_purchase)->format('d/m/Y'),
+                'location' => $asset->location ? $asset->location_text : '',
+                'seri_number' => $asset->seri_number.'',
+                'price' => $asset->price,
+                'recent_maintenance_date' => $asset->recent_maintenance_date,
+                'next_maintenance_date' => $asset->next_maintenance_date,
+                'month_warranty' => $asset->warranty_months,
 
-                // 'time_warranty' => Carbon::parse($asset->date_purchase)->addMonth()->format('d/m/Y'),
+                'time_warranty' => Carbon::parse($asset->date_warranty)->format('d/m/Y'),
             ];
         }
 
