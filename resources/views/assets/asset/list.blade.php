@@ -181,8 +181,8 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="col-2 d-flex position-relative">
-                        <span @click="location.href='/asset/export-list-asset'">
+                    <div class="col-2 d-flex position-relative" style="justify-content: flex-end;">
+                        <span style="cursor: pointer;" @click="location.href='/asset/export-list-asset'">
                             <svg width="131" height="36" viewBox="0 0 131 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="0.5" width="130" height="35" rx="7.5" stroke="#379237"/>
                                 <path d="M30 23L35 18M35 18L30 13M35 18L23 18" stroke="#379237" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -892,7 +892,7 @@
             assetStatus: 1,
             assetObj: {},
             pageParam: 1,
-            limitParam: 10,
+            limitParam: 25,
             listOrg: [],
             listUser: [],
             defaultCheck: 'employee',
@@ -922,12 +922,17 @@
             listHistoryAsset: [],
             assetEdit: {},
             listLogAsset: [],
+            limit: 25,
+            from: 0,
+            to: 0,
+            total: 0,
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
                 window.initSelect2Modal('modalRotation');
                 window.initSelect2Modal('modalDetailAsset');
                 window.initSelect2Modal('modalEditAsset');
+                window.initSelect2Modal('searchAssetModal');
 
                 this.fetchData();
                 this.getListOrg();
@@ -965,13 +970,13 @@
 
                 window.addEventListener('change-page', (event) => {
                     this.pageParam = event.detail.page;
-                    this.fetchData();
+                    this.fetchData('', '', '', '', '', this.urlSearch.replace(/([?&])page=\d+&?/, '$1').replace(/([?&])$/, '') + '&page=' + this.pageParam);
                 });
 
                 window.addEventListener('change-limit', (event) => {
                     this.pageParam = 1;
                     this.limitParam = event.target.value;
-                    this.fetchData();
+                    this.fetchData('', '', '', '', '', this.urlSearch);
                 });
             },
 
@@ -1034,7 +1039,10 @@
                     this.listStatus = data.data.listStatus;
                     this.listSupplier = data.data.listSupplier;
                     this.totalPages = data.data.listAsset.last_page;
-                    this.currentPage = data.data.listAsset.current_page;                                   
+                    this.currentPage = data.data.listAsset.current_page; 
+                    this.from = data.data.listAsset.per_page * (data.data.listAsset.current_page - 1) + 1; 
+                    this.to = data.data.listAsset.per_page * data.data.listAsset.current_page;
+                    this.total = data.data.listAsset.total;                                 
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
