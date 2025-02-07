@@ -7,62 +7,51 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            @can('shopping_plan_company.week.crud')
+                            @can('shopping_plan_company.crud')
                                 <th class="text-center">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
                             @endcan
-                            <th rowspan="1" colspan="1">STT</th>
-                            <template x-for="(columnName, key) in columns">
-                                <th rowspan="1" colspan="1" x-text="columnName"></th>
-                            </template>
-                            <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center">Kế hoạch</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                         <template x-for="(value,index) in dataTable" :key="index">
                             <tr>
                                 @can('shopping_plan_company.week.crud')
-                                    <td class="text-center align-middle" x-show="+value.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
-                                    </td>
-                                    <td class="text-center align-middle" x-show="+value.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        <input type="checkbox" disabled>
+                                    <td class="text-center align-middle">
+                                        <input type="checkbox" x-model="selectedRow[value.id]"
+                                               x-bind:checked="selectedRow[value.id]"
+                                               :disabled="+value.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                     </td>
                                 @endcan
-                                <td x-text="from + index"></td>
-                                <template x-for="(columnName, key) in columns">
-                                    <td>
-                                        <template x-if="key !== 'register_time' && key !== 'status' && key !== 'user'">
-                                            <span x-text="value[key]"></span>
-                                        </template>
-                                        <template x-if="key === 'register_time'">
-                                            <span :class="!value.status_register ? 'tw-text-red-500': ''" x-text="value.start_time + ' - ' + value.end_time"></span>
-                                        </template>
-                                        <template x-if="key === 'status'">
-                                            <div class="d-flex justify-content-center">
-                                                @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
-                                            </div>
-                                        </template>
-                                        <template x-if="key === 'user'">
-                                            <span x-data="{data: value}">
-                                                @include('common.user_info')
-                                            </span>
-                                        </template>
-
-                                    </td>
-                                </template>
+                                <td class="text-center align-middle" x-text="from + index"></td>
+                                <td class="align-middle" x-text="value.name"></td>
+                                <td class="text-center align-middle"
+                                    :class="!value.status_register ? 'text-red': ''"
+                                    x-text="value.start_time + ' - ' + value.end_time">
+                                </td>
+                                <td x-data="{data: value, key: 'user'}">
+                                    @include('common.user_info')
+                                </td>
+                                <td class="text-center align-middle" x-text="value.created_at"></td>
                                 <td class="text-center align-middle">
-                                    {{-- xem chi tiet --}}
-                                    <button class="border-0 bg-body"
-                                            @click="handleShowModal(value.id, 'view')">
-                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
-                                    </button>
+                                    @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
+                                </td>
+                                <td class="text-center align-middle">
                                     <template x-for="configBtnTable in configButtonsTable">
-                                        <template x-if="configBtnTable.condition(+value.status)">
-                                            <template x-if="permission.includes(configBtnTable.permission)">
+                                        <template
+                                            x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
+                                            <template
+                                                x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
                                                 <template x-for="configBtn in configBtnTable.buttons">
-                                                    <button class="border-0 bg-body"
+                                                    <button class="border-0 bg-white"
                                                             @click="configBtn.action(value.id)">
                                                         <i :class="configBtn.icon"></i>
                                                     </button>
@@ -90,7 +79,7 @@
             selectedAll() {
                 this.checkedAll = !this.checkedAll
                 this.dataTable.forEach((item) => {
-                    if(+item.status === STATUS_SHOPPING_PLAN_COMPANY_NEW) {
+                    if (+item.status === STATUS_SHOPPING_PLAN_COMPANY_NEW) {
                         this.selectedRow[item.id] = this.checkedAll
                     }
                 })
