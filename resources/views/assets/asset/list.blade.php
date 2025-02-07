@@ -489,7 +489,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị</span>
-                                                            <input type="number" class="form-control" x-model="assetObj.price" disabled>
+                                                            <input type="text" class="form-control" x-model="assetObj.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')" disabled>
 
                                                         </div>
                                                     </div>
@@ -700,7 +700,7 @@
                                                     Sửa chữa
                                                 </h6>
                                                 <div class="row">
-                                                    <div class="col-12" style="overflow-x: auto;width: 100%;">
+                                                    <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%;">
                                                         <table class="table table-bordered table-repair" style="width: 1000px;">
                                                             <thead>
                                                             <tr style="font-size: 14px;">
