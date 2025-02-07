@@ -334,6 +334,25 @@ class ListAssetService
         return $query->limit(2000)->get();
     }
 
+    public function getListLog($request)
+    {
+        if ($request->assetId) {
+            $logRepair = AssetHistory::where('asset_id', $request->assetId)->where('action', Asset::STATUS_DAMAGED)->with('assetRepair')->get();
+            $logLostCancel = AssetHistory::where('asset_id', $request->assetId)
+                ->whereIn('action', [
+                    Asset::STATUS_LOST,
+                    Asset::STATUS_CANCEL,
+                    Asset::STATUS_PROPOSAL_LIQUIDATION,
+                    Asset::STATUS_LIQUIDATED
+                ])->with('createBy')->get();
+
+            return [
+                'logRepair' => $logRepair,
+                'logLostCancel' => $logLostCancel
+            ];
+        }
+    }
+
     public function getListHistory($request)
     {
         if ($request->userId) {
@@ -347,35 +366,22 @@ class ListAssetService
         if ($request->assetId) {
             return MoveAssetUser::whereIn('id', function ($query) use ($request) {
                 $query->selectRaw('MAX(id)')
-                      ->from('move_asset_users')
-                      ->where('asset_id', $request->assetId)
-                      ->groupBy('transfer_asset_id');
+                    ->from('move_asset_users')
+                    ->where('asset_id', $request->assetId)
+                    ->groupBy('transfer_asset_id');
             })
-            ->with([
-                'transferAsset',
-                'transferAsset.user',
-                'transferAsset.organization.manager',
-                'transferAsset.organization.deptType',
-                'transferAsset.userTo',
-                'transferAsset.organizationTo.manager',
-                'transferAsset.organizationTo.deptType',
-                'transferAsset.createBy'
-            ])
-            ->get();
+                ->with([
+                    'transferAsset',
+                    'transferAsset.user',
+                    'transferAsset.organization.manager',
+                    'transferAsset.organization.deptType',
+                    'transferAsset.userTo',
+                    'transferAsset.organizationTo.manager',
+                    'transferAsset.organizationTo.deptType',
+                    'transferAsset.createBy'
+                ])
+                ->get();
         }
-
-        // if ($request->assetId) {
-        //     $arrTransferAsset = MoveAssetUser::where('asset_id', $request->assetId)->pluck('transfer_asset_id');
-
-        //     return TransferAsset::whereIn('id', $arrTransferAsset)
-        //         ->with([
-        //             'user',
-        //             'organization.manager',
-        //             'organization.deptType',
-        //             'createBy'
-        //         ])
-        //         ->get();
-        // }
     }
 
     public function rotationAsset($request)
@@ -389,7 +395,7 @@ class ListAssetService
                 $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
 
                 $orgId = $request->rotationToType == 'unit' ?  $request->rotationToId : $orgLastParentId;
-                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId*1;
+                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId * 1;
 
                 $transferAsset = TransferAsset::create([
                     'user_id'       => $assetRotation['user_id'],

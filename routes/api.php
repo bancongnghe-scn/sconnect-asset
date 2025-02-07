@@ -279,6 +279,7 @@ Route::prefix('asset')->group(function () {
     Route::get('/get-list-asset-of-org', [ListAssetController::class, 'getListAssetOfOrg'])->name('assets.getListAssetOfOrg');
 
     Route::get('/get-list-history', [ListAssetController::class, 'getListHistory'])->name('assets.getListHistory');
+    Route::get('/get-list-log', [ListAssetController::class, 'getListLog'])->name('assets.getListLog');
 
     Route::post('/allocate-asset', [ListAssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
     Route::post('/recovery-asset', [ListAssetController::class, 'recoveryAsset'])->name('assets.recoveryAsset');
