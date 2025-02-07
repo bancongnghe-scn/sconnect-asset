@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        @include('component.shopping_plan_company.quarter.filter')
+                        @include('assets.shopping-plan-company.quarter.filter')
                     </div>
 
                     @can('shopping_plan_company.crud')

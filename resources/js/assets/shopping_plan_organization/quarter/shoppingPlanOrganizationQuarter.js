@@ -5,17 +5,11 @@ document.addEventListener('alpine:init', () => {
             this.list({page:1, limit:10})
             this.getListPlanCompanyYear()
             this.watchFilters()
+            this.setConfigButtons()
         },
 
         //dataTable
         dataTable: [],
-        columns: {
-            name: 'Kế hoạch',
-            register_time: 'Thời gian đăng ký',
-            user: 'Người tạo',
-            created_at: 'Ngày tạo',
-            status: 'Trạng thái',
-        },
 
         //pagination
         totalPages: null,
@@ -74,16 +68,153 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async handleShowModalInfo(id) {
+        async getInfo(){
             this.loading = true
-            const response = await window.apiShowContract(id)
-            if (!response.success) {
-                toast.error(response.message)
-                return
+            try {
+                const response = await window.apiGetInfoShoppingPlanOrganization(this.id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.data = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+                this.getJobs([this.data.organization_id])
             }
-            this.data = this.formatDateAppendix(response.data.data)
-            $('#'+this.idModalInfo).modal('show');
-            this.loading = false
+        },
+
+        async getJobs(organization_id){
+            this.loading = true
+            try {
+                const response = await window.apiGetListJob({'org_id': organization_id})
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.list_job = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getRegisterAsset(){
+            this.loading = true
+            try {
+                const response = await window.apiGetRegisterShoppingPlanOrganization(this.id)
+                if (response.success) {
+                    this.registers = response.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.list_asset_type = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShowModal(id, action) {
+            this.loading = true
+            try {
+                this.id = id
+                this.action = action
+                this.table_index = []
+                this.resetData()
+                await this.getInfo()
+                this.getRegisterAsset()
+                if (this.list_asset_type.length === 0) {
+                    this.getListAssetType()
+                }
+                if (action === 'view') {
+                    $('#modalDetailOrganization').modal('show')
+                } else {
+                    $('#modalRegister').modal('show')
+                }
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        setConfigButtons() {
+            this.configButtonsTable = [
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) => this.handleShowModal(id, 'register'),
+                        },
+                    ],
+                },
+            ]
+            this.configButtonsOrganization = [
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-primary',
+                            action: () => this.saveReviewRegisterAsset(),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_DISAPPROVAL),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+            ]
         },
 
         watchFilters() {

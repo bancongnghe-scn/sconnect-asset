@@ -12,13 +12,6 @@ document.addEventListener('alpine:init', () => {
 
         //dataTable
         dataTable: [],
-        columns: {
-            name: 'Kế hoạch',
-            register_time: 'Thời gian đăng ký',
-            user: 'Người tạo',
-            created_at: 'Ngày tạo',
-            status: 'Trạng thái',
-        },
         selectedRow: [],
 
         //pagination
