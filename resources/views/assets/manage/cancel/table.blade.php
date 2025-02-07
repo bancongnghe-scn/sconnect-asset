@@ -17,7 +17,7 @@
                             <template x-for="(columnName, key) in columns">
                                 <td :class="'align-content-center'">
                                     <template x-if="key !== 'validity' && key !== 'status' && key !== 'date' && key !== 'user_name' ">
-                                        <span x-text="data[key]"></span>
+                                        <span x-text="data[key]" class="text-wrap"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
                                         <div class="text-white d-flex justify-content-center">

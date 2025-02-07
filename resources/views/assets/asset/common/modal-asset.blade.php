@@ -4,7 +4,7 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
+                    <h5 class="mb-0" x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -247,7 +247,7 @@
                                         <div class="col-12">
                                             <div class="mb-3">
                                                 <span>Nội dung thu hồi</span>
-                                                <textarea id="noteAllocation" name="" class="form-control" x-model="description" style="width: 100%; height: 60px !important;"></textarea>
+                                                <textarea id="noteAllocation" name="" class="form-control" x-model="description" style="width: 100%; height: 60px !important; min-height: 30px !important;"></textarea>
     
                                             </div>
                                         </div>
@@ -289,9 +289,9 @@
                                                         <td x-text="asset.code"></td>
                                                         <td x-text="asset.name"></td>
                                                         <td x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td x-text="asset.seri_number"></td>
+                                                        <td x-text="LIST_MEASURE[asset.asset_type.measure]"></td>
+                                                        <td x-text="asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></td>
                                                         <td x-text="asset.location_text"></td>
                                                     </tr>
                                                 </template>
@@ -331,47 +331,75 @@
                                                     <td x-text="formatDateVN(history.created_at)"></td>
                                                     <td x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                     <td>
-                                                        <span class="text-primary">BB001</span>
+                                                        <span class="text-primary" x-text="'BB0' + history.id"></span>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
-                                                            <img x-show="history.created_by" x-bind:src="history.createBy && history.createBy.avatar 
-                                                                    ? (history.createBy.avatar.includes('/uploads/') 
-                                                                        ? 'https://office.sconnect.com.vn' + history.createBy.avatar 
-                                                                        : history.createBy.avatar) 
+                                                            <img x-show="history.create_by" x-bind:src="history.create_by && history.create_by.avatar 
+                                                                    ? (history.create_by.avatar.includes('/uploads/') 
+                                                                        ? 'https://office.sconnect.com.vn' + history.create_by.avatar 
+                                                                        : history.create_by.avatar) 
                                                                     : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
                                                                     alt="" 
                                                                     style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
                                                             <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                                                <span x-text="history.createBy ? history.createBy.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                <span x-text="history.createBy ? 'Mã nhân sự:' + history.createBy.code : ''" style="color: #706f6f;"></span>
+                                                                <span x-text="history.create_by ? history.create_by.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                <span x-text="history.create_by ? 'Mã nhân sự:' + history.create_by.code : ''" style="color: #706f6f;"></span>
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td>
-                                                        <button x-show="history.user_id" type="button" class="btn btn-outline-success">
-                                                            Cá nhân
-                                                        </button>
-                                                        <button x-show="!history.user_id" type="button" class="btn btn-outline-success">
-                                                            Đơn vị
-                                                        </button>
+                                                        <template x-if="history.type != 3">
+                                                            <button type="button" class="btn btn-outline-success" x-text="history.user_id ? 'Cá nhân' : 'Đơn vị'">
+                                                                
+                                                            </button>
+                                                        </template>
+                                                        <template x-if="history.type == 3">
+                                                            <button type="button" class="btn btn-outline-success" x-text="history.to_user_id ? 'Cá nhân' : 'Đơn vị'">
+                                                                
+                                                            </button>
+                                                        </template>
                                                     </td>
                                                     <td>
-                                                        <div class="d-flex">
-                                                            <img x-show="history.user_id" x-bind:src="history.user && history.user.avatar 
-                                                                    ? (history.user.avatar.includes('/uploads/') 
-                                                                        ? 'https://office.sconnect.com.vn' + history.user.avatar 
-                                                                        : history.user.avatar) 
-                                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                                                    alt="" 
-                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                                                <span x-text="history.user ? history.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                <span x-text="history.user ? 'Mã nhân sự:' + history.user.code : ''" style="color: #706f6f;"></span>
+                                                        <template x-if="history.type != 3">
+                                                            <div class="d-flex" x-show="history.type != 3">
+                                                                <img x-show="history.user_id" x-bind:src="history.user && history.user.avatar 
+                                                                        ? (history.user.avatar.includes('/uploads/') 
+                                                                            ? 'https://office.sconnect.com.vn' + history.user.avatar 
+                                                                            : history.user.avatar) 
+                                                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                        alt="" 
+                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                    <span x-text="history.user ? history.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                    <span x-text="history.user ? 'Mã nhân sự:' + history.user.code : ''" style="color: #706f6f;"></span>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        </template>
+
+                                                        <template x-if="history.type == 3">
+                                                            <div class="d-flex">
+                                                                <img x-show="history.to_user_id" x-bind:src="history.user_to && history.user_to.avatar 
+                                                                        ? (history.user_to.avatar.includes('/uploads/') 
+                                                                            ? 'https://office.sconnect.com.vn' + history.user_to.avatar 
+                                                                            : history.user_to.avatar) 
+                                                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                                        alt="" 
+                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                                    <span x-text="history.user_to ? history.user_to.name : ''" style="font-weight: 600; font-size: 16px;"></span>
+                                                                    <span x-text="history.user_to ? 'Mã nhân sự:' + history.user_to.code : ''" style="color: #706f6f;"></span>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+                                                        
                                                     </td>
-                                                    <td x-text="history.organization.dept_type.cfg_key + ' ' + history.organization.name"></td>
+                                                    <template x-if="history.type != 3">
+                                                        <td x-text="history.organization.dept_type.cfg_key + ' ' + history.organization.name"></td>
+                                                    </template>
+                                                    <template x-if="history.type == 3">
+                                                        <td x-text="history.organization_to.dept_type.cfg_key + ' ' + history.organization_to.name"></td>
+                                                    </template>
                                                     <td x-text="history.description"></td>
                                                 </tr>
                                             </template>
@@ -611,7 +639,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-12" style="overflow-x: auto;width: 100%;">
+                <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%;">
                     <table class="table table-bordered table-repair">
                         <thead>
                         <tr style="font-size: 14px;">
@@ -635,9 +663,9 @@
                                 <td x-text="asset.code"></td>
                                 <td x-text="asset.name"></td>
                                 <td x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>                                        
+                                <td x-text="asset.seri_number"></td>
+                                <td x-text="LIST_MEASURE[asset.asset_type.measure]"></td>
+                                <td x-text="asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></td>                                       
                             </tr>
                         </template>
                         </tbody>

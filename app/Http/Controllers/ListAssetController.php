@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ListAssetExport;
 use App\Models\AssetType;
 use App\Models\Org;
 use App\Models\Supplier;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListAssetController extends Controller
 {
@@ -206,6 +208,21 @@ class ListAssetController extends Controller
         }
     }
 
+    public function getListLog(Request $request)
+    {
+        try {
+            $listLog = $this->assetService->getListLog($request);
+
+            return response_success([
+                'listLog' => $listLog,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
     public function getListOrg()
     {
         try {
@@ -310,5 +327,10 @@ class ListAssetController extends Controller
 
             return response_error();
         }
+    }
+
+    public function exportListAsset()
+    {
+        return Excel::download(new ListAssetExport(), 'danh_sach_tai_san.xlsx');
     }
 }

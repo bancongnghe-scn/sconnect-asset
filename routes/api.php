@@ -191,6 +191,17 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('update/multi', 'updateMultiAssetRepaired');
     });
 
+    Route::prefix('comment-v1')->controller(App\Http\Controllers\CommentV1Controller::class)->group(function () {
+        Route::post('create', 'commentCreate')->name('comment-create');
+        Route::get('list', 'commentList')->name('comment-list');
+        Route::get('react', 'commentReact')->name('comment-react');
+        Route::get('del', 'commentDel')->name('comment-del');
+        Route::get('get-comment-edit', 'getCommentEdit')->name('get-comment-edit');
+        Route::get('comment-tag-list-user', 'getTagListUser')->name('comment-tag-list-user');
+        Route::get('comment-list-more', 'getCommentListMore')->name('comment-list-more');
+        Route::get('get-list-react-user', 'getListReactUser')->name('get-list-react-user');
+    });
+
     Route::prefix('shopping-asset')->controller(App\Http\Controllers\ShoppingAssetController::class)->group(function () {
         Route::post('sent-info', 'sentInfoShoppingAsset');
         Route::post('approval', 'approvalShoppingAsset');
@@ -268,6 +279,7 @@ Route::prefix('asset')->group(function () {
     Route::get('/get-list-asset-of-org', [ListAssetController::class, 'getListAssetOfOrg'])->name('assets.getListAssetOfOrg');
 
     Route::get('/get-list-history', [ListAssetController::class, 'getListHistory'])->name('assets.getListHistory');
+    Route::get('/get-list-log', [ListAssetController::class, 'getListLog'])->name('assets.getListLog');
 
     Route::post('/allocate-asset', [ListAssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
     Route::post('/recovery-asset', [ListAssetController::class, 'recoveryAsset'])->name('assets.recoveryAsset');

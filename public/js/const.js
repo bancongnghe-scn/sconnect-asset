@@ -278,3 +278,18 @@ localeVi = {
     timeFormat: 'HH:mm',
     firstDay: 1 // Thứ Hai là ngày đầu tuần
 };
+
+//
+window.LIST_STATUS_TEXT = {
+    1: 'Đang sử dụng',
+    2: 'Chưa sử dụng',
+    3: 'Mới',
+    4: 'Mất',
+    5: 'Hủy',
+    6: 'Đề nghị thanh lý',
+    7: 'Đang thanh lý',
+    8: 'Đã thanh lý',
+    9: 'Hỏng',
+    10: 'Đang sửa chữa',
+    11: 'Bảo Dưỡng',
+}

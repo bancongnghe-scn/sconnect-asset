@@ -26,7 +26,7 @@
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Mã tài sản</span>
                                     <span class="label-field">Tên tài sản</span>
                                     <span class="label-field">Loại tài sản</span>
@@ -34,27 +34,27 @@
                                     <span class="label-field">Hạn bảo hành</span>
                                 </div>
                                 <div class="col-6 col-field">
-                                    <span x-text="assetSelect.code"></span>
-                                    <span x-text="assetSelect.name"></span>
-                                    <span x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.name"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị tài sản</span>
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span x-text="assetSelect.price"></span>
-                                    <span>--</span>
-                                    <span x-text="assetSelect.location_text"></span>
-                                    <span x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
-                                    <span x-html="arrSvgStatus[assetSelect.status]"></span>
+                                <div class="col-8 col-field">
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                    <span class="text-field">--</span>
+                                    <span class="text-field" x-text="assetSelect.location_text"></span>
+                                    <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
+                                    <span class="text-field" x-html="arrSvgStatus[assetSelect.status]"></span>
                                 </div>
                             </div>
                         </div>
@@ -160,6 +160,14 @@
 </div>
 
 <div>
+    <style>
+        .text-field{
+            max-width: 300px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
     <div class="modal fade" id="modalCancel" tabindex="-1" aria-labelledby="modalCancel" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -172,7 +180,7 @@
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Mã tài sản</span>
                                     <span class="label-field">Tên tài sản</span>
                                     <span class="label-field">Loại tài sản</span>
@@ -180,27 +188,27 @@
                                     <span class="label-field">Hạn bảo hành</span>
                                 </div>
                                 <div class="col-6 col-field">
-                                    <span x-text="assetSelect.code"></span>
-                                    <span x-text="assetSelect.name"></span>
-                                    <span x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.name"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị tài sản</span>
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span x-text="assetSelect.price"></span>
-                                    <span>--</span>
-                                    <span x-text="assetSelect.location_text"></span>
-                                    <span x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
-                                    <span x-html="arrSvgStatus[assetSelect.status]"></span>
+                                <div class="col-8 col-field">
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                    <span class="text-field">--</span>
+                                    <span class="text-field" x-text="assetSelect.location_text"></span>
+                                    <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
+                                    <span class="text-field" x-html="arrSvgStatus[assetSelect.status]"></span>
                                 </div>
                             </div>
                         </div>
@@ -312,7 +320,7 @@
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Mã tài sản</span>
                                     <span class="label-field">Tên tài sản</span>
                                     <span class="label-field">Loại tài sản</span>
@@ -320,27 +328,27 @@
                                     <span class="label-field">Hạn bảo hành</span>
                                 </div>
                                 <div class="col-6 col-field">
-                                    <span x-text="assetSelect.code"></span>
-                                    <span x-text="assetSelect.name"></span>
-                                    <span x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.name"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị tài sản</span>
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span x-text="assetSelect.price"></span>
-                                    <span>--</span>
-                                    <span x-text="assetSelect.location_text"></span>
-                                    <span x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
-                                    <span x-html="arrSvgStatus[assetSelect.status]"></span>
+                                <div class="col-8 col-field">
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                    <span class="text-field">--</span>
+                                    <span class="text-field" x-text="assetSelect.location_text"></span>
+                                    <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
+                                    <span class="text-field" x-html="arrSvgStatus[assetSelect.status]"></span>
                                 </div>
                             </div>
                         </div>
@@ -452,7 +460,7 @@
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Mã tài sản</span>
                                     <span class="label-field">Tên tài sản</span>
                                     <span class="label-field">Loại tài sản</span>
@@ -460,31 +468,31 @@
                                     <span class="label-field">Hạn bảo hành</span>
                                 </div>
                                 <div class="col-6 col-field">
-                                    <span x-text="assetSelect.code"></span>
-                                    <span x-text="assetSelect.name"></span>
-                                    <span x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
-                                    <span x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.name"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
-                                <div class="col-6 col-field">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị tài sản</span>
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span x-text="assetSelect.price"></span>
-                                    <span>--</span>
-                                    <span x-text="assetSelect.location_text"></span>
-                                    <span x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
-                                    <span x-html="arrSvgStatus[assetSelect.status]"></span>
+                                <div class="col-8 col-field">
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                    <span class="text-field">--</span>
+                                    <span class="text-field" x-text="assetSelect.location_text"></span>
+                                    <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
+                                    <span class="text-field" x-html="arrSvgStatus[assetSelect.status]"></span>
                                 </div>
                             </div>
                         </div>
-                        <h5 class="text-bold">Thông tin tài sản</h5>
+                        <h5 class="text-bold">Thông tin đánh dấu mất tài sản</h5>
                         <div class="row">
                             <div class="col-6 item-rotation-modal">
                                 <div class="col-12">
@@ -516,7 +524,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLongTitle" style="color: #111; font-size: 20px;">Xác nhận đánh dấu hỏng tài sản</h5>
+              <h5 class="modal-title" id="exampleModalLongTitle" style="color: #111; font-size: 20px;">Xác nhận đánh dấu mất tài sản</h5>
               <button type="button" class="close" data-bs-dismiss="modal" @click="closeModal('#confirmLostModal')">
                 <span aria-hidden="true">&times;</span>
               </button>

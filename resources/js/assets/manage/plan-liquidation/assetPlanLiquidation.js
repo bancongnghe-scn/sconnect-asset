@@ -173,6 +173,7 @@ document.addEventListener('alpine:init', () => {
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
 
             $('#' + this.idModalEditPlanLiquidation).modal('show');
+            $("[name='target_id']").val(this.id);
             this.loading = false
         },
 
@@ -399,6 +400,7 @@ document.addEventListener('alpine:init', () => {
 
         async showPlanLiquidation(planId) {
             this.loading = true
+console.warn('vaooo');
 
             this.id = planId
             const response = await window.apiShowPlanLiquidation(planId)
@@ -407,7 +409,11 @@ document.addEventListener('alpine:init', () => {
                 return
             }
             this.data = response.data.data
+            console.warn('123', this.data);
+            
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
+            console.warn('this.dataTbodyListAssetLiqui', this.data?.plan_maintain_asset);
+            
 
             $('#' + this.idModalShowPlanLiquidation).modal('show');
 

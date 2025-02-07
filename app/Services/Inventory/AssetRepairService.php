@@ -10,6 +10,7 @@ use App\Support\Constants\AppErrorCode;
 use App\Repositories\AssetHistoryRepository;
 use App\Repositories\Inventory\AssetRepairRepository;
 use App\Http\Resources\Inventory\AssetRepairResource;
+use App\Models\AssetHistory;
 
 class AssetRepairService
 {
@@ -18,7 +19,6 @@ class AssetRepairService
         protected AssetRepository $assetRepository,
         protected AssetHistoryRepository $assetHistoryRepository,
     ) {
-
     }
 
     public function createAssetRepair($data)
@@ -83,6 +83,39 @@ class AssetRepairService
                         'error_code' => AppErrorCode::CODE_5011,
                     ];
                 }
+
+                $assetRepairIds = AssetRepair::latest()
+                    ->take(count($dataInsert))
+                    ->pluck('id', 'asset_id')
+                    ->toArray();
+
+                $historyAssetIds = AssetHistory::latest()
+                    ->take(count($assetIds))
+                    ->pluck('id', 'asset_id')
+                    ->toArray();
+
+                // Lọc ra các phần tử có trong cả hai mảng
+                $updates = array_intersect_key($assetRepairIds, $historyAssetIds);
+
+                if ($updates) {
+                    $caseStatements = [];
+                    $bindings       = [];
+
+                    foreach ($updates as $assetId => $repairId) {
+                        $caseStatements[] = 'WHEN id = ? THEN ?';
+                        $bindings[]       = $repairId;
+                        $bindings[]       = $historyAssetIds[$assetId];
+                    }
+
+                    $placeholders = implode(',', array_fill(0, count($updates), '?'));
+
+                    DB::update('
+                        UPDATE asset_repair
+                        SET asset_history_id = CASE ' . implode(' ', $caseStatements) . " END
+                        WHERE id IN ($placeholders)
+                    ", [...$bindings, ...array_values($updates)]);
+                }
+
                 DB::commit();
             } catch (\Exception $e) {
                 DB::rollBack();
@@ -171,7 +204,6 @@ class AssetRepairService
                         'error_code'    => AppErrorCode::CODE_5010,
                     ];
                 }
-
             }
 
             $assetIds     = array_column($assetsRepaired, 'asset_id');
