@@ -208,6 +208,21 @@ class ListAssetController extends Controller
         }
     }
 
+    public function getListLog(Request $request)
+    {
+        try {
+            $listLog = $this->assetService->getListLog($request);
+
+            return response_success([
+                'listLog' => $listLog,
+            ]);
+        } catch (\Throwable $exception) {
+            Log::error($exception);
+
+            return response_error();
+        }
+    }
+
     public function getListOrg()
     {
         try {
