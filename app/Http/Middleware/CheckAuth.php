@@ -14,6 +14,7 @@ class CheckAuth
     {
 //        Auth::loginUsingId(323);
 //        Auth::loginUsingId(3);
+//        Auth::loginUsingId(851);
 //        Auth::loginUsingId(466);
         Auth::loginUsingId(2);
         //                dd(Auth::user()->getAllPermissions()->pluck('name')->toArray());
