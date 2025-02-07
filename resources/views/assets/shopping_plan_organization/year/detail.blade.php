@@ -83,7 +83,7 @@
                                         </div>
 
                                         <div class="card card-body mt-3" x-show="table_index.includes(index)">
-                                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                                            <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                                 <thead>
                                                 <tr>
                                                     <th rowspan="1" colspan="1">Loại tài sản</th>

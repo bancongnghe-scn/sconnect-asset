@@ -16,7 +16,7 @@
                                 @include('component.status.status_shopping_plan_company', ['status' => 'data.status'])
                             </div>
                             <div class="tw-grid tw-grid-cols-5 tw-gap-4">
-                                <div class="tw-col-span-1">
+                                <div>
                                     <label class="tw-font-bold">Năm<span
                                             class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_year', [
@@ -25,7 +25,7 @@
                                     ])
                                 </div>
 
-                                <div class="tw-col-span-1">
+                                <div>
                                     <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',
@@ -82,10 +82,10 @@
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                             <div>
                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                    @include('assets.shopping-plan-company.table_synthetic_organization_register')
                                 </template>
                                 <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')
+                                    @include('assets.shopping-plan-company.year.table_synthetic_asset_organization_register')
                                 </template>
                             </div>
                         </div>

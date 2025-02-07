@@ -2,7 +2,7 @@
     <div id="" class="dataTables_wrapper dt-bootstrap4">
         <div class="row">
             <div class="col-sm-12">
-                <table id="" class="table table-bordered table-hover dataTable dtr-inline"
+                <table id="" class="table table-bordered dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
                     <tr :class="'position-sticky tw-top-0'">
@@ -10,8 +10,8 @@
                             <input type="checkbox" id="selectedAll" @click="selectedAll" @change="count()">
                         </th>
                         <template x-for="(columnName, key) in columns">
-                            <th rowspan="1" colspan="1" 
-                                :class="key === 'status' ? 'text-center' : ''" 
+                            <th rowspan="1" colspan="1"
+                                :class="key === 'status' ? 'text-center' : ''"
                                 x-text="columnName">
                             </th>
                         </template>
@@ -86,7 +86,7 @@
             checkedAll: false,
 
             selectedAll() {
-                
+
                 this.checkedAll = !this.checkedAll
                 this.dataTable.forEach(
                     (item) => {

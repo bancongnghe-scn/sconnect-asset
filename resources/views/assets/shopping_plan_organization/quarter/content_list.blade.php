@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        @include('component.shopping_plan_company.quarter.filter')
+                        @include('assets.shopping_plan_organization.quarter.filter')
                     </div>
 
                     <div
@@ -17,4 +17,8 @@
             </div>
         </div>
     </div>
+
+    @include('assets.shopping_plan_organization.quarter.detail')
+    @include('assets.shopping_plan_organization.quarter.register')
 </div>
+

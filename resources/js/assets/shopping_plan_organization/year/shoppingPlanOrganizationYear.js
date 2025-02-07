@@ -205,7 +205,6 @@ document.addEventListener('alpine:init', () => {
                 this.resetData()
                 await this.getInfo()
                 this.getRegisterAsset()
-                console.log(this.list_asset_type)
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
@@ -213,8 +212,6 @@ document.addEventListener('alpine:init', () => {
                     $('#modalDetailOrganization').modal('show')
                     this.setConfigButtons()
                 } else {
-                    // this.setConfigButtonsApproval()
-                    // this.setConfigApprovalOrganizations()
                     $('#modalRegister').modal('show')
                 }
             } catch (e) {

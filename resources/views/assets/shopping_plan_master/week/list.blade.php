@@ -24,7 +24,7 @@
                 @include('component.shopping_plan_company.week.content_list')
             </div>
             <div x-show="activeLink.organization">
-                @include('component.shopping_plan_organization.week.content_list')
+                @include('assets.shopping_plan_organization.week.content_list')
             </div>
         </div>
     </div>

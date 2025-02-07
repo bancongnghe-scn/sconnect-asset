@@ -373,9 +373,11 @@ class ShoppingPlanOrganizationService
 
             foreach ($data['registers'] as $register) {
                 foreach ($register['assets'] as $asset) {
-                    $this->shoppingAssetRepository->update($asset['id'], [
-                        'quantity_approved' => $asset['quantity_approved'],
-                    ]);
+                    if (!empty($asset)) {
+                        $this->shoppingAssetRepository->update($asset['id'], [
+                            'quantity_approved' => $asset['quantity_approved'],
+                        ]);
+                    }
                 }
             }
 

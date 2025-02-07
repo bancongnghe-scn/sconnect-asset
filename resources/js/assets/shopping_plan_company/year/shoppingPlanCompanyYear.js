@@ -6,7 +6,7 @@ document.addEventListener('alpine:init', () => {
                 this.list({page: 1, limit: 10})
                 this.getListUser({'dept_id': DEPT_IDS_FOLLOWERS})
                 this.watchFilters()
-                this.setConfigButtonsTable()
+                this.setConfigButtons()
             },
 
             //dataTable
@@ -38,6 +38,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             id: null,
+            showModal: null,
             idPlanOrganization: null,
             note_disapproval: null,
             listUser: [],
@@ -269,6 +270,7 @@ document.addEventListener('alpine:init', () => {
                             $("#modalNoteDisapprovalPlanCompany").modal('hide')
                         }
                         this.getOrganizationRegisterYear()
+                        this.list(this.filters)
                         return
                     }
 
@@ -335,6 +337,7 @@ document.addEventListener('alpine:init', () => {
 
             async handleShowModal(id, action) {
                 this.loading = true
+                this.showModal = true
                 try {
                     this.id = id
                     this.action = action
@@ -349,15 +352,13 @@ document.addEventListener('alpine:init', () => {
                     if (action === 'view') {
                         $('#modalDetail').modal('show')
                     } else {
-                        this.setConfigButtons()
-                        this.setConfigButtonsApprovalOrganization()
-                        this.setConfigApprovalOrganizationTable()
                         $('#modalUpdate').modal('show')
                     }
                 } catch (e) {
                     toast.error(e)
                 } finally {
                     this.loading = false
+                    this.showModal = false
                 }
             },
 
@@ -397,10 +398,10 @@ document.addEventListener('alpine:init', () => {
             async saveReviewRegisterAsset() {
                 this.loading = true
                 try {
-                    const response = await window.apiSaveReviewRegisterAsset(this.idPlanOrganization, this.registers)
+                    const response = await window.apiSaveReviewRegisterAsset(this.idPlanOrganization, this.registersOrganization)
                     if (response.success) {
                         toast.success('Lưu thông tin phê duyệt thành công')
-                        this.dataOrganization.find((item) => +item.id === +this.idPlanOrganization).status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                        this.register.organizations.find((item) => +item.id === +this.idPlanOrganization).status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                         return
                     }
                     toast.error(response.message)
@@ -409,55 +410,6 @@ document.addEventListener('alpine:init', () => {
                 } finally {
                     this.loading = false
                 }
-            },
-
-            setConfigButtonsOrganization() {
-                this.configButtonsOrganization = [
-                    {
-                        condition: () => [
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                        ].includes(+this.data.status),
-                        buttons: [
-                            {
-                                text: 'Lưu',
-                                class: 'btn btn-primary',
-                                action: () => this.saveReviewRegisterAsset(),
-                                permission: 'shopping_plan_company.accounting_approval'
-                            },
-                        ],
-                    },
-                    {
-                        condition: () => [
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                        ].includes(+this.data.status),
-                        buttons: [
-                            {
-                                text: 'Duyệt',
-                                class: 'btn bg-sc text-white',
-                                action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_APPROVAL),
-                                permission: 'shopping_plan_company.accounting_approval'
-                            },
-                        ],
-                    },
-                    {
-                        condition: () => [
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                        ].includes(+this.data.status),
-                        buttons: [
-                            {
-                                text: 'Từ chối',
-                                class: 'btn bg-red',
-                                action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_DISAPPROVAL),
-                                permission: 'shopping_plan_company.accounting_approval'
-                            },
-                        ],
-                    },
-                ]
             },
 
             async getJobs(organization_id){
@@ -511,7 +463,7 @@ document.addEventListener('alpine:init', () => {
                         this.getListAssetType()
                     }
                     $('#modalDetailOrganization').modal('show')
-                    this.setConfigButtonsOrganization()
+                    this.setConfigButtons()
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -519,27 +471,16 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            setConfigButtonsApprovalOrganization() {
-                this.configButtonsApproval = [
-                    {
-                        condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        permission: 'shopping_plan_company.accounting_approval',
-                        buttons: [
-                            {
-                                text: 'Duyệt',
-                                class: 'btn bg-sc text-white',
-                                action: () => this.accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL),
-                                disabled: () => window.checkDisableSelectRow
-                            },
-                            {
-                                text: 'Từ chối',
-                                class: 'btn bg-red',
-                                action: () => this.showModalNoteDisapprovalMultiple(),
-                                disabled: () => window.checkDisableSelectRow
-                            },
-                        ]
-                    },
-                ]
+            calculateApproval(index) {
+                let total = 0
+                let price = 0
+                this.registersOrganization[index].assets.forEach((asset) => {
+                    total += +asset.quantity_approved
+                    price += (asset.quantity_approved * asset.price)
+                })
+
+                this.registersOrganization[index].approval.total = total
+                this.registersOrganization[index].approval.price = price
             },
 
             setConfigButtons() {
@@ -613,9 +554,6 @@ document.addEventListener('alpine:init', () => {
                         ],
                     }
                 ]
-            },
-
-            setConfigButtonsTable() {
                 this.configButtonsTable = [
                     {
                         condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
@@ -657,10 +595,37 @@ document.addEventListener('alpine:init', () => {
                             },
                         ],
                     },
+                    {
+                        condition: () => true,
+                        permission: true,
+                        buttons: [
+                            {
+                                icon: 'bi bi-eye text-info',
+                                action: (id) => this.handleShowModal(id, 'view'),
+                            },
+                        ],
+                    },
                 ]
-            },
-
-            setConfigApprovalOrganizationTable() {
+                this.configButtonsApproval = [
+                    {
+                        condition: () => +this.data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                        permission: 'shopping_plan_company.accounting_approval',
+                        buttons: [
+                            {
+                                text: 'Duyệt',
+                                class: 'btn bg-sc text-white',
+                                action: () => this.accountApprovalMultipleShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL),
+                                disabled: () => window.checkDisableSelectRow
+                            },
+                            {
+                                text: 'Từ chối',
+                                class: 'btn bg-red',
+                                action: () => this.showModalNoteDisapprovalMultiple(),
+                                disabled: () => window.checkDisableSelectRow
+                            },
+                        ]
+                    },
+                ]
                 this.configApprovalOrganization = [
                     {
                         condition: (status) => [
@@ -679,6 +644,22 @@ document.addEventListener('alpine:init', () => {
                             },
                         ],
                     }
+                ]
+                this.configButtonsOrganization = [
+                    {
+                        condition: () => [
+                            STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                            STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                        ].includes(+this.dataOrganization.status),
+                        buttons: [
+                            {
+                                text: 'Lưu',
+                                class: 'btn btn-primary',
+                                action: () => this.saveReviewRegisterAsset(),
+                                permission: 'shopping_plan_company.accounting_approval'
+                            },
+                        ],
+                    },
                 ]
             },
 

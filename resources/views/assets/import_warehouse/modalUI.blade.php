@@ -44,7 +44,7 @@
                     <div>
                         <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản nhập (${data.shopping_assets?.length})`"></div>
                         <div class="mt-3 overflow-auto custom-scroll tw-max-h-56">
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                            <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                 <thead>
                                 <tr>
                                     <th>Mã</th>

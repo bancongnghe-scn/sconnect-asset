@@ -45,14 +45,9 @@
                                         @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class="border-0 bg-white"
-                                                @click="handleShowModal(value.id, 'view')">
-                                            <i class="bi bi-eye" style="color: #63E6BE;"></i>
-                                        </button>
-
                                         <template x-for="configBtnTable in configButtonsTable">
-                                            <template x-if="configBtnTable.condition(+value.status)">
-                                                <template x-if="permission.includes(configBtnTable.permission)">
+                                            <template x-if="value.status === true || configBtnTable.condition(+value.status)">
+                                                <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
                                                     <template x-for="configBtn in configBtnTable.buttons">
                                                         <button class="border-0 bg-white"
                                                                 @click="configBtn.action(value.id)">

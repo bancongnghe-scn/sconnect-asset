@@ -2,7 +2,7 @@
     <div id="" class="dataTables_wrapper dt-bootstrap4">
         <div class="row">
             <div class="col-sm-12">
-                <table id="" class="table table-bordered table-hover dataTable dtr-inline"
+                <table id="" class="table table-bordered dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
                     <tr :class="'position-sticky tw-top-0'">
@@ -19,9 +19,9 @@
                     <template x-for="(data,index) in dataTable" x-data="{line: 1}">
                         <tr>
                             <td class="text-center align-middle">
-                                <input type="checkbox" 
-                                    x-model="selectedRow[data.id]" 
-                                    x-bind:checked="selectedRow[data.id]" 
+                                <input type="checkbox"
+                                    x-model="selectedRow[data.id]"
+                                    x-bind:checked="selectedRow[data.id]"
                                     @change="count()"
                                     x-show="data.status_repair !== 'Hoàn thành sửa chữa'">
                                 <span x-show="data.status_repair === 'Hoàn thành sửa chữa'"></span>
@@ -87,7 +87,7 @@
             checkedAll: false,
 
             selectedAll() {
-                
+
                 this.checkedAll = !this.checkedAll
                 this.dataTable.forEach((item) => {
                     if (item.status_repair !== 'Hoàn thành sửa chữa') {

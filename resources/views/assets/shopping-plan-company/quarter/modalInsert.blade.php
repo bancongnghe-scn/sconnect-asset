@@ -10,10 +10,10 @@
                     <div>
                         <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                         <span>
-                            @include('common.select2.modal.extent.select2_single_modal', [
-                               'placeholder' => 'Chọn kế hoạch năm',
-                               'model' => 'data.plan_year_id',
-                               'values' => 'listPlanCompanyYear',
+                            @include('common.select_custom.extent.select_single', [
+                                'placeholder' => 'Chọn kế hoạch năm',
+                                'selected' => 'data.plan_year_id',
+                                'options' => 'listPlanCompanyYearComplete',
                             ])
                         </span>
                     </div>
@@ -21,10 +21,10 @@
                     <div>
                         <label class="tw-font-bold">Quý</label>
                         <span>
-                            @include('common.select2.modal.simple.select2_single_modal', [
-                               'placeholder' => 'Chọn quý',
-                               'model' => 'data.time',
-                               'values' => 'LIST_QUARTER',
+                            @include('common.select_custom.simple.select_single', [
+                                'placeholder' => 'Chọn quý',
+                                'selected' => 'data.time',
+                                'options' => 'LIST_QUARTER',
                             ])
                         </span>
                     </div>
@@ -43,10 +43,10 @@
                     <template x-if="listUser.length > 0">
                         <div>
                             <label class="form-label">Người quan sát</label>
-                            @include('common.select2.modal.extent.select2_multiple_modal', [
+                            @include('common.select_custom.extent.select_multiple', [
                                 'placeholder' => 'Chọn người quan sát',
-                                'model' => 'data.monitor_ids',
-                                'values' => 'listUser'
+                                'selected' => 'data.monitor_ids',
+                                'options' => 'listUser',
                             ])
                         </div>
                     </template>

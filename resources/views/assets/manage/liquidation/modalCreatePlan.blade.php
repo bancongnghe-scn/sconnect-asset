@@ -41,7 +41,7 @@
                             <textarea name="" id="" class="form-control" x-model="data.note" placeholder="Nhập"></textarea>
                         </div>
                     </div>
-                    <table class="table table-bordered table-hover dataPlanLiquidation dtr-inline"
+                    <table class="table table-bordered dataPlanLiquidation dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>

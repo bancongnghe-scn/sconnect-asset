@@ -2,12 +2,25 @@
     <div class="col-12">
         <div class="d-flex flex-wrap gap-3 align-items-end form-group">
             <div class="col-3 pl-0">
-                @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
+                @include('common.select_custom.extent.select_single', [
+                    'selected' => 'filters.plan_year_id',
+                    'options' => 'listPlanCompanyYearComplete',
+                    'placeholder' => 'Chọn kế hoạch năm',
+                ])
             </div>
+
+            <div class="col-2">
+                @include('common.select_custom.simple.select_single', [
+                   'selected' => 'filters.time',
+                   'options' => 'LIST_QUARTER',
+                   'placeholder' => 'Chọn quý',
+               ])
+            </div>
+
             <div class="col-2">
                 @include('common.select_custom.simple.select_single', [
                     'selected' => 'filters.status',
-                    'options' => 'STATUS_SHOPPING_PLAN_COMPANY',
+                    'options' => 'listStatus',
                     'placeholder' => 'Chọn trạng thái',
                 ])
             </div>

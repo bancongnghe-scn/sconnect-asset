@@ -20,10 +20,10 @@
         </div>
 
         <div x-show="activeLink.company">
-            @include('component.shopping_plan_company.quarter.content_list')
+            @include('assets.shopping-plan-company.quarter.content_list')
         </div>
         <div x-show="activeLink.organization">
-            @include('component.shopping_plan_organization.quarter.content_list')
+            @include('assets.shopping_plan_organization.quarter.content_list')
         </div>
     </div>
 
@@ -52,9 +52,12 @@
     @vite([
         'resources/js/assets/shopping_plan_organization/quarter/shoppingPlanOrganizationQuarter.js',
         'resources/js/assets/api/shopping_plan_organization/quarter/apiShoppingPlanOrganizationQuarter.js',
+        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
         'resources/js/assets/shopping_plan_company/quarter/shoppingPlanCompanyQuarter.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
         'resources/js/app/api/apiUser.js',
+        'resources/js/app/api/apiJob.js',
+        'resources/js/assets/api/apiAssetType.js',
     ])
 @endsection

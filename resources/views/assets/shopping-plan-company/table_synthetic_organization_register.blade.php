@@ -1,4 +1,4 @@
-<table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+<table id="example2" class="table table-bordered dataTable dtr-inline"
        aria-describedby="example2_info">
     <thead>
     <tr>

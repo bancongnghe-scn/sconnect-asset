@@ -96,7 +96,7 @@
                                 <div class="mt-3">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2"
-                                               class="table table-bordered table-hover dataTable dtr-inline"
+                                               class="table table-bordered dataTable dtr-inline"
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
@@ -141,7 +141,7 @@
                                     </template>
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN">
                                         <table id="example2"
-                                               class="table table-bordered table-hover dataTable dtr-inline"
+                                               class="table table-bordered dataTable dtr-inline"
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
