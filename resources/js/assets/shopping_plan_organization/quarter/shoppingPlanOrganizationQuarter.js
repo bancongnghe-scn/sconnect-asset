@@ -295,13 +295,6 @@ document.addEventListener('alpine:init', () => {
             this.calculateRegister(index)
         },
 
-        getPrice(asset_type_id, job_id) {
-            if (!asset_type_id || !job_id) {
-                return 0
-            }
-            return +(asset_type_id + job_id + 1000)
-        },
-
         calculateRegister(index) {
             let total = 0
             let price = 0
