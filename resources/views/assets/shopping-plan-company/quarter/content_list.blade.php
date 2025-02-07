@@ -34,6 +34,9 @@
     @include('assets.shopping-plan-company.quarter.modalInsert')
     @include('assets.shopping-plan-company.quarter.detail')
     @include('assets.shopping-plan-company.quarter.update')
+    <div x-data="{registers: [], data: []}" x-effect="registers = registersOrganization, data = dataOrganization">
+        @include('assets.shopping_plan_organization.quarter.detail')
+    </div>
     <div
         x-data="{
               modalId: 'idModalConfirmDelete',
@@ -67,3 +70,4 @@
         @include('common.modal-note', ['id' => 'modalNoteDisapprovalPlanCompany', 'model' => 'note_disapproval'])
     </div>
 </div>
+

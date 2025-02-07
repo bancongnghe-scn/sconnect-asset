@@ -9,7 +9,7 @@
                         <template x-if="config.condition()">
                             <template x-for="(button, index) in config.buttons" :key="key + index">
                                 <template x-if="!button.permission || permission.includes(button.permission)">
-                                    <button :class="button.class"  @click="button.action(id)">
+                                    <button :class="button.class" @click="button.action(id)">
                                         <span x-text="button.text"></span>
                                     </button>
                                 </template>
@@ -30,7 +30,8 @@
                             </div>
                             <div class="tw-grid tw-grid-cols-5 tw-gap-4">
                                 <div>
-                                    <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <label class="tw-font-bold">Kế hoạch năm<span
+                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.select_custom.extent.select_single', [
                                           'selected' => 'data.plan_year_id',
                                           'options' => 'listPlanCompanyYearComplete',
@@ -48,7 +49,8 @@
                                 </div>
 
                                 <div>
-                                    <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <label class="tw-font-bold">Thời gian đăng ký<span
+                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',
                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
@@ -124,10 +126,10 @@
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                             <div>
                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                    @include('assets.shopping-plan-company.table_synthetic_organization_register')
                                 </template>
                                 <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.quarter.table_synthetic_asset_organization_register')
+                                    @include('assets.shopping-plan-company.quarter.table_synthetic_asset_organization_register')
                                 </template>
                             </div>
                         </div>

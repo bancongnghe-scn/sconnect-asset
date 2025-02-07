@@ -20,10 +20,10 @@
         </div>
 
         <div x-show="activeLink.company">
-            @include('component.shopping_plan_company.year.content_list')
+            @include('assets.shopping-plan-company.year.content_list')
         </div>
         <div x-show="activeLink.organization">
-            @include('component.shopping_plan_organization.year.content_list')
+            @include('assets.shopping_plan_organization.year.content_list')
         </div>
     </div>
 

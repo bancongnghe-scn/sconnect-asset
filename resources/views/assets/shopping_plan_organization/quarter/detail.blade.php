@@ -4,15 +4,13 @@
             <div class="modal-header">
                 <h4 class="modal-title">Chi tiết kế hoạch mua sắm quý</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
-                    <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
-                        <template x-for="(config, key) in configButtonsModalDetail" :key="key">
-                            <template x-if="config.condition()">
-                                <template x-for="(button, index) in config.buttons" :key="key + index">
-                                    <template x-if="!button.permission || permission.includes(button.permission)">
-                                        <button :class="button.class"  @click="button.action()">
-                                            <span x-text="button.text"></span>
-                                        </button>
-                                    </template>
+                    <template x-for="(config, key) in configButtonsModalDetail" :key="key">
+                        <template x-if="config.condition()">
+                            <template x-for="(button, index) in config.buttons" :key="key + index">
+                                <template x-if="permission.includes(button.permission)">
+                                    <button :class="button.class"  @click="button.action()">
+                                        <span x-text="button.text"></span>
+                                    </button>
                                 </template>
                             </template>
                         </template>

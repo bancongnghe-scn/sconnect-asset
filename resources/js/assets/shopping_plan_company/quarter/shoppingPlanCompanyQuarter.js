@@ -43,6 +43,10 @@ document.addEventListener('alpine:init', () => {
         showModal: false,
         listStatus: STATUS_SHOPPING_PLAN_COMPANY,
         listUser: [],
+        registersOrganization: [],
+        dataOrganization: [],
+        list_asset_type: [],
+        list_job : [],
         register: [],
         listPlanCompanyYearComplete: [],
         configButtonsTable: [],
@@ -287,6 +291,172 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async accountApprovalShoppingPlanOrganization(id, type) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type, this.note_disapproval)
+                if (response.success) {
+                    let organization = this.register.organizations.find((item) => +item.id === +id);
+                    if (type === ORGANIZATION_TYPE_APPROVAL) {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    } else {
+                        organization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
+                        $("#modalNoteDisapproval").modal('hide')
+                    }
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async accountApprovalMultipleShoppingPlanOrganization(type) {
+            this.loading = true
+            try {
+                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+                ids = ids.map(Number);
+                const response = await window.apiAccountApprovalShoppingPlanOrganization(ids, type, this.note_disapproval)
+                if (response.success) {
+                    this.register.organizations.filter(function (item) {
+                        if (ids.includes(item.id)) {
+                            item.status = type === ORGANIZATION_TYPE_APPROVAL
+                                ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
+                        }
+                    });
+                    this.selectedRow = []
+                    if (type === ORGANIZATION_TYPE_DISAPPROVAL) {
+                        $("#modalNoteDisapprovalMultiple").modal('hide')
+                    }
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.register.organizations.forEach((item) => {
+                if ([
+                    STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                    STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                ].includes(+item.status)) {
+                    this.selectedRow[item.id] = this.checkedAll
+                }
+            })
+        },
+
+        async getInfoOrganization(id) {
+            this.loading = true
+            try {
+                const response = await window.apiGetInfoShoppingPlanOrganization(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.dataOrganization = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+                this.getJobs([this.data.organization_id])
+            }
+        },
+
+        async getRegisterAssetOrganization(id) {
+            this.loading = true
+            try {
+                const response = await window.apiGetRegisterShoppingPlanOrganization(id)
+                if (response.success) {
+                    this.registersOrganization = response.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.list_asset_type = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getJobs(organization_id){
+            this.loading = true
+            try {
+                const response = await window.apiGetListJob({'org_id': organization_id})
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                this.list_job = response.data
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async saveReviewRegisterAsset() {
+            this.loading = true
+            try {
+                const response = await window.apiSaveReviewRegisterAsset(this.idPlanOrganization, this.registersOrganization)
+                if (response.success) {
+                    toast.success('Lưu thông tin phê duyệt thành công')
+                    this.register.organizations.find((item) => +item.id === +this.idPlanOrganization).status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async handleShowModalDetailOrganization(id) {
+            this.loading = true
+            try {
+                this.idPlanOrganization = id
+                this.table_index = []
+                await this.getInfoOrganization(id)
+                this.getRegisterAssetOrganization(id)
+                if (this.list_asset_type.length === 0) {
+                    this.getListAssetType()
+                }
+                $('#modalDetailOrganization').modal('show')
+                this.setConfigButton()
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModal(action, id = null) {
             this.loading = true
             this.showModal = true
@@ -312,6 +482,26 @@ document.addEventListener('alpine:init', () => {
                 this.loading = false
                 this.showModal = false
             }
+        },
+
+        handleShowTable(index) {
+            if (!this.table_index.includes(index)) {
+                this.table_index.push(index)
+            } else {
+                this.table_index = this.table_index.filter(item => item !== index);
+            }
+        },
+
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
+
+            this.registersOrganization[index].approval.total = total
+            this.registersOrganization[index].approval.price = price
         },
 
         setConfigButton() {
@@ -457,11 +647,87 @@ document.addEventListener('alpine:init', () => {
                     ]
                 },
             ]
+            this.configButtonApprovalOrganizationTable = [
+                {
+                    condition: (status) => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    ].includes(status),
+                    permission: 'shopping_plan_company.accounting_approval',
+                    buttons: [
+                        {
+                            icon: 'bi bi-check fs-4 color-sc',
+                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
+                        },
+                        {
+                            icon: 'bi bi-x fs-4 text-red',
+                            action: (id) => this.showModalNoteDisapproval(id),
+                        },
+                    ],
+                }
+            ]
+            this.configButtonsModalDetail = [
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-primary',
+                            action: () => this.saveReviewRegisterAsset(),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                // {
+                //     condition: () => [
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                //     ].includes(+this.data.status),
+                //     buttons: [
+                //         {
+                //             text: 'Duyệt',
+                //             class: 'btn bg-sc text-white',
+                //             action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_APPROVAL),
+                //             permission: 'shopping_plan_company.accounting_approval'
+                //         },
+                //     ],
+                // },
+                // {
+                //     condition: () => [
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                //     ].includes(+this.data.status),
+                //     buttons: [
+                //         {
+                //             text: 'Từ chối',
+                //             class: 'btn bg-red',
+                //             action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_DISAPPROVAL),
+                //             permission: 'shopping_plan_company.accounting_approval'
+                //         },
+                //     ],
+                // },
+            ]
         },
 
         showModalNoteDisapprovalShoppingCompany() {
             this.note_disapproval = null
             $("#modalNoteDisapprovalPlanCompany").modal('show')
+        },
+
+        showModalNoteDisapproval(id) {
+            this.id_organization = id
+            this.note_disapproval = null
+            $("#modalNoteDisapproval").modal('show')
+        },
+
+        showModalNoteDisapprovalMultiple() {
+            this.note_disapproval = null
+            $("#modalNoteDisapprovalMultiple").modal('show')
         },
 
         watchFilters() {

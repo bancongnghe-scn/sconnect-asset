@@ -21,3 +21,4 @@
     @include('assets.shopping_plan_organization.quarter.detail')
     @include('assets.shopping_plan_organization.quarter.register')
 </div>
+

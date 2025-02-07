@@ -82,10 +82,10 @@
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                             <div>
                                 <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                    @include('assets.shopping-plan-company.table_synthetic_organization_register')
                                 </template>
                                 <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                    @include('component.shopping_plan_company.year.table_synthetic_asset_organization_register')
+                                    @include('assets.shopping-plan-company.year.table_synthetic_asset_organization_register')
                                 </template>
                             </div>
                         </div>

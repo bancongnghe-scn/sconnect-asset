@@ -33,7 +33,8 @@
                             <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                 <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                     <div>
-                                        <label class="tw-font-bold">Kế hoạch quý<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                        <label class="tw-font-bold">Kế hoạch quý<span
+                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.extent.select_single', [
                                             'selected' => 'data.plan_quarter_id',
                                             'options' => 'listPlanCompanyQuarter',
@@ -44,7 +45,8 @@
                                     </div>
 
                                     <div>
-                                        <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                        <label class="tw-font-bold">Tháng<span
+                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.simple.select_single', [
                                             'selected' => 'data.month',
                                             'options' => 'LIST_MONTHS',
@@ -55,7 +57,8 @@
                                     </div>
 
                                     <div>
-                                        <label class="tw-font-bold">Tuần<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                        <label class="tw-font-bold">Tuần<span
+                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.simple.select_single', [
                                             'selected' => 'data.time',
                                             'options' => 'LIST_WEEK',
@@ -76,7 +79,8 @@
                                 </template>
 
                                 <div>
-                                    <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                    <label class="tw-font-bold">Thời gian đăng ký<span
+                                                class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',
                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
@@ -103,7 +107,7 @@
                                 <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
                                 <div>
                                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        @include('component.shopping_plan_company.table_synthetic_organization_register')
+                                        @include('assets.shopping-plan-company.table_synthetic_organization_register')
                                     </template>
                                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
