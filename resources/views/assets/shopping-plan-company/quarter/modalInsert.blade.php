@@ -9,35 +9,29 @@
                 <div class="tw-grid tw-grid-cols-2 tw-gap-4">
                     <div>
                         <label class="tw-font-bold">Kế hoạch năm<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span>
-                            @include('common.select_custom.extent.select_single', [
+                        @include('common.select_custom.extent.select_single', [
                                 'placeholder' => 'Chọn kế hoạch năm',
                                 'selected' => 'data.plan_year_id',
                                 'options' => 'listPlanCompanyYearComplete',
-                            ])
-                        </span>
+                        ])
                     </div>
 
                     <div>
                         <label class="tw-font-bold">Quý</label>
-                        <span>
-                            @include('common.select_custom.simple.select_single', [
+                        @include('common.select_custom.simple.select_single', [
                                 'placeholder' => 'Chọn quý',
                                 'selected' => 'data.time',
                                 'options' => 'LIST_QUARTER',
-                            ])
-                        </span>
+                        ])
                     </div>
 
                     <div>
                         <label class="tw-font-bold">Thời gian đăng ký<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <span>
-                            @include('common.datepicker.datepicker_range', [
+                        @include('common.datepicker.datepicker_range', [
                                 'placeholder' => 'Chọn thời gian đăng ký',
                                 'start' => 'data.start_time',
                                 'end' => 'data.end_time'
                             ])
-                        </span>
                     </div>
 
                     <template x-if="listUser.length > 0">

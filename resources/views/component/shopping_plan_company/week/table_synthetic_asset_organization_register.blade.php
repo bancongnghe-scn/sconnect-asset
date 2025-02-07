@@ -23,12 +23,12 @@
                         'tooltip' => 'organization.note'
                     ])
                 </td>
-                <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <td x-text="assetRegister.job_name ?? '-'"></td>
-                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
-                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
-                <td x-text="assetRegister.description ?? '-'"></td>
-                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
+                <td x-text="assetRegister.asset_type_name ?? '-'" class="align-middle"></td>
+                <td x-text="assetRegister.job_name ?? '-'" class="align-middle"></td>
+                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center align-middle"></td>
+                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center align-middle"></td>
+                <td x-text="assetRegister.description ?? '-'" class="align-middle"></td>
+                <td class="align-middle" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
                     <template x-if="typeof assetRegister.action !== 'undefined'">
                         <select class="form-select" x-model="assetRegister.action">
                             <option value="1">Mua mới</option>
@@ -38,7 +38,7 @@
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
-                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-body">
+                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-white">
                         <i class="bi bi-eye" style="color: #63E6BE;"></i>
                     </button>
 

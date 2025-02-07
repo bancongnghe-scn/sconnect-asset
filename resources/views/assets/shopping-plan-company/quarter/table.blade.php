@@ -46,7 +46,7 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <template x-for="configBtnTable in configButtonsTable">
-                                        <template x-if="value.status === true || configBtnTable.condition(+value.status)">
+                                        <template x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
                                             <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
                                                 <template x-for="configBtn in configBtnTable.buttons">
                                                     <button class="border-0 bg-white"

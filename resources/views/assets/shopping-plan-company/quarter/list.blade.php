@@ -13,5 +13,7 @@
      'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
      'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
      'resources/js/app/api/apiUser.js',
+     'resources/js/app/api/apiJob.js',
+     'resources/js/assets/api/apiAssetType.js',
 ])
 @endsection

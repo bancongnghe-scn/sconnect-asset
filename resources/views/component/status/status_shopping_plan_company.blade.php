@@ -38,9 +38,9 @@
                 || status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
             ) {
                 return {
-                    color: '#FFE58F',
+                    color: '#FAAD14',
                     backgroundColor: '#FFFBE6',
-                    border: '1px solid #FFE58F'
+                    border: '1px solid #FAAD14'
                 };
             }
             return {};

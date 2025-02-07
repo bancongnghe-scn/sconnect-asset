@@ -14,7 +14,7 @@
         </a>
     </div>
 
-    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; height: 80dvh">
+    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; height: 83dvh">
         <div class="overflow-y-scroll custom-scroll mt-3" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
             {{-- Lich su --}}
             <div class="list-group pr-2" x-show="activeLink.history">
