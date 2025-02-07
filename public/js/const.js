@@ -270,7 +270,7 @@ localeVi = {
 };
 
 //
-LIST_STATUS_TEXT = {
+window.LIST_STATUS_TEXT = {
     1: 'Đang sử dụng',
     2: 'Chưa sử dụng',
     3: 'Mới',
@@ -281,5 +281,5 @@ LIST_STATUS_TEXT = {
     8: 'Đã thanh lý',
     9: 'Hỏng',
     10: 'Đang sửa chữa',
-    10: 'Bảo Dưỡng',
+    11: 'Bảo Dưỡng',
 }
