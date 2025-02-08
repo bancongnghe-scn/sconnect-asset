@@ -59,7 +59,7 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <span>Tài sản đang sử dụng</span>
-                                            <input type="text" class="form-control" value="0" disabled>
+                                            <input type="text" class="form-control" x-model="userObj.list_asset_use.length" disabled>
 
                                         </div>
                                     </div>
@@ -643,7 +643,11 @@
                     <table class="table table-bordered table-repair">
                         <thead>
                         <tr class="sticky-top" style="font-size: 14px;">
-                            <th></th>
+                            <th>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" @change="toggleAllSelection($event.target.checked)">
+                            </div>
+                            </th>
                             <th>Mã tài sản</th>
                             <th>Tên tài sản</th>
                             <th>Loại tài sản</th>
@@ -657,7 +661,7 @@
                             <tr>
                                 <td>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" @change="toggleSelection(asset, $event.target.checked)">
+                                        <input class="form-check-input" type="checkbox" :checked="listAssetAllocate.some(selected => selected.id === asset.id)" value="" @change="toggleSelection(asset, $event.target.checked)">
                                     </div>
                                 </td>
                                 <td x-text="asset.code"></td>
