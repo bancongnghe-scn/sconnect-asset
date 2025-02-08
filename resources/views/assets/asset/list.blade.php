@@ -252,6 +252,19 @@
                             <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
                             <td class="text-center" x-text="LIST_LOCATION_ASSET[asset.location]"></td>
                             <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
+                                {{-- <div class="dropdown">
+                                    <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" data-bs-auto-flip="true">
+                                        <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Bảo dưỡng</a></li>
+                                        <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                                    </ul>
+                                </div> --}}
                                 <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1217,6 +1230,19 @@
                     }
                 } else {
                     this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== asset.id);
+                }
+            },
+            toggleAllSelection(isChecked) {
+                if (isChecked) {
+                    this.listAssetSelect.forEach(assetSelect => {
+                        if (!this.listAssetAllocate.some(selected => selected.id === assetSelect.id)) {
+                            this.listAssetAllocate.push(assetSelect);
+                        }
+                    });
+                } else {
+                    this.listAssetSelect.forEach(assetSelect => {
+                        this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetSelect.id);
+                    });
                 }
             },
             deleteSelection(assetId){
