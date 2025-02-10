@@ -38,7 +38,9 @@
         class="form-select tw-w-full"
         type="button"
         :class="selected? '' : 'tw-text-gray-500'"
-        x-text="options.find(item => +item.id === +selected)?.name || '{{ $placeholder ?? 'Chọn ...' }}'"
+        x-data="{option: null}"
+        x-effect="option = options.find(item => +item.id === +selected)"
+        x-text="option ? (option?.code + '-' + option?.name) : '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >

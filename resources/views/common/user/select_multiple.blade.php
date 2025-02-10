@@ -62,7 +62,7 @@
             <div class="d-flex flex-wrap gap-1">
                 <template x-for="id in selected" :key="id">
                     <span class="badge bg-primary d-flex align-items-center tw-w-fit">
-                        <span x-text="options.find(option => option.id === id)?.name"></span>
+                        <span x-data="{option: options.find(option => option.id === id)}" x-text="option?.code + '-' + option?.name"></span>
                         <button
                             @click.stop="clearOption(id)"
                             class="btn btn-sm text-white ms-2 p-0 d-flex align-items-center"
