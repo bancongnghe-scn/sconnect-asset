@@ -8,19 +8,21 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="tw-mt-8">
-                            @include('assets.order.filters')
-                        </div>
+                        <div class="d-flex justify-content-between align-items-center form-group">
+                            <div class="col-8 p-0">
+                                @include('assets.order.filters')
+                            </div>
 
-                        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-                            @can('order.crud')
-                                <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#modalSelectTypeCreate').modal('show')">
-                                    <span>+ Thêm</span>
-                                </button>
-                                <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemove(true)" :disabled="window.checkDisableSelectRow">
-                                    <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
-                                </button>
-                            @endcan
+                            <div class="d-flex tw-gap-x-2">
+                                @can('order.crud')
+                                    <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#modalSelectTypeCreate').modal('show')">
+                                        <span>+ Thêm</span>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemove(true)" :disabled="window.checkDisableSelectRow">
+                                        <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
+                                    </button>
+                                @endcan
+                            </div>
                         </div>
 
                         <div

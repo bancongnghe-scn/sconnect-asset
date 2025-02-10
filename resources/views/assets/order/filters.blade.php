@@ -1,17 +1,17 @@
-<div class="d-flex flex-row align-items-end form-group">
-    <div class="col-2">
+<div class="d-grid tw-grid-cols-4 tw-gap-x-4 align-items-center">
+    <div>
         <input class="form-control" type="text" x-model="filters.code_name"
                placeholder="Tên/số đơn hàng"
                @keydown.enter="list(filters)">
     </div>
-    <div class="col-2">
+    <div>
         @include('common.datepicker.datepicker', [
             'placeholder' => "Ngày đơn hàng",
             'model' => "filters.created_at",
             'id' => 'filters.created_at'
         ])
     </div>
-    <div class="col-2">
+    <div>
         <div>
             <select class="form-select" x-model="filters.status">
                 <option value="#">Chọn trạng thái</option>
@@ -21,7 +21,7 @@
             </select>
         </div>
     </div>
-    <div class="col-auto">
-        <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>
+    <div>
+        <button @click="reloadPage()" type="button" class="btn btn-sm btn-outline-danger">Xóa lọc</button>
     </div>
 </div>

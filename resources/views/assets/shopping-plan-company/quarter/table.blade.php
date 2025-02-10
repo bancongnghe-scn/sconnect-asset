@@ -18,7 +18,7 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -44,7 +44,7 @@
                                 <td class="text-center align-middle">
                                     @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                 </td>
-                                <td class="text-center align-middle">
+                                <td class="align-middle">
                                     <template x-for="configBtnTable in configButtonsTable">
                                         <template x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
                                             <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">

@@ -39,7 +39,7 @@
                                         <label>Người phụ trách mua sắm<span
                                                 class="tw-text-red-600 mb-0">*</span></label>
                                         <div>
-                                            @include('common.select_custom.extent.select_single', [
+                                            @include('common.user.select_single', [
                                                 'selected' => 'data.purchasing_manager_id',
                                                 'options' => 'listUser',
                                                 'placeholder' => 'Chọn người phụ trách',
@@ -82,7 +82,7 @@
                                         <label>Trạng thái</label>
                                         @include('common.select_custom.simple.select_single', [
                                              'selected' => 'data.status',
-                                             'options' => 'listStatus',
+                                             'options' => 'LIST_STATUS_ORDER',
                                              'placeholder' => 'Chọn trạng thái',
                                              'disabled' => 'disabled'
                                         ])
@@ -93,7 +93,7 @@
                             {{--  thông tin mặt hàng--}}
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                                <div class="mt-3">
+                                <div class="mt-3 table-responsive custom-scroll">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2"
                                                class="table table-bordered dataTable dtr-inline"
@@ -155,7 +155,7 @@
                                                 <th>ĐVT</th>
                                                 <th class="tw-min-w-60">Đơn vị</th>
                                                 <th class="tw-min-w-60">Mô tả</th>
-                                                <th></th>
+                                                <th x-show="action === 'update'"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -198,8 +198,8 @@
                                                         <input class="form-control" type="text"
                                                                x-model="asset.description" :disabled="disabled">
                                                     </td>
-                                                    <td class="text-center align-middle">
-                                                        <button class="border-0 bg-body"
+                                                    <td class="text-center align-middle" x-show="action === 'update'">
+                                                        <button class="border-0 bg-white"
                                                                 @click="data.shopping_assets_order.splice(index, 1)">
                                                             <i class="fa-regular fa-trash-can"
                                                                style="color: #cd1326;"></i>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="card col-2">
-                        @include('component.history_comment_v2')
+                        @include('assets.order.history_comment')
                     </div>
                 </div>
             </div>
