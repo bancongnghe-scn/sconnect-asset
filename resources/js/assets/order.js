@@ -70,12 +70,8 @@ document.addEventListener('alpine:init', () => {
         title: null,
         action: null,
         id: null,
+        showModal : false,
         reason: null,
-        listStatus: {
-            [ORDER_STATUS_NEW]: 'Mới tạo',
-            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
-            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
-        },
 
         //methods
         async list(filters) {
@@ -176,6 +172,7 @@ document.addEventListener('alpine:init', () => {
                     this.title = 'Tạo mới'
                     $('#modalInsert').modal('show')
                 } else {
+                    this.showModal = true
                     this.title = action === 'view' ? 'Chi tiết' : 'Cập nhật'
                     this.id = id
                     await this.findOrder(id)
@@ -185,6 +182,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+                this.showModal = false
             }
         },
 

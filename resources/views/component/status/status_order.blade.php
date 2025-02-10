@@ -1,21 +1,42 @@
-<span x-text="LIST_STATUS_ORDER[{{$status}}]" class="p-1 border rounded"
-      :class="{
-            'tw-text-cyan-400 tw-bg-cyan-100'  : +{{$status}} === ORDER_STATUS_NEW,
-            'tw-text-amber-400 tw-bg-amber-100'  : +{{$status}} === ORDER_STATUS_TRANSIT,
-            'tw-text-green-900 tw-bg-green-100'  : [ORDER_STATUS_DELIVERED, ORDER_STATUS_WAREHOUSED].includes(+{{$status}}),
-            'tw-text-red-600 tw-bg-red-100'  : +{{$status}} === ORDER_STATUS_CANCEL,
-      }"
-      @if(isset($tooltip))
-          data-bs-toggle="tooltip" data-bs-placement="bottom" :title="{{$tooltip}}"
-      @endif
->
-</span>
-<span x-text="LIST_STATUS_ASSET_MAINTAIN[{{$status}}]"
+<span x-text="LIST_STATUS_ORDER[{{$status}}]"
+      x-data="{
+        getStyle(status) {
+            if (status === ORDER_STATUS_NEW) {
+                return {
+                    color: '#1890FF',
+                    backgroundColor: '#E6F7FF',
+                    border: '1px solid #1890FF'
+                };
+            }
+            else if (status === ORDER_STATUS_TRANSIT) {
+                return {
+                    color: '#FAAD14',
+                    backgroundColor: '#FFFBE6',
+                    border: '1px solid #FAAD14'
+                };
+            }
+            else if (status === ORDER_STATUS_CANCEL) {
+                return {
+                    color: '#F5222D',
+                    backgroundColor: '#FFF1F0',
+                    border: '1px solid #F5222D'
+                };
+            }
+            else if ([ORDER_STATUS_DELIVERED, ORDER_STATUS_WAREHOUSED].includes(+status)) {
+                return {
+                    color: '#52C41A',
+                    backgroundColor: '#F6FFED',
+                    border: '1px solid #52C41A'
+                };
+            }
+            return {};
+        }
+    }"
       style="
         font-size: 12px;
         padding: 3px 12px 3px 12px;
         border-radius: 8px;
       "
-      :style="(+{{$status}} === STATUS_ASSET_MAINTAINING) ? { color: '#FAAD14', backgroundColor: '#FFFBE6', border: '1px solid #FFE58F' } : {}"
+      :style="getStyle(+{{$status}})"
 >
 </span>
