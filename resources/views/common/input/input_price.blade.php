@@ -1,8 +1,10 @@
 <input x-data="{
             init() {
-                this.formatPriceVnd = formatCurrencyVND(this.formatPriceVnd)
+                this.$watch(`{{$model}}`, (newValue) => {
+                    this.formatPriceVnd = new Intl.NumberFormat('vi-VN').format(newValue)
+                });
             },
-            formatPriceVnd: null,
+            formatPriceVnd: 0,
             formatCurrencyVNDInput(event) {
                 let input = event.target;
                 let valueInput = input.value.trim(); // Xóa khoảng trắng thừa và dấu chấm
