@@ -37,7 +37,7 @@
 
                                 <div class="tw-col-span-3">
                                     <label class="form-label">Người quan sát</label>
-                                    @include('common.select_custom.extent.select_multiple', [
+                                    @include('common.user.select_multiple', [
                                             'placeholder' => 'Chọn người tham gia',
                                             'options' => 'listUser',
                                             'selected' => 'data.monitor_ids',

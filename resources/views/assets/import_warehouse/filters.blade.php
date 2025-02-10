@@ -15,7 +15,7 @@
 
     <div class="col-2">
         <div>
-            @include('common.select_custom.extent.select_single', [
+            @include('common.user.select_single', [
                 'selected' => 'filters.created_by',
                 'options' => 'listUser',
                 'placeholder' => 'Người nhập',

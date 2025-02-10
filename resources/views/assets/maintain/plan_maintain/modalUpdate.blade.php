@@ -53,7 +53,7 @@
                             </div>
                             <div class="tw-col-span-2">
                                 <label class="tw-font-bold">Người tham gia</label>
-                                @include('common.select_custom.extent.select_multiple', [
+                                @include('common.user.select_multiple', [
                                     'placeholder' => 'Chọn người tham gia',
                                     'options' => 'listUser',
                                     'selected' => 'data.user_ids',

@@ -39,7 +39,7 @@
                                         <label>Người phụ trách mua sắm<span
                                                 class="tw-text-red-600 mb-0">*</span></label>
                                         <div>
-                                            @include('common.select_custom.extent.select_single', [
+                                            @include('common.user.select_single', [
                                                 'selected' => 'data.purchasing_manager_id',
                                                 'options' => 'listUser',
                                                 'placeholder' => 'Chọn người phụ trách',
