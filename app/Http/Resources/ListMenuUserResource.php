@@ -9,7 +9,7 @@ class ListMenuUserResource extends JsonResource
     public function toArray($request)
     {
         $menus    = $this->resource->groupBy('parent_id');
-        $menuMain = $menus[null];
+        $menuMain = $menus[null] ?? collect();
         $menuMain->sortBy('order');
         $data = [];
         foreach ($menuMain as $menu) {

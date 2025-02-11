@@ -19,8 +19,7 @@ class AssetTypeController extends Controller
     {
         $request->validate([
             'name'                   => 'nullable|string|max:255',
-            'asset_type_group_id'    => 'nullable|array',
-            'asset_type_group_id.*'  => 'integer',
+            'asset_type_group_id'    => 'nullable|integer',
             'page'                   => 'nullable|integer',
             'limit'                  => 'nullable|integer|max:200',
         ]);
@@ -30,6 +29,8 @@ class AssetTypeController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -56,6 +57,8 @@ class AssetTypeController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -74,6 +77,8 @@ class AssetTypeController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -100,6 +105,8 @@ class AssetTypeController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -117,6 +124,8 @@ class AssetTypeController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -136,6 +145,8 @@ class AssetTypeController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

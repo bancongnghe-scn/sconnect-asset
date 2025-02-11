@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\IndustryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class IndustryController extends Controller
 {
@@ -27,6 +26,8 @@ class IndustryController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -50,7 +51,7 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            Log::error($exception);
+            report($exception);
 
             return response_error();
         }
@@ -70,6 +71,8 @@ class IndustryController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -93,6 +96,8 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -110,6 +115,8 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -130,6 +137,8 @@ class IndustryController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

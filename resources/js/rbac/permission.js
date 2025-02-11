@@ -31,7 +31,7 @@ document.addEventListener('alpine:init', () => {
 
         //data
         filters: {
-            name: null,
+            description: null,
             limit: 10,
             page: 1
         },

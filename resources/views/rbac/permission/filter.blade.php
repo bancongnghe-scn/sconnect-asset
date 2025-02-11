@@ -5,7 +5,7 @@
                 <div class="d-flex flex-wrap align-items-end form-group">
                     <div class="col-3">
                         <label class="tw-font-bold">Tên quyền</label>
-                        <input type="text" class="form-control" x-model="filters.name" placeholder="Nhập tên quyền">
+                        <input type="text" class="form-control" x-model="filters.description" placeholder="Nhập tên quyền">
                     </div>
                     <div>
                         <button @click="list(filters)" type="button" class="btn btn-block btn-sc">Tìm kiếm</button>

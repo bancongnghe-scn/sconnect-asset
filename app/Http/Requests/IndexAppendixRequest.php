@@ -15,10 +15,8 @@ class IndexAppendixRequest extends FormRequest
     {
         return [
             'name_code'       => 'nullable|string|max:255',
-            'contract_ids'    => 'nullable|array',
-            'contract_ids.*'  => 'integer',
-            'status'          => 'nullable|array',
-            'status.*'        => 'integer',
+            'contract_id'     => 'nullable|integer',
+            'status'          => 'nullable|integer',
             'signing_date'    => 'nullable|date|date_format:Y-m-d',
             'from'            => 'nullable|date|date_format:Y-m-d',
             'page'            => 'nullable|integer',

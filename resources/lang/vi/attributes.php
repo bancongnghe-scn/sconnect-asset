@@ -15,7 +15,20 @@ return [
         'year' => [
             'time' => 'năm',
         ],
-        'start_time' => 'thời gian bắt đầu đăng ký',
-        'end_time'   => 'thời gian kết thúc đăng ký',
+        'quarter' => [
+            'time' => 'quý',
+        ],
+        'week' => [
+            'time' => 'tuần',
+        ],
+        'start_time'        => 'thời gian bắt đầu đăng ký',
+        'end_time'          => 'thời gian kết thúc đăng ký',
+        'plan_year_id'      => 'kế hoạch năm',
+        'plan_quarter_id'   => 'kế hoạch quý',
     ],
+    'job_id'                   => 'chức danh',
+    'quantity_registered'      => 'số lượng đăng ký',
+    'purchasing_manager_id'    => 'người phụ trách mua sắm',
+    'shopping_plan_company_id' => 'kế hoạch mua sắm',
+    'organization_id'          => 'đơn vị',
 ];

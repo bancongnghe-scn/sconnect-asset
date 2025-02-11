@@ -9,7 +9,7 @@ use App\Models\Monitor;
 use App\Repositories\ContractAppendixRepository;
 use App\Repositories\ContractFileRepository;
 use App\Repositories\MonitorRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -73,6 +73,7 @@ class ContractAppendixService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -143,6 +144,7 @@ class ContractAppendixService
 
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -195,6 +197,7 @@ class ContractAppendixService
             $this->contractFileRepository->deleteByContractIds($id);
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -220,6 +223,7 @@ class ContractAppendixService
             $this->contractFileRepository->deleteByContractIds($ids);
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

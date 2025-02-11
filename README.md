@@ -6,9 +6,10 @@
 - vim .git/hooks/pre-commit
 - Thêm đoạn mã sau vào file  (#!/bin/sh ./vendor/bin/php-cs-fixer fix git add .
   )
+  <!-- git commit -am "build" -->
 ## Using
 - Check quyền Auth::user()->can('permission_name')
-
+- Tạo controller, service, repository, model : php artisan make:crms {name}
 ## Server
 ssh ubuntu@18.141.181.19
 ubuntu/abc@@123

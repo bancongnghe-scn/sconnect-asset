@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
             this.list({page: 1, limit: 10})
             this.getRole()
             this.getMenuParent()
+            this.getListUser()
             this.initSelect2Modal(this.idModalUI);
             this.onChangeSelect2()
         },
@@ -45,10 +46,12 @@ document.addEventListener('alpine:init', () => {
             parent_id: null,
             description: null,
             role_ids: [],
+            user_ids: [],
         },
 
         listRole: [],
         listMenuParent: [],
+        listUser: [],
         titleModal: null,
         action: null,
         id: null,
@@ -137,6 +140,17 @@ document.addEventListener('alpine:init', () => {
                 this.listMenuParent = response.data.data
             } else {
                 toast.error(response.message)
+            }
+            this.loading = false
+        },
+
+        async getListUser(){
+            this.loading = true
+            const response = await window.apiGetUser({})
+            if (response.success) {
+                this.listUser = response.data.data
+            } else {
+                toast.error('Lấy danh sách nhân viên thất bại !')
             }
             this.loading = false
         },

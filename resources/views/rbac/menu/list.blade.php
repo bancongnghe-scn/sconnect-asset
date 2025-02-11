@@ -47,5 +47,6 @@
         'resources/js/rbac/menu.js',
         'resources/js/rbac/api/apiRole.js',
         'resources/js/rbac/api/apiMenu.js',
+        'resources/js/app/api/apiUser.js',
     ])
 @endsection

@@ -1,9 +1,11 @@
-<div class="d-flex tw-gap-x-2 align-items-center">
-    <div class="col-2">
-        <img src="https://lh3.googleusercontent.com/a/ACg8ocJ-NELNG55xGTjMztdZpSLwO6SsJiKCfW1UluF-QjAddVaFSQ=s96-c" class="tw-rounded-full tw-h-10">
-    </div>
-    <div>
-        <p x-text="data[key].name ?? ''" class="mb-0 tw-font-bold"></p>
-        <span class="opacity-50">Mã nhân sự: <span x-text="data[key].code"></span></span>
+<div class="d-flex justify-content-center">
+    <img x-bind:src="data[key] && data[key].avatar ?
+            (data[key].avatar.includes('/uploads/') ? 'https://office.sconnect.com.vn' + data[key].avatar : data[key].avatar)
+            : 'https://office.sconnect.com.vn/images/avatar-default.png'"
+         style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;"
+     >
+    <div class="d-flex flex-column align-items-start justify-content-center" style="margin-left: 10px">
+        <span x-text="data[key] ? data[key].name : ''" class="font-weight-bold text-sm"></span>
+        <span x-text="data[key] ? 'Mã nhân sự:' + data[key].code : ''" style="color: #706f6f;"></span>
     </div>
 </div>

@@ -3,9 +3,10 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListIndustry()
-            this.getListAssetType({})
+            this.getListAssetType()
             window.initSelect2Modal(this.idModalUI)
             this.onChangeSelect2()
+            this.watchFilters()
         },
 
         //dataTable
@@ -35,8 +36,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             code_name: null,
-            status: [],
-            industry_ids: [],
+            status: null,
+            industry_ids: null,
             page: 1,
             limit: 10
         },
@@ -79,9 +80,6 @@ document.addEventListener('alpine:init', () => {
         activeLink: {
             payment_terms : true,
             payment_account : false
-        },
-        status: {
-           1: 'Chờ phê duyệt'
         },
 
         //methods
@@ -175,9 +173,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListAssetType(filters) {
+        async getListAssetType() {
             this.loading = true
-            const response = await window.apiGetAssetType(filters)
+            const response = await window.apiGetAssetType({})
             if (response.success) {
                 this.listAssetType = response.data.data
             } else {
@@ -267,20 +265,14 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 code_name: null,
-                status: [],
-                industry_ids: [],
+                status: null,
+                industry_ids: null,
                 page: 1,
                 limit: 10
             }
-            $('#industriesFilter').val([]).change()
-            $('#statusFilter').val([]).change()
+            this.list(this.filters)
         },
 
         onChangeSelect2() {
@@ -290,10 +282,6 @@ document.addEventListener('alpine:init', () => {
                     this.data.industry_ids = value
                 } else if (event.target.id === 'assetTypeSelect2') {
                     this.data.asset_type_ids = value
-                } else if (event.target.id === 'industriesFilter') {
-                    this.filters.industry_ids = value
-                } else if (event.target.id === 'statusFilter') {
-                    this.filters.status = value
                 }
             });
         },
@@ -304,6 +292,17 @@ document.addEventListener('alpine:init', () => {
             }
 
             this.activeLink[active] = true
+        },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['status', 'industry_ids'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
         }
     }));
 });

@@ -11,7 +11,7 @@
     <link rel="icon" type="image/png" href="/images/fav-sc-icon.png" />
 
     <!-- Scripts -->
-    <script src="{{ asset('js/const.js') }}"></script>
+    <script  src="/js/const.js"></script>
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
@@ -53,7 +53,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid">
+                    <div class="container-fluid" x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}" x-init="console.log(permission)">
                         @yield('content')
                     </div>
                 </section>

@@ -16,7 +16,7 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
+        // \SOfficeConstant\Http\Middleware\TrustHosts::class,
         Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         Middleware\PreventRequestsDuringMaintenance::class,
@@ -46,6 +46,11 @@ class Kernel extends HttpKernel
         //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
         //        ],
         'api' => [
+//            'throttle:api',
+//            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],

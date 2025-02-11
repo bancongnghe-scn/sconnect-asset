@@ -18,10 +18,8 @@ class SupplierController extends Controller
     {
         $request->validate([
             'code_name'      => 'nullable|string|max:255',
-            'industry_ids'   => 'nullable|array',
-            'industry_ids.*' => 'integer',
-            'status'         => 'nullable|array',
-            'status.*'       => 'integer',
+            'industry_ids'   => 'nullable|integer',
+            'status'         => 'nullable|integer',
             'page'           => 'integer',
             'limit'          => 'integer|max:200',
         ]);
@@ -31,6 +29,8 @@ class SupplierController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -49,6 +49,8 @@ class SupplierController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -67,6 +69,8 @@ class SupplierController extends Controller
 
             return response_success($result['data']);
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -85,6 +89,8 @@ class SupplierController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -102,6 +108,8 @@ class SupplierController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }
@@ -122,6 +130,8 @@ class SupplierController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            report($exception);
+
             return response_error();
         }
     }

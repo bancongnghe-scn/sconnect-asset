@@ -6,7 +6,7 @@ use App\Http\Resources\RoleInfoResource;
 use App\Repositories\Rbac\RolePermissionRepository;
 use App\Repositories\Rbac\RoleRepository;
 use App\Repositories\Rbac\RoleUserRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -45,6 +45,7 @@ class RoleService
             }
             DB::commit();
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [
@@ -137,6 +138,7 @@ class RoleService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+            report($exception);
             DB::rollBack();
 
             return [

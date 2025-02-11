@@ -31,7 +31,10 @@ window.formData = function (data) {
 }
 
 window.formatCurrencyVND = function formatCurrencyVND(number) {
-    return number.toLocaleString('vi-VN') + ' vnđ';
+    if (+number === 0 || typeof number === 'undefined') {
+        return 0
+    }
+    return number.toLocaleString('vi-VN');
 }
 
 window.initSelect2Modal = function initSelect2Modal(modalId) {
@@ -65,7 +68,25 @@ window.checkDisableSelectRow = function checkDisableSelectRow() {
 }
 
 window.formatDate = function formatDate(date) {
-    const [day, month, year] = date.split('/').map(Number); // Tách chuỗi và chuyển đổi thành số
-    date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
-    return format(date, 'yyyy-MM-dd')
+    const regex = /^(\d{2})\/(\d{2})\/(\d{4})$/;
+    if (regex.test(date)) {
+        const [day, month, year] = date.split('/').map(Number); // Tách chuỗi và chuyển đổi thành số
+        date =  new Date(year, month - 1, day); // Lưu ý tháng bắt đầu từ 0
+        return format(date, 'yyyy-MM-dd')
+    }
+
+    return date
+}
+
+window.formatDateVN = function formatDateVN(date) {
+    if (date === null) {
+        return null
+    }
+
+    return format(date, 'dd/MM/yyyy')
+}
+
+window.convertDateString = function convertDateString(dateString) {
+    const [year, month, day] = dateString.split('-')
+    return new Date(year, month - 1, day)
 }

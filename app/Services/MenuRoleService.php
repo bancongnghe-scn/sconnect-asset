@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\MenuRoleRepository;
+use App\Repositories\Rbac\MenuRoleRepository;
 
 class MenuRoleService
 {

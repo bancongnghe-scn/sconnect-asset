@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\ListAssetTypeResource;
 use App\Repositories\AssetTypeRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 
 class AssetTypeService

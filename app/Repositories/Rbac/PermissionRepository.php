@@ -40,6 +40,10 @@ class PermissionRepository extends BaseRepository
             $query->where('name', 'like', $filters['name'] . '%');
         }
 
+        if (!empty($filters['description'])) {
+            $query->where('description', 'like', $filters['description'] . '%');
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }

@@ -1,5 +1,3 @@
-import AirDatepicker from "air-datepicker";
-import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
 
 document.addEventListener('alpine:init', () => {
@@ -7,11 +5,9 @@ document.addEventListener('alpine:init', () => {
         init() {
             window.initSelect2Modal(this.idModalUI);
             window.initSelect2Modal(this.idModalInfo);
-            this.onChangeSelect2()
-            this.initDatePicker()
             this.list({page: 1, limit: 10})
-            this.getListSupplier({})
-            this.getListUser({page: 1, limit:20})
+            this.getListSupplier()
+            this.watchFilters()
         },
 
         //dataTable
@@ -44,8 +40,8 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name_code: null,
-            type: [],
-            status: [],
+            type: null,
+            status: null,
             signing_date: null,
             from : null,
             limit: 10,
@@ -67,10 +63,7 @@ document.addEventListener('alpine:init', () => {
             payments: [],
             appendixes: [],
         },
-        listTypeContract: TYPE_CONTRACT,
-        listStatusContract: STATUS_CONTRACT,
         listSupplier: [],
-        listUser: [],
         title: null,
         action: null,
         id: null,
@@ -158,9 +151,9 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
-        async getListSupplier(filters) {
+        async getListSupplier() {
             this.loading = true
-            const response = await window.apiGetSupplier(filters)
+            const response = await window.apiGetSupplier({})
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
@@ -241,24 +234,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name_code: null,
-                type: [],
-                status: [],
+                type: null,
+                status: null,
                 signing_date: null,
                 from : null,
                 limit: 10,
                 page: 1
             }
-            $('#filterTypeContract').val([]).change()
-            $('#filterStatusContract').val([]).change()
-            $('#filterSigningDateContract').val(null).change()
-            $('#filterFromContract').val(null).change()
+            this.list(this.filters)
         },
 
         confirmRemove(id) {
@@ -275,40 +260,6 @@ document.addEventListener('alpine:init', () => {
 
             $("#"+this.idModalConfirmDeleteMultiple).modal('show');
             this.id = ids
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterTypeContract') {
-                    this.filters.type = value
-                } else if (event.target.id === 'filterStatusContract') {
-                    this.filters.status = value
-                } else if (event.target.id === 'selectUserId') {
-                    this.data.user_ids = value
-                } else if (event.target.id === 'selectSupplier') {
-                    this.data.supplier_id = value
-                } else if (event.target.id === 'selectContractType') {
-                    this.data.type = value
-                }
-            });
-        },
-
-        onChangeDatePicker(el, date) {
-            const storageFormat = date != null ? format(date, 'dd/MM/yyyy') : null
-            if(el.id === 'selectSigningDateContract') {
-                this.data.signing_date = storageFormat
-            } else if (el.id === 'selectFromContract') {
-                this.data.from = storageFormat
-            } else if (el.id === 'selectToContract') {
-                this.data.to = storageFormat
-            } else if (el.name === 'selectPaymentDate') {
-                this.data.payments[el.id].payment_date = storageFormat
-            } else if (el.id === 'filterSigningDateContract') {
-                this.filters.signing_date = storageFormat
-            } else if (el.id === 'filterFromContract') {
-                this.filters.from = storageFormat
-            }
         },
 
         handleFilesContract() {
@@ -331,10 +282,6 @@ document.addEventListener('alpine:init', () => {
                 money: null,
                 description: null
             })
-
-            this.$nextTick(() => {
-                this.initDatePicker()
-            });
         },
 
         formatDataContract(contract) {
@@ -348,28 +295,15 @@ document.addEventListener('alpine:init', () => {
             return contract
         },
 
-        initDatePicker() {
-            document.querySelectorAll('.datepickerContract').forEach(el => {
-                new AirDatepicker(el, {
-                    autoClose: true,
-                    clearButton: true,
-                    locale: localeEn,
-                    dateFormat: 'dd/MM/yyyy',
-                    onSelect: ({date}) => {
-                        this.onChangeDatePicker(el, date)
-                    }
-                });
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['type', 'status', 'signing_date','from'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
 
-                el.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' || e.key === 'Delete') {
-                        setTimeout(() => {
-                            if (!el.value) {
-                                this.onChangeDatePicker(el, null);
-                            }
-                        }, 0);
-                    }
-                });
-            });
-        },
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        }
     }));
 });

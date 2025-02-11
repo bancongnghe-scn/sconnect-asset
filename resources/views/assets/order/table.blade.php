@@ -1,0 +1,88 @@
+<div class="row" x-data="table">
+    <div class="col-12">
+        <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12 table-responsive custom-scroll">
+                    <table id="example2" class="table table-bordered dataTable dtr-inline"
+                           aria-describedby="example2_info">
+                        <thead>
+                        <tr>
+                            <th class="text-center">
+                                <input type="checkbox" @click="selectedAll">
+                            </th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 4rem">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 26rem">Tên đơn hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center">Số đơn hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center">NCC</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày đơn hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày giao hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">Người phụ trách</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 5rem">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(value,index) in dataTable" :key="index">
+                                <tr x-data="{
+                                            isStatusActive: [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)
+                                        }" x-effect="isStatusActive = [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)">
+                                    <td class="text-center align-middle" >
+                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]" :disabled="!isStatusActive">
+                                    </td>
+                                    <td class="text-center align-middle" x-text="from + index"></td>
+                                    <td class="align-middle text-wrap tw-no-underline">
+                                        <a x-text="value.name" class="tw-no-underline tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span x-text="value.code"></span>
+                                    </td>
+                                    <td class="align-middle text-wrap">
+                                        <span x-text="value.supplier_name"></span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span x-text="formatDateVN(value.created_at)"></span>
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <span x-text="formatDateVN(value.delivery_date)"></span>
+                                    </td>
+                                    <td class="text-center align-middle" x-data="{data: value, key: 'purchasing_manager'}">
+                                        @include('common.user_info')
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        @include('component.status.status_order', ['status' => 'value.status'])
+                                    </td>
+                                    <td class="text-center align-middle">
+                                        <button class="border-0 bg-body" x-show="isStatusActive" @click="$dispatch('edit', { id: value.id })">
+                                            <i class="fa-regular fa-pen-to-square color-sc"></i>
+                                        </button>
+                                        <button class="border-0 bg-body" x-show="isStatusActive" @click="$dispatch('remove', { id: value.id })">
+                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @include('common.pagination')
+    </div>
+</div>
+
+<script>
+    function table() {
+        return {
+            checkedAll: false,
+
+            selectedAll() {
+                this.checkedAll = !this.checkedAll
+                this.dataTable.forEach((item) => {
+                    if(+item.status === ORDER_STATUS_NEW || +item.status === ORDER_STATUS_TRANSIT) {
+                        this.selectedRow[item.id] = this.checkedAll
+                    }
+                })
+            }
+        }
+    }
+</script>

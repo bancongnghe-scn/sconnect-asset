@@ -15,11 +15,12 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Loại hợp đồng</label>
-                            <select class="form-control" x-model="data.type" disabled>
-                                <template x-for="(value, key) in listTypeContract" :key="key">
-                                    <option :value="key" x-text="value"></option>
-                                </template>
-                            </select>
+                            @include('common.select_custom.simple.select_single', [
+                                    'selected' => 'data.type',
+                                    'options' => 'TYPE_CONTRACT',
+                                    'placeholder' => 'Chọn loại hợp đồng',
+                                    'disabled' => true
+                            ])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Tên hợp đồng</label>
@@ -27,11 +28,13 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp</label>
-                            <select class="form-select select2" disabled>
-                                <template x-for="value in listSupplier" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listSupplier.length > 0">
+                                <span x-data="{values: listSupplier}">
+                                    @include('common.select2.modal.extent.select2_single_modal', [
+                                        'placeholder' => 'Chọn nhà cung cấp', 'model' => 'data.supplier_id', 'disabled' => true
+                                    ])
+                                </span>
+                            </template>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -49,11 +52,15 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
-                            <select class="form-select select2" x-model="data.user_ids" multiple="multiple" disabled>
-                                <template x-for="value in listUser" :key="value.id">
-                                    <option :value="value.id" x-text="value.name"></option>
-                                </template>
-                            </select>
+                            <template x-if="listUser.length > 0">
+                                <span x-data="{values: listUser}">
+                                    @include('common.select2.modal.extent.select2_multiple_modal', [
+                                        'placeholder' => 'Chọn người theo dõi',
+                                        'model' => 'data.user_ids',
+                                        'disabled' => true
+                                    ])
+                                </span>
+                            </template>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -85,8 +92,8 @@
 
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
-                    <div class="mb-3 tw-max-h-60 overflow-y-scroll">
-                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                    <div class="mb-3 tw-max-h-60 overflow-y-scroll custom-scroll">
+                        <table id="example2" class="table table-bordered dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
                             <tr>
@@ -118,8 +125,8 @@
 
                 <div class="container">
                     <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
-                    <div class="tw-max-h-60 overflow-y-scroll">
-                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                    <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
+                        <table id="example2" class="table table-bordered dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
                             <tr>

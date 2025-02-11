@@ -4,8 +4,8 @@
             <div class="card-body">
                 <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
                     <div class="row">
-                        <div class="col-sm-12">
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                        <div class="col-sm-12 table-responsive custom-scroll">
+                            <table id="example2" class="table table-bordered dataTable dtr-inline"
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
@@ -46,10 +46,10 @@
                                         </template>
                                         <td class="text-center align-middle">
                                             <button class="border-0 bg-body" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
-                                                <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
+                                                <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                             </button>
                                             <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                                <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
+                                                <i class="fa-regular fa-pen-to-square color-sc"></i>
                                             </button>
                                             <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
                                                 <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>

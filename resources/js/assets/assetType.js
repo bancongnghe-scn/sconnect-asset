@@ -3,8 +3,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListTypeGroup({})
-            window.initSelect2Modal(this.idModalUI);
-            this.onChangeSelect2()
+            this.watchFilters()
         },
 
         //dataTable
@@ -34,7 +33,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             name: null,
-            asset_type_group_id: [],
+            asset_type_group_id: null,
             page: 1,
             limit: 10
         },
@@ -45,7 +44,6 @@ document.addEventListener('alpine:init', () => {
             description: null,
             measure: null,
         },
-        listMeasure: LIST_MEASURE,
         listAssetTypeGroup: [],
         title: null,
         action: null,
@@ -187,18 +185,13 @@ document.addEventListener('alpine:init', () => {
         },
 
         reloadPage() {
-            this.resetFilters()
-            this.list(this.filters)
-        },
-
-        resetFilters() {
             this.filters = {
                 name: null,
-                asset_type_group_id: [],
+                asset_type_group_id: null,
                 page: 1,
                 limit: 10
             }
-            $('#filterAssetTypeGroup').val([]).change()
+            this.list(this.filters)
         },
 
         confirmRemove(id) {
@@ -217,19 +210,18 @@ document.addEventListener('alpine:init', () => {
             this.id = ids
         },
 
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'filterAssetTypeGroup') {
-                    this.filters.asset_type_group_id = value
-                } else if (event.target.id === 'filterStatusContract') {
-                    this.filters.status = value
-                }  else if (event.target.id === 'selectMeasure') {
-                    this.data.measure = value
-                } else if (event.target.id === 'selectAssetTypeGroup') {
-                    this.data.asset_type_group_id = value
+        watchFilters() {
+            this.$watch('loading', (value) => {
+                console.log(value)
+            })
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['asset_type_group_id'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
                 }
-            });
+            }, { deep: true });
         },
     }));
 });

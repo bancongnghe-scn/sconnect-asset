@@ -11,13 +11,15 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
+        //                Auth::loginUsingId(1);
+
+        //                return $next($request);
         $secretKey     = env('SECRET_KEY');
-        $sessionCookie = @$_COOKIE['scn_session'];
+        $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
         if (!Auth::check()) {
             $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 $user = @$data['data']['user'];
-
                 Auth::loginUsingId($user['id']);
 
                 return $next($request);

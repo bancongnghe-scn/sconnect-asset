@@ -1,0 +1,19 @@
+@extends('layouts.app',[
+    'title' => 'Kế hoạch mua sắm quý'
+])
+
+@section('content')
+    @include('assets.shopping-plan-company.quarter.content_list')
+@endsection
+
+@section('js')
+    @vite([
+     'resources/js/assets/shopping_plan_company/quarter/shoppingPlanCompanyQuarter.js',
+     'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
+     'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
+     'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+     'resources/js/app/api/apiUser.js',
+     'resources/js/app/api/apiJob.js',
+     'resources/js/assets/api/apiAssetType.js',
+])
+@endsection

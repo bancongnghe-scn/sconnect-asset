@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Repositories\SupplierAssetIndustryRepository;
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 
 class SupplierAssetIndustryService
 {

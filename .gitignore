@@ -9,6 +9,7 @@
 .env.backup
 .env.production
 .phpunit.result.cache
+.php-cs-fixer.cache
 Homestead.json
 Homestead.yaml
 auth.json
@@ -17,3 +18,8 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.php-cs-fixer.cache
+/public/vendor/telescope
+/database/migrations/2018_08_08_100000_create_telescope_entries_table.php
+/config/telescope.php
+/app/Providers/TelescopeServiceProvider.php

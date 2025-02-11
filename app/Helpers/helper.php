@@ -1,6 +1,6 @@
 <?php
 
-use App\Support\AppErrorCode;
+use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Log;
 
 if (!function_exists('response_success')) {
@@ -37,7 +37,7 @@ if (!function_exists('response_error')) {
             'success'  => false,
             'code'     => $errorCode,
             'errors'   => empty($errors) ? $extraData['errors'] ?? [] : $errors,
-            'message'  => !empty($message) ? $message : __('error.'.$errorCode, $extraData),
+            'message'  => !empty($message) ? $message : __('error.' . $errorCode, $extraData),
         ];
 
         if (!empty($data)) {
@@ -53,6 +53,9 @@ if (!function_exists('response_error')) {
 if (!function_exists('callApiSSO')) {
     function callApiSSO($url, $sessionCookie, $secretKey)
     {
+        Log::info($url);
+        Log::info($sessionCookie);
+        Log::info($secretKey);
         try {
             $response = Illuminate\Support\Facades\Http::withHeaders([
                 'Origin'      => env('URL_CLIENT_SSO'),
@@ -60,7 +63,7 @@ if (!function_exists('callApiSSO')) {
             ])->timeout(30)
                 ->retry(2, 1000, throw: false)
                 ->get($url, [
-                    'scn_session' => $sessionCookie,
+                    env('SESSION_NAME') => $sessionCookie,
                 ]);
 
             return json_decode($response, true);
@@ -69,6 +72,24 @@ if (!function_exists('callApiSSO')) {
             Log::info($e->getMessage());
             Log::info('======================== End Helper:: callApiWithSession ============================');
             throw $e;
+        }
+    }
+}
+
+if (!function_exists('formatNumberToReadable')) {
+
+    function formatNumberToReadable($number)
+    {
+        if ($number >= 1000000000) {
+            return round($number / 1000000000, 1) . ' tỷ';
+        }
+        if ($number >= 1000000) {
+            return round($number / 1000000, 1) . ' triệu';
+        }
+        if ($number >= 1000) {
+            return round($number / 1000, 1) . ' nghìn';
+        } else {
+            return $number;
         }
     }
 }

@@ -1,0 +1,444 @@
+.proposal-comment {
+    emoji-picker {
+        width: 350px;
+        height: 300px;
+    }
+
+    .note-editor .note-toolbar {
+        border-bottom: 1px solid #a19a9a73;
+    }
+
+    .picker {
+        z-index: 9999 !important;
+    }
+
+    /*========= list comment =========*/
+    .comment-box-list {
+        margin-bottom: 30px;
+    }
+
+    .btn-show-hide {
+        color: rgba(130, 139, 149, 0.7);
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .btn-show-hide:hover {
+        color: #3a3d42;
+    }
+
+    .user-comment,
+    .form-user-comment {
+        /* display: flex; */
+
+        .comment-reated {
+            display: flex;
+            width: auto;
+            position: relative;
+            margin-right: -36px;
+            float: right;
+            margin-top: -23px;
+            cursor: pointer;
+
+            .total-react {
+                color: #828b95;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                margin: 1px 0 0 0px;
+            }
+            img {
+                margin-right: 1px;
+                width: 100%;
+                background: #fff;
+                border-radius: 5px;
+            }
+
+            .icon-emoji-1 {
+                z-index: 40;
+                margin-left: -34px;
+            }
+
+            .icon-emoji-2 {
+                z-index: 39;
+                margin-left: -3px;
+            }
+
+            .icon-emoji-3 {
+                z-index: 38;
+                margin-left: -3px;
+            }
+
+            .icon-emoji-4 {
+                z-index: 37;
+                margin-left: -3px;
+            }
+
+            .icon-emoji-5 {
+                z-index: 36;
+                margin-left: -3px;
+            }
+
+            .icon-emoji-6 {
+                z-index: 35;
+                margin-left: -3px;
+            }
+        }
+    }
+
+    .user-comment .propose__box-avatar {
+        border: 2px solid #edf1f3;
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .user-comment .comment-content {
+        margin-left: 15px;
+        border-radius: 10px;
+        padding: 7px 11px 7px 15px;
+        background-color: #edf1f3;
+        width: fit-content;
+        block-size: fit-content;
+        word-break: break-word;
+        position: relative;
+
+        .comment-file-content {
+            font-size: 12px;
+            color: #9f9a9aed;
+            cursor: pointer;
+        }
+
+        .comment-file-content:hover {
+            text-decoration: underline;
+        }
+
+        .descipt {
+            /* white-space: pre-line;
+            margin-top: -25px  */
+        }
+    }
+
+    .comment-content.focus-remove {
+        background-color: #edf1f3 !important;
+        -webkit-transition: background-color 3000ms linear;
+        -ms-transition: background-color 3000ms linear;
+        transition: background-color 3000ms linear;
+    }
+
+    .user-comment .comment-content .user-info {
+        .user-name {
+            color: #2067b0;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .comment-created {
+            margin-left: 6px;
+            color: #bcc2c7;
+            font-size: 11px;
+        }
+    }
+
+    .action {
+        display: flex;
+        margin-left: 70px;
+        margin-top: 5px;
+        margin-left: 70px;
+        color: rgba(130, 139, 149, 0.7);
+        font-size: 12px;
+        line-height: 14px;
+
+        .btn-like-action:hover + .react-emoji-box {
+            display: block !important;
+        }
+
+        .text-react {
+            color: #2067b0;
+            font-weight: 600;
+        }
+
+        .react-emoji-box {
+            display: none;
+            position: relative;
+            margin-top: -60px;
+            margin-left: -100px;
+        }
+
+        .react-emoji-box:hover {
+            display: block !important;
+        }
+
+        .list-react-emoji {
+            display: flex;
+            background-color: #fcfcfd;
+            padding: 5px 10px 5px 10px;
+            border-radius: 50px;
+            position: absolute;
+            box-shadow: 0 6px 16px 0 rgba(83, 92, 105, 0.15);
+
+            img {
+                width: 30px;
+                margin: 2px;
+                transform: translate3d(0px, 0px, 0px);
+            }
+
+            :hover {
+                transform: scale(1.1) translate(0, -3px);
+            }
+        }
+    }
+
+    .action span:hover {
+        color: #3a3d42;
+    }
+
+    .btn-action {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+
+    .popup-user {
+        cursor: pointer;
+    }
+
+    /* ========= form coment ======== */
+    .user-comment .form-comment {
+        margin-left: 15px;
+        width: 100%;
+        word-break: break-word;
+
+        .form-control {
+            border-radius: 18px !important;
+            /* overflow: auto !important; */
+            overflow-y: hidden !important;
+        }
+
+        .form-btn {
+            display: flex;
+            padding: 10px;
+        }
+    }
+
+    div.note-editor.panel.panel-default {
+        border-radius: 30px;
+    }
+
+    .note-editor.note-airframe .note-statusbar,
+    .note-editor.note-frame .note-statusbar {
+        border-top: 0px !important;
+        background-color: hsl(0deg 0% 0% / 0%);
+    }
+
+    /*========= end list comment =========*/
+    /*========= edt comment box=========*/
+    .edit-comment-box {
+        padding-left: 70px;
+        width: 100%;
+        display: none;
+    }
+
+    /*========= end edt comment box=========*/
+
+    /*========= button action comment=========*/
+    .form-action {
+        display: flex;
+        position: relative;
+
+        .btn-action {
+            margin-right: 10px;
+            color: #515e68;
+            opacity: 0.5;
+            cursor: pointer;
+        }
+
+        .btn-action:hover {
+            opacity: 2;
+        }
+
+        .dropdown-list-user {
+            padding: 10px;
+            width: 380px;
+            height: 250px;
+            background-color: #fcfcfd;
+            border-radius: 30px;
+            box-shadow: 0 6px 16px 0 rgba(83, 92, 105, 0.15);
+            position: absolute;
+            margin-top: -223px;
+            margin-left: 90px;
+            /* display: none; */
+
+            .list-user {
+                padding: 5px;
+                max-height: 150px;
+                overflow: scroll;
+                overflow-x: hidden;
+
+                .user-tag-box {
+                    margin-bottom: 10px;
+                    cursor: pointer;
+                }
+
+                .user-tag-box:hover {
+                    background-color: rgb(215 215 215);
+                    border-radius: 20px;
+                }
+
+                .propose__box-avatar {
+                    width: 30px !important;
+                    height: 30px !important;
+                    margin-right: 10px;
+                }
+
+                .user-tag-name {
+                    color: black;
+                }
+            }
+        }
+    }
+
+    .box-files.drop-zone {
+        position: relative;
+    }
+
+    .drag-white-space {
+        padding-top: 20px;
+        text-align: center;
+        background-color: white;
+        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border: 2px dashed rgba(0, 0, 0, 0.2);
+        border-radius: 10px 10px 30px 30px;
+        z-index: 900;
+
+        span {
+            font-size: 18px;
+            color: rgba(83, 92, 105, 0.7);
+        }
+    }
+
+    .box-files {
+        display: none;
+        /* height: 250px; */
+        background-color: #f8f9fa;
+        width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 10px 10px 30px 30px;
+    }
+
+    .list-file {
+        padding: 10px 10px 10px 10px;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .card-file-info {
+        height: 150px;
+        width: 120px;
+        margin: 20px;
+        border: 1px solid #77757538;
+        border-radius: 20px;
+        position: relative;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.09);
+        background-color: white;
+    }
+
+    .image-file {
+        padding: 5px;
+        height: 80%;
+
+        img {
+            border-radius: 20px;
+            width: 100%;
+            object-fit: cover;
+            height: 100%;
+        }
+    }
+
+    .name-file {
+        text-align: center;
+        font-size: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .remove-file-comment,
+    .remove-file-add {
+        display: none;
+        position: absolute;
+        color: gray;
+        border: 1px solid #ccd3d361;
+        border-radius: 40%;
+    }
+
+    .btn-upload .ui-btn-upload {
+        padding: 10px 70px 10px 70px;
+        height: 30%;
+        border-top: 1px solid #77757538;
+
+        .drop-click-upload {
+            color: rgb(82 92 105 / 51%);
+            cursor: pointer;
+            border-radius: 20px;
+            padding-top: 2px;
+            text-align: center;
+            height: 100%;
+            border: 2px dashed rgba(82, 92, 105, 0.15);
+        }
+    }
+
+    .edit-comment-box,
+    .comment-box {
+        .card-file-info:hover {
+            box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.11);
+        }
+
+        .card-file-info:hover > .remove-file-comment,
+        .remove-file-add {
+            display: block;
+        }
+    }
+
+    #modal-delete-one .modal-body {
+        max-height: 100px;
+    }
+
+    .modal-user-react {
+        right: 0;
+        width: max-content;
+        display: none;
+        position: absolute;
+        border-radius: 15px;
+        padding: 5px;
+        background-color: #fcfcfd;
+        z-index: 1000;
+        box-shadow: 0 6px 16px 0 rgba(83, 92, 105, 0.15);
+    }
+}
+#ul-tab-comment li .active {
+    color: #217121;
+    font-weight: 700;
+    border-bottom: 2px solid #217121;
+    padding-bottom: 13px;
+}
+#ul-tab-comment li {
+    padding: 10px 15px;
+}
+
+@media (max-width: 768px) {
+    .form-comment {
+        padding-left: 10px;
+    }
+
+    .btn-upload .ui-btn-upload {
+        padding: 10px 50px 10px 50px !important;
+    }
+
+    .card-file-info {
+        height: 140px !important;
+        width: 110px !important;
+        margin: 15px !important;
+    }
+}

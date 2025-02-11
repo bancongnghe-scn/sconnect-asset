@@ -1,89 +1,67 @@
 <div class="row" x-data="table">
     <div class="col-12">
-        <div class="card">
-            <div class="card-body">
-                <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
-                                   aria-describedby="example2_info">
-                                <thead>
+        <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+            <div class="row">
+                <div class="col-sm-12 table-responsive custom-scroll">
+                    <table id="example2" class="table table-bordered dataTable dtr-inline"
+                           aria-describedby="example2_info">
+                        <thead>
+                        <tr>
+                            @can('shopping_plan_company.crud')
+                                <th class="text-center">
+                                    <input type="checkbox" @click="selectedAll">
+                                </th>
+                            @endcan
+                            <th rowspan="1" colspan="1" class="text-center">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center">Kế hoạch</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" style="width: 6rem">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(value,index) in dataTable" :key="index">
                                 <tr>
-                                    <template x-if="permission.remove">
-                                        <th class="text-center">
-                                            <input type="checkbox" @click="selectedAll">
-                                        </th>
-                                    </template>
-                                    <th rowspan="1" colspan="1">STT</th>
-                                    <template x-for="(columnName, key) in columns">
-                                        <th rowspan="1" colspan="1" x-text="columnName"></th>
-                                    </template>
-                                    <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <template x-for="(data,index) in dataTable">
-                                    <tr>
-                                        <template x-if="permission.remove">
-                                            <td class="text-center align-middle">
-                                                <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
-                                            </td>
-                                        </template>
-                                        <td x-text="from + index"></td>
-                                        <template x-for="(columnName, key) in columns">
-                                            <td>
-                                                <template x-if="key !== 'register_time' && key !== 'status' && key !== 'user'">
-                                                    <span x-text="data[key]"></span>
-                                                </template>
-                                                <template x-if="key === 'register_time'">
-                                                    <span :class="!data.status_register ? 'tw-text-red-500': ''" x-text="data.start_time + ' - ' + data.end_time"></span>
-                                                </template>
-                                                <template x-if="key === 'status'">
-                                                    <div class="d-flex justify-content-center">
-                                                        <span x-text="listStatus[data[key]]" class="p-1 border rounded"
-                                                              :class="{
-                                                                 'tw-text-sky-600 tw-bg-sky-100': +data[key] === 1,
-                                                                 'tw-text-purple-600 tw-bg-purple-100': +data[key] === 2,
-                                                                 'tw-text-green-600 tw-bg-green-100': +data[key] === 3 || +data[key] === 4,
-                                                                 'tw-text-green-900 tw-bg-green-100'  : +data[key] === 5,
-                                                                 'tw-text-red-600 tw-bg-red-100'  : +data[key] === 6
-                                                                 }"
-                                                        ></span>
-                                                    </div>
-                                                </template>
-                                                <template x-if="key === 'user'">
-                                                    @include('common.user_info')
-                                                </template>
-
-                                            </td>
-                                        </template>
+                                    @can('shopping_plan_company.crud')
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" x-show="typeof showAction === 'undefined' || showAction.view"
-                                                    @click="$dispatch('view', { id: data.id })">
-                                                <i class="fa-solid fa-eye" style="color: #63E6BE;"></i>
-                                            </button>
-                                            <template x-if="permission.update && [1,2].includes(+data.status)
-                                            || permission.approve && [3,4].includes(+data.status)">
-                                                <button class="border-0 bg-body"
-                                                        x-show="typeof showAction === 'undefined' || showAction.edit"
-                                                        @click="$dispatch('edit', { id: data.id })">
-                                                    <i class="fa-solid fa-pen" style="color: #1ec258;"></i>
-                                                </button>
-                                            </template>
-                                            <template x-if="permission.remove && +data.status === 1">
-                                                <button class="border-0 bg-body"
-                                                        x-show="typeof showAction === 'undefined' || showAction.remove"
-                                                        @click="$dispatch('remove', { id: data.id })">
-                                                    <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
-                                                </button>
-                                            </template>
+                                            <input type="checkbox" x-model="selectedRow[value.id]"
+                                                   x-bind:checked="selectedRow[value.id]"
+                                                   :disabled="+value.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
                                         </td>
-                                    </tr>
-                                </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                                    @endcan
+                                    <td class="text-center align-middle" x-text="from + index"></td>
+                                    <td class="align-middle" x-text="value.name"></td>
+                                    <td class="text-center align-middle"
+                                        :class="!value.status_register ? 'text-red': ''"
+                                        x-text="value.start_time + ' - ' + value.end_time">
+                                    </td>
+                                    <td x-data="{data: value, key: 'user'}">
+                                        @include('common.user_info')
+                                    </td>
+                                    <td class="text-center align-middle" x-text="value.created_at"></td>
+                                    <td class="text-center align-middle">
+                                        @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
+                                    </td>
+                                    <td class="align-middle">
+                                        <template x-for="configBtnTable in configButtonsTable">
+                                            <template x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
+                                                <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
+                                                    <template x-for="configBtn in configBtnTable.buttons">
+                                                        <button class="border-0 bg-white"
+                                                                @click="configBtn.action(value.id)">
+                                                            <i :class="configBtn.icon"></i>
+                                                        </button>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -98,7 +76,11 @@
 
             selectedAll() {
                 this.checkedAll = !this.checkedAll
-                this.dataTable.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
+                this.dataTable.forEach((item) => {
+                    if(+item.status === STATUS_SHOPPING_PLAN_COMPANY_NEW) {
+                        this.selectedRow[item.id] = this.checkedAll
+                    }
+                })
             }
         }
     }
