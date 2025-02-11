@@ -6,7 +6,9 @@
                 <div>
                     <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu
                     </button>
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white">Quay lại</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white"
+                            @click="$('#modalSelectTypeCreate').modal('show')"
+                    >Quay lại</button>
                 </div>
             </div>
             <div class="modal-body">

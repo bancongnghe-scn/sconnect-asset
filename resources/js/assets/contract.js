@@ -12,21 +12,6 @@ document.addEventListener('alpine:init', () => {
 
         //dataTable
         dataTable: [],
-        columns: {
-            code: 'Mã hợp đồng',
-            type: 'Loại hợp đồng',
-            name: 'Tên hợp đồng',
-            supplier_name: 'Tên nhà cung cấp',
-            signing_date: 'Ngày ký',
-            contract_value: 'Tổng giá trị',
-            validity: 'Hiệu lực',
-            status: 'Trạng thái',
-        },
-        showAction: {
-            view: true,
-            edit: true,
-            remove: true
-        },
         selectedRow: [],
 
         //pagination
