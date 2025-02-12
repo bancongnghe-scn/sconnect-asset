@@ -256,7 +256,7 @@
                             </td>
                             <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
                             <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
-                            <td class="text-center" x-text="LIST_LOCATION_ASSET[asset.location]"></td>
+                            <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
                             <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
                                 {{-- <div class="dropdown">
                                     <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" data-bs-auto-flip="true">
