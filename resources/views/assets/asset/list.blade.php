@@ -199,7 +199,7 @@
                         <th class="text-center">Mã tài sản</th>
                         <th class="text-left">Tên tài sản</th>
                         <th class="text-left">Loại tài sản</th>
-                        <th class="text-left">Đơn vị</th>
+                        <th class="text-center">Đơn vị</th>
                         <th class="text-center">Nhân viên đang sử dụng</th>
                         <th class="text-center">Người đại diện</th>
                         <th class="text-center">Giá trị</th>
@@ -215,7 +215,7 @@
                             <td class="text-center" x-text="asset.code"></td>
                             <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
                             <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                            <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '')"></td>
+                            <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
                             <td class="text-center">
                                 <div class="d-flex">
                                     <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
@@ -230,6 +230,9 @@
                                         <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
                                     </div>
                                 </div>
+                                <template x-if="!asset.user_id">
+                                    <div>-</div>
+                                </template>
                             </td>
                             <td class="text-center">
                                 <template x-if="!asset.user_id && asset.organization_id">
@@ -247,8 +250,11 @@
                                         </div>
                                     </div>
                                 </template>
+                                <template x-if="asset.user_id && !asset.organization_id">
+                                    <div>-</div>
+                                </template>
                             </td>
-                            <td class="text-center" x-text="asset.price ? formatCurrency(asset.price) : ''"></td>
+                            <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
                             <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
                             <td class="text-center" x-text="LIST_LOCATION_ASSET[asset.location]"></td>
                             <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
