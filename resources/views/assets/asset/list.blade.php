@@ -250,7 +250,7 @@
                                         </div>
                                     </div>
                                 </template>
-                                <template x-if="!asset.organization_id">
+                                <template x-if="!asset.organization_id || asset.user_id">
                                     <div>-</div>
                                 </template>
                             </td>
