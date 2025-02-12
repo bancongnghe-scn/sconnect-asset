@@ -19,10 +19,18 @@
        ])
     </div>
     <div class="col-3">
-        @include('common.datepicker.datepicker', ['placeholder' => "Ngày ký", 'model' => "filters.signing_date"])
+        @include('common.datepicker.datepicker_range', [
+           'placeholder' => "Ngày ký", 'model' => "filters.signing_date",
+           'start' => 'filters.signing_date.start',
+           'end' => 'filters.signing_date.end',
+        ])
     </div>
     <div class="col-3 pl-0">
-        @include('common.datepicker.datepicker', ['placeholder' => "Ngày hiệu lực", 'model' => "filters.from"])
+        @include('common.datepicker.datepicker_range', [
+            'placeholder' => "Ngày hiệu lực",
+            'start' => 'filters.from.start',
+            'end' => 'filters.from.end',
+        ])
     </div>
     <div class="col-auto">
         <button @click="reloadPage()" type="button" class="btn btn-outline-danger">Xóa lọc</button>

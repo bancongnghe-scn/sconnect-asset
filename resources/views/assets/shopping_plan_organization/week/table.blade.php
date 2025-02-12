@@ -11,8 +11,8 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -28,10 +28,10 @@
                                         @include('common.user_info')
                                     </td>
                                     <td class="text-center align-middle" x-text="value.created_at"></td>
-                                    <td class="text-center align-middle">
+                                    <td class="align-middle">
                                         @include('component.status.status_shopping_plan_organization', ['status' => 'value.status'])
                                     </td>
-                                    <td class="text-center align-middle">
+                                    <td class="align-middle">
                                         <button class="border-0 bg-white" @click="handleShowModal(value.id, 'view')">
                                             <i class="bi bi-eye text-info"></i>
                                         </button>

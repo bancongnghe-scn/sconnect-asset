@@ -6,7 +6,9 @@
                 <div>
                     <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu
                     </button>
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white">Quay lại</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white"
+                            @click="$('#modalSelectTypeCreate').modal('show')"
+                    >Quay lại</button>
                 </div>
             </div>
             <div class="modal-body">
@@ -120,8 +122,9 @@
                                                     <input class="form-control" type="text" x-model="asset.name">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" type="number" min="1"
-                                                           x-model="asset.price">
+                                                    @include('common.input.input_price', [
+                                                        'model' => 'asset.price'
+                                                    ])
                                                 </td>
                                                 <td>
                                                     <input class="form-control" type="number" min="1"
@@ -139,95 +142,97 @@
                                     </table>
                                 </template>
                                 <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN">
-                                    <div class="table-responsive">
-                                        <table id="example2" class="table table-bordered dataTable dtr-inline"
-                                               aria-describedby="example2_info">
-                                            <thead>
+                                    <table id="example2" class="table table-bordered dataTable dtr-inline"
+                                           aria-describedby="example2_info">
+                                        <thead>
+                                        <tr>
+                                            <th>Mã</th>
+                                            <th class="tw-min-w-60">Tên</th>
+                                            <th class="tw-min-w-40">Đơn giá</th>
+                                            <th>VAT (%)</th>
+                                            <th>Tiền VAT</th>
+                                            <th>Thành tiền</th>
+                                            <th class="tw-min-w-52">Loại tài sản</th>
+                                            <th>ĐVT</th>
+                                            <th class="tw-min-w-60">Đơn vị</th>
+                                            <th class="tw-min-w-60">Mô tả</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                             <tr>
-                                                <th>Mã</th>
-                                                <th class="tw-min-w-60">Tên</th>
-                                                <th class="tw-min-w-40">Đơn giá</th>
-                                                <th>VAT (%)</th>
-                                                <th>Tiền VAT</th>
-                                                <th>Thành tiền</th>
-                                                <th class="tw-min-w-52">Loại tài sản</th>
-                                                <th>ĐVT</th>
-                                                <th class="tw-min-w-60">Đơn vị</th>
-                                                <th class="tw-min-w-60">Mô tả</th>
-                                                <th></th>
+                                                <td class="text-center align-middle" x-text="asset.code"></td>
+                                                <td>
+                                                    <input class="form-control" type="text" x-model="asset.name">
+                                                </td>
+                                                <td>
+                                                    @include('common.input.input_price', [
+                                                        'model' => 'asset.price'
+                                                    ])
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="number" min="1"
+                                                           x-model="asset.vat_rate">
+                                                </td>
+                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                <td>
+                                                    @include('common.select_custom.extent.select_single', [
+                                                         'selected' => 'asset.asset_type_id',
+                                                         'options' => 'listAssetType',
+                                                         'placeholder' => 'Loại tài sản',
+                                                    ])
+                                                </td>
+                                                <td class="text-center align-middle" x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
+                                                <td>
+                                                    @include('common.select_custom.extent.select_single', [
+                                                         'selected' => 'asset.organization_id',
+                                                         'options' => 'listOrganization',
+                                                         'placeholder' => 'Đơn vị',
+                                                    ])
+                                                </td>
+                                                <td>
+                                                    <input class="form-control" type="text"
+                                                           x-model="asset.description">
+                                                </td>
+                                                <td class="text-center align-middle">
+                                                    <button class="border-0 bg-body"
+                                                            @click="data.shopping_assets_order.splice(index, 1)">
+                                                        <i class="fa-regular fa-trash-can"
+                                                           style="color: #cd1326;"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                            <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
-                                                <tr>
-                                                    <td x-text="asset.code"></td>
-                                                    <td>
-                                                        <input class="form-control" type="text" x-model="asset.name">
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" type="number" min="1"
-                                                               x-model="asset.price">
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" type="number" min="1"
-                                                               x-model="asset.vat_rate">
-                                                    </td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                    <td>
-                                                        @include('common.select_custom.extent.select_single', [
-                                                             'selected' => 'asset.asset_type_id',
-                                                             'options' => 'listAssetType',
-                                                             'placeholder' => 'Loại tài sản',
-                                                        ])
-                                                    </td>
-                                                    <td x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
-                                                    <td>
-                                                        @include('common.select_custom.extent.select_single', [
-                                                             'selected' => 'asset.organization_id',
-                                                             'options' => 'listOrganization',
-                                                             'placeholder' => 'Đơn vị',
-                                                        ])
-                                                    </td>
-                                                    <td>
-                                                        <input class="form-control" type="text"
-                                                               x-model="asset.description">
-                                                    </td>
-                                                    <td class="text-center align-middle">
-                                                        <button class="border-0 bg-body"
-                                                                @click="data.shopping_assets_order.splice(index, 1)">
-                                                            <i class="fa-regular fa-trash-can"
-                                                               style="color: #cd1326;"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </template>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        </template>
+                                        </tbody>
+                                    </table>
                                 </template>
                             </div>
                             <button x-show="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN"
                                     class="btn btn-sm btn-sc mt-3" @click="addRows()">Thêm hàng
                             </button>
                         </div>
-
                         <hr>
 
+                        {{--chi phi khac--}}
                         <div class="d-flex justify-content-between tw-pb-8">
                             <div class="col-4">
                                 <div class="mb-2">
                                     <label>Chi phí vận chuyển, lắp đặt</label>
-                                    <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                           x-model="data.shipping_costs">
+                                    @include('common.input.input_price', [
+                                        'model' => 'data.shipping_costs'
+                                    ])
                                 </div>
                                 <div>
                                     <label>Chi phí khác</label>
-                                    <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                           x-model="data.other_costs">
+                                    @include('common.input.input_price', [
+                                        'model' => 'data.other_costs'
+                                    ])
                                 </div>
                             </div>
-                            <div class="col-4" x-data="{get totalPrice () {
+                            <div class="col-4" x-data="{
+                                    get totalPrice () {
                                             let totalPrice = 0
                                             data.shopping_assets_order.filter((item) => {
                                                 totalPrice = totalPrice + (+item.price + (+item.price * (+item.vat_rate || 0) / 100))

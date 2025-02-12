@@ -11,26 +11,12 @@ document.addEventListener('alpine:init', () => {
 
         //dataTable
         dataTable: [],
-        columns: {
-            code: 'Mã',
-            name: 'Tên nhà cung cấp',
-            industries: 'Ngành hàng',
-            contact: 'Số điện thoại',
-            address: 'Địa chỉ/Website',
-            status: 'Đánh giá',
-            contract_user: 'Người liên hệ',
-        },
         totalPages: null,
         currentPage: 1,
         total: 0,
         from: 0,
         to: 0,
         limit: 10,
-        showAction: {
-            view: false,
-            edit: true,
-            remove: true
-        },
         selectedRow: [],
 
         //data

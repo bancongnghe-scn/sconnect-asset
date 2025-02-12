@@ -27,13 +27,12 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listSupplier.length > 0">
-                                <span x-data="{values: listSupplier}">
-                                    @include('common.select2.modal.extent.select2_single_modal', [
-                                        'placeholder' => 'Chọn nhà cung cấp', 'model' => 'data.supplier_id'
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.select_custom.extent.select_single', [
+                                    'selected' => 'data.supplier_id',
+                                    'options' => 'listSupplier',
+                                    'placeholder' => 'Chọn nhà cung cấp',
+                                    'id' => 'supplier_ui'
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -51,16 +50,12 @@
                             @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Người theo dõi<label
-                                    class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listUser.length > 0">
-                                <span x-data="{values: listUser}">
-                                    @include('common.select2.modal.extent.select2_multiple_modal', [
-                                        'placeholder' => 'Chọn người theo dõi',
-                                        'model' => 'data.user_ids'
-                                    ])
-                                </span>
-                            </template>
+                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
+                            @include('common.user.select_multiple', [
+                                'placeholder' => 'Chọn người theo dõi',
+                                'options' => 'listUser',
+                                'selected' => 'data.user_ids'
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">

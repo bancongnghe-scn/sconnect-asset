@@ -30,15 +30,15 @@ class StoreContractRequest extends FormRequest
             'from'                    => 'required|date|date_format:Y-m-d',
             'to'                      => 'nullable|date_format:Y-m-d|after:from',
             'user_ids'                => 'required|array',
-            'user_ids.*'              => 'integer',
+            'user_ids.*'              => 'integer|nullable',
             'contract_value'          => 'nullable|integer',
             'contract_link'           => 'nullable|url',
             'description'             => 'nullable|string',
             'files'                   => 'nullable|array',
             'payments'                => 'nullable|array',
-            'payments.*.payment_date' => 'date|date_format:Y-m-d',
-            'payments.*.money'        => 'integer',
-            'payments.*.description'  => 'string',
+            'payments.*.payment_date' => 'date|date_format:Y-m-d|nullable',
+            'payments.*.money'        => 'integer|nullable',
+            'payments.*.description'  => 'string|nullable',
         ];
     }
 
