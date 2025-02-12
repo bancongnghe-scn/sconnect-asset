@@ -28,11 +28,13 @@ class AssetService
 
         $dataInsert = [];
         $userId     = Auth::id();
+        $datePurchase = Carbon::now();
         foreach ($importWarehouseAssets as $importWarehouseAsset) {
             $data = [
                 'name'                    => $importWarehouseAsset->name,
                 'code'                    => $importWarehouseAsset->code,
                 'price'                   => $importWarehouseAsset->price_last,
+                'date_purchase'           => $datePurchase,
                 'warranty_months'         => $importWarehouseAsset->warranty_time,
                 'depreciation_months'     => $importWarehouseAsset->assetType?->depreciation_months,
                 'recent_maintenance_date' => $importWarehouseAsset->date_purchase,

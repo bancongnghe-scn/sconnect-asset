@@ -27,7 +27,7 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600 mb-0">*</label></label>
-                            @include('common.select_custom.simple.select_single', [
+                            @include('common.select_custom.extent.select_single', [
                                     'selected' => 'data.supplier_id',
                                     'options' => 'listSupplier',
                                     'placeholder' => 'Chọn nhà cung cấp',

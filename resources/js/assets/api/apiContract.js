@@ -1,8 +1,15 @@
 window.apiGetContract = async function (filters) {
     try {
         let dataFormat = JSON.parse(JSON.stringify(filters))
-        dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
-        dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
+        dataFormat.signing_date = {
+            start: filters?.signing_date?.start ? formatDate(filters.signing_date.start) : null,
+            end: filters?.signing_date?.end ? formatDate(filters.signing_date.end) : null,
+        };
+
+        dataFormat.from = {
+            start: filters?.from?.start ? formatDate(filters.from.start) : null,
+            end: filters?.from?.end ? formatDate(filters.from.end) : null,
+        };
         const response = await axios.get("/api/contract", {
             params: dataFormat
         })

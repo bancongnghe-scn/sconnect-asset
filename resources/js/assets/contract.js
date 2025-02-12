@@ -3,9 +3,7 @@ import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('contract', () => ({
         init() {
-            window.initSelect2Modal(this.idModalUI);
-            window.initSelect2Modal(this.idModalInfo);
-            this.list({page: 1, limit: 10})
+            this.list(this.filters)
             this.getListSupplier()
             this.watchFilters()
         },
@@ -27,8 +25,14 @@ document.addEventListener('alpine:init', () => {
             name_code: null,
             type: null,
             status: null,
-            signing_date: null,
-            from : null,
+            signing_date: {
+                start: null,
+                end: null,
+            },
+            from : {
+                start: null,
+                end: null,
+            },
             limit: 10,
             page: 1
         },
@@ -60,19 +64,25 @@ document.addEventListener('alpine:init', () => {
         //methods
         async list(filters) {
             this.loading = true
-            const response = await window.apiGetContract(filters)
-            if (response.success) {
-                const data = response.data
-                this.dataTable = data.data.data
-                this.totalPages = data.data.last_page
-                this.currentPage = data.data.current_page
-                this.total = data.data.total ?? 0
-                this.from = data.data.from ?? 0
-                this.to = data.data.to ?? 0
-            } else {
-                toast.error('Lấy danh sách hợp đồng thất bại !')
+            try {
+                const response = await window.apiGetContract(filters)
+                console.log(response)
+                if (response.success) {
+                    const data = response.data
+                    this.dataTable = data.data.data
+                    this.totalPages = data.data.last_page
+                    this.currentPage = data.data.current_page
+                    this.total = data.data.total ?? 0
+                    this.from = data.data.from ?? 0
+                    this.to = data.data.to ?? 0
+                } else {
+                    toast.error('Lấy danh sách hợp đồng thất bại !')
+                }
+            } catch (e) {
+                console.log(e)
+            } finally {
+                this.loading = false
             }
-            this.loading = false
         },
 
         async edit() {
@@ -223,8 +233,14 @@ document.addEventListener('alpine:init', () => {
                 name_code: null,
                 type: null,
                 status: null,
-                signing_date: null,
-                from : null,
+                signing_date: {
+                    start: null,
+                    end: null,
+                },
+                from : {
+                    start: null,
+                    end: null,
+                },
                 limit: 10,
                 page: 1
             }
@@ -281,10 +297,21 @@ document.addEventListener('alpine:init', () => {
         },
 
         watchFilters() {
-            this.$watch('filters', (value) => {
-                const watchedKeys = ['type', 'status', 'signing_date','from'];
-                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+            this.$watch('filters.signing_date', (value) => {
+                if (value.start !== null && value.end !== null) {
+                    this.list(this.filters);
+                }
+            })
 
+            this.$watch('filters.from', (value) => {
+                if (value.start !== null && value.end !== null) {
+                    this.list(this.filters);
+                }
+            })
+
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['type', 'status'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
                 if (shouldCallList) {
                     this.list(this.filters);
                 }

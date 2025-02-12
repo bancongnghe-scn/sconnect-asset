@@ -60,7 +60,7 @@
     >
         <template x-if="selected.length">
             <div class="d-flex flex-wrap gap-1">
-                <template x-for="id in selected" :key="id">
+                <template x-for="id in selected">
                     <span class="badge bg-primary d-flex align-items-center tw-w-fit">
                         <span x-data="{option: options.find(option => option.id === id)}" x-text="option?.code + '-' + option?.name"></span>
                         <button
