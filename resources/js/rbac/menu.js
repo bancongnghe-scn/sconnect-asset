@@ -217,14 +217,8 @@ document.addEventListener('alpine:init', () => {
         onChangeSelect2() {
             $('.select2').on('select2:select select2:unselect', (event) => {
                 const value = $(event.target).val()
-                if (event.target.id === 'filterRoles') {
-                    this.filters.role_ids = value
-                } else if (event.target.id === 'selectRoles') {
-                    this.menu.role_ids = value
-                } else if (event.target.id === 'selectIcon') {
+                if (event.target.id === 'selectIcon') {
                     this.menu.icon = value
-                } else if (event.target.id === 'selectMenuParent') {
-                    this.menu.parent_id = value
                 }
             });
         },
