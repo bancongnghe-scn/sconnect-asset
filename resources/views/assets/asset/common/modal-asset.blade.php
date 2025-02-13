@@ -66,7 +66,7 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <span>Số điện thoại</span>
-                                            <input type="text" class="form-control" x-model="userObj.email" disabled>
+                                            <input type="text" class="form-control" x-model="userObj.phone" disabled>
 
                                         </div>
                                     </div>
@@ -153,7 +153,7 @@
                                         <div class="col-6">
                                             <div class="mb-3">
                                                 <span>Ngày cấp phát</span>
-                                                <input type="date" class="form-control" x-model="new Date().toISOString().slice(0, 10)" disabled>
+                                                <input type="date" class="form-control" x-model="new Date().toISOString().slice(0, 10)">
                                             </div>
                                         </div>
                                         <div class="col-12">

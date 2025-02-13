@@ -50,7 +50,7 @@ class ListAssetService
             $query->whereNull('user_id');
         }
 
-        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType'])->orderBy('id', 'desc')->paginate($request->limit);
+        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType', 'user.listAssetUse'])->orderBy('id', 'desc')->paginate($request->limit);
     }
 
     public function getListUserAsset($request): LengthAwarePaginator

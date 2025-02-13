@@ -117,9 +117,9 @@
                                                 <td x-text="assetSelect.code"></td>
                                                 <td x-text="assetSelect.name"></td>
                                                 <td x-text="assetSelect.asset_type ? assetSelect.asset_type.name : ''"></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td x-text="assetSelect.seri_number"></td>
+                                                <td x-text="LIST_MEASURE[assetSelect.asset_type.measure]"></td>
+                                                <td x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></td> 
                                                 <td x-text="assetSelect.location_text"></td>
                                             </tr>
                                         </tbody>
