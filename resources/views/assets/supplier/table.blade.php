@@ -10,38 +10,39 @@
                             <th class="text-center">
                                 <input type="checkbox" @click="selectedAll">
                             </th>
-                            <th rowspan="1" colspan="1">STT</th>
-                            <template x-for="(columnName, key) in columns">
-                                <th rowspan="1" colspan="1" x-text="columnName"></th>
-                            </template>
-                            <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 4rem">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Mã</th>
+                            <th rowspan="1" colspan="1" class="text-center">Tên nhà cung cấp</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Ngành hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Số điện thoại</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 14rem">Địa chỉ/Website</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Đánh giá</th>
+                            <th rowspan="1" colspan="1" class="text-center">Người liên hệ</th>
+                            <th rowspan="1" colspan="1" class="col-2 text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <template x-for="(data,index) in dataTable" x-data="{line: 1}">
+                        <template x-for="(value,index) in dataTable" x-data="{line: 1}">
                             <tr>
                                 <td class="text-center align-middle">
-                                    <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                    <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                 </td>
-                                <td x-text="from + index"></td>
-                                <template x-for="(columnName, key) in columns">
-                                    <td>
-                                        <template x-if="key === 'status'">
-                                            @include('common.table-status')
-                                        </template>
-                                        <template x-if="key !== 'status'">
-                                            <span x-text="data[key]"></span>
-                                        </template>
-                                    </td>
-                                </template>
+                                <td x-text="from + index" class="text-center"></td>
+                                <td x-text="value.code" class="text-center"></td>
+                                <td x-text="value.name"></td>
+                                <td x-text="value.industries"></td>
+                                <td x-text="value.contact"></td>
+                                <td x-text="value.address"></td>
+                                <td>
+                                    @include('component.status.status_supplier', ['status' => 'value.status'])
+                                </td>
+                                <td x-text="value.contract_user">
+                                </td>
                                 <td class="text-center align-middle">
-                                    <button class="border-0 bg-body" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
-                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                                    <button class="border-0 bg-white" @click="$dispatch('edit', { id: value.id })">
+                                        <i class="bi bi-pencil-square color-sc"></i>
                                     </button>
-                                    <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                        <i class="fa-regular fa-pen-to-square color-sc"></i>
-                                    </button>
-                                    <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
+                                    <button class="border-0 bg-white" @click="$dispatch('remove', { id: value.id })">
                                         <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                     </button>
                                 </td>

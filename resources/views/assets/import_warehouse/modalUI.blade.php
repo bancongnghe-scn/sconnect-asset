@@ -26,11 +26,11 @@
 
                              <div class="mb-3">
                                  <label>Đơn hàng</label>
-                                 @include('common.select2.modal.extent.select2_multiple_modal', [
-                                         'model' => 'data.order_ids',
-                                         'values' => "action === 'view' ? listOrders : listOrdersDelivered",
-                                         'placeholder' => 'Chọn đơn hàng',
-                                         'disabled' => 'disabled'
+                                 @include('common.select_custom.extent.select_multiple', [
+                                   'placeholder' => 'Chọn đơn hàng',
+                                   'options' => "action === 'view' ? listOrders : listOrdersDelivered",
+                                   'selected' => 'data.order_ids',
+                                   'disabled' => 'disabled'
                                  ])
                              </div>
 

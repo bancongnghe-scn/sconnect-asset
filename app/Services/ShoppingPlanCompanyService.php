@@ -273,7 +273,7 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        $data                = $shoppingPlanCompany->toArray();
+        $data = $shoppingPlanCompany->toArray();
         switch ($shoppingPlanCompany->type) {
             case ShoppingPlanCompany::TYPE_YEAR:
                 $data['monitor_ids'] =  $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();

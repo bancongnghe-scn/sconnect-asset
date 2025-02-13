@@ -14,7 +14,9 @@ class ImportWarehouseRepository extends BaseRepository
 
     public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->select($columns)->with($with)->newQuery();
+        $query = $this->_model->select($columns)
+            ->orderBy('created_at', 'desc')
+            ->with($with)->newQuery();
 
         if (!empty($filters['code'])) {
             $query->where('code', $filters['code']);

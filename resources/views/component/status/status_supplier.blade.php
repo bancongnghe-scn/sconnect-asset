@@ -1,21 +1,21 @@
 <span
-    x-text="LIST_STATUS_IMPORT_WAREHOUSE[{{$status}}]"
+    x-text="LIST_STATUS_SUPPLIER[{{$status}}]"
     x-data="{
         getStyle(status) {
-            if (status === STATUS_IMPORT_WAREHOUSE_NOT_COMPLETE) {
-                return {
-                    color: '#1890FF',
-                    backgroundColor: '#E6F7FF',
-                    border: '1px solid #1890FF'
-                };
-            } else if (status === STATUS_IMPORT_WAREHOUSE_COMPLETE)
-            {
+            if (status === STATUS_SUPPLIER_PENDING_APPROVAL) {
                 return {
                     color: '#52C41A',
                     backgroundColor: '#F6FFED',
                     border: '1px solid #52C41A'
                 };
-            } else if (status === STATUS_IMPORT_WAREHOUSE_CANCEL)
+            } else if (status === STATUS_SUPPLIER_APPROVED)
+            {
+                return {
+                    color: '#FAAD14',
+                    backgroundColor: '#FFFBE6',
+                    border: '1px solid #FAAD14'
+                };
+            } else if (status === STATUS_SUPPLIER_CANCEL)
             {
                 return {
                     color: '#F5222D',

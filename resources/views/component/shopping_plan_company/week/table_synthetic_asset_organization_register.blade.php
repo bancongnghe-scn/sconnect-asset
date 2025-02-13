@@ -39,7 +39,7 @@
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
                     <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-white">
-                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                        <i class="bi bi-eye text-info"></i>
                     </button>
 
                     {{-- button duyet --}}
@@ -53,7 +53,7 @@
                                             STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                                         ].includes(+organization.status)"
                                     >
-                                        <button class="border-0 bg-body"
+                                        <button class="border-0 bg-white"
                                                 @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_APPROVAL)"
                                         >
                                             <i class="fa-solid fa-thumbs-up" style="color: #125fe2;"></i>
@@ -66,7 +66,7 @@
                                             STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
                                         ].includes(+organization.status)"
                                     >
-                                        <button class="border-0 bg-body"
+                                        <button class="border-0 bg-white"
                                                 @click="showModalNoteDisapproval(organization.id)"
                                         >
                                             <i class="fa-solid fa-thumbs-down" style="color: #727479;"></i>

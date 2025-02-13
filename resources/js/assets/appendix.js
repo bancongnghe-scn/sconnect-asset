@@ -148,6 +148,7 @@ document.addEventListener('alpine:init', () => {
         async getListContract() {
             this.loading = true
             const response = await window.apiGetContract({status: CONTRACT_STATUS_APPROVED})
+            console.log(response)
             if (response.success) {
                 this.listContract = response.data.data
             } else {

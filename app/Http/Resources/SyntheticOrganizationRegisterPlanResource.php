@@ -38,7 +38,7 @@ class SyntheticOrganizationRegisterPlanResource extends JsonResource
             ],
         ]);
         $organizationIds       = $shoppingPlanCompany->shoppingPlanOrganizations->pluck('organization_id')->toArray();
-        $organizations         = $this->organizationRepository->getListing(['id' => $organizationIds])->keyBy('id')->toArray();
+        $organizations         = $this->organizationRepository->getInfoOrganizationByFilters(['id' => $organizationIds])->keyBy('id')->toArray();
 
         if (in_array($shoppingPlanCompany->type, [ShoppingPlanCompany::TYPE_YEAR, ShoppingPlanCompany::TYPE_QUARTER])) {
             $data =  SyntheticOrganizationRegisterPlanYearQuarterResource::make($shoppingPlanCompany)->additional(['organizations' => $organizations]);

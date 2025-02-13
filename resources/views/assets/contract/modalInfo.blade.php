@@ -28,13 +28,13 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp</label>
-                            <template x-if="listSupplier.length > 0">
-                                <span x-data="{values: listSupplier}">
-                                    @include('common.select2.modal.extent.select2_single_modal', [
-                                        'placeholder' => 'Chọn nhà cung cấp', 'model' => 'data.supplier_id', 'disabled' => true
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.select_custom.extent.select_single', [
+                                 'selected' => 'data.supplier_id',
+                                 'options' => 'listSupplier',
+                                 'placeholder' => 'Chọn nhà cung cấp',
+                                 'disabled' => true,
+                                 'id' => 'supplier_view'
+                           ])
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -52,15 +52,12 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Người theo dõi</label>
-                            <template x-if="listUser.length > 0">
-                                <span x-data="{values: listUser}">
-                                    @include('common.select2.modal.extent.select2_multiple_modal', [
-                                        'placeholder' => 'Chọn người theo dõi',
-                                        'model' => 'data.user_ids',
-                                        'disabled' => true
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.user.select_multiple', [
+                                'placeholder' => 'Chọn người theo dõi',
+                                'options' => 'listUser',
+                                'selected' => 'data.user_ids',
+                                'disabled' => true,
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">

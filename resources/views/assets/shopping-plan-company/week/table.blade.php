@@ -17,8 +17,8 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 10rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" style="width: 6rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -37,11 +37,11 @@
                                     :class="!value.status_register ? 'text-red': ''"
                                     x-text="value.start_time + ' - ' + value.end_time">
                                 </td>
-                                <td x-data="{data: value, key: 'user'}">
-                                    @include('common.user_info')
+                                <td>
+                                    @include('common.user.user_info', ['user' => 'value.user'])
                                 </td>
                                 <td class="text-center align-middle" x-text="value.created_at"></td>
-                                <td class="text-center align-middle">
+                                <td class="align-middle">
                                     @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                 </td>
                                 <td class="align-middle">

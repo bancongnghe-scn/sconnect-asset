@@ -68,7 +68,7 @@
                                     </td>
                                 </template>
                                 <td class="text-center align-middle">
-                                    <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: data.id })">
+                                    <button class="border-0 bg-white" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: data.id })">
                                         <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>

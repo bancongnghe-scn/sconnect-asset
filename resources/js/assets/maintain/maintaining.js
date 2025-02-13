@@ -48,10 +48,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        watchFilters() {
-
-        },
-
         reloadPage() {
             this.filters = {
                 name_code: null,

@@ -7,17 +7,6 @@
                         @include('component.shopping_plan_company.week.filter')
                     </div>
 
-                    @can('shopping_plan_company.week.crud')
-                        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-                            <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#idModalInsert').modal('show')">
-                                <span>+ Thêm</span>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
-                                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
-                            </button>
-                        </div>
-                    @endcan
-
                     <div
                         @remove="confirmRemove($event.detail.id)"
                         @change-page.window="changePage($event.detail.page)"
