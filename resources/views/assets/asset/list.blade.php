@@ -251,7 +251,7 @@
                                             </div>
                                         </div>
                                     </template>
-                                    <template x-if="(!asset.organization_id || asset.user_id) && asset.status != 2">
+                                    <template x-if="!asset.organization_id || asset.user_id || asset.status == 2">
                                         <div>-</div>
                                     </template>
                                 </td>
