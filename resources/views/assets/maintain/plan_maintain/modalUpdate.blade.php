@@ -121,8 +121,8 @@
                                                             </template>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center align-middle" x-data="{data: value, key: 'user'}">
-                                                        @include('common.user_info')
+                                                    <td class="text-center align-middle">
+                                                        @include('common.user.user_info', ['user' => 'value.user'])
                                                     </td>
                                                     <td class="text-center align-middle">
                                                         @include('component.status.status_plan_maintain_asset', [

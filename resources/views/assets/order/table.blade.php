@@ -45,18 +45,18 @@
                                     <td class="text-center align-middle">
                                         <span x-text="formatDateVN(value.delivery_date)"></span>
                                     </td>
-                                    <td class="text-center align-middle" x-data="{data: value, key: 'purchasing_manager'}">
-                                        @include('common.user_info')
+                                    <td class="text-center align-middle">
+                                        @include('common.user.user_info', ['user' => 'value.purchasing_manager'])
                                     </td>
                                     <td class="text-center align-middle">
                                         @include('component.status.status_order', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class="border-0 bg-body" x-show="isStatusActive" @click="$dispatch('edit', { id: value.id })">
-                                            <i class="fa-regular fa-pen-to-square color-sc"></i>
+                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="$dispatch('edit', { id: value.id })">
+                                            <i class="bi bi-pencil-square color-sc"></i>
                                         </button>
-                                        <button class="border-0 bg-body" x-show="isStatusActive" @click="$dispatch('remove', { id: value.id })">
-                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="$dispatch('remove', { id: value.id })">
+                                            <i class="bi bi-trash text-red"></i>
                                         </button>
                                     </td>
                                 </tr>

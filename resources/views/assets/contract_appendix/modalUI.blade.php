@@ -11,14 +11,11 @@
                     <div class="row mb-3">
                         <div class="col-3">
                             <label class="form-label">Hợp đồng<label class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listContract.length > 0">
-                                <span x-data="{values: listContract}">
-                                    @include('common.select2.modal.extent.select2_single_modal', [
-                                        'placeholder' => 'Chọn hợp đồng',
-                                        'model' => 'data.contract_id'
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.select_custom.extent.select_single', [
+                                 'selected' => 'data.contract_id',
+                                 'options' => 'listContract',
+                                 'placeholder' => 'Chọn hợp đồng',
+                            ])
                         </div>
                         <div class="col-3">
                             <label class="form-label">Mã phụ lục<label class="tw-text-red-600 mb-0">*</label></label>
@@ -50,14 +47,11 @@
                         <div class="col-3">
                             <label class="form-label">Người theo dõi<label
                                     class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listUser.length > 0">
-                                <span x-data="{values: listUser}">
-                                    @include('common.select2.modal.extent.select2_multiple_modal', [
-                                        'placeholder' => 'Chọn người theo dõi',
-                                        'model' => 'data.user_ids'
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.user.select_multiple', [
+                                'placeholder' => 'Chọn người theo dõi',
+                                'options' => 'listUser',
+                                'selected' => 'data.user_ids',
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">

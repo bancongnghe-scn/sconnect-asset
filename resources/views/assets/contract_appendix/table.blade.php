@@ -45,14 +45,14 @@
                                             </td>
                                         </template>
                                         <td class="text-center align-middle">
-                                            <button class="border-0 bg-body" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
+                                            <button class="border-0 bg-white" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
                                                 <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                             </button>
-                                            <button class="border-0 bg-body" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                                <i class="fa-regular fa-pen-to-square color-sc"></i>
+                                            <button class="border-0 bg-white" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
+                                                <i class="bi bi-pencil-square color-sc"></i>
                                             </button>
-                                            <button class="border-0 bg-body" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
-                                                <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                            <button class="border-0 bg-white" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
+                                                <i class="bi bi-trash text-red"></i>
                                             </button>
                                         </td>
                                     </tr>

@@ -201,8 +201,7 @@
                                                     <td class="text-center align-middle" x-show="action === 'update'">
                                                         <button class="border-0 bg-white"
                                                                 @click="data.shopping_assets_order.splice(index, 1)">
-                                                            <i class="fa-regular fa-trash-can"
-                                                               style="color: #cd1326;"></i>
+                                                            <i class="bi bi-trash text-red"></i>
                                                         </button>
                                                     </td>
                                                 </tr>

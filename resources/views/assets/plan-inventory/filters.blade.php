@@ -24,7 +24,7 @@
             </button>
             <button class="btn btn-sm btn-outline-danger" type="button"
                     :disabled="window.checkDisableSelectRow">
-                <span><i class="fa-solid fa-trash-can pr-1"></i>Xóa chọn</span>
+                <span><i class="bi bi-trash pr-1"></i>Xóa chọn</span>
             </button>
         </div>
     </div>
