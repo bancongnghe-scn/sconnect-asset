@@ -214,7 +214,7 @@
                             <tr>
                                 <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
                                 <td class="text-center" x-text="asset.code"></td>
-                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces;"></td>
                                 <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
                                 <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
                                 <td class="text-center">
@@ -236,7 +236,7 @@
                                     </template>
                                 </td>
                                 <td class="text-center">
-                                    <template x-if="!asset.user_id && asset.organization_id">
+                                    <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
                                         <div class="d-flex">
                                             <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
                                             ? (asset.organization.manager.avatar.includes('/uploads/') 
@@ -251,7 +251,7 @@
                                             </div>
                                         </div>
                                     </template>
-                                    <template x-if="!asset.organization_id || asset.user_id">
+                                    <template x-if="(!asset.organization_id || asset.user_id) && asset.status != 2">
                                         <div>-</div>
                                     </template>
                                 </td>
