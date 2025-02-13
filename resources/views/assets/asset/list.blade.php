@@ -10,7 +10,7 @@
       min-width: 160px;
       box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
       z-index: 1000;
-      right: 40px;
+      left: 105px;
       border-radius: 10px;
     }
     
@@ -192,11 +192,12 @@
                         </span>
                     </div>
                 </div>
-                <div class="custom-scroll">
+                <div class="custom-scroll" style="overflow-x: auto; width: 100%; margin-bottom: 10px;">
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th class="text-center">STT</th>
+                            {{-- <th class="text-center">STT</th> --}}
+                            <th class="text-center">Thao tác</th>
                             <th class="text-center">Mã tài sản</th>
                             <th class="text-left">Tên tài sản</th>
                             <th class="text-left">Loại tài sản</th>
@@ -206,72 +207,14 @@
                             <th class="text-center">Giá trị</th>
                             <th class="text-center">Tình trạng</th>
                             <th class="text-center">Vị trí</th>
-                            <th class="text-center">Thao tác</th>
+                            
                         </tr>
                         </thead>
                         <tbody>
                         <template x-for="(asset, index) in listAsset" :key="asset.id">
                             <tr>
-                                <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
-                                <td class="text-center" x-text="asset.code"></td>
-                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces;"></td>
-                                <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
-                                <td class="text-center">
-                                    <div class="d-flex">
-                                        <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
-                                                ? (asset.user.avatar.includes('/uploads/') 
-                                                    ? 'https://office.sconnect.com.vn' + asset.user.avatar 
-                                                    : asset.user.avatar) 
-                                                : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                                alt="" 
-                                                style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                        <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                            <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                            <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
-                                        </div>
-                                    </div>
-                                    <template x-if="!asset.user_id">
-                                        <div>-</div>
-                                    </template>
-                                </td>
-                                <td class="text-center">
-                                    <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
-                                        <div class="d-flex">
-                                            <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
-                                            ? (asset.organization.manager.avatar.includes('/uploads/') 
-                                                ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar 
-                                                : asset.organization.manager.avatar) 
-                                            : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                            alt="" 
-                                            style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                            <div class="d-flex" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                                <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                                <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
-                                            </div>
-                                        </div>
-                                    </template>
-                                    <template x-if="!asset.organization_id || asset.user_id || asset.status == 2">
-                                        <div>-</div>
-                                    </template>
-                                </td>
-                                <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
-                                <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
-                                <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
+                                {{-- <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td> --}}
                                 <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
-                                    {{-- <div class="dropdown">
-                                        <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" data-bs-auto-flip="true">
-                                            <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="#">Bảo dưỡng</a></li>
-                                            <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
-                                        </ul>
-                                    </div> --}}
                                     <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -407,6 +350,52 @@
                                         </a>
                                     </div>
                                 </td>
+                                <td class="text-center" x-text="asset.code"></td>
+                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces;"></td>
+                                <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
+                                <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
+                                <td class="text-center">
+                                    <div class="d-flex">
+                                        <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
+                                                ? (asset.user.avatar.includes('/uploads/') 
+                                                    ? 'https://office.sconnect.com.vn' + asset.user.avatar 
+                                                    : asset.user.avatar) 
+                                                : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                alt="" 
+                                                style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                            <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 14px;"></span>
+                                            <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
+                                        </div>
+                                    </div>
+                                    <template x-if="!asset.user_id">
+                                        <div>-</div>
+                                    </template>
+                                </td>
+                                <td class="text-center">
+                                    <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
+                                        <div class="d-flex">
+                                            <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
+                                            ? (asset.organization.manager.avatar.includes('/uploads/') 
+                                                ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar 
+                                                : asset.organization.manager.avatar) 
+                                            : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                            alt="" 
+                                            style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
+                                            <div class="d-flex" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 14px;"></span>
+                                                <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <template x-if="!asset.organization_id || asset.user_id || asset.status == 2">
+                                        <div>-</div>
+                                    </template>
+                                </td>
+                                <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
+                                <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
+                                <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
+                                
                             </tr>
                         </template>
                         </tbody>

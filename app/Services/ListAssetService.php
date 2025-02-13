@@ -565,7 +565,7 @@ class ListAssetService
             "description" => $request->assetEdit['description'],
             "seri_number" => $request->assetEdit['seri_number'],
             "location" => $request->location,
-            "date_purchase" => Carbon::createFromFormat('d/m/Y', $request->assetEdit['date_purchase'])->format('Y-m-d'),
+            "date_purchase" => $request->assetEdit['date_purchase'],
         ]);
     }
 }
