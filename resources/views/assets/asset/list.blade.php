@@ -351,7 +351,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center" x-text="asset.code"></td>
-                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces;"></td>
+                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces; line-height: 1.5;"></td>
                                 <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
                                 <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
                                 <td class="text-center">
