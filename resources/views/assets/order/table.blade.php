@@ -52,6 +52,9 @@
                                         @include('component.status.status_order', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
+                                        <button class="border-0 bg-white" @click="handleShowModalUI('view', value.id)">
+                                            <i class="bi bi-eye text-info"></i>
+                                        </button>
                                         <button class="border-0 bg-white" x-show="isStatusActive" @click="$dispatch('edit', { id: value.id })">
                                             <i class="bi bi-pencil-square color-sc"></i>
                                         </button>

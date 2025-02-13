@@ -32,7 +32,7 @@
                                 <td class="text-center align-middle">
                                     <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
                                         <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
-                                            <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                                            <i class="bi bi-eye text-info"></i>
                                         </span>
                                     </template>
                                     <template x-if="value.status === STATUS_MAINTAINING">
