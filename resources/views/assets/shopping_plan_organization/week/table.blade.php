@@ -24,9 +24,9 @@
                                         :class="!value.status_register ? 'text-red': ''"
                                         x-text="value.start_time + ' - ' + value.end_time">
                                     </td>
-                                    <td x-data="{data: value, key: 'user'}">
-                                        @include('common.user_info')
-                                    </td>
+                                    <td>
+                                            @include('common.user.user_info', ['user' => 'value.user'])
+                                        </td>
                                     <td class="text-center align-middle" x-text="value.created_at"></td>
                                     <td class="align-middle">
                                         @include('component.status.status_shopping_plan_organization', ['status' => 'value.status'])

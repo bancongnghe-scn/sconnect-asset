@@ -132,8 +132,8 @@
                                                placeholder="Nhập nội dung thanh toán">
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class="border-0 bg-body" @click="data.payments.splice(index, 1)">
-                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                        <button class="border-0 bg-white" @click="data.payments.splice(index, 1)">
+                                            <i class="bi bi-trash text-red"></i>
                                         </button>
                                     </td>
                                 </tr>

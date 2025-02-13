@@ -49,10 +49,10 @@
                                         <i class="bi bi-eye" style="color: #63E6BE;"></i>
                                     </button>
                                     <button class="border-0 bg-white" @click="$dispatch('edit', { id: value.id })">
-                                        <i class="fa-regular fa-pen-to-square color-sc"></i>
+                                        <i class="bi bi-pencil-square color-sc"></i>
                                     </button>
                                     <button class="border-0 bg-white" @click="$dispatch('remove', { id: value.id })">
-                                        <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                        <i class="bi bi-trash text-red"></i>
                                     </button>
                                 </td>
                             </tr>

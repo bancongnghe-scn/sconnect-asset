@@ -1,5 +1,5 @@
 <!-- ======= Header ======= -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light bg-sc px-2">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light bg-sc px-2 fixed-top">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">

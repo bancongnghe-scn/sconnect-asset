@@ -10,12 +10,12 @@
                             <th class="text-center">
                                 <input type="checkbox" @click="selectedAll">
                             </th>
-                            <th rowspan="1" colspan="1" class="tw-w-80 text-center">Đơn vị</th>
-                            <th rowspan="1" colspan="1" class="tw-w-80 text-center">Chức danh</th>
+                            <th rowspan="1" colspan="1" class="tw-w-80">Đơn vị</th>
+                            <th rowspan="1" colspan="1" class="tw-w-80">Chức danh</th>
                             <th rowspan="1" colspan="1" class="text-center">Loại tài sản</th>
                             <th rowspan="1" colspan="1" class="text-center">Hạng</th>
-                            <th rowspan="1" colspan="1" class="text-center">Giá</th>
-                            <th rowspan="1" colspan="1" class="tw-w-96 text-center">Ghi chú</th>
+                            <th rowspan="1" colspan="1" class="text-right">Giá</th>
+                            <th rowspan="1" colspan="1" class="tw-w-96">Ghi chú</th>
                             <th rowspan="1" colspan="1" class="text-center tw-w-20">Thao tác</th>
                         </tr>
                         </thead>
@@ -27,9 +27,9 @@
                                             <input type="checkbox" x-model="selectedRow[value.organization_id + '_' + value.position_id]">
                                         </td>
                                         <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" x-text="value.organization_name"
-                                            class="text-center align-middle"></td>
+                                            class="align-middle"></td>
                                         <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" x-text="value.position_name"
-                                            class="text-center align-middle"></td>
+                                            class="align-middle"></td>
                                         <td class="text-center">
                                             <span class="border rounded p-1 tw-text-xs tw-shadow-md"
                                                   x-text="config?.asset_type_name || ''"
@@ -40,7 +40,7 @@
                                                   class="border rounded p-1 tw-text-xs tw-shadow-md">
                                             </span>
                                         </td>
-                                        <td x-text="formatCurrencyVND(+config.price)" class="text-center"></td>
+                                        <td x-text="formatCurrencyVND(+config.price)" class="text-right"></td>
                                         <td x-text="config?.description || ''"></td>
                                         <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" class="text-center align-middle">
                                             <button class="border-0 bg-white" @click="handleShowModal('update', value.organization_id, value.position_id)">

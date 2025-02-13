@@ -96,7 +96,7 @@
                                                     <input class="form-control" x-model="register.description" type="text">
                                                 </td>
                                                 <td class="text-center align-middle">
-                                                    <span class="border-0 bg-body" @click="deleteRow(index)">
+                                                    <span class="border-0 bg-white" @click="deleteRow(index)">
                                                         <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                                     </span>
                                                 </td>

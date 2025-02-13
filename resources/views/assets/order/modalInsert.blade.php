@@ -117,7 +117,7 @@
                                         <tbody>
                                         <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                             <tr>
-                                                <td x-text="asset.code"></td>
+                                                <td x-text="asset.code" class="align-middle"></td>
                                                 <td>
                                                     <input class="form-control" type="text" x-model="asset.name">
                                                 </td>
@@ -130,12 +130,12 @@
                                                     <input class="form-control" type="number" min="1"
                                                            x-model="asset.vat_rate">
                                                 </td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                <td x-text="asset.asset_type_name"></td>
-                                                <td x-text="LIST_MEASURE[asset.measure]"></td>
-                                                <td x-text="asset.organization_name"></td>
-                                                <td x-text="asset.description"></td>
+                                                <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)" class="align-middle"></td>
+                                                <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))" class="align-middle"></td>
+                                                <td x-text="asset.asset_type_name" class="align-middle"></td>
+                                                <td x-text="LIST_MEASURE[asset.measure]" class="align-middle"></td>
+                                                <td x-text="asset.organization_name" class="align-middle"></td>
+                                                <td x-text="asset.description" class="align-middle"></td>
                                             </tr>
                                         </template>
                                         </tbody>
@@ -197,10 +197,9 @@
                                                            x-model="asset.description">
                                                 </td>
                                                 <td class="text-center align-middle">
-                                                    <button class="border-0 bg-body"
+                                                    <button class="border-0 bg-white"
                                                             @click="data.shopping_assets_order.splice(index, 1)">
-                                                        <i class="fa-regular fa-trash-can"
-                                                           style="color: #cd1326;"></i>
+                                                        <i class="bi bi-trash text-red"></i>
                                                     </button>
                                                 </td>
                                             </tr>

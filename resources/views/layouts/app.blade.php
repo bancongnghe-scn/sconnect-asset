@@ -31,7 +31,7 @@
 
             @include('layouts.sidebar')
 
-            <div class="content-wrapper" x-data="{loading: false}">
+            <div class="content-wrapper tw-relative tw-top-16" x-data="{loading: false}">
                 <!-- Content Header (Page header) -->
                 <div class="content-header">
                     <div class="container-fluid">

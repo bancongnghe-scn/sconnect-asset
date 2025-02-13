@@ -135,7 +135,7 @@
                                                                 <input class="form-control" x-model="asset.description" type="text">
                                                             </td>
                                                             <td class="text-center align-middle">
-                                                                <button class="border-0 bg-body" @click="deleteRow(index, key)">
+                                                                <button class="border-0 bg-white" @click="deleteRow(index, key)">
                                                                     <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                                                 </button>
                                                             </td>
