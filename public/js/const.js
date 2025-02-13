@@ -13,10 +13,13 @@ LIST_MEASURE = {
 }
 
 //APPENDIX
+STATUS_APPENDIX_PENDING          = 1;
+STATUS_APPENDIX_APPROVED         = 2;
+STATUS_APPENDIX_CANCEL           = 3;
 STATUS_APPENDIX = {
-    1: 'Chờ duyệt',
-    2: 'Đã duyệt',
-    3: 'Hủy'
+    [STATUS_APPENDIX_PENDING]: 'Chờ duyệt',
+    [STATUS_APPENDIX_APPROVED]: 'Đã duyệt',
+    [STATUS_APPENDIX_CANCEL]: 'Hủy'
 }
 
 //CONTRACT

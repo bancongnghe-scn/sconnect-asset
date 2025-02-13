@@ -12,18 +12,6 @@
                             @include('assets.import_warehouse.filters')
                         </div>
 
-                        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
-                            <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModalUI('create')">
-                                <span>+ Thêm</span>
-                            </button>
-                            <a href="/api/import-warehouse/export" download>
-                                <button type="button" class="btn btn-sm btn-outline-success">
-                                    <i class="fa-solid fa-file-export"></i>
-                                    Xuất Excel
-                                </button>
-                            </a>
-                        </div>
-
                         <div
                             @change-page.window="changePage($event.detail.page)"
                             @change-limit.window="changeLimit"

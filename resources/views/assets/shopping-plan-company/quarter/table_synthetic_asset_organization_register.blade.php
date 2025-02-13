@@ -50,7 +50,7 @@
                     {{-- button view --}}
                     <button  @click="handleShowModalDetailOrganization(organization.id)"
                              class="border-0 bg-white">
-                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                        <i class="bi bi-eye text-info"></i>
                     </button>
 
                     {{-- button duyet --}}

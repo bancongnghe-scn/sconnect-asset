@@ -46,7 +46,7 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <button class="border-0 bg-white" @click="$dispatch('view', { id: value.id })">
-                                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                                        <i class="bi bi-eye text-info"></i>
                                     </button>
                                     <button class="border-0 bg-white" @click="$dispatch('edit', { id: value.id })">
                                         <i class="bi bi-pencil-square color-sc"></i>

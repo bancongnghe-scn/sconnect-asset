@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center form-group">
-    <div class="col-8 p-0">
+    <div class="col-10 p-0">
         <div class="d-grid tw-grid-cols-12 tw-gap-x-4 align-items-center">
             <div class="tw-col-span-3">
                 @include('common.datepicker.datepicker_year',['model' => 'filters.time'])
@@ -11,7 +11,7 @@
                     'placeholder' => 'Chọn trạng thái',
                 ])
             </div>
-            <div>
+            <div class="tw-col-span-3">
                 <button @click="reloadPage()" type="button" class="btn btn-sm btn-outline-danger">Xóa lọc</button>
             </div>
         </div>

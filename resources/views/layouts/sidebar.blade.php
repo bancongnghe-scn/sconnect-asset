@@ -8,8 +8,8 @@
         <nav>
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item rounded bg-white-opacity-10-hover {{request()->is('home') ? 'bg-white-opacity-10' : ''}}">
-                    <a href="{{route('home')}}" class="nav-link text-white">
-                        <i class="fa-solid fa-house"></i>
+                    <a href="{{route('home')}}" class="nav-link text-white align-middle">
+                        <i class="bi bi-house-door-fill pr-1"></i>
                         <p>Home</p>
                     </a>
                 </li>
@@ -17,7 +17,7 @@
                     <li class="nav-item"
                         :class="menu.children.map(child => child.url).includes(window.location.pathname) ? 'menu-is-opening menu-open' : ''">
                         <a href="#" class="nav-link text-white">
-                            <i :class="menu.icon"></i>
+                            <i :class="menu.icon" class="pr-1"></i>
                             <p>
                                 <span x-text="menu.name"></span>
                                 <i x-show="menu.children.length > 0" class="right fas fa-angle-left"></i>
