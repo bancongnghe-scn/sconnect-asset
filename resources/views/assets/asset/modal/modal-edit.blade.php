@@ -58,11 +58,11 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày mua <span class="text-danger">*</span></span>
-                                        @include('common.datepicker.datepicker', [
+                                        {{-- @include('common.datepicker.datepicker', [
                                             'placeholder' => "Ngày mua",
                                             'model' => "assetEdit.date_purchase",
-                                        ])
-                                        {{-- <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase"> --}}
+                                        ]) --}}
+                                        <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase">
 
                                     </div>
                                 </div>
