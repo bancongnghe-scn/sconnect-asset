@@ -192,224 +192,227 @@
                         </span>
                     </div>
                 </div>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th class="text-center">STT</th>
-                        <th class="text-center">Mã tài sản</th>
-                        <th class="text-left">Tên tài sản</th>
-                        <th class="text-left">Loại tài sản</th>
-                        <th class="text-center">Đơn vị</th>
-                        <th class="text-center">Nhân viên đang sử dụng</th>
-                        <th class="text-center">Người đại diện</th>
-                        <th class="text-center">Giá trị</th>
-                        <th class="text-center">Tình trạng</th>
-                        <th class="text-center">Vị trí</th>
-                        <th class="text-center">Thao tác</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <template x-for="(asset, index) in listAsset" :key="asset.id">
+                <div class="custom-scroll">
+                    <table class="table table-bordered">
+                        <thead>
                         <tr>
-                            <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
-                            <td class="text-center" x-text="asset.code"></td>
-                            <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
-                            <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                            <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
-                            <td class="text-center">
-                                <div class="d-flex">
-                                    <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
-                                            ? (asset.user.avatar.includes('/uploads/') 
-                                                ? 'https://office.sconnect.com.vn' + asset.user.avatar 
-                                                : asset.user.avatar) 
+                            <th class="text-center">STT</th>
+                            <th class="text-center">Mã tài sản</th>
+                            <th class="text-left">Tên tài sản</th>
+                            <th class="text-left">Loại tài sản</th>
+                            <th class="text-center">Đơn vị</th>
+                            <th class="text-center">Nhân viên đang sử dụng</th>
+                            <th class="text-center">Người đại diện</th>
+                            <th class="text-center">Giá trị</th>
+                            <th class="text-center">Tình trạng</th>
+                            <th class="text-center">Vị trí</th>
+                            <th class="text-center">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <template x-for="(asset, index) in listAsset" :key="asset.id">
+                            <tr>
+                                <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td>
+                                <td class="text-center" x-text="asset.code"></td>
+                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"></td>
+                                <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
+                                <td class="text-center" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
+                                <td class="text-center">
+                                    <div class="d-flex">
+                                        <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
+                                                ? (asset.user.avatar.includes('/uploads/') 
+                                                    ? 'https://office.sconnect.com.vn' + asset.user.avatar 
+                                                    : asset.user.avatar) 
+                                                : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                alt="" 
+                                                style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
+                                        <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                            <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 14px;"></span>
+                                            <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
+                                        </div>
+                                    </div>
+                                    <template x-if="!asset.user_id">
+                                        <div>-</div>
+                                    </template>
+                                </td>
+                                <td class="text-center">
+                                    <template x-if="!asset.user_id && asset.organization_id">
+                                        <div class="d-flex">
+                                            <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
+                                            ? (asset.organization.manager.avatar.includes('/uploads/') 
+                                                ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar 
+                                                : asset.organization.manager.avatar) 
                                             : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
                                             alt="" 
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                    <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                        <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                        <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
-                                    </div>
-                                </div>
-                                <template x-if="!asset.user_id">
-                                    <div>-</div>
-                                </template>
-                            </td>
-                            <td class="text-center">
-                                <template x-if="!asset.user_id && asset.organization_id">
-                                    <div class="d-flex">
-                                        <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
-                                        ? (asset.organization.manager.avatar.includes('/uploads/') 
-                                            ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar 
-                                            : asset.organization.manager.avatar) 
-                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                        alt="" 
-                                        style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                        <div class="d-flex" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
-                                            <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                            <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
+                                            <div class="d-flex" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                                <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 14px;"></span>
+                                                <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
+                                            </div>
                                         </div>
+                                    </template>
+                                    <template x-if="!asset.organization_id || asset.user_id">
+                                        <div>-</div>
+                                    </template>
+                                </td>
+                                <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
+                                <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
+                                <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
+                                <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
+                                    {{-- <div class="dropdown">
+                                        <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" data-bs-auto-flip="true">
+                                            <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Bảo dưỡng</a></li>
+                                            <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
+                                        </ul>
+                                    </div> --}}
+                                    <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div 
+                                        x-show="open" 
+                                        class="dropdown-content" 
+                                        @click.outside="open = false" 
+                                        style="position: absolute; background: #fff; padding: 10px; z-index: 1000; display: block;">
+                                        <template x-if="matchStatus(asset.status, 'maintain')">
+                                            <a class="d-flex item-menu" href="#">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M21.767 4.69652C21.7536 4.67241 21.7348 4.6483 21.7134 4.62955C21.5795 4.49563 21.3625 4.49563 21.2286 4.62955L16.6134 9.24473L14.7946 7.42598L19.4125 2.80813C19.4339 2.7867 19.45 2.76527 19.4661 2.74116C19.5625 2.57777 19.5089 2.36884 19.3455 2.27241C16.7152 0.718839 13.2705 1.07509 11.0071 3.3358C9.21249 5.13045 8.61785 7.67509 9.22588 9.96259L1.37767 17.8108C1.29731 17.8912 1.30267 18.0224 1.38571 18.1054L5.93124 22.651C6.01428 22.734 6.14821 22.7394 6.22588 22.659L14.0714 14.8135C16.3616 15.4242 18.9062 14.8322 20.7036 13.0349C22.9643 10.7715 23.3205 7.32688 21.767 4.69652ZM19.3402 11.6688C17.7839 13.2251 15.4482 13.5251 13.592 12.5688L13.3562 12.8046L13.3536 12.8019L6.01428 20.1438L3.89285 18.0224L10.0562 11.859C10.0562 11.859 10.0562 11.8617 10.0589 11.8617L11.4732 10.4474C10.517 8.59116 10.817 6.25545 12.3732 4.6992C12.8751 4.19682 13.4796 3.80872 14.1453 3.5614C14.8109 3.31408 15.5222 3.21337 16.2304 3.26616L12.6705 6.8233C12.5097 6.98427 12.4194 7.20248 12.4194 7.43C12.4194 7.65752 12.5097 7.87573 12.6705 8.0367L16.0053 11.3715C16.1663 11.5323 16.3845 11.6226 16.612 11.6226C16.8396 11.6226 17.0578 11.5323 17.2187 11.3715L20.7759 7.81438C20.875 9.20188 20.3902 10.6215 19.3402 11.6688Z" fill="#344054"/>
+                                                </svg>
+                                                <span class="title-menu">Bảo dưỡng</span>    
+                                            </a>
+                                        </template>
+    
+                                        <template x-if="matchStatus(asset.status, 'detail')">
+                                            <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset);">
+                                                <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M23.5214 8.3106C20.9821 2.9615 17.1437 0.269531 11.9982 0.269531C6.84999 0.269531 3.01427 2.9615 0.474987 8.31328C0.373136 8.52895 0.320313 8.7645 0.320312 9.00301C0.320312 9.24152 0.373136 9.47708 0.474987 9.69275C3.01427 15.0419 6.85267 17.7338 11.9982 17.7338C17.1464 17.7338 20.9821 15.0419 23.5214 9.69007C23.7277 9.25614 23.7277 8.75257 23.5214 8.3106V8.3106ZM11.9982 15.8052C7.67767 15.8052 4.51427 13.6142 2.28302 9.00167C4.51427 4.38917 7.67767 2.1981 11.9982 2.1981C16.3187 2.1981 19.4821 4.38917 21.7134 9.00167C19.4848 13.6142 16.3214 15.8052 11.9982 15.8052ZM11.8911 4.28739C9.28749 4.28739 7.17677 6.3981 7.17677 9.00167C7.17677 11.6052 9.28749 13.716 11.8911 13.716C14.4946 13.716 16.6053 11.6052 16.6053 9.00167C16.6053 6.3981 14.4946 4.28739 11.8911 4.28739ZM11.8911 12.0017C10.233 12.0017 8.89106 10.6597 8.89106 9.00167C8.89106 7.34364 10.233 6.00167 11.8911 6.00167C13.5491 6.00167 14.8911 7.34364 14.8911 9.00167C14.8911 10.6597 13.5491 12.0017 11.8911 12.0017Z" fill="#344054"/>
+                                                </svg>
+                                                <span class="title-menu">Xem chi tiết</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'edit')">
+                                            <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset); tab='general-tab';">
+                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z" fill="#344054"/>
+                                                </svg>
+                                                <span class="title-menu">Chỉnh sửa</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'allocation')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" @click="getUser(); assetSelect = asset;" style="cursor: pointer;">
+                                                <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z" fill="#344054"/>
+                                                </svg> 
+                                                <span class="title-menu">Cấp phát</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'recovery', asset)">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" @click="assetSelect = asset; fillDataModalAllocation('recovery');">
+                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M15.4523 14.8377C16.1005 14.4895 16.8425 14.2913 17.6327 14.2913H17.6353C17.7157 14.2913 17.7532 14.1949 17.6943 14.1413C16.8725 13.4038 15.9338 12.8082 14.9166 12.3788C14.9059 12.3734 14.8952 12.3708 14.8844 12.3654C16.5478 11.1574 17.63 9.19397 17.63 6.9788C17.63 3.30915 14.6621 0.335938 11.0005 0.335938C7.33891 0.335938 4.37373 3.30915 4.37373 6.9788C4.37373 9.19397 5.45587 11.1574 7.12194 12.3654C7.11123 12.3708 7.10051 12.3734 7.0898 12.3788C5.89248 12.885 4.81837 13.6109 3.89426 14.5377C2.97549 15.4548 2.24403 16.542 1.74069 17.7386C1.24546 18.9104 0.978187 20.1658 0.953192 21.4377C0.952477 21.4663 0.957491 21.4948 0.96794 21.5214C0.978388 21.548 0.994059 21.5723 1.01403 21.5927C1.034 21.6132 1.05786 21.6295 1.08422 21.6406C1.11057 21.6517 1.13888 21.6574 1.16748 21.6574H2.77194C2.88712 21.6574 2.98355 21.5636 2.98623 21.4484C3.0398 19.3806 3.86748 17.444 5.33266 15.9761C6.84605 14.4574 8.86034 13.6217 11.0032 13.6217C12.5219 13.6217 13.9791 14.0422 15.2353 14.8297C15.2676 14.85 15.3047 14.8614 15.3427 14.8628C15.3808 14.8642 15.4186 14.8556 15.4523 14.8377V14.8377ZM11.0032 11.5859C9.77641 11.5859 8.62194 11.1065 7.75141 10.2359C7.32309 9.80873 6.98353 9.301 6.7523 8.74199C6.52106 8.18298 6.40272 7.58374 6.40409 6.9788C6.40409 5.74933 6.88355 4.59219 7.75141 3.72165C8.61926 2.85112 9.77373 2.37165 11.0032 2.37165C12.2327 2.37165 13.3844 2.85112 14.255 3.72165C14.6833 4.14886 15.0229 4.65659 15.2541 5.2156C15.4853 5.77461 15.6037 6.37385 15.6023 6.9788C15.6023 8.20826 15.1228 9.3654 14.255 10.2359C13.3844 11.1065 12.23 11.5859 11.0032 11.5859ZM20.855 17.9609H14.4264C14.3086 17.9609 14.2121 18.0574 14.2121 18.1752V19.6752C14.2121 19.7931 14.3086 19.8895 14.4264 19.8895H20.855C20.9728 19.8895 21.0693 19.7931 21.0693 19.6752V18.1752C21.0693 18.0574 20.9728 17.9609 20.855 17.9609Z" fill="#344054"/>
+                                                </svg>                                            
+                                                <span class="title-menu">Thu hồi</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'rotation')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" @click="fillDataModalRotation(); assetSelect = asset;">
+                                                <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M17.6173 7.25223C17.6173 3.58259 14.644 0.609375 10.9744 0.609375C7.30475 0.609375 4.33154 3.58259 4.33154 7.25223C4.33154 9.47009 5.41904 11.4362 7.09047 12.6415C7.07975 12.6469 7.07172 12.6496 7.06636 12.6522C5.86904 13.1585 4.79493 13.8844 3.87083 14.8112C2.95206 15.7283 2.22059 16.8154 1.71725 18.0121C1.22202 19.1838 0.95475 20.4393 0.929754 21.7112C0.92904 21.7397 0.934054 21.7682 0.944502 21.7948C0.954951 21.8214 0.970621 21.8457 0.990591 21.8662C1.01056 21.8866 1.03443 21.9029 1.06078 21.914C1.08713 21.9251 1.11544 21.9308 1.14404 21.9308H2.7485C2.86368 21.9308 2.96011 21.8371 2.96279 21.7219C3.01636 19.654 3.84404 17.7174 5.30922 16.2496C6.82261 14.7308 8.83154 13.8951 10.9744 13.8951C14.644 13.8951 17.6173 10.9219 17.6173 7.25223ZM10.9744 11.8594C8.42975 11.8594 6.36725 9.79687 6.36725 7.25223C6.36725 4.70759 8.42975 2.64509 10.9744 2.64509C13.519 2.64509 15.5815 4.70759 15.5815 7.25223C15.5815 9.79687 13.519 11.8594 10.9744 11.8594ZM13.7869 17.779H20.8583C20.9762 17.779 21.0726 17.6826 21.0726 17.5647V16.0647C21.0726 15.9469 20.9762 15.8504 20.8583 15.8504H16.1306L17.3949 14.2406C17.4241 14.203 17.4401 14.1569 17.4405 14.1094C17.4405 13.9915 17.344 13.8951 17.2262 13.8951H15.2815C15.1503 13.8951 15.0271 13.9567 14.944 14.0585L13.1092 16.3915C12.9914 16.5415 12.9271 16.729 12.9271 16.9219C12.9298 17.396 13.3128 17.779 13.7869 17.779ZM20.2155 19.4933H13.144C13.0262 19.4933 12.9298 19.5897 12.9298 19.7076V21.2076C12.9298 21.3254 13.0262 21.4219 13.144 21.4219H17.8717L16.6074 23.0317C16.5783 23.0693 16.5623 23.1154 16.5619 23.1629C16.5619 23.2808 16.6583 23.3772 16.7762 23.3772H18.7208C18.8521 23.3772 18.9753 23.3156 19.0583 23.2138L20.8931 20.8808C21.011 20.7308 21.0753 20.5433 21.0753 20.3504C21.0726 19.8763 20.6896 19.4933 20.2155 19.4933Z" fill="#344054"/>
+                                                </svg>                                           
+                                                <span class="title-menu">Luân chuyển</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'repair')">
+                                            <a class="d-flex item-menu" href="#">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M23.0564 15.0496L21.3019 13.5496C21.3849 13.0406 21.4278 12.521 21.4278 12.0013C21.4278 11.4817 21.3849 10.9621 21.3019 10.4531L23.0564 8.95313C23.1887 8.83984 23.2834 8.68895 23.3279 8.52053C23.3724 8.35211 23.3646 8.17413 23.3055 8.01027L23.2814 7.94062C22.7984 6.5907 22.0751 5.33929 21.1465 4.24687L21.0983 4.19062C20.9857 4.05818 20.8356 3.96296 20.6677 3.91754C20.4999 3.87211 20.3222 3.87861 20.1582 3.93616L17.9805 4.71027C17.1769 4.05134 16.2796 3.5317 15.3099 3.16741L14.8894 0.890625C14.8577 0.719309 14.7746 0.561703 14.6511 0.438744C14.5277 0.315785 14.3698 0.233295 14.1983 0.202232L14.126 0.188839C12.7305 -0.0629464 11.2626 -0.0629464 9.86708 0.188839L9.79476 0.202232C9.62332 0.233295 9.46539 0.315785 9.34196 0.438744C9.21852 0.561703 9.13542 0.719309 9.10369 0.890625L8.68047 3.17813C7.71857 3.54249 6.8228 4.06185 6.02869 4.71562L3.83494 3.93616C3.67092 3.87815 3.49313 3.87142 3.32519 3.91687C3.15726 3.96233 3.00713 4.05781 2.89476 4.19062L2.84655 4.24687C1.91908 5.34006 1.19595 6.59126 0.711724 7.94062L0.687617 8.01027C0.567081 8.34509 0.666188 8.72009 0.936724 8.95313L2.71262 10.4692C2.62958 10.9728 2.5894 11.4871 2.5894 11.9987C2.5894 12.5129 2.62958 13.0272 2.71262 13.5281L0.936724 15.0442C0.804391 15.1575 0.709679 15.3084 0.665181 15.4768C0.620684 15.6452 0.628509 15.8232 0.687617 15.9871L0.711724 16.0567C1.19655 17.4067 1.9144 18.6522 2.84655 19.7504L2.89476 19.8067C3.00741 19.9391 3.15754 20.0344 3.32537 20.0798C3.49321 20.1252 3.67087 20.1187 3.83494 20.0612L6.02869 19.2817C6.8269 19.9379 7.71887 20.4576 8.68047 20.8192L9.10369 23.1067C9.13542 23.278 9.21852 23.4356 9.34196 23.5586C9.46539 23.6815 9.62332 23.764 9.79476 23.7951L9.86708 23.8085C11.2754 24.0616 12.7177 24.0616 14.126 23.8085L14.1983 23.7951C14.3698 23.764 14.5277 23.6815 14.6511 23.5586C14.7746 23.4356 14.8577 23.278 14.8894 23.1067L15.3099 20.8299C16.2792 20.4666 17.1816 19.9452 17.9805 19.2871L20.1582 20.0612C20.3222 20.1192 20.5 20.1259 20.6679 20.0804C20.8358 20.035 20.986 19.9395 21.0983 19.8067L21.1465 19.7504C22.0787 18.6496 22.7965 17.4067 23.2814 16.0567L23.3055 15.9871C23.426 15.6576 23.3269 15.2826 23.0564 15.0496V15.0496ZM19.4001 10.7692C19.4671 11.1737 19.5019 11.5888 19.5019 12.004C19.5019 12.4192 19.4671 12.8344 19.4001 13.2388L19.2233 14.3129L21.2242 16.0246C20.9209 16.7234 20.538 17.3849 20.0832 17.996L17.5974 17.1147L16.7564 17.8058C16.1162 18.3308 15.4037 18.7433 14.6323 19.0326L13.6117 19.4156L13.1323 22.0138C12.3758 22.0996 11.612 22.0996 10.8555 22.0138L10.376 19.4103L9.36351 19.0219C8.60012 18.7326 7.8903 18.3201 7.25547 17.7978L6.4144 17.104L3.91262 17.9933C3.45726 17.3799 3.0769 16.7183 2.77155 16.0219L4.79387 14.2942L4.61976 13.2228C4.55547 12.8237 4.52065 12.4112 4.52065 12.004C4.52065 11.5942 4.5528 11.1844 4.61976 10.7853L4.79387 9.71384L2.77155 7.98616C3.07422 7.28705 3.45726 6.62812 3.91262 6.01473L6.4144 6.90402L7.25547 6.21027C7.8903 5.68795 8.60012 5.27545 9.36351 4.98616L10.3787 4.60312L10.8582 1.99955C11.6108 1.91384 12.3796 1.91384 13.1349 1.99955L13.6144 4.59777L14.6349 4.9808C15.4037 5.27009 16.1189 5.68259 16.759 6.20759L17.6001 6.89866L20.0858 6.01741C20.5412 6.6308 20.9215 7.29241 21.2269 7.98884L19.226 9.70045L19.4001 10.7692ZM11.9992 7.02187C9.39565 7.02187 7.28494 9.13259 7.28494 11.7362C7.28494 14.3397 9.39565 16.4504 11.9992 16.4504C14.6028 16.4504 16.7135 14.3397 16.7135 11.7362C16.7135 9.13259 14.6028 7.02187 11.9992 7.02187ZM14.1207 13.8576C13.8424 14.1366 13.5117 14.3579 13.1477 14.5087C12.7836 14.6595 12.3933 14.7368 11.9992 14.7362C11.1983 14.7362 10.4457 14.4228 9.8778 13.8576C9.59875 13.5793 9.37748 13.2487 9.2267 12.8846C9.07592 12.5205 8.99861 12.1302 8.99922 11.7362C8.99922 10.9353 9.31262 10.1826 9.8778 9.61473C10.4457 9.04687 11.1983 8.73616 11.9992 8.73616C12.8001 8.73616 13.5528 9.04687 14.1207 9.61473C14.3997 9.89298 14.621 10.2236 14.7718 10.5877C14.9225 10.9518 14.9998 11.3421 14.9992 11.7362C14.9992 12.5371 14.6858 13.2897 14.1207 13.8576Z" fill="#344054"/>
+                                                </svg>                                                                                        
+                                                <span class="title-menu">Sửa chữa</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'request-liquidation')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLiquidation" @click="assetSelect = asset;">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <g clip-path="url(#clip0_13695_31778)">
+                                                    <path d="M9 21H4.714C3.767 21 3 20.233 3 19.286V15" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3 4.35547V9.50047C3 9.77647 3.224 10.0005 3.5 10.0005H9.553C9.829 10.0005 10.053 9.77647 10.053 9.50047V4.35547" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M2 5L6.592 2L11 5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M16 3H19.286C20.233 3 21 3.767 21 4.714V8" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M17 22C19.75 22 22 19.75 22 17.001C22 14.252 19.75 12 17 12C14.25 12 12 14.25 12 17.001C12 18.123 12.379 19.157 13.008 19.994C13.923 21.208 15.372 22 17 22Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M17 14.955V14.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M17 19.0459V19.5009" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M15.8177 18.5581C15.9937 18.8471 16.2957 19.0471 16.6607 19.0471H17.0017H17.4077C17.9367 19.0471 18.3647 18.6181 18.3647 18.0901C18.3647 17.6511 18.0657 17.2681 17.6397 17.1611L16.3617 16.8401C15.9367 16.7341 15.6367 16.3511 15.6367 15.9121C15.6367 15.3831 16.0657 14.9551 16.5937 14.9551H17.0017H17.3427C17.7067 14.9551 18.0077 15.1541 18.1837 15.4421" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </g>
+                                                    <defs>
+                                                    <clipPath id="clip0_13695_31778">
+                                                    <rect width="24" height="24" fill="white"/>
+                                                    </clipPath>
+                                                    </defs>
+                                                </svg>                                            
+                                                <span class="title-menu">Đề xuất thanh lý</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'cancel')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalCancel" @click="assetSelect = asset;">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16.6443 7.76409C16.6443 7.64623 16.5478 7.5498 16.43 7.5498L14.6621 7.55784L11.9996 10.7319L9.3398 7.56052L7.56927 7.55248C7.45141 7.55248 7.35498 7.64623 7.35498 7.76677C7.35498 7.81766 7.37373 7.86588 7.40587 7.90606L10.8907 12.0578L7.40587 16.2069C7.37351 16.2462 7.35555 16.2954 7.35498 16.3462C7.35498 16.4641 7.45141 16.5605 7.56927 16.5605L9.3398 16.5525L11.9996 13.3784L14.6594 16.5498L16.4273 16.5578C16.5452 16.5578 16.6416 16.4641 16.6416 16.3436C16.6416 16.2927 16.6228 16.2444 16.5907 16.2043L13.1112 12.0552L16.5961 7.90338C16.6282 7.86588 16.6443 7.81498 16.6443 7.76409Z" fill="#344054"/>
+                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
+                                                </svg>                                                                                        
+                                                <span class="title-menu">Hủy tài sản</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'mark-damaged')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalBroken" @click="assetSelect = asset;">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
+                                                    <path d="M10.7139 16.7143C10.7139 17.0553 10.8493 17.3823 11.0904 17.6234C11.3316 17.8645 11.6586 18 11.9996 18C12.3406 18 12.6676 17.8645 12.9087 17.6234C13.1498 17.3823 13.2853 17.0553 13.2853 16.7143C13.2853 16.3733 13.1498 16.0463 12.9087 15.8051C12.6676 15.564 12.3406 15.4286 11.9996 15.4286C11.6586 15.4286 11.3316 15.564 11.0904 15.8051C10.8493 16.0463 10.7139 16.3733 10.7139 16.7143ZM11.3567 13.7143H12.6424C12.7603 13.7143 12.8567 13.6179 12.8567 13.5V6.21429C12.8567 6.09643 12.7603 6 12.6424 6H11.3567C11.2389 6 11.1424 6.09643 11.1424 6.21429V13.5C11.1424 13.6179 11.2389 13.7143 11.3567 13.7143Z" fill="#344054"/>
+                                                </svg>                                                                                   
+                                                <span class="title-menu">Đánh dấu hỏng</span>   
+                                            </a>
+                                        </template>
+                                        <template x-if="matchStatus(asset.status, 'mark-lost')">
+                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLost" @click="assetSelect = asset;">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M16.9284 11.1416H7.07122C6.95336 11.1416 6.85693 11.238 6.85693 11.3559V12.6416C6.85693 12.7595 6.95336 12.8559 7.07122 12.8559H16.9284C17.0462 12.8559 17.1427 12.7595 17.1427 12.6416V11.3559C17.1427 11.238 17.0462 11.1416 16.9284 11.1416Z" fill="#344054"/>
+                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
+                                                </svg>                                                                                   
+                                                <span class="title-menu">Đánh dấu mất</span>   
+                                            </a>
+                                        </template>
+                                        <a class="d-flex item-menu" href="#">
+                                            <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z" fill="#344054"/>
+                                            </svg>                                            
+                                            <span class="title-menu">In</span>   
+                                        </a>
+                                        <a class="d-flex item-menu" href="#">
+                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M3.66797 5.7998V22.9998C3.66797 24.1044 4.5634 24.9998 5.66797 24.9998H20.3346C21.4392 24.9998 22.3346 24.1044 22.3346 22.9998V5.7998" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M7.66797 5.8V3C7.66797 1.89543 8.5634 1 9.66797 1H16.3346C17.4392 1 18.3346 1.89543 18.3346 3V5.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M10.332 13L10.332 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M15.668 13L15.668 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                                                                          
+                                            <span class="title-menu text-danger">Xóa</span>   
+                                        </a>
                                     </div>
-                                </template>
-                                <template x-if="!asset.organization_id || asset.user_id">
-                                    <div>-</div>
-                                </template>
-                            </td>
-                            <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
-                            <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
-                            <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
-                            <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
-                                {{-- <div class="dropdown">
-                                    <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" data-bs-auto-flip="true">
-                                        <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Bảo dưỡng</a></li>
-                                        <li><a class="dropdown-item" href="#">Xem chi tiết</a></li>
-                                    </ul>
-                                </div> --}}
-                                <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <div 
-                                    x-show="open" 
-                                    class="dropdown-content" 
-                                    @click.outside="open = false" 
-                                    style="position: absolute; background: #fff; padding: 10px; z-index: 1000; display: block;">
-                                    <template x-if="matchStatus(asset.status, 'maintain')">
-                                        <a class="d-flex item-menu" href="#">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M21.767 4.69652C21.7536 4.67241 21.7348 4.6483 21.7134 4.62955C21.5795 4.49563 21.3625 4.49563 21.2286 4.62955L16.6134 9.24473L14.7946 7.42598L19.4125 2.80813C19.4339 2.7867 19.45 2.76527 19.4661 2.74116C19.5625 2.57777 19.5089 2.36884 19.3455 2.27241C16.7152 0.718839 13.2705 1.07509 11.0071 3.3358C9.21249 5.13045 8.61785 7.67509 9.22588 9.96259L1.37767 17.8108C1.29731 17.8912 1.30267 18.0224 1.38571 18.1054L5.93124 22.651C6.01428 22.734 6.14821 22.7394 6.22588 22.659L14.0714 14.8135C16.3616 15.4242 18.9062 14.8322 20.7036 13.0349C22.9643 10.7715 23.3205 7.32688 21.767 4.69652ZM19.3402 11.6688C17.7839 13.2251 15.4482 13.5251 13.592 12.5688L13.3562 12.8046L13.3536 12.8019L6.01428 20.1438L3.89285 18.0224L10.0562 11.859C10.0562 11.859 10.0562 11.8617 10.0589 11.8617L11.4732 10.4474C10.517 8.59116 10.817 6.25545 12.3732 4.6992C12.8751 4.19682 13.4796 3.80872 14.1453 3.5614C14.8109 3.31408 15.5222 3.21337 16.2304 3.26616L12.6705 6.8233C12.5097 6.98427 12.4194 7.20248 12.4194 7.43C12.4194 7.65752 12.5097 7.87573 12.6705 8.0367L16.0053 11.3715C16.1663 11.5323 16.3845 11.6226 16.612 11.6226C16.8396 11.6226 17.0578 11.5323 17.2187 11.3715L20.7759 7.81438C20.875 9.20188 20.3902 10.6215 19.3402 11.6688Z" fill="#344054"/>
-                                            </svg>
-                                            <span class="title-menu">Bảo dưỡng</span>    
-                                        </a>
-                                    </template>
-
-                                    <template x-if="matchStatus(asset.status, 'detail')">
-                                        <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset);">
-                                            <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M23.5214 8.3106C20.9821 2.9615 17.1437 0.269531 11.9982 0.269531C6.84999 0.269531 3.01427 2.9615 0.474987 8.31328C0.373136 8.52895 0.320313 8.7645 0.320312 9.00301C0.320312 9.24152 0.373136 9.47708 0.474987 9.69275C3.01427 15.0419 6.85267 17.7338 11.9982 17.7338C17.1464 17.7338 20.9821 15.0419 23.5214 9.69007C23.7277 9.25614 23.7277 8.75257 23.5214 8.3106V8.3106ZM11.9982 15.8052C7.67767 15.8052 4.51427 13.6142 2.28302 9.00167C4.51427 4.38917 7.67767 2.1981 11.9982 2.1981C16.3187 2.1981 19.4821 4.38917 21.7134 9.00167C19.4848 13.6142 16.3214 15.8052 11.9982 15.8052ZM11.8911 4.28739C9.28749 4.28739 7.17677 6.3981 7.17677 9.00167C7.17677 11.6052 9.28749 13.716 11.8911 13.716C14.4946 13.716 16.6053 11.6052 16.6053 9.00167C16.6053 6.3981 14.4946 4.28739 11.8911 4.28739ZM11.8911 12.0017C10.233 12.0017 8.89106 10.6597 8.89106 9.00167C8.89106 7.34364 10.233 6.00167 11.8911 6.00167C13.5491 6.00167 14.8911 7.34364 14.8911 9.00167C14.8911 10.6597 13.5491 12.0017 11.8911 12.0017Z" fill="#344054"/>
-                                            </svg>
-                                            <span class="title-menu">Xem chi tiết</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'edit')">
-                                        <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset); tab='general-tab';">
-                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z" fill="#344054"/>
-                                            </svg>
-                                            <span class="title-menu">Chỉnh sửa</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'allocation')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" @click="getUser(); assetSelect = asset;" style="cursor: pointer;">
-                                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z" fill="#344054"/>
-                                            </svg> 
-                                            <span class="title-menu">Cấp phát</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'recovery', asset)">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" @click="assetSelect = asset; fillDataModalAllocation('recovery');">
-                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M15.4523 14.8377C16.1005 14.4895 16.8425 14.2913 17.6327 14.2913H17.6353C17.7157 14.2913 17.7532 14.1949 17.6943 14.1413C16.8725 13.4038 15.9338 12.8082 14.9166 12.3788C14.9059 12.3734 14.8952 12.3708 14.8844 12.3654C16.5478 11.1574 17.63 9.19397 17.63 6.9788C17.63 3.30915 14.6621 0.335938 11.0005 0.335938C7.33891 0.335938 4.37373 3.30915 4.37373 6.9788C4.37373 9.19397 5.45587 11.1574 7.12194 12.3654C7.11123 12.3708 7.10051 12.3734 7.0898 12.3788C5.89248 12.885 4.81837 13.6109 3.89426 14.5377C2.97549 15.4548 2.24403 16.542 1.74069 17.7386C1.24546 18.9104 0.978187 20.1658 0.953192 21.4377C0.952477 21.4663 0.957491 21.4948 0.96794 21.5214C0.978388 21.548 0.994059 21.5723 1.01403 21.5927C1.034 21.6132 1.05786 21.6295 1.08422 21.6406C1.11057 21.6517 1.13888 21.6574 1.16748 21.6574H2.77194C2.88712 21.6574 2.98355 21.5636 2.98623 21.4484C3.0398 19.3806 3.86748 17.444 5.33266 15.9761C6.84605 14.4574 8.86034 13.6217 11.0032 13.6217C12.5219 13.6217 13.9791 14.0422 15.2353 14.8297C15.2676 14.85 15.3047 14.8614 15.3427 14.8628C15.3808 14.8642 15.4186 14.8556 15.4523 14.8377V14.8377ZM11.0032 11.5859C9.77641 11.5859 8.62194 11.1065 7.75141 10.2359C7.32309 9.80873 6.98353 9.301 6.7523 8.74199C6.52106 8.18298 6.40272 7.58374 6.40409 6.9788C6.40409 5.74933 6.88355 4.59219 7.75141 3.72165C8.61926 2.85112 9.77373 2.37165 11.0032 2.37165C12.2327 2.37165 13.3844 2.85112 14.255 3.72165C14.6833 4.14886 15.0229 4.65659 15.2541 5.2156C15.4853 5.77461 15.6037 6.37385 15.6023 6.9788C15.6023 8.20826 15.1228 9.3654 14.255 10.2359C13.3844 11.1065 12.23 11.5859 11.0032 11.5859ZM20.855 17.9609H14.4264C14.3086 17.9609 14.2121 18.0574 14.2121 18.1752V19.6752C14.2121 19.7931 14.3086 19.8895 14.4264 19.8895H20.855C20.9728 19.8895 21.0693 19.7931 21.0693 19.6752V18.1752C21.0693 18.0574 20.9728 17.9609 20.855 17.9609Z" fill="#344054"/>
-                                            </svg>                                            
-                                            <span class="title-menu">Thu hồi</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'rotation')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" @click="fillDataModalRotation(); assetSelect = asset;">
-                                            <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M17.6173 7.25223C17.6173 3.58259 14.644 0.609375 10.9744 0.609375C7.30475 0.609375 4.33154 3.58259 4.33154 7.25223C4.33154 9.47009 5.41904 11.4362 7.09047 12.6415C7.07975 12.6469 7.07172 12.6496 7.06636 12.6522C5.86904 13.1585 4.79493 13.8844 3.87083 14.8112C2.95206 15.7283 2.22059 16.8154 1.71725 18.0121C1.22202 19.1838 0.95475 20.4393 0.929754 21.7112C0.92904 21.7397 0.934054 21.7682 0.944502 21.7948C0.954951 21.8214 0.970621 21.8457 0.990591 21.8662C1.01056 21.8866 1.03443 21.9029 1.06078 21.914C1.08713 21.9251 1.11544 21.9308 1.14404 21.9308H2.7485C2.86368 21.9308 2.96011 21.8371 2.96279 21.7219C3.01636 19.654 3.84404 17.7174 5.30922 16.2496C6.82261 14.7308 8.83154 13.8951 10.9744 13.8951C14.644 13.8951 17.6173 10.9219 17.6173 7.25223ZM10.9744 11.8594C8.42975 11.8594 6.36725 9.79687 6.36725 7.25223C6.36725 4.70759 8.42975 2.64509 10.9744 2.64509C13.519 2.64509 15.5815 4.70759 15.5815 7.25223C15.5815 9.79687 13.519 11.8594 10.9744 11.8594ZM13.7869 17.779H20.8583C20.9762 17.779 21.0726 17.6826 21.0726 17.5647V16.0647C21.0726 15.9469 20.9762 15.8504 20.8583 15.8504H16.1306L17.3949 14.2406C17.4241 14.203 17.4401 14.1569 17.4405 14.1094C17.4405 13.9915 17.344 13.8951 17.2262 13.8951H15.2815C15.1503 13.8951 15.0271 13.9567 14.944 14.0585L13.1092 16.3915C12.9914 16.5415 12.9271 16.729 12.9271 16.9219C12.9298 17.396 13.3128 17.779 13.7869 17.779ZM20.2155 19.4933H13.144C13.0262 19.4933 12.9298 19.5897 12.9298 19.7076V21.2076C12.9298 21.3254 13.0262 21.4219 13.144 21.4219H17.8717L16.6074 23.0317C16.5783 23.0693 16.5623 23.1154 16.5619 23.1629C16.5619 23.2808 16.6583 23.3772 16.7762 23.3772H18.7208C18.8521 23.3772 18.9753 23.3156 19.0583 23.2138L20.8931 20.8808C21.011 20.7308 21.0753 20.5433 21.0753 20.3504C21.0726 19.8763 20.6896 19.4933 20.2155 19.4933Z" fill="#344054"/>
-                                            </svg>                                           
-                                            <span class="title-menu">Luân chuyển</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'repair')">
-                                        <a class="d-flex item-menu" href="#">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M23.0564 15.0496L21.3019 13.5496C21.3849 13.0406 21.4278 12.521 21.4278 12.0013C21.4278 11.4817 21.3849 10.9621 21.3019 10.4531L23.0564 8.95313C23.1887 8.83984 23.2834 8.68895 23.3279 8.52053C23.3724 8.35211 23.3646 8.17413 23.3055 8.01027L23.2814 7.94062C22.7984 6.5907 22.0751 5.33929 21.1465 4.24687L21.0983 4.19062C20.9857 4.05818 20.8356 3.96296 20.6677 3.91754C20.4999 3.87211 20.3222 3.87861 20.1582 3.93616L17.9805 4.71027C17.1769 4.05134 16.2796 3.5317 15.3099 3.16741L14.8894 0.890625C14.8577 0.719309 14.7746 0.561703 14.6511 0.438744C14.5277 0.315785 14.3698 0.233295 14.1983 0.202232L14.126 0.188839C12.7305 -0.0629464 11.2626 -0.0629464 9.86708 0.188839L9.79476 0.202232C9.62332 0.233295 9.46539 0.315785 9.34196 0.438744C9.21852 0.561703 9.13542 0.719309 9.10369 0.890625L8.68047 3.17813C7.71857 3.54249 6.8228 4.06185 6.02869 4.71562L3.83494 3.93616C3.67092 3.87815 3.49313 3.87142 3.32519 3.91687C3.15726 3.96233 3.00713 4.05781 2.89476 4.19062L2.84655 4.24687C1.91908 5.34006 1.19595 6.59126 0.711724 7.94062L0.687617 8.01027C0.567081 8.34509 0.666188 8.72009 0.936724 8.95313L2.71262 10.4692C2.62958 10.9728 2.5894 11.4871 2.5894 11.9987C2.5894 12.5129 2.62958 13.0272 2.71262 13.5281L0.936724 15.0442C0.804391 15.1575 0.709679 15.3084 0.665181 15.4768C0.620684 15.6452 0.628509 15.8232 0.687617 15.9871L0.711724 16.0567C1.19655 17.4067 1.9144 18.6522 2.84655 19.7504L2.89476 19.8067C3.00741 19.9391 3.15754 20.0344 3.32537 20.0798C3.49321 20.1252 3.67087 20.1187 3.83494 20.0612L6.02869 19.2817C6.8269 19.9379 7.71887 20.4576 8.68047 20.8192L9.10369 23.1067C9.13542 23.278 9.21852 23.4356 9.34196 23.5586C9.46539 23.6815 9.62332 23.764 9.79476 23.7951L9.86708 23.8085C11.2754 24.0616 12.7177 24.0616 14.126 23.8085L14.1983 23.7951C14.3698 23.764 14.5277 23.6815 14.6511 23.5586C14.7746 23.4356 14.8577 23.278 14.8894 23.1067L15.3099 20.8299C16.2792 20.4666 17.1816 19.9452 17.9805 19.2871L20.1582 20.0612C20.3222 20.1192 20.5 20.1259 20.6679 20.0804C20.8358 20.035 20.986 19.9395 21.0983 19.8067L21.1465 19.7504C22.0787 18.6496 22.7965 17.4067 23.2814 16.0567L23.3055 15.9871C23.426 15.6576 23.3269 15.2826 23.0564 15.0496V15.0496ZM19.4001 10.7692C19.4671 11.1737 19.5019 11.5888 19.5019 12.004C19.5019 12.4192 19.4671 12.8344 19.4001 13.2388L19.2233 14.3129L21.2242 16.0246C20.9209 16.7234 20.538 17.3849 20.0832 17.996L17.5974 17.1147L16.7564 17.8058C16.1162 18.3308 15.4037 18.7433 14.6323 19.0326L13.6117 19.4156L13.1323 22.0138C12.3758 22.0996 11.612 22.0996 10.8555 22.0138L10.376 19.4103L9.36351 19.0219C8.60012 18.7326 7.8903 18.3201 7.25547 17.7978L6.4144 17.104L3.91262 17.9933C3.45726 17.3799 3.0769 16.7183 2.77155 16.0219L4.79387 14.2942L4.61976 13.2228C4.55547 12.8237 4.52065 12.4112 4.52065 12.004C4.52065 11.5942 4.5528 11.1844 4.61976 10.7853L4.79387 9.71384L2.77155 7.98616C3.07422 7.28705 3.45726 6.62812 3.91262 6.01473L6.4144 6.90402L7.25547 6.21027C7.8903 5.68795 8.60012 5.27545 9.36351 4.98616L10.3787 4.60312L10.8582 1.99955C11.6108 1.91384 12.3796 1.91384 13.1349 1.99955L13.6144 4.59777L14.6349 4.9808C15.4037 5.27009 16.1189 5.68259 16.759 6.20759L17.6001 6.89866L20.0858 6.01741C20.5412 6.6308 20.9215 7.29241 21.2269 7.98884L19.226 9.70045L19.4001 10.7692ZM11.9992 7.02187C9.39565 7.02187 7.28494 9.13259 7.28494 11.7362C7.28494 14.3397 9.39565 16.4504 11.9992 16.4504C14.6028 16.4504 16.7135 14.3397 16.7135 11.7362C16.7135 9.13259 14.6028 7.02187 11.9992 7.02187ZM14.1207 13.8576C13.8424 14.1366 13.5117 14.3579 13.1477 14.5087C12.7836 14.6595 12.3933 14.7368 11.9992 14.7362C11.1983 14.7362 10.4457 14.4228 9.8778 13.8576C9.59875 13.5793 9.37748 13.2487 9.2267 12.8846C9.07592 12.5205 8.99861 12.1302 8.99922 11.7362C8.99922 10.9353 9.31262 10.1826 9.8778 9.61473C10.4457 9.04687 11.1983 8.73616 11.9992 8.73616C12.8001 8.73616 13.5528 9.04687 14.1207 9.61473C14.3997 9.89298 14.621 10.2236 14.7718 10.5877C14.9225 10.9518 14.9998 11.3421 14.9992 11.7362C14.9992 12.5371 14.6858 13.2897 14.1207 13.8576Z" fill="#344054"/>
-                                            </svg>                                                                                        
-                                            <span class="title-menu">Sửa chữa</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'request-liquidation')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLiquidation" @click="assetSelect = asset;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <g clip-path="url(#clip0_13695_31778)">
-                                                <path d="M9 21H4.714C3.767 21 3 20.233 3 19.286V15" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M3 4.35547V9.50047C3 9.77647 3.224 10.0005 3.5 10.0005H9.553C9.829 10.0005 10.053 9.77647 10.053 9.50047V4.35547" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M2 5L6.592 2L11 5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M16 3H19.286C20.233 3 21 3.767 21 4.714V8" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M17 22C19.75 22 22 19.75 22 17.001C22 14.252 19.75 12 17 12C14.25 12 12 14.25 12 17.001C12 18.123 12.379 19.157 13.008 19.994C13.923 21.208 15.372 22 17 22Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M17 14.955V14.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M17 19.0459V19.5009" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M15.8177 18.5581C15.9937 18.8471 16.2957 19.0471 16.6607 19.0471H17.0017H17.4077C17.9367 19.0471 18.3647 18.6181 18.3647 18.0901C18.3647 17.6511 18.0657 17.2681 17.6397 17.1611L16.3617 16.8401C15.9367 16.7341 15.6367 16.3511 15.6367 15.9121C15.6367 15.3831 16.0657 14.9551 16.5937 14.9551H17.0017H17.3427C17.7067 14.9551 18.0077 15.1541 18.1837 15.4421" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </g>
-                                                <defs>
-                                                <clipPath id="clip0_13695_31778">
-                                                <rect width="24" height="24" fill="white"/>
-                                                </clipPath>
-                                                </defs>
-                                            </svg>                                            
-                                            <span class="title-menu">Đề xuất thanh lý</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'cancel')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalCancel" @click="assetSelect = asset;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16.6443 7.76409C16.6443 7.64623 16.5478 7.5498 16.43 7.5498L14.6621 7.55784L11.9996 10.7319L9.3398 7.56052L7.56927 7.55248C7.45141 7.55248 7.35498 7.64623 7.35498 7.76677C7.35498 7.81766 7.37373 7.86588 7.40587 7.90606L10.8907 12.0578L7.40587 16.2069C7.37351 16.2462 7.35555 16.2954 7.35498 16.3462C7.35498 16.4641 7.45141 16.5605 7.56927 16.5605L9.3398 16.5525L11.9996 13.3784L14.6594 16.5498L16.4273 16.5578C16.5452 16.5578 16.6416 16.4641 16.6416 16.3436C16.6416 16.2927 16.6228 16.2444 16.5907 16.2043L13.1112 12.0552L16.5961 7.90338C16.6282 7.86588 16.6443 7.81498 16.6443 7.76409Z" fill="#344054"/>
-                                                <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                            </svg>                                                                                        
-                                            <span class="title-menu">Hủy tài sản</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'mark-damaged')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalBroken" @click="assetSelect = asset;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                                <path d="M10.7139 16.7143C10.7139 17.0553 10.8493 17.3823 11.0904 17.6234C11.3316 17.8645 11.6586 18 11.9996 18C12.3406 18 12.6676 17.8645 12.9087 17.6234C13.1498 17.3823 13.2853 17.0553 13.2853 16.7143C13.2853 16.3733 13.1498 16.0463 12.9087 15.8051C12.6676 15.564 12.3406 15.4286 11.9996 15.4286C11.6586 15.4286 11.3316 15.564 11.0904 15.8051C10.8493 16.0463 10.7139 16.3733 10.7139 16.7143ZM11.3567 13.7143H12.6424C12.7603 13.7143 12.8567 13.6179 12.8567 13.5V6.21429C12.8567 6.09643 12.7603 6 12.6424 6H11.3567C11.2389 6 11.1424 6.09643 11.1424 6.21429V13.5C11.1424 13.6179 11.2389 13.7143 11.3567 13.7143Z" fill="#344054"/>
-                                            </svg>                                                                                   
-                                            <span class="title-menu">Đánh dấu hỏng</span>   
-                                        </a>
-                                    </template>
-                                    <template x-if="matchStatus(asset.status, 'mark-lost')">
-                                        <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLost" @click="assetSelect = asset;">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M16.9284 11.1416H7.07122C6.95336 11.1416 6.85693 11.238 6.85693 11.3559V12.6416C6.85693 12.7595 6.95336 12.8559 7.07122 12.8559H16.9284C17.0462 12.8559 17.1427 12.7595 17.1427 12.6416V11.3559C17.1427 11.238 17.0462 11.1416 16.9284 11.1416Z" fill="#344054"/>
-                                                <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                            </svg>                                                                                   
-                                            <span class="title-menu">Đánh dấu mất</span>   
-                                        </a>
-                                    </template>
-                                    <a class="d-flex item-menu" href="#">
-                                        <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z" fill="#344054"/>
-                                        </svg>                                            
-                                        <span class="title-menu">In</span>   
-                                    </a>
-                                    <a class="d-flex item-menu" href="#">
-                                        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M3.66797 5.7998V22.9998C3.66797 24.1044 4.5634 24.9998 5.66797 24.9998H20.3346C21.4392 24.9998 22.3346 24.1044 22.3346 22.9998V5.7998" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M7.66797 5.8V3C7.66797 1.89543 8.5634 1 9.66797 1H16.3346C17.4392 1 18.3346 1.89543 18.3346 3V5.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M10.332 13L10.332 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M15.668 13L15.668 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                                                                      
-                                        <span class="title-menu text-danger">Xóa</span>   
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </template>
-                    </tbody>
-              </table>
+                                </td>
+                            </tr>
+                        </template>
+                        </tbody>
+                  </table>
+                </div>
+                
               @include('common.pagination')
                 <!-- Modal -->
                     <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
