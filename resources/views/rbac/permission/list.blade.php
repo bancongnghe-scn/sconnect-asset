@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="permission">
+    <div x-data="permissions">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
@@ -25,10 +25,7 @@
         </div>
 
         {{--  modal--}}
-        <div>
-            <div
-            @include('rbac.permission.modalUI')
-        </div>
+        @include('rbac.permission.modalUI')
 
         <div
             x-data="{

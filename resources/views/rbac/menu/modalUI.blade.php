@@ -62,9 +62,9 @@
                     <div class="col-auto">
                         <label class="form-label">Danh sách người dùng</label>
                         @include('common.user.select_multiple', [
-                                'placeholder' => "Chọn danh sách người dùng",
-                                'options' => 'listUser',
-                                'selected' => 'menu.user_ids'
+                             'placeholder' => 'Chọn danh sách người dùng',
+                             'options' => 'listUser',
+                             'selected' => 'menu.user_ids'
                         ])
                     </div>
                 </div>

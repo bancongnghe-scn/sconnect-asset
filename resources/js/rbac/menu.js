@@ -1,10 +1,10 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('menu', () => ({
+    Alpine.data('menus', () => ({
         init() {
             this.list({page: 1, limit: 10})
+            this.getListUser()
             this.getRole()
             this.getMenuParent()
-            this.getListUser()
             this.initSelect2Modal(this.idModalUI);
             this.onChangeSelect2()
         },

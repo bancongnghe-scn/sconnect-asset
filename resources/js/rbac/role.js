@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('role', () => ({
+    Alpine.data('roles', () => ({
         init() {
             this.getListUser()
             this.list({page: 1, limit: 10})

@@ -12,7 +12,7 @@
                         @include('common.select_custom.extent.select_multiple', [
                            'placeholder' => 'Chọn danh sách vai trò',
                            'options' => 'listRole',
-                           'selected' => 'data.role_ids',
+                           'selected' => 'filters.role_ids',
                         ])
                     </div>
                     <div class="col-auto">
