@@ -46,14 +46,12 @@
                                     </td>
                                     <td class="align-middle">
                                         <template x-for="configBtnTable in configButtonsTable">
-                                            <template x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
-                                                <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
-                                                    <template x-for="configBtn in configBtnTable.buttons">
-                                                        <button class="border-0 bg-white"
-                                                                @click="configBtn.action(value.id)">
-                                                            <i :class="configBtn.icon"></i>
-                                                        </button>
-                                                    </template>
+                                            <template x-if="configBtnTable.condition(+value.status)">
+                                                <template x-for="configBtn in configBtnTable.buttons">
+                                                    <button class="border-0 bg-white"
+                                                            @click="configBtn.action(value.id)">
+                                                        <i :class="configBtn.icon"></i>
+                                                    </button>
                                                 </template>
                                             </template>
                                         </template>

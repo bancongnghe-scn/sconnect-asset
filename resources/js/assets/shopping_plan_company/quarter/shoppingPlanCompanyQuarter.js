@@ -272,14 +272,20 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async sentNotificationRegister() {
+        async sentNotificationRegister(type= 'sent_to_detail',id = null) {
             this.loading = true
+            if (type === 'sent_to_table') {
+                this.id = id
+            }
             try {
                 const response = await window.apiSentNotificationRegister(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                    this.getOrganizationRegisterQuarter()
+                    if (type === 'sent_to_detail') {
+                        this.getOrganizationRegisterQuarter()
+                    }
+                    this.list(this.filters)
                     return
                 }
 
@@ -507,8 +513,22 @@ document.addEventListener('alpine:init', () => {
         setConfigButton() {
             this.configButtonsTable = [
                 {
-                    condition: (status) => STATUS_SHOPPING_PLAN_COMPANY_NEW === status,
-                    permission: 'shopping_plan_company.crud',
+                    condition: (status) =>
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW === status
+                        && this.permission.includes('shopping_plan_company.sent_notification_register')
+                    ,
+                    buttons: [
+                        {
+                            icon: 'bi bi-send text-primary',
+                            action: (id) => this.sentNotificationRegister('sent_to_table',id),
+                        },
+                    ],
+                },
+                {
+                    condition: (status) =>
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW === status
+                        && this.permission.includes('shopping_plan_company.crud')
+                    ,
                     buttons: [
                         {
                             icon: 'bi bi-trash text-red',
@@ -517,28 +537,22 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
                 {
-                    condition: (status) => [STATUS_SHOPPING_PLAN_COMPANY_NEW,STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status),
-                    permission: 'shopping_plan_company.crud',
-                    buttons: [
-                        {
-                            icon: 'bi bi-pencil-square color-sc',
-                            action: (id) => this.handleShowModal('update', id),
-                        },
-                    ],
-                },
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                    permission: 'shopping_plan_company.accounting_approval',
-                    buttons: [
-                        {
-                            icon: 'bi bi-pencil-square color-sc',
-                            action: (id) => this.handleShowModal( 'update', id),
-                        },
-                    ],
-                },
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                    permission: 'shopping_plan_company.general_approval',
+                    condition: (status) =>
+                        (
+                            [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status)
+                            && this.permission.includes('shopping_plan_company.crud')
+                        )
+                        ||
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                            && this.permission.includes('shopping_plan_company.accounting_approval')
+                        )
+                        ||
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                            && this.permission.includes('shopping_plan_company.general_approval')
+                        )
+                    ,
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
@@ -548,7 +562,6 @@ document.addEventListener('alpine:init', () => {
                 },
                 {
                     condition: () => true,
-                    permission: true,
                     buttons: [
                         {
                             icon: 'bi bi-eye text-info',
