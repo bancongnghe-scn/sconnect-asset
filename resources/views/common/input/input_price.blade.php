@@ -1,7 +1,7 @@
 <input x-data="{
             init() {
                 this.$watch(`{{$model}}`, (newValue) => {
-                    this.formatPriceVnd = new Intl.NumberFormat('vi-VN').format(newValue)
+                    this.formatPriceVnd = new Intl.NumberFormat('en-US').format(newValue)
                 });
             },
             formatPriceVnd: 0,
@@ -23,7 +23,7 @@
                 // Định dạng lại số với dấu chấm
                 valueInput = valueInput.replace(/[.,]/g, '')
                 this.{{$model}} = valueInput
-                valueInput = new Intl.NumberFormat('vi-VN').format(valueInput);
+                valueInput = new Intl.NumberFormat('en-US').format(valueInput);
 
                 // Gán lại vào ô input
                 input.value = valueInput;

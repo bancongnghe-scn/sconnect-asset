@@ -87,13 +87,20 @@
                            :disabled="isDisabled"
                     >
                 </td>
-                <td>
-                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price"
-                           :disabled="isDisabled">
+                <td class="tw-min-w-36">
+{{--                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price" :disabled="isDisabled">--}}
+                    @include('common.input.input_price', [
+                        'model' => 'assetRegister.price',
+                        'disabled' => 'isDisabled'
+                    ])
                 </td>
-                <td>
-                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"
-                           :disabled="isDisabled">
+                <td class="tw-min-w-32">
+{{--                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"--}}
+{{--                           :disabled="isDisabled">--}}
+                    @include('common.input.input_price', [
+                        'model' => 'assetRegister.tax_money',
+                        'disabled' => 'isDisabled'
+                    ])
                 </td>
                 <td x-text="total ?? '-'" class="text-center align-middle"></td>
                 <td>

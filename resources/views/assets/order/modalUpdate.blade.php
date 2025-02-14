@@ -115,7 +115,7 @@
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                                 <tr>
-                                                    <td x-text="asset.code"></td>
+                                                    <td class="align-middle" x-text="asset.code"></td>
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
@@ -128,12 +128,12 @@
                                                         <input class="form-control" type="number" min="1"
                                                                x-model="asset.vat_rate" :disabled="disabled">
                                                     </td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                    <td x-text="asset.asset_type_name"></td>
-                                                    <td x-text="LIST_MEASURE[asset.measure]"></td>
-                                                    <td x-text="asset.organization_name"></td>
-                                                    <td x-text="asset.description"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                    <td class="align-middle" x-text="asset.asset_type_name"></td>
+                                                    <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
+                                                    <td class="align-middle" x-text="asset.organization_name"></td>
+                                                    <td class="align-middle" x-text="asset.description"></td>
                                                 </tr>
                                             </template>
                                             </tbody>
@@ -161,7 +161,7 @@
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                                 <tr>
-                                                    <td x-text="asset.code"></td>
+                                                    <td class="align-middle" x-text="asset.code"></td>
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
@@ -174,8 +174,8 @@
                                                         <input class="form-control" type="number" min="1"
                                                                x-model="asset.vat_rate" :disabled="disabled">
                                                     </td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                     <td>
                                                         @include('common.select_custom.extent.select_single', [
                                                              'selected' => 'asset.asset_type_id',
@@ -184,7 +184,7 @@
                                                              'disabled' => 'disabled',
                                                         ])
                                                     </td>
-                                                    <td x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
+                                                    <td class="align-middle" x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
                                                     </td>
                                                     <td>
                                                         @include('common.select_custom.extent.select_single', [
@@ -219,13 +219,19 @@
                                 <div class="col-4">
                                     <div class="mb-2">
                                         <label>Chi phí vận chuyển, lắp đặt</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                               x-model="data.shipping_costs" :disabled="disabled">
+                                        @include('common.input.input_price', [
+                                            'model' => 'data.shipping_costs',
+                                            'placeholder' => "Nhập số",
+                                            'disabled' => 'disabled'
+                                        ])
                                     </div>
                                     <div>
                                         <label>Chi phí khác</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                               x-model="data.other_costs" :disabled="disabled">
+                                        @include('common.input.input_price', [
+                                            'model' => 'data.other_costs',
+                                            'placeholder' => "Nhập số",
+                                            'disabled' => 'disabled'
+                                        ])
                                     </div>
                                 </div>
                                 <div class="col-4" x-data="{get totalPrice () {

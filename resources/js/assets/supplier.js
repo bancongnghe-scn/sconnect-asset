@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
             this.list({page: 1, limit: 10})
             this.getListIndustry()
             this.getListAssetType()
-            window.initSelect2Modal(this.idModalUI)
             this.onChangeSelect2()
             this.watchFilters()
         },
