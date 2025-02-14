@@ -62,7 +62,7 @@
                                             'placeholder' => "Ngày mua",
                                             'model' => "assetEdit.date_purchase",
                                         ]) --}}
-                                        <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase">
+                                        <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase" onclick="this.showPicker();">
 
                                     </div>
                                 </div>
@@ -130,7 +130,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Thời gian bảo hành</span>
-                                        <input type="date" class="form-control" x-model="assetEdit.date_warranty" disabled>
+                                        <input type="date" class="form-control date-disabled" x-model="assetEdit.date_warranty" disabled>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -156,13 +156,13 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bảo dưỡng gần nhất</span>
-                                        <input type="date" class="form-control" x-model="assetEdit.recent_maintenance_date">
+                                        <input type="date" class="form-control" x-model="assetEdit.recent_maintenance_date" onclick="this.showPicker();">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                        <input type="date" class="form-control" x-model="assetEdit.next_maintenance_date">
+                                        <input type="date" class="form-control" x-model="assetEdit.next_maintenance_date" onclick="this.showPicker();">
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +187,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bắt đầu phân bổ</span>
-                                        <input type="date" class="form-control" value="2024-11-01">
+                                        <input type="date" class="form-control" value="2024-11-01" onclick="this.showPicker();">
                                     </div>
                                 </div>
                                 <div class="col-6">
