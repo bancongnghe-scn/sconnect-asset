@@ -24,10 +24,7 @@ class SyntheticOrganizationRegisterPlanResource extends JsonResource
     public function toArray($request)
     {
         if (ShoppingPlanCompany::STATUS_NEW === +$this->resource->status) {
-            return $this->organizationRepository->getListing([
-                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
-                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
-            ])->pluck('name')->toArray();
+            return $this->organizationRepository->getOrganizationMain()->pluck('name')->toArray();
         }
 
         $shoppingPlanCompany = $this->shoppingPlanCompanyRepository->getFirst([
