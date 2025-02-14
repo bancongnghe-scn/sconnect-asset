@@ -109,6 +109,12 @@
     .modal-2{
         --bs-modal-zindex: 1100 !important;
     }
+
+    .date-disabled{
+        background: #e9ecef url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 8v9a1 1 0 001 1h12a1 1 0 001-1V8H3z"/></svg>') no-repeat right 10px center;
+        background-size: 16px;
+        pointer-events: none;
+    }
     </style>
 <div x-data="listAsset">
     <div class="row" >
@@ -467,7 +473,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày mua</span>
-                                                            <input type="date" class="form-control" id="locationSearch" x-model="assetObj.date_purchase" disabled>
+                                                            <input type="date" class="form-control date-disabled" id="locationSearch" x-model="assetObj.date_purchase" disabled>
                     
                                                         </div>
                                                     </div>
@@ -535,7 +541,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Thời gian bảo hành</span>
-                                                            <input type="date" class="form-control" x-model="assetObj.date_warranty" disabled>
+                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.date_warranty" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
@@ -664,13 +670,13 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng gần nhất</span>
-                                                            <input type="date" class="form-control" x-model="assetObj.recent_maintenance_date" disabled>
+                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.recent_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                                            <input type="date" class="form-control" x-model="assetObj.next_maintenance_date" disabled>
+                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.next_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -695,7 +701,7 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control" value="2024-11-01" disabled>
+                                                            <input type="date" class="form-control date-disabled" value="2024-11-01" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
