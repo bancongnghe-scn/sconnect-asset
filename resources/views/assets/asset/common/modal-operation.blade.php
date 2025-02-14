@@ -25,32 +25,38 @@
                     <div class="row" style="background: #fff; border-radius: 25px; padding: 30px 25px; border: 1px solid #d7d7d7;">
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
-                            <div class="col-6 item-rotation-modal row">
-                                <div class="col-4 col-field">
-                                    <span class="label-field">Mã tài sản</span>
+                            <div class="col-12 item-rotation-modal row">
+                                <div class="col-2 col-field">
                                     <span class="label-field">Tên tài sản</span>
-                                    <span class="label-field">Loại tài sản</span>
-                                    <span class="label-field">Ngày mua</span>
-                                    <span class="label-field">Hạn bảo hành</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span class="text-field" x-text="assetSelect.code"></span>
-                                    <span class="text-field" x-text="assetSelect.name"></span>
-                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                <div class="col-10 col-field">
+                                    <span x-text="assetSelect.name"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
                                 <div class="col-4 col-field">
+                                    <span class="label-field">Mã tài sản</span>
+                                    <span class="label-field">Loại tài sản</span>
+                                    <span class="label-field">Ngày mua</span>
+                                    <span class="label-field">Hạn bảo hành</span>
                                     <span class="label-field">Giá trị tài sản</span>
+                                </div>
+                                <div class="col-6 col-field">
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                </div>
+                            </div>
+                            <div class="col-6 item-rotation-modal row">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
                                 <div class="col-8 col-field">
-                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
                                     <span class="text-field">--</span>
                                     <span class="text-field" x-text="assetSelect.location_text"></span>
                                     <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
@@ -63,7 +69,7 @@
                             <div class="col-6 item-rotation-modal">
                                 <div class="col-12 mb-3">
                                     <span>Ngày đánh dấu</span>
-                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation">
+                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation" onclick="this.showPicker();">
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal">
@@ -179,32 +185,38 @@
                     <div class="row" style="background: #fff; border-radius: 25px; padding: 30px 25px; border: 1px solid #d7d7d7;">
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
-                            <div class="col-6 item-rotation-modal row">
-                                <div class="col-4 col-field">
-                                    <span class="label-field">Mã tài sản</span>
+                            <div class="col-12 item-rotation-modal row">
+                                <div class="col-2 col-field">
                                     <span class="label-field">Tên tài sản</span>
-                                    <span class="label-field">Loại tài sản</span>
-                                    <span class="label-field">Ngày mua</span>
-                                    <span class="label-field">Hạn bảo hành</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span class="text-field" x-text="assetSelect.code"></span>
-                                    <span class="text-field" x-text="assetSelect.name"></span>
-                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                <div class="col-10 col-field">
+                                    <span x-text="assetSelect.name"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
                                 <div class="col-4 col-field">
+                                    <span class="label-field">Mã tài sản</span>
+                                    <span class="label-field">Loại tài sản</span>
+                                    <span class="label-field">Ngày mua</span>
+                                    <span class="label-field">Hạn bảo hành</span>
                                     <span class="label-field">Giá trị tài sản</span>
+                                </div>
+                                <div class="col-6 col-field">
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                </div>
+                            </div>
+                            <div class="col-6 item-rotation-modal row">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
                                 <div class="col-8 col-field">
-                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
                                     <span class="text-field">--</span>
                                     <span class="text-field" x-text="assetSelect.location_text"></span>
                                     <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
@@ -217,7 +229,7 @@
                             <div class="col-6 item-rotation-modal">
                                 <div class="col-12">
                                     <span>Ngày hủy</span>
-                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation">
+                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation" onclick="this.showPicker();">
                                 </div>
                             </div>
                             <div class="col-12 item-rotation-modal">
@@ -319,32 +331,38 @@
                     <div class="row" style="background: #fff; border-radius: 25px; padding: 30px 25px; border: 1px solid #d7d7d7;">
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
-                            <div class="col-6 item-rotation-modal row">
-                                <div class="col-4 col-field">
-                                    <span class="label-field">Mã tài sản</span>
+                            <div class="col-12 item-rotation-modal row">
+                                <div class="col-2 col-field">
                                     <span class="label-field">Tên tài sản</span>
-                                    <span class="label-field">Loại tài sản</span>
-                                    <span class="label-field">Ngày mua</span>
-                                    <span class="label-field">Hạn bảo hành</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span class="text-field" x-text="assetSelect.code"></span>
-                                    <span class="text-field" x-text="assetSelect.name"></span>
-                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                <div class="col-10 col-field">
+                                    <span x-text="assetSelect.name"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
                                 <div class="col-4 col-field">
+                                    <span class="label-field">Mã tài sản</span>
+                                    <span class="label-field">Loại tài sản</span>
+                                    <span class="label-field">Ngày mua</span>
+                                    <span class="label-field">Hạn bảo hành</span>
                                     <span class="label-field">Giá trị tài sản</span>
+                                </div>
+                                <div class="col-6 col-field">
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                </div>
+                            </div>
+                            <div class="col-6 item-rotation-modal row">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
                                 <div class="col-8 col-field">
-                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
                                     <span class="text-field">--</span>
                                     <span class="text-field" x-text="assetSelect.location_text"></span>
                                     <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
@@ -357,7 +375,7 @@
                             <div class="col-6 item-rotation-modal">
                                 <div class="col-12">
                                     <span>Ngày đánh dấu hỏng</span>
-                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation">
+                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation" onclick="this.showPicker();">
                                 </div>
                             </div>
                             <div class="col-12 item-rotation-modal">
@@ -459,32 +477,38 @@
                     <div class="row" style="background: #fff; border-radius: 25px; padding: 30px 25px; border: 1px solid #d7d7d7;">
                         <h5 class="text-bold">Thông tin tài sản</h5>
                         <div class="row">
-                            <div class="col-6 item-rotation-modal row">
-                                <div class="col-4 col-field">
-                                    <span class="label-field">Mã tài sản</span>
+                            <div class="col-12 item-rotation-modal row">
+                                <div class="col-2 col-field">
                                     <span class="label-field">Tên tài sản</span>
-                                    <span class="label-field">Loại tài sản</span>
-                                    <span class="label-field">Ngày mua</span>
-                                    <span class="label-field">Hạn bảo hành</span>
                                 </div>
-                                <div class="col-6 col-field">
-                                    <span class="text-field" x-text="assetSelect.code"></span>
-                                    <span class="text-field" x-text="assetSelect.name"></span>
-                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
-                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                <div class="col-10 col-field">
+                                    <span x-text="assetSelect.name"></span>
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal row">
                                 <div class="col-4 col-field">
+                                    <span class="label-field">Mã tài sản</span>
+                                    <span class="label-field">Loại tài sản</span>
+                                    <span class="label-field">Ngày mua</span>
+                                    <span class="label-field">Hạn bảo hành</span>
                                     <span class="label-field">Giá trị tài sản</span>
+                                </div>
+                                <div class="col-6 col-field">
+                                    <span class="text-field" x-text="assetSelect.code"></span>
+                                    <span class="text-field" x-text="assetSelect.asset_type ? assetSelect.asset_type.name : '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.date_purchase) ?? '--'"></span>
+                                    <span class="text-field" x-text="formatDateVN(assetSelect.created_at)"></span>
+                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
+                                </div>
+                            </div>
+                            <div class="col-6 item-rotation-modal row">
+                                <div class="col-4 col-field">
                                     <span class="label-field">Giá trị còn lại</span>
                                     <span class="label-field">Vị trí</span>
                                     <span class="label-field">Người sử dụng</span>
                                     <span class="label-field">Trạng thái</span>
                                 </div>
                                 <div class="col-8 col-field">
-                                    <span class="text-field" x-text="assetSelect.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '--'"></span>
                                     <span class="text-field">--</span>
                                     <span class="text-field" x-text="assetSelect.location_text"></span>
                                     <span class="text-field" x-text="assetSelect.user ? assetSelect.user.name : '--'"></span>
@@ -497,7 +521,7 @@
                             <div class="col-6 item-rotation-modal">
                                 <div class="col-12">
                                     <span>Ngày đánh dấu mất</span>
-                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation">
+                                    <input type="date" class="form-control" placeholder="dd/mm/yyyy" x-model="dateLiquidation" onclick="this.showPicker();">
                                 </div>
                             </div>
                             <div class="col-12 item-rotation-modal">
