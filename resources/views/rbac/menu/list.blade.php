@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="menu">
+    <div x-data="menus">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
