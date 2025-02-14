@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
             this.getListOrder()
             this.getListUser()
-            window.initSelect2Modal('modalUI')
             this.$watch('data.order_ids', (newValue, oldValue) => {
                 this.handleGetImportWarehouseAsset(newValue, oldValue)
             })
