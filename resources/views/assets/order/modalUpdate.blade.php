@@ -167,8 +167,10 @@
                                                                :disabled="disabled">
                                                     </td>
                                                     <td>
-                                                        <input class="form-control" type="number" min="1"
-                                                               x-model="asset.price" :disabled="disabled">
+                                                        @include('common.input.input_price', [
+                                                            'model' => 'asset.price',
+                                                            'disabled' => 'disabled'
+                                                        ])
                                                     </td>
                                                     <td>
                                                         <input class="form-control" type="number" min="1"

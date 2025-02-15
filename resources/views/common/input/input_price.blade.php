@@ -1,5 +1,8 @@
 <input x-data="{
             init() {
+                if (this.{{$model}} !== null) {
+                    this.formatPriceVnd = new Intl.NumberFormat('en-US').format(this.{{$model}})
+                }
                 this.$watch(`{{$model}}`, (newValue) => {
                     this.formatPriceVnd = new Intl.NumberFormat('en-US').format(newValue)
                 });
@@ -30,6 +33,6 @@
             }
 }" class="form-control" type="text" placeholder="{{$placeholder ?? 'Nhập số'}}"
            x-model="formatPriceVnd" @input="formatCurrencyVNDInput($event)"
-       @isset($disabled) disabled @endisset
+       @isset($disabled) :disabled = {{$disabled}} @endisset
 >
 
