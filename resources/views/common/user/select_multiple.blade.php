@@ -53,7 +53,7 @@
     <!-- Nút chọn -->
     <button
         @click="open = !open"
-        class="form-select tw-w-full tw-text-gray-500 flex flex-wrap items-center"
+        class="form-select tw-w-full"
         type="button"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
@@ -61,17 +61,20 @@
         <template x-if="selected.length">
             <div class="d-flex flex-wrap gap-1">
                 <template x-for="id in selected">
-                    <span class="badge bg-primary d-flex align-items-center tw-w-fit">
-                        <span x-data="{option: options.find(option => option.id === id)}" x-text="option?.code + '-' + option?.name"></span>
+                    <span class="tw-bg-[#e5f2ff] tw-text-[#007aff] tw-p-[2px] rounded d-flex align-items-center tw-w-fit">
+                        <span x-data="{option: options.find(option => option.id === id)}" x-text="option?.code + '-' + option?.name"
+                              class="tw-pl-[3px]"
+                        ></span>
                         <button
                             @click.stop="clearOption(id)"
-                            class="btn btn-sm text-white ms-2 p-0 d-flex align-items-center"
+                            class="btn btn-sm text-gray p-0 d-flex align-items-center"
+                            style="margin-left: 3px;font-size: 13px;font-weight: 600;"
                         >x</button>
                     </span>
                 </template>
             </div>
         </template>
-        <span x-show="!selected.length">{{ $placeholder ?? 'Chọn ...' }}</span>
+        <span class="text-gray" x-show="!selected.length">{{ $placeholder ?? 'Chọn ...' }}</span>
     </button>
 
     <!-- Dropdown -->
