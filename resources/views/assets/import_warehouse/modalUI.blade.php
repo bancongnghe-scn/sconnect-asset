@@ -72,8 +72,8 @@
                                         <td>
                                             <input class="form-control tw-w-[9rem]" type="text" x-model="asset.seri_number" :disabled="disabled">
                                         </td>
-                                        <td x-text="asset.price"></td>
-                                        <td x-text="asset.price_last"></td>
+                                        <td x-text="formatCurrencyVND(asset.price)"></td>
+                                        <td x-text="formatCurrencyVND(asset.price_last)"></td>
                                         <td x-text="formatDateVN(asset.date_purchase)"></td>
                                         <td x-text="asset.asset_type_name"></td>
                                         <td x-text="LIST_MEASURE[asset.measure]"></td>
