@@ -21,7 +21,7 @@ class JobTitleService
             $organizationChild = $this->organizationRepository->departmentTreeCollection($filters['org_id']);
             if (!empty($organizationChild)) {
                 $organizationIds = $organizationChild->pluck('id')->toArray();
-                $filters['org_id'] = array_merge($organizationIds, Arr::wrap($filters['org_id']));
+                $filters['org_id'] = $organizationIds;
             }
         }
         $results = $this->jobTitleRepository->getJobs($filters);

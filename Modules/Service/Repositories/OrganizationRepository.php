@@ -86,7 +86,7 @@ class OrganizationRepository extends BaseRepository
                 JOIN configs ON b.dept_type_id = configs.id
             )
             SELECT id, name, level, parent_id FROM temp ORDER BY path;",
-            [$parentId]
+            Arr::wrap($parentId)
         );
         return collect($organizations);
     }
