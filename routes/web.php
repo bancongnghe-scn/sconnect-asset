@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/ping', function () {
-    resolve(\Modules\Service\Services\JobTitleService::class)->getJobs(['org_id' => 65]);
     return 'pong';
 });
 
