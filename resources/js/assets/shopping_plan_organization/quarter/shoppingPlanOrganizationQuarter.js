@@ -197,6 +197,30 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
+            try {
+                const response = await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, position_id)
+                if (response.success) {
+                    if (response.data.data.length === 0) {
+                        toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
+                    }
+                    return response.data.data?.price ?? 0
+                } else {
+                    toast.error(response.message)
+                    return 0
+                }
+            } catch (e) {
+                toast.error(e)
+            }
+        },
+
+        async getPrice(asset_type_id, position_id) {
+            if (!asset_type_id || !position_id) {
+                return 0
+            }
+            return  await this.getAllocationRateOfOrganization(this.data.organization_id, asset_type_id, position_id)
+        },
+
         setConfigButtons() {
             this.configButtonsTable = [
                 {

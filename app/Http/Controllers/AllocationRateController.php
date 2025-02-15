@@ -91,4 +91,27 @@ class AllocationRateController extends Controller
             return response_error();
         }
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     * Lấy giá tri cua tai san theo dinh muc cap phat cua don vi
+     */
+    public function getAllocationRateOfOrganization(Request $request)
+    {
+        $request->validate([
+           'organization_id'   => 'required|integer',
+           'asset_type_id'   => 'required|integer',
+           'position_id'   => 'nullable|integer',
+        ]);
+
+        try {
+            $result = $this->allocationRateService->getAllocationRateOfOrganization($request->all());
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            dd($exception);
+            report($exception);
+            return response_error();
+        }
+    }
 }

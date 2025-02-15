@@ -94,32 +94,36 @@
                                                         <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                             <tr class="tw-text-nowrap"
                                                                 x-data="{
-                                                                    get price() {
-                                                                        if (!asset.asset_type_id || !asset.job_id) {
-                                                                            return 0
+                                                                    async updatePrice() {
+                                                                        if (asset.asset_type_id && asset.job_id) {
+                                                                            asset.price = await getPrice(asset.asset_type_id, asset.job_id);
+                                                                        } else {
+                                                                            asset.price = 0;
                                                                         }
-                                                                        asset.price = +(asset.asset_type_id + asset.job_id + 1000)
-                                                                        return +(asset.asset_type_id + asset.job_id + 1000)
+                                                                    },
+                                                                    init() {
+                                                                        this.updatePrice();
+                                                                        this.$watch('asset.asset_type_id', () => this.updatePrice());
+                                                                        this.$watch('asset.job_id', () => this.updatePrice());
+                                                                        this.$watch('asset.price', value => calculatePrice(index));
                                                                     }
-                                                            }"
-                                                                x-init="$watch('asset.price', value => calculatePrice(index))"
-                                                            >
+                                                                }">
                                                                 <td>
                                                                     @include('common.select_custom.extent.select_single', [
-                                                                            'placeholder' => 'Chọn tài sản',
-                                                                            'selected' => 'asset.asset_type_id',
-                                                                            'options' => 'list_asset_type',
+                                                                        'placeholder' => 'Chọn tài sản',
+                                                                        'selected' => 'asset.asset_type_id',
+                                                                        'options' => 'list_asset_type',
                                                                     ])
                                                                 </td>
                                                                 <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
                                                                 <td>
                                                                     @include('common.select_custom.extent.select_single', [
-                                                                                'placeholder' => 'Chọn chức danh',
-                                                                                'selected' => 'asset.job_id',
-                                                                                'options' => 'list_job',
+                                                                        'placeholder' => 'Chọn chức danh',
+                                                                        'selected' => 'asset.job_id',
+                                                                        'options' => 'list_job',
                                                                     ])
                                                                 </td>
-                                                                <td class="align-middle" x-text="window.formatCurrencyVND(price)"></td>
+                                                                <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price)"></td>
                                                                 <td>
                                                                     <input class="form-control" type="number" min="1"
                                                                            x-model="asset.quantity_registered"
