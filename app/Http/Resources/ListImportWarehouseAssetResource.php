@@ -9,7 +9,6 @@ use App\Repositories\OrderRepository;
 use App\Repositories\SupplierRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 class ListImportWarehouseAssetResource extends JsonResource
 {
@@ -64,12 +63,12 @@ class ListImportWarehouseAssetResource extends JsonResource
                 'order_id'              => $value->order_id,
             ];
             if ($value->total > 1) {
-                for ($i = 0; $i < $value->total; $i++) {
-                    $data[] = $assetInfo;
+                for ($i = 0; $i < $value->total; ++$i) {
+                    $data[]     = $assetInfo;
                     $totalPrice = $totalPrice + $price;
                 }
             } else {
-                $data[] = $assetInfo;
+                $data[]     = $assetInfo;
                 $totalPrice = $totalPrice + $price;
             }
         }
@@ -77,6 +76,7 @@ class ListImportWarehouseAssetResource extends JsonResource
         foreach ($data as &$value) {
             $value['price_last'] = (+$value['price']) + ((+$value['price'] / $totalPrice) * $totalCost);
         }
+
         return $data;
     }
 }

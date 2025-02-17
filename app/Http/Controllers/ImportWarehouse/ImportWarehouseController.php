@@ -26,6 +26,7 @@ class ImportWarehouseController extends Controller
 
         try {
             $result = $this->importWarehouseService->getAssetForImportWarehouse($request->get('order_ids'));
+
             return response_success($result);
         } catch (\Throwable $exception) {
             report($exception);

@@ -8,7 +8,6 @@ use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class ShoppingPlanCompanyYearController extends Controller
 {
@@ -67,7 +66,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();
@@ -89,7 +88,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();

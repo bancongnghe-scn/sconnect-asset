@@ -88,6 +88,7 @@ class OrganizationRepository extends BaseRepository
             SELECT id, name, level, parent_id FROM temp ORDER BY path;",
             Arr::wrap($parentId)
         );
+
         return collect($organizations);
     }
 }

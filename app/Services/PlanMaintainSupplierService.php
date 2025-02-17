@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\PlanMaintainSupplier;
 use App\Repositories\PlanMaintainSupplierRepository;
 use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\DB;
 
 class PlanMaintainSupplierService
 {

@@ -11,7 +11,7 @@ class CheckAuth
 {
     public function handle(Request $request, \Closure $next)
     {
-        $secretKey = env('SECRET_KEY');
+        $secretKey     = env('SECRET_KEY');
         $sessionCookie = @$_COOKIE[env('SESSION_NAME')];
         if (!Auth::check()) {
             $data = callApiSSO(env('API_GET_SESSION'), $sessionCookie, $secretKey);

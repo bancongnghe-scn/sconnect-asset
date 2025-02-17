@@ -34,17 +34,17 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name_code'    => 'nullable|string|max:255',
-            'type'         => 'nullable|integer',
-            'status'       => 'nullable|integer',
-            'signing_date' => 'nullable|array',
+            'name_code'          => 'nullable|string|max:255',
+            'type'               => 'nullable|integer',
+            'status'             => 'nullable|integer',
+            'signing_date'       => 'nullable|array',
             'signing_date.start' => 'date|date_format:Y-m-d',
-            'signing_date.end' => 'date|date_format:Y-m-d',
-            'from'         => 'nullable|array',
+            'signing_date.end'   => 'date|date_format:Y-m-d',
+            'from'               => 'nullable|array',
             'from.start'         => 'date|date_format:Y-m-d',
-            'from.end'         => 'date|date_format:Y-m-d',
-            'page'         => 'nullable|integer',
-            'limit'        => 'nullable|integer|max:200',
+            'from.end'           => 'date|date_format:Y-m-d',
+            'page'               => 'nullable|integer',
+            'limit'              => 'nullable|integer|max:200',
         ]);
 
         try {
@@ -52,7 +52,7 @@ class ContractController extends Controller
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();

@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\PlanMaintainOrganization;
 use App\Repositories\PlanMaintainOrganizationRepository;
 use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\DB;
 
 class PlanMaintainOrganizationService
 {

@@ -14,7 +14,6 @@ use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
-use App\Support\Constants\SOfficeConstant;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -195,7 +194,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
             DB::rollBack();
 

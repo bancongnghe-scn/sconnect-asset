@@ -50,7 +50,7 @@ class OrderService
 
         foreach ($data['shopping_assets_order'] as &$item) {
             $item['supplier_id'] = $data['supplier_id'];
-            $item['total'] = $item['quantity_approved'];
+            $item['total']       = $item['quantity_approved'];
             unset($item['quantity_approved']);
         }
 
@@ -84,7 +84,7 @@ class OrderService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+
             DB::rollBack();
             report($exception);
 
