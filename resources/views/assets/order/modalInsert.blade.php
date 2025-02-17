@@ -86,7 +86,7 @@
                                     <label>Trạng thái</label>
                                     @include('common.select_custom.simple.select_single', [
                                          'selected' => 'data.status',
-                                         'options' => 'LIST_STATUS_ORDER',
+                                         'options' => 'listStatus',
                                          'placeholder' => 'Chọn trạng thái',
                                     ])
                                 </div>
@@ -146,23 +146,21 @@
                                            aria-describedby="example2_info">
                                         <thead>
                                         <tr>
-                                            <th>Mã</th>
-                                            <th class="tw-min-w-60">Tên</th>
-                                            <th class="tw-min-w-40">Đơn giá</th>
-                                            <th>VAT (%)</th>
+                                            <th>Tên</th>
+                                            <th class="tw-w-40">Đơn giá</th>
+                                            <th class="tw-w-24">VAT (%)</th>
                                             <th>Tiền VAT</th>
+                                            <th class="text-center" style="width: 6rem">SL</th>
                                             <th>Thành tiền</th>
-                                            <th class="tw-min-w-52">Loại tài sản</th>
+                                            <th>Loại tài sản</th>
                                             <th>ĐVT</th>
-                                            <th class="tw-min-w-60">Đơn vị</th>
-                                            <th class="tw-min-w-60">Mô tả</th>
-                                            <th></th>
+                                            <th>Đơn vị</th>
+                                            <th class="tw-w-80">Mô tả</th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                             <tr>
-                                                <td class="text-center align-middle" x-text="asset.code"></td>
                                                 <td>
                                                     <input class="form-control" type="text" x-model="asset.name">
                                                 </td>
@@ -172,11 +170,13 @@
                                                     ])
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" type="number" min="1"
-                                                           x-model="asset.vat_rate">
+                                                    <input class="form-control" type="number" min="1" x-model="asset.vat_rate">
                                                 </td>
-                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                <td class="align-middle" x-text="window.formatCurrencyVND(asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                <td>
+                                                    <input class="form-control" type="number" min="1" x-model="asset.quantity_approved">
+                                                </td>
+                                                <td class="align-middle" x-text="window.formatCurrencyVND(asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                 <td>
                                                     @include('common.select_custom.extent.select_single', [
                                                          'selected' => 'asset.asset_type_id',
@@ -193,8 +193,7 @@
                                                     ])
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" type="text"
-                                                           x-model="asset.description">
+                                                    <input class="form-control" type="text" x-model="asset.description">
                                                 </td>
                                                 <td class="text-center align-middle">
                                                     <button class="border-0 bg-white"
