@@ -56,6 +56,7 @@
         'resources/js/assets/shopping_plan_company/quarter/shoppingPlanCompanyQuarter.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/quarter/apiShoppingPlanCompanyQuarter.js',
+        'resources/js/assets/api/allocation_rate/apiAllocationRate.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/app/api/apiJob.js',
         'resources/js/assets/api/apiAssetType.js',

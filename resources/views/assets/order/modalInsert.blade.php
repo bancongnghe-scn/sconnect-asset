@@ -102,11 +102,11 @@
                                            aria-describedby="example2_info">
                                         <thead>
                                         <tr>
-                                            <th>Mã</th>
                                             <th>Tên</th>
                                             <th class="tw-w-40">Đơn giá</th>
                                             <th class="tw-w-24">VAT (%)</th>
                                             <th>Tiền VAT</th>
+                                            <th class="text-center" style="width: 4rem">SL</th>
                                             <th>Thành tiền</th>
                                             <th>Loại tài sản</th>
                                             <th>ĐVT</th>
@@ -117,7 +117,6 @@
                                         <tbody>
                                         <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                             <tr>
-                                                <td x-text="asset.code" class="align-middle"></td>
                                                 <td>
                                                     <input class="form-control" type="text" x-model="asset.name">
                                                 </td>
@@ -127,11 +126,12 @@
                                                     ])
                                                 </td>
                                                 <td>
-                                                    <input class="form-control" type="number" min="1"
+                                                    <input class="form-control" type="number" min="1" max="100"
                                                            x-model="asset.vat_rate">
                                                 </td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)" class="align-middle"></td>
-                                                <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))" class="align-middle"></td>
+                                                <td x-text="window.formatCurrencyVND(asset.price * (+asset.vat_rate || 0) / 100)" class="align-middle"></td>
+                                                <td x-text="asset.quantity_approved" class="text-center align-middle"></td>
+                                                <td x-text="window.formatCurrencyVND(asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))" class="align-middle"></td>
                                                 <td x-text="asset.asset_type_name" class="align-middle"></td>
                                                 <td x-text="LIST_MEASURE[asset.measure]" class="align-middle"></td>
                                                 <td x-text="asset.organization_name" class="align-middle"></td>
@@ -175,8 +175,8 @@
                                                     <input class="form-control" type="number" min="1"
                                                            x-model="asset.vat_rate">
                                                 </td>
-                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                <td class="text-center align-middle" x-text="window.formatCurrencyVND(asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                 <td>
                                                     @include('common.select_custom.extent.select_single', [
                                                          'selected' => 'asset.asset_type_id',

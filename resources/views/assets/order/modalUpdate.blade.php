@@ -100,11 +100,11 @@
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
-                                                <th>Mã</th>
                                                 <th>Tên</th>
                                                 <th class="tw-w-40">Đơn giá</th>
                                                 <th class="tw-w-24">VAT (%)</th>
                                                 <th>Tiền VAT</th>
+                                                <th class="text-center" style="width: 4rem">SL</th>
                                                 <th>Thành tiền</th>
                                                 <th>Loại tài sản</th>
                                                 <th>ĐVT</th>
@@ -114,8 +114,12 @@
                                             </thead>
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
-                                                <tr>
-                                                    <td class="align-middle" x-text="asset.code"></td>
+                                                <tr x-data="{
+                                                    get vat () {
+                                                       return +asset.price * (+asset.vat_rate || 0) / 100
+                                                    },
+
+                                                }">
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
@@ -128,8 +132,9 @@
                                                         <input class="form-control" type="number" min="1"
                                                                x-model="asset.vat_rate" :disabled="disabled">
                                                     </td>
-                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(vat)"></td>
+                                                    <td x-text="asset.total" class="text-center align-middle"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND((+asset.price + vat) * asset.total)"></td>
                                                     <td class="align-middle" x-text="asset.asset_type_name"></td>
                                                     <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
                                                     <td class="align-middle" x-text="asset.organization_name"></td>
@@ -237,9 +242,13 @@
                                     </div>
                                 </div>
                                 <div class="col-4" x-data="{get totalPrice () {
+                                            if (data.shopping_assets_order === undefined) {
+                                                return 0
+                                            }
                                             let totalPrice = 0
                                             data.shopping_assets_order.filter((item) => {
-                                                totalPrice = totalPrice + (+item.price + (+item.price * (+item.vat_rate || 0) / 100))
+                                                const vat = +item.price * (+item.vat_rate || 0) / 100
+                                                totalPrice = totalPrice + ((+item.price + vat) * item.total)
                                             })
 
                                             return totalPrice

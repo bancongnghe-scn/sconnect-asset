@@ -237,6 +237,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('createAllocationRate', 'createAllocationRate');
         Route::post('updateAllocationRate', 'updateAllocationRate');
         Route::post('deleteAllocationRate', 'deleteAllocationRate');
+        Route::get('getAllocationRateOfOrganization', 'getAllocationRateOfOrganization');
     });
 
     Route::prefix('maintain')->controller(MaintainController::class)->group(function () {

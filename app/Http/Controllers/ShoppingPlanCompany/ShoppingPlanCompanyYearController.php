@@ -8,6 +8,7 @@ use App\Models\ShoppingPlanCompany;
 use App\Services\ShoppingPlanCompanyService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ShoppingPlanCompanyYearController extends Controller
 {
@@ -42,7 +43,7 @@ class ShoppingPlanCompanyYearController extends Controller
             $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
             $result          = $this->planCompanyService->getListShoppingPlanCompany($filters);
 
-            return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
+            return response_success($result['data'] ?? []);
         } catch (\Throwable $exception) {
             report($exception);
 

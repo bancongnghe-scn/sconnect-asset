@@ -37,7 +37,7 @@
                                                   class="border rounded p-1 tw-text-xs tw-shadow-md">
                                             </span>
                                     </td>
-                                    <td x-text="formatCurrencyVND(+config.price)" class="text-center"></td>
+                                    <td x-text="formatCurrencyVND(config.price)" class="text-center"></td>
                                     <td x-text="config?.description || ''"></td>
                                     <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" class="text-center align-middle">
                                         <button class="border-0 bg-white" @click="handleShowModal('update', value.organization_id)">

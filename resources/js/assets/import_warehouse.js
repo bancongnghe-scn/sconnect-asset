@@ -238,6 +238,7 @@ document.addEventListener('alpine:init', () => {
                 const data = response.data
                 this.data.id = data.id
                 this.data.code = data.code
+                this.data.status = data.status
                 this.data.name = data.name
                 this.data.description = data.description
                 this.data.order_ids = data.order_ids

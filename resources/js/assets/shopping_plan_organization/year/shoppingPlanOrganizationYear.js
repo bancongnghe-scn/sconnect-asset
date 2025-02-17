@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page:1, limit:10})
             this.watchFilters()
-            this.setConfigButtonsTable()
+            this.setConfigButtons()
         },
 
         //dataTable
@@ -196,6 +196,23 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
+            try {
+                const response = await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, position_id)
+                if (response.success) {
+                    if (response.data.data.length === 0) {
+                        toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
+                    }
+                    return response.data.data?.price ?? 0
+                } else {
+                    toast.error(response.message)
+                    return 0
+                }
+            } catch (e) {
+                toast.error(e)
+            }
+        },
+
         async handleShowModal(id, action) {
             this.loading = true
             try {
@@ -210,7 +227,6 @@ document.addEventListener('alpine:init', () => {
                 }
                 if (action === 'view') {
                     $('#modalDetailOrganization').modal('show')
-                    this.setConfigButtons()
                 } else {
                     $('#modalRegister').modal('show')
                 }
@@ -229,6 +245,19 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getPrice(asset_type_id, position_id) {
+            if (!asset_type_id || !position_id) {
+                return 0
+            }
+            return  await this.getAllocationRateOfOrganization(this.dataOrganization.organization_id, asset_type_id, position_id)
+        },
+
+        validateQuantityRegistered(value) {
+            if (+value < 1) {
+                toast.error('Số lượng đăng ký phải lớn hơn 0')
+            }
+        },
+
         addRow(index) {
             this.registersOrganization[index].assets.push({
                 id_fake: Date.now() + Math.random(),
@@ -241,11 +270,33 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
-        getPrice(asset_type_id, job_id) {
-            if (!asset_type_id || !job_id) {
-                return 0
-            }
-            return +(asset_type_id + job_id + 1000)
+        deleteRow(index, key) {
+            this.registersOrganization[index].assets.splice(key,1)
+            this.calculateApproval(index)
+            this.calculateRegister(index)
+        },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['time', 'status'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
+
+            this.registersOrganization[index].approval.total = total
+            this.registersOrganization[index].approval.price = price
         },
 
         calculatePrice(index) {
@@ -270,30 +321,6 @@ document.addEventListener('alpine:init', () => {
 
             this.registersOrganization[index].register.total = total
             this.registersOrganization[index].register.price = price
-        },
-
-        validateQuantityRegistered(value) {
-            if (+value < 1) {
-                toast.error('Số lượng đăng ký phải lớn hơn 0')
-            }
-        },
-
-        deleteRow(index, key) {
-            this.registersOrganization[index].assets.splice(key,1)
-            this.calculateApproval(index)
-            this.calculateRegister(index)
-        },
-
-        calculateApproval(index) {
-            let total = 0
-            let price = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                total += +asset.quantity_approved
-                price += (asset.quantity_approved * asset.price)
-            })
-
-            this.registersOrganization[index].approval.total = total
-            this.registersOrganization[index].approval.price = price
         },
 
         setConfigButtons() {
@@ -343,9 +370,6 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
             ]
-        },
-
-        setConfigButtonsTable() {
             this.configButtonsTable = [
                 {
                     condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
@@ -357,17 +381,6 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
             ]
-        },
-
-        watchFilters() {
-            this.$watch('filters', (value) => {
-                const watchedKeys = ['time', 'status'];
-                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
-
-                if (shouldCallList) {
-                    this.list(this.filters);
-                }
-            }, { deep: true });
         },
 
         resetData() {
