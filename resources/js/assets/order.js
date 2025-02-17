@@ -65,6 +65,12 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         listAssetType: [],
         listOrganization: [],
+        listStatus: {
+            [ORDER_STATUS_NEW]: 'Mới tạo',
+            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
+            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+            [ORDER_STATUS_CANCEL]: 'Hủy'
+        },
         comments: [],
         comment_message: null,
         title: null,
@@ -418,9 +424,6 @@ document.addEventListener('alpine:init', () => {
                 description: null,
                 organization_id: null,
             }
-            window.generateShortCode().then(code => {
-                rows.code =  'MH'+ code
-            })
             this.data.shopping_assets_order.push(rows)
         },
 
