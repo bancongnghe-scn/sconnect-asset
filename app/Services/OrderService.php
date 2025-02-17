@@ -84,7 +84,7 @@ class OrderService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+
             DB::rollBack();
             report($exception);
 

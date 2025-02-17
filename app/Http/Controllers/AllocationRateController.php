@@ -109,7 +109,7 @@ class AllocationRateController extends Controller
             $result = $this->allocationRateService->getAllocationRateOfOrganization($request->all());
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
             return response_error();
         }

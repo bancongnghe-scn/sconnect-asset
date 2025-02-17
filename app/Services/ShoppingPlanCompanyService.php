@@ -118,7 +118,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+
 
             report($exception);
             DB::rollBack();
@@ -190,7 +190,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
             DB::rollBack();
 

@@ -53,7 +53,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid" x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}" x-init="console.log(permission)">
+                    <div class="container-fluid" x-data="{permission: {{\Auth::user()->getAllPermissions()->pluck('name')}}}">
                         @yield('content')
                     </div>
                 </section>
