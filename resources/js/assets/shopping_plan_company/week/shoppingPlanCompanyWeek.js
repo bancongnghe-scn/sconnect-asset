@@ -192,7 +192,8 @@ document.addEventListener('alpine:init', () => {
                     STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                    STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
                 ].includes(+this.data.status)) {
                     this.syntheticShoppingAssetWithAction()
                 }

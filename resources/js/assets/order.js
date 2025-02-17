@@ -284,9 +284,6 @@ document.addEventListener('alpine:init', () => {
                 })
                 if (response.success) {
                     this.data.shopping_assets_order = response.data.data
-                    this.data.shopping_assets_order.filter((item) => {
-                        item.code = 'MH' + item.id
-                    })
                     return
                 }
                 toast.error(response.message)

@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="tw-mt-8">
+                        <div>
                             @include('assets.import_warehouse.filters')
                         </div>
 

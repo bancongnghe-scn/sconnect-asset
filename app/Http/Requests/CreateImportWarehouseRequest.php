@@ -16,7 +16,6 @@ class CreateImportWarehouseRequest extends FormRequest
             'description'                           => 'nullable|string',
             'shopping_assets'                       => 'required|array',
             'shopping_assets.*'                     => 'array',
-            'shopping_assets.*.code'                => 'required|string',
             'shopping_assets.*.name'                => 'required|string',
             'shopping_assets.*.warranty_time'       => 'nullable|integer',
             'shopping_assets.*.seri_number'         => 'nullable|string',

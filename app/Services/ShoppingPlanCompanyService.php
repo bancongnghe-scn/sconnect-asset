@@ -56,6 +56,7 @@ class ShoppingPlanCompanyService
         }
 
         $userIds = $planCompany->pluck('created_by')->toArray();
+
         $users   = $this->userRepository->getListing(['id' => $userIds], ['id', 'name', 'code']);
 
         return [
