@@ -54,19 +54,19 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
-//    protected $appends = ['org_last_parent', 'job_position'];
+    //    protected $appends = ['org_last_parent', 'job_position'];
 
     public function organization(): HasOne
     {
         return $this->hasOne(Org::class, 'id', 'dept_id');
     }
 
-    public function jobTitle():HasOne
+    public function jobTitle(): HasOne
     {
         return $this->hasOne(OrgJobTitle::class, 'id', 'job_title_id');
     }
 
-    public function listAssetUse():HasMany
+    public function listAssetUse(): HasMany
     {
         return $this->hasMany(Asset::class, 'user_id', 'id');
     }

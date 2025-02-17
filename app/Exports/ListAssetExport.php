@@ -3,9 +3,6 @@
 namespace App\Exports;
 
 use App\Models\Asset;
-use App\Models\ImportWarehouse;
-use App\Repositories\ImportWarehouse\ImportWarehouseRepository;
-use App\Repositories\UserRepository;
 use App\Traits\ExportStylingTrait;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromArray;
@@ -17,7 +14,9 @@ class ListAssetExport implements FromArray, WithHeadings, WithEvents
 {
     use ExportStylingTrait;
 
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 
     public function headings(): array
     {
@@ -36,7 +35,7 @@ class ListAssetExport implements FromArray, WithHeadings, WithEvents
             'Ngày bảo dưỡng gần nhất',
             'Ngày bảo dưỡng tiếp theo',
             'Hạn bảo hành',
-            'Thời gian bảo hành'
+            'Thời gian bảo hành',
         ];
     }
 
@@ -49,25 +48,25 @@ class ListAssetExport implements FromArray, WithHeadings, WithEvents
             'assetType',
             'organization',
             'organization.manager',
-            'organization.deptType'
+            'organization.deptType',
         ])->orderBy('id', 'desc')->get();
 
         foreach ($listAsset as $key => $asset) {
             $listAssetExport[] = [
-                'order' => $key + 1,
-                'code'        => $asset->code,
-                'name'        => $asset->name,
-                'type' => $asset->assetType?->name,
-                'org' => $asset->organization ? $asset->organization?->name : ($asset->user ? $asset->user?->organization?->name : ''),
-                'user' => $asset->user ? $asset->user->name : '',
-                'manager' => !$asset->user ? $asset->organization?->manager->name : '',
-                'date_purchase' => Carbon::parse($asset->date_purchase)->format('d/m/Y'),
-                'location' => $asset->location ? $asset->location_text : '',
-                'seri_number' => $asset->seri_number.'',
-                'price' => $asset->price,
+                'order'                   => $key + 1,
+                'code'                    => $asset->code,
+                'name'                    => $asset->name,
+                'type'                    => $asset->assetType?->name,
+                'org'                     => $asset->organization ? $asset->organization?->name : ($asset->user ? $asset->user?->organization?->name : ''),
+                'user'                    => $asset->user ? $asset->user->name : '',
+                'manager'                 => !$asset->user ? $asset->organization?->manager->name : '',
+                'date_purchase'           => Carbon::parse($asset->date_purchase)->format('d/m/Y'),
+                'location'                => $asset->location ? $asset->location_text : '',
+                'seri_number'             => $asset->seri_number.'',
+                'price'                   => $asset->price,
                 'recent_maintenance_date' => $asset->recent_maintenance_date,
-                'next_maintenance_date' => $asset->next_maintenance_date,
-                'month_warranty' => $asset->warranty_months,
+                'next_maintenance_date'   => $asset->next_maintenance_date,
+                'month_warranty'          => $asset->warranty_months,
 
                 'time_warranty' => Carbon::parse($asset->date_warranty)->format('d/m/Y'),
             ];

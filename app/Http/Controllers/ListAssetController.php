@@ -35,7 +35,7 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
-                'listSupplier' => Supplier::all(),
+                'listSupplier'  => Supplier::all(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);

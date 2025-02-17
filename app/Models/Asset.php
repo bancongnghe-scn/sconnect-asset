@@ -28,7 +28,7 @@ class Asset extends Model
         'user_id',
         'status',
         'image',
-        'location',         
+        'location',
         'organization_id',
         'date_purchase',
         'seri_number',
@@ -43,7 +43,7 @@ class Asset extends Model
 
     protected $appends = [
         'location_text',
-        'date_warranty'
+        'date_warranty',
     ];
 
     public const STATUS_ACTIVE                  = 1;

@@ -128,7 +128,7 @@ class MaintainService
             $planMaintain = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'],$planMaintain->id);
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planMaintain->id);
             if (!$insert['success']) {
                 DB::rollBack();
 
@@ -136,7 +136,7 @@ class MaintainService
             }
 
             // gan nha cung cap cho ke hoach
-            $insert = resolve(PlanMaintainSupplierService::class)->insertPlanMaintainSupplier($data['supplier_ids'],$planMaintain->id);
+            $insert = resolve(PlanMaintainSupplierService::class)->insertPlanMaintainSupplier($data['supplier_ids'], $planMaintain->id);
             if (!$insert['success']) {
                 DB::rollBack();
 
@@ -145,7 +145,7 @@ class MaintainService
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'],$planMaintain->id);
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planMaintain->id);
                 if (!$insert['success']) {
                     DB::rollBack();
 

@@ -4,13 +4,10 @@ namespace App\Services\Inventory;
 
 use App\Http\Resources\PlanInventoryResource;
 use App\Models\PlanMaintain;
-use App\Models\PlanMaintainAsset;
-use App\Models\PlanMaintainLog;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Services\PlanMaintainChargeService;
 use App\Services\PlanMaintainOrganizationService;
-use App\Services\PlanMaintainSupplierService;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,7 +57,7 @@ class InventoryService
             $planMaintain = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'],$planMaintain->id);
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planMaintain->id);
             if (!$insert['success']) {
                 DB::rollBack();
 
@@ -70,7 +67,7 @@ class InventoryService
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'],$planMaintain->id);
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planMaintain->id);
                 if (!$insert['success']) {
                     DB::rollBack();
 

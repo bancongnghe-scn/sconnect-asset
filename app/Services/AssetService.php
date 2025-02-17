@@ -26,8 +26,8 @@ class AssetService
             with: ['assetType']
         );
 
-        $dataInsert = [];
-        $userId     = Auth::id();
+        $dataInsert   = [];
+        $userId       = Auth::id();
         $datePurchase = Carbon::now();
         foreach ($importWarehouseAssets as $importWarehouseAsset) {
             $data = [

@@ -83,10 +83,10 @@ class ListAssetService
             $arrAssetId         = [];
 
             $transferAsset = TransferAsset::create([
-                'user_id'    => $request->user['id'],
-                'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'type'       => 1,
-                'created_by' => auth()->user() ? auth()->user()->id : 1,
+                'user_id'           => $request->user['id'],
+                'org_id'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'type'              => 1,
+                'created_by'        => auth()->user() ? auth()->user()->id : 1,
                 'description'       => $request->description,
             ]);
 
@@ -131,10 +131,10 @@ class ListAssetService
             $orgIdAfter       = null;
 
             $transferAsset = TransferAsset::create([
-                'user_id'    => $request->user['id'],
-                'org_id'     => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'type'       => 2,
-                'created_by' => auth()->user() ? auth()->user()->id : 1,
+                'user_id'     => $request->user['id'],
+                'org_id'      => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'type'        => 2,
+                'created_by'  => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
             ]);
 
@@ -198,10 +198,10 @@ class ListAssetService
             $arrAllocationAssetUser = [];
 
             $transferAsset = TransferAsset::create([
-                'user_id'    => null,
-                'org_id'     => $request->org['id'],
-                'type'       => 1,
-                'created_by' => auth()->user() ? auth()->user()->id : 1,
+                'user_id'     => null,
+                'org_id'      => $request->org['id'],
+                'type'        => 1,
+                'created_by'  => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
             ]);
 
@@ -263,7 +263,7 @@ class ListAssetService
                 'org_id'      => $request->org['id'],
                 'type'        => 2,
                 'description' => $request->description,
-                'created_by' => auth()->user() ? auth()->user()->id : 1,
+                'created_by'  => auth()->user() ? auth()->user()->id : 1,
             ]);
 
             foreach ($request->listAssetRecovery as $asset) {
@@ -337,18 +337,18 @@ class ListAssetService
     public function getListLog($request)
     {
         if ($request->assetId) {
-            $logRepair = AssetHistory::where('asset_id', $request->assetId)->where('action', Asset::STATUS_DAMAGED)->with('assetRepair')->get();
+            $logRepair     = AssetHistory::where('asset_id', $request->assetId)->where('action', Asset::STATUS_DAMAGED)->with('assetRepair')->get();
             $logLostCancel = AssetHistory::where('asset_id', $request->assetId)
                 ->whereIn('action', [
                     Asset::STATUS_LOST,
                     Asset::STATUS_CANCEL,
                     Asset::STATUS_PROPOSAL_LIQUIDATION,
-                    Asset::STATUS_LIQUIDATED
+                    Asset::STATUS_LIQUIDATED,
                 ])->with('createBy')->get();
 
             return [
-                'logRepair' => $logRepair,
-                'logLostCancel' => $logLostCancel
+                'logRepair'     => $logRepair,
+                'logLostCancel' => $logLostCancel,
             ];
         }
     }
@@ -394,7 +394,7 @@ class ListAssetService
                     'transferAsset.userTo',
                     'transferAsset.organizationTo.manager',
                     'transferAsset.organizationTo.deptType',
-                    'transferAsset.createBy'
+                    'transferAsset.createBy',
                 ])
                 ->get();
         }
@@ -410,8 +410,8 @@ class ListAssetService
 
                 $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
 
-                $orgId = $request->rotationToType == 'unit' ?  $request->rotationToId : $orgLastParentId;
-                $userId = $request->rotationToType == 'unit' ?  null : $request->rotationToId * 1;
+                $orgId  = 'unit' == $request->rotationToType ? $request->rotationToId : $orgLastParentId;
+                $userId = 'unit' == $request->rotationToType ? null : $request->rotationToId * 1;
 
                 $transferAsset = TransferAsset::create([
                     'user_id'       => $assetRotation['user_id'],
@@ -419,8 +419,8 @@ class ListAssetService
                     'type'          => 3,
                     'to_user_id'    => $userId,
                     'to_org_id'     => $orgId,
-                    'created_by' => auth()->user() ? auth()->user()->id : 1,
-                    'description' => $request->descriptionRotation,
+                    'created_by'    => auth()->user() ? auth()->user()->id : 1,
+                    'description'   => $request->descriptionRotation,
                 ]);
 
                 //thu hồi
@@ -554,18 +554,18 @@ class ListAssetService
     public function updateAsset($request): void
     {
         Asset::where('id', $request->assetEdit['id'])->update([
-            "name" => $request->assetEdit['name'],
-            "asset_type_id" => $request->typeAsset,
-            "code" => $request->assetEdit['code'],
-            "supplier_id" => $request->supplier,
-            "price" => $request->assetEdit['price'],
-            "warranty_months" => $request->assetEdit['warranty_months'],
-            "recent_maintenance_date" => $request->assetEdit['recent_maintenance_date'],
-            "next_maintenance_date" => $request->assetEdit['next_maintenance_date'],
-            "description" => $request->assetEdit['description'],
-            "seri_number" => $request->assetEdit['seri_number'],
-            "location" => $request->location,
-            "date_purchase" => $request->assetEdit['date_purchase'],
+            'name'                    => $request->assetEdit['name'],
+            'asset_type_id'           => $request->typeAsset,
+            'code'                    => $request->assetEdit['code'],
+            'supplier_id'             => $request->supplier,
+            'price'                   => $request->assetEdit['price'],
+            'warranty_months'         => $request->assetEdit['warranty_months'],
+            'recent_maintenance_date' => $request->assetEdit['recent_maintenance_date'],
+            'next_maintenance_date'   => $request->assetEdit['next_maintenance_date'],
+            'description'             => $request->assetEdit['description'],
+            'seri_number'             => $request->assetEdit['seri_number'],
+            'location'                => $request->location,
+            'date_purchase'           => $request->assetEdit['date_purchase'],
         ]);
     }
 }
