@@ -59,7 +59,7 @@ class AssetService
 
         $assets = $this->assetRepository->getListing(['import_warehouse_id' => $importWarehouseId]);
         foreach ($assets as $asset) {
-            $link     = config('app.url').'/assets/info/'.$asset->id;
+            $link     = config('app.url').'/asset/info/'.$asset->id;
             $savePath = public_path('qrcode/qr_image_'.$asset->id.'.png');
             $qrCode   = Builder::create()
                 ->writer(new PngWriter())
