@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\AssetInfoResource;
 use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\MoveAssetOrg;
@@ -9,6 +10,8 @@ use App\Models\MoveAssetUser;
 use App\Models\Org;
 use App\Models\TransferAsset;
 use App\Models\User;
+use App\Repositories\AssetRepository;
+use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
@@ -16,6 +19,11 @@ use Illuminate\Support\Facades\DB;
 
 class ListAssetService
 {
+    public function __construct(
+        protected AssetRepository $assetRepository,
+    ) {
+    }
+
     public function getListAsset($request): LengthAwarePaginator
     {
         $query = Asset::query();
@@ -567,5 +575,21 @@ class ListAssetService
             'location'                => $request->location,
             'date_purchase'           => $request->assetEdit['date_purchase'],
         ]);
+    }
+
+    public function getAssetInfo($id)
+    {
+        $data = $this->assetRepository->find($id);
+        if (empty($data)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2106,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => AssetInfoResource::make($data)->resolve(),
+        ];
     }
 }

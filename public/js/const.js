@@ -203,7 +203,19 @@ ASSET_STATUS_LIQUIDATED              = 8;
 ASSET_STATUS_DAMAGED                 = 9;
 ASSET_STATUS_REPAIR                  = 10;
 ASSET_STATUS_MAINTAIN                = 11;
-
+LIST_STATUS_ASEET = {
+    [ASSET_STATUS_ACTIVE]: 'Đang sử dụng',
+    [ASSET_STATUS_PENDING]: 'Chưa sử dụng',
+    [ASSET_STATUS_NEW]: 'Mới',
+    [ASSET_STATUS_LOST]: 'Đã mất',
+    [ASSET_STATUS_CANCEL]: 'Đã hủy',
+    [ASSET_STATUS_PROPOSAL_LIQUIDATION]: 'Đề nghị thanh lý',
+    [ASSET_STATUS_IN_LIQUIDATION]: 'Đang thanh lý',
+    [ASSET_STATUS_LIQUIDATED]: 'Đã thanh lý',
+    [ASSET_STATUS_DAMAGED]: 'Hỏng',
+    [ASSET_STATUS_REPAIR]: 'Đang sửa chữa',
+    [ASSET_STATUS_MAINTAIN]: 'Bảo Dưỡng',
+}
 // MAINTAIN
 LIST_STATUS_MAINTAIN = {
     [ASSET_STATUS_ACTIVE]  : 'Đang sử dụng',
