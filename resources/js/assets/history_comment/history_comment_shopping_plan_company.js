@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('history_comment', () => ({
+    Alpine.data('history_comment_company', () => ({
             init() {
                 this.$watch('showModal', (newValue, oldValue) => {
                     if (newValue && this.id !== null) {
@@ -48,8 +48,9 @@ document.addEventListener('alpine:init', () => {
             },
 
             handleComment() {
-                window.Echo.channel('channel_plan_maintain_' + this.id)
+                window.Echo.channel('channel_shopping_plan_' + this.id)
                     .listen('.ShoppingPlanCommentEvent', (e) => {
+                        console.log(e)
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)

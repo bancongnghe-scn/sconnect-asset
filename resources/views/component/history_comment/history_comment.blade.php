@@ -27,7 +27,9 @@
                             <div class="border-start border-2 flex-grow-1"></div>
                         </div>
                         <div class="border rounded p-2 tw-bg-zinc-100 mb-3">
-                            <p class="mb-1 text-muted small" x-text="format(log.created_at, 'dd/MM/yyyy HH:ii:ss')"></p>
+                            <p class="mb-1 text-muted small"
+                               x-text="format(log.created_at, 'dd/MM/yyyy HH:ii:ss')"
+                            ></p>
                             <p class="mb-0">
                                 <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
                                 <span x-text="log.desc"></span>

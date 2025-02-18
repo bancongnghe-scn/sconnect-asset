@@ -20,3 +20,7 @@ docker logs container_name_or_id
 
 figma : https://www.figma.com/design/ebzV5jXxGnI2a5B6SgDxmD/S-Office-(LongPV)?node-id=13121-33455
 dbdiagram: https://dbdiagram.io/d/Quan-ly-tai-san-main-66c6e769a346f9518cc30b6d
+
+## Chạy lệnh pusher 
+php artisan websockets:serve --port=?
+php artisan queue:work

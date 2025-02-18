@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('history_comment', () => ({
+    Alpine.data('history_comment_organization', () => ({
             init() {
                 this.$watch('id', (newValue, oldValue) => {
                     if (newValue !== null && newValue !== oldValue) {
@@ -48,8 +48,8 @@ document.addEventListener('alpine:init', () => {
             },
 
             handleComment() {
-                window.Echo.channel('channel_plan_maintain_' + this.id)
-                    .listen('.ShoppingPlanCommentEvent', (e) => {
+                window.Echo.channel('channel_shopping_plan_organization' + this.id)
+                    .listen('.ShoppingPlanOrganizationCommentEvent', (e) => {
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)
