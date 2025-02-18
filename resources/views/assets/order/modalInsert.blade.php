@@ -172,11 +172,11 @@
                                                 <td>
                                                     <input class="form-control" type="number" min="1" x-model="asset.vat_rate">
                                                 </td>
-                                                <td class="align-middle" x-text="window.formatCurrencyVND(asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
                                                 <td>
                                                     <input class="form-control" type="number" min="1" x-model="asset.quantity_approved">
                                                 </td>
-                                                <td class="align-middle" x-text="window.formatCurrencyVND(asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                 <td>
                                                     @include('common.select_custom.extent.select_single', [
                                                          'selected' => 'asset.asset_type_id',
