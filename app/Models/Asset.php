@@ -135,4 +135,9 @@ class Asset extends Model
     {
         return $this->hasMany(TransferAsset::class, 'asset_id');
     }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
 }

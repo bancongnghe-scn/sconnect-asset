@@ -333,4 +333,21 @@ class ListAssetController extends Controller
     {
         return Excel::download(new ListAssetExport(), 'danh_sach_tai_san.xlsx');
     }
+
+    public function getAssetInfo($id)
+    {
+        try {
+            $result = $this->assetService->getAssetInfo($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }
