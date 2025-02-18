@@ -13,6 +13,8 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class ListAssetService
 {
@@ -566,5 +568,42 @@ class ListAssetService
             "location" => $request->location,
             "date_purchase" => $request->assetEdit['date_purchase'],
         ]);
+    }
+
+    public function exportReportAllocation()
+    {
+        // Đọc file XML template
+        $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
+        $template = file_get_contents($templatePath);
+
+        // Dữ liệu cần điền vào Excel
+        $data = [
+            ['name' => 'Nguyễn A', 'age' => 25, 'address' => 'Hà Nội'],
+            ['name' => 'Trần B', 'age' => 30, 'address' => 'TP. HCM'],
+            ['name' => 'Lê C', 'age' => 22, 'address' => 'Đà Nẵng'],
+        ];
+
+        // Tạo file Excel thực sự (không phải XML)
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Ghi dữ liệu vào Excel
+        $rowIndex = 1;
+        foreach ($data as $row) {
+            $sheet->setCellValue("A{$rowIndex}", $row['name']);
+            $sheet->setCellValue("B{$rowIndex}", $row['age']);
+            $sheet->setCellValue("C{$rowIndex}", $row['address']);
+            $rowIndex++;
+        }
+
+        // Lưu file Excel
+        $exportPath = storage_path('app/test_export');
+        if (!file_exists($exportPath)) {
+            mkdir($exportPath, 0777, true);
+        }
+
+        $excelFilePath = $exportPath . '/final.xlsx';
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save($excelFilePath);
     }
 }

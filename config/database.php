@@ -45,7 +45,7 @@ return [
 
         'db_dev' => [
             'driver'   => 'mysql',
-            'host'     => env('DB2_HOST', '10.7.0.8'),
+            'host'     => env('DB2_HOST', '10.2.0.18'),
             'database' => env('DB2_DATABASE', 'soffice_dev'),
             'username' => env('DB2_USERNAME', 'root'),
             'password' => env('DB2_PASSWORD', 'Sconnect@123'),
