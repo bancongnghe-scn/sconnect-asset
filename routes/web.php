@@ -116,5 +116,6 @@ Route::prefix('asset')->group(function () {
     Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
     Route::get('/list-organization-asset', [ListAssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
     Route::get('/export-list-asset', [ListAssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
-    Route::view('info/{id}', 'assets.asset.info_qr');
 });
+
+Route::view('asset/info/{id}', 'assets.asset.info_qr');
