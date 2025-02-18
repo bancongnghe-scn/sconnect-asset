@@ -1329,7 +1329,7 @@
                         this.description = '';
                         this.recoveryCompany = false;
 
-                        openModal('#successAllocateModal');
+                        openModal('#successRecoveryModal');
                     } else {
                         let urlSearch = '/api/asset/recovery-asset-org';
 
@@ -1348,7 +1348,7 @@
                         this.listAssetRecovery = [];
                         this.description = '';
 
-                        openModal('#successAllocateModal');
+                        openModal('#successRecoveryModal');
                     }
                     this.fetchData('', '', '', '', '', this.urlSearch);
                 } catch (error) {
