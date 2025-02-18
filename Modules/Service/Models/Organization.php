@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Organization extends BaseModel
 {
-    protected $table = 'organizations';
+    protected $table                     = 'organizations';
+    public const STATUS_ACTIVE           = 1;
+    public const PARENT_MAIN             = 1;
 
     public function parent(): BelongsTo
     {

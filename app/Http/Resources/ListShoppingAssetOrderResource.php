@@ -14,7 +14,7 @@ class ListShoppingAssetOrderResource extends JsonResource
         foreach ($this->resource as $shoppingAssetOrder) {
             $data[] = [
                 'id'                => $shoppingAssetOrder->id,
-                'code'              => $shoppingAssetOrder->code,
+                'total'             => $shoppingAssetOrder->total,
                 'name'              => $shoppingAssetOrder->name,
                 'price'             => $shoppingAssetOrder->price,
                 'vat_rate'          => $shoppingAssetOrder->vat_rate,

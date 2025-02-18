@@ -14,6 +14,7 @@ class AssetHistory extends Model
 
     protected $fillable = [
         'asset_id',
+        'org_id',
         'action',
         'date',
         'description',

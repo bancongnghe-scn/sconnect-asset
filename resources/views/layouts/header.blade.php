@@ -1,9 +1,11 @@
 <!-- ======= Header ======= -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light bg-sc px-2">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light bg-sc px-2 fixed-top">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button"><i class="fa-solid fa-table-columns"></i></a>
+            <a class="nav-link text-white" data-widget="pushmenu" href="#" role="button">
+                <i class="bi bi-list" style="font-size: 120%"></i>
+            </a>
         </li>
     </ul>
 

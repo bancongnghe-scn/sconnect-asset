@@ -197,4 +197,14 @@ class AllocationRateService
             'success' => true,
         ];
     }
+
+    public function getAllocationRateOfOrganization($filters)
+    {
+        $data = $this->allocationRateRepository->getAllocationRateOfOrganization($filters);
+        if (empty($data)) {
+            return [];
+        }
+
+        return $data->toArray();
+    }
 }

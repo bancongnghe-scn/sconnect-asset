@@ -9,11 +9,11 @@
             </div>
             <div class="modal-body">
                 <div class="d-flex tw-gap-x-4 h-100">
-                    <div class="card card-body col-10 overflow-auto custom-scroll">
+                    <div class="flex-grow-1 overflow-auto custom-scroll">
                         <div class="mb-3">
                             <div class="d-flex tw-gap-x-4 mb-3">
                                 <div class="active-link tw-w-fit">Thông tin chung</div>
-                                @include('component.shopping_plan_organization.status_shopping_plan_organization', ['status' => 'data.status'])
+                                @include('component.status.status_shopping_plan_organization', ['status' => 'data.status'])
                             </div>
                             <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                 <div>
@@ -40,20 +40,20 @@
 
                         <div class="mb-3">
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline" aria-describedby="example2_info">
+                            <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                 <thead>
                                 <tr class="tw-text-nowrap">
                                     <th rowspan="1" colspan="1">Loại tài sản</th>
-                                    <th rowspan="1" colspan="1">Đơn vị tính</th>
+                                    <th rowspan="1" colspan="1" class="tw-w-24">Đơn vị tính</th>
                                     <th rowspan="1" colspan="1">Chức danh</th>
-                                    <th rowspan="1" colspan="1">SL</th>
-                                    <th rowspan="1" colspan="1">Thời gian cần</th>
+                                    <th rowspan="1" colspan="1" class="tw-w-24">SL</th>
+                                    <th rowspan="1" colspan="1" class="tw-w-48">Thời gian cần</th>
                                     <th rowspan="1" colspan="1">Mô tả</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <template x-for="(register, index) in registers" :key="`asset_${register.id || register.id_fake}`">
-                                    <tr class="tw-text-nowrap"
+                                    <tr
                                         x-data="{
                                                      get measure() {
                                                         if (register.asset_type_id) {
@@ -81,7 +81,7 @@
                                             ])
                                         </td>
                                         <td>
-                                            <input class="form-control w-auto" type="number" min="1" x-model="register.quantity_registered" disabled>
+                                            <input class="form-control" type="number" min="1" x-model="register.quantity_registered" disabled>
                                         </td>
                                         <td>
                                             @include('common.datepicker.datepicker',[
@@ -89,7 +89,7 @@
                                             ])
                                         </td>
                                         <td>
-                                            <input class="form-control w-auto" x-model="register.description" type="text" disabled>
+                                            <input class="form-control" x-model="register.description" type="text" disabled>
                                         </td>
                                     </tr>
                                 </template>
@@ -97,8 +97,8 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card col-2">
-                        @include('component.shopping_plan_company.history_comment')
+                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
+                        @include('assets.shopping-plan-company.history_comment')
                     </div>
                 </div>
             </div>

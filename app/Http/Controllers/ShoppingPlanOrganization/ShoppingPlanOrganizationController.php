@@ -73,7 +73,7 @@ class ShoppingPlanOrganizationController
         $request->validate([
             'id'                                     => 'required|integer',
             'registers'                              => 'required|array',
-            'registers.*.assets'                     => 'required|array',
+            'registers.*.assets'                     => 'nullable|array',
             'registers.*.assets.*.id'                => 'required|integer',
             'registers.*.assets.*.quantity_approved' => 'required|integer',
         ]);

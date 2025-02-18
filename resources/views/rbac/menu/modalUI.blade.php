@@ -41,38 +41,31 @@
                 <div class="mb-3 d-flex gap-2">
                     <div class="col-6">
                         <label class="form-label">Menu cha</label>
-                        <select class="form-select select2" x-model="menu.parent_id" id="selectMenuParent">
-                            <option value="">Chọn menu cha</option>
-                            <template x-for="value in listMenuParent" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
+                        @include('common.select_custom.extent.select_single', [
+                            'placeholder' => 'Chọn menu cha',
+                            'options' => 'listMenuParent',
+                            'selected' => 'menu.parent_id',
+                        ])
                     </div>
 
                     <div class="col-6">
                         <label class="form-label">Danh sách vai trò</label>
-                        <select class="form-select select2" x-model="menu.role_ids" id="selectRoles" multiple="multiple" data-placeholder="Chọn danh sách vai trò">
-                            <template x-for="value in listRole" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
+                        @include('common.select_custom.extent.select_single', [
+                            'placeholder' => 'Chọn danh sách vai trò',
+                            'options' => 'listRole',
+                            'selected' => 'menu.role_ids',
+                        ])
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <div class="col-auto">
                         <label class="form-label">Danh sách người dùng</label>
-                        <select class="form-select select2"
-                                x-init="$nextTick(() => {
-                                       $($el).on('change', (e) => {
-                                           menu.user_ids = $($el).val()
-                                       });
-                                })"
-                                x-model="menu.user_ids" multiple="multiple" data-placeholder="Chọn danh sách người dùng">
-                            <template x-for="value in listUser" :key="value.id">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
+                        @include('common.user.select_multiple', [
+                             'placeholder' => 'Chọn danh sách người dùng',
+                             'options' => 'listUser',
+                             'selected' => 'menu.user_ids'
+                        ])
                     </div>
                 </div>
 

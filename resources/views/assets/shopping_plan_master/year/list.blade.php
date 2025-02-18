@@ -20,10 +20,10 @@
         </div>
 
         <div x-show="activeLink.company">
-            @include('component.shopping_plan_company.year.content_list')
+            @include('assets.shopping-plan-company.year.content_list')
         </div>
         <div x-show="activeLink.organization">
-            @include('component.shopping_plan_organization.year.content_list')
+            @include('assets.shopping_plan_organization.year.content_list')
         </div>
     </div>
 
@@ -56,5 +56,9 @@
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/assets/api/shopping_plan_company/year/apiShoppingPlanCompanyYear.js',
         'resources/js/app/api/apiUser.js',
+        'resources/js/assets/api/allocation_rate/apiAllocationRate.js',
+        'resources/js/assets/api/shopping_plan_organization/apiShoppingPlanOrganization.js',
+        'resources/js/assets/api/apiAssetType.js',
+        'resources/js/app/api/apiJob.js',
     ])
 @endsection

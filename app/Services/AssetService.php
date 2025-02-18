@@ -26,14 +26,17 @@ class AssetService
             with: ['assetType']
         );
 
-        $dataInsert = [];
-        $userId     = Auth::id();
+        $dataInsert   = [];
+        $userId       = Auth::id();
+        $datePurchase = Carbon::now();
         foreach ($importWarehouseAssets as $importWarehouseAsset) {
             $data = [
                 'name'                    => $importWarehouseAsset->name,
                 'code'                    => $importWarehouseAsset->code,
                 'price'                   => $importWarehouseAsset->price_last,
+                'date_purchase'           => $datePurchase,
                 'warranty_months'         => $importWarehouseAsset->warranty_time,
+                'serial_number'           => $importWarehouseAsset->seri_number,
                 'depreciation_months'     => $importWarehouseAsset->assetType?->depreciation_months,
                 'recent_maintenance_date' => $importWarehouseAsset->date_purchase,
                 'next_maintenance_date'   => Carbon::create($importWarehouseAsset->date_purchase)
@@ -56,8 +59,8 @@ class AssetService
 
         $assets = $this->assetRepository->getListing(['import_warehouse_id' => $importWarehouseId]);
         foreach ($assets as $asset) {
-            $link     = config('app.url').'/assets/info/'.$asset->id;
-            $savePath = storage_path('app/public/qrcode/qr_image_'.$asset->id.'.png');
+            $link     = config('app.url').'/asset/info/'.$asset->id;
+            $savePath = public_path('qrcode/qr_image_'.$asset->id.'.png');
             $qrCode   = Builder::create()
                 ->writer(new PngWriter())
                 ->data($link)

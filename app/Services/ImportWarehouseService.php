@@ -78,9 +78,10 @@ class ImportWarehouseService
             }
 
             $importWarehouseAssets = [];
-            foreach ($data['shopping_assets'] as $shoppingAsset) {
+            foreach ($data['shopping_assets'] as $key => $shoppingAsset) {
                 $shoppingAsset['import_warehouse_id'] = $importWarehouse->id;
                 $shoppingAsset['created_by']          = $userId;
+                $shoppingAsset['code']                = 'MTS_'.$shoppingAsset['order_id'].$key;
                 $importWarehouseAssets[]              = $shoppingAsset;
             }
 
@@ -103,6 +104,7 @@ class ImportWarehouseService
                 ],
             ];
         } catch (\Throwable $exception) {
+
             report($exception);
             DB::rollBack();
 

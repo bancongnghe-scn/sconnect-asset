@@ -25,7 +25,7 @@ class CreateOrderRequest extends FormRequest
             'other_costs'                                                       => 'nullable|string',
             'shopping_assets_order'                                             => 'required|array',
             'shopping_assets_order.*'                                           => 'array',
-            'shopping_assets_order.*.code'                                      => 'required|string',
+            'shopping_assets_order.*.quantity_approved'                         => 'required|integer',
             'shopping_assets_order.*.name'                                      => 'required|string',
             'shopping_assets_order.*.price'                                     => 'required|numeric',
             'shopping_assets_order.*.asset_type_id'                             => 'required|integer',

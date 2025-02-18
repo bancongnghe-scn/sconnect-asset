@@ -211,9 +211,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         watchFilters() {
-            this.$watch('loading', (value) => {
-                console.log(value)
-            })
             this.$watch('filters', (value) => {
                 const watchedKeys = ['asset_type_group_id'];
                 const shouldCallList = watchedKeys.some((key) => value[key] !== null);

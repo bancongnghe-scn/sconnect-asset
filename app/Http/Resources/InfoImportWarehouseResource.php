@@ -12,6 +12,7 @@ class InfoImportWarehouseResource extends JsonResource
             'id'          => $this->resource->id,
             'name'        => $this->resource->name,
             'code'        => $this->resource->code,
+            'status'      => $this->resource->status,
             'description' => $this->resource->description,
             'order_ids'   => $this->resource->importWarehouseOrders?->pluck('order_id')->toArray(),
         ];

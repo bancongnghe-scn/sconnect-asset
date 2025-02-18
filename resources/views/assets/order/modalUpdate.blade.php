@@ -39,7 +39,7 @@
                                         <label>Người phụ trách mua sắm<span
                                                 class="tw-text-red-600 mb-0">*</span></label>
                                         <div>
-                                            @include('common.select_custom.extent.select_single', [
+                                            @include('common.user.select_single', [
                                                 'selected' => 'data.purchasing_manager_id',
                                                 'options' => 'listUser',
                                                 'placeholder' => 'Chọn người phụ trách',
@@ -93,18 +93,18 @@
                             {{--  thông tin mặt hàng--}}
                             <div class="mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                                <div class="mt-3">
+                                <div class="mt-3 table-responsive custom-scroll">
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_PLAN">
                                         <table id="example2"
-                                               class="table table-bordered table-hover dataTable dtr-inline"
+                                               class="table table-bordered dataTable dtr-inline"
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
-                                                <th>Mã</th>
                                                 <th>Tên</th>
                                                 <th class="tw-w-40">Đơn giá</th>
                                                 <th class="tw-w-24">VAT (%)</th>
                                                 <th>Tiền VAT</th>
+                                                <th class="text-center" style="width: 4rem">SL</th>
                                                 <th>Thành tiền</th>
                                                 <th>Loại tài sản</th>
                                                 <th>ĐVT</th>
@@ -114,8 +114,12 @@
                                             </thead>
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
-                                                <tr>
-                                                    <td x-text="asset.code"></td>
+                                                <tr x-data="{
+                                                    get vat () {
+                                                       return +asset.price * (+asset.vat_rate || 0) / 100
+                                                    },
+
+                                                }">
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
@@ -128,12 +132,13 @@
                                                         <input class="form-control" type="number" min="1"
                                                                x-model="asset.vat_rate" :disabled="disabled">
                                                     </td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
-                                                    <td x-text="asset.asset_type_name"></td>
-                                                    <td x-text="LIST_MEASURE[asset.measure]"></td>
-                                                    <td x-text="asset.organization_name"></td>
-                                                    <td x-text="asset.description"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(vat)"></td>
+                                                    <td x-text="asset.total" class="text-center align-middle"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND((+asset.price + vat) * asset.total)"></td>
+                                                    <td class="align-middle" x-text="asset.asset_type_name"></td>
+                                                    <td class="align-middle" x-text="LIST_MEASURE[asset.measure]"></td>
+                                                    <td class="align-middle" x-text="asset.organization_name"></td>
+                                                    <td class="align-middle" x-text="asset.description"></td>
                                                 </tr>
                                             </template>
                                             </tbody>
@@ -141,7 +146,7 @@
                                     </template>
                                     <template x-if="+data.type === ORDER_TYPE_CREATE_WITH_NOT_PLAN">
                                         <table id="example2"
-                                               class="table table-bordered table-hover dataTable dtr-inline"
+                                               class="table table-bordered dataTable dtr-inline"
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
@@ -155,27 +160,29 @@
                                                 <th>ĐVT</th>
                                                 <th class="tw-min-w-60">Đơn vị</th>
                                                 <th class="tw-min-w-60">Mô tả</th>
-                                                <th></th>
+                                                <th x-show="action === 'update'"></th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                                 <tr>
-                                                    <td x-text="asset.code"></td>
+                                                    <td class="align-middle" x-text="asset.code"></td>
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
                                                     </td>
                                                     <td>
-                                                        <input class="form-control" type="number" min="1"
-                                                               x-model="asset.price" :disabled="disabled">
+                                                        @include('common.input.input_price', [
+                                                            'model' => 'asset.price',
+                                                            'disabled' => 'disabled'
+                                                        ])
                                                     </td>
                                                     <td>
                                                         <input class="form-control" type="number" min="1"
                                                                x-model="asset.vat_rate" :disabled="disabled">
                                                     </td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
-                                                    <td x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                                                    <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
                                                     <td>
                                                         @include('common.select_custom.extent.select_single', [
                                                              'selected' => 'asset.asset_type_id',
@@ -184,7 +191,7 @@
                                                              'disabled' => 'disabled',
                                                         ])
                                                     </td>
-                                                    <td x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
+                                                    <td class="align-middle" x-text="listAssetType.find((item) => +item.id === +asset.asset_type_id)?.measure">
                                                     </td>
                                                     <td>
                                                         @include('common.select_custom.extent.select_single', [
@@ -198,11 +205,10 @@
                                                         <input class="form-control" type="text"
                                                                x-model="asset.description" :disabled="disabled">
                                                     </td>
-                                                    <td class="text-center align-middle">
-                                                        <button class="border-0 bg-body"
+                                                    <td class="text-center align-middle" x-show="action === 'update'">
+                                                        <button class="border-0 bg-white"
                                                                 @click="data.shopping_assets_order.splice(index, 1)">
-                                                            <i class="fa-regular fa-trash-can"
-                                                               style="color: #cd1326;"></i>
+                                                            <i class="bi bi-trash text-red"></i>
                                                         </button>
                                                     </td>
                                                 </tr>
@@ -220,19 +226,29 @@
                                 <div class="col-4">
                                     <div class="mb-2">
                                         <label>Chi phí vận chuyển, lắp đặt</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                               x-model="data.shipping_costs" :disabled="disabled">
+                                        @include('common.input.input_price', [
+                                            'model' => 'data.shipping_costs',
+                                            'placeholder' => "Nhập số",
+                                            'disabled' => 'disabled'
+                                        ])
                                     </div>
                                     <div>
                                         <label>Chi phí khác</label>
-                                        <input class="form-control" type="number" min="0" placeholder="Nhập số"
-                                               x-model="data.other_costs" :disabled="disabled">
+                                        @include('common.input.input_price', [
+                                            'model' => 'data.other_costs',
+                                            'placeholder' => "Nhập số",
+                                            'disabled' => 'disabled'
+                                        ])
                                     </div>
                                 </div>
                                 <div class="col-4" x-data="{get totalPrice () {
+                                            if (data.shopping_assets_order === undefined) {
+                                                return 0
+                                            }
                                             let totalPrice = 0
                                             data.shopping_assets_order.filter((item) => {
-                                                totalPrice = totalPrice + (+item.price + (+item.price * (+item.vat_rate || 0) / 100))
+                                                const vat = +item.price * (+item.vat_rate || 0) / 100
+                                                totalPrice = totalPrice + ((+item.price + vat) * item.total)
                                             })
 
                                             return totalPrice
@@ -259,15 +275,11 @@
                         </div>
                     </div>
                     <div class="card col-2">
-                        @include('component.history_comment_v2')
+                        @include('assets.order.history_comment')
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+

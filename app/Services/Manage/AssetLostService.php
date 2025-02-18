@@ -16,7 +16,6 @@ class AssetLostService
         protected AssetLostRepository $assetLostRepository,
         protected AssetHistoryRepository $assetHistoryRepository,
     ) {
-
     }
 
     public function getListAssetLost(array $filters = [])
@@ -104,7 +103,6 @@ class AssetLostService
         return [
             'success' => true,
         ];
-
     }
 
     private function updateOneAsset($data)
@@ -116,7 +114,7 @@ class AssetLostService
                 'error_code' => AppErrorCode::CODE_5000,
             ];
         }
-        $data['updated_by'] = Auth::id();
+        $data['updated_by'] = Auth::id() ?? 1;
         $updateStatus       = ['status' => $data['status']];
         $assetLost->fill($updateStatus);
         if (!$assetLost->save()) {
@@ -127,16 +125,9 @@ class AssetLostService
         }
 
         // update asset history
-        $dataHistory = [
-            'asset_id'              => $data['id'],
-            'action'                => $data['status'],
-            'date'                  => $data['signing_date'] ?? new \DateTime(),
-            'description'           => $data['description'] ?? '',
-            'created_at'            => new \DateTime(),
-            'created_by'            => Auth::id(),
-        ];
-
-        $historyAsset = $this->assetHistoryRepository->insert($dataHistory);
+        $assetIds     = [];
+        $assetIds[]   = $data['id'];
+        $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, $data['status']);
         if (!$historyAsset) {
             return [
                 'success'    => false,

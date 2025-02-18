@@ -27,13 +27,12 @@
                         </div>
                         <div class="col-3">
                             <label class="form-label">Nhà cung cấp<label class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listSupplier.length > 0">
-                                <span x-data="{values: listSupplier}">
-                                    @include('common.select2.modal.extent.select2_single_modal', [
-                                        'placeholder' => 'Chọn nhà cung cấp', 'model' => 'data.supplier_id'
-                                    ])
-                                </span>
-                            </template>
+                            @include('common.select_custom.extent.select_single', [
+                                    'selected' => 'data.supplier_id',
+                                    'options' => 'listSupplier',
+                                    'placeholder' => 'Chọn nhà cung cấp',
+                                    'id' => 'supplier_ui'
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -51,16 +50,12 @@
                             @include('common.datepicker.datepicker', ['placeholder'=>"Chọn ngày kết thúc hiệu lực", 'model' => "data.to"])
                         </div>
                         <div class="col-3">
-                            <label class="form-label">Người theo dõi<label
-                                    class="tw-text-red-600 mb-0">*</label></label>
-                            <template x-if="listUser.length > 0">
-                                <span x-data="{values: listUser}">
-                                    @include('common.select2.modal.extent.select2_multiple_modal', [
-                                        'placeholder' => 'Chọn người theo dõi',
-                                        'model' => 'data.user_ids'
-                                    ])
-                                </span>
-                            </template>
+                            <label class="form-label">Người theo dõi<label class="tw-text-red-600 mb-0">*</label></label>
+                            @include('common.user.select_multiple', [
+                                'placeholder' => 'Chọn người theo dõi',
+                                'options' => 'listUser',
+                                'selected' => 'data.user_ids'
+                            ])
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -106,7 +101,7 @@
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Thanh toán</div>
                     <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
-                        <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                        <table id="example2" class="table table-bordered dataTable dtr-inline"
                                aria-describedby="example2_info">
                             <thead>
                             <tr>
@@ -137,8 +132,8 @@
                                                placeholder="Nhập nội dung thanh toán">
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class="border-0 bg-body" @click="data.payments.splice(index, 1)">
-                                            <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
+                                        <button class="border-0 bg-white" @click="data.payments.splice(index, 1)">
+                                            <i class="bi bi-trash text-red"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -153,7 +148,7 @@
                     <div class="container">
                         <div class="mb-3 active-link tw-w-fit">Phụ lục hợp đồng</div>
                         <div class="tw-max-h-60 overflow-y-scroll custom-scroll">
-                            <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                            <table id="example2" class="table table-bordered dataTable dtr-inline"
                                    aria-describedby="example2_info">
                                 <thead>
                                 <tr>
@@ -187,9 +182,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Facades\Auth;
@@ -16,13 +17,19 @@ class AssetHistoryRepository extends BaseRepository
     public function insertHistoryAsset($assetIds, $status)
     {
         $dataHistory = [];
-        foreach ($assetIds as $asset_id) {
+        $assets      = Asset::whereIn('id', $assetIds)
+            ->get()
+            ->load(['user' => function ($query) {
+                $query->select('id', 'dept_id');
+            }]);
+        foreach ($assets as $asset) {
             $dataHistory[] = [
-                'asset_id'              => $asset_id,
+                'asset_id'              => $asset->id,
                 'action'                => $status,
                 'date'                  => new \DateTime(),
                 'created_at'            => new \DateTime(),
                 'created_by'            => Auth::id() ?? 1,
+                'org_id'                => $asset?->user?->getOrgLastParentAttribute()?->id ?? null,
             ];
         }
 

@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
- 
+
                 <div class="row mb-3">
                     <div class="col-4">
                         <label class="form-label">Ngày hoàn thành</label>
@@ -26,7 +26,7 @@
                     <label class="form-label">Tài sản sửa chữa</label>
                 </div>
                 <div class="d-block overflow-x-auto tw-whitespace-nowrap">
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
+                    <table class="table table-bordered dataSelectMulti dtr-inline tw-table-fixed tw-min-w-min"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -69,7 +69,7 @@
                                     </div>
                                 </td>
                                 <td class="align-content-center">
-                                    <input type="text" class="form-control" 
+                                    <input type="text" class="form-control"
                                         :value="dataShowRepair?.cost_repair"
                                         disabled>
                                 </td>
@@ -91,7 +91,7 @@
                                                 <option :value="key" x-text="value" :selected="dataShowRepair.performer_supplier == key"></option>
                                             </template>
                                         </template>
-                                
+
                                         <!-- Nếu address_repair == 2, hiển thị supplier -->
                                         <template x-if="dataShowRepair.address_repair == 2">
                                             <template x-for="(value, key) in supplier" :key="key">
@@ -114,9 +114,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

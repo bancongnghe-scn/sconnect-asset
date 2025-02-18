@@ -45,4 +45,28 @@ class PlanMaintainSupplierService
             'success' => true,
         ];
     }
+
+    public function insertPlanMaintainSupplier(array $supplierIds, $planId)
+    {
+        $dataInsert = [];
+        foreach ($supplierIds as $supplierId) {
+            $dataInsert[] = [
+                'plan_maintain_id' => $planId,
+                'supplier_id'      => $supplierId,
+            ];
+        }
+        if (!empty($dataInsert)) {
+            $insert = $this->planMaintainSupplierRepository->insert($dataInsert);
+            if (!$insert) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2097,
+                ];
+            }
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

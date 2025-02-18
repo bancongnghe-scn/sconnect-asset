@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between align-items-center form-group">
+    <div class="col-10 p-0">
+        <div class="d-grid tw-grid-cols-12 tw-gap-x-4 align-items-center">
+            <div class="tw-col-span-3 pl-0">
+                @include('common.select_custom.extent.select_single', [
+                    'selected' => 'filters.plan_year_id',
+                    'options' => 'listPlanCompanyYearComplete',
+                    'placeholder' => 'Chọn kế hoạch năm',
+                ])
+            </div>
+
+            <div class="tw-col-span-2">
+                @include('common.select_custom.simple.select_single', [
+                   'selected' => 'filters.time',
+                   'options' => 'LIST_QUARTER',
+                   'placeholder' => 'Chọn quý',
+               ])
+            </div>
+
+            <div class="tw-col-span-2">
+                @include('common.select_custom.simple.select_single', [
+                    'selected' => 'filters.status',
+                    'options' => 'listStatus',
+                    'placeholder' => 'Chọn trạng thái',
+                ])
+            </div>
+            <div class="tw-col-span-3">
+                <button @click="reloadPage()" type="button" class="btn btn-sm btn-outline-danger">Xóa lọc</button>
+            </div>
+        </div>
+    </div>
+    @can('shopping_plan_company.crud')
+        <div class="tw-mb-3 d-flex tw-gap-x-2 tw-justify-end">
+            <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModal('create')">
+                <span>+ Thêm</span>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" type="button" @click="confirmRemoveMultiple" :disabled="window.checkDisableSelectRow">
+                <span><i class="bi bi-trash pr-1"></i>Xóa chọn</span>
+            </button>
+        </div>
+    @endcan
+</div>
+

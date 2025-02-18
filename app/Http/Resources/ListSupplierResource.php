@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Supplier;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListSupplierResource extends JsonResource
@@ -18,7 +17,7 @@ class ListSupplierResource extends JsonResource
                 'contact'          => $supplier->contact,
                 'address'          => $supplier->address,
                 'contract_user'    => $supplier->contract_user,
-                'status'           => Supplier::STATUS_NAME[$supplier->status] ?? '',
+                'status'           => $supplier->status ?? '',
                 'industries'       => [],
             ];
 

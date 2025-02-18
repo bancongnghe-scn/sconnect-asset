@@ -31,7 +31,7 @@
                             <label class="tw-font-bold">Tài sản hủy (<span id="numbAssetCancel"></span>)</label>
                         </div>
                     </div>
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
+                    <table class="table table-bordered dataSelectMulti dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -73,9 +73,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

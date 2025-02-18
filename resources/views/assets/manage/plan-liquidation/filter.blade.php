@@ -28,7 +28,7 @@
         <button type="button" class="btn btn-sc" style="line-height: 20.6px;"  @click="handleShowModalCreatePlan()">
             Thêm mới
         </button>
-        <button type="button" class="btn tw-bg-red-600 tw-text-white" style="line-height: 20.6px;" @click="confirmRemoveMultiplePlan" :disabled="window.checkDisableSelectRow">
+        <button type="button" class="btn btn-red tw-bg-red-600 tw-text-white" style="line-height: 20.6px;" @click="confirmRemoveMultiplePlan" :disabled="window.checkDisableSelectRow">
             Xóa chọn
         </button>
     </div>

@@ -56,6 +56,7 @@ class ShoppingPlanCompanyService
         }
 
         $userIds = $planCompany->pluck('created_by')->toArray();
+
         $users   = $this->userRepository->getListing(['id' => $userIds], ['id', 'name', 'code']);
 
         return [
@@ -117,6 +118,8 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+
+
             report($exception);
             DB::rollBack();
 
@@ -187,6 +190,7 @@ class ShoppingPlanCompanyService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
+
             report($exception);
             DB::rollBack();
 
@@ -217,8 +221,7 @@ class ShoppingPlanCompanyService
             ]),
             default => [],
         };
-
-        $check = 'create' === $action ? !empty($shoppingPlanCompany) : $shoppingPlanCompany->id !== $data['id'];
+        $check = 'create' === $action ? !empty($shoppingPlanCompany) : (!empty($shoppingPlanCompany) && $shoppingPlanCompany->id !== $data['id']);
 
         if ($check) {
             return [
@@ -271,7 +274,7 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        $data                = $shoppingPlanCompany->toArray();
+        $data = $shoppingPlanCompany->toArray();
         switch ($shoppingPlanCompany->type) {
             case ShoppingPlanCompany::TYPE_YEAR:
                 $data['monitor_ids'] =  $shoppingPlanCompany->monitorShoppingPlanYear?->pluck('user_id')->toArray();
