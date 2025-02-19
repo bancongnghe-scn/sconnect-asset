@@ -18,7 +18,7 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày giao hàng</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">Người phụ trách</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 5rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
