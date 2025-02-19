@@ -84,11 +84,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 let data = response.data
-                data.unshift({
-                    id: 100000,
-                    name: 'Đơn vị'
-                })
-                console.log(data)
+                data.unshift(POSITION_ORGANIZATION)
                 this.list_job = data
             } catch (e) {
                 toast.error(e)
@@ -204,16 +200,22 @@ document.addEventListener('alpine:init', () => {
 
         async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
             try {
-                const response = await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, position_id)
-                if (response.success) {
-                    if (response.data.data.length === 0) {
-                        toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
-                    }
-                    return response.data.data?.price ?? 0
-                } else {
+                const type = position_id === POSITION_ORGANIZATION.id ? TYPE_ALLOCATION_RATE_ORGANIZATION : TYPE_ALLOCATION_RATE_POSITION
+                const response = type === TYPE_ALLOCATION_RATE_ORGANIZATION ?
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type) :
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type, position_id)
+
+                if (!response.success) {
                     toast.error(response.message)
                     return 0
                 }
+
+                if (response.data.data.length === 0) {
+                    toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
+                }
+
+                return response.data.data?.price ?? 0
+
             } catch (e) {
                 toast.error(e)
             }

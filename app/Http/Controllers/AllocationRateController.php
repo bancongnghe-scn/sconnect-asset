@@ -101,6 +101,7 @@ class AllocationRateController extends Controller
         $request->validate([
             'organization_id'   => 'required|integer',
             'asset_type_id'     => 'required|integer',
+            'type'              => 'required|integer',
             'position_id'       => 'nullable|integer',
         ]);
 

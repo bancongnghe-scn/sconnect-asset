@@ -298,8 +298,7 @@ localeVi = {
     firstDay: 1 // Thứ Hai là ngày đầu tuần
 };
 
-//
-window.LIST_STATUS_TEXT = {
+LIST_STATUS_TEXT = {
     1: 'Đang sử dụng',
     2: 'Chưa sử dụng',
     3: 'Mới',
@@ -311,4 +310,9 @@ window.LIST_STATUS_TEXT = {
     9: 'Hỏng',
     10: 'Đang sửa chữa',
     11: 'Bảo Dưỡng',
+}
+
+POSITION_ORGANIZATION = {
+    id : 1000000,
+    name: 'Đơn vị'
 }

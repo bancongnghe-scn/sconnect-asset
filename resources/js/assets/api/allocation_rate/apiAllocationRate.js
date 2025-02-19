@@ -24,13 +24,14 @@ window.apiGetListAllocationRate = async function (filters) {
     }
 }
 
-window.apiGetAllocationRateOfOrganization = async function (organization_id, asset_type_id, position_id) {
+window.apiGetAllocationRateOfOrganization = async function (organization_id, asset_type_id, type, position_id = null) {
     try {
         const response = await axios.get("/api/allocation-rate/getAllocationRateOfOrganization", {
             params: {
                 organization_id: organization_id,
                 asset_type_id: asset_type_id,
-                position_id: position_id
+                position_id: position_id,
+                type: type,
             }
         })
 
