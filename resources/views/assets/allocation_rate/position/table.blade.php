@@ -12,7 +12,7 @@
                             </th>
                             <th rowspan="1" colspan="1" class="tw-w-80">Đơn vị</th>
                             <th rowspan="1" colspan="1" class="tw-w-80">Chức danh</th>
-                            <th rowspan="1" colspan="1" class="text-center">Loại tài sản</th>
+                            <th rowspan="1" colspan="1" style="width: 11rem;">Loại tài sản</th>
                             <th rowspan="1" colspan="1" class="text-center">Hạng</th>
                             <th rowspan="1" colspan="1" class="text-right">Giá</th>
                             <th rowspan="1" colspan="1" class="tw-w-96">Ghi chú</th>
@@ -30,10 +30,9 @@
                                             class="align-middle"></td>
                                         <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" x-text="value.position_name"
                                             class="align-middle"></td>
-                                        <td class="text-center">
+                                        <td>
                                             <span class="border rounded p-1 tw-text-xs tw-shadow-md"
-                                                  x-text="config?.asset_type_name || ''"
-                                            ></span>
+                                                  x-text="config?.asset_type_name || ''"></span>
                                         </td>
                                         <td class="text-center">
                                             <span x-text="LEVEL_ALLOCATION_RATE[config.level]"
