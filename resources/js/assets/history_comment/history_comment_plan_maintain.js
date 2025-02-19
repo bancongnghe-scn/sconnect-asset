@@ -21,6 +21,10 @@ document.addEventListener('alpine:init', () => {
             comment_message: null,
 
             async sentComment() {
+                if (!this.comment_message) {
+                    return
+                }
+
                 const param = {
                     type: TYPE_COMMENT_PLAN_MAINTAIN,
                     target_id: this.id,

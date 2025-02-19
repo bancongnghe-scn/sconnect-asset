@@ -15,7 +15,7 @@
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
-
+    <script src='{{ asset('/js/summernote-lite.min.js') }}'></script>
     @vite([
         'resources/css/app.css',
         'resources/sass/app.scss',
