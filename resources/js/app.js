@@ -11,12 +11,15 @@ import './helpers.js'
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
+import 'summernote/dist/summernote-lite.min.css';
+
 window.Alpine = Alpine
 window.AirDatepicker = AirDatepicker;
 window.localeEn = localeEn;
 window.format = format;
 window.addEventListener('load', () => {
     Alpine.start();
+
     $('.select2').select2({
         language: {
             noResults: function() {

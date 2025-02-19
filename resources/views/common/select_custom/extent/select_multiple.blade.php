@@ -5,9 +5,6 @@
                 this.$watch(`{{$selected}}`, (newValue) => {
                     this.selected = newValue;
                 });
-                this.$watch('selected', (newValue) => {
-                    this.{{$selected}} = newValue;
-                });
                 this.$watch(`{{$options}}`, (newValue) => {
                     this.options = newValue;
                 });

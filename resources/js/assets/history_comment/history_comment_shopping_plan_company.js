@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('history_comment', () => ({
+    Alpine.data('history_comment_company', () => ({
             init() {
                 this.$watch('showModal', (newValue, oldValue) => {
                     if (newValue && this.id !== null) {
@@ -21,6 +21,9 @@ document.addEventListener('alpine:init', () => {
             comment_message: null,
 
             async sentComment() {
+                if (!this.comment_message) {
+                    return
+                }
                 const param = {
                     type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                     target_id: this.id,
@@ -48,8 +51,9 @@ document.addEventListener('alpine:init', () => {
             },
 
             handleComment() {
-                window.Echo.channel('channel_plan_maintain_' + this.id)
+                window.Echo.channel('channel_shopping_plan_' + this.id)
                     .listen('.ShoppingPlanCommentEvent', (e) => {
+                        console.log(e)
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)

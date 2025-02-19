@@ -583,7 +583,7 @@ class ListAssetService
     {
         // Đọc file XML template
         $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
-        $template = file_get_contents($templatePath);
+        $template     = file_get_contents($templatePath);
 
         // Dữ liệu cần điền vào Excel
         $data = [
@@ -594,7 +594,7 @@ class ListAssetService
 
         // Tạo file Excel thực sự (không phải XML)
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
+        $sheet       = $spreadsheet->getActiveSheet();
 
         // Ghi dữ liệu vào Excel
         $rowIndex = 1;
@@ -602,7 +602,7 @@ class ListAssetService
             $sheet->setCellValue("A{$rowIndex}", $row['name']);
             $sheet->setCellValue("B{$rowIndex}", $row['age']);
             $sheet->setCellValue("C{$rowIndex}", $row['address']);
-            $rowIndex++;
+            ++$rowIndex;
         }
 
         // Lưu file Excel
@@ -612,10 +612,10 @@ class ListAssetService
         }
 
         $excelFilePath = $exportPath . '/final.xlsx';
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer        = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save($excelFilePath);
     }
-  
+
     public function getAssetInfo($id)
     {
         $data = $this->assetRepository->find($id);
