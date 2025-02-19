@@ -3,8 +3,8 @@ document.addEventListener('alpine:init', () => {
         init() {
         },
         activeLink: {
-            need_maintain: false,
-            plan: true,
+            need_maintain: true,
+            plan: false,
             maintaining: false
         },
 
