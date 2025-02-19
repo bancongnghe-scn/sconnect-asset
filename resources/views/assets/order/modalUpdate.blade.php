@@ -150,7 +150,6 @@
                                                aria-describedby="example2_info">
                                             <thead>
                                             <tr>
-                                                <th>Mã</th>
                                                 <th class="tw-min-w-60">Tên</th>
                                                 <th class="tw-min-w-40">Đơn giá</th>
                                                 <th>VAT (%)</th>
@@ -166,7 +165,6 @@
                                             <tbody>
                                             <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
                                                 <tr>
-                                                    <td class="align-middle" x-text="asset.code"></td>
                                                     <td>
                                                         <input class="form-control" type="text" x-model="asset.name"
                                                                :disabled="disabled">
