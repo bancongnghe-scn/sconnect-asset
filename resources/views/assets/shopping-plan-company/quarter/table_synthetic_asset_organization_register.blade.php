@@ -10,7 +10,7 @@
         <th colspan="3" class="text-center">Số lượng đăng ký theo tháng</th>
         <th rowspan="2" class="text-center">Tổng Số lượng</th>
         <th rowspan="2" class="text-center">Tổng Thành tiền</th>
-        <th rowspan="2" class="text-center tw-w-28">Thao tác</th>
+        <th rowspan="2" class="text-center" style="width: 9rem;">Thao tác</th>
     </tr>
     <tr>
         <template x-for="number in Array.from({ length: 3 }, (_, i) => i + 1)" :key="number">

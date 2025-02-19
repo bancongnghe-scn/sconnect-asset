@@ -8,16 +8,16 @@
                         <thead>
                         <tr>
                             @can('shopping_plan_company.crud')
-                                <th class="text-center">
+                                <th class="text-center" style="width: 3rem">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
                             @endcan
-                            <th rowspan="1" colspan="1" class="text-center">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 3rem">STT</th>
                             <th rowspan="1" colspan="1" class="text-center">Kế hoạch</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Trạng thái</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
