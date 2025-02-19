@@ -50,7 +50,7 @@
 
                     <div class="col-6">
                         <label class="form-label">Danh sách vai trò</label>
-                        @include('common.select_custom.extent.select_single', [
+                        @include('common.select_custom.extent.select_multiple', [
                             'placeholder' => 'Chọn danh sách vai trò',
                             'options' => 'listRole',
                             'selected' => 'menu.role_ids',
