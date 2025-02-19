@@ -88,7 +88,8 @@ class AllocationRateRepository extends BaseRepository
         return $this->_model->newQuery()
            ->where(function ($query) use ($filters) {
                $query->where('organization_id', $filters['organization_id'])
-                   ->where('asset_type_id', $filters['asset_type_id']);
+                   ->where('asset_type_id', $filters['asset_type_id'])
+                   ->whereNull('position_id');
            })->orWhere(function ($query) use ($filters) {
                $query->where('organization_id', $filters['organization_id'])
                    ->where('asset_type_id', $filters['asset_type_id'])
