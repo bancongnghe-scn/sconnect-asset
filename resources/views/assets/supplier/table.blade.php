@@ -17,7 +17,7 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Số điện thoại</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 14rem">Địa chỉ/Website</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Đánh giá</th>
-                            <th rowspan="1" colspan="1" class="text-center">Người liên hệ</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 11rem">Người liên hệ</th>
                             <th rowspan="1" colspan="1" class="col-2 text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
