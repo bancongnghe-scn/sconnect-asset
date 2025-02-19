@@ -83,7 +83,13 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.list_job = response.data
+                let data = response.data
+                data.unshift({
+                    id: 100000,
+                    name: 'Đơn vị'
+                })
+                console.log(data)
+                this.list_job = data
             } catch (e) {
                 toast.error(e)
             } finally {
