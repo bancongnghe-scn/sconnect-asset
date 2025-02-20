@@ -111,6 +111,7 @@ class AppErrorCode
     public const CODE_2104 = 2104; //  Cập nhật thời gian bảo dưỡng cho tài sản thất bại !
     public const CODE_2105 = 2105; //  Lưu lịch sử kế bảo dưỡng thất bại !
     public const CODE_2106 = 2106; //  Không tồn tại thông tin tài sản !
+    public const CODE_2107 = 2107; //  Đã tồn tại định mức cấp phát cho loại tài sản (:asset_type) !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

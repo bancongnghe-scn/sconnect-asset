@@ -158,28 +158,13 @@ class AllocationRateService
             }
 
             if (!empty($dataNew)) {
-                $assetTypeIds = array_column($dataNew, 'asset_type_id');
-                if (AllocationRate::TYPE_POSITION == $data['type']) {
-                    $allocationRate = $this->allocationRateRepository->getList([
-                        'organization_id' => $data['organization_id'],
-                        'position_id'     => $data['position_id'],
-                        'asset_type_id'   => $assetTypeIds,
-                        'first'           => true,
-                    ]);
-                } else {
-                    $allocationRate = $this->allocationRateRepository->getList([
-                        'organization_id' => $data['organization_id'],
-                        'asset_type_id'   => $assetTypeIds,
-                        'first'           => true,
-                    ]);
+                $check = $this->checkAllocationRateExits($dataNew, $data);
+                if (!$check['success']) {
+                    DB::rollBack();
+
+                    return $check;
                 }
 
-                if (!empty($allocationRate)) {
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2096,
-                    ];
-                }
                 $insert = $this->allocationRateRepository->insert($dataNew);
                 if (!$insert) {
                     DB::rollBack();
@@ -205,6 +190,39 @@ class AllocationRateService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function checkAllocationRateExits($dataNew, $data): array
+    {
+        $assetTypeIds = array_column($dataNew, 'asset_type_id');
+        if (AllocationRate::TYPE_POSITION == $data['type']) {
+            $allocationRate = $this->allocationRateRepository->getList([
+                'organization_id' => $data['organization_id'],
+                'position_id'     => $data['position_id'],
+                'asset_type_id'   => $assetTypeIds,
+                'first'           => true,
+            ]);
+        } else {
+            $allocationRate = $this->allocationRateRepository->getList([
+                'organization_id' => $data['organization_id'],
+                'asset_type_id'   => $assetTypeIds,
+                'first'           => true,
+            ]);
+        }
+
+        if (!empty($allocationRate)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2107,
+                'extra_data' => [
+                    'asset_type' => $allocationRate->assetType?->name,
+                ],
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 
     public function deleteAllocationRate($data)
