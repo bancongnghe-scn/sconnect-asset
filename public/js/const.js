@@ -181,15 +181,33 @@ LEVEL_ALLOCATION_RATE = {
 }
 
 // ASSET
+LOCATION_CS_1      = 136;
+LOCATION_CS_4      = 303;
+LOCATION_CS_7      = 304;
+LOCATION_CS_8      = 305;
+LOCATION_CS_9      = 306;
+LOCATION_HCM       = 313;
+LOCATION_KVC       = 416;
+LOCATION_TQ_3      = 307;
+LOCATION_TQ_4      = 308;
+LOCATION_TQ_5      = 309;
+LOCATION_TQ_6      = 310;
+LOCATION_TQ_7      = 311;
+LOCATION_WAREHOUSE = 1;
 LIST_LOCATION_ASSET = {
-    1: 'HN_Tầng 1',
-    2: 'HN_Tầng 2',
-    3: 'HN_Tầng 3',
-    4: 'HN_Tầng 4',
-    5: 'HN_Tầng 5',
-    6: 'HN_Tầng 6',
-    7: 'HN_Tầng 7',
-    8: 'HCM',
+    LOCATION_CS_1      : 'CS_Tầng 1',
+    LOCATION_CS_4      : 'CS_Tầng 4',
+    LOCATION_CS_7      : 'CS_Tầng 7',
+    LOCATION_CS_8      : 'CS_Tầng 8',
+    LOCATION_CS_9      : 'CS_Tầng 9',
+    LOCATION_TQ_3      : 'TQ - Tầng 3',
+    LOCATION_TQ_4      : 'TQ - Tầng 4',
+    LOCATION_TQ_5      : 'TQ - Tầng 5',
+    LOCATION_TQ_6      : 'TQ - Tầng 6',
+    LOCATION_TQ_7      : 'TQ - Tầng 7',
+    LOCATION_HCM       : 'HCM',
+    LOCATION_KVC       : 'Khu vui chơi',
+    LOCATION_WAREHOUSE : 'Kho công ty',
 }
 
 ASSET_STATUS_ACTIVE                  = 1;
