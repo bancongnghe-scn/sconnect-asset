@@ -85,6 +85,7 @@ class ListAssetController extends Controller
     {
         try {
             $listAssetOfObj = $this->assetService->allocateAsset($request);
+            $this->assetService->exportReportAllocation();
 
             return response_success([
                 'listAssetOfObj' => $listAssetOfObj,

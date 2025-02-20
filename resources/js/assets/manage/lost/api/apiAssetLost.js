@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 window.apiGetAssetLost = async function (filters) {
     try {
 

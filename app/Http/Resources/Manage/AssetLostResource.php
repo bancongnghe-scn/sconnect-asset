@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Manage;
 
-use App\Models\Asset;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class AssetLostResource extends JsonResource
@@ -14,13 +13,11 @@ class AssetLostResource extends JsonResource
                 'id'                     => $item?->id,
                 'code'                   => $item?->code,
                 'name'                   => $item?->name,
-                'user_name'              => $item?->user?->name,
-                'avatar'                 => $item?->user?->avatar,
-                'user_code'              => $item?->user?->code,
+                'user'                   => $item?->user,
                 'status'                 => $item?->status,
                 'date'                   => $item?->assetHistory?->first()?->date,
                 'reason'                 => $item?->assetHistory?->first()?->description,
-                'location'               => $item?->location ? Asset::LOCATION_NAME[$item?->location] : '',
+                'location'               => $item->location,
             ];
         });
 
