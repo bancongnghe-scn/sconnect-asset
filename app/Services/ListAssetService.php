@@ -616,35 +616,6 @@ class ListAssetService
         }
     }
 
-    // public function exportReportAllocation()
-    // {
-    //     // Đọc file XML và XSLT từ storage
-    //     $xmlPath = storage_path('app/xml/data.xml');
-    //     $xslPath = storage_path('app/xml/template.xsl');
-
-    //     // Tạo DOMDocument cho XML
-    //     $xml = new DOMDocument;
-    //     $xml->load($xmlPath);
-
-    //     // Tạo DOMDocument cho XSLT
-    //     $xsl = new DOMDocument;
-    //     $xsl->load($xslPath);
-
-    //     // Khởi tạo bộ xử lý XSLT
-    //     $xsltProcessor = new XSLTProcessor();
-    //     $xsltProcessor->importStylesheet($xsl);
-
-    //     // Chuyển đổi XML sang HTML
-    //     $html = $xsltProcessor->transformToXML($xml);
-
-    //     return response($html)->header('Content-Type', 'text/html');
-    // }
-
-        $excelFilePath = $exportPath . '/final.xlsx';
-        $writer        = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($excelFilePath);
-    }
-
     public function getAssetInfo($id)
     {
         $data = $this->assetRepository->find($id);
