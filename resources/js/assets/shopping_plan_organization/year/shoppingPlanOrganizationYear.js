@@ -148,10 +148,8 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentRegisterYear(this.id, this.registersOrganization)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
-                    this.getRegisterAsset()
-                    if (+this.dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
-                        this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                    }
+                    this.dataTable.find(item => +item.id === +this.id).status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                    $('#modalRegister').modal('hide')
                     return
                 }
                 toast.error(response.message)
