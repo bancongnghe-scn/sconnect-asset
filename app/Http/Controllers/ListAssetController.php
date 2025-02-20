@@ -13,12 +13,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use DOMDocument;
+use XSLTProcessor;
+use Storage;
 
 class ListAssetController extends Controller
 {
-    public function __construct(private readonly ListAssetService $assetService)
-    {
-    }
+    public function __construct(private readonly ListAssetService $assetService) {}
 
     public function listAsset(): View
     {
@@ -85,7 +86,7 @@ class ListAssetController extends Controller
     {
         try {
             $listAssetOfObj = $this->assetService->allocateAsset($request);
-            $this->assetService->exportReportAllocation();
+            // $this->assetService->exportReportAllocation();
 
             return response_success([
                 'listAssetOfObj' => $listAssetOfObj,
@@ -333,5 +334,32 @@ class ListAssetController extends Controller
     public function exportListAsset()
     {
         return Excel::download(new ListAssetExport(), 'danh_sach_tai_san.xlsx');
+    }
+
+    public function transformXmlToHtml()
+    {
+        // Đọc file XML và XSLT từ storage
+        $xmlPath = storage_path('app/template/XMLFile1.xml');
+        $xslPath = storage_path('app/template/thuhoi.xsl');
+
+        // Tạo DOMDocument cho XML
+        $xml = new DOMDocument;
+        $xml->load($xmlPath);
+
+        // Tạo DOMDocument cho XSLT
+        $xsl = new DOMDocument;
+        $xsl->load($xslPath);
+
+        // Khởi tạo bộ xử lý XSLT
+        $xsltProcessor = new XSLTProcessor();
+        $xsltProcessor->importStylesheet($xsl);
+
+        // Chuyển đổi XML sang HTML
+        $html = $xsltProcessor->transformToXML($xml);
+
+        $filePath = storage_path('app/template/output.xls');
+        file_put_contents($filePath, $html);
+
+        return response()->download($filePath, 'output.xls')->deleteFileAfterSend();
     }
 }

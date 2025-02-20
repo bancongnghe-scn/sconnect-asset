@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exports\ReportExport;
 use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\MoveAssetOrg;
@@ -13,8 +14,10 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Maatwebsite\Excel\Facades\Excel;
+use DOMDocument;
+use XSLTProcessor;
+use Storage;
 
 class ListAssetService
 {
@@ -465,6 +468,8 @@ class ListAssetService
                 ]);
 
                 MoveAssetUser::create([
+                    'org_id' => $assetRotation['organization_id'],
+                    'user_id' => $assetRotation['user_id'],
                     'user_id_after' => $userId,
                     'org_id_after' => $orgId,
                     'asset_id' => $assetRotation['id'],
@@ -570,40 +575,36 @@ class ListAssetService
         ]);
     }
 
-    public function exportReportAllocation()
+    public function listAssetRepresent($request)
     {
-        // Đọc file XML template
-        $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
-        $template = file_get_contents($templatePath);
+        $orgOfUser = Org::where('manager_id', $request->userId)->first();
 
-        // Dữ liệu cần điền vào Excel
-        $data = [
-            ['name' => 'Nguyễn A', 'age' => 25, 'address' => 'Hà Nội'],
-            ['name' => 'Trần B', 'age' => 30, 'address' => 'TP. HCM'],
-            ['name' => 'Lê C', 'age' => 22, 'address' => 'Đà Nẵng'],
-        ];
-
-        // Tạo file Excel thực sự (không phải XML)
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Ghi dữ liệu vào Excel
-        $rowIndex = 1;
-        foreach ($data as $row) {
-            $sheet->setCellValue("A{$rowIndex}", $row['name']);
-            $sheet->setCellValue("B{$rowIndex}", $row['age']);
-            $sheet->setCellValue("C{$rowIndex}", $row['address']);
-            $rowIndex++;
+        if ($orgOfUser) {
+            Asset::where('organization_id', $orgOfUser->id)->get();
         }
-
-        // Lưu file Excel
-        $exportPath = storage_path('app/test_export');
-        if (!file_exists($exportPath)) {
-            mkdir($exportPath, 0777, true);
-        }
-
-        $excelFilePath = $exportPath . '/final.xlsx';
-        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($excelFilePath);
     }
+
+    // public function exportReportAllocation()
+    // {
+    //     // Đọc file XML và XSLT từ storage
+    //     $xmlPath = storage_path('app/xml/data.xml');
+    //     $xslPath = storage_path('app/xml/template.xsl');
+
+    //     // Tạo DOMDocument cho XML
+    //     $xml = new DOMDocument;
+    //     $xml->load($xmlPath);
+
+    //     // Tạo DOMDocument cho XSLT
+    //     $xsl = new DOMDocument;
+    //     $xsl->load($xslPath);
+
+    //     // Khởi tạo bộ xử lý XSLT
+    //     $xsltProcessor = new XSLTProcessor();
+    //     $xsltProcessor->importStylesheet($xsl);
+
+    //     // Chuyển đổi XML sang HTML
+    //     $html = $xsltProcessor->transformToXML($xml);
+
+    //     return response($html)->header('Content-Type', 'text/html');
+    // }
 }
