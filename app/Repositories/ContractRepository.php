@@ -52,11 +52,11 @@ class ContractRepository extends BaseRepository
         }
 
         if (!empty($filters['signing_date'])) {
-            $query->whereDate('signing_date', $filters['signing_date']);
+            $query->whereBetween('signing_date', [$filters['signing_date']['start'], $filters['signing_date']['end']]);
         }
 
         if (!empty($filters['from'])) {
-            $query->whereDate('from', $filters['from']);
+            $query->whereBetween('from', [$filters['from']['start'], $filters['from']['end']]);
         }
 
         if (!empty($filters['limit'])) {

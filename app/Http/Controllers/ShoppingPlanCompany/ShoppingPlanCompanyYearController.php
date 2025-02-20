@@ -42,7 +42,7 @@ class ShoppingPlanCompanyYearController extends Controller
             $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
             $result          = $this->planCompanyService->getListShoppingPlanCompany($filters);
 
-            return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
+            return response_success($result['data'] ?? []);
         } catch (\Throwable $exception) {
             report($exception);
 
@@ -66,6 +66,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+
             report($exception);
 
             return response_error();
@@ -87,6 +88,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+
             report($exception);
 
             return response_error();

@@ -22,7 +22,7 @@ class UpdateOrderRequest extends CreateOrderRequest
             'shopping_assets_order'                                             => 'required|array',
             'shopping_assets_order.*'                                           => 'array',
             'shopping_assets_order.*.id'                                        => 'nullable|integer',
-            'shopping_assets_order.*.code'                                      => 'required|string',
+            'shopping_assets_order.*.total'                                     => 'required|integer',
             'shopping_assets_order.*.name'                                      => 'required|string',
             'shopping_assets_order.*.price'                                     => 'required|numeric',
             'shopping_assets_order.*.asset_type_id'                             => 'required|integer',

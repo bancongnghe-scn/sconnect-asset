@@ -18,17 +18,17 @@
             <tr>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
                     <span x-text="organization.name"></span>
-                    @include('component.shopping_plan_organization.status_shopping_plan_organization', [
+                    @include('component.status.status_shopping_plan_organization', [
                         'status' => 'organization.status',
                         'tooltip' => 'organization.note'
                     ])
                 </td>
-                <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <td x-text="assetRegister.job_name ?? '-'"></td>
-                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
-                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
-                <td x-text="assetRegister.description ?? '-'"></td>
-                <td x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
+                <td x-text="assetRegister.asset_type_name ?? '-'" class="align-middle"></td>
+                <td x-text="assetRegister.job_name ?? '-'" class="align-middle"></td>
+                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center align-middle"></td>
+                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center align-middle"></td>
+                <td x-text="assetRegister.description ?? '-'" class="align-middle"></td>
+                <td class="align-middle" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE">
                     <template x-if="typeof assetRegister.action !== 'undefined'">
                         <select class="form-select" x-model="assetRegister.action">
                             <option value="1">Mua mới</option>
@@ -38,8 +38,8 @@
                 </td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center align-middle">
                     {{-- button view --}}
-                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-body">
-                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                    <button @click="handleShowModalDetailOrganization(organization.id)" class="border-0 bg-white">
+                        <i class="bi bi-eye text-info"></i>
                     </button>
 
                     {{-- button duyet --}}
@@ -53,7 +53,7 @@
                                             STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
                                         ].includes(+organization.status)"
                                     >
-                                        <button class="border-0 bg-body"
+                                        <button class="border-0 bg-white"
                                                 @click="accountApprovalShoppingPlanOrganization(organization.id, ORGANIZATION_TYPE_APPROVAL)"
                                         >
                                             <i class="fa-solid fa-thumbs-up" style="color: #125fe2;"></i>
@@ -66,7 +66,7 @@
                                             STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
                                         ].includes(+organization.status)"
                                     >
-                                        <button class="border-0 bg-body"
+                                        <button class="border-0 bg-white"
                                                 @click="showModalNoteDisapproval(organization.id)"
                                         >
                                             <i class="fa-solid fa-thumbs-down" style="color: #727479;"></i>

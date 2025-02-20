@@ -5,6 +5,7 @@ document.addEventListener('alpine:init', () => {
             this.getListPlanCompanyQuarter()
             this.getListAssetType()
             this.watchFilters()
+            this.setConfigButtons()
         },
 
         //dataTable
@@ -46,6 +47,7 @@ document.addEventListener('alpine:init', () => {
         list_asset_type: [],
         list_job: [],
         registers : [],
+        showModal: false,
         action: null,
         id: null,
 
@@ -86,12 +88,13 @@ document.addEventListener('alpine:init', () => {
 
         async handleShowModal(id, action) {
             this.loading = true
+            this.showModal = true
             this.resetData()
             this.registers = []
             this.action = action
             this.id = id
             try {
-                this.getInfo()
+                await this.getInfo()
                 this.getRegisterAsset()
                 if (action === 'view') {
                     $('#modalDetailOrganization').modal('show');
@@ -101,7 +104,8 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
 
             } finally {
-
+                this.loading = false
+                this.showModal = false
             }
         },
 
@@ -231,6 +235,20 @@ document.addEventListener('alpine:init', () => {
                     this.list(this.filters);
                 }
             }, { deep: true });
+        },
+
+        setConfigButtons() {
+            this.configButtonsTable = [
+                {
+                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) => this.handleShowModal(id, 'register'),
+                        },
+                    ],
+                },
+            ]
         },
 
         changePage(page) {

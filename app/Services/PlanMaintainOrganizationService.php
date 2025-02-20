@@ -46,4 +46,29 @@ class PlanMaintainOrganizationService
             'success'    => true,
         ];
     }
+
+    public function insertPlanMaintainOrganization(array $organizationIds, $planId)
+    {
+        // gan don vi cho ke hoach
+        $dataInsert = [];
+        foreach ($organizationIds as $organizationId) {
+            $dataInsert[] = [
+                'plan_maintain_id' => $planId,
+                'organization_id'  => $organizationId,
+            ];
+        }
+        if (!empty($dataInsert)) {
+            $insert = $this->planMaintainOrganizationRepository->insert($dataInsert);
+            if (!$insert) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2096,
+                ];
+            }
+        }
+
+        return [
+            'success'    => true,
+        ];
+    }
 }

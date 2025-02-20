@@ -14,10 +14,10 @@
         </a>
     </div>
 
-    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; height: 80dvh">
+    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; height: 83dvh">
         <div class="overflow-y-scroll custom-scroll mt-3" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
             {{-- Lich su --}}
-            <div class="list-group" x-show="activeLink.history">
+            <div class="list-group pr-2" x-show="activeLink.history">
                 <template x-for="log in logs">
                     <div class="d-flex tw-gap-x-2">
                         <div class="tw-w-8 d-flex flex-column align-items-center">
@@ -26,8 +26,10 @@
                             </span>
                             <div class="border-start border-2 flex-grow-1"></div>
                         </div>
-                        <div class="w-auto border rounded p-2 tw-bg-zinc-100 mb-3">
-                            <p class="mb-1 text-muted small" x-text="log.created_at"></p>
+                        <div class="border rounded p-2 tw-bg-zinc-100 mb-3">
+                            <p class="mb-1 text-muted small"
+                               x-text="format(log.created_at, 'dd/MM/yyyy HH:ii:ss')"
+                            ></p>
                             <p class="mb-0">
                                 <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
                                 <span x-text="log.desc"></span>
@@ -89,7 +91,3 @@
     </div>
 </div>
 
-@vite([
-    'resources/js/assets/history_comment/plan_maintain/history_comment_plan_maintain.js',
-    'resources/js/assets/api/apiComment.js'
-])

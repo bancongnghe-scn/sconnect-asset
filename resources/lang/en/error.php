@@ -108,6 +108,8 @@ return [
     AppErrorCode::CODE_2102 => 'Xóa kế hoạch bảo dưỡng thất bại !',
     AppErrorCode::CODE_2103 => 'Trạng thái kế hoạch bảo dưỡng không hợp lệ !',
     AppErrorCode::CODE_2104 => 'Cập nhật thời gian bảo dưỡng cho tài sản thất bại !',
+    AppErrorCode::CODE_2105 => 'Lưu lịch sử kế bảo dưỡng thất bại !',
+    AppErrorCode::CODE_2106 => 'Không tồn tại thông tin tài sản !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

@@ -24,6 +24,37 @@ window.apiGetListAllocationRate = async function (filters) {
     }
 }
 
+window.apiGetAllocationRateOfOrganization = async function (organization_id, asset_type_id, type, position_id = null) {
+    try {
+        const response = await axios.get("/api/allocation-rate/getAllocationRateOfOrganization", {
+            params: {
+                organization_id: organization_id,
+                asset_type_id: asset_type_id,
+                position_id: position_id,
+                type: type,
+            }
+        })
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
 window.apiCreateAllocationRate = async function (dataCreate) {
     try {
         const response = await axios.post("/api/allocation-rate/createAllocationRate",dataCreate)

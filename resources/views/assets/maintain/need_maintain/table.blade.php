@@ -24,9 +24,7 @@
                                     <td x-text="value.name"></td>
                                     <td x-text="value.asset_type_name"></td>
                                     <td>
-                                        <span x-data="{data: value, key: 'user'}">
-                                            @include('common.user_info')
-                                        </span>
+                                        @include('common.user.user_info', ['user' => 'value.user'])
                                     </td>
                                     <td class="text-center align-middle" x-text="formatDateVN(value.recent_maintenance_date)"></td>
                                     <td class="text-center align-middle" x-text="formatDateVN(value.next_maintenance_date)"></td>

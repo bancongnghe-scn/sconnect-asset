@@ -36,7 +36,7 @@ class ListAssetController extends Controller
                 'listAssetType' => AssetType::all(),
                 'listStatus'    => config('constant.status'),
                 'listLocation'  => config('constant.location'),
-                'listSupplier' => Supplier::all(),
+                'listSupplier'  => Supplier::all(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -242,7 +242,7 @@ class ListAssetController extends Controller
     {
         try {
             return response_success([
-                'listUser' => User::where('status', 1)->limit(2000)->get()
+                'listUser' => User::where('status', 1)->limit(2000)->get(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -361,5 +361,22 @@ class ListAssetController extends Controller
         file_put_contents($filePath, $html);
 
         return response()->download($filePath, 'output.xls')->deleteFileAfterSend();
+    }
+
+    public function getAssetInfo($id)
+    {
+        try {
+            $result = $this->assetService->getAssetInfo($id);
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
     }
 }

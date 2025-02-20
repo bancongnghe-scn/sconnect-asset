@@ -25,7 +25,7 @@
                             <label class="tw-font-bold">Tài sản đã mất (<span id="numbAssetLost"></span>)</label>
                         </div>
                     </div>
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
+                    <table class="table table-bordered dataSelectMulti dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -49,7 +49,7 @@
                                     </td>
                                 </template>
                                 <td class="text-center align-middle">
-                                    <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: data.id })">
+                                    <button class="border-0 bg-body" @click="handleDeleteOfMultiModalBackUI(data.id)">
                                         <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                     </button>
                                 </td>
@@ -67,9 +67,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

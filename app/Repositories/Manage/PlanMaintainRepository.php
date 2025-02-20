@@ -28,12 +28,25 @@ class PlanMaintainRepository extends BaseRepository
             });
         }
 
+        if (!empty($filters['start_time']) && !empty($filters['end_time'])) {
+            $query->where('start_time', '>=', $filters['start_time'])
+                ->where('end_time', '<=', $filters['end_time']);
+        }
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'LIKE', $filters['name'] . '%');
+        }
+
         if (!empty($filters['created_at'])) {
             $query->whereDate('created_at', $filters['created_at']);
         }
 
         if (!empty($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
+        }
+
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
         }
 
         if (!empty($filters['limit'])) {
@@ -66,6 +79,10 @@ class PlanMaintainRepository extends BaseRepository
 
         if (!empty($filters['status'])) {
             $query->where('plan_maintain.status', $filters['status']);
+        }
+
+        if (!empty($filters['type'])) {
+            $query->where('plan_maintain.type', $filters['type']);
         }
 
         if (!empty($filters['supplier_id'])) {

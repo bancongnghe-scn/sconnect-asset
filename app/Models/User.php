@@ -5,6 +5,8 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\MigrateAuthorize;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -52,19 +54,19 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
-    protected $appends = ['org_last_parent', 'job_position'];
+    //    protected $appends = ['org_last_parent', 'job_position'];
 
-    public function organization()
+    public function organization(): HasOne
     {
         return $this->hasOne(Org::class, 'id', 'dept_id');
     }
 
-    public function jobTitle()
+    public function jobTitle(): HasOne
     {
         return $this->hasOne(OrgJobTitle::class, 'id', 'job_title_id');
     }
 
-    public function listAssetUse()
+    public function listAssetUse(): HasMany
     {
         return $this->hasMany(Asset::class, 'user_id', 'id');
     }
@@ -85,8 +87,8 @@ class User extends Authenticatable
             $departments = Org::leftJoin('configs as cfOrg', 'organizations.dept_type_id', '=', 'cfOrg.id')
                 ->selectRaw(
                     'organizations.id,
-        organizations.parent_id,
-        CONCAT(cfOrg.cfg_key, " ",organizations.name) AS org_name'
+                    organizations.parent_id,
+                    CONCAT(cfOrg.cfg_key, " ",organizations.name) AS org_name'
                 )
                 ->orderBy('id')->get();
 

@@ -8,11 +8,13 @@ use App\Http\Resources\ListAssetNeedMaintainResource;
 use App\Http\Resources\ListPlanMaintainResource;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainAsset;
+use App\Models\PlanMaintainLog;
 use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainAssetRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\PlanMaintainChargeRepository;
+use App\Repositories\PlanMaintainLogRepository;
 use App\Repositories\PlanMaintainOrganizationRepository;
 use App\Repositories\PlanMaintainSupplierRepository;
 use App\Repositories\SupplierRepository;
@@ -34,6 +36,7 @@ class MaintainService
         protected PlanMaintainSupplierRepository $planMaintainSupplierRepository,
         protected PlanMaintainChargeRepository $planMaintainChargeRepository,
         protected AssetTypeRepository $assetTypeRepository,
+        protected PlanMaintainLogRepository $planMaintainLogRepository,
     ) {
 
     }
@@ -76,7 +79,6 @@ class MaintainService
 
     public function getAssetMaintaining($filters)
     {
-        $filters['status'] = PlanMaintainAsset::STATUS_MAINTAINING;
         $result            = $this->planMaintainAssetRepository->getListing($filters);
         if ($result->isEmpty()) {
             return [];
@@ -126,64 +128,28 @@ class MaintainService
             $planMaintain = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $dataInsert = [];
-            foreach ($data['organization_ids'] as $organizationId) {
-                $dataInsert[] = [
-                    'plan_maintain_id' => $planMaintain->id,
-                    'organization_id'  => $organizationId,
-                ];
-            }
-            if (!empty($dataInsert)) {
-                $insert = $this->planMaintainOrganizationRepository->insert($dataInsert);
-                if (!$insert) {
-                    DB::rollBack();
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planMaintain->id);
+            if (!$insert['success']) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2096,
-                    ];
-                }
+                return $insert;
             }
 
             // gan nha cung cap cho ke hoach
-            $dataInsert = [];
-            foreach ($data['supplier_ids'] as $supplierId) {
-                $dataInsert[] = [
-                    'plan_maintain_id' => $planMaintain->id,
-                    'supplier_id'      => $supplierId,
-                ];
-            }
-            if (!empty($dataInsert)) {
-                $insert = $this->planMaintainSupplierRepository->insert($dataInsert);
-                if (!$insert) {
-                    DB::rollBack();
+            $insert = resolve(PlanMaintainSupplierService::class)->insertPlanMaintainSupplier($data['supplier_ids'], $planMaintain->id);
+            if (!$insert['success']) {
+                DB::rollBack();
 
-                    return [
-                        'success'    => false,
-                        'error_code' => AppErrorCode::CODE_2097,
-                    ];
-                }
+                return $insert;
             }
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $dataInsert = [];
-                foreach ($data['user_ids'] as $userId) {
-                    $dataInsert[] = [
-                        'plan_maintain_id' => $planMaintain->id,
-                        'user_id'          => $userId,
-                    ];
-                }
-                if (!empty($dataInsert)) {
-                    $insert = $this->planMaintainChargeRepository->insert($dataInsert);
-                    if (!$insert) {
-                        DB::rollBack();
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planMaintain->id);
+                if (!$insert['success']) {
+                    DB::rollBack();
 
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_2098,
-                        ];
-                    }
+                    return $insert;
                 }
             }
 
@@ -211,6 +177,20 @@ class MaintainService
                     ];
                 }
             }
+
+            $insertLog = $this->planMaintainLogRepository->insertPlanMaintainLog(
+                PlanMaintainLog::ACTION_CREATE_PLAN_MAINTAIN,
+                $planMaintain->id,
+            );
+            if (!$insertLog) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2105,
+                ];
+            }
+
             DB::commit();
 
             return [
@@ -218,7 +198,6 @@ class MaintainService
             ];
 
         } catch (\Throwable $exception) {
-            dd($exception);
             DB::rollBack();
             report($exception);
 
@@ -247,6 +226,7 @@ class MaintainService
 
     public function completeAssetMaintain($configs)
     {
+        DB::beginTransaction();
         try {
             foreach ($configs as $config) {
                 $this->planMaintainAssetRepository->update($config['id'], [
@@ -254,6 +234,7 @@ class MaintainService
                     'note'   => $config['note'] ?? null,
                 ]);
             }
+
             DB::commit();
 
             return [
@@ -281,6 +262,19 @@ class MaintainService
         }
 
         $planMaintain->fill($data);
+        $insertLog = $this->planMaintainLogRepository->insertPlanMaintainLog(
+            PlanMaintainLog::ACTION_UPDATE_PLAN_MAINTAIN,
+            $planMaintain->id,
+            $planMaintain->getAttributes(),
+            $planMaintain->getOriginal(),
+        );
+        if (!$insertLog) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2105,
+            ];
+        }
+        DB::beginTransaction();
         try {
             if (!$planMaintain->save()) {
                 DB::rollBack();
@@ -313,7 +307,7 @@ class MaintainService
                 'success' => true,
             ];
         } catch (\Throwable $exception) {
-            dd($exception);
+
             DB::rollBack();
             report($exception);
 
@@ -335,6 +329,7 @@ class MaintainService
         }
 
         $planMaintain->status = PlanMaintain::STATUS_COMPLETE_MAINTAIN;
+        DB::beginTransaction();
         try {
             if (!$planMaintain->save()) {
                 DB::rollBack();
@@ -370,6 +365,17 @@ class MaintainService
                         ];
                     }
                 }
+            }
+
+            $insertLog = $this->planMaintainLogRepository->insertPlanMaintainLog(
+                PlanMaintainLog::ACTION_COMPLETE_PLAN_MAINTAIN,
+                $planMaintain->id,
+            );
+            if (!$insertLog) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2105,
+                ];
             }
 
             DB::commit();
@@ -419,7 +425,16 @@ class MaintainService
             $this->planMaintainOrganizationRepository->deleteByCondition(['plan_maintain_id' => $id]);
             $this->planMaintainChargeRepository->deleteByCondition(['plan_maintain_id' => $id]);
             $this->planMaintainAssetRepository->deleteByCondition(['plan_maintain_id' => $id]);
-
+            $insertLog = $this->planMaintainLogRepository->insertPlanMaintainLog(
+                PlanMaintainLog::ACTION_DELETE_PLAN_MAINTAIN,
+                $planMaintain->id,
+            );
+            if (!$insertLog) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2105,
+                ];
+            }
             DB::commit();
 
             return [

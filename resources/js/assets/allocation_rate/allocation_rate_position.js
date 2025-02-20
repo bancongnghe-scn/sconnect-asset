@@ -2,8 +2,7 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('allocation_rate_position', () => ({
         init() {
             this.list(this.filters)
-            this.getListPosition()
-            this.watchFilters()
+            this.watchChange()
         },
 
         dataTable: [],
@@ -23,7 +22,7 @@ document.addEventListener('alpine:init', () => {
             position_id: null,
             type: TYPE_ALLOCATION_RATE_POSITION,
             page: 1,
-            limit: 5,
+            limit: 10,
         },
         listPosition: [],
         data: {
@@ -57,10 +56,12 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getListPosition(){
+        async getListPosition(organizationId){
             this.loading = true
             try {
-                const response = await window.apiGetListJob({})
+                const response = await window.apiGetListJob({
+                    org_id: [organizationId]
+                })
                 if (!response.success) {
                     toast.error(response.message)
                     return
@@ -193,15 +194,25 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        watchFilters() {
-            this.$watch('filters', (value) => {
-                const watchedKeys = ['organization_id', 'position_id'];
-                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
-
-                if (shouldCallList) {
-                    this.list(this.filters);
+        watchChange() {
+            this.$watch('filters.organization_id', (value) => {
+                if (value !== null) {
+                    this.list(this.filters)
+                    this.getListPosition(value)
                 }
-            }, { deep: true });
+            })
+
+            this.$watch('filters.position_id', (value) => {
+                if (value !== null) {
+                    this.list(this.filters)
+                }
+            })
+
+            this.$watch('data.organization_id', (value) => {
+                if (value !== null) {
+                    this.getListPosition(value)
+                }
+            })
         },
 
         selectedAll() {

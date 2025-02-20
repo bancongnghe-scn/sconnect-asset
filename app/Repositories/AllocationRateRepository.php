@@ -82,4 +82,20 @@ class AllocationRateRepository extends BaseRepository
     {
         return $this->_model->whereIn('organization_id', $organizationId)->whereNull('position_id')->delete();
     }
+
+    public function getAllocationRateOfOrganization($filters)
+    {
+        $query = $this->_model->newQuery();
+        if (AllocationRate::TYPE_ORGANIZATION == $filters['type']) {
+            $query->where('organization_id', $filters['organization_id'])
+                ->where('asset_type_id', $filters['asset_type_id'])
+                ->whereNull('position_id');
+        } else {
+            $query->where('organization_id', $filters['organization_id'])
+                ->where('asset_type_id', $filters['asset_type_id'])
+                ->where('position_id', $filters['position_id']);
+        }
+
+        return $query->first();
+    }
 }

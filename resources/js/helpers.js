@@ -31,10 +31,10 @@ window.formData = function (data) {
 }
 
 window.formatCurrencyVND = function formatCurrencyVND(number) {
-    if (+number === 0 || typeof number === 'undefined') {
+    if (+number === 0 || number === undefined) {
         return 0
     }
-    return number.toLocaleString('vi-VN');
+    return (+number).toLocaleString("en-US");
 }
 
 window.initSelect2Modal = function initSelect2Modal(modalId) {
@@ -63,6 +63,9 @@ window.initSelect2Modal = function initSelect2Modal(modalId) {
 }
 
 window.checkDisableSelectRow = function checkDisableSelectRow() {
+    if (this.selectedRow !== 'undefined') {
+        return
+    }
     const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
     return ids.length === 0
 }

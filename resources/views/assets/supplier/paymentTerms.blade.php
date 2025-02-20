@@ -16,11 +16,10 @@
     <div class="row mb-3">
         <div class="col-4">
             <label class="form-label tw-font-bold">Số tiền đặt cọc</label>
-            <input type="number"
-                   class="form-control"
-                   x-model="data.meta_data.payment_terms.deposit_amount"
-                   placeholder="Nhập số tiền đặt cọc"
-            >
+            @include('common.input.input_price', [
+                'model' => 'data.meta_data.payment_terms.deposit_amount',
+                'placeholder' => "Nhập số tiền đặt cọc"
+            ])
         </div>
     </div>
     <div class="row">

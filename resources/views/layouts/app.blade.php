@@ -15,7 +15,7 @@
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
-
+    <script src='{{ asset('/js/summernote-lite.min.js') }}'></script>
     @vite([
         'resources/css/app.css',
         'resources/sass/app.scss',
@@ -31,7 +31,7 @@
 
             @include('layouts.sidebar')
 
-            <div class="content-wrapper" x-data="{loading: false}">
+            <div class="content-wrapper tw-relative tw-top-16" x-data="{loading: false}">
                 <!-- Content Header (Page header) -->
                 <div class="content-header">
                     <div class="container-fluid">
@@ -53,7 +53,7 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid">
+                    <div class="container-fluid" x-data="{permission: {{\Auth::user()->getAllPermissions()->pluck('name')}}}">
                         @yield('content')
                     </div>
                 </section>

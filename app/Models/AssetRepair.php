@@ -13,6 +13,7 @@ class AssetRepair extends Model
 
     protected $fillable = [
         'asset_id',
+        'asset_history_id',
         'date_repair',
         'date_repaired',
         'address',

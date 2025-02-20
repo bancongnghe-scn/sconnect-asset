@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div class="container mb-3">
                     <div class="mb-3 active-link tw-w-fit">Danh sách tài sản đang sửa chữa</div>
-                    <table id="" class="table table-bordered table-hover dataTable dtr-inline"
+                    <table id="" class="table table-bordered dataTable dtr-inline"
                             aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -27,13 +27,13 @@
                                     <input type="checkbox" x-model="selectedRepairtMore[data.id]" x-bind:checked="selectedRepairtMore[data.id]">
                                 </td>
                                 <td>
-                                    <span x-text="data.asset.code"></span>
+                                    <span x-text="data.asset.code" class="text-wrap"></span>
                                 </td>
                                 <td>
-                                    <span x-text="data.asset.name"></span>
+                                    <span x-text="data.asset.name" class="text-wrap"></span>
                                 </td>
                                 <td>
-                                    <span x-text="data.date_repair"></span>
+                                    <span x-text="data.date_repair" class="text-wrap"></span>
                                 </td>
                             </tr>
                         </template>
@@ -49,18 +49,14 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 <script>
     function tableSelectRepair() {
         return {
             checkedAll: false,
 
             selectedAllAsset() {
-                
+
                 this.checkedAll = !this.checkedAll
                 this.dataModalRepairtMore.forEach(
                     (item) => {

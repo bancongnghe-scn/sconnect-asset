@@ -50,7 +50,7 @@ document.addEventListener('alpine:init', () => {
         totalMore: 0,
         fromMore: 0,
         toMore: 0,
-        limitMore: 25,
+        limitMore: 10,
 
         //data
         filters: {
@@ -117,7 +117,7 @@ document.addEventListener('alpine:init', () => {
         assetsLiquidationCount: "assetsLiquidationCount",
         filterMore: {
             name_code: null,
-            limitMore: 25,
+            limitMore: 10,
             pageMore: 1
         },
 
@@ -150,6 +150,15 @@ document.addEventListener('alpine:init', () => {
             return `${day}/${month}/${year}`;
         },
 
+        formatPrice(event) {
+            if (event && (typeof event === 'string' || typeof event === 'number')) {
+                
+                let rawValue = String(event).replace(/[^0-9]/g, '');
+                return rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            }
+            return 0;
+        },
+
         // Edit Plan liquidation
         async handleEditModalUI(id) {
             this.loading = true
@@ -164,13 +173,14 @@ document.addEventListener('alpine:init', () => {
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
 
             $('#' + this.idModalEditPlanLiquidation).modal('show');
+            $("[name='target_id']").val(this.id);
             this.loading = false
         },
 
         // Open modal select asset to plan liquidation
-        async modalSelectAsset(filter) {            
+        async modalSelectAsset(filter) {
+            $('#' + this.idModalSelectAsset).modal('show');
             const response = await window.apiGetAssetLiquidationForModal(filter)
-
 
             this.dataTbodySelectAsset = response.data.data.data
             this.totalPagesMore = response.data.data.last_page
@@ -183,8 +193,6 @@ document.addEventListener('alpine:init', () => {
                 const ids_selected_pre = Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation.map(item => item.id)
                 this.dataTbodySelectAsset = this.dataTbodySelectAsset.filter(item => !ids_selected_pre.map(Number).includes(item.id))
             }
-
-            $('#' + this.idModalSelectAsset).modal('show');
             
             if ($('.modal-backdrop').length > 1) {
                 $('.modal-backdrop')[1].classList.add('custom-backdrop');
@@ -392,6 +400,7 @@ document.addEventListener('alpine:init', () => {
 
         async showPlanLiquidation(planId) {
             this.loading = true
+console.warn('vaooo');
 
             this.id = planId
             const response = await window.apiShowPlanLiquidation(planId)
@@ -400,7 +409,11 @@ document.addEventListener('alpine:init', () => {
                 return
             }
             this.data = response.data.data
+            console.warn('123', this.data);
+            
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
+            console.warn('this.dataTbodyListAssetLiqui', this.data?.plan_maintain_asset);
+            
 
             $('#' + this.idModalShowPlanLiquidation).modal('show');
 

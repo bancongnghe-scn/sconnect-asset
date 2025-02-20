@@ -143,7 +143,7 @@ th {
 
 td {
     background-color: white !important;
-    white-space: nowrap;
+    white-space: wrap;
 }
 
 .custom-scroll {
@@ -183,4 +183,8 @@ html {
 
 .w-1-7 {
     width: 14.2%;
+}
+
+.modal-confirm-index {
+    z-index: 3000;
 }

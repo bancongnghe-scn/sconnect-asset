@@ -23,13 +23,6 @@ document.addEventListener('alpine:init', () => {
             location: 'Vị trí tài sản',
             reason: 'Lý do mất',
         },
-        showAction: {
-            edit: true,
-            cancel: true,
-            delete: true,
-            back: true,
-        },
-
         dateValue: '',
 
         //pagination

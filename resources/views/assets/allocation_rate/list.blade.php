@@ -4,27 +4,34 @@
 
 @section('content')
     <div x-data="allocation_rate">
-        <div class="d-flex tw-gap-x-4">
-            <a href="#" class="tw-no-underline hover:tw-text-green-500"
-               :class="activeLink.position ? 'active-link' : 'inactive-link'"
-               @click="handleShowActive('position')"
-            >
-                Chức danh
-            </a>
-            <a href="#" class="tw-no-underline hover:tw-text-green-500"
-               :class="activeLink.organization ? 'active-link' : 'inactive-link'"
-               @click="handleShowActive('organization')"
-            >
-                Đơn vị
-            </a>
-        </div>
-        <hr>
-        <div class="mt-3">
-            <div x-show="activeLink.position">
-                @include('assets.allocation_rate.position.list')
-            </div>
-            <div x-show="activeLink.organization">
-                @include('assets.allocation_rate.organization.list')
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex tw-gap-x-4">
+                            <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                               :class="activeLink.position ? 'active-link' : 'inactive-link'"
+                               @click="handleShowActive('position')"
+                            >
+                                Chức danh
+                            </a>
+                            <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                               :class="activeLink.organization ? 'active-link' : 'inactive-link'"
+                               @click="handleShowActive('organization')"
+                            >
+                                Đơn vị
+                            </a>
+                        </div>
+                        <div class="mt-3">
+                            <div x-show="activeLink.position">
+                                @include('assets.allocation_rate.position.list')
+                            </div>
+                            <div x-show="activeLink.organization">
+                                @include('assets.allocation_rate.organization.list')
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -65,17 +65,19 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         listAssetType: [],
         listOrganization: [],
+        listStatus: {
+            [ORDER_STATUS_NEW]: 'Mới tạo',
+            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
+            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+            [ORDER_STATUS_CANCEL]: 'Hủy'
+        },
         comments: [],
         comment_message: null,
         title: null,
         action: null,
         id: null,
+        showModal : false,
         reason: null,
-        listStatus: {
-            [ORDER_STATUS_NEW]: 'Mới tạo',
-            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
-            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
-        },
 
         //methods
         async list(filters) {
@@ -176,6 +178,7 @@ document.addEventListener('alpine:init', () => {
                     this.title = 'Tạo mới'
                     $('#modalInsert').modal('show')
                 } else {
+                    this.showModal = true
                     this.title = action === 'view' ? 'Chi tiết' : 'Cập nhật'
                     this.id = id
                     await this.findOrder(id)
@@ -185,6 +188,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+                this.showModal = false
             }
         },
 
@@ -286,9 +290,6 @@ document.addEventListener('alpine:init', () => {
                 })
                 if (response.success) {
                     this.data.shopping_assets_order = response.data.data
-                    this.data.shopping_assets_order.filter((item) => {
-                        item.code = 'MH' + item.id
-                    })
                     return
                 }
                 toast.error(response.message)
@@ -423,9 +424,6 @@ document.addEventListener('alpine:init', () => {
                 description: null,
                 organization_id: null,
             }
-            window.generateShortCode().then(code => {
-                rows.code =  'MH'+ code
-            })
             this.data.shopping_assets_order.push(rows)
         },
 

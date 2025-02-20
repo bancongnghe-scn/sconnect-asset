@@ -26,7 +26,7 @@ class ListContractResource extends JsonResource
                 'signing_date'   => date('d/m/Y', strtotime($contract->signing_date)),
                 'contract_value' => $contract->contract_value,
                 'validity'       => $now->between($from, $to),
-                'status'         => Contract::STATUS_NAME[$contract->status],
+                'status'         => $contract->status,
             ];
         }
 

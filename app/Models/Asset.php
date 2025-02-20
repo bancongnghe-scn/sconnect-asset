@@ -28,7 +28,7 @@ class Asset extends Model
         'user_id',
         'status',
         'image',
-        'location',         
+        'location',
         'organization_id',
         'date_purchase',
         'seri_number',
@@ -43,7 +43,7 @@ class Asset extends Model
 
     protected $appends = [
         'location_text',
-        'date_warranty'
+        'date_warranty',
     ];
 
     public const STATUS_ACTIVE                  = 1;
@@ -72,24 +72,34 @@ class Asset extends Model
         self::STATUS_MAINTAIN                   => 'Bảo Dưỡng',
     ];
 
-    public const LOCATION_HN_1                  = 1;
-    public const LOCATION_HN_2                  = 2;
-    public const LOCATION_HN_3                  = 3;
-    public const LOCATION_HN_4                  = 4;
-    public const LOCATION_HN_5                  = 5;
-    public const LOCATION_HN_6                  = 6;
-    public const LOCATION_HN_7                  = 7;
-    public const LOCATION_HCM                   = 8;
+    public const LOCATION_CS_1                  = 136;
+    public const LOCATION_CS_4                  = 303;
+    public const LOCATION_CS_7                  = 304;
+    public const LOCATION_CS_8                  = 305;
+    public const LOCATION_CS_9                  = 306;
+    public const LOCATION_HCM                   = 313;
+    public const LOCATION_KVC                   = 416;
+    public const LOCATION_TQ_3                  = 307;
+    public const LOCATION_TQ_4                  = 308;
+    public const LOCATION_TQ_5                  = 309;
+    public const LOCATION_TQ_6                  = 310;
+    public const LOCATION_TQ_7                  = 311;
+    public const LOCATION_WAREHOUSE             = 1;
 
     public const LOCATION_NAME = [
-        self::LOCATION_HN_1                     => 'HN_Tầng 1',
-        self::LOCATION_HN_2                     => 'HN_Tầng 2',
-        self::LOCATION_HN_3                     => 'HN_Tầng 3',
-        self::LOCATION_HN_4                     => 'HN_Tầng 4',
-        self::LOCATION_HN_5                     => 'HN_Tầng 5',
-        self::LOCATION_HN_6                     => 'HN_Tầng 6',
-        self::LOCATION_HN_7                     => 'HN_Tầng 7',
+        self::LOCATION_CS_1                     => 'CS_Tầng 1',
+        self::LOCATION_CS_4                     => 'CS_Tầng 4',
+        self::LOCATION_CS_7                     => 'CS_Tầng 7',
+        self::LOCATION_CS_8                     => 'CS_Tầng 8',
+        self::LOCATION_CS_9                     => 'CS_Tầng 9',
+        self::LOCATION_TQ_3                     => 'TQ - Tầng 3',
+        self::LOCATION_TQ_4                     => 'TQ - Tầng 4',
+        self::LOCATION_TQ_5                     => 'TQ - Tầng 5',
+        self::LOCATION_TQ_6                     => 'TQ - Tầng 6',
+        self::LOCATION_TQ_7                     => 'TQ - Tầng 7',
         self::LOCATION_HCM                      => 'HCM',
+        self::LOCATION_KVC                      => 'Khu vui chơi',
+        self::LOCATION_WAREHOUSE                => 'Kho công ty',
     ];
 
     protected function locationText(): Attribute
@@ -134,5 +144,10 @@ class Asset extends Model
     public function listHistory(): HasMany
     {
         return $this->hasMany(TransferAsset::class, 'asset_id');
+    }
+
+    public function supplier(): BelongsTo
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
     }
 }

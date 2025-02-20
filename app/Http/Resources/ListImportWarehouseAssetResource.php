@@ -9,7 +9,6 @@ use App\Repositories\OrderRepository;
 use App\Repositories\SupplierRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Str;
 
 class ListImportWarehouseAssetResource extends JsonResource
 {
@@ -49,11 +48,8 @@ class ListImportWarehouseAssetResource extends JsonResource
         $totalCost         = (+$order->shipping_costs) + (+$order->other_costs);
         $totalPrice        = 0;
         foreach ($this->resource as $key => $value) {
-            $code       = strtoupper(Str::random(7)).$key;
             $price      = +$value->price + ($value->price * $value->vate_rate ?? 0);
-            $totalPrice = $totalPrice + $price;
-            $data[]     = [
-                'code'                  => $code,
+            $assetInfo  = [
                 'name'                  => $value->name,
                 'price'                 => $price,
                 'date_purchase'         => $dateCompleteOrder,
@@ -65,8 +61,16 @@ class ListImportWarehouseAssetResource extends JsonResource
                 'supplier_id'           => $value->supplier_id,
                 'supplier_name'         => $suppliers[$value->supplier_id]->name ?? null,
                 'order_id'              => $value->order_id,
-                'import_warehouse_id'   => $value->import_warehouse_id ?? null,
             ];
+            if ($value->total > 1) {
+                for ($i = 0; $i < $value->total; ++$i) {
+                    $data[]     = $assetInfo;
+                    $totalPrice = $totalPrice + $price;
+                }
+            } else {
+                $data[]     = $assetInfo;
+                $totalPrice = $totalPrice + $price;
+            }
         }
 
         foreach ($data as &$value) {

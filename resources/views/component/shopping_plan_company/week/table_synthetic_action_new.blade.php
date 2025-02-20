@@ -67,7 +67,7 @@
                     class="tw-font-bold align-middle">
                     <span x-text="organization.name"></span>
                 </td>
-                <td
+                <td class="align-middle"
                     x-show="[
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
@@ -78,24 +78,31 @@
                         'status' => 'assetRegister.status', 'tooltip' => 'assetRegister.reason'
                     ])
                 </td>
-                <td x-text="assetRegister.asset_type_name ?? '-'"></td>
-                <td x-text="assetRegister.job_name ?? '-'"></td>
-                <td x-text="assetRegister.receiving_time ?? '-'" class="text-center"></td>
-                <td x-text="assetRegister.quantity_registered ?? '-'" class="text-center"></td>
+                <td class="align-middle" x-text="assetRegister.asset_type_name ?? '-'"></td>
+                <td class="align-middle" x-text="assetRegister.job_name ?? '-'"></td>
+                <td class="text-center align-middle" x-text="assetRegister.receiving_time ?? '-'"></td>
+                <td class="align-middle text-center" x-text="assetRegister.quantity_registered ?? '-'"></td>
                 <td>
                     <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved"
                            :disabled="isDisabled"
                     >
                 </td>
-                <td>
-                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price"
-                           :disabled="isDisabled">
+                <td class="tw-min-w-36">
+{{--                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price" :disabled="isDisabled">--}}
+                    @include('common.input.input_price', [
+                        'model' => 'assetRegister.price',
+                        'disabled' => 'isDisabled'
+                    ])
                 </td>
-                <td>
-                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"
-                           :disabled="isDisabled">
+                <td class="tw-min-w-32">
+{{--                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"--}}
+{{--                           :disabled="isDisabled">--}}
+                    @include('common.input.input_price', [
+                        'model' => 'assetRegister.tax_money',
+                        'disabled' => 'isDisabled'
+                    ])
                 </td>
-                <td x-text="total ?? '-'" class="text-center"></td>
+                <td x-text="total ?? '-'" class="text-center align-middle"></td>
                 <td>
                     @include('common.select_custom.extent.select_single', [
                         'selected' => 'assetRegister.supplier_id',
@@ -108,13 +115,13 @@
                     <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link"
                            :disabled="isDisabled">
                 </td>
-                <td x-text="assetRegister.description ?? '-'"></td>
+                <td class="align-middle" x-text="assetRegister.description ?? '-'"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"
                     class="text-center align-middle">
                     {{-- button view --}}
                     <button @click="handleShowModalDetailOrganization(organization.id)"
-                            class="border-0 bg-body">
-                        <i class="bi bi-eye" style="color: #63E6BE;"></i>
+                            class="border-0 bg-white">
+                        <i class="bi bi-eye text-info"></i>
                     </button>
                 </td>
             </tr>

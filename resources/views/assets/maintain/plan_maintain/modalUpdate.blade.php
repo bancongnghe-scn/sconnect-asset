@@ -53,7 +53,7 @@
                             </div>
                             <div class="tw-col-span-2">
                                 <label class="tw-font-bold">Người tham gia</label>
-                                @include('common.select_custom.extent.select_multiple', [
+                                @include('common.user.select_multiple', [
                                     'placeholder' => 'Chọn người tham gia',
                                     'options' => 'listUser',
                                     'selected' => 'data.user_ids',
@@ -121,8 +121,8 @@
                                                             </template>
                                                         </div>
                                                     </td>
-                                                    <td class="text-center align-middle" x-data="{data: value, key: 'user'}">
-                                                        @include('common.user_info')
+                                                    <td class="text-center align-middle">
+                                                        @include('common.user.user_info', ['user' => 'value.user'])
                                                     </td>
                                                     <td class="text-center align-middle">
                                                         @include('component.status.status_plan_maintain_asset', [
@@ -157,9 +157,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

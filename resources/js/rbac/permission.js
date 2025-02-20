@@ -1,11 +1,9 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('permission', () => ({
+    Alpine.data('permissions', () => ({
         init() {
             this.list({page: 1, limit: 10})
             this.getListUser({})
             this.getRole()
-            window.initSelect2Modal(this.idModalUI);
-            this.onChangeSelect2()
         },
 
         //dataTable
@@ -39,6 +37,7 @@ document.addEventListener('alpine:init', () => {
             name: null,
             description: null,
             permission_ids: [],
+            role_ids: [],
             user_ids: []
         },
         listUser: [],
@@ -171,6 +170,7 @@ document.addEventListener('alpine:init', () => {
                 name: null,
                 description: null,
                 permission_ids: [],
+                role_ids: [],
                 user_ids: []
             }
         },
@@ -188,17 +188,6 @@ document.addEventListener('alpine:init', () => {
         confirmRemove(id) {
             $("#"+this.idModalConfirmDelete).modal('show');
             this.id = id
-        },
-
-        onChangeSelect2() {
-            $('.select2').on('select2:select select2:unselect', (event) => {
-                const value = $(event.target).val()
-                if (event.target.id === 'selectUsers') {
-                    this.permission.user_ids = value
-                } else if (event.target.id === 'selectRoles') {
-                    this.permission.role_ids = value
-                }
-            });
         },
     }));
 });

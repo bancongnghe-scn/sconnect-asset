@@ -32,7 +32,7 @@
                             <button class="mb-3 tw-w-fit border-0 position-absolute tw-right-4 tw-bg-transparent tw-text-green-600" @click="getAssetDamagedModal('liquidation')">+ Thêm</button>
                         </div>
                     </div>
-                    <table class="table table-bordered table-hover dataSelectMulti dtr-inline"
+                    <table class="table table-bordered dataSelectMulti dtr-inline"
                         aria-describedby="example2_info">
                         <thead>
                         <tr>
@@ -51,8 +51,8 @@
                                             <span x-text="data[key]"></span>
                                         </template>
                                         <template x-if="key == 'price_liquidation'">
-                                            <input type="text" 
-                                                placeholder="Nhập giá trị thanh lý" 
+                                            <input type="text"
+                                                placeholder="Nhập giá trị thanh lý"
                                                 class="form-control"
                                                 :value="formattedPrice"
                                                 @input="formatPrice"
@@ -86,9 +86,5 @@
         </div>
     </div>
 </div>
-<style>
-    .air-datepicker {
-        z-index: 3000; /* Đảm bảo giá trị này lớn hơn z-index của modal Bootstrap (thường là 1050) */
-    }
-</style>
+
 

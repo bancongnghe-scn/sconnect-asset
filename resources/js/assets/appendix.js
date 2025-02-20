@@ -5,8 +5,6 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListContract()
-            window.initSelect2Modal(this.idModalUI);
-            window.initSelect2Modal(this.idModalInfo);
             this.watchFilters()
         },
 
@@ -148,6 +146,7 @@ document.addEventListener('alpine:init', () => {
         async getListContract() {
             this.loading = true
             const response = await window.apiGetContract({status: CONTRACT_STATUS_APPROVED})
+            console.log(response)
             if (response.success) {
                 this.listContract = response.data.data
             } else {

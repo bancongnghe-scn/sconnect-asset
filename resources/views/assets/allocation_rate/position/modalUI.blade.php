@@ -63,7 +63,10 @@
                                                             ])
                                                          </td>
                                                          <td>
-                                                             <input class="form-control" type="number" x-model="config.price" placeholder="Nhập giá">
+                                                             @include('common.input.input_price', [
+                                                                 'model' => 'config.price',
+                                                                 'placeholder' => 'Nhập giá'
+                                                            ])
                                                          </td>
                                                          <td>
                                                              <input class="form-control" type="text" x-model="config.description" placeholder="Nhập ghi chú">

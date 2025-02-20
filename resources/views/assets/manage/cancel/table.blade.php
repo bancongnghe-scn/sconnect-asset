@@ -2,7 +2,7 @@
     <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
         <div class="row">
             <div class="col-sm-12">
-                <table id="example2" class="table table-bordered table-hover dataTable dtr-inline"
+                <table id="example2" class="table table-bordered dataTable dtr-inline"
                         aria-describedby="example2_info">
                     <thead>
                     <tr :class="'position-sticky tw-top-0'">
@@ -17,7 +17,7 @@
                             <template x-for="(columnName, key) in columns">
                                 <td :class="'align-content-center'">
                                     <template x-if="key !== 'validity' && key !== 'status' && key !== 'date' && key !== 'user_name' ">
-                                        <span x-text="data[key]"></span>
+                                        <span x-text="data[key]" class="text-wrap"></span>
                                     </template>
                                     <template x-if="key === 'validity'">
                                         <div class="text-white d-flex justify-content-center">
@@ -50,7 +50,7 @@
                                     </template>
                                 </td>
                             </template>
-                            
+
                         </tr>
                     </template>
                     </tbody>

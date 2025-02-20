@@ -14,7 +14,6 @@ use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
-use App\Support\Constants\SOfficeConstant;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,19 +31,16 @@ class ShoppingPlanOrganizationService
     ) {
     }
 
-    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
+    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [])
     {
         if (empty($organizationIds)) {
-            $organizationIds   = $this->organizationRepository->getListing([
-                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
-                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
-            ])->pluck('id')->toArray();
+            $organizationIds   = $this->organizationRepository->getOrganizationMain()->pluck('id')->toArray();
         }
 
         $dataInsert = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
-                'status'                   => $status,
+                'status'                   => ShoppingPlanOrganization::STATUS_OPEN_REGISTER,
                 'organization_id'          => $organizationId,
                 'shopping_plan_company_id' => $shoppingPlanCompanyId,
                 'created_by'               => Auth::id(),
@@ -198,6 +194,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
+
             report($exception);
             DB::rollBack();
 
@@ -373,9 +370,11 @@ class ShoppingPlanOrganizationService
 
             foreach ($data['registers'] as $register) {
                 foreach ($register['assets'] as $asset) {
-                    $this->shoppingAssetRepository->update($asset['id'], [
-                        'quantity_approved' => $asset['quantity_approved'],
-                    ]);
+                    if (!empty($asset)) {
+                        $this->shoppingAssetRepository->update($asset['id'], [
+                            'quantity_approved' => $asset['quantity_approved'],
+                        ]);
+                    }
                 }
             }
 

@@ -49,36 +49,15 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-plan-company')->group(function () {
         Route::prefix('year')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.year.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.year.detail');
         });
         Route::prefix('quarter')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.quarter.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.quarter.detail');
         });
         Route::prefix('week')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class, 'index']);
-            Route::view('update/{id}', 'assets.shopping-plan-company.week.update');
-            Route::view('view/{id}', 'assets.shopping-plan-company.week.detail');
         });
     });
-    Route::prefix('shopping-plan-organization')->group(function () {
-        Route::prefix('year')->group(function () {
-            Route::view('register/{id}', 'assets.shopping_plan_organization.year.register');
-            Route::view('view/{id}', 'assets.shopping_plan_organization.year.detail');
-        });
 
-        Route::prefix('quarter')->group(function () {
-            Route::view('register/{id}', 'assets.shopping_plan_organization.quarter.register');
-            Route::view('view/{id}', 'assets.shopping_plan_organization.quarter.detail');
-        });
-
-        Route::prefix('week')->group(function () {
-            Route::view('register/{id}', 'assets.shopping_plan_organization.week.register');
-            Route::view('view/{id}', 'assets.shopping_plan_organization.week.detail');
-        });
-    });
     Route::prefix('order')->group(function () {
         Route::view('list', 'assets.order.list');
     });
@@ -102,6 +81,11 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('maintain')->group(function () {
         Route::view('list', 'assets.maintain.list');
     });
+    Route::prefix('plan-inventory')->group(function () {
+        Route::view('list', 'assets.plan-inventory.list');
+    });
+    Route::view('summernote', 'common.summernote.summernote_comment');
+
 });
 
 Route::prefix('report')->group(function () {
@@ -136,10 +120,10 @@ Route::prefix('asset')->group(function () {
     Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
     Route::get('/list-organization-asset', [ListAssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
     Route::get('/export-list-asset', [ListAssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
-    Route::view('info/{id}', 'assets.assets.info2');
 });
 
 Route::get('/xslt-transform', [ListAssetController::class, 'transformXmlToHtml']);
 Route::get('/excel-transform', function (){
     return Excel::download(new ReportExport, 'output.xlsx');
 });
+Route::view('asset/info/{id}', 'assets.asset.info_qr');
