@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class AllocationRate extends Model
 {
@@ -20,4 +21,9 @@ class AllocationRate extends Model
 
     public const TYPE_POSITION     = 1;
     public const TYPE_ORGANIZATION = 2;
+
+    public function assetType(): HasOne
+    {
+        return $this->hasOne(AssetType::class, 'asset_type_id');
+    }
 }

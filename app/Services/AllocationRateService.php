@@ -152,7 +152,34 @@ class AllocationRateService
                 ];
             }
 
+            $idsRemove = array_diff($idsOld, $idsUpdate);
+            if (!empty($idsRemove)) {
+                $this->allocationRateRepository->deleteByIds($idsRemove);
+            }
+
             if (!empty($dataNew)) {
+                $assetTypeIds = array_column($dataNew, 'asset_type_id');
+                if (AllocationRate::TYPE_POSITION == $data['type']) {
+                    $allocationRate = $this->allocationRateRepository->getList([
+                        'organization_id' => $data['organization_id'],
+                        'position_id'     => $data['position_id'],
+                        'asset_type_id'   => $assetTypeIds,
+                        'first'           => true,
+                    ]);
+                } else {
+                    $allocationRate = $this->allocationRateRepository->getList([
+                        'organization_id' => $data['organization_id'],
+                        'asset_type_id'   => $assetTypeIds,
+                        'first'           => true,
+                    ]);
+                }
+
+                if (!empty($allocationRate)) {
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2096,
+                    ];
+                }
                 $insert = $this->allocationRateRepository->insert($dataNew);
                 if (!$insert) {
                     DB::rollBack();
@@ -162,11 +189,6 @@ class AllocationRateService
                         'error_code' => AppErrorCode::CODE_2095,
                     ];
                 }
-            }
-
-            $idsRemove = array_diff($idsOld, $idsUpdate);
-            if (!empty($idsRemove)) {
-                $this->allocationRateRepository->deleteByIds($idsRemove);
             }
 
             DB::commit();
