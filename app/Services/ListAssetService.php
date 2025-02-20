@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exports\ReportExport;
 use App\Http\Resources\AssetInfoResource;
 use App\Models\Asset;
 use App\Models\AssetHistory;
@@ -16,8 +17,10 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Maatwebsite\Excel\Facades\Excel;
+use DOMDocument;
+use XSLTProcessor;
+use Storage;
 
 class ListAssetService
 {
@@ -473,10 +476,12 @@ class ListAssetService
                 ]);
 
                 MoveAssetUser::create([
-                    'user_id_after'        => $userId,
-                    'org_id_after'         => $orgId,
-                    'asset_id'             => $assetRotation['id'],
-                    'type'                 => 1,
+                    'org_id' => $assetRotation['organization_id'],
+                    'user_id' => $assetRotation['user_id'],
+                    'user_id_after' => $userId,
+                    'org_id_after' => $orgId,
+                    'asset_id' => $assetRotation['id'],
+                    'type' => 1,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->descriptionRotation,
                     'created_at'           => Carbon::now(),
@@ -579,8 +584,9 @@ class ListAssetService
         ]);
     }
 
-    public function exportReportAllocation()
+    public function listAssetRepresent($request)
     {
+        $orgOfUser = Org::where('manager_id', $request->userId)->first();
         // Đọc file XML template
         $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
         $template     = file_get_contents($templatePath);
@@ -605,11 +611,34 @@ class ListAssetService
             ++$rowIndex;
         }
 
-        // Lưu file Excel
-        $exportPath = storage_path('app/test_export');
-        if (!file_exists($exportPath)) {
-            mkdir($exportPath, 0777, true);
+        if ($orgOfUser) {
+            Asset::where('organization_id', $orgOfUser->id)->get();
         }
+    }
+
+    // public function exportReportAllocation()
+    // {
+    //     // Đọc file XML và XSLT từ storage
+    //     $xmlPath = storage_path('app/xml/data.xml');
+    //     $xslPath = storage_path('app/xml/template.xsl');
+
+    //     // Tạo DOMDocument cho XML
+    //     $xml = new DOMDocument;
+    //     $xml->load($xmlPath);
+
+    //     // Tạo DOMDocument cho XSLT
+    //     $xsl = new DOMDocument;
+    //     $xsl->load($xslPath);
+
+    //     // Khởi tạo bộ xử lý XSLT
+    //     $xsltProcessor = new XSLTProcessor();
+    //     $xsltProcessor->importStylesheet($xsl);
+
+    //     // Chuyển đổi XML sang HTML
+    //     $html = $xsltProcessor->transformToXML($xml);
+
+    //     return response($html)->header('Content-Type', 'text/html');
+    // }
 
         $excelFilePath = $exportPath . '/final.xlsx';
         $writer        = IOFactory::createWriter($spreadsheet, 'Xlsx');
