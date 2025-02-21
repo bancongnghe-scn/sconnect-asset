@@ -79,11 +79,65 @@
             </div>
         </div>
 
-        <div
-            @update-message.window="comment_message = $event.detail"
-        >
-            @include('common.summernote.summernote_comment')
+        <div x-data="summernote">
+            <textarea id="summernote"></textarea>
+
+            <div>
+                <button class="btn btn-sc" @click="sentComment()">Gửi</button>
+                <button class="btn btn-light" @click="resetInputSummer()">Hủy bỏ</button>
+            </div>
         </div>
     </div>
 </div>
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('summernote', () => ({
+            init() {
+                this.initSummer();
+                this.$watch('showModal', (value) => {
+                    this.resetInputSummer();
+                });
+            },
 
+            initSummer() {
+                const summerNote = $('#summernote');
+                summerNote.summernote({
+                    height: 70,
+                    placeholder: 'Nhập nội dung...',
+                    toolbar: [
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['insert', ['link']],
+                    ],
+                    callbacks: {
+                        onChange: (contents) => {
+                            this.comment_message = contents;
+                        }
+                    }
+                }).summernote('code', '');
+
+                summerNote.on('summernote.keydown', (we, e) => {
+                    if (e.keyCode === 13 && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sentComment()
+                        this.resetInputSummer()
+                    }
+                });
+            },
+
+            resetInputSummer() {
+                $('#summernote').summernote('code', '');
+            },
+        }));
+    });
+</script>
+<style>
+    .note-editor {
+        padding: 9px;
+        border-radius: 29px !important;
+    }
+</style>

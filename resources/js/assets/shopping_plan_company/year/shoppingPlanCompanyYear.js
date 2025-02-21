@@ -38,6 +38,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             id: null,
+            action: null,
             showModal: null,
             idPlanOrganization: null,
             note_disapproval: null,

@@ -2,11 +2,10 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment_company', () => ({
             init() {
                 this.$watch('showModal', (newValue, oldValue) => {
-                    if (newValue && this.id !== null) {
+                    if (newValue && this.id !== null && this.isActive) {
                         this.getLogByRecordId()
                         this.listComment()
                         this.handleComment()
-                        this.$dispatch('init-comment')
                     }
                 })
             },
@@ -33,7 +32,6 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentComment(param)
                 if (response.success) {
                     this.comment_message = null
-                    this.$dispatch('init-comment')
                     return
                 }
                 toast.error(response.message)

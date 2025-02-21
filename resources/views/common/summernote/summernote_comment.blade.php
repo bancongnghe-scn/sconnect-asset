@@ -4,7 +4,7 @@
         border-radius: 29px !important;
     }
 </style>
-<div x-data="summernote" @init-comment.window="resetInputSummer()">
+<div x-data="summernote" x-init="initSummer()">
     <textarea id="summernote"></textarea>
 
     <div>
@@ -16,8 +16,9 @@
     document.addEventListener('alpine:init', () => {
         Alpine.data('summernote', () => ({
             init() {
-                this.initSummer()
-
+                this.$watch('showModal', (value) => {
+                    this.resetInputSummer()
+                })
             },
 
             initSummer() {
