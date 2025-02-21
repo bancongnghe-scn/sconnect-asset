@@ -1,4 +1,4 @@
-<div x-data="history_comment_company">
+<div>
     @include('component.history_comment.history_comment')
 </div>
 

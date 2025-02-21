@@ -4,14 +4,25 @@
         border-radius: 29px !important;
     }
 </style>
-<div x-data="summernote">
-    <textarea id="summernote" name="content"></textarea>
+<div x-data="summernote" @init-comment.window="resetInputSummer()">
+    <textarea id="summernote"></textarea>
+
+    <div>
+        <button class="btn btn-sc" @click="sentComment()">Gửi</button>
+        <button class="btn btn-light" @click="resetInputSummer()">Hủy bỏ</button>
+    </div>
 </div>
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('summernote', () => ({
             init() {
-                $('#summernote').summernote({
+                this.initSummer()
+
+            },
+
+            initSummer() {
+                const summerNote = $('#summernote')
+                summerNote.summernote({
                     height: 70,
                     placeholder: 'Nhập nội dung...',
                     toolbar: [
@@ -22,9 +33,30 @@
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['height', ['height']],
                         ['insert', ['link']],
-                    ]
+                    ],
+                    callbacks: {
+                        onChange: function(contents) {
+                            window.dispatchEvent(new CustomEvent('update-message', { detail: contents }));
+                        }
+                    }
                 });
+
+                summerNote.on('summernote.keydown', function(we, e) {
+                    if (e.keyCode === 13 && !e.shiftKey) {
+                        e.preventDefault();
+                        window.dispatchEvent(new CustomEvent('sent-comment'));
+                    }
+                });
+            },
+
+            resetInputSummer() {
+                $('#summernote').summernote('code', null)
+            },
+
+            sentComment() {
+                window.dispatchEvent(new CustomEvent('sent-comment'));
             }
+
         }))
     })
 </script>

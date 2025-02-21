@@ -66,7 +66,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const response = await window.apiGetContract(filters)
-                console.log(response)
+
                 if (response.success) {
                     const data = response.data
                     this.dataTable = data.data.data
@@ -79,7 +79,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error('Lấy danh sách hợp đồng thất bại !')
                 }
             } catch (e) {
-                console.log(e)
+
             } finally {
                 this.loading = false
             }

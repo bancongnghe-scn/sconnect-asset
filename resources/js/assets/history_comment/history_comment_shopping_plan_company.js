@@ -6,6 +6,7 @@ document.addEventListener('alpine:init', () => {
                         this.getLogByRecordId()
                         this.listComment()
                         this.handleComment()
+                        this.$dispatch('init-comment')
                     }
                 })
             },
@@ -30,8 +31,9 @@ document.addEventListener('alpine:init', () => {
                     message: this.comment_message,
                 }
                 const response = await window.apiSentComment(param)
-                this.comment_message = null
                 if (response.success) {
+                    this.comment_message = null
+                    this.$dispatch('init-comment')
                     return
                 }
                 toast.error(response.message)
@@ -53,7 +55,7 @@ document.addEventListener('alpine:init', () => {
             handleComment() {
                 window.Echo.channel('channel_shopping_plan_' + this.id)
                     .listen('.ShoppingPlanCommentEvent', (e) => {
-                        console.log(e)
+
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)

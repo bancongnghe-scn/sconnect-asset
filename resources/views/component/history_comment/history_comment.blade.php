@@ -28,7 +28,7 @@
                         </div>
                         <div class="border rounded p-2 tw-bg-zinc-100 mb-3">
                             <p class="mb-1 text-muted small"
-                               x-text="format(log.created_at, 'dd/MM/yyyy HH:ii:ss')"
+                               x-text="log.created_at"
                             ></p>
                             <p class="mb-0">
                                 <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
@@ -51,7 +51,7 @@
                                     <span class="tw-font-bold" style="color: #2067B0;" x-text="comment.user_created"></span>
                                     <span class="text-xs opacity-50 ml-2" x-text="comment.created_at"></span>
                                 </div>
-                                <span x-text="comment.message"></span>
+                                <span x-html="comment.message"></span>
                             </div>
                         </div>
                         <div class="tw-ml-12">
@@ -79,14 +79,10 @@
             </div>
         </div>
 
-        <div class="input-group border rounded mt-3" x-show="activeLink.comment">
-            <input type="text" class="form-control border-0" placeholder="Thêm bình luận..."
-                   x-model="comment_message"
-                   x-ref="input_message"
-                   @keydown.enter="sentComment()">
-            <button class="btn" type="button" @click="sentComment()">
-                <i class="fas fa-paper-plane color-sc"></i>
-            </button>
+        <div
+            @update-message.window="comment_message = $event.detail"
+        >
+            @include('common.summernote.summernote_comment')
         </div>
     </div>
 </div>
