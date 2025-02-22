@@ -126,7 +126,7 @@
                     <div class="col-2 border border-right-0 border-top-0 border-bottom-0"
                          x-data="{isActive: false}" x-effect="isActive = action && action === 'update'"
                     >
-                        @include('assets.shopping-plan-company.history_comment')
+                        @include('assets.shopping-plan-company.history_comment', ['refCommentName' => 'commentUpdate'])
                     </div>
                 </div>
             </div>

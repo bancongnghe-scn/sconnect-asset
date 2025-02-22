@@ -1,3 +1,28 @@
+<style>
+    .note-editor {
+        padding-left: 10px;
+        border-radius: 30px !important;
+    }
+
+    .note-toolbar {
+        padding: 0 !important;
+        background: none;
+    }
+
+    .note-btn {
+        border: 0;
+    }
+
+    .note-btn:hover {
+        background: none;
+        border: 0;
+    }
+
+    .note-statusbar {
+        background: none !important;
+        border-top: 0 !important;
+    }
+</style>
 <div>
     <div class="container d-flex tw-gap-x-4 mt-3">
         <a class="tw-no-underline hover:tw-text-green-500"
@@ -14,10 +39,13 @@
         </a>
     </div>
 
-    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; height: 83dvh">
-        <div class="overflow-y-scroll custom-scroll mt-3" x-data="{user_login: {{\Illuminate\Support\Facades\Auth::id()}}}">
+    <div class="mt-3 d-flex flex-column justify-content-between" style="border-top: 1px solid; max-height: 83dvh">
+        <div class="overflow-auto custom-scroll mt-3"
+             x-data="{user_login: {{ \Illuminate\Support\Facades\Auth::id() }}}"
+             id="historyComment"
+        >
             {{-- Lich su --}}
-            <div class="list-group pr-2" x-show="activeLink.history">
+            <div class="list-group pr-2" x-show="activeLink.history" :key="history">
                 <template x-for="log in logs">
                     <div class="d-flex tw-gap-x-2">
                         <div class="tw-w-8 d-flex flex-column align-items-center">
@@ -26,7 +54,7 @@
                             </span>
                             <div class="border-start border-2 flex-grow-1"></div>
                         </div>
-                        <div class="border rounded p-2 tw-bg-zinc-100 mb-3">
+                        <div class="border rounded p-2 tw-bg-zinc-100 mb-3 flex-grow-1">
                             <p class="mb-1 text-muted small"
                                x-text="log.created_at"
                             ></p>
@@ -37,12 +65,12 @@
                         </div>
                     </div>
                 </template>
-            </div>
+            </div  >
 
-            {{--      Comment      --}}
-            <div x-show="activeLink.comment">
+            {{-- Comment --}}
+            <div x-show="activeLink.comment" :key="comment">
                 <template x-for="comment in comments" :key="comment.id">
-                    <div class="mb-3">
+                    <div class="mt-3">
                         <div class="tw-flex tw-gap-x-2 align-items-center ">
                             <img src="https://lh3.googleusercontent.com/a/ACg8ocJ-NELNG55xGTjMztdZpSLwO6SsJiKCfW1UluF-QjAddVaFSQ=s96-c"
                                  class="tw-w-10 tw-h-10 border tw-rounded-full">
@@ -79,65 +107,79 @@
             </div>
         </div>
 
-        <div x-data="summernote">
-            <textarea id="summernote"></textarea>
+        <hr>
 
-            <div>
+        <div x-show="activeLink.comment" x-data="{resetInput: false, unicode: null}">
+            <textarea
+                x-data="{
+                    init() {
+                        this.$watch('showModal', (value) => {
+                            this.initSummer();
+                        });
+                        this.$watch('resetInput', (value) => {
+                            this.resetInputSummer();
+                        });
+                        this.$watch('unicode', (value) => {
+                            if(value) {
+                                let editor = $($el);
+                                let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
+                                editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
+                                this.unicode = null
+                            }
+                        });
+                    },
+
+                    initSummer() {
+                        const summerNote = $($el);
+                        summerNote.summernote({
+                            height: 40,
+                            placeholder: 'Nhập nội dung...',
+                            toolbar: [
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['font', ['strikethrough', 'superscript', 'subscript']],
+                                ['fontsize', ['fontsize']],
+                                ['color', ['color']],
+                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['height', ['height']],
+                                ['insert', ['link']],
+                            ],
+                            callbacks: {
+                                onChange: (contents) => {
+                                    this.comment_message = contents;
+                                }
+                            }
+                        }).summernote('code', '');
+
+                        summerNote.on('summernote.keydown', (we, e) => {
+                            if (e.keyCode === 13 && !e.shiftKey) {
+                                e.preventDefault();
+                                this.sentComment();
+                                this.resetInputSummer();
+                            }
+                        });
+                    },
+
+                    resetInputSummer() {
+                        $($el).summernote('code', '');
+                    },
+                }"
+            ></textarea>
+
+            <div class="d-flex tw-gap-x-4" x-data="{showIcon: false}">
+                <span class="tw-text-gray-500">@Nhắc đến</span>
+                <span class="tw-text-gray-500"><i class="fa fa-upload"></i>Tập tin</span>
+                <span class="tw-text-gray-500" @click="showIcon = true"><i class="fa fa-smile emoji"></i></span>
+                <emoji-picker id="emojiPicker" x-show="showIcon"
+                              @emoji-click="comment_message += $event.detail.unicode; showIcon = false; unicode = $event.detail.unicode">
+                </emoji-picker>
+            </div>
+
+            <div class="d-flex tw-gap-x-4 mt-2">
                 <button class="btn btn-sc" @click="sentComment()">Gửi</button>
-                <button class="btn btn-light" @click="resetInputSummer()">Hủy bỏ</button>
+                <button class="btn btn-light" @click="resetInput = !resetInput">Hủy bỏ</button>
             </div>
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('summernote', () => ({
-            init() {
-                this.initSummer();
-                this.$watch('showModal', (value) => {
-                    this.resetInputSummer();
-                });
-            },
+<script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 
-            initSummer() {
-                const summerNote = $('#summernote');
-                summerNote.summernote({
-                    height: 70,
-                    placeholder: 'Nhập nội dung...',
-                    toolbar: [
-                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                        ['fontsize', ['fontsize']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['height', ['height']],
-                        ['insert', ['link']],
-                    ],
-                    callbacks: {
-                        onChange: (contents) => {
-                            this.comment_message = contents;
-                        }
-                    }
-                }).summernote('code', '');
-
-                summerNote.on('summernote.keydown', (we, e) => {
-                    if (e.keyCode === 13 && !e.shiftKey) {
-                        e.preventDefault();
-                        this.sentComment()
-                        this.resetInputSummer()
-                    }
-                });
-            },
-
-            resetInputSummer() {
-                $('#summernote').summernote('code', '');
-            },
-        }));
-    });
-</script>
-<style>
-    .note-editor {
-        padding: 9px;
-        border-radius: 29px !important;
-    }
-</style>

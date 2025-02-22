@@ -8,6 +8,10 @@ document.addEventListener('alpine:init', () => {
                         this.handleComment()
                     }
                 })
+
+                $('.modal').on('shown.bs.modal',() => {
+                    this.scrollBottom()
+                });
             },
             //data
             activeLink: {
@@ -58,6 +62,13 @@ document.addEventListener('alpine:init', () => {
                     }).error((error) => {
                     alert(error)
                 });
+            },
+
+            scrollBottom() {
+                const scroll = $('#historyComment').get(0);
+                if (scroll) {
+                    scroll.scrollTop = scroll.scrollHeight; // Cuộn xuống dưới
+                }
             },
             //methods
             async getLogByRecordId() {
