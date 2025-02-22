@@ -170,6 +170,8 @@
                 <span class="tw-text-gray-500"><i class="fa fa-upload"></i>Tập tin</span>
                 <span class="tw-text-gray-500" @click="showIcon = true"><i class="fa fa-smile emoji"></i></span>
                 <emoji-picker id="emojiPicker" x-show="showIcon"
+                              style="position: absolute;right: 0;bottom: 12rem"
+                              @click.outside="showIcon = false"
                               @emoji-click="comment_message += $event.detail.unicode; showIcon = false; unicode = $event.detail.unicode">
                 </emoji-picker>
             </div>
