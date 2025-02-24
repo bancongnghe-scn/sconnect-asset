@@ -109,7 +109,7 @@
 
         <hr>
 
-        <div x-show="activeLink.comment" x-data="{resetInput: false, unicode: null}">
+        <div x-show="activeLink.comment" x-data="{resetInput: false, unicode: null, showIcon: false, showUser: false, userId: null}">
             <textarea
                 x-data="{
                     init() {
@@ -165,15 +165,21 @@
                 }"
             ></textarea>
 
-            <div class="d-flex tw-gap-x-4" x-data="{showIcon: false}">
-                <span class="tw-text-gray-500">@Nhắc đến</span>
-                <span class="tw-text-gray-500"><i class="fa fa-upload"></i>Tập tin</span>
-                <span class="tw-text-gray-500" @click="showIcon = true"><i class="fa fa-smile emoji"></i></span>
+            <div class="d-flex tw-gap-x-4">
+                <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUser = true">@Nhắc đến</span>
+                <span class="tw-text-gray-500 tw-cursor-pointer"><i class="fa fa-upload"></i>Tập tin</span>
+                <span class="tw-text-gray-500 tw-cursor-pointer" @click="showIcon = true"><i class="fa fa-smile emoji"></i></span>
+            </div>
+
+            <div>
                 <emoji-picker id="emojiPicker" x-show="showIcon"
                               style="position: absolute;right: 0;bottom: 12rem"
                               @click.outside="showIcon = false"
                               @emoji-click="comment_message += $event.detail.unicode; showIcon = false; unicode = $event.detail.unicode">
                 </emoji-picker>
+                <div>
+                    @include('common.uploadFile.form_upload_file')
+                </div>
             </div>
 
             <div class="d-flex tw-gap-x-4 mt-2">
