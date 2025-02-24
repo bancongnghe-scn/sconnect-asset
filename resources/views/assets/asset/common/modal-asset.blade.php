@@ -311,13 +311,13 @@
                                     Lịch sử cấp phát/Thu hồi/Luân chuyển
                                 </h6>
                                 <div class="row">
-                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%;">
+                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%;  padding: 0;">
                                         <table class="table table-bordered table-repair" style="width: 1000px;">
                                             <thead>
                                             <tr style="font-size: 14px;">
-                                                <th scope="col">Ngày</th>
-                                                <th scope="col">Hành động</th>
-                                                <th scope="col">Biên bản</th>
+                                                <th scope="col" style="position: sticky; left: 0; z-index: 1;">Ngày</th>
+                                                <th scope="col" style="position: sticky; left: 95px; z-index: 1;">Hành động</th>
+                                                <th scope="col" style="position: sticky; left: 186px; z-index: 1;">Biên bản</th>
                                                 <th scope="col">Người thực hiện</th>
                                                 <th scope="col">Bàn giao cho</th>
                                                 <th scope="col">Cá nhân/Đại diện</th>
@@ -328,9 +328,9 @@
                                             <tbody>
                                             <template x-for="history in listHistory">
                                                 <tr>
-                                                    <td x-text="formatDateVN(history.created_at)"></td>
-                                                    <td x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
-                                                    <td>
+                                                    <td style="position: sticky; left: 0; z-index: 1;" x-text="formatDateVN(history.created_at)"></td>
+                                                    <td style="position: sticky; left: 95px; z-index: 1;" x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
+                                                    <td style="position: sticky; left: 186px; z-index: 1;">
                                                         <span class="text-primary" x-text="'BB0' + history.id" @click="window.open('/' + history.link_report, '_blank')" style="cursor: pointer;"></span>
                                                     </td>
                                                     <td>
