@@ -1,6 +1,4 @@
-<table x-data="{can_handle: {{ json_encode(Auth::check() && Auth::user()->can('shopping_plan_company.handle_shopping')) }}}"
-       id="example2" class="table table-bordered dataTable dtr-inline"
-       aria-describedby="example2_info">
+<table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
     <thead>
     <tr>
         <th class="text-center"
