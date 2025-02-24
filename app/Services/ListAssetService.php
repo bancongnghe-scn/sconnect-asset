@@ -19,6 +19,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use DOMDocument;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use XSLTProcessor;
 use Storage;
 
@@ -26,8 +29,7 @@ class ListAssetService
 {
     public function __construct(
         protected AssetRepository $assetRepository,
-    ) {
-    }
+    ) {}
 
     public function getListAsset($request): LengthAwarePaginator
     {
@@ -95,12 +97,16 @@ class ListAssetService
             $arrAllocationAsset = [];
             $arrAssetId         = [];
 
+            $assetCurrent = Asset::find($request->listAssetAllocate[0]['id']);
+
             $transferAsset = TransferAsset::create([
                 'user_id'           => $request->user['id'],
                 'org_id'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                 'type'              => 1,
                 'created_by'        => auth()->user() ? auth()->user()->id : 1,
                 'description'       => $request->description,
+                'to_user_id'     => $assetCurrent->user_id,
+                'to_org_id'      => $assetCurrent->organization_id,
             ]);
 
             foreach ($request->listAssetAllocate as $asset) {
@@ -125,9 +131,13 @@ class ListAssetService
                 'user_id'         => $request->user['id'],
                 'organization_id' => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
             ]);
+            $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
 
-            return $this->getListAssetOfUser($request->user['id']);
+            return [
+                'listAssetOfObj' => $this->getListAssetOfUser($request->user['id']),
+                'linkReport' => TransferAsset::find($transferAsset->id)
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -143,18 +153,20 @@ class ListAssetService
             $arrAssetId       = [];
             $orgIdAfter       = null;
 
+            $orgIdAfter = $request->recoveryCompany
+                ? null : ($request->user['org_last_parent'] ?
+                    $request->user['org_last_parent']['id']
+                    : $request->user['dept_id']);
+
             $transferAsset = TransferAsset::create([
                 'user_id'     => $request->user['id'],
                 'org_id'      => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                 'type'        => 2,
                 'created_by'  => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
+                'to_user_id'     => null,
+                'to_org_id'      => $orgIdAfter,
             ]);
-
-            $orgIdAfter = $request->recoveryCompany
-                ? null : ($request->user['org_last_parent'] ?
-                    $request->user['org_last_parent']['id']
-                    : $request->user['dept_id']);
 
             foreach ($request->listAssetRecovery as $asset) {
                 $arrRecoveryAsset[] = [
@@ -180,9 +192,15 @@ class ListAssetService
                 'user_id'         => null,
                 'organization_id' => $orgIdAfter,
             ]);
+
+            $this->exportReport($transferAsset->id, $arrAssetId);
+
             DB::commit();
 
-            return $this->getListAssetOfUser($request->user['id']);
+            return [
+                'listAssetOfObj' => $this->getListAssetOfUser($request->user['id']),
+                'linkReport' => TransferAsset::find($transferAsset->id)
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -199,7 +217,7 @@ class ListAssetService
     {
         $query = Org::query();
 
-        return $query->whereIn('parent_id', [0, 1])->with(['manager', 'deptType'])->paginate($request->limit);
+        return $query->whereIn('parent_id', [0, 1])->with(['manager', 'deptType', 'listAsset'])->paginate($request->limit);
     }
 
     public function allocateAssetOrg($request)
@@ -210,12 +228,16 @@ class ListAssetService
             $arrAssetId             = [];
             $arrAllocationAssetUser = [];
 
+            $assetCurrent = Asset::find($request->listAssetAllocate[0]['id']);
+
             $transferAsset = TransferAsset::create([
                 'user_id'     => null,
                 'org_id'      => $request->org['id'],
                 'type'        => 1,
                 'created_by'  => auth()->user() ? auth()->user()->id : 1,
                 'description' => $request->description,
+                'to_user_id'     => $assetCurrent->user_id,
+                'to_org_id'      => $assetCurrent->organization_id,
             ]);
 
             foreach ($request->listAssetAllocate as $asset) {
@@ -253,9 +275,13 @@ class ListAssetService
                 'organization_id' => $request->org['id'],
                 'user_id'         => null,
             ]);
+            $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
 
-            return $this->getListAssetOfOrg($request->org['id']);
+            return [
+                'listAssetOfObj' => $this->getListAssetOfOrg($request->org['id']),
+                'linkReport' => TransferAsset::find($transferAsset->id)
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -315,9 +341,15 @@ class ListAssetService
                 'organization_id' => null,
                 'user_id'         => null,
             ]);
+
+            $this->exportReport($transferAsset->id, $arrAssetId);
+
             DB::commit();
 
-            return $this->getListAssetOfOrg($request->org['id']);
+            return [
+                'listAssetOfObj' => $this->getListAssetOfOrg($request->org['id']),
+                'linkReport' => TransferAsset::find($transferAsset->id)
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -417,9 +449,13 @@ class ListAssetService
     {
         DB::beginTransaction();
         try {
+            $transferAsset = null;
+            $arrAssetId = [];
+
             foreach ($request->listAssetRotation as $assetRotation) {
                 $orgId  = null;
                 $userId = null;
+                $arrAssetId[] = $assetRotation['id'];
 
                 $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
 
@@ -495,9 +531,11 @@ class ListAssetService
                 ]);
             }
 
+            $this->exportReport($transferAsset->id, $arrAssetId);
+
             DB::commit();
 
-            return true;
+            return TransferAsset::find($transferAsset->id);
         } catch (\Throwable $exception) {
             DB::rollBack();
 
@@ -586,34 +624,13 @@ class ListAssetService
 
     public function listAssetRepresent($request)
     {
-        $orgOfUser = Org::where('manager_id', $request->userId)->first();
-        // Đọc file XML template
-        $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
-        $template     = file_get_contents($templatePath);
+        $listOrgIdOfUser = Org::where('manager_id', $request->userId)->pluck('id');
 
-        // Dữ liệu cần điền vào Excel
-        $data = [
-            ['name' => 'Nguyễn A', 'age' => 25, 'address' => 'Hà Nội'],
-            ['name' => 'Trần B', 'age' => 30, 'address' => 'TP. HCM'],
-            ['name' => 'Lê C', 'age' => 22, 'address' => 'Đà Nẵng'],
-        ];
-
-        // Tạo file Excel thực sự (không phải XML)
-        $spreadsheet = new Spreadsheet();
-        $sheet       = $spreadsheet->getActiveSheet();
-
-        // Ghi dữ liệu vào Excel
-        $rowIndex = 1;
-        foreach ($data as $row) {
-            $sheet->setCellValue("A{$rowIndex}", $row['name']);
-            $sheet->setCellValue("B{$rowIndex}", $row['age']);
-            $sheet->setCellValue("C{$rowIndex}", $row['address']);
-            ++$rowIndex;
+        if (count($listOrgIdOfUser) > 0) {
+            return Asset::whereIn('organization_id', $listOrgIdOfUser)->with(['assetType'])->get();
         }
 
-        if ($orgOfUser) {
-            Asset::where('organization_id', $orgOfUser->id)->get();
-        }
+        return [];
     }
 
     public function getAssetInfo($id)
@@ -630,5 +647,110 @@ class ListAssetService
             'success' => true,
             'data'    => AssetInfoResource::make($data)->resolve(),
         ];
+    }
+
+    public function exportReport($transferAssetId, $arrAssetId)
+    {
+        $nameFile = '';
+        $titleReport = '';
+
+        $transferAsset = TransferAsset::find($transferAssetId);
+        $userFrom = $transferAsset->user_id ? User::where('id', $transferAsset->user_id)->with(['organization'])->first()
+            : ($transferAsset->org_id ? Org::where('id', $transferAsset->org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
+        $userTo = $transferAsset->to_user_id ? User::where('id', $transferAsset->to_user_id)->with(['organization'])->first()
+            : ($transferAsset->to_org_id ? Org::where('id', $transferAsset->to_org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
+
+        $userTemp = null;
+
+        switch ($transferAsset->type) {
+            case 1:
+                $nameFile = 'capphat';
+                $titleReport = 'BIÊN BẢN CẤP PHÁT TÀI SẢN';
+
+                $userTemp = $userFrom;
+                $userFrom = $userTo;
+                $userTo = $userTemp;
+                break;
+
+            case 2:
+                $nameFile = 'thuhhoi';
+                $titleReport = 'BIÊN BẢN THU HỒI TÀI SẢN';
+                break;
+
+            default:
+                $nameFile = 'luanchuyen';
+                $titleReport = 'BIÊN BẢN LUÂN CHUYỂN TÀI SẢN';
+                break;
+        }
+
+        $filePath = resource_path('views/assets/asset/template-excel/template_report.xlsx');
+        $spreadsheet = IOFactory::load($filePath);
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $sheet->setCellValue('A14', 'Hôm nay, vào lúc ….  Ngày ' . Carbon::now()->day . ' tháng ' . Carbon::now()->month . ' năm ' . Carbon::now()->year . ' tại Văn phòng Công ty TNHH Đầu tư Công nghệ và Dịch vụ S-Connect Việt Nam.');
+        $sheet->setCellValue('A7', $titleReport);
+        $sheet->setCellValue('D17', $userFrom?->name);
+        $sheet->setCellValue('D18', $userFrom?->job_position);
+        $sheet->setCellValue('D19', $userFrom?->organization?->name);
+        $sheet->setCellValue('D21', $userTo?->name);
+        $sheet->setCellValue('D22', $userTo?->job_position);
+        $sheet->setCellValue('D23', $userTo?->organization?->name);
+
+        $listAsset = Asset::whereIn('id', $arrAssetId)->with(['assetType'])->get();
+
+        $startRow = 26;
+        $numNewRows = count($listAsset);
+
+        $sheet->insertNewRowBefore($startRow + 1, $numNewRows);
+
+        $currentRow = $startRow;
+        foreach ($listAsset as $index => $asset) {
+            $this->copyRowStyle($sheet, $startRow, $currentRow);
+
+            $columnWidth = 40;
+            $lineCount = ceil(strlen($asset->name) / $columnWidth);
+
+            $sheet->getRowDimension($currentRow)->setRowHeight($lineCount * 15);
+
+            $sheet->setCellValue("A$currentRow", $index + 1);
+            $sheet->setCellValue("B$currentRow", $asset->name);
+            $sheet->setCellValue("E$currentRow", $asset->code);
+            $sheet->setCellValue("F$currentRow", Asset::LIST_MEASURE[$asset->assetType->measure]);
+            $sheet->setCellValue("G$currentRow", 1);
+            $sheet->setCellValue("H$currentRow", $asset->price);
+            $sheet->setCellValue("I$currentRow", Asset::STATUS_NAME[$asset->status]);
+            $sheet->setCellValue("J$currentRow", $userFrom?->name);
+            $sheet->setCellValue("K$currentRow", $userTo?->name);
+            $sheet->getRowDimension($currentRow)->setRowHeight(-1);
+            $currentRow++;
+        }
+
+        $sheet->removeRow(26 + $numNewRows);
+
+        $path = public_path('reports/');
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        $nameFile = $nameFile . '_' . $transferAsset->id . '.xlsx';
+        $newFilePath = public_path('reports/' . $nameFile);
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($newFilePath);
+
+        TransferAsset::where('id', $transferAssetId)->update([
+            'link_report' => 'reports/' . $nameFile
+        ]);
+    }
+
+    private function copyRowStyle(Worksheet $sheet, int $sourceRow, int $targetRow)
+    {
+        $sheet->duplicateStyle($sheet->getStyle("A$sourceRow:C$sourceRow"), "A$targetRow:C$targetRow");
+
+        foreach ($sheet->getMergeCells() as $mergeRange) {
+            if (preg_match("/([A-Z]+)$sourceRow:([A-Z]+)$sourceRow/", $mergeRange, $matches)) {
+                $newMergeRange = "{$matches[1]}$targetRow:{$matches[2]}$targetRow";
+                $sheet->mergeCells($newMergeRange);
+            }
+        }
     }
 }

@@ -39,13 +39,13 @@
                                     <span>Đối tượng luân chuyển</span>
                                     <div class="d-flex" style="gap: 30px;">
                                         <div class="form-check">
-                                            <input class="form-check-input" :checked="assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom1">
+                                            <input class="form-check-input" :checked="assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom1" disabled>
                                             <label class="form-check-label" for="defaultCheckFrom1">
                                                 Nhân viên
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" :checked="assetSelect.organization"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom2">
+                                            <input class="form-check-input" :checked="!assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom2" disabled>
                                             <label class="form-check-label" for="defaultCheckFrom2">
                                                 Đơn vị
                                             </label>
@@ -201,8 +201,8 @@
                 <span>
                     Biên bản luân chuyển
                 </span>
-                <span class="text-primary">
-                    Bienbanluanchuyen
+                <span class="text-primary" x-text="'BB0' + linkReport.id" @click="window.open('/' + linkReport.link_report, '_blank')" style="cursor: pointer;">
+                    
                 </span>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">

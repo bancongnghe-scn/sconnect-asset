@@ -23,6 +23,11 @@ class Org extends Model
         return $this->belongsTo(Config::class, 'dept_type_id');
     }
 
+    public function listAsset()
+    {
+        return $this->hasMany(Asset::class, 'organization_id', 'id');
+    }
+
     //code cũ
     public static function getLastParentId($parent_id, $arr, $rootOrgId)
     {

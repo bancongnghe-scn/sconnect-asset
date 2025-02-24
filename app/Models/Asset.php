@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Asset extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql';
     protected $table = 'assets';
 
     protected $fillable = [
@@ -102,17 +103,30 @@ class Asset extends Model
         self::LOCATION_WAREHOUSE                => 'Kho công ty',
     ];
 
+    public const LIST_MEASURE = [
+        1 => 'Chiếc',
+        2 => 'Cái',
+        3 => 'Bộ',
+        4 => 'Bình',
+        5 => 'Cuộn',
+        6 => 'Hộp',
+        7 => 'Túi',
+        8 => 'Lọ',
+        9 => 'Thùng',
+        10 => 'Đôi',
+    ];
+
     protected function locationText(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->location && isset(self::LOCATION_NAME[$this->location]) ? self::LOCATION_NAME[$this->location] : null,
+            get: fn() => $this->location && isset(self::LOCATION_NAME[$this->location]) ? self::LOCATION_NAME[$this->location] : null,
         );
     }
 
     protected function dateWarranty(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::parse($this->date_purchase)->addMonths($this->warranty_months)->format('Y-m-d'),
+            get: fn() => Carbon::parse($this->date_purchase)->addMonths($this->warranty_months)->format('Y-m-d'),
         );
     }
 
