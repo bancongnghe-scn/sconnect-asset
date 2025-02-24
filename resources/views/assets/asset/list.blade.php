@@ -220,6 +220,17 @@
                         <template x-for="(asset, index) in listAsset" :key="asset.id">
                             <tr>
                                 {{-- <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td> --}}
+                                <style>
+                                    .dropdown-content-print {
+                                        display: none;
+                                        position: absolute;
+                                        background-color: #f1f1f1;
+                                        min-width: 160px;
+                                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                        z-index: 1;
+                                    }
+                                    #printBtn:hover .dropdown-content-print {display: block;}
+                                </style>
                                 <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
                                     <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -337,11 +348,11 @@
                                                 <span class="title-menu">Đánh dấu mất</span>   
                                             </a>
                                         </template>
-                                        <a class="d-flex item-menu" href="#">
+                                        <a class="d-flex item-menu" id="printBtn">
                                             <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z" fill="#344054"/>
                                             </svg>                                            
-                                            <span class="title-menu">In</span>   
+                                            <span class="title-menu">In</span>                                              
                                         </a>
                                         <a class="d-flex item-menu" href="#">
                                             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -353,7 +364,11 @@
                                             </svg>
                                                                                           
                                             <span class="title-menu text-danger">Xóa</span>   
-                                        </a>
+                                        </a>                                        
+                                    </div>
+                                    <div class="dropdown-content-print">
+                                        <a>In mã QR</a>
+                                        <a>In biên bản</a>
                                     </div>
                                 </td>
                                 <td class="text-center" x-text="asset.code"></td>
@@ -564,13 +579,13 @@
                                                     Cấp phát/Thu hồi/Luân chuyển
                                                 </h6>
                                                 <div class="row">
-                                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%;">
+                                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%; padding: 0;">
                                                         <table class="table table-bordered table-repair" style="width: 1000px;">
                                                             <thead>
                                                             <tr style="font-size: 14px;">
-                                                                <th scope="col">Ngày</th>
-                                                                <th scope="col">Hành động</th>
-                                                                <th scope="col">Biên bản</th>
+                                                                <th scope="col" style="position: sticky; left: 0; z-index: 1;">Ngày</th>
+                                                                <th scope="col" style="position: sticky; left: 95px; z-index: 1;">Hành động</th>
+                                                                <th scope="col" style="position: sticky; left: 186px; z-index: 1;">Biên bản</th>
                                                                 <th scope="col">Người thực hiện</th>
                                                                 <th scope="col">Bàn giao cho</th>
                                                                 <th scope="col">Cá nhân/Đại diện</th>
@@ -581,9 +596,9 @@
                                                             <tbody>
                                                             <template x-for="history in listHistoryAsset">
                                                                 <tr>
-                                                                    <td x-text="formatDateVN(history.transfer_asset.created_at)"></td>
-                                                                    <td x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
-                                                                    <td>
+                                                                    <td x-text="formatDateVN(history.transfer_asset.created_at)" style="position: sticky; left: 0; z-index: 1;"></td>
+                                                                    <td style="position: sticky; left: 95px; z-index: 1;" x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
+                                                                    <td style="position: sticky; left: 186px; z-index: 1;">
                                                                         <span class="text-primary" x-text="'BB0' + history.transfer_asset_id" @click="window.open('/' + history.transfer_asset.link_report, '_blank')" style="cursor: pointer;"></span>
                                                                     </td>
                                                                     <td>
