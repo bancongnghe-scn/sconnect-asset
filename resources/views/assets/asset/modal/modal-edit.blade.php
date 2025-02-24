@@ -29,7 +29,7 @@
                                     <div class="mb-3">
                                         <span>Loại tài sản <span class="text-danger">*</span></span>
                                         {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
-                                        <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAssetEditSelect" x-model="assetEdit.asset_type_id">
+                                        <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAssetEditSelect" x-model="assetEdit.asset_type_id" disabled>
                                             <option value="0" selected>Loại tài sản</option>
                                             <template x-for="(value, key) in assetType">
                                                 <option :value="value.id" x-text="value.name"></option>
@@ -40,7 +40,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Vị trí tài sản <span class="text-danger">*</span></span>
-                                        <select class="form-control select2" data-placeholder="Vị trí" id="locationSearchEdit" x-model="assetEdit.location">
+                                        <select class="form-control select2" data-placeholder="Vị trí" id="locationSearchEdit" x-model="assetEdit.location" disabled>
                                             <option value="0" selected>Vị trí</option>
                                             <template x-for="(value, key) in listLocation">
                                                 <option :value="key" x-text="value"></option>
@@ -51,7 +51,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Mã tài sản <span class="text-danger">*</span></span>
-                                        <input type="text" class="form-control" x-model="assetEdit.code">
+                                        <input type="text" class="form-control" x-model="assetEdit.code" disabled>
 
                                     </div>
                                 </div>
@@ -76,7 +76,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Nhà cung cấp <span class="text-danger">*</span></span>
-                                        <select class="form-control select2" data-placeholder="Vị trí" id="supplierEdit" x-model="assetEdit.supplier_id">
+                                        <select class="form-control select2" data-placeholder="Vị trí" id="supplierEdit" x-model="assetEdit.supplier_id" disabled>
                                             <option value="0" selected>Nhà cung cấp</option>
                                             <template x-for="(supplier, key) in listSupplier">
                                                 <option :value="supplier.id" x-text="supplier.name"></option>
@@ -95,8 +95,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Giá trị <span class="text-danger">*</span></span>
-                                        <input type="number" class="form-control" x-model="assetEdit.price">
-
+                                        <input type="number" class="form-control" x-model="assetEdit.price" disabled>
                                     </div>
                                 </div>
                                 <div class="col-6">
