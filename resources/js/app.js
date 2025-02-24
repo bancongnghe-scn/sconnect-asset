@@ -11,7 +11,7 @@ import './helpers.js'
 import AirDatepicker from "air-datepicker";
 import localeEn from "air-datepicker/locale/en";
 import {format} from "date-fns";
-import 'summernote/dist/summernote-lite.min.css';
+// import 'summernote/dist/summernote-lite.min.css';
 
 window.Alpine = Alpine
 window.AirDatepicker = AirDatepicker;
