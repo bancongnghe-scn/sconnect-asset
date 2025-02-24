@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div>
     <div class="modal fade" id="modalDetail" tabindex="-1" aria-labelledby="modalDetail" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-xl" style="--bs-modal-width: 1400px !important">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="mb-0" x-text="userObj ? userObj.code + ' - ' + userObj.name + ' - ' + userObj.job_position : orgObj.dept_type.cfg_key + ' ' + orgObj.name"></h5>
@@ -73,7 +73,7 @@
                                     <div class="col-6">
                                         <div class="mb-3">
                                             <span>Tài sản đại diện</span>
-                                            <input type="number" class="form-control" value="0" disabled>
+                                            <input type="number" class="form-control" x-model="listAssetRepresent.length" disabled>
 
                                         </div>
                                     </div>
@@ -331,7 +331,7 @@
                                                     <td x-text="formatDateVN(history.created_at)"></td>
                                                     <td x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                     <td>
-                                                        <span class="text-primary" x-text="'BB0' + history.id"></span>
+                                                        <span class="text-primary" x-text="'BB0' + history.id" @click="window.open('/' + history.link_report, '_blank')" style="cursor: pointer;"></span>
                                                     </td>
                                                     <td>
                                                         <div class="d-flex">
@@ -414,27 +414,31 @@
                                     Tài sản đang đại diện
                                 </h6>
                                 <div class="row">
-                                    <div class="col-12" style="overflow-x: auto;width: 100%;">
+                                    <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%;">
                                         <table class="table table-bordered table-repair" style="width: 1000px;">
                                             <thead>
                                             <tr style="font-size: 14px;">
-                                                <th>Ngày báo hỏng</th>
-                                                <th>Tình trạng hỏng</th>
-                                                <th>Ngày sửa chữa</th>
-                                                <th>Chi phí sửa</th>
-                                                <th>Tình trạng sửa chữa</th>
-                                                <th>Ngày hoàn thành</th>
+                                                <th>Mã tài sản</th>
+                                                <th>Tên tài sản</th>
+                                                <th>Loại tài sản</th>
+                                                <th>Số seri</th>
+                                                <th>Đơn vị tính</th>
+                                                <th>Trạng thái</th>
+                                                <th>Vị trí tài sản</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Mark</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                                <td>Otto</td>
-                                                <td>@mdo</td>
-                                            </tr>
+                                                <template x-for="asset in listAssetRepresent">
+                                                    <tr>
+                                                        <td x-text="asset.code"></td>
+                                                        <td x-text="asset.name"></td>
+                                                        <td x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
+                                                        <td x-text="asset.seri_number"></td>
+                                                        <td x-text="LIST_MEASURE[asset.asset_type.measure]"></td>
+                                                        <td x-html="arrSvgStatus[asset.status]"></td>
+                                                        <td x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
+                                                    </tr>
+                                                </template>
                                             </tbody>
                                         </table>
                                     </div>
@@ -532,12 +536,12 @@
                 <span>
                     Biên bản cấp phát
                 </span>
-                <span class="text-primary">
-                    Bienbancapphat
+                <span class="text-primary" x-text="'BB0' + linkReport.id" @click="window.open('/' + linkReport.link_report, '_blank')" style="cursor: pointer;">
+                    
                 </span>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successAllocateModal')">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successAllocateModal');">Đóng</button>
             </div>
           </div>
         </div>
@@ -604,12 +608,12 @@
                 <span>
                     Biên bản thu hồi
                 </span>
-                <span class="text-primary">
-                    Bienbanthuhoi
+                <span class="text-primary" x-text="'BB0' + linkReport.id" @click="window.open('/' + linkReport.link_report, '_blank')" style="cursor: pointer;">
+                    
                 </span>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRecoveryModal')">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRecoveryModal');">Đóng</button>
             </div>
           </div>
         </div>

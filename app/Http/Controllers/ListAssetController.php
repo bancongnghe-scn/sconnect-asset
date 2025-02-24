@@ -85,11 +85,11 @@ class ListAssetController extends Controller
     public function allocateAsset(Request $request): JsonResponse
     {
         try {
-            $listAssetOfObj = $this->assetService->allocateAsset($request);
-            // $this->assetService->exportReportAllocation();
+            $infoReturn = $this->assetService->allocateAsset($request);
 
             return response_success([
-                'listAssetOfObj' => $listAssetOfObj,
+                'listAssetOfObj' => $infoReturn['listAssetOfObj'],
+                'linkReport' => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -101,10 +101,11 @@ class ListAssetController extends Controller
     public function recoveryAsset(Request $request): JsonResponse
     {
         try {
-            $listAssetOfObj = $this->assetService->recoveryAsset($request);
+            $infoReturn = $this->assetService->recoveryAsset($request);
 
             return response_success([
-                'listAssetOfObj' => $listAssetOfObj,
+                'listAssetOfObj' => $infoReturn['listAssetOfObj'],
+                'linkReport' => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -153,10 +154,11 @@ class ListAssetController extends Controller
     public function allocateAssetOrg(Request $request): JsonResponse
     {
         try {
-            $listAssetOfObj = $this->assetService->allocateAssetOrg($request);
+            $infoReturn = $this->assetService->allocateAssetOrg($request);
 
             return response_success([
-                'listAssetOfObj' => $listAssetOfObj,
+                'listAssetOfObj' => $infoReturn['listAssetOfObj'],
+                'linkReport' => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -168,10 +170,11 @@ class ListAssetController extends Controller
     public function recoveryAssetOrg(Request $request): JsonResponse
     {
         try {
-            $listAssetOfObj = $this->assetService->recoveryAssetOrg($request);
+            $infoReturn = $this->assetService->recoveryAssetOrg($request);
 
             return response_success([
-                'listAssetOfObj' => $listAssetOfObj,
+                'listAssetOfObj' => $infoReturn['listAssetOfObj'],
+                'linkReport' => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -254,10 +257,10 @@ class ListAssetController extends Controller
     public function rotationAsset(Request $request): JsonResponse
     {
         try {
-            $listAssetOfObj = $this->assetService->rotationAsset($request);
+            $infoReturn = $this->assetService->rotationAsset($request);
 
             return response_success([
-                'listAssetOfObj' => $listAssetOfObj,
+                'linkReport' => $infoReturn,
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -336,33 +339,6 @@ class ListAssetController extends Controller
         return Excel::download(new ListAssetExport(), 'danh_sach_tai_san.xlsx');
     }
 
-    public function transformXmlToHtml()
-    {
-        // Đọc file XML và XSLT từ storage
-        $xmlPath = storage_path('app/template/XMLFile1.xml');
-        $xslPath = storage_path('app/template/thuhoi.xsl');
-
-        // Tạo DOMDocument cho XML
-        $xml = new DOMDocument;
-        $xml->load($xmlPath);
-
-        // Tạo DOMDocument cho XSLT
-        $xsl = new DOMDocument;
-        $xsl->load($xslPath);
-
-        // Khởi tạo bộ xử lý XSLT
-        $xsltProcessor = new XSLTProcessor();
-        $xsltProcessor->importStylesheet($xsl);
-
-        // Chuyển đổi XML sang HTML
-        $html = $xsltProcessor->transformToXML($xml);
-
-        $filePath = storage_path('app/template/output.xls');
-        file_put_contents($filePath, $html);
-
-        return response()->download($filePath, 'output.xls')->deleteFileAfterSend();
-    }
-
     public function getAssetInfo($id)
     {
         try {
@@ -373,6 +349,21 @@ class ListAssetController extends Controller
             }
 
             return response_success($result['data']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListAssetRepresent(Request $request)
+    {
+        try {
+            $listAssetRepresent = $this->assetService->listAssetRepresent($request);
+
+            return response_success([
+                'listAssetRepresent' => $listAssetRepresent
+            ]);
         } catch (\Throwable $exception) {
             report($exception);
 
