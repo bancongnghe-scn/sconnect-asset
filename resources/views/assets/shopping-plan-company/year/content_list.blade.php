@@ -41,7 +41,7 @@
     @include('assets.shopping-plan-company.year.detail')
     @include('assets.shopping-plan-company.year.update')
     <div x-data="{id: null}" x-effect="id = idPlanOrganization">
-        @include('assets.shopping_plan_organization.year.detail')
+        @include('assets.shopping_plan_organization.year.detail', ['id' => 'modalOrganizationCompany'])
     </div>
 </div>
 

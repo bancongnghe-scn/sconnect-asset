@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-<style>
+<style> 
     .dropdown-content {
       position: absolute;
       background-color: #f9f9f9;
@@ -13,16 +13,16 @@
       right: 40px;
       border-radius: 10px;
     }
-
+    
     .dropdown-content a {
       color: black;
       padding: 12px 16px;
       text-decoration: none;
       display: block;
     }
-
+    
     .dropdown-content a:hover {background-color: #f1f1f1}
-
+    
     .dropdown:hover .dropdown-content {
       display: block;
     }
@@ -80,7 +80,7 @@
     .modal-2{
         --bs-modal-zindex: 1100 !important;
     }
-
+    
     .custom-backdrop {
     z-index: 1060 !important;
     }
@@ -119,7 +119,7 @@
         --bs-btn-disabled-border-color: #379237;
     }
 
-
+    
     .tab-container{
         height: 40px;
         margin-bottom: 10px;
@@ -159,7 +159,7 @@
                                 <input type="text" class="form-control" id="nameUser" placeholder="Tên/mã nhân viên">
                                 <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
                             </div>
-
+        
                             <div class="col-2">
                                 <select class="form-control select2" data-placeholder="Đơn vị" id="unitSearch">
                                     <option value="0" selected>Chọn đơn vị</option>
@@ -168,7 +168,7 @@
                                     </template>
                                 </select>
                             </div>
-
+        
                             {{-- <div class="col-2">
                                 <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusSearch" x-model="status">
                                     <option value="0" selected>Trạng thái</option>
@@ -177,7 +177,7 @@
                                     </template>
                                 </select>
                             </div> --}}
-
+                        
                             <div class="col-2">
                                 <span @click="fetchData($('#unitSearch').val(), $('#nameUser').val())" style="cursor: pointer;">
                                     <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -221,14 +221,14 @@
                                     <td class="text-center" x-text="user.code"></td>
                                     <td class="text-center">
                                         <div class="d-flex">
-                                            <img x-show="user" x-bind:src="user.avatar
-                                                    ? (user.avatar.includes('/uploads/')
-                                                        ? 'https://office.sconnect.com.vn' + user.avatar
-                                                        : user.avatar)
-                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                    alt=""
+                                            <img x-show="user" x-bind:src="user.avatar 
+                                                    ? (user.avatar.includes('/uploads/') 
+                                                        ? 'https://office.sconnect.com.vn' + user.avatar 
+                                                        : user.avatar) 
+                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
+                                                    alt="" 
                                                     style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
                                                 <span x-text="user.name" style="font-weight: 600; font-size: 16px;"></span>
                                             </div>
                                         </div>
@@ -236,9 +236,9 @@
                                     <td class="text-left" x-text="user.job_position"></td>
                                     <td class="text-left" x-text="user.org_last_parent ? user.org_last_parent.org_name : user.organization.dept_type.cfg_key + ' ' + user.organization.name"></td>
                                     <td class="text-center" x-text="user.list_asset_use.length">
-
+                                        
                                     </td>
-                                    <td class="text-center">0</td>
+                                    <td class="text-center" x-text="user.total_asset_represent"></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 8px;">
                                             <span style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetail" @click="fillData(user); tab = 'allocation-tab'; tabAllocation = 'allocation-tab'">
@@ -249,7 +249,7 @@
                                             <span style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetail" @click="fillData(user); tab = 'allocation-tab'; tabAllocation = 'recovery-tab'">
                                                 <svg width="21" height="23" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M14.9523 15.3377C15.6005 14.9895 16.3425 14.7913 17.1327 14.7913H17.1353C17.2157 14.7913 17.2532 14.6949 17.1943 14.6413C16.3725 13.9038 15.4338 13.3082 14.4166 12.8788C14.4059 12.8734 14.3952 12.8708 14.3844 12.8654C16.0478 11.6574 17.13 9.69397 17.13 7.4788C17.13 3.80915 14.1621 0.835938 10.5005 0.835938C6.83891 0.835938 3.87373 3.80915 3.87373 7.4788C3.87373 9.69397 4.95587 11.6574 6.62194 12.8654C6.61123 12.8708 6.60051 12.8734 6.5898 12.8788C5.39248 13.385 4.31837 14.1109 3.39426 15.0377C2.47549 15.9548 1.74403 17.042 1.24069 18.2386C0.745459 19.4104 0.478187 20.6658 0.453192 21.9377C0.452477 21.9663 0.457491 21.9948 0.46794 22.0214C0.478388 22.048 0.494059 22.0723 0.514029 22.0927C0.533999 22.1132 0.557864 22.1295 0.584217 22.1406C0.610571 22.1517 0.638881 22.1574 0.667478 22.1574H2.27194C2.38712 22.1574 2.48355 22.0636 2.48623 21.9484C2.5398 19.8806 3.36748 17.944 4.83266 16.4761C6.34605 14.9574 8.36034 14.1217 10.5032 14.1217C12.0219 14.1217 13.4791 14.5422 14.7353 15.3297C14.7676 15.35 14.8047 15.3614 14.8427 15.3628C14.8808 15.3642 14.9186 15.3556 14.9523 15.3377V15.3377ZM10.5032 12.0859C9.27641 12.0859 8.12194 11.6065 7.25141 10.7359C6.82309 10.3087 6.48353 9.801 6.2523 9.24199C6.02106 8.68298 5.90272 8.08374 5.90409 7.4788C5.90409 6.24933 6.38355 5.09219 7.25141 4.22165C8.11926 3.35112 9.27373 2.87165 10.5032 2.87165C11.7327 2.87165 12.8844 3.35112 13.755 4.22165C14.1833 4.64886 14.5229 5.15659 14.7541 5.7156C14.9853 6.27461 15.1037 6.87385 15.1023 7.4788C15.1023 8.70826 14.6228 9.8654 13.755 10.7359C12.8844 11.6065 11.73 12.0859 10.5032 12.0859ZM20.355 18.4609H13.9264C13.8086 18.4609 13.7121 18.5574 13.7121 18.6752V20.1752C13.7121 20.2931 13.8086 20.3895 13.9264 20.3895H20.355C20.4728 20.3895 20.5693 20.2931 20.5693 20.1752V18.6752C20.5693 18.5574 20.4728 18.4609 20.355 18.4609Z" fill="#344054"/>
-                                                </svg>
+                                                </svg> 
                                             </span>
                                         </div>
                                     </td>
@@ -259,7 +259,7 @@
                       </table>
                       @include('common.pagination')
                     @include('assets.asset.common.modal-asset')
-
+                            
                     </div>
                 </div>
             </div>
@@ -333,6 +333,8 @@
             description: '',
             listAssetRecovery: [],
             listHistory: [],
+            linkReport: {},
+            listAssetRepresent: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -363,8 +365,8 @@
                     this.totalPages = data.data.listUserAsset.last_page;
                     this.currentPage = data.data.listUserAsset.current_page;
 
-
-
+                    console.log(this.listUserAsset);
+                                      
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -397,7 +399,7 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfObj;
+                    this.listAssetOfUser = data.data.listAssetOfObj;                   
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -408,17 +410,28 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listHistory = data.data.listHistory;
+                    this.listHistory = data.data.listHistory;                   
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async getListAssetRepresent(userId) {
+                try {
+                    let urlSearch = '/api/asset/get-list-asset-represent?userId='+ userId;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listAssetRepresent = data.data.listAssetRepresent;           
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
             },
             fillData(user) {
                 this.userObj = user;
-
-
+                
                 this.getDataAssetOfUser();
                 this.getDataHistoryOfUser();
+                this.getListAssetRepresent(user.id);
             },
             toggleSelection(asset, isChecked) {
                 if (isChecked) {
@@ -472,6 +485,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetAllocate = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {
@@ -496,6 +510,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRecovery = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {

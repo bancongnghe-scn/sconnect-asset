@@ -18,7 +18,7 @@
         </div>
     </div>
 
-    @include('assets.shopping_plan_organization.quarter.detail')
+    @include('assets.shopping_plan_organization.quarter.detail', ['id' => 'modalDetailOrganization'])
     @include('assets.shopping_plan_organization.quarter.register')
 </div>
 
