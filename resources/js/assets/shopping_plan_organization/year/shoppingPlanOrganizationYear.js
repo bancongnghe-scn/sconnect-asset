@@ -148,7 +148,7 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentRegisterYear(this.id, this.registersOrganization)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
-                    this.dataTable.find(item => +item.id === +this.id).status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                    this.list(this.filters)
                     $('#modalRegister').modal('hide')
                     return
                 }
@@ -378,7 +378,12 @@ document.addEventListener('alpine:init', () => {
             ]
             this.configButtonsTable = [
                 {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
+                    condition: (status, startTime, endTime) =>
+                        (
+                            [STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(status)
+                            && new Date() >= new Date(window.formatDate(startTime))
+                            && new Date() <= new Date(window.formatDate(endTime))
+                        ) || status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL,
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',

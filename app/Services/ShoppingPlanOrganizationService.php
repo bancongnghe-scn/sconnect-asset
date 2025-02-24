@@ -105,8 +105,12 @@ class ShoppingPlanOrganizationService
         // Chi dang ky khi trang thai phu hop va con thoi gian dang ky
         $shoppingPlanCompany = $shoppingPlanOrganization->shoppingPlanCompany;
         if (
-            !in_array($shoppingPlanOrganization->status, [ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED])
-            || Carbon::now() > Carbon::parse($shoppingPlanCompany->end_time)
+            !(
+                in_array($shoppingPlanOrganization->status, [
+                    ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED,
+                ]) && Carbon::now() > Carbon::parse($shoppingPlanCompany->end_time)
+                || ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL == $shoppingPlanOrganization->status
+            )
         ) {
             return [
                 'success'    => false,
@@ -128,8 +132,19 @@ class ShoppingPlanOrganizationService
 
         DB::beginTransaction();
         try {
-            if (ShoppingPlanOrganization::STATUS_OPEN_REGISTER === +$shoppingPlanOrganization->status) {
-                $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_REGISTERED;
+            $status = null;
+            switch (+$shoppingPlanOrganization->status) {
+                case ShoppingPlanOrganization::STATUS_OPEN_REGISTER:
+                    $status = ShoppingPlanOrganization::STATUS_REGISTERED;
+                    break;
+                case ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL:
+                    $status = ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                    break;
+                default:
+            }
+
+            if (!is_null($status)) {
+                $shoppingPlanOrganization->status = $status;
                 if (!$shoppingPlanOrganization->save()) {
                     DB::rollBack();
 
