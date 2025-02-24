@@ -61,7 +61,7 @@ class RoleService
 
     public function getListRole($filters)
     {
-        $data = $this->roleRepository->getListing($filters, ['id', 'name', 'description']);
+        $data = $this->roleRepository->getListing($filters, ['id', 'name as description', 'description as name']);
 
         return $data->toArray();
     }
