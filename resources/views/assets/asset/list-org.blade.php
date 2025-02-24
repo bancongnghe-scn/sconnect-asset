@@ -205,7 +205,7 @@
                                 <tr>
                                     <td class="text-center" x-text="index + 1 + (currentPage-1)*limitParam"></td>
                                     <td class="text-left" x-text="org.dept_type.cfg_key + ' ' + org.name"></td>
-                                    <td class="text-left" x-text="org.asset_count"></td>
+                                    <td class="text-center" x-text="org.list_asset.length"></td>
                                         
                                     </td>
                                     <td class="text-center">
@@ -302,6 +302,7 @@
             description: '',
             listAssetRecovery: [],
             listHistory: [],
+            linkReport: {},
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -381,7 +382,6 @@
             },
             fillData(org) {
                 this.orgObj = org;
-                console.log(this.orgObj);
                 
                 this.getDataAssetOfUser();
                 this.getDataHistoryOfOrg();
@@ -438,6 +438,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetAllocate = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {
@@ -462,6 +463,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRecovery = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {

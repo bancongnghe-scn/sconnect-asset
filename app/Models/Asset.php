@@ -12,7 +12,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Asset extends Model
 {
     use HasFactory;
-    protected $table = 'assets';
+    protected $connection = 'mysql';
+    protected $table      = 'assets';
 
     protected $fillable = [
         'name',
@@ -100,6 +101,19 @@ class Asset extends Model
         self::LOCATION_HCM                      => 'HCM',
         self::LOCATION_KVC                      => 'Khu vui chơi',
         self::LOCATION_WAREHOUSE                => 'Kho công ty',
+    ];
+
+    public const LIST_MEASURE = [
+        1  => 'Chiếc',
+        2  => 'Cái',
+        3  => 'Bộ',
+        4  => 'Bình',
+        5  => 'Cuộn',
+        6  => 'Hộp',
+        7  => 'Túi',
+        8  => 'Lọ',
+        9  => 'Thùng',
+        10 => 'Đôi',
     ];
 
     protected function locationText(): Attribute

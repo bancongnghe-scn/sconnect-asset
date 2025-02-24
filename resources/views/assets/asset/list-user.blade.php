@@ -238,7 +238,7 @@
                                     <td class="text-center" x-text="user.list_asset_use.length">
                                         
                                     </td>
-                                    <td class="text-center">0</td>
+                                    <td class="text-center" x-text="user.total_asset_represent"></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 8px;">
                                             <span style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetail" @click="fillData(user); tab = 'allocation-tab'; tabAllocation = 'allocation-tab'">
@@ -333,6 +333,8 @@
             description: '',
             listAssetRecovery: [],
             listHistory: [],
+            linkReport: {},
+            listAssetRepresent: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -413,12 +415,23 @@
                     console.error('Lỗi khi gọi API:', error);
                 }
             },
+            async getListAssetRepresent(userId) {
+                try {
+                    let urlSearch = '/api/asset/get-list-asset-represent?userId='+ userId;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listAssetRepresent = data.data.listAssetRepresent;           
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
             fillData(user) {
                 this.userObj = user;
-                console.log(this.userObj);
                 
                 this.getDataAssetOfUser();
                 this.getDataHistoryOfUser();
+                this.getListAssetRepresent(user.id);
             },
             toggleSelection(asset, isChecked) {
                 if (isChecked) {
@@ -472,6 +485,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetAllocate = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {
@@ -496,6 +510,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRecovery = [];
                     this.description = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successAllocateModal');
                 } catch (error) {

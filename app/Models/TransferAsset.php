@@ -19,6 +19,7 @@ class TransferAsset extends Model
         'to_org_id',
         'created_by',
         'description',
+        'link_report',
     ];
 
     public function user()

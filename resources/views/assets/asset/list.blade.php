@@ -411,7 +411,7 @@
               @include('common.pagination')
                 <!-- Modal -->
                     <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-xl">
+                        <div class="modal-dialog modal-xl" style="--bs-modal-width: 1400px !important">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="mb-0" style="font-weight: bold; color: #379237">Xem chi tiết tài sản</h5>
@@ -419,7 +419,7 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-4" style="padding-right: 60px;">
+                                        <div class="col-3" style="padding-right: 60px;">
                                             <ul class="sidebar-tab" style="padding: 0;">
                                                 <li @click="tabDetail='general-tab'" :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
                                                 <li @click="tabDetail='guarantee-tab'" :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
@@ -432,7 +432,7 @@
                                             <span>Mã QR</span>
                                             <img src="https://media.istockphoto.com/id/1095468748/vi/vec-to/m%C3%A3-qr-m%E1%BA%ABu-m%C3%A3-v%E1%BA%A1ch-hi%E1%BB%87n-%C4%91%E1%BA%A1i-vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BB%83-qu%C3%A9t-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-th%C3%B4ng-minh-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=nCjpoa8qW4lREJGqVCQZsWcrKGOcKKuy5RSsSVzqlL8=" alt="" style="width: 100%;">
                                         </div>
-                                        <div class="col-8">
+                                        <div class="col-9">
                                             <div class="name-asset d-flex" style="gap: 10px;">
                                                 <h5 class="text-bold" x-text="assetName"></h5>
                                                 <span x-html="arrSvgStatus[assetStatus]"></span>
@@ -584,7 +584,7 @@
                                                                     <td x-text="formatDateVN(history.transfer_asset.created_at)"></td>
                                                                     <td x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                                     <td>
-                                                                        <span class="text-primary" x-text="'BB0' + history.id"></span>
+                                                                        <span class="text-primary" x-text="'BB0' + history.transfer_asset_id" @click="window.open('/' + history.transfer_asset.link_report, '_blank')" style="cursor: pointer;"></span>
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex">
@@ -943,6 +943,8 @@
             from: 0,
             to: 0,
             total: 0,
+            linkReport: {},
+            listAssetRepresent: {},
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
@@ -1159,8 +1161,18 @@
 
                     const response = await axios.get(urlSearch);
                     const data = response.data;
-                    this.listHistoryAsset = data.data.listHistory;
-                    console.log(this.listHistoryAsset);                                    
+                    this.listHistoryAsset = data.data.listHistory;                                   
+                } catch (error) {
+                    console.error('Lỗi khi gọi API:', error);
+                }
+            },
+            async getListAssetRepresent(userId) {
+                try {
+                    let urlSearch = '/api/asset/get-list-asset-represent?userId='+ userId;
+
+                    const response = await axios.get(urlSearch);
+                    const data = response.data;
+                    this.listAssetRepresent = data.data.listAssetRepresent;           
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
                 }
@@ -1184,11 +1196,13 @@
                     if (this.defaultCheck == 'employee') {
                         obj = this.listUser.find(user => user.id == this.userSelect);
                         this.userObj = obj;
+                        this.orgObj = null;
                     }
 
                     if (this.defaultCheck == 'unit') {
                         obj = this.listOrg.find(user => user.id == this.unitSelect);
                         this.orgObj = obj;
+                        this.userObj = null;
                     }
 
                     this.obj = obj;
@@ -1197,6 +1211,7 @@
                     
                     this.getDataAssetOf();
                     this.getDataHistoryOf();
+                    this.getListAssetRepresent(this.assetSelect.user_id);
                     this.tab = 'allocation-tab'; 
                     this.tabAllocation = 'allocation-tab';
                 } else {
@@ -1205,12 +1220,14 @@
                     if (this.assetSelect.user_id) {
                         obj = this.assetSelect.user;
                         this.userObj = obj;
+                        this.orgObj = null;
                         this.defaultCheck = 'employee';
                     }
 
                     if (!this.assetSelect.user_id && this.assetSelect.organization_id) {
                         obj = this.assetSelect.organization;
                         this.orgObj = obj;
+                        this.userObj = null;
                         this.defaultCheck = 'unit';
                     }
 
@@ -1220,6 +1237,7 @@
                     this.listAssetRecovery.push(this.assetSelect);
                     this.getDataAssetOf();
                     this.getDataHistoryOf();
+                    this.getListAssetRepresent(this.assetSelect.user_id);
                     this.tab = 'allocation-tab'; 
                     this.tabAllocation = 'recovery-tab';
                 }
@@ -1280,6 +1298,7 @@
                         this.listAssetOfUser = data.data.listAssetOfObj;
                         this.listAssetAllocate = [];
                         this.description = '';
+                        this.linkReport = data.data.linkReport;
 
                         openModal('#successAllocateModal');
                     } else {
@@ -1299,6 +1318,7 @@
                         this.listAssetOfUser = data.data.listAssetOfObj;
                         this.listAssetAllocate = [];
                         this.description = '';
+                        this.linkReport = data.data.linkReport;
 
                         openModal('#successAllocateModal');
                     }
@@ -1328,6 +1348,7 @@
                         this.listAssetRecovery = [];
                         this.description = '';
                         this.recoveryCompany = false;
+                        this.linkReport = data.data.linkReport;
 
                         openModal('#successRecoveryModal');
                     } else {
@@ -1347,6 +1368,7 @@
                         this.listAssetOfUser = data.data.listAssetOfObj;
                         this.listAssetRecovery = [];
                         this.description = '';
+                        this.linkReport = data.data.linkReport;
 
                         openModal('#successRecoveryModal');
                     }
@@ -1387,6 +1409,7 @@
                     this.listAssetOfUser = data.data.listAssetOfObj;
                     this.listAssetRotation = [];
                     this.descriptionRotation = '';
+                    this.linkReport = data.data.linkReport;
 
                     openModal('#successRotationModal');
                     this.fetchData('', '', '', '', '', this.urlSearch);
