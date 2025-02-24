@@ -95,7 +95,7 @@
                                                             <tr class="tw-text-nowrap"
                                                                 x-data="{
                                                                     async updatePrice() {
-                                                                        if (![STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(+data.status)) {
+                                                                        if (![STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(+dataOrganization.status)) {
                                                                             return
                                                                         }
                                                                         if (asset.asset_type_id && asset.job_id) {
