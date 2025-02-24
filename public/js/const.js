@@ -160,7 +160,7 @@ LIST_STATUS_IMPORT_WAREHOUSE = {
 
 //SUPPLIER
 STATUS_SUPPLIER_PENDING_APPROVAL = 1
-STATUS_SUPPLIER_APPROVED  = 2
+STATUS_SUPPLIER_APPROVED = 2
 STATUS_SUPPLIER_CANCEL = 3
 LIST_STATUS_SUPPLIER = {
     [STATUS_SUPPLIER_PENDING_APPROVAL]: 'Chờ phê duyệt',
@@ -195,19 +195,19 @@ LOCATION_TQ_6      = 310;
 LOCATION_TQ_7      = 311;
 LOCATION_WAREHOUSE = 1;
 LIST_LOCATION_ASSET = {
-    LOCATION_CS_1      : 'CS_Tầng 1',
-    LOCATION_CS_4      : 'CS_Tầng 4',
-    LOCATION_CS_7      : 'CS_Tầng 7',
-    LOCATION_CS_8      : 'CS_Tầng 8',
-    LOCATION_CS_9      : 'CS_Tầng 9',
-    LOCATION_TQ_3      : 'TQ - Tầng 3',
-    LOCATION_TQ_4      : 'TQ - Tầng 4',
-    LOCATION_TQ_5      : 'TQ - Tầng 5',
-    LOCATION_TQ_6      : 'TQ - Tầng 6',
-    LOCATION_TQ_7      : 'TQ - Tầng 7',
-    LOCATION_HCM       : 'HCM',
-    LOCATION_KVC       : 'Khu vui chơi',
-    LOCATION_WAREHOUSE : 'Kho công ty',
+    [LOCATION_CS_1]      : 'CS_Tầng 1',
+    [LOCATION_CS_4]      : 'CS_Tầng 4',
+    [LOCATION_CS_7]      : 'CS_Tầng 7',
+    [LOCATION_CS_8]      : 'CS_Tầng 8',
+    [LOCATION_CS_9]      : 'CS_Tầng 9',
+    [LOCATION_TQ_3]      : 'TQ - Tầng 3',
+    [LOCATION_TQ_4]      : 'TQ - Tầng 4',
+    [LOCATION_TQ_5]      : 'TQ - Tầng 5',
+    [LOCATION_TQ_6]      : 'TQ - Tầng 6',
+    [LOCATION_TQ_7]      : 'TQ - Tầng 7',
+    [LOCATION_HCM]       : 'HCM',
+    [LOCATION_KVC]       : 'Khu vui chơi',
+    [LOCATION_WAREHOUSE] : 'Kho công ty',
 }
 
 ASSET_STATUS_ACTIVE                  = 1;

@@ -16,8 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ListAssetService
 {
@@ -473,6 +472,8 @@ class ListAssetService
                 ]);
 
                 MoveAssetUser::create([
+                    'org_id'               => $assetRotation['organization_id'],
+                    'user_id'              => $assetRotation['user_id'],
                     'user_id_after'        => $userId,
                     'org_id_after'         => $orgId,
                     'asset_id'             => $assetRotation['id'],
@@ -579,8 +580,9 @@ class ListAssetService
         ]);
     }
 
-    public function exportReportAllocation()
+    public function listAssetRepresent($request)
     {
+        $orgOfUser = Org::where('manager_id', $request->userId)->first();
         // Đọc file XML template
         $templatePath = resource_path('views/assets/asset/excel/template-recovery-asset.xml');
         $template     = file_get_contents($templatePath);
@@ -605,15 +607,9 @@ class ListAssetService
             ++$rowIndex;
         }
 
-        // Lưu file Excel
-        $exportPath = storage_path('app/test_export');
-        if (!file_exists($exportPath)) {
-            mkdir($exportPath, 0777, true);
+        if ($orgOfUser) {
+            Asset::where('organization_id', $orgOfUser->id)->get();
         }
-
-        $excelFilePath = $exportPath . '/final.xlsx';
-        $writer        = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $writer->save($excelFilePath);
     }
 
     public function getAssetInfo($id)

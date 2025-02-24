@@ -95,6 +95,9 @@
                                                             <tr class="tw-text-nowrap"
                                                                 x-data="{
                                                                     async updatePrice() {
+                                                                        if (![STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(data.status)) {
+                                                                            return
+                                                                        }
                                                                         if (asset.asset_type_id && asset.job_id) {
                                                                             asset.price = await getPrice(asset.asset_type_id, asset.job_id);
                                                                         } else {
@@ -102,7 +105,6 @@
                                                                         }
                                                                     },
                                                                     init() {
-                                                                        this.updatePrice();
                                                                         this.$watch('asset.asset_type_id', () => this.updatePrice());
                                                                         this.$watch('asset.job_id', () => this.updatePrice());
                                                                         this.$watch('asset.price', value => calculatePrice(index));

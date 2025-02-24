@@ -1,8 +1,10 @@
 <?php
 
+use App\Exports\ReportExport;
 use App\Http\Controllers\ListAssetController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,4 +120,8 @@ Route::prefix('asset')->group(function () {
     Route::get('/export-list-asset', [ListAssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
 });
 
+Route::get('/xslt-transform', [ListAssetController::class, 'transformXmlToHtml']);
+Route::get('/excel-transform', function () {
+    return Excel::download(new ReportExport(), 'output.xlsx');
+});
 Route::view('asset/info/{id}', 'assets.asset.info_qr');
