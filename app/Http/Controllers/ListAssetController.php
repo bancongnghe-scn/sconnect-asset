@@ -14,12 +14,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use DOMDocument;
-use XSLTProcessor;
 use Storage;
 
 class ListAssetController extends Controller
 {
-    public function __construct(private readonly ListAssetService $assetService) {}
+    public function __construct(private readonly ListAssetService $assetService)
+    {
+    }
 
     public function listAsset(): View
     {
@@ -343,15 +344,15 @@ class ListAssetController extends Controller
         $xslPath = storage_path('app/template/thuhoi.xsl');
 
         // Tạo DOMDocument cho XML
-        $xml = new DOMDocument;
+        $xml = new \DOMDocument();
         $xml->load($xmlPath);
 
         // Tạo DOMDocument cho XSLT
-        $xsl = new DOMDocument;
+        $xsl = new \DOMDocument();
         $xsl->load($xslPath);
 
         // Khởi tạo bộ xử lý XSLT
-        $xsltProcessor = new XSLTProcessor();
+        $xsltProcessor = new \XSLTProcessor();
         $xsltProcessor->importStylesheet($xsl);
 
         // Chuyển đổi XML sang HTML

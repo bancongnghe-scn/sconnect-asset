@@ -123,7 +123,7 @@ Route::prefix('asset')->group(function () {
 });
 
 Route::get('/xslt-transform', [ListAssetController::class, 'transformXmlToHtml']);
-Route::get('/excel-transform', function (){
-    return Excel::download(new ReportExport, 'output.xlsx');
+Route::get('/excel-transform', function () {
+    return Excel::download(new ReportExport(), 'output.xlsx');
 });
 Route::view('asset/info/{id}', 'assets.asset.info_qr');

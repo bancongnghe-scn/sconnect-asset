@@ -454,7 +454,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
-                $('#modalDetailOrganization').modal('show')
+                $('#modalOrganizationCompany').modal('show')
                 this.setConfigButton()
             } catch (e) {
                 toast.error(e)

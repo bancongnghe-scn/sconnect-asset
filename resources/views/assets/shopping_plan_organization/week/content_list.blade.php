@@ -20,7 +20,7 @@
 
     {{--modal--}}
     <div>
-        @include('assets.shopping_plan_organization.week.detail')
+        @include('assets.shopping_plan_organization.week.detail', ['id' => 'modalDetailOrganization'])
         @include('assets.shopping_plan_organization.week.register')
     </div>
 </div>

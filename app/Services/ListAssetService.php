@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exports\ReportExport;
 use App\Http\Resources\AssetInfoResource;
 use App\Models\Asset;
 use App\Models\AssetHistory;
@@ -18,9 +17,6 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
-use DOMDocument;
-use XSLTProcessor;
-use Storage;
 
 class ListAssetService
 {
@@ -476,12 +472,12 @@ class ListAssetService
                 ]);
 
                 MoveAssetUser::create([
-                    'org_id' => $assetRotation['organization_id'],
-                    'user_id' => $assetRotation['user_id'],
-                    'user_id_after' => $userId,
-                    'org_id_after' => $orgId,
-                    'asset_id' => $assetRotation['id'],
-                    'type' => 1,
+                    'org_id'               => $assetRotation['organization_id'],
+                    'user_id'              => $assetRotation['user_id'],
+                    'user_id_after'        => $userId,
+                    'org_id_after'         => $orgId,
+                    'asset_id'             => $assetRotation['id'],
+                    'type'                 => 1,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->descriptionRotation,
                     'created_at'           => Carbon::now(),

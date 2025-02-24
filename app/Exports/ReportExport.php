@@ -3,9 +3,7 @@
 namespace App\Exports;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
-use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Events\AfterSheet;
 
@@ -24,7 +22,7 @@ class ReportExport implements WithEvents
     }
 
     /**
-     * ✅ Trả về nội dung của file template (bắt buộc để Laravel Excel nhận diện)
+     * ✅ Trả về nội dung của file template (bắt buộc để Laravel Excel nhận diện).
      */
     public function array(): array
     {
@@ -32,7 +30,7 @@ class ReportExport implements WithEvents
     }
 
     /**
-     * ✅ Sao chép dữ liệu từ template & chèn dữ liệu động
+     * ✅ Sao chép dữ liệu từ template & chèn dữ liệu động.
      */
     public function registerEvents(): array
     {
@@ -50,7 +48,7 @@ class ReportExport implements WithEvents
     }
 
     /**
-     * ✅ Hàm sao chép toàn bộ nội dung, styles, công thức từ template
+     * ✅ Hàm sao chép toàn bộ nội dung, styles, công thức từ template.
      */
     private static function copySheet(Worksheet $source, Worksheet $destination)
     {
@@ -59,22 +57,22 @@ class ReportExport implements WithEvents
             $destination->setCellValue($cell, $cellValue);
 
             // ✅ Sao chép công thức (nếu có)
-            if ($source->getCell($cell)->getDataType() === \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_FORMULA) {
+            if (\PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_FORMULA === $source->getCell($cell)->getDataType()) {
                 $destination->getCell($cell)->setValue($source->getCell($cell)->getValue());
             }
 
             // ✅ Sao chép định dạng (font, màu nền, border, căn lề)
             $destination->getStyle($cell)->applyFromArray([
-                'font'  => $source->getStyle($cell)->getFont()->toArray(),
+                'font'      => $source->getStyle($cell)->getFont()->toArray(),
                 'alignment' => $source->getStyle($cell)->getAlignment()->toArray(),
-                'fill'  => $source->getStyle($cell)->getFill()->toArray(),
-                'borders' => $source->getStyle($cell)->getBorders()->toArray(),
+                'fill'      => $source->getStyle($cell)->getFill()->toArray(),
+                'borders'   => $source->getStyle($cell)->getBorders()->toArray(),
             ]);
         }
     }
 
     /**
-     * ✅ Hàm chèn dữ liệu động vào các vị trí trong Excel
+     * ✅ Hàm chèn dữ liệu động vào các vị trí trong Excel.
      */
     private static function insertData(Worksheet $sheet)
     {
