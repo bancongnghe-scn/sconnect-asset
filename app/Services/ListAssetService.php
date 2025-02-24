@@ -86,8 +86,17 @@ class ListAssetService
             $query->where('name', 'LIKE', "%{$request->nameUser}%")
                 ->orWhere('code', 'LIKE', "%{$request->nameUser}%");
         }
+        $listAsset = $query->with(['organization', 'organization.deptType', 'listAssetUse'])->where('status', 1)->paginate($request->limit);
 
-        return $query->with(['organization', 'organization.deptType', 'listAssetUse'])->where('status', 1)->paginate($request->limit);
+        foreach ($listAsset->items() as $user) {
+            $listOrgIdOfUser = Org::where('manager_id', $user->id)->pluck('id');
+
+            $user->total_asset_represent = count($listOrgIdOfUser) > 0 ? 
+            Asset::whereIn('organization_id', $listOrgIdOfUser)->count()
+            : 0;
+        }
+
+        return $listAsset;
     }
 
     public function allocateAsset($request)

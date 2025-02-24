@@ -238,7 +238,7 @@
                                     <td class="text-center" x-text="user.list_asset_use.length">
                                         
                                     </td>
-                                    <td class="text-center">0</td>
+                                    <td class="text-center" x-text="user.total_asset_represent"></td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center" style="gap: 8px;">
                                             <span style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetail" @click="fillData(user); tab = 'allocation-tab'; tabAllocation = 'allocation-tab'">
