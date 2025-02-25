@@ -37,7 +37,8 @@ class AssetService
                 'date_purchase'           => $datePurchase,
                 'warranty_months'         => $importWarehouseAsset->warranty_time,
                 'seri_number'             => $importWarehouseAsset->seri_number,
-                'depreciation_months'     => $importWarehouseAsset->assetType?->depreciation_months,
+                'depreciation_months'     => +$importWarehouseAsset->price_last >= Asset::PRICE_DEPRECIATION ?
+                    Asset::MONTH_DEPRECIATION_24 : Asset::MONTH_DEPRECIATION_12,
                 'recent_maintenance_date' => $importWarehouseAsset->date_purchase,
                 'next_maintenance_date'   => Carbon::create($importWarehouseAsset->date_purchase)
                     ->addMonths($importWarehouseAsset->assetType?->depreciation_months)
