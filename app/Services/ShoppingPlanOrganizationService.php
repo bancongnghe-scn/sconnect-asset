@@ -106,9 +106,15 @@ class ShoppingPlanOrganizationService
         $shoppingPlanCompany = $shoppingPlanOrganization->shoppingPlanCompany;
         if (
             !(
-                in_array($shoppingPlanOrganization->status, [
-                    ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED,
-                ]) && Carbon::now() > Carbon::parse($shoppingPlanCompany->end_time)
+                (
+                    in_array($shoppingPlanOrganization->status, [
+                        ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED,
+                    ])
+                    && (
+                        Carbon::now() > Carbon::parse($shoppingPlanCompany->start_time)
+                        && Carbon::now() < Carbon::parse($shoppingPlanCompany->end_time)
+                    )
+                )
                 || ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL == $shoppingPlanOrganization->status
             )
         ) {

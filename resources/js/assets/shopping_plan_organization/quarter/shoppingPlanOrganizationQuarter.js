@@ -113,7 +113,9 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.list_job = response.data
+                let data = response.data
+                data.unshift(POSITION_ORGANIZATION)
+                this.list_job = data
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -226,17 +228,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         setConfigButtons() {
-            this.configButtonsTable = [
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
-                    buttons: [
-                        {
-                            icon: 'bi bi-pencil-square color-sc',
-                            action: (id) => this.handleShowModal(id, 'register'),
-                        },
-                    ],
-                },
-            ]
             this.configButtonsModalDetail = [
                 {
                     condition: () => [
@@ -249,6 +240,22 @@ document.addEventListener('alpine:init', () => {
                             class: 'btn btn-primary',
                             action: () => this.saveReviewRegisterAsset(),
                             permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+            ]
+            this.configButtonsTable = [
+                {
+                    condition: (status, startTime, endTime) =>
+                        (
+                            [STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(status)
+                            && new Date() >= new Date(window.formatDate(startTime))
+                            && new Date() <= new Date(window.formatDate(endTime))
+                        ) || status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL,
+                    buttons: [
+                        {
+                            icon: 'bi bi-pencil-square color-sc',
+                            action: (id) => this.handleShowModal(id, 'register'),
                         },
                     ],
                 },

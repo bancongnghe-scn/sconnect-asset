@@ -1092,4 +1092,54 @@ class ShoppingPlanCompanyService
             ];
         }
     }
+
+    public function sentRegisterAgain($shoppingPlanCompanyId)
+    {
+        $shoppingPlanCompany = $this->planCompanyRepository->find($shoppingPlanCompanyId);
+        if (empty($shoppingPlanCompany)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2058,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            $shoppingPlanCompany->status = ShoppingPlanCompany::STATUS_REGISTER;
+            if (!$shoppingPlanCompany->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2062,
+                ];
+            }
+
+            // Cập nhật các kế hoạch mua sắm đơn vị thành mở đăng ký
+            $this->shoppingPlanOrganizationRepository->updateShoppingPlanOrganization([
+                'shopping_plan_company_id' => $shoppingPlanCompanyId,
+            ], [
+                'status' => ShoppingPlanOrganization::STATUS_OPEN_REGISTER,
+            ]);
+
+            $insertLog = $this->shoppingPlanLogRepository->insertShoppingPlanLog(
+                ShoppingPlanLog::ACTION_SENT_REGISTER_AGAIN,
+                $shoppingPlanCompanyId
+            );
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
 }

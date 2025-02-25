@@ -451,6 +451,22 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
+            async sentRegisterAgain(id) {
+                this.loading = true
+                try {
+                    const response = await window.apiSentRegisterAgain(id)
+                    if (response.success) {
+                        this.list(this.filters)
+                        return
+                    }
+                    toast.error(response.message)
+                } catch (e) {
+                    toast.error(e)
+                } finally {
+                    this.loading = false
+                }
+            },
+
             handleShowTable(index) {
                 if (!this.table_index.includes(index)) {
                     this.table_index.push(index)
@@ -562,6 +578,18 @@ document.addEventListener('alpine:init', () => {
                     }
                 ]
                 this.configButtonsTable = [
+                    {
+                        condition: (status) =>
+                            STATUS_SHOPPING_PLAN_COMPANY_CANCEL === status
+                            && this.permission.includes('shopping_plan_company.sent_register_again')
+                        ,
+                        buttons: [
+                            {
+                                icon: 'bi bi-repeat color-sc',
+                                action: (id) => this.sentRegisterAgain(id),
+                            },
+                        ],
+                    },
                     {
                         condition: (status) =>
                             STATUS_SHOPPING_PLAN_COMPANY_NEW === status
