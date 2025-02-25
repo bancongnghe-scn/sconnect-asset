@@ -112,6 +112,8 @@ class AppErrorCode
     public const CODE_2105 = 2105; //  Lưu lịch sử kế bảo dưỡng thất bại !
     public const CODE_2106 = 2106; //  Không tồn tại thông tin tài sản !
     public const CODE_2107 = 2107; //  Đã tồn tại định mức cấp phát cho loại tài sản (:asset_type) !
+    public const CODE_2108 = 2108; //  Bạn có thể hoàn thành kế hoạch mà không cần gửi duyệt tới giám đốc, do không có tài sản nào cần giám đốc duyệt mua sắm !
+    public const CODE_2109 = 2109; //  Bạn chưa thể hoàn thành do vẫn còn tài sản cần được duyệt !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

@@ -961,6 +961,17 @@ class ShoppingPlanCompanyService
             ];
         }
 
+        if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL == $data['status']) {
+            // Kiểm tra xem có tài sản nào cần giám đốc duyệt không
+            $shoppingAsset = $this->shoppingAssetRepository->getAssetManagerApproval($data['shopping_plan_company_id']);
+            if (empty($shoppingAsset)) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2108,
+                ];
+            }
+        }
+
         DB::beginTransaction();
         try {
             $shoppingPlanCompany->status = $data['status'];
@@ -1045,10 +1056,19 @@ class ShoppingPlanCompanyService
             ];
         }
 
-        if (ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL != $shoppingPlanCompany->status) {
+        if (!in_array($shoppingPlanCompany->status, [ShoppingPlanCompany::STATUS_PENDING_MANAGER_APPROVAL, ShoppingPlanCompany::STATUS_PENDING_ACCOUNTANT_APPROVAL])) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2074,
+            ];
+        }
+
+        //Kiểm tra xem còn tài sản nào chưa được duyệt không
+        $shoppingAsset = $this->shoppingAssetRepository->getAssetUnApproval($id);
+        if (!empty($shoppingAsset)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2109,
             ];
         }
 
