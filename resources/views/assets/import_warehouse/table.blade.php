@@ -12,7 +12,7 @@
                             <th rowspan="1" colspan="1" class="text-center">Tên phiếu</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem;">Thời gian nhập</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem;">Người nhập</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem;">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem;">Trạng thái</th>
                             <th rowspan="1" colspan="1" style="width: 5rem;">Thao tác</th>
                         </tr>
                         </thead>
