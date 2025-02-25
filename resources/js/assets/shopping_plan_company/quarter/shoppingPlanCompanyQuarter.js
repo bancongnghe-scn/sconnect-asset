@@ -444,6 +444,22 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async sentRegisterAgain(id) {
+            this.loading = true
+            try {
+                const response = await window.apiSentRegisterAgain(id)
+                if (response.success) {
+                    this.list(this.filters)
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         async handleShowModalDetailOrganization(id) {
             this.loading = true
             try {
@@ -512,6 +528,18 @@ document.addEventListener('alpine:init', () => {
 
         setConfigButton() {
             this.configButtonsTable = [
+                {
+                    condition: (status) =>
+                        STATUS_SHOPPING_PLAN_COMPANY_CANCEL === status
+                        && this.permission.includes('shopping_plan_company.sent_register_again')
+                    ,
+                    buttons: [
+                        {
+                            icon: 'bi bi-repeat color-sc',
+                            action: (id) => this.sentRegisterAgain(id),
+                        },
+                    ],
+                },
                 {
                     condition: (status) =>
                         STATUS_SHOPPING_PLAN_COMPANY_NEW === status

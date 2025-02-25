@@ -2,12 +2,16 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('history_comment_company', () => ({
             init() {
                 this.$watch('showModal', (newValue, oldValue) => {
-                    if (newValue && this.id !== null) {
+                    if (newValue && this.id !== null && this.isActive) {
                         this.getLogByRecordId()
                         this.listComment()
                         this.handleComment()
                     }
                 })
+
+                $('.modal').on('shown.bs.modal',() => {
+                    this.scrollBottom()
+                });
             },
             //data
             activeLink: {
@@ -30,8 +34,8 @@ document.addEventListener('alpine:init', () => {
                     message: this.comment_message,
                 }
                 const response = await window.apiSentComment(param)
-                this.comment_message = null
                 if (response.success) {
+                    this.comment_message = null
                     return
                 }
                 toast.error(response.message)
@@ -53,11 +57,18 @@ document.addEventListener('alpine:init', () => {
             handleComment() {
                 window.Echo.channel('channel_shopping_plan_' + this.id)
                     .listen('.ShoppingPlanCommentEvent', (e) => {
-                        console.log(e)
+
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)
                 });
+            },
+
+            scrollBottom() {
+                const scroll = $('#historyComment').get(0);
+                if (scroll) {
+                    scroll.scrollTop = scroll.scrollHeight; // Cuộn xuống dưới
+                }
             },
             //methods
             async getLogByRecordId() {

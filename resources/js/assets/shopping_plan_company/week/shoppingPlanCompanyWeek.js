@@ -566,7 +566,7 @@ document.addEventListener('alpine:init', () => {
                 }
             })
 
-            console.log(this.shoppingAssetWithAction)
+
         },
 
         selectedAll() {

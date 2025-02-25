@@ -45,6 +45,7 @@ class AssetService
                 'asset_type_id'           => $importWarehouseAsset->asset_type_id,
                 'supplier_id'             => $importWarehouseAsset->supplier_id,
                 'status'                  => Asset::STATUS_PENDING,
+                'location'                => Asset::LOCATION_WAREHOUSE,
                 'import_warehouse_id'     => $importWarehouseId,
                 'created_by'              => $userId,
             ];

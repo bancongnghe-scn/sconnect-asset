@@ -5,9 +5,12 @@
                 <h4 class="modal-title">Kế hoạch mua sắm quý</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
                     <template x-if="
-                        (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                        || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                        && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
+                        ((
+                            +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                        ) && (new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time)))
+                        || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
+                    ">
                         <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
                     </template>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>

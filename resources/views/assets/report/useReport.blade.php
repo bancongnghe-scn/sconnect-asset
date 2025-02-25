@@ -29,7 +29,7 @@
                       <option value="">Chưa sử dụng</option>
                     </select>
                   </div>
-                  
+
                   <br>
                   <table class="table table-bordered">
                       <thead>
@@ -87,8 +87,8 @@
           fetch('/api/report/get-data-use-report')
           .then(response => {
             if (!response.ok) {
-              console.log(response);
-              
+
+
               throw new Error('Network response was not ok ' + response.statusText);
             }
             return response.json();
@@ -149,14 +149,14 @@
         fetch('/api/report/get-data-structure-report')
           .then(response => {
             if (!response.ok) {
-              console.log(response);
-              
+
+
               throw new Error('Network response was not ok ' + response.statusText);
             }
             return response.json();
           })
           .then(data => {
-            
+
             this.chart = new Chart(ctx, {
               type: 'doughnut',
               data: {

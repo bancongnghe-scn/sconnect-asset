@@ -98,7 +98,7 @@
                         </div>
                     </div>
                     <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
-                        @include('assets.shopping-plan-company.history_comment')
+                        @include('assets.shopping_plan_organization.history_comment')
                     </div>
                 </div>
             </div>
