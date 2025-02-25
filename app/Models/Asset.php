@@ -117,7 +117,7 @@ class Asset extends Model
     ];
 
     public const PRICE_DEPRECIATION    = 30000000;
-    public const MONTH_DEPRECIATION_24 = 24;
+    public const MONTH_DEPRECIATION_36 = 36;
     public const MONTH_DEPRECIATION_12 = 12;
 
     protected function locationText(): Attribute
