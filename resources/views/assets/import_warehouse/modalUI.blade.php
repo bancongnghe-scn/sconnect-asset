@@ -47,8 +47,8 @@
                         <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                             <thead>
                             <tr>
-                                <th x-show="+data.status === STATUS_IMPORT_WAREHOUSE_COMPLETE">Mã</th>
-                                <th>Tên</th>
+                                <th style="width: 6rem;" x-show="+data.status === STATUS_IMPORT_WAREHOUSE_COMPLETE">Mã</th>
+                                <th style="width: 23rem">Tên</th>
                                 <th style="width: 9rem;">Bảo hành (tháng)</th>
                                 <th style="width: 12rem;">Seri</th>
                                 <th style="width: 8rem;">Đơn giá</th>
