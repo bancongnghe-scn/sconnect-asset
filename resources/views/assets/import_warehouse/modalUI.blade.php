@@ -56,7 +56,7 @@
                                 <th style="width: 6rem;">Ngày mua</th>
                                 <th>Loại tài sản</th>
                                 <th style="width: 4rem;">ĐVT</th>
-                                <th>NCC</th>
+                                <th style="width: 30rem">NCC</th>
                             </tr>
                             </thead>
                             <tbody>

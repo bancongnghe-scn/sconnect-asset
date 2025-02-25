@@ -17,7 +17,7 @@ class AssetInfoResource extends JsonResource
             'supplier'      => $this->resource->supplier?->name,
             'price'         => $this->resource->price,
             'date_purchase' => $this->resource->date_purchase,
-            'serial_number' => $this->resource->serial_number,
+            'seri_number'   => $this->resource->seri_number,
             'location'      => $this->resource->location,
             'status'        => $this->resource->status,
         ];
