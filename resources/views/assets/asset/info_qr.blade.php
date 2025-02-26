@@ -55,7 +55,7 @@
         </div>
         <div>
             <span class="tw-font-bold">Số Serial:</span>
-            <span x-text="data.serial_number"></span>
+            <span x-text="data.seri_number"></span>
         </div>
         <div>
             <span class="tw-font-bold">Vị trí tài sản:</span>

@@ -62,4 +62,28 @@ class ShoppingAssetRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function getAssetManagerApproval($shoppingPlanCompanyId)
+    {
+        return $this->_model->where('shopping_plan_company_id', $shoppingPlanCompanyId)
+            ->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+            ->first();
+    }
+
+    // Lấy tài sản chưa được duyệt
+    public function getAssetUnApproval($shoppingPlanCompanyId)
+    {
+        return $this->_model->where('shopping_plan_company_id', $shoppingPlanCompanyId)
+            ->where(function ($query) {
+                $query->where('price', '<=', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                    ->whereNotIn('status', [
+                        ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL,
+                        ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL,
+                        ShoppingAsset::STATUS_HR_MANAGER_DISAPPROVAL,
+                    ]);
+            })->orWhere(function ($query) {
+                $query->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                    ->whereNotIn('status', [ShoppingAsset::STATUS_GENERAL_APPROVAL, ShoppingAsset::STATUS_GENERAL_DISAPPROVAL]);
+            })->first();
+    }
 }

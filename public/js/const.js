@@ -13,9 +13,9 @@ LIST_MEASURE = {
 }
 
 //APPENDIX
-STATUS_APPENDIX_PENDING = 1;
-STATUS_APPENDIX_APPROVED = 2;
-STATUS_APPENDIX_CANCEL = 3;
+STATUS_APPENDIX_PENDING          = 1;
+STATUS_APPENDIX_APPROVED         = 2;
+STATUS_APPENDIX_CANCEL           = 3;
 STATUS_APPENDIX = {
     [STATUS_APPENDIX_PENDING]: 'Chờ duyệt',
     [STATUS_APPENDIX_APPROVED]: 'Đã duyệt',
@@ -23,9 +23,9 @@ STATUS_APPENDIX = {
 }
 
 //CONTRACT
-CONTRACT_STATUS_PENDING = 1;
-CONTRACT_STATUS_APPROVED = 2;
-CONTRACT_STATUS_CANCEL = 3;
+CONTRACT_STATUS_PENDING          = 1;
+CONTRACT_STATUS_APPROVED         = 2;
+CONTRACT_STATUS_CANCEL           = 3;
 STATUS_CONTRACT = {
     [CONTRACT_STATUS_PENDING]: 'Chờ duyệt',
     [CONTRACT_STATUS_APPROVED]: 'Đã duyệt',
@@ -181,33 +181,46 @@ LEVEL_ALLOCATION_RATE = {
 }
 
 // ASSET
+LOCATION_CS_1      = 136;
+LOCATION_CS_4      = 303;
+LOCATION_CS_7      = 304;
+LOCATION_CS_8      = 305;
+LOCATION_CS_9      = 306;
+LOCATION_HCM       = 313;
+LOCATION_KVC       = 416;
+LOCATION_TQ_3      = 307;
+LOCATION_TQ_4      = 308;
+LOCATION_TQ_5      = 309;
+LOCATION_TQ_6      = 310;
+LOCATION_TQ_7      = 311;
+LOCATION_WAREHOUSE = 1;
 LIST_LOCATION_ASSET = {
-    136: 'CS_Tầng 1',
-    303: 'CS_Tầng 4',
-    304: 'CS_Tầng 7',
-    305: 'CS_Tầng 8',
-    306: 'CS_Tầng 9',
-    307: 'TQ - Tầng 3',
-    308: 'TQ - Tầng 4',
-    309: 'TQ - Tầng 5',
-    310: 'TQ - Tầng 6',
-    311: 'TQ - Tầng 7',
-    313: 'HCM',
-    416: 'Khu vui chơi',
-    1: 'Kho công ty',
+    [LOCATION_CS_1]      : 'CS_Tầng 1',
+    [LOCATION_CS_4]      : 'CS_Tầng 4',
+    [LOCATION_CS_7]      : 'CS_Tầng 7',
+    [LOCATION_CS_8]      : 'CS_Tầng 8',
+    [LOCATION_CS_9]      : 'CS_Tầng 9',
+    [LOCATION_TQ_3]      : 'TQ - Tầng 3',
+    [LOCATION_TQ_4]      : 'TQ - Tầng 4',
+    [LOCATION_TQ_5]      : 'TQ - Tầng 5',
+    [LOCATION_TQ_6]      : 'TQ - Tầng 6',
+    [LOCATION_TQ_7]      : 'TQ - Tầng 7',
+    [LOCATION_HCM]       : 'HCM',
+    [LOCATION_KVC]       : 'Khu vui chơi',
+    [LOCATION_WAREHOUSE] : 'Kho công ty',
 }
 
-ASSET_STATUS_ACTIVE = 1;
-ASSET_STATUS_PENDING = 2;
-ASSET_STATUS_NEW = 3;
-ASSET_STATUS_LOST = 4;
-ASSET_STATUS_CANCEL = 5;
-ASSET_STATUS_PROPOSAL_LIQUIDATION = 6;
-ASSET_STATUS_IN_LIQUIDATION = 7;
-ASSET_STATUS_LIQUIDATED = 8;
-ASSET_STATUS_DAMAGED = 9;
-ASSET_STATUS_REPAIR = 10;
-ASSET_STATUS_MAINTAIN = 11;
+ASSET_STATUS_ACTIVE                  = 1;
+ASSET_STATUS_PENDING                 = 2;
+ASSET_STATUS_NEW                     = 3;
+ASSET_STATUS_LOST                    = 4;
+ASSET_STATUS_CANCEL                  = 5;
+ASSET_STATUS_PROPOSAL_LIQUIDATION    = 6;
+ASSET_STATUS_IN_LIQUIDATION          = 7;
+ASSET_STATUS_LIQUIDATED              = 8;
+ASSET_STATUS_DAMAGED                 = 9;
+ASSET_STATUS_REPAIR                  = 10;
+ASSET_STATUS_MAINTAIN                = 11;
 LIST_STATUS_ASEET = {
     [ASSET_STATUS_ACTIVE]: 'Đang sử dụng',
     [ASSET_STATUS_PENDING]: 'Chưa sử dụng',
@@ -223,8 +236,8 @@ LIST_STATUS_ASEET = {
 }
 // MAINTAIN
 LIST_STATUS_MAINTAIN = {
-    [ASSET_STATUS_ACTIVE]: 'Đang sử dụng',
-    [ASSET_STATUS_PENDING]: 'Chưa sử dụng',
+    [ASSET_STATUS_ACTIVE]  : 'Đang sử dụng',
+    [ASSET_STATUS_PENDING] : 'Chưa sử dụng',
 }
 
 STATUS_ASSET_NOT_MAINTAINED = 0
@@ -318,6 +331,6 @@ LIST_STATUS_TEXT = {
 }
 
 POSITION_ORGANIZATION = {
-    id: 1000000,
+    id : 1000000,
     name: 'Đơn vị'
 }

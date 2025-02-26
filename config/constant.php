@@ -60,6 +60,6 @@ return [
         311 => 'TQ - Tầng 7',
         313 => 'HCM',
         416 => 'Khu vui chơi',
-        1 => 'Kho công ty',
+        1   => 'Kho công ty',
     ],
 ];

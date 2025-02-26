@@ -18,8 +18,8 @@ class SentInfoShoppingAssetRequest extends FormRequest
             'assets'                     => 'required|array',
             'assets.*.id'                => 'required|integer',
             'assets.*.quantity_approved' => 'nullable|integer',
-            'assets.*.price'             => 'nullable|integer',
-            'assets.*.tax_money'         => 'nullable|integer',
+            'assets.*.price'             => 'nullable|string',
+            'assets.*.tax_money'         => 'nullable|string',
             'assets.*.supplier_id'       => 'nullable|integer',
             'assets.*.link'              => 'nullable|string',
         ];

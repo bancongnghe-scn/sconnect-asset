@@ -45,6 +45,7 @@ class CommentController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();

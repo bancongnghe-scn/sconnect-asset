@@ -8,7 +8,7 @@
         <th rowspan="2" class="text-center">Đơn vị</th>
         <th rowspan="2" class="text-center">Loại tài sản</th>
         <th colspan="3" class="text-center">Số lượng đăng ký theo tháng</th>
-        <th rowspan="2" class="text-center">Tổng Số lượng</th>
+        <th rowspan="2" class="text-center" style="width: 6rem">SL</th>
         <th rowspan="2" class="text-center">Tổng Thành tiền</th>
         <th rowspan="2" class="text-center" style="width: 9rem;">Thao tác</th>
     </tr>
@@ -33,7 +33,7 @@
                                ].includes(+organization.status)"
                     >
                 </td>
-                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
+                <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold align-middle">
                     <span x-text="organization.name"></span>
                     @include('component.status.status_shopping_plan_organization', [
                         'status' => 'organization.status',

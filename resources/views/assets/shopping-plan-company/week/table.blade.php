@@ -18,7 +18,7 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>

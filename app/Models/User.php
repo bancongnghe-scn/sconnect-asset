@@ -54,7 +54,7 @@ class User extends Authenticatable
         'password'          => 'hashed',
     ];
 
-       protected $appends = ['org_last_parent', 'job_position'];
+    protected $appends = ['org_last_parent', 'job_position'];
 
     public function organization(): HasOne
     {

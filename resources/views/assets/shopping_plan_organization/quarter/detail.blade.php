@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalDetailOrganization" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="{{$id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
@@ -105,7 +105,7 @@
                                                                'disabled' => true
                                                             ])
                                                         </td>
-                                                        <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
+                                                        <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id)?.measure : ''"></td>
                                                         <td>
                                                             @include('common.select_custom.extent.select_single', [
                                                                 'placeholder' => 'Chọn chức danh',
