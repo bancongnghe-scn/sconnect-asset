@@ -1,7 +1,7 @@
 <?php
 
 use App\Exports\ReportExport;
-use App\Http\Controllers\ListAssetController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
