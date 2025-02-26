@@ -40,7 +40,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Vị trí tài sản <span class="text-danger">*</span></span>
-                                        <select class="form-control select2" data-placeholder="Vị trí" id="locationSearchEdit" x-model="assetEdit.location" disabled>
+                                        <select class="form-control select2" data-placeholder="Vị trí" id="locationSearchEdit" x-model="assetEdit.location">
                                             <option value="0" selected>Vị trí</option>
                                             <template x-for="(value, key) in listLocation">
                                                 <option :value="key" x-text="value"></option>
@@ -76,7 +76,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Nhà cung cấp <span class="text-danger">*</span></span>
-                                        <select class="form-control select2" data-placeholder="Vị trí" id="supplierEdit" x-model="assetEdit.supplier_id" disabled>
+                                        <select class="form-control select2" data-placeholder="Vị trí" id="supplierEdit" x-model="assetEdit.supplier_id">
                                             <option value="0" selected>Nhà cung cấp</option>
                                             <template x-for="(supplier, key) in listSupplier">
                                                 <option :value="supplier.id" x-text="supplier.name"></option>
@@ -95,7 +95,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Giá trị <span class="text-danger">*</span></span>
-                                        <input type="number" class="form-control" x-model="assetEdit.price" disabled>
+                                        <input type="number" class="form-control" x-model="assetEdit.price">
                                     </div>
                                 </div>
                                 <div class="col-6">

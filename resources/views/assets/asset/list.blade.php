@@ -242,14 +242,14 @@
                                         class="dropdown-content" 
                                         @click.outside="open = false" 
                                         style="position: absolute; background: #fff; padding: 10px; z-index: 1000; display: block;">
-                                        <template x-if="matchStatus(asset.status, 'maintain')">
+                                        {{-- <template x-if="matchStatus(asset.status, 'maintain')">
                                             <a class="d-flex item-menu" href="#">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M21.767 4.69652C21.7536 4.67241 21.7348 4.6483 21.7134 4.62955C21.5795 4.49563 21.3625 4.49563 21.2286 4.62955L16.6134 9.24473L14.7946 7.42598L19.4125 2.80813C19.4339 2.7867 19.45 2.76527 19.4661 2.74116C19.5625 2.57777 19.5089 2.36884 19.3455 2.27241C16.7152 0.718839 13.2705 1.07509 11.0071 3.3358C9.21249 5.13045 8.61785 7.67509 9.22588 9.96259L1.37767 17.8108C1.29731 17.8912 1.30267 18.0224 1.38571 18.1054L5.93124 22.651C6.01428 22.734 6.14821 22.7394 6.22588 22.659L14.0714 14.8135C16.3616 15.4242 18.9062 14.8322 20.7036 13.0349C22.9643 10.7715 23.3205 7.32688 21.767 4.69652ZM19.3402 11.6688C17.7839 13.2251 15.4482 13.5251 13.592 12.5688L13.3562 12.8046L13.3536 12.8019L6.01428 20.1438L3.89285 18.0224L10.0562 11.859C10.0562 11.859 10.0562 11.8617 10.0589 11.8617L11.4732 10.4474C10.517 8.59116 10.817 6.25545 12.3732 4.6992C12.8751 4.19682 13.4796 3.80872 14.1453 3.5614C14.8109 3.31408 15.5222 3.21337 16.2304 3.26616L12.6705 6.8233C12.5097 6.98427 12.4194 7.20248 12.4194 7.43C12.4194 7.65752 12.5097 7.87573 12.6705 8.0367L16.0053 11.3715C16.1663 11.5323 16.3845 11.6226 16.612 11.6226C16.8396 11.6226 17.0578 11.5323 17.2187 11.3715L20.7759 7.81438C20.875 9.20188 20.3902 10.6215 19.3402 11.6688Z" fill="#344054"/>
                                                 </svg>
                                                 <span class="title-menu">Bảo dưỡng</span>    
                                             </a>
-                                        </template>
+                                        </template> --}}
     
                                         <template x-if="matchStatus(asset.status, 'detail')">
                                             <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset);">
@@ -354,7 +354,7 @@
                                             </svg>                                            
                                             <span class="title-menu">In</span>                                              
                                         </a>
-                                        <a class="d-flex item-menu" href="#">
+                                        {{-- <a class="d-flex item-menu" href="#">
                                             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                 <path d="M3.66797 5.7998V22.9998C3.66797 24.1044 4.5634 24.9998 5.66797 24.9998H20.3346C21.4392 24.9998 22.3346 24.1044 22.3346 22.9998V5.7998" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -364,7 +364,7 @@
                                             </svg>
                                                                                           
                                             <span class="title-menu text-danger">Xóa</span>   
-                                        </a>                                        
+                                        </a>                                         --}}
                                     </div>
                                     <div class="dropdown-content-print">
                                         <a>In mã QR</a>
@@ -445,7 +445,7 @@
                                                 <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
                                             </ul>
                                             <span>Mã QR</span>
-                                            <img src="https://media.istockphoto.com/id/1095468748/vi/vec-to/m%C3%A3-qr-m%E1%BA%ABu-m%C3%A3-v%E1%BA%A1ch-hi%E1%BB%87n-%C4%91%E1%BA%A1i-vector-tr%E1%BB%ABu-t%C6%B0%E1%BB%A3ng-%C4%91%E1%BB%83-qu%C3%A9t-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-th%C3%B4ng-minh-b%E1%BB%8B-c%C3%B4-l%E1%BA%ADp-tr%C3%AAn.jpg?s=612x612&w=0&k=20&c=nCjpoa8qW4lREJGqVCQZsWcrKGOcKKuy5RSsSVzqlL8=" alt="" style="width: 100%;">
+                                            <img :src="'qr_image_'+assetObj.id" alt="" style="width: 100%;">
                                         </div>
                                         <div class="col-9">
                                             <div class="name-asset d-flex" style="gap: 10px;">

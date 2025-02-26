@@ -1,7 +1,7 @@
 <?php
 
 use App\Exports\ReportExport;
-use App\Http\Controllers\ListAssetController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
@@ -86,43 +86,42 @@ Route::middleware('checkAuth')->group(function () {
     });
     Route::view('summernote', 'common.summernote.summernote_comment');
 
+    Route::prefix('report')->group(function () {
+        Route::get('/overview-report', [ReportController::class, 'overviewReport'])->name('assets.report.overviewReport');
+        Route::get('/value-report', function () {
+            return view('assets.report.valueReport');
+        })->name('assets.report.valueReport');
+    
+        Route::get('/operating-cost-report', function () {
+            return view('assets.report.operatingReport');
+        })->name('assets.report.operatingReport');
+    
+        Route::get('/use-report', function () {
+            return view('assets.report.useReport');
+        })->name('assets.report.useReport');
+    
+        Route::get('/maintain-report', function () {
+            return view('assets.report.maintainReport');
+        })->name('assets.report.maintainReport');
+    
+        Route::get('/buy-report', function () {
+            return view('assets.report.buyReport');
+        })->name('assets.report.buyReport');
+    
+        Route::get('/supplier-report', function () {
+            return view('assets.report.supplierReport');
+        })->name('assets.report.supplierReport');
+    });
+    
+    Route::prefix('asset')->group(function () {
+        Route::get('/list-asset', [AssetController::class, 'listAsset'])->name('assets.listAsset');
+        Route::get('/list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
+        Route::get('/list-organization-asset', [AssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
+        Route::get('/export-list-asset', [AssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
+    });
 });
 
-Route::prefix('report')->group(function () {
-    Route::get('/overview-report', [ReportController::class, 'overviewReport'])->name('assets.report.overviewReport');
-    Route::get('/value-report', function () {
-        return view('assets.report.valueReport');
-    })->name('assets.report.valueReport');
-
-    Route::get('/operating-cost-report', function () {
-        return view('assets.report.operatingReport');
-    })->name('assets.report.operatingReport');
-
-    Route::get('/use-report', function () {
-        return view('assets.report.useReport');
-    })->name('assets.report.useReport');
-
-    Route::get('/maintain-report', function () {
-        return view('assets.report.maintainReport');
-    })->name('assets.report.maintainReport');
-
-    Route::get('/buy-report', function () {
-        return view('assets.report.buyReport');
-    })->name('assets.report.buyReport');
-
-    Route::get('/supplier-report', function () {
-        return view('assets.report.supplierReport');
-    })->name('assets.report.supplierReport');
-});
-
-Route::prefix('asset')->group(function () {
-    Route::get('/list-asset', [ListAssetController::class, 'listAsset'])->name('assets.listAsset');
-    Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
-    Route::get('/list-organization-asset', [ListAssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
-    Route::get('/export-list-asset', [ListAssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
-});
-
-Route::get('/xslt-transform', [ListAssetController::class, 'transformXmlToHtml']);
+Route::get('/xslt-transform', [AssetController::class, 'transformXmlToHtml']);
 Route::get('/excel-transform', function (){
     return Excel::download(new ReportExport, 'output.xlsx');
 });
