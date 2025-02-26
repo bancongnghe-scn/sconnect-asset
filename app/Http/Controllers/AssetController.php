@@ -16,7 +16,9 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
 {
-    public function __construct(private readonly ListAssetService $assetService) {}
+    public function __construct(private readonly ListAssetService $assetService)
+    {
+    }
 
     public function listAsset(): View
     {
@@ -86,7 +88,7 @@ class AssetController extends Controller
 
             return response_success([
                 'listAssetOfObj' => $infoReturn['listAssetOfObj'],
-                'linkReport' => $infoReturn['linkReport'],
+                'linkReport'     => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -102,7 +104,7 @@ class AssetController extends Controller
 
             return response_success([
                 'listAssetOfObj' => $infoReturn['listAssetOfObj'],
-                'linkReport' => $infoReturn['linkReport'],
+                'linkReport'     => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -155,7 +157,7 @@ class AssetController extends Controller
 
             return response_success([
                 'listAssetOfObj' => $infoReturn['listAssetOfObj'],
-                'linkReport' => $infoReturn['linkReport'],
+                'linkReport'     => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -171,7 +173,7 @@ class AssetController extends Controller
 
             return response_success([
                 'listAssetOfObj' => $infoReturn['listAssetOfObj'],
-                'linkReport' => $infoReturn['linkReport'],
+                'linkReport'     => $infoReturn['linkReport'],
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);
@@ -359,7 +361,7 @@ class AssetController extends Controller
             $listAssetRepresent = $this->assetService->listAssetRepresent($request);
 
             return response_success([
-                'listAssetRepresent' => $listAssetRepresent
+                'listAssetRepresent' => $listAssetRepresent,
             ]);
         } catch (\Throwable $exception) {
             report($exception);
