@@ -384,7 +384,7 @@ document.addEventListener('alpine:init', () => {
                 name: this.data['name'] ?? '',
                 code: this.data['code'] ?? '',
                 note: this.data['note'] ?? '',
-                status: +Object.entries(this.listStatusPlanLiquidation).find(([key, value]) => value === 'Chờ duyệt')?.[0]
+                status: 1
             }
 
             const response = await window.apiUpdatePlanLiquidation(planId, _data)

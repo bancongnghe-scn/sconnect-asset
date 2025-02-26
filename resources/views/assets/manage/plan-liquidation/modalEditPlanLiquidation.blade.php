@@ -78,13 +78,13 @@
                                                 <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
                                             <td>
-                                                <span x-text="dataAsset.asset.asset_history[0].description ?? ''"></span>
+                                                <span x-text="dataAsset.asset && dataAsset.asset.asset_history && dataAsset.asset.asset_history.length > 0 ? dataAsset.asset.asset_history[0].description : ''"></span>
                                             </td>
                                             <td class="text-right">
-                                                <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : dataAsset.price_liquidation.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
+                                                <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : (dataAsset?.price_liquidation ? dataAsset?.price_liquidation?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '') "></span>
                                             </td>
                                             <td>
-                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : dataAsset.status" class="pl-2 pr-2 border rounded" 
+                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded" 
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,
                                                     'tw-text-green-500 tw-bg-green-100':    data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Đã duyệt'    : dataAsset.status,

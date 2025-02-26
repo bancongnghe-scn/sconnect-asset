@@ -8,11 +8,15 @@
         <div class="row">
             <div class="col-2">
                 <div class="user-avatar propose__box-avatar rounded-circle">
-                    <img onerror="this.src='https://office.sconnect.com.vn/images/avatar-default.png'" class="w-100 h-100 rounded-circle object-fit" src="user.avatar 
-                                            ? (user.avatar.includes('/uploads/') 
-                                                ? 'https://office.sconnect.com.vn' + user.avatar 
-                                                : user.avatar) 
-                                            : 'https://office.sconnect.com.vn/images/avatar-default.png'" alt="">
+                    <img 
+                        onerror="this.src='https://office.sconnect.com.vn/images/avatar-default.png'" 
+                        class="w-100 h-100 rounded-circle object-fit" 
+                        src="{{ optional(Auth::user())->avatar 
+                            ? (Str::contains(optional(Auth::user())->avatar, '/uploads/') 
+                                ? 'https://office.sconnect.com.vn' . Auth::user()->avatar 
+                                : Auth::user()->avatar) 
+                            : 'https://office.sconnect.com.vn/images/avatar-default.png' }}" 
+                        alt="User Avatar">
                 </div>
             </div>
             <div class="col">
