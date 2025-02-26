@@ -13,7 +13,7 @@ class ListMenuResource extends JsonResource
         foreach ($this->resource as $menu) {
             $roleIds   = $menu->role_ids;
             $roleIds   = explode(',', $roleIds);
-            $roleNames = $roles->whereIn('id', $roleIds)->implode('name', ',');
+            $roleNames = $roles->whereIn('id', $roleIds)->implode('description', ',');
             $data[]    = [
                 'id'          => $menu->id,
                 'name'        => $menu->name,

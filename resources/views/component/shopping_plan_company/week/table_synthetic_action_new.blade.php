@@ -1,6 +1,4 @@
-<table x-data="{can_handle: {{ json_encode(Auth::check() && Auth::user()->can('shopping_plan_company.handle_shopping')) }}}"
-       id="example2" class="table table-bordered dataTable dtr-inline"
-       aria-describedby="example2_info">
+<table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
     <thead>
     <tr>
         <th class="text-center"
@@ -12,26 +10,27 @@
         >
             <input type="checkbox" @click="selectedAll">
         </th>
-        <th class="text-center">Đơn vị</th>
+        <th class="text-center" style="min-width: 12rem">Đơn vị</th>
         <th class="text-center"
+            style="min-width: 9rem"
             x-show="[
                 STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
                 STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
                 STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
             ].includes(+data.status)"
         >Trạng thái</th>
-        <th class="text-center">Loại tài sản</th>
-        <th class="text-center">Chức danh</th>
+        <th class="text-center" style="min-width: 12rem">Loại tài sản</th>
+        <th class="text-center" style="min-width: 11rem">Chức danh</th>
         <th class="text-center">Thời gian cần</th>
         <th class="text-center">SL</th>
         <th class="text-center">SL duyệt</th>
         <th class="text-center">Đơn giá</th>
         <th class="text-center">Thuế</th>
-        <th class="text-center">Tổng</th>
-        <th class="text-center">NCC</th>
+        <th class="text-center" style="min-width: 9rem">Tổng</th>
+        <th class="text-center" style="min-width: 14rem">NCC</th>
         <th class="text-center">Ghi chú</th>
-        <th class="text-center">Mô tả</th>
-        <th class="text-center tw-w-28">Thao tác</th>
+        <th class="text-center" style="min-width: 10rem">Mô tả</th>
+        <th class="text-center" style="width: 4rem">Thao tác</th>
     </tr>
     </thead>
     <tbody>
@@ -42,7 +41,6 @@
                     SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL,
                     SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,
                     SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL,
-                    0
                 ].includes(+assetRegister.status),
 
                 get total() {
@@ -82,28 +80,25 @@
                 <td class="align-middle" x-text="assetRegister.job_name ?? '-'"></td>
                 <td class="text-center align-middle" x-text="assetRegister.receiving_time ?? '-'"></td>
                 <td class="align-middle text-center" x-text="assetRegister.quantity_registered ?? '-'"></td>
-                <td>
+                <td class="align-middle">
                     <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved"
                            :disabled="isDisabled"
                     >
                 </td>
-                <td class="tw-min-w-36">
-{{--                    <input class="form-control tw-min-w-36" type="number" min="1" x-model="assetRegister.price" :disabled="isDisabled">--}}
+                <td class="tw-min-w-36 align-middle">
                     @include('common.input.input_price', [
                         'model' => 'assetRegister.price',
                         'disabled' => 'isDisabled'
                     ])
                 </td>
-                <td class="tw-min-w-32">
-{{--                    <input class="form-control tw-min-w-32" type="number" min="1" x-model="assetRegister.tax_money"--}}
-{{--                           :disabled="isDisabled">--}}
+                <td class="tw-min-w-32 align-middle">
                     @include('common.input.input_price', [
                         'model' => 'assetRegister.tax_money',
                         'disabled' => 'isDisabled'
                     ])
                 </td>
                 <td x-text="total ?? '-'" class="text-center align-middle"></td>
-                <td>
+                <td class="align-middle">
                     @include('common.select_custom.extent.select_single', [
                         'selected' => 'assetRegister.supplier_id',
                         'options' => 'listSupplier',
@@ -111,7 +106,7 @@
                         'disabled' => "isDisabled"
                     ])
                 </td>
-                <td>
+                <td class="align-middle">
                     <input class="form-control tw-w-fit" type="text" min="1" x-model="assetRegister.link"
                            :disabled="isDisabled">
                 </td>

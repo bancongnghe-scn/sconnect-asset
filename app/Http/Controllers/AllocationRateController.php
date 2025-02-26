@@ -61,7 +61,7 @@ class AllocationRateController extends Controller
                 return response_success();
             }
 
-            return response_error($result['error_code']);
+            return response_error($result['error_code'], extraData: $result['extra_data']);
         } catch (\Throwable $exception) {
             report($exception);
 

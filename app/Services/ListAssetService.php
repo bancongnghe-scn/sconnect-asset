@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exports\ReportExport;
 use App\Http\Resources\AssetInfoResource;
 use App\Models\Asset;
 use App\Models\AssetHistory;
@@ -17,19 +16,16 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
-use DOMDocument;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use XSLTProcessor;
-use Storage;
 
 class ListAssetService
 {
     public function __construct(
         protected AssetRepository $assetRepository,
-    ) {}
+    ) {
+    }
 
     public function getListAsset($request): LengthAwarePaginator
     {
@@ -91,7 +87,7 @@ class ListAssetService
         foreach ($listAsset->items() as $user) {
             $listOrgIdOfUser = Org::where('manager_id', $user->id)->pluck('id');
 
-            $user->total_asset_represent = count($listOrgIdOfUser) > 0 ? 
+            $user->total_asset_represent = count($listOrgIdOfUser) > 0 ?
             Asset::whereIn('organization_id', $listOrgIdOfUser)->count()
             : 0;
         }
@@ -114,8 +110,8 @@ class ListAssetService
                 'type'              => 1,
                 'created_by'        => auth()->user() ? auth()->user()->id : 1,
                 'description'       => $request->description,
-                'to_user_id'     => $assetCurrent->user_id,
-                'to_org_id'      => $assetCurrent->organization_id,
+                'to_user_id'        => $assetCurrent->user_id,
+                'to_org_id'         => $assetCurrent->organization_id,
             ]);
 
             foreach ($request->listAssetAllocate as $asset) {
@@ -145,7 +141,7 @@ class ListAssetService
 
             return [
                 'listAssetOfObj' => $this->getListAssetOfUser($request->user['id']),
-                'linkReport' => TransferAsset::find($transferAsset->id)
+                'linkReport'     => TransferAsset::find($transferAsset->id),
             ];
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -168,11 +164,11 @@ class ListAssetService
                     : $request->user['dept_id']);
 
             $transferAsset = TransferAsset::create([
-                'user_id'     => $request->user['id'],
-                'org_id'      => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'type'        => 2,
-                'created_by'  => auth()->user() ? auth()->user()->id : 1,
-                'description' => $request->description,
+                'user_id'        => $request->user['id'],
+                'org_id'         => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'type'           => 2,
+                'created_by'     => auth()->user() ? auth()->user()->id : 1,
+                'description'    => $request->description,
                 'to_user_id'     => null,
                 'to_org_id'      => $orgIdAfter,
             ]);
@@ -208,7 +204,7 @@ class ListAssetService
 
             return [
                 'listAssetOfObj' => $this->getListAssetOfUser($request->user['id']),
-                'linkReport' => TransferAsset::find($transferAsset->id)
+                'linkReport'     => TransferAsset::find($transferAsset->id),
             ];
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -240,11 +236,11 @@ class ListAssetService
             $assetCurrent = Asset::find($request->listAssetAllocate[0]['id']);
 
             $transferAsset = TransferAsset::create([
-                'user_id'     => null,
-                'org_id'      => $request->org['id'],
-                'type'        => 1,
-                'created_by'  => auth()->user() ? auth()->user()->id : 1,
-                'description' => $request->description,
+                'user_id'        => null,
+                'org_id'         => $request->org['id'],
+                'type'           => 1,
+                'created_by'     => auth()->user() ? auth()->user()->id : 1,
+                'description'    => $request->description,
                 'to_user_id'     => $assetCurrent->user_id,
                 'to_org_id'      => $assetCurrent->organization_id,
             ]);
@@ -289,7 +285,7 @@ class ListAssetService
 
             return [
                 'listAssetOfObj' => $this->getListAssetOfOrg($request->org['id']),
-                'linkReport' => TransferAsset::find($transferAsset->id)
+                'linkReport'     => TransferAsset::find($transferAsset->id),
             ];
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -357,7 +353,7 @@ class ListAssetService
 
             return [
                 'listAssetOfObj' => $this->getListAssetOfOrg($request->org['id']),
-                'linkReport' => TransferAsset::find($transferAsset->id)
+                'linkReport'     => TransferAsset::find($transferAsset->id),
             ];
         } catch (\Throwable $exception) {
             DB::rollBack();
@@ -459,11 +455,11 @@ class ListAssetService
         DB::beginTransaction();
         try {
             $transferAsset = null;
-            $arrAssetId = [];
+            $arrAssetId    = [];
 
             foreach ($request->listAssetRotation as $assetRotation) {
-                $orgId  = null;
-                $userId = null;
+                $orgId        = null;
+                $userId       = null;
                 $arrAssetId[] = $assetRotation['id'];
 
                 $orgLastParentId = User::find($request->rotationToId)->org_last_parent?->id ?? User::find($request->rotationToId)->organization_id;
@@ -521,12 +517,12 @@ class ListAssetService
                 ]);
 
                 MoveAssetUser::create([
-                    'org_id' => $assetRotation['organization_id'],
-                    'user_id' => $assetRotation['user_id'],
-                    'user_id_after' => $userId,
-                    'org_id_after' => $orgId,
-                    'asset_id' => $assetRotation['id'],
-                    'type' => 1,
+                    'org_id'               => $assetRotation['organization_id'],
+                    'user_id'              => $assetRotation['user_id'],
+                    'user_id_after'        => $userId,
+                    'org_id_after'         => $orgId,
+                    'asset_id'             => $assetRotation['id'],
+                    'type'                 => 1,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->descriptionRotation,
                     'created_at'           => Carbon::now(),
@@ -660,11 +656,11 @@ class ListAssetService
 
     public function exportReport($transferAssetId, $arrAssetId)
     {
-        $nameFile = '';
+        $nameFile    = '';
         $titleReport = '';
 
         $transferAsset = TransferAsset::find($transferAssetId);
-        $userFrom = $transferAsset->user_id ? User::where('id', $transferAsset->user_id)->with(['organization'])->first()
+        $userFrom      = $transferAsset->user_id ? User::where('id', $transferAsset->user_id)->with(['organization'])->first()
             : ($transferAsset->org_id ? Org::where('id', $transferAsset->org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
         $userTo = $transferAsset->to_user_id ? User::where('id', $transferAsset->to_user_id)->with(['organization'])->first()
             : ($transferAsset->to_org_id ? Org::where('id', $transferAsset->to_org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
@@ -673,28 +669,28 @@ class ListAssetService
 
         switch ($transferAsset->type) {
             case 1:
-                $nameFile = 'capphat';
+                $nameFile    = 'capphat';
                 $titleReport = 'BIÊN BẢN CẤP PHÁT TÀI SẢN';
 
                 $userTemp = $userFrom;
                 $userFrom = $userTo;
-                $userTo = $userTemp;
+                $userTo   = $userTemp;
                 break;
 
             case 2:
-                $nameFile = 'thuhhoi';
+                $nameFile    = 'thuhhoi';
                 $titleReport = 'BIÊN BẢN THU HỒI TÀI SẢN';
                 break;
 
             default:
-                $nameFile = 'luanchuyen';
+                $nameFile    = 'luanchuyen';
                 $titleReport = 'BIÊN BẢN LUÂN CHUYỂN TÀI SẢN';
                 break;
         }
 
-        $filePath = resource_path('views/assets/asset/template-excel/template_report.xlsx');
+        $filePath    = resource_path('views/assets/asset/template-excel/template_report.xlsx');
         $spreadsheet = IOFactory::load($filePath);
-        $sheet = $spreadsheet->getActiveSheet();
+        $sheet       = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A14', 'Hôm nay, vào lúc ….  Ngày ' . Carbon::now()->day . ' tháng ' . Carbon::now()->month . ' năm ' . Carbon::now()->year . ' tại Văn phòng Công ty TNHH Đầu tư Công nghệ và Dịch vụ S-Connect Việt Nam.');
         $sheet->setCellValue('A7', $titleReport);
@@ -707,7 +703,7 @@ class ListAssetService
 
         $listAsset = Asset::whereIn('id', $arrAssetId)->with(['assetType'])->get();
 
-        $startRow = 26;
+        $startRow   = 26;
         $numNewRows = count($listAsset);
 
         $sheet->insertNewRowBefore($startRow + 1, $numNewRows);
@@ -717,7 +713,7 @@ class ListAssetService
             $this->copyRowStyle($sheet, $startRow, $currentRow);
 
             $columnWidth = 40;
-            $lineCount = ceil(strlen($asset->name) / $columnWidth);
+            $lineCount   = ceil(strlen($asset->name) / $columnWidth);
 
             $sheet->getRowDimension($currentRow)->setRowHeight($lineCount * 15);
 
@@ -731,7 +727,7 @@ class ListAssetService
             $sheet->setCellValue("J$currentRow", $userFrom?->name);
             $sheet->setCellValue("K$currentRow", $userTo?->name);
             $sheet->getRowDimension($currentRow)->setRowHeight(-1);
-            $currentRow++;
+            ++$currentRow;
         }
 
         $sheet->removeRow(26 + $numNewRows);
@@ -741,13 +737,13 @@ class ListAssetService
             mkdir($path, 0777, true);
         }
 
-        $nameFile = $nameFile . '_' . $transferAsset->id . '.xlsx';
+        $nameFile    = $nameFile . '_' . $transferAsset->id . '.xlsx';
         $newFilePath = public_path('reports/' . $nameFile);
-        $writer = new Xlsx($spreadsheet);
+        $writer      = new Xlsx($spreadsheet);
         $writer->save($newFilePath);
 
         TransferAsset::where('id', $transferAssetId)->update([
-            'link_report' => 'reports/' . $nameFile
+            'link_report' => 'reports/' . $nameFile,
         ]);
     }
 

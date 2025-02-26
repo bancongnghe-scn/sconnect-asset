@@ -320,7 +320,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_job.length === 0) {
                     this.getJobs()
                 }
-                $('#modalDetailOrganization').modal('show')
+                $('#modalOrganizationCompany').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -566,7 +566,7 @@ document.addEventListener('alpine:init', () => {
                 }
             })
 
-            console.log(this.shoppingAssetWithAction)
+
         },
 
         selectedAll() {

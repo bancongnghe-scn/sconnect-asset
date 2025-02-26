@@ -38,16 +38,13 @@
                                         <i class="bi bi-eye text-info"></i>
                                     </button>
 
-                                    <template x-if="new Date() >= new Date(window.formatDate(value.start_time))
-                                        && new Date() <= new Date(window.formatDate(value.end_time))">
-                                        <template x-for="configBtnTable in configButtonsTable">
-                                            <template x-if="configBtnTable.condition(+value.status)">
-                                                <template x-for="configBtn in configBtnTable.buttons">
-                                                    <button class="border-0 bg-white"
-                                                            @click="configBtn.action(value.id)">
-                                                        <i :class="configBtn.icon"></i>
-                                                    </button>
-                                                </template>
+                                    <template x-for="configBtnTable in configButtonsTable">
+                                        <template x-if="configBtnTable.condition(+value.status, value.start_time, value.end_time)">
+                                            <template x-for="configBtn in configBtnTable.buttons">
+                                                <button class="border-0 bg-white"
+                                                        @click="configBtn.action(value.id)">
+                                                    <i :class="configBtn.icon"></i>
+                                                </button>
                                             </template>
                                         </template>
                                     </template>

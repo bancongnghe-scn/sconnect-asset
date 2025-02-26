@@ -112,7 +112,7 @@
                                                     <td class="text-center align-middle" x-text="value.code"></td>
                                                     <td class="align-middle" x-text="value.name"></td>
                                                     <td class="text-center align-middle" x-text="formatDateVN(value.recent_maintenance_date)"></td>
-                                                    <td class="text-center align-middle" x-text="value.serial_number"></td>
+                                                    <td class="text-center align-middle" x-text="value.seri_number"></td>
                                                     <td class="align-middle" x-text="value.asset_type_name"></td>
                                                     <td class="align-middle">
                                                         <div>

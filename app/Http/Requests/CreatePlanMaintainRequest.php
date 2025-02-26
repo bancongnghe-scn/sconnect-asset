@@ -27,7 +27,7 @@ class CreatePlanMaintainRequest extends FormRequest
             'assets_maintain.*.name'                    => 'required|string',
             'assets_maintain.*.code'                    => 'required|string',
             'assets_maintain.*.asset_type_name'         => 'nullable|string',
-            'assets_maintain.*.serial_number'           => 'nullable|string',
+            'assets_maintain.*.seri_number'             => 'nullable|string',
             'assets_maintain.*.user_id'                 => 'nullable|integer',
             'assets_maintain.*.organization_id'         => 'nullable|integer',
             'assets_maintain.*.location'                => 'nullable|integer',

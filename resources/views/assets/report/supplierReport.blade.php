@@ -104,7 +104,7 @@
                 this.values = data.data.data.values;
                 this.labels = data.data.data.labels;
                 this.arrDifference = data.data.data.arrDifference;
-                console.log( data.data.data);
+
             } catch (error) {
                 console.error('Lỗi khi gọi API:', error);
             }

@@ -197,4 +197,25 @@ class ShoppingPlanCompanyController extends Controller
             return response_error();
         }
     }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * TKCT thực hiện gửi đăng ký lại cho đơn vị khi giám đốc từ chối
+     */
+    public function sentRegisterAgain($id)
+    {
+        Auth::user()->canPer('shopping_plan_company.sent_register_again');
+        try {
+            $result = $this->planCompanyService->sentRegisterAgain($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

@@ -13,7 +13,7 @@ class Asset extends Model
 {
     use HasFactory;
     protected $connection = 'mysql';
-    protected $table = 'assets';
+    protected $table      = 'assets';
 
     protected $fillable = [
         'name',
@@ -104,29 +104,33 @@ class Asset extends Model
     ];
 
     public const LIST_MEASURE = [
-        1 => 'Chiếc',
-        2 => 'Cái',
-        3 => 'Bộ',
-        4 => 'Bình',
-        5 => 'Cuộn',
-        6 => 'Hộp',
-        7 => 'Túi',
-        8 => 'Lọ',
-        9 => 'Thùng',
+        1  => 'Chiếc',
+        2  => 'Cái',
+        3  => 'Bộ',
+        4  => 'Bình',
+        5  => 'Cuộn',
+        6  => 'Hộp',
+        7  => 'Túi',
+        8  => 'Lọ',
+        9  => 'Thùng',
         10 => 'Đôi',
     ];
+
+    public const PRICE_DEPRECIATION    = 30000000;
+    public const MONTH_DEPRECIATION_36 = 36;
+    public const MONTH_DEPRECIATION_12 = 12;
 
     protected function locationText(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->location && isset(self::LOCATION_NAME[$this->location]) ? self::LOCATION_NAME[$this->location] : null,
+            get: fn () => $this->location && isset(self::LOCATION_NAME[$this->location]) ? self::LOCATION_NAME[$this->location] : null,
         );
     }
 
     protected function dateWarranty(): Attribute
     {
         return Attribute::make(
-            get: fn() => Carbon::parse($this->date_purchase)->addMonths($this->warranty_months)->format('Y-m-d'),
+            get: fn () => Carbon::parse($this->date_purchase)->addMonths($this->warranty_months)->format('Y-m-d'),
         );
     }
 

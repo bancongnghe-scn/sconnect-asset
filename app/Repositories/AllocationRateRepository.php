@@ -41,6 +41,14 @@ class AllocationRateRepository extends BaseRepository
             $query->where('position_id', $filters['position_id']);
         }
 
+        if (!empty($filters['asset_type_id'])) {
+            $query->whereIn('asset_type_id', Arr::wrap($filters['asset_type_id']));
+        }
+
+        if (!empty($filters['first'])) {
+            return $query->first();
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }

@@ -67,6 +67,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
             Route::get('list', 'getListShoppingPlan');
             Route::get('get-organization-register/{id}', 'getOrganizationRegister');
+            Route::get('sentRegisterAgain/{id}', 'sentRegisterAgain');
         });
 
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class)->group(function () {

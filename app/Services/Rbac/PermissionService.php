@@ -72,7 +72,7 @@ class PermissionService
 
     public function getListPermission($filters)
     {
-        $data = $this->permissionRepository->getListing($filters, ['id', 'name', 'description']);
+        $data = $this->permissionRepository->getListing($filters, ['id', 'description as name', 'name as description']);
 
         return $data->toArray();
     }

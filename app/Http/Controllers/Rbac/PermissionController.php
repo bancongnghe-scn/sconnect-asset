@@ -44,7 +44,6 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name'         => 'nullable|string|max:255',
-            'description'  => 'nullable|string|max:255',
             'page'         => 'nullable|integer',
             'limit'        => 'nullable|integer|max:200',
         ]);

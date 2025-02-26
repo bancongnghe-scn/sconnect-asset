@@ -5,9 +5,12 @@
                 <h4 class="modal-title">Kế hoạch mua sắm năm</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
                     <template x-if="
-                        (+dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                        || +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                        && ( new Date() > new Date(dataOrganization.start_time) &&  new Date() < new Date(dataOrganization.end_time))">
+                        ((
+                            +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                            || +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                        ) && (new Date() > new Date(dataOrganization.start_time) &&  new Date() < new Date(dataOrganization.end_time)))
+                        || +dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
+                    ">
                         <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
                     </template>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
@@ -95,6 +98,9 @@
                                                             <tr class="tw-text-nowrap"
                                                                 x-data="{
                                                                     async updatePrice() {
+                                                                        if (![STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(+dataOrganization.status)) {
+                                                                            return
+                                                                        }
                                                                         if (asset.asset_type_id && asset.job_id) {
                                                                             asset.price = await getPrice(asset.asset_type_id, asset.job_id);
                                                                         } else {
@@ -102,7 +108,6 @@
                                                                         }
                                                                     },
                                                                     init() {
-                                                                        this.updatePrice();
                                                                         this.$watch('asset.asset_type_id', () => this.updatePrice());
                                                                         this.$watch('asset.job_id', () => this.updatePrice());
                                                                         this.$watch('asset.price', value => calculatePrice(index));
@@ -115,7 +120,7 @@
                                                                         'options' => 'list_asset_type',
                                                                     ])
                                                                 </td>
-                                                                <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
+                                                                <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id)?.measure : ''"></td>
                                                                 <td>
                                                                     @include('common.select_custom.extent.select_single', [
                                                                         'placeholder' => 'Chọn chức danh',
