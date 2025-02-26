@@ -231,7 +231,7 @@
                                     }
                                     #printBtn:hover .dropdown-content-print {display: block;}
                                 </style>
-                                <td class="text-center" style="vertical-align: middle;" x-data="{ open: false }"> 
+                                <td class="text-center" style="vertical-align: middle;" x-data="{ open: false, openPrintDropdown: false }"> 
                                     <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -348,12 +348,38 @@
                                                 <span class="title-menu">Đánh dấu mất</span>   
                                             </a>
                                         </template>
-                                        <a class="d-flex item-menu" id="printBtn">
+                                        <a style="cursor: pointer;" class="d-flex item-menu" id="printBtn" @click="openPrintDropdown = !openPrintDropdown">
                                             <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z" fill="#344054"/>
                                             </svg>                                            
-                                            <span class="title-menu">In</span>                                              
+                                            <span class="title-menu">In</span>                                                                                      
                                         </a>
+                                        <div x-show="openPrintDropdown" 
+                                        class="dropdown-content" 
+                                        @click.outside="openPrintDropdown = false"  style="position: absolute; background: #fff; border-radius: 13px; box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); right: -105px; min-width: 100px !important; width: fit-content;">
+                                            <a @click="printImage('/qrcode/qr_image_'+asset.id+'.png')" style="cursor: pointer;">In mã QR</a>
+                                            <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset); tabDetail = 'change-tab';">In biên bản</a>
+                                        </div>  
+                                        <script>
+                                            function printImage(src) {
+                                                let newWin = window.open('', '_blank');
+                                                newWin.document.write(`
+                                                    <html>
+                                                        <head><title>In ảnh QR</title></head>
+                                                        <body style="text-align: center;">
+                                                            <img src="${src}" style="max-width: 100%;">
+                                                            <script>
+                                                                window.onload = function() { 
+                                                                    window.print();
+                                                                    window.onafterprint = window.close;
+                                                                };
+                                                            <\/script>
+                                                        </body>
+                                                    </html>
+                                                `);
+                                                newWin.document.close();
+                                            }
+                                        </script>
                                         {{-- <a class="d-flex item-menu" href="#">
                                             <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -365,11 +391,7 @@
                                                                                           
                                             <span class="title-menu text-danger">Xóa</span>   
                                         </a>                                         --}}
-                                    </div>
-                                    <div class="dropdown-content-print">
-                                        <a>In mã QR</a>
-                                        <a>In biên bản</a>
-                                    </div>
+                                    </div>                                                                    
                                 </td>
                                 <td class="text-center" x-text="asset.code"></td>
                                 <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces; line-height: 1.5;"></td>
@@ -1211,13 +1233,13 @@
                     if (this.defaultCheck == 'employee') {
                         obj = this.listUser.find(user => user.id == this.userSelect);
                         this.userObj = obj;
-                        this.orgObj = null;
+                        this.orgObj = {};
                     }
 
                     if (this.defaultCheck == 'unit') {
                         obj = this.listOrg.find(user => user.id == this.unitSelect);
                         this.orgObj = obj;
-                        this.userObj = null;
+                        this.userObj = {};
                     }
 
                     this.obj = obj;
@@ -1235,14 +1257,14 @@
                     if (this.assetSelect.user_id) {
                         obj = this.assetSelect.user;
                         this.userObj = obj;
-                        this.orgObj = null;
+                        this.orgObj = {};
                         this.defaultCheck = 'employee';
                     }
 
                     if (!this.assetSelect.user_id && this.assetSelect.organization_id) {
                         obj = this.assetSelect.organization;
                         this.orgObj = obj;
-                        this.userObj = null;
+                        this.userObj = {};
                         this.defaultCheck = 'unit';
                     }
 
