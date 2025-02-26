@@ -55,19 +55,19 @@
                                 </td>
                             </template>
                             <td class="text-center align-middle" x-show="data.status === 'Mới tạo'">
-                                <button class="border-0 position-relative" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                    <i class="fa-solid fa-pencil">&#xF117;</i>
+                                <button class="border-0 bg-white position-relative" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
+                                    <i class="bi bi-pencil-square color-sc"></i>
                                     <span class="tooltip-text">Chỉnh sửa</span>
                                 </button>
-                                <button class="border-0 position-relative" @click="removeOnePlan(data.id)"
+                                <button class="border-0 bg-white position-relative" @click="removeOnePlan(data.id)"
                                 >
-                                    <i class="fa-solid fa-trash" style="color: #db4554;"></i>
+                                    <i class="bi bi-trash text-red"></i>
                                     <span class="tooltip-text">Xóa</span>
                                 </button>
                             </td>
                             <td class="text-center align-middle" x-show="data.status !== 'Mới tạo'">
-                                <button class="border-0 position-relative" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
-                                    <i class="fa-solid fa-eye">&#xF117;</i>
+                                <button class="border-0 bg-white position-relative" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
+                                    <i class="bi bi-eye text-info"></i>
                                     <span class="tooltip-text">Xem</span>
                                 </button>
                             </td>

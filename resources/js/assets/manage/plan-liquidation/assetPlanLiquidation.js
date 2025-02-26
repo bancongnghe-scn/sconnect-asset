@@ -69,11 +69,10 @@ document.addEventListener('alpine:init', () => {
             total_price_liquidation: null,
         },
         listStatusPlanLiquidation: {
-            0: 'Chọn trạng thái',
-            1: 'Mới tạo',
-            2: 'Chờ duyệt',
-            3: 'Đã duyệt',
-            4: 'Từ chối',
+            0: 'Mới tạo',
+            1: 'Chờ duyệt',
+            2: 'Đã duyệt',
+            3: 'Từ chối',
         },
         listStatusAssetOfPlan: {
             1: 'Chưa duyệt',
@@ -400,7 +399,6 @@ document.addEventListener('alpine:init', () => {
 
         async showPlanLiquidation(planId) {
             this.loading = true
-console.warn('vaooo');
 
             this.id = planId
             const response = await window.apiShowPlanLiquidation(planId)

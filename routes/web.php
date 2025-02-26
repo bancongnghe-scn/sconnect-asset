@@ -91,28 +91,28 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('/value-report', function () {
             return view('assets.report.valueReport');
         })->name('assets.report.valueReport');
-    
+
         Route::get('/operating-cost-report', function () {
             return view('assets.report.operatingReport');
         })->name('assets.report.operatingReport');
-    
+
         Route::get('/use-report', function () {
             return view('assets.report.useReport');
         })->name('assets.report.useReport');
-    
+
         Route::get('/maintain-report', function () {
             return view('assets.report.maintainReport');
         })->name('assets.report.maintainReport');
-    
+
         Route::get('/buy-report', function () {
             return view('assets.report.buyReport');
         })->name('assets.report.buyReport');
-    
+
         Route::get('/supplier-report', function () {
             return view('assets.report.supplierReport');
         })->name('assets.report.supplierReport');
     });
-    
+
     Route::prefix('asset')->group(function () {
         Route::get('/list-asset', [AssetController::class, 'listAsset'])->name('assets.listAsset');
         Route::get('/list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
@@ -122,7 +122,7 @@ Route::middleware('checkAuth')->group(function () {
 });
 
 Route::get('/xslt-transform', [AssetController::class, 'transformXmlToHtml']);
-Route::get('/excel-transform', function (){
-    return Excel::download(new ReportExport, 'output.xlsx');
+Route::get('/excel-transform', function () {
+    return Excel::download(new ReportExport(), 'output.xlsx');
 });
 Route::view('asset/info/{id}', 'assets.asset.info_qr');
