@@ -1233,13 +1233,13 @@
                     if (this.defaultCheck == 'employee') {
                         obj = this.listUser.find(user => user.id == this.userSelect);
                         this.userObj = obj;
-                        this.orgObj = null;
+                        this.orgObj = {};
                     }
 
                     if (this.defaultCheck == 'unit') {
                         obj = this.listOrg.find(user => user.id == this.unitSelect);
                         this.orgObj = obj;
-                        this.userObj = null;
+                        this.userObj = {};
                     }
 
                     this.obj = obj;
@@ -1257,14 +1257,14 @@
                     if (this.assetSelect.user_id) {
                         obj = this.assetSelect.user;
                         this.userObj = obj;
-                        this.orgObj = null;
+                        this.orgObj = {};
                         this.defaultCheck = 'employee';
                     }
 
                     if (!this.assetSelect.user_id && this.assetSelect.organization_id) {
                         obj = this.assetSelect.organization;
                         this.orgObj = obj;
-                        this.userObj = null;
+                        this.userObj = {};
                         this.defaultCheck = 'unit';
                     }
 
