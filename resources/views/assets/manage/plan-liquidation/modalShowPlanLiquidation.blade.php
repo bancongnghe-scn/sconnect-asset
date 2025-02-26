@@ -56,6 +56,7 @@
                                         Danh sách tài sản thanh lý
                                     </div>
                                     <div class="col-2"></div>
+                                    @can('liquidation_asset.hr_manager_approval')
                                     <div class="col-6" x-show="dataTbodyListAssetLiqui.some(data => listStatusAssetOfPlan[data.status] === 'Chưa duyệt')">
                                         <div class="row">
                                             <div class="col-9 text-end">
@@ -76,6 +77,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endcan
                                 </div>
                                 <table class="mb-3 table table-bordered dataPlanLiquidation dtr-inline" x-show="data.id"
                                     aria-describedby="example2_info">
@@ -123,6 +125,7 @@
                                                     <span class="tooltip-text" x-text="data?.note"></span>
                                                 </button>
                                             </td>
+                                            @can('liquidation_asset.hr_manager_approval')
                                             <td class="text-center align-middle" x-show="listStatusAssetOfPlan[data.status] === 'Chưa duyệt'">
                                                 <button class="border-0 bg-body" x-show="showAction.approve ?? true" @click="$dispatch('approve', { id: data.id })">
                                                     <i class="fa-solid fa-check" style="color: #28c76f;;"></i>
@@ -132,6 +135,7 @@
                                                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                                                 </button>
                                             </td>
+                                            @endcan
                                         </tr>
                                     </template>
                                     </tbody>
