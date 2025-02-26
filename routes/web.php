@@ -84,6 +84,7 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('plan-inventory')->group(function () {
         Route::view('list', 'assets.plan-inventory.list');
     });
+    Route::view('summernote', 'common.summernote.summernote_comment');
 
     Route::prefix('report')->group(function () {
         Route::get('/overview-report', [ReportController::class, 'overviewReport'])->name('assets.report.overviewReport');
@@ -113,15 +114,15 @@ Route::middleware('checkAuth')->group(function () {
     });
     
     Route::prefix('asset')->group(function () {
-        Route::get('/list-asset', [ListAssetController::class, 'listAsset'])->name('assets.listAsset');
-        Route::get('/list-user-asset', [ListAssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
-        Route::get('/list-organization-asset', [ListAssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
-        Route::get('/export-list-asset', [ListAssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
+        Route::get('/list-asset', [AssetController::class, 'listAsset'])->name('assets.listAsset');
+        Route::get('/list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
+        Route::get('/list-organization-asset', [AssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
+        Route::get('/export-list-asset', [AssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
     });
 });
 
-Route::get('/xslt-transform', [ListAssetController::class, 'transformXmlToHtml']);
-Route::get('/excel-transform', function () {
-    return Excel::download(new ReportExport(), 'output.xlsx');
+Route::get('/xslt-transform', [AssetController::class, 'transformXmlToHtml']);
+Route::get('/excel-transform', function (){
+    return Excel::download(new ReportExport, 'output.xlsx');
 });
 Route::view('asset/info/{id}', 'assets.asset.info_qr');
