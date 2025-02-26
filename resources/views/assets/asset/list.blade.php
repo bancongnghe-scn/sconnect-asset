@@ -445,7 +445,7 @@
                                                 <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
                                             </ul>
                                             <span>Mã QR</span>
-                                            <img :src="'qr_image_'+assetObj.id" alt="" style="width: 100%;">
+                                            <img :src="'/qrcode/qr_image_'+assetObj.id+'.png'" alt="" style="width: 100%;">
                                         </div>
                                         <div class="col-9">
                                             <div class="name-asset d-flex" style="gap: 10px;">
