@@ -30,7 +30,6 @@
 
                     this.$watch('selected', (value) => {
                         {{$model}} = value != null ? formatDate(value) : null
-                        console.log({{$model}})
                     })
                 },
 

@@ -2,11 +2,8 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('order_list', () => ({
         init() {
             this.list(this.filters)
-            this.getListUser()
             this.watch()
             this.watchFilters()
-            this.getListAssetType()
-            this.getListOrganization()
         },
 
         //dataTable
@@ -137,6 +134,15 @@ document.addEventListener('alpine:init', () => {
         async handleShowModalInsert() {
             this.resetData()
             $('#modalInsert').modal('show')
+            if (this.listAssetType.length === 0) {
+                this.getListAssetType()
+            }
+            if (this.listOrganization.length === 0) {
+                this.getListOrganization()
+            }
+            if (this.listUser.length === 0) {
+                this.getListUser()
+            }
         },
 
         async getListShoppingPlanCompany() {
@@ -282,7 +288,7 @@ document.addEventListener('alpine:init', () => {
 
         watch() {
             this.$watch('data.type', (value) => {
-                if (this.action === 'create' && value !== null) {
+                if (value !== null) {
                     if (+value === ORDER_TYPE_CREATE_WITH_PLAN && this.listShoppingPlanCompany.length < 1) {
                         this.getListShoppingPlanCompany()
                     } else if (+value === ORDER_TYPE_CREATE_WITH_NOT_PLAN) {
@@ -293,7 +299,7 @@ document.addEventListener('alpine:init', () => {
             });
 
             this.$watch('data.shopping_plan_company_id', (value) => {
-                if (this.action === 'create' && value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                if (value !== null && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
                     this.listSupplier = []
                     this.data.supplier_id = null
                     this.getSupplierOfShoppingPlanWeek(value);
@@ -302,7 +308,7 @@ document.addEventListener('alpine:init', () => {
 
             this.$watch('data.supplier_id', (value) => {
                 if (value !== null) {
-                    if (this.action === 'create' && +this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
+                    if (+this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
                         this.getShoppingAssets()
                     } else if (this.action !== 'create') {
                         this.getShoppingAssetOrder()
@@ -371,7 +377,7 @@ document.addEventListener('alpine:init', () => {
                 shopping_plan_company_id: null,
                 supplier_id: null,
                 name: null,
-                type: ORDER_TYPE_CREATE_WITH_PLAN,
+                type: this.typeCreateOrder,
                 purchasing_manager_id: null,
                 delivery_date: null,
                 delivery_location: null,

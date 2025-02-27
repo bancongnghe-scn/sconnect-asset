@@ -17,7 +17,7 @@
                         <div class="mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
                             <div class="tw-grid tw-grid-cols-4 mt-3 gap-3">
-                                <div x-show="+typeCreateOrder === +ORDER_TYPE_CREATE_WITH_PLAN">
+                                <div x-show="+data.type === +ORDER_TYPE_CREATE_WITH_PLAN">
                                     <label>Lập đơn hàng từ<span class="tw-text-red-600 mb-0">*</span></label>
                                     <div>
                                         @include('common.select_custom.extent.select_single', [
