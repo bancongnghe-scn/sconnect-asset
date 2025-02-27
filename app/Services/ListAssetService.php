@@ -24,8 +24,7 @@ class ListAssetService
 {
     public function __construct(
         protected AssetRepository $assetRepository,
-    ) {
-    }
+    ) {}
 
     public function getListAsset($request): LengthAwarePaginator
     {
@@ -88,8 +87,8 @@ class ListAssetService
             $listOrgIdOfUser = Org::where('manager_id', $user->id)->pluck('id');
 
             $user->total_asset_represent = count($listOrgIdOfUser) > 0 ?
-            Asset::whereIn('organization_id', $listOrgIdOfUser)->count()
-            : 0;
+                Asset::whereIn('organization_id', $listOrgIdOfUser)->count()
+                : 0;
         }
 
         return $listAsset;
@@ -135,6 +134,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_ACTIVE,
                 'user_id'         => $request->user['id'],
                 'organization_id' => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
+                'location' => DB::connection('db_dev')->table('user_generals')->where('user_id', $request->user['id'])->first()->workplace_id
             ]);
             $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
@@ -196,6 +196,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_PENDING,
                 'user_id'         => null,
                 'organization_id' => $orgIdAfter,
+                'location' => $request->recoveryCompany ? 1 : DB::connection('db_dev')->table('org_infos')->where('org_id', $orgIdAfter)->first()->branch_id
             ]);
 
             $this->exportReport($transferAsset->id, $arrAssetId);
@@ -279,6 +280,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_ACTIVE,
                 'organization_id' => $request->org['id'],
                 'user_id'         => null,
+                'location' => DB::connection('db_dev')->table('org_infos')->where('org_id', $request->org['id'])->first()->branch_id
             ]);
             $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
@@ -345,6 +347,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_PENDING,
                 'organization_id' => null,
                 'user_id'         => null,
+                'location' => 1
             ]);
 
             $this->exportReport($transferAsset->id, $arrAssetId);
@@ -533,6 +536,9 @@ class ListAssetService
                     'status'          => Asset::STATUS_ACTIVE,
                     'organization_id' => $orgId,
                     'user_id'         => $userId,
+                    'location' => $userId ?
+                        DB::connection('db_dev')->table('user_generals')->where('user_id', $userId)->first()->workplace_id
+                        : DB::connection('db_dev')->table('org_infos')->where('org_id', $orgId)->first()->branch_id,
                 ]);
             }
 
