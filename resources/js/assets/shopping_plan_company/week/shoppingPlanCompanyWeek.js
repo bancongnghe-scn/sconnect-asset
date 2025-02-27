@@ -176,8 +176,8 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     const data = response.data.data
                     this.data = data
-                    this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
-                    this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
+                    this.data.start_time = data.start_time
+                    this.data.end_time = data.end_time
                     return
                 }
 
@@ -279,7 +279,7 @@ document.addEventListener('alpine:init', () => {
                     this.registersOrganization = response.data
                     this.registersOrganization = this.registersOrganization.map(register => ({
                         ...register,
-                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                        receiving_time: register.receiving_time
                     }))
                     return
                 }

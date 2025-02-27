@@ -153,8 +153,8 @@ document.addEventListener('alpine:init', () => {
                         const data = response.data.data
                         this.data.time = data.time
                         this.data.status = data.status
-                        this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
-                        this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
+                        this.data.start_time = data.start_time
+                        this.data.end_time = data.end_time
                         this.data.monitor_ids = data.monitor_ids
                         return
                     }

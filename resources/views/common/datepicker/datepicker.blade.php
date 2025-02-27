@@ -11,10 +11,9 @@
                         locale: localeVi,
                         dateFormat: 'dd/MM/yyyy',
                         onSelect: ({date}) => {
-                            this.selected = date != null ? format(date, 'dd/MM/yyyy') : null
+                            this.selected = date != null ? this.selected : null
                         }
                     })
-
                     $el.addEventListener('keydown', (e) => {
                       if (e.key === 'Backspace' || e.key === 'Delete') {
                          setTimeout(() => {
