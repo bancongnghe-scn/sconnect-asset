@@ -180,7 +180,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.data = this.formatDateAppendix(response.data.data)
+                this.data = response.data.data
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -194,7 +194,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
                 return
             }
-            this.data = this.formatDateAppendix(response.data.data)
+            this.data = response.data.data
             $('#'+this.idModalInfo).modal('show');
             this.loading = false
         },
@@ -287,13 +287,6 @@ document.addEventListener('alpine:init', () => {
             this.$nextTick(() => {
                 this.initDatePicker()
             });
-        },
-
-        formatDateAppendix(appendix) {
-            appendix.signing_date = appendix.signing_date !== null ? format(appendix.signing_date, 'dd/MM/yyyy') : null
-            appendix.from = appendix.from !== null ? format(appendix.from, 'dd/MM/yyyy') : null
-            appendix.to = appendix.to !== null ? format(appendix.to, 'dd/MM/yyyy') : null
-            return appendix
         },
     }));
 });

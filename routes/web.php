@@ -59,7 +59,8 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::prefix('order')->group(function () {
-        Route::view('list', 'assets.order.list');
+        Route::view('list', 'assets.order.order_list');
+        Route::view('detail/{id}', 'assets.order.order_detail');
     });
     Route::prefix('import-warehouse')->group(function () {
         Route::view('list', 'assets.import_warehouse.list');

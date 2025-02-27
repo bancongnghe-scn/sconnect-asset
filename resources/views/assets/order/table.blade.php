@@ -11,9 +11,9 @@
                                 <input type="checkbox" @click="selectedAll">
                             </th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 4rem">STT</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 26rem">Tên đơn hàng</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">Tên đơn hàng</th>
                             <th rowspan="1" colspan="1" class="text-center">Số đơn hàng</th>
-                            <th rowspan="1" colspan="1" class="text-center">NCC</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">NCC</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày đơn hàng</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày giao hàng</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">Người phụ trách</th>
@@ -24,14 +24,14 @@
                         <tbody>
                             <template x-for="(value,index) in dataTable" :key="index">
                                 <tr x-data="{
-                                            isStatusActive: [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)
-                                        }" x-effect="isStatusActive = [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)">
+                                      isStatusActive: [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)
+                                    }" x-effect="isStatusActive = [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)">
                                     <td class="text-center align-middle" >
                                         <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]" :disabled="!isStatusActive">
                                     </td>
                                     <td class="text-center align-middle" x-text="from + index"></td>
                                     <td class="align-middle text-wrap tw-no-underline">
-                                        <a x-text="value.name" class="tw-no-underline tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
+                                        <a x-text="value.name" class="tw-no-underline tw-cursor-pointer" :href="`/order/detail/${value.id}`"></a>
                                     </td>
                                     <td class="text-center align-middle">
                                         <span x-text="value.code"></span>
@@ -52,13 +52,13 @@
                                         @include('component.status.status_order', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <button class="border-0 bg-white" @click="handleShowModalUI('view', value.id)">
+                                        <a :href="`/order/detail/${value.id}`">
                                             <i class="bi bi-eye text-info"></i>
-                                        </button>
-                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="$dispatch('edit', { id: value.id })">
+                                        </a>
+                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="handleShowModalUI('update', value.id)">
                                             <i class="bi bi-pencil-square color-sc"></i>
                                         </button>
-                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="$dispatch('remove', { id: value.id })">
+                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="confirmRemove(false, value.id)">
                                             <i class="bi bi-trash text-red"></i>
                                         </button>
                                     </td>

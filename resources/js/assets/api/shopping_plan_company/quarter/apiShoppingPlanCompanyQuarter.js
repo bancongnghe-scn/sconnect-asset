@@ -26,7 +26,7 @@ window.apiGetShoppingPlanCompanyQuarter = async function (filters) {
 
 window.apiCreateShoppingPlanCompanyQuarter = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/quarter/create",formatDateShoppingPlanCompanyQuarter(dataCreate))
+        const response = await axios.post("/api/shopping-plan-company/quarter/create",dataCreate)
 
         const data = response.data;
         if (!data.success) {
@@ -50,7 +50,7 @@ window.apiCreateShoppingPlanCompanyQuarter = async function (dataCreate) {
 
 window.apiUpdateShoppingPlanCompanyQuarter = async function (dataUpdate, id) {
     try {
-        const response = await axios.put("/api/shopping-plan-company/quarter/update/"+id,formatDateShoppingPlanCompanyQuarter(dataUpdate))
+        const response = await axios.put("/api/shopping-plan-company/quarter/update/"+id,dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -96,9 +96,3 @@ window.getOrganizationRegisterQuarter = async function (id) {
     }
 }
 
-function formatDateShoppingPlanCompanyQuarter(data) {
-    let dataFormat = data
-    dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
-    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.end_time) : null
-    return dataFormat
-}

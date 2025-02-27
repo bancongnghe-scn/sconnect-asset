@@ -56,6 +56,10 @@ class SyntheticOrganizationRegisterPlanYearQuarterResource extends JsonResource
             $data['total_price_company'] = $data['total_price_company'] + $totalPrice;
         }
 
+        usort($data['organizations'], function ($a, $b) {
+            return $b['total_price'] - $a['total_price'];
+        });
+
         return $data;
     }
 }

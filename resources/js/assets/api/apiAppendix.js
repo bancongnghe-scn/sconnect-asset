@@ -1,7 +1,7 @@
 window.apiGetAppendix = async function (filters) {
     try {
         const response = await axios.get("/api/contract-appendix", {
-            params: formatDateAppendix(filters)
+            params: filters
         })
 
         const data = response.data;
@@ -99,7 +99,7 @@ window.apiShowAppendix = async function (id) {
 
 window.apiCreateAppendix = async function (dataCreate) {
     try {
-        const formData = window.formData(formatDateAppendix(dataCreate))
+        const formData = window.formData(dataCreate)
 
         const response = await axios.post("/api/contract-appendix",formData)
 
@@ -125,7 +125,7 @@ window.apiCreateAppendix = async function (dataCreate) {
 
 window.apiUpdateAppendix = async function (dataUpdate, id) {
     try {
-        const formData = window.formData(formatDateAppendix(dataUpdate))
+        const formData = window.formData(dataUpdate)
 
         const response = await axios.post("/api/contract-appendix/"+id,formData)
 
@@ -147,13 +147,4 @@ window.apiUpdateAppendix = async function (dataUpdate, id) {
             message: error?.response?.data?.message || error?.message
         }
     }
-}
-
-function formatDateAppendix(appendix) {
-    let dataFormat = JSON.parse(JSON.stringify(appendix))
-    dataFormat.signing_date = dataFormat.signing_date ? window.formatDate(dataFormat.signing_date) : null
-    dataFormat.from = dataFormat.from ? window.formatDate(dataFormat.from) : null
-    dataFormat.to = dataFormat.to ? window.formatDate(dataFormat.to) : null
-
-    return dataFormat
 }

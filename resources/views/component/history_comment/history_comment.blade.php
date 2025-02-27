@@ -109,13 +109,15 @@
 
         <hr>
 
-        <div x-show="activeLink.comment" x-data="{resetInput: false, unicode: null, showIcon: false, showUser: false, userId: null}">
+        <div x-show="activeLink.comment"
+             x-data="{resetInput: false, unicode: null, showIcon: false, showUpload: false}"
+        >
             <textarea
                 x-data="{
                     init() {
-                        this.$watch('showModal', (value) => {
-                            this.initSummer();
-                        });
+{{--                        this.$watch('showModal', (value) => {--}}
+{{--                            this.initSummer();--}}
+{{--                        });--}}
                         this.$watch('resetInput', (value) => {
                             this.resetInputSummer();
                         });
@@ -166,8 +168,8 @@
             ></textarea>
 
             <div class="d-flex tw-gap-x-4">
-                <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUser = true">@Nhắc đến</span>
-                <span class="tw-text-gray-500 tw-cursor-pointer"><i class="fa fa-upload"></i>Tập tin</span>
+                <span class="tw-text-gray-500 tw-cursor-pointer">@Nhắc đến</span>
+                <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUpload = !showUpload"><i class="fa fa-upload"></i>Tập tin</span>
                 <span class="tw-text-gray-500 tw-cursor-pointer" @click="showIcon = true"><i class="fa fa-smile emoji"></i></span>
             </div>
 
@@ -177,7 +179,7 @@
                               @click.outside="showIcon = false"
                               @emoji-click="comment_message += $event.detail.unicode; showIcon = false; unicode = $event.detail.unicode">
                 </emoji-picker>
-                <div>
+                <div x-show="showUpload">
                     @include('common.uploadFile.form_upload_file')
                 </div>
             </div>

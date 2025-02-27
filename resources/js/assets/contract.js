@@ -286,13 +286,9 @@ document.addEventListener('alpine:init', () => {
         },
 
         formatDataContract(contract) {
-            contract.signing_date = contract.signing_date !== null ? format(contract.signing_date, 'dd/MM/yyyy') : null
-            contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
-            contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
             contract.files = contract.files ?? []
             contract.appendixes = contract.appendixes ?? []
             contract.payments = contract.payments ?? []
-            contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
         },
 

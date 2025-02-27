@@ -117,7 +117,7 @@ document.addEventListener('alpine:init', () => {
                     this.registers = response.data
                     this.registers = this.registers.map(register => ({
                         ...register,
-                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                        receiving_time: register.receiving_time
                     }))
                     return
                 }

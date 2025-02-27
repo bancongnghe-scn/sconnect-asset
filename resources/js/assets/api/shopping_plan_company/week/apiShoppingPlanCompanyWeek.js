@@ -50,7 +50,7 @@ window.apiCompleteShoppingPlanWeek = async function (id) {
 
 window.apiCreateShoppingPlanCompanyWeek = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/week/create",formatDateShoppingPlanCompanyWeek(dataCreate))
+        const response = await axios.post("/api/shopping-plan-company/week/create",dataCreate)
 
         const data = response.data;
         if (!data.success) {
@@ -74,7 +74,7 @@ window.apiCreateShoppingPlanCompanyWeek = async function (dataCreate) {
 
 window.apiUpdateShoppingPlanCompanyWeek = async function (dataUpdate, id) {
     try {
-        const response = await axios.put("/api/shopping-plan-company/week/update/"+id,formatDateShoppingPlanCompanyWeek(dataUpdate))
+        const response = await axios.put("/api/shopping-plan-company/week/update/"+id,dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -273,9 +273,4 @@ window.apiRemoveShoppingPlanCompanyWeek = async function (id) {
     }
 }
 
-function formatDateShoppingPlanCompanyWeek(data) {
-    let dataFormat = data
-    dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
-    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.end_time) : null
-    return dataFormat
-}
+

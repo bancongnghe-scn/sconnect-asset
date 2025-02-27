@@ -5,7 +5,7 @@
                 <h4 class="modal-title" x-text="title + ' đơn hàng'"></h4>
                 <div>
                     <button x-show="action === 'update'" @click="update()" type="button" class="btn btn-primary">Lưu</button>
-                    <a :href="`/api/order/export/${id}l486`" download>
+                    <a :href="`/api/order/export/${id}`" download>
                         <button type="button" class="btn btn-sc">
                             <i class="fa-solid fa-file-export"></i>
                             Gửi NCC

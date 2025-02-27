@@ -2,10 +2,9 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="title + ' đơn hàng'"></h4>
+                <h4 class="modal-title">Tạo mới đơn hàng</h4>
                 <div>
-                    <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu
-                    </button>
+                    <button @click="create()" type="button" class="btn btn-sc">Lưu</button>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white"
                             @click="$('#modalSelectTypeCreate').modal('show')"
                     >Quay lại</button>
@@ -18,7 +17,7 @@
                         <div class="mb-3">
                             <div class="active-link tw-w-fit">Thông tin chung</div>
                             <div class="tw-grid tw-grid-cols-4 mt-3 gap-3">
-                                <div x-show="+typeCreateOrder === +ORDER_TYPE_CREATE_WITH_PLAN">
+                                <div x-show="+data.type === +ORDER_TYPE_CREATE_WITH_PLAN">
                                     <label>Lập đơn hàng từ<span class="tw-text-red-600 mb-0">*</span></label>
                                     <div>
                                         @include('common.select_custom.extent.select_single', [

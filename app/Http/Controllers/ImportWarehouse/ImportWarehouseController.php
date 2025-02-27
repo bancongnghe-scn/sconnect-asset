@@ -153,4 +153,9 @@ class ImportWarehouseController extends Controller
 
         return Excel::download(new ImportWarehouseExport($id), 'phieu_nhap_kho.xlsx');
     }
+
+    public function exportImportWarehouseInfo($id)
+    {
+        return Excel::download(new ImportWarehouseExport($id), 'phieu_nhap_kho.xlsx');
+    }
 }
