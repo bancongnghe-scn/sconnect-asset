@@ -26,7 +26,7 @@ window.apiGetShoppingPlanCompanyYear = async function (filters) {
 
 window.apiCreateShoppingPlanCompanyYear = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/shopping-plan-company/year/create",formatDateShoppingPlanCompanyYear(dataCreate))
+        const response = await axios.post("/api/shopping-plan-company/year/create",dataCreate)
 
         const data = response.data;
         if (!data.success) {
@@ -50,7 +50,7 @@ window.apiCreateShoppingPlanCompanyYear = async function (dataCreate) {
 
 window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
     try {
-        const response = await axios.put("/api/shopping-plan-company/year/update/"+id,formatDateShoppingPlanCompanyYear(dataUpdate))
+        const response = await axios.put("/api/shopping-plan-company/year/update/"+id,dataUpdate)
 
         const data = response.data;
         if (!data.success) {
@@ -72,9 +72,3 @@ window.apiUpdateShoppingPlanCompanyYear = async function (dataUpdate, id) {
     }
 }
 
-function formatDateShoppingPlanCompanyYear(data) {
-    let dataFormat = data
-    dataFormat.start_time = dataFormat.start_time ? window.formatDate(dataFormat.start_time) : null
-    dataFormat.end_time = dataFormat.end_time ? window.formatDate(dataFormat.end_time) : null
-    return dataFormat
-}

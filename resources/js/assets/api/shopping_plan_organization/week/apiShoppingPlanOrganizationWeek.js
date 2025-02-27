@@ -26,14 +26,9 @@ window.apiGetShoppingPlanOrganizationWeek = async function (filters) {
 
 window.apiSentRegisterWeek = async function (id, registers = []) {
     try {
-        let dataFormat = JSON.parse(JSON.stringify(registers))
-        dataFormat = dataFormat.map(register => ({
-            ...register,
-            receiving_time: register.receiving_time ? window.formatDate(register.receiving_time) : null
-        }))
         const response = await axios.post("/api/shopping-plan-organization/week/register",{
             shopping_plan_organization_id: id,
-            registers: [{'assets' : dataFormat}]
+            registers: [{'assets' : registers}]
         })
 
         const data = response.data;
