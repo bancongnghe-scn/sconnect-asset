@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="order">
+    <div x-data="order_list">
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -26,8 +26,6 @@
                         </div>
 
                         <div
-                            @edit="handleShowModalUI('update', $event.detail.id)"
-                            @remove="confirmRemove(false, $event.detail.id)"
                             @change-page.window="changePage($event.detail.page)"
                             @change-limit.window="changeLimit"
                         >
@@ -41,10 +39,6 @@
         {{--modal--}}
         <div>
             @include('assets.order.modalInsert')
-        </div>
-
-        <div>
-            @include('assets.order.modalUpdate')
         </div>
 
         <div>
@@ -69,7 +63,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/order.js',
+        'resources/js/assets/order/order_list.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/assets/api/apiSupplier.js',
         'resources/js/assets/api/order/apiOrder.js',

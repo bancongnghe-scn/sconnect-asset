@@ -1,6 +1,6 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('order', () => ({
-        async init() {
+    Alpine.data('order_list', () => ({
+        init() {
             this.list(this.filters)
             this.getListUser()
             this.watch()
@@ -11,15 +11,6 @@ document.addEventListener('alpine:init', () => {
 
         //dataTable
         dataTable: [],
-        columns: {
-            name: 'Tên đơn hàng',
-            code: 'Số đơn hàng',
-            supplier_name: 'NCC',
-            created_at: 'Ngày đơn hàng',
-            delivery_date: 'Ngày giao hàng',
-            purchasing_manager: 'Người phụ trách',
-            status: 'Trạng thái',
-        },
 
         // pagination
         totalPages: null,
@@ -28,11 +19,6 @@ document.addEventListener('alpine:init', () => {
         from: 0,
         to: 0,
         limit: 10,
-        showAction: {
-            view: false,
-            edit: true,
-            remove: true
-        },
         selectedRow: [],
 
         //data
@@ -71,8 +57,6 @@ document.addEventListener('alpine:init', () => {
             [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
             [ORDER_STATUS_CANCEL]: 'Hủy'
         },
-        comments: [],
-        comment_message: null,
         title: null,
         action: null,
         id: null,
@@ -126,24 +110,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async update() {
-            this.loading = true
-            try {
-                const response = await window.apiUpdateOrder(this.data)
-                if (!response.success) {
-                    toast.error(response.message)
-                    return
-                }
-                toast.success('Cập nhật đơn hàng thành công')
-                $('#modalUpdate').modal('hide')
-                this.list(this.filters)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async remove() {
             this.loading = true
             try {
@@ -168,28 +134,9 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async handleShowModalUI(action, id = null) {
-            this.loading = true
-            try {
-                this.resetData()
-                this.action = action
-                if (action === 'create') {
-                    this.data.type = this.typeCreateOrder
-                    this.title = 'Tạo mới'
-                    $('#modalInsert').modal('show')
-                } else {
-                    this.showModal = true
-                    this.title = action === 'view' ? 'Chi tiết' : 'Cập nhật'
-                    this.id = id
-                    await this.findOrder(id)
-                    $('#modalUpdate').modal('show')
-                }
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-                this.showModal = false
-            }
+        async handleShowModalInsert() {
+            this.resetData()
+            $('#modalInsert').modal('show')
         },
 
         async getListShoppingPlanCompany() {
@@ -252,24 +199,6 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiGetUser({})
                 if (response.success) {
                     this.listUser = response.data.data
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async findOrder(id){
-            this.loading = true
-            try {
-                const response = await window.apiFindOrder(id)
-                if (response.success) {
-                    this.data = response.data
-                    this.data.delivery_date = formatDateVN(this.data.delivery_date)
-                    this.data.payment_time = formatDateVN(this.data.payment_time)
                     return
                 }
                 toast.error(response.message)
@@ -442,7 +371,7 @@ document.addEventListener('alpine:init', () => {
                 shopping_plan_company_id: null,
                 supplier_id: null,
                 name: null,
-                type: null,
+                type: ORDER_TYPE_CREATE_WITH_PLAN,
                 purchasing_manager_id: null,
                 delivery_date: null,
                 delivery_location: null,

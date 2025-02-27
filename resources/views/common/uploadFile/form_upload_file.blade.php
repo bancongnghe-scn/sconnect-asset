@@ -5,18 +5,12 @@
                      uploadUrl: false,
                      maxFilePreviewSize: 10240,
                      showUpload: false,
-                     showCancel: false,
-                     previewSettings: {
-                         image: { width: '120px', height: '120px' },
-                         video: { width: '120px', height: '120px' },
-                         pdf: { width: '120px', height: '120px' },
-                         text: { width: '120px', height: '120px' },
-                         object: { width: '120px', height: '120px' }
-                     }
+                     showCancel: false
                  });
              },
              files: []
         }" id="input-41" name="input41[]" type="file" multiple>
+
 </div>
 
 <style>
@@ -56,5 +50,8 @@
     .kv-preview-data {
         width: 100% !important;
         height: 100% !important;
+    }
+    .fileinput-remove {
+        display: none;
     }
 </style>

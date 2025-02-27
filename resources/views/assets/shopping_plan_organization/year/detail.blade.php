@@ -57,6 +57,13 @@
                         {{-- chi tiet--}}
                         <div class="mb-3">
                             <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+{{--                            <div class="d-flex justify-content-between">--}}
+{{--                                <div class="mb-3 active-link tw-w-fit">Chi tiết</div>--}}
+{{--                                <div>--}}
+{{--                                    <i class="bi bi-arrows-angle-expand"></i>--}}
+{{--                                    <i class="bi bi-arrows-angle-contract"></i>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                             <div>
                                 <template x-for="(register, index) in registersOrganization" :key="index">
                                     <div class="p-4 tw-bg-[#E4F0E6] mb-3">

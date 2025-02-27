@@ -2,10 +2,9 @@
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" x-text="title + ' đơn hàng'"></h4>
+                <h4 class="modal-title">Tạo mới đơn hàng</h4>
                 <div>
-                    <button @click="action === 'create' ? create() : edit()" type="button" class="btn btn-sc">Lưu
-                    </button>
+                    <button @click="create()" type="button" class="btn btn-sc">Lưu</button>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning text-white"
                             @click="$('#modalSelectTypeCreate').modal('show')"
                     >Quay lại</button>
