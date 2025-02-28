@@ -109,13 +109,13 @@ document.addEventListener('alpine:init', () => {
 
         addRows() {
             let rows = {
-                code: null,
                 name: null,
                 vat_rate: null,
                 price: null,
                 asset_type_id: null,
                 description: null,
                 organization_id: null,
+                total: null,
             }
             this.data.shopping_assets_order.push(rows)
         },

@@ -1,5 +1,6 @@
 <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-<div class="mt-3" x-data="{isOrderPlan: +data.type === ORDER_TYPE_CREATE_WITH_PLAN}">
+<div class="mt-3" x-data="{isOrderPlan: true, isCreate: @json($action === 'create')}"
+     x-effect="isOrderPlan = +data.type === ORDER_TYPE_CREATE_WITH_PLAN">
     <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
         <thead>
         <tr>
@@ -18,9 +19,9 @@
         </thead>
         <tbody>
         <template x-for="(asset,index) in data.shopping_assets_order" :key="index">
-            <tr>
+            <tr x-data="{vat: 0}" x-effect="vat = +asset.price * ((+asset.vat_rate || 0) / 100)">
                 <td>
-                    <input class="form-control" type="text" x-model="asset.name">
+                    <input class="form-control" type="text" x-model="asset.name" placeholder="Nhập tên">
                 </td>
                 <td>
                     @include('common.input.input_price', [
@@ -30,11 +31,16 @@
                 <td>
                     <input class="form-control" type="number" min="1" x-model="asset.vat_rate">
                 </td>
-                <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price * (+asset.vat_rate || 0) / 100)"></td>
+                <td class="align-middle" x-text="window.formatCurrencyVND(vat)"></td>
                 <td>
-                    <input class="form-control" type="number" min="1" x-model="asset.total" :disabled="isOrderPlan">
+                    <template x-if="isCreate">
+                        <input class="form-control" type="number" min="1" x-model="asset.quantity_approved" :disabled="isOrderPlan">
+                    </template>
+                    <template x-if="!isCreate">
+                        <input class="form-control" type="number" min="1" x-model="asset.total" :disabled="isOrderPlan">
+                    </template>
                 </td>
-                <td class="align-middle" x-text="window.formatCurrencyVND(+asset.price + (+asset.price * (+asset.vat_rate || 0) / 100))"></td>
+                <td class="align-middle" x-text="window.formatCurrencyVND((+asset.price + vat) * (isCreate ? asset.quantity_approved : asset.total))"></td>
                 <td>
                     @include('common.select_custom.extent.select_single', [
                          'selected' => 'asset.asset_type_id',
@@ -54,7 +60,7 @@
                     ])
                 </td>
                 <td>
-                    <input class="form-control" type="text" x-model="asset.description" :disabled="isOrderPlan">
+                    <input class="form-control" type="text" x-model="asset.description" :disabled="isOrderPlan" placeholder="Nhập mô tả">
                 </td>
                 <td class="text-center align-middle" x-show="!isOrderPlan">
                     <button class="border-0 bg-white" @click="data.shopping_assets_order.splice(index, 1)">

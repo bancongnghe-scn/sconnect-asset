@@ -30,7 +30,7 @@
             },
 }" class="dropdown"
      @if(isset($id)) id="{{$id}}" @endif
-     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+     @isset($disabled) :disabled="{{$disabled}}" @endisset
 >
     <!-- Nút chọn -->
     <button
@@ -40,7 +40,7 @@
         :class="selected? '' : 'tw-text-gray-500'"
         x-text="options.find(item => +item.id === +selected)?.name || '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
-        @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+        @isset($disabled) :disabled="{{$disabled}}" @endisset
     >
     </button>
 

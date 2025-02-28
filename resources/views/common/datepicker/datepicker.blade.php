@@ -11,7 +11,7 @@
                         locale: localeVi,
                         dateFormat: 'dd/MM/yyyy',
                         onSelect: ({date}) => {
-                            this.selected = date != null ? this.selected : null
+                            this.selected = date != null ? format(date, 'dd/MM/yyyy') : null
                         }
                     })
                     $el.addEventListener('keydown', (e) => {

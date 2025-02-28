@@ -19,7 +19,7 @@
             <div class="card col-10 mh-100 overflow-y-auto custom-scroll">
                 <div class="card-body">
                     <div class="mb-3">
-                        @include('assets.order.order_info_general', ['disabled' => true, 'action' => 'detail'])
+                        @include('assets.order.order_info_general', ['action' => 'detail'])
                     </div>
 
                     <div class="mb-3">
@@ -74,7 +74,7 @@
 
                     <hr>
 
-                    @include('assets.order.costs_other', ['disabled' => true])
+                    @include('assets.order.costs_other', ['action' => 'detail'])
                 </div>
             </div>
             <div class="card col-2">

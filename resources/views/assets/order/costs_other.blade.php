@@ -1,11 +1,11 @@
-<div class="d-flex justify-content-between tw-pb-8" x-data="{ isDisabled: @json($disabled) }">
+<div class="d-flex justify-content-between tw-pb-8" x-data="{ isDetail: @json($action === 'detail'), isCreate: @json($action === 'create')}">
     <div class="col-4">
         <div class="mb-2">
             <label>Chi phí vận chuyển, lắp đặt</label>
             @include('common.input.input_price', [
                 'model' => 'data.shipping_costs',
                 'placeholder' => "Nhập số",
-                'disabled' => 'isDisabled'
+                'disabled' => 'isDetail'
             ])
         </div>
         <div>
@@ -13,7 +13,7 @@
             @include('common.input.input_price', [
                 'model' => 'data.other_costs',
                 'placeholder' => "Nhập số",
-                'disabled' => 'isDisabled'
+                'disabled' => 'isDetail'
             ])
         </div>
     </div>
@@ -24,8 +24,9 @@
             }
             let totalPrice = 0
             data.shopping_assets_order.filter((item) => {
+                const total = isCreate ? item.quantity_approved : item.total
                 const vat = +item.price * (+item.vat_rate || 0) / 100
-                totalPrice = totalPrice + ((+item.price + vat) * item.total)
+                totalPrice = totalPrice + ((+item.price + vat) * total)
             })
 
             return totalPrice

@@ -15,17 +15,17 @@
                     <div class="card-body">
                         {{--Thong tin chung--}}
                         <div class="mb-3">
-                            @include('assets.order.order_info_general', ['disabled' => false, 'action' => 'create'])
+                            @include('assets.order.order_info_general', ['action' => 'create'])
                         </div>
 
                         {{--  thông tin mặt hàng--}}
                         <div class="mb-3">
-                            @include('assets.order.shopping_asset_info')
+                            @include('assets.order.shopping_asset_info', ['action' => 'create'])
                         </div>
                         <hr>
 
                         {{--chi phi khac--}}
-                        @include('assets.order.costs_other', ['disabled' => false])
+                        @include('assets.order.costs_other', ['action' => 'create'])
                     </div>
                 </div>
             </div>
