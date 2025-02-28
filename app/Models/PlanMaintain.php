@@ -45,8 +45,8 @@ class PlanMaintain extends Model
 
     public const STATUS_NAME = [
         self::STATUS_NEW            => 'Mới tạo',
-        self::STATUS_PENDING        => 'Chờ duyệt',
-        self::STATUS_APPROVAL       => 'Đã duyệt',
+        self::STATUS_PENDING        => 'Chờ xác nhận',
+        self::STATUS_APPROVAL       => 'Hoàn thành',
         self::STATUS_REJECT         => 'Từ chối',
     ];
 

@@ -5,6 +5,7 @@ namespace App\Repositories\Manage;
 use App\Models\PlanMaintainAsset;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class PlanMaintainAssetRepository extends BaseRepository
 {
@@ -73,6 +74,22 @@ class PlanMaintainAssetRepository extends BaseRepository
             $query->where('status', $filters['status']);
         }
 
+        if (!empty($filters['asset_id'])) {
+            $query->where('asset_id', $filters['asset_id']);
+        }
+
         return $query->delete();
+    }
+
+    public function updateWithConditions($caseString, $idString)
+    {
+        $sql = "
+            UPDATE plan_maintain_asset
+            SET price = CASE $caseString END
+            WHERE (asset_id, plan_maintain_id) IN ($idString)
+            AND deleted_at IS NULL;
+        ";
+
+        return DB::affectingStatement($sql); // return number records updated
     }
 }

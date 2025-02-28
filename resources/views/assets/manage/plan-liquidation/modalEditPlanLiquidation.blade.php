@@ -68,22 +68,27 @@
                                         <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="font-size: 13px;">
                                     <template x-for="(dataAsset, index) in (data.id ? dataTbodyListAssetLiqui : $store.globalData.dataAssetDraftForCreatePlanLiquidation)" x-data="{line: 1}">
                                         <tr>
                                             <td>
                                                 <span x-text="data.id ? dataAsset?.asset?.code : dataAsset?.code"></span>
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
-                                            <td>
+                                            <td style="max-width: 160px;">
                                                 <span x-text="dataAsset.asset && dataAsset.asset.asset_history && dataAsset.asset.asset_history.length > 0 ? dataAsset.asset.asset_history[0].description : ''"></span>
+                                            </td class="text-center align-middle text-align-center">
+                                            <td class="text-center align-middle text-align-center">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control text-right" 
+                                                    x-bind:value="formatPriceAssetLiqui(dataAsset.price ?? dataAsset.price_liquidation ?? 0)" 
+                                                    @input="updatePriceAssetLiqui($event.target.value, index)"
+                                                >
                                             </td>
-                                            <td class="text-right">
-                                                <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : (dataAsset?.price_liquidation ? dataAsset?.price_liquidation?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '') "></span>
-                                            </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded" 
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,
@@ -91,7 +96,7 @@
                                                     'tw-text-red-500 tw-bg-red-100':        data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Từ chối'     : dataAsset.status,
                                                 }"></span>
                                             </td>
-                                            <td class="text-center align-middle">
+                                            <td class="text-center align-middle text-align-center">
                                                 <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: dataAsset.id })">
                                                     <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                                 </button>

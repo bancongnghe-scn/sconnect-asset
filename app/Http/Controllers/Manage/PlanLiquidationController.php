@@ -98,10 +98,11 @@ class PlanLiquidationController extends Controller
     {
         try {
             $request->validate([
-                'name'      => 'nullable|string|max:255',
-                'code'      => 'nullable|string|max:255',
-                'note'      => 'nullable|string',
-                'status'    => 'nullable|integer|max:200',
+                'name'                  => 'nullable|string|max:255',
+                'code'                  => 'nullable|string|max:255',
+                'note'                  => 'nullable|string',
+                'status'                => 'nullable|integer|max:200',
+                'plan_maintain_asset'   => 'nullable|array',
             ]);
 
             $result = $this->planLiquidationService->updatePlan($id, $request->all());

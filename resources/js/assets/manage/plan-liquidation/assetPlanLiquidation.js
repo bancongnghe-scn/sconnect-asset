@@ -13,7 +13,7 @@ document.addEventListener('alpine:init', () => {
             Alpine.store('assetPlanLiquidation').instance = this
             this.initDatePicker()
             this.filterPlanLiquidation()
-            $('#idModalEditPlanLiquidation').on('hidden.bs.modal', () => {
+            $('#idModalEditPlanLiquidation').off('hidden.bs.modal').on('hidden.bs.modal', () => {
                 this.loading = false;
             });
         },
@@ -70,8 +70,8 @@ document.addEventListener('alpine:init', () => {
         },
         listStatusPlanLiquidation: {
             0: 'Mới tạo',
-            1: 'Chờ duyệt',
-            2: 'Đã duyệt',
+            1: 'Chờ xác nhận',
+            2: 'Hoàn thành',
             3: 'Từ chối',
         },
         listStatusAssetOfPlan: {
@@ -82,7 +82,6 @@ document.addEventListener('alpine:init', () => {
         id: null,
         selectedValue: null,
         idModalEditPlanLiquidation: "idModalEditPlanLiquidation",
-        idModalSelectAsset: "idModalSelectAsset",
 
         idModalShowPlanLiquidation: "idModalShowPlanLiquidation",
         statusPlanLiquidation: "statusPlanLiquidation",
@@ -158,6 +157,84 @@ document.addEventListener('alpine:init', () => {
             return 0;
         },
 
+        formatPriceAssetLiqui(value) {
+            if (value == null || isNaN(value)) {
+                return "0";
+            }
+            return value.toLocaleString('en-US');
+        },
+
+        updatePriceAssetLiqui(value, index) {
+            let numericValue = parseFloat(value.replace(/,/g, '')) || 0;
+
+            if (this.data.id) {
+                this.dataTbodyListAssetLiqui[index].price = numericValue;
+            } else {
+                Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation[index].price = numericValue;
+            }
+        },
+
+        confirmValue : null,
+        confirmIndex : null,
+        originalPrice: null,
+        isConfirmedLiqui: false,
+        showConfirmModal(value, index) {
+            this.confirmPrice = value;
+            this.confirmIndex = index;
+
+            $('#confirmChangePriceLiquidation').modal('show');
+            $('#confirmChangePriceLiquidation').off('hidden.bs.modal').on('hidden.bs.modal', () => {
+                if (!this.isConfirmedLiqui) {
+                    this.dataTbodyListAssetLiqui[index].price = this.originalPrice[index].price;
+                }
+                this.isConfirmedLiqui = false
+            });
+
+            if ($('.modal-backdrop').length > 1) {
+                $('.modal-backdrop')[1].classList.add('custom-backdrop');
+            }
+        },
+
+        async changePriceLiquidation() {
+            let e = this.dataTbodyListAssetLiqui[this.confirmIndex]
+            let _id = e.plan_maintain_id
+            let plan_maintain_asset = [];
+
+            // Update giá trị thanh lý của  "1 tài sản" 
+            plan_maintain_asset.push({
+                asset_id: e.asset_id,
+                plan_maintain_id: e.plan_maintain_id,
+                price: e.price
+            });
+
+            // Update giá trị thanh lý của 1 tài sản từ trạng thái từ chối, -> chờ duyệt lại
+            if (this.listStatusAssetOfPlan[e.status] == 'Từ chối') {
+                plan_maintain_asset = {
+                    asset_id: e.asset_id,
+                    plan_maintain_id: e.plan_maintain_id,
+                    price: e.price,
+                    status: e.status
+                }
+
+                this.dataTbodyListAssetLiqui[this.confirmIndex].status = Object.entries(this.listStatusAssetOfPlan).find(([k, v]) => v === 'Chưa duyệt')?.[0]
+            }
+            let _data = {
+                plan_maintain_asset: plan_maintain_asset,
+            };
+
+            const response = await window.apiUpdatePlanLiquidation(_id, _data)
+            if (!response.success) {
+                toast.error(response.message)
+                return
+            }
+            toast.success('Cập nhật giá trị thanh lý tài sản thành công')
+            this.isConfirmedLiqui = true;
+
+            this.originalPrice[this.confirmIndex].price = e.price
+            this.dataTbodyListAssetLiqui[this.confirmIndex].price = e.price
+            $('#confirmChangePriceLiquidation').modal('hide');
+        },
+
         // Edit Plan liquidation
         async handleEditModalUI(id) {
             this.loading = true
@@ -171,14 +248,22 @@ document.addEventListener('alpine:init', () => {
             this.data = response.data.data
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
 
-            $('#' + this.idModalEditPlanLiquidation).modal('show');
+            $('#idModalEditPlanLiquidation').modal('show');
+            $('#idModalEditPlanLiquidation').on('shown.bs.modal', function () {
+                $(this).removeAttr('aria-hidden'); 
+            });
+
             $("[name='target_id']").val(this.id);
             this.loading = false
         },
 
         // Open modal select asset to plan liquidation
         async modalSelectAsset(filter) {
-            $('#' + this.idModalSelectAsset).modal('show');
+            $('#idModalSelectAsset').modal('show');
+            $('#idModalSelectAsset').on('shown.bs.modal', function () {
+                $(this).removeAttr('aria-hidden');
+            });
+
             const response = await window.apiGetAssetLiquidationForModal(filter)
 
             this.dataTbodySelectAsset = response.data.data.data
@@ -239,7 +324,10 @@ document.addEventListener('alpine:init', () => {
 
             this.selectedRowAssetToPlan = []
 
-            $('#' + this.idModalSelectAsset).modal('hide');
+            $('#idModalSelectAsset').modal('hide');
+            $('#idModalSelectAsset').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                $(this).attr('aria-hidden', 'true');
+            });
         },
 
         async modalRemoveSelectAsset(id) {
@@ -267,7 +355,11 @@ document.addEventListener('alpine:init', () => {
 
             this.id = null
             this.checkCreate = true
-            $('#' + this.idModalEditPlanLiquidation).modal('show')
+            $('#idModalEditPlanLiquidation').modal('show')
+            $('#idModalEditPlanLiquidation').on('shown.bs.modal', function () {
+                $(this).removeAttr('aria-hidden'); 
+            });
+            
             this.dataTbodyListAssetLiqui = []
 
             this.loading = false
@@ -283,7 +375,7 @@ document.addEventListener('alpine:init', () => {
                 const assets_id = {
                     assets_id: data_asset_liquidation_prev.map(item => ({
                         id: item.id,
-                        price_liquidation: item.price_liquidation
+                        price: item.price ?? item.price_liquidation
                     }))
                 };
 
@@ -318,18 +410,33 @@ document.addEventListener('alpine:init', () => {
             this.dataTbodyListAssetLiqui = []
             Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation = []
             this.list(this.filters)
-            $('#' + this.idModalEditPlanLiquidation).modal('hide');
+            $('#idModalEditPlanLiquidation').modal('hide');
+            $('#idModalEditPlanLiquidation').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                $(this).attr('aria-hidden', 'true');
+            });
             this.checkCreate = false
             this.loading = false
         },
 
         async updatePlan(id) {
             this.loading = true
+
+            let plan_maintain_asset = [];
+            this.dataTbodyListAssetLiqui.forEach(e => {
+                plan_maintain_asset.push({
+                    asset_id: e.asset_id,
+                    plan_maintain_id: e.plan_maintain_id,
+                    price: e.price
+                });
+            });
+
             const _data = {
                 name: this.data['name'] ?? '',
                 code: this.data['code'] ?? '',
                 note: this.data['note'] ?? '',
+                plan_maintain_asset: plan_maintain_asset,
             }
+            
             const response = await window.apiUpdatePlanLiquidation(id, _data)
             if (!response.success) {
                 toast.error(response.message)
@@ -337,7 +444,10 @@ document.addEventListener('alpine:init', () => {
             }
             this.list(this.filters)
             this.id = null
-            $('#' + this.idModalEditPlanLiquidation).modal('hide');
+            $('#idModalEditPlanLiquidation').modal('hide');
+            $('#idModalEditPlanLiquidation').off('hidden.bs.modal').on('hidden.bs.modal', function () {
+                $(this).attr('aria-hidden', 'true');
+            });
             this.loading = false
         },
 
@@ -380,11 +490,21 @@ document.addEventListener('alpine:init', () => {
 
         async sendForApproval(planId) {
             this.loading = true
+
+            let plan_maintain_asset = [];
+            this.dataTbodyListAssetLiqui.forEach(e => {
+                plan_maintain_asset.push({
+                    asset_id: e.asset_id,
+                    plan_maintain_id: e.plan_maintain_id,
+                    price: e.price
+                });
+            });
             const _data = {
                 name: this.data['name'] ?? '',
                 code: this.data['code'] ?? '',
                 note: this.data['note'] ?? '',
-                status: 1
+                status: 1,
+                plan_maintain_asset: plan_maintain_asset
             }
 
             const response = await window.apiUpdatePlanLiquidation(planId, _data)
@@ -407,13 +527,10 @@ document.addEventListener('alpine:init', () => {
                 return
             }
             this.data = response.data.data
-            console.warn('123', this.data);
-            
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
-            console.warn('this.dataTbodyListAssetLiqui', this.data?.plan_maintain_asset);
-            
+            this.originalPrice = JSON.parse(JSON.stringify(this.dataTbodyListAssetLiqui));
 
-            $('#' + this.idModalShowPlanLiquidation).modal('show');
+            $('#idModalShowPlanLiquidation').modal('show');
 
             this.loading = false
         },
