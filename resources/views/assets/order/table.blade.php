@@ -52,15 +52,15 @@
                                         @include('component.status.status_order', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <a :href="`/order/detail/${value.id}`">
+                                        <a :href="`/order/detail/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-eye text-info"></i>
                                         </a>
-                                        <a x-show="isStatusActive" :href="`/order/update/${value.id}`">
+                                        <a x-show="isStatusActive" :href="`/order/update/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-pencil-square color-sc"></i>
                                         </a>
-                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="confirmRemove(false, value.id)">
+                                        <span class="border-0 bg-white" x-show="isStatusActive" @click="confirmRemove(false, value.id)">
                                             <i class="bi bi-trash text-red"></i>
-                                        </button>
+                                        </span>
                                     </td>
                                 </tr>
                             </template>
