@@ -490,7 +490,7 @@
         </div>
     </div>
 
-    <div class="modal fade modal-2" id="confirmAllocateModal" tabindex="-1" aria-labelledby="confirmAllocateModal" aria-hidden="true">
+    <div class="modal fade modal-2" id="confirmAllocateModal" tabindex="-1" aria-labelledby="confirmAllocateModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -562,7 +562,7 @@
         </div>
     </div>
 
-    <div class="modal fade modal-2" id="confirmRecoveryModal" tabindex="-1" aria-labelledby="confirmRecoveryModal" aria-hidden="true">
+    <div class="modal fade modal-2" id="confirmRecoveryModal" tabindex="-1" aria-labelledby="confirmRecoveryModal">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
