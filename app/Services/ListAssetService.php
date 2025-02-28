@@ -43,6 +43,10 @@ class ListAssetService
             $query->where('asset_type_id', $request->type);
         }
 
+        if ($request->unitSearch && 0 != $request->unitSearch) {
+            $query->where('organization_id', $request->unitSearch);
+        }
+
         if ($request->nameCodeAsset) {
             $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%'])
                 ->orWhereRaw('LOWER(code) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%']);
@@ -104,6 +108,8 @@ class ListAssetService
 
             $assetCurrent = Asset::find($request->listAssetAllocate[0]['id']);
 
+            $dateChange = Carbon::parse($request->dateChange);
+
             $transferAsset = TransferAsset::create([
                 'user_id'           => $request->user['id'],
                 'org_id'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
@@ -112,6 +118,7 @@ class ListAssetService
                 'description'       => $request->description,
                 'to_user_id'        => $assetCurrent->user_id,
                 'to_org_id'         => $assetCurrent->organization_id,
+                'date' => $dateChange,
             ]);
 
             foreach ($request->listAssetAllocate as $asset) {
@@ -122,6 +129,8 @@ class ListAssetService
                     'type'                    => 1,
                     'transfer_asset_id'       => $transferAsset->id,
                     'description'             => $request->description,
+                    'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                    'date_change' => $dateChange,
                     'created_at'              => Carbon::now(),
                     'updated_at'              => Carbon::now(),
                 ];
@@ -164,6 +173,8 @@ class ListAssetService
                     $request->user['org_last_parent']['id']
                     : $request->user['dept_id']);
 
+            $dateChange = Carbon::parse($request->dateChange);
+
             $transferAsset = TransferAsset::create([
                 'user_id'        => $request->user['id'],
                 'org_id'         => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
@@ -172,6 +183,7 @@ class ListAssetService
                 'description'    => $request->description,
                 'to_user_id'     => null,
                 'to_org_id'      => $orgIdAfter,
+                'date' => $dateChange,
             ]);
 
             foreach ($request->listAssetRecovery as $asset) {
@@ -184,6 +196,8 @@ class ListAssetService
                     'org_id_after'         => $orgIdAfter,
                     'description'          => $request->description,
                     'transfer_asset_id'    => $transferAsset->id,
+                    'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                    'date_change' => $dateChange,
                     'created_at'           => Carbon::now(),
                     'updated_at'           => Carbon::now(),
                 ];
@@ -224,6 +238,10 @@ class ListAssetService
     {
         $query = Org::query();
 
+        if ($request->unit) {
+            $query->where('id', $request->unit);
+        }
+
         return $query->whereIn('parent_id', [0, 1])->with(['manager', 'deptType', 'listAsset'])->paginate($request->limit);
     }
 
@@ -235,6 +253,8 @@ class ListAssetService
             $arrAssetId             = [];
             $arrAllocationAssetUser = [];
 
+            $dateChange = Carbon::parse($request->dateChange);
+
             $assetCurrent = Asset::find($request->listAssetAllocate[0]['id']);
 
             $transferAsset = TransferAsset::create([
@@ -245,6 +265,7 @@ class ListAssetService
                 'description'    => $request->description,
                 'to_user_id'     => $assetCurrent->user_id,
                 'to_org_id'      => $assetCurrent->organization_id,
+                'date' => $dateChange,
             ]);
 
             foreach ($request->listAssetAllocate as $asset) {
@@ -266,6 +287,8 @@ class ListAssetService
                     'type'                 => 1,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->description,
+                    'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                    'date_change' => $dateChange,
                     'created_at'           => Carbon::now(),
                     'updated_at'           => Carbon::now(),
                 ];
@@ -305,12 +328,15 @@ class ListAssetService
             $arrAssetId             = [];
             $arrAllocationAssetUser = [];
 
+            $dateChange = Carbon::parse($request->dateChange);
+
             $transferAsset = TransferAsset::create([
                 'user_id'     => null,
                 'org_id'      => $request->org['id'],
                 'type'        => 2,
                 'description' => $request->description,
                 'created_by'  => auth()->user() ? auth()->user()->id : 1,
+                'date' => $dateChange,
             ]);
 
             foreach ($request->listAssetRecovery as $asset) {
@@ -333,6 +359,8 @@ class ListAssetService
                     'org_id'               => $request->org['id'],
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->description,
+                    'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                    'date_change' => $dateChange,
                     'created_at'           => Carbon::now(),
                     'updated_at'           => Carbon::now(),
                 ];
@@ -461,6 +489,8 @@ class ListAssetService
             $transferAsset = null;
             $arrAssetId    = [];
 
+            $dateChange = Carbon::parse($request->dateChange);
+
             foreach ($request->listAssetRotation as $assetRotation) {
                 $orgId        = null;
                 $userId       = null;
@@ -479,6 +509,7 @@ class ListAssetService
                     'to_org_id'     => $orgId,
                     'created_by'    => auth()->user() ? auth()->user()->id : 1,
                     'description'   => $request->descriptionRotation,
+                    'date' => $dateChange,
                 ]);
 
                 //thu hồi
@@ -503,6 +534,8 @@ class ListAssetService
                         'user_id'              => $assetRotation['user_id'],
                         'transfer_asset_id'    => $transferAsset->id,
                         'description'          => $request->descriptionRotation,
+                        'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                        'date_change' => $dateChange,
                         'created_at'           => Carbon::now(),
                         'updated_at'           => Carbon::now(),
                     ]);
@@ -529,6 +562,8 @@ class ListAssetService
                     'type'                 => 1,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->descriptionRotation,
+                    'date' => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
+                    'date_change' => $dateChange,
                     'created_at'           => Carbon::now(),
                     'updated_at'           => Carbon::now(),
                 ]);

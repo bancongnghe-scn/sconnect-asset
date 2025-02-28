@@ -153,11 +153,11 @@
                 </div>
                 <div class="col-xxl-12 col-sm-12">
                     <div style="background: #fff; border-radius: 15px;">
-                        {{-- <div class="d-flex align-items-end mt-3 mb-3">
-                            <div class="col-2 d-flex position-relative">
+                        <div class="d-flex align-items-end mt-3 mb-3">
+                            {{-- <div class="col-2 d-flex position-relative">
                                 <input type="text" class="form-control" id="nameUser" placeholder="Tên/mã nhân viên">
                                 <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
-                            </div>
+                            </div> --}}
         
                             <div class="col-2">
                                 <select class="form-control select2" data-placeholder="Đơn vị" id="unitSearch">
@@ -169,7 +169,7 @@
                             </div>
                         
                             <div class="col-2">
-                                <span @click="fetchData($('#unitSearch').val(), $('#nameUser').val())" style="cursor: pointer;">
+                                <span @click="fetchData($('#unitSearch').val())" style="cursor: pointer;">
                                     <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <g filter="url(#filter0_d_13695_32688)">
                                         <rect x="2" width="34" height="34" rx="6" fill="#379237"/>
@@ -190,7 +190,7 @@
                                     </svg>
                                 </span>
                             </div>
-                        </div> --}}
+                        </div>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
@@ -303,6 +303,7 @@
             listAssetRecovery: [],
             listHistory: [],
             linkReport: {},
+            assetType: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -328,7 +329,7 @@
                     const data = response.data;
                     this.listOrg = data.data.listOrg.data;
                     this.listUnit = data.data.listUnit;
-                    this.listAssetType = data.data.listAssetType;
+                    this.assetType = data.data.listAssetType;
 
                     this.totalPages = data.data.listOrg.last_page;
                     this.currentPage = data.data.listOrg.current_page;                                      

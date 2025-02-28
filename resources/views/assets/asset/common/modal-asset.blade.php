@@ -153,7 +153,7 @@
                                         <div class="col-6">
                                             <div class="mb-3">
                                                 <span>Ngày cấp phát</span>
-                                                <input type="date" class="form-control" x-model="new Date().toISOString().slice(0, 10)">
+                                                <input type="date" class="form-control" x-model="dateChange" onclick="this.showPicker();">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -241,7 +241,7 @@
                                         <div class="col-6">
                                             <div class="mb-3">
                                                 <span>Ngày thu hồi</span>
-                                                <input type="date" class="form-control" x-model="new Date().toISOString().slice(0, 10)" disabled>
+                                                <input type="date" class="form-control" x-model="dateChange" onclick="this.showPicker();">
                                             </div>
                                         </div>
                                         <div class="col-12">
