@@ -20,6 +20,7 @@ class TransferAsset extends Model
         'created_by',
         'description',
         'link_report',
+        'date'
     ];
 
     public function user()

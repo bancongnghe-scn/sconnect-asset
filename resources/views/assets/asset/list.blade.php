@@ -153,12 +153,14 @@
                         </select>
                     </div>
 
-                    {{-- <div class="col-2">
+                    <div class="col-2">
                         <select class="form-control select2" data-placeholder="Chọn đơn vị" id="unitSearch">
-                            <option value="" disabled selected>Trạng thái</option>
-                           
+                            <option value="0" selected>Đơn vị</option>
+                            <template x-for="(unit, key) in listOrg">
+                                <option :value="unit.id" x-text="unit.dept_type.cfg_key + ' ' + unit.name"></option>
+                            </template>
                         </select>
-                    </div> --}}
+                    </div>
                 
                     <div class="col-2 d-flex position-relative">
                         <input type="text" class="form-control" id="nameUser" placeholder="Người sử dụng/người đại diện" style="padding: 0.375rem 1.75rem 0.375rem 0.75rem;">
@@ -292,11 +294,11 @@
                                             </a>
                                         </template>
                                         <template x-if="matchStatus(asset.status, 'repair')">
-                                            <a class="d-flex item-menu" href="#">
+                                            <a class="d-flex item-menu" tyle="cursor: pointer;">
                                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M23.0564 15.0496L21.3019 13.5496C21.3849 13.0406 21.4278 12.521 21.4278 12.0013C21.4278 11.4817 21.3849 10.9621 21.3019 10.4531L23.0564 8.95313C23.1887 8.83984 23.2834 8.68895 23.3279 8.52053C23.3724 8.35211 23.3646 8.17413 23.3055 8.01027L23.2814 7.94062C22.7984 6.5907 22.0751 5.33929 21.1465 4.24687L21.0983 4.19062C20.9857 4.05818 20.8356 3.96296 20.6677 3.91754C20.4999 3.87211 20.3222 3.87861 20.1582 3.93616L17.9805 4.71027C17.1769 4.05134 16.2796 3.5317 15.3099 3.16741L14.8894 0.890625C14.8577 0.719309 14.7746 0.561703 14.6511 0.438744C14.5277 0.315785 14.3698 0.233295 14.1983 0.202232L14.126 0.188839C12.7305 -0.0629464 11.2626 -0.0629464 9.86708 0.188839L9.79476 0.202232C9.62332 0.233295 9.46539 0.315785 9.34196 0.438744C9.21852 0.561703 9.13542 0.719309 9.10369 0.890625L8.68047 3.17813C7.71857 3.54249 6.8228 4.06185 6.02869 4.71562L3.83494 3.93616C3.67092 3.87815 3.49313 3.87142 3.32519 3.91687C3.15726 3.96233 3.00713 4.05781 2.89476 4.19062L2.84655 4.24687C1.91908 5.34006 1.19595 6.59126 0.711724 7.94062L0.687617 8.01027C0.567081 8.34509 0.666188 8.72009 0.936724 8.95313L2.71262 10.4692C2.62958 10.9728 2.5894 11.4871 2.5894 11.9987C2.5894 12.5129 2.62958 13.0272 2.71262 13.5281L0.936724 15.0442C0.804391 15.1575 0.709679 15.3084 0.665181 15.4768C0.620684 15.6452 0.628509 15.8232 0.687617 15.9871L0.711724 16.0567C1.19655 17.4067 1.9144 18.6522 2.84655 19.7504L2.89476 19.8067C3.00741 19.9391 3.15754 20.0344 3.32537 20.0798C3.49321 20.1252 3.67087 20.1187 3.83494 20.0612L6.02869 19.2817C6.8269 19.9379 7.71887 20.4576 8.68047 20.8192L9.10369 23.1067C9.13542 23.278 9.21852 23.4356 9.34196 23.5586C9.46539 23.6815 9.62332 23.764 9.79476 23.7951L9.86708 23.8085C11.2754 24.0616 12.7177 24.0616 14.126 23.8085L14.1983 23.7951C14.3698 23.764 14.5277 23.6815 14.6511 23.5586C14.7746 23.4356 14.8577 23.278 14.8894 23.1067L15.3099 20.8299C16.2792 20.4666 17.1816 19.9452 17.9805 19.2871L20.1582 20.0612C20.3222 20.1192 20.5 20.1259 20.6679 20.0804C20.8358 20.035 20.986 19.9395 21.0983 19.8067L21.1465 19.7504C22.0787 18.6496 22.7965 17.4067 23.2814 16.0567L23.3055 15.9871C23.426 15.6576 23.3269 15.2826 23.0564 15.0496V15.0496ZM19.4001 10.7692C19.4671 11.1737 19.5019 11.5888 19.5019 12.004C19.5019 12.4192 19.4671 12.8344 19.4001 13.2388L19.2233 14.3129L21.2242 16.0246C20.9209 16.7234 20.538 17.3849 20.0832 17.996L17.5974 17.1147L16.7564 17.8058C16.1162 18.3308 15.4037 18.7433 14.6323 19.0326L13.6117 19.4156L13.1323 22.0138C12.3758 22.0996 11.612 22.0996 10.8555 22.0138L10.376 19.4103L9.36351 19.0219C8.60012 18.7326 7.8903 18.3201 7.25547 17.7978L6.4144 17.104L3.91262 17.9933C3.45726 17.3799 3.0769 16.7183 2.77155 16.0219L4.79387 14.2942L4.61976 13.2228C4.55547 12.8237 4.52065 12.4112 4.52065 12.004C4.52065 11.5942 4.5528 11.1844 4.61976 10.7853L4.79387 9.71384L2.77155 7.98616C3.07422 7.28705 3.45726 6.62812 3.91262 6.01473L6.4144 6.90402L7.25547 6.21027C7.8903 5.68795 8.60012 5.27545 9.36351 4.98616L10.3787 4.60312L10.8582 1.99955C11.6108 1.91384 12.3796 1.91384 13.1349 1.99955L13.6144 4.59777L14.6349 4.9808C15.4037 5.27009 16.1189 5.68259 16.759 6.20759L17.6001 6.89866L20.0858 6.01741C20.5412 6.6308 20.9215 7.29241 21.2269 7.98884L19.226 9.70045L19.4001 10.7692ZM11.9992 7.02187C9.39565 7.02187 7.28494 9.13259 7.28494 11.7362C7.28494 14.3397 9.39565 16.4504 11.9992 16.4504C14.6028 16.4504 16.7135 14.3397 16.7135 11.7362C16.7135 9.13259 14.6028 7.02187 11.9992 7.02187ZM14.1207 13.8576C13.8424 14.1366 13.5117 14.3579 13.1477 14.5087C12.7836 14.6595 12.3933 14.7368 11.9992 14.7362C11.1983 14.7362 10.4457 14.4228 9.8778 13.8576C9.59875 13.5793 9.37748 13.2487 9.2267 12.8846C9.07592 12.5205 8.99861 12.1302 8.99922 11.7362C8.99922 10.9353 9.31262 10.1826 9.8778 9.61473C10.4457 9.04687 11.1983 8.73616 11.9992 8.73616C12.8001 8.73616 13.5528 9.04687 14.1207 9.61473C14.3997 9.89298 14.621 10.2236 14.7718 10.5877C14.9225 10.9518 14.9998 11.3421 14.9992 11.7362C14.9992 12.5371 14.6858 13.2897 14.1207 13.8576Z" fill="#344054"/>
                                                 </svg>                                                                                        
-                                                <span class="title-menu">Sửa chữa</span>   
+                                                <span class="title-menu">Sửa chữa</span>
                                             </a>
                                         </template>
                                         <template x-if="matchStatus(asset.status, 'request-liquidation')">
@@ -1013,6 +1015,7 @@
             total: 0,
             linkReport: {},
             listAssetRepresent: {},
+            dateChange: new Date().toISOString().slice(0, 10),
 
             init (){
                 window.initSelect2Modal('modalAllocationConfirm');
@@ -1023,6 +1026,7 @@
 
                 this.fetchData();
                 this.getListOrg();
+                this.getUser();
 
                 // const select = $('#unitSelect').select2();
           
@@ -1110,6 +1114,10 @@
 
                     if (nameUser) {
                         urlSearch += 'nameUser=' + nameUser + '&';
+                    }
+
+                    if ($('#unitSearch').val() != 0) {
+                        urlSearch += 'unitSearch=' + $('#unitSearch').val() + '&';
                     }
 
                     if (urlSearchParam) {
@@ -1357,7 +1365,8 @@
                         const response = await axios.post(urlSearch, {
                             listAssetAllocate: this.listAssetAllocate,
                             user: this.userObj,
-                            description: this.description
+                            description: this.description,
+                            dateChange: this.dateChange
                         }, {
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1377,7 +1386,8 @@
                         const response = await axios.post(urlSearch, {
                             listAssetAllocate: this.listAssetAllocate,
                             org: this.orgObj,
-                            description: this.description
+                            description: this.description,
+                            dateChange: this.dateChange
                         }, {
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1406,7 +1416,8 @@
                             listAssetRecovery: this.listAssetRecovery,
                             user: this.userObj,
                             description: this.description,
-                            recoveryCompany: this.recoveryCompany
+                            recoveryCompany: this.recoveryCompany,
+                            dateChange: this.dateChange
                         }, {
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1427,7 +1438,8 @@
                         const response = await axios.post(urlSearch, {
                             listAssetRecovery: this.listAssetRecovery,
                             org: this.orgObj,
-                            description: this.description
+                            description: this.description,
+                            dateChange: this.dateChange
                         }, {
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -1468,7 +1480,8 @@
                         listAssetRotation: this.listAssetRotation,
                         rotationToId: this.rotationTo,
                         rotationToType: this.rotationToType,
-                        descriptionRotation: this.descriptionRotation
+                        descriptionRotation: this.descriptionRotation,
+                        dateChange: this.dateChange
                     }, {
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
