@@ -43,6 +43,10 @@ class AssetRepository extends BaseRepository
             $query->whereIn('id', Arr::wrap($filters['id']));
         }
 
+        if (!empty($filters['code'])) {
+            $query->whereIn('code', Arr::wrap($filters['code']));
+        }
+
         return $query->get();
     }
 

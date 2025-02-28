@@ -302,4 +302,5 @@ Route::prefix('asset')->group(function () {
 
     Route::post('/update-asset', [ListAssetController::class, 'updateAsset'])->name('assets.updateAsset');
     Route::get('/info/{id}', [ListAssetController::class, 'getAssetInfo']);
+    Route::post('import', [App\Http\Controllers\AssetController::class, 'importAsset']);
 });
