@@ -55,9 +55,9 @@
                                         <a :href="`/order/detail/${value.id}`">
                                             <i class="bi bi-eye text-info"></i>
                                         </a>
-                                        <button class="border-0 bg-white" x-show="isStatusActive" @click="handleShowModalUI('update', value.id)">
+                                        <a x-show="isStatusActive" :href="`/order/update/${value.id}`">
                                             <i class="bi bi-pencil-square color-sc"></i>
-                                        </button>
+                                        </a>
                                         <button class="border-0 bg-white" x-show="isStatusActive" @click="confirmRemove(false, value.id)">
                                             <i class="bi bi-trash text-red"></i>
                                         </button>

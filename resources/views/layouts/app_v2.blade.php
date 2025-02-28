@@ -31,7 +31,7 @@
 <body>
     <div class="modal fade show" style="display: block;"
          x-data="{loading: false, permission: {{\Auth::user()->getAllPermissions()->pluck('name')}}}">
-        <div class="modal-dialog modal-fullscreen">
+        <div class="modal-dialog modal-fullscreen" @yield('x-data')>
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{$title}}</h4>

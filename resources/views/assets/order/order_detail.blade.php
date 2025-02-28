@@ -2,6 +2,10 @@
     'title' => 'Chi tiết đơn hàng'
 ])
 
+@section('x-data')
+    x-data="order_detail({{$id}})"
+@endsection
+
 @section('btn-header')
     <a class="btn btn-sc" :href="`/api/order/export/{{$id}}`" download>
         <i class="fa-solid fa-file-export"></i>Gửi NCC
@@ -11,14 +15,16 @@
 
 @section('content')
     <div>
-        <div class="d-flex tw-gap-x-4 h-100" x-data="order_detail({{$id}})">
+        <div class="d-flex tw-gap-x-4 h-100">
             <div class="card col-10 mh-100 overflow-y-auto custom-scroll">
                 <div class="card-body">
-                    @include('assets.order.order_info_general', ['disabled' => true])
+                    <div class="mb-3">
+                        @include('assets.order.order_info_general', ['disabled' => true])
+                    </div>
 
                     <div class="mb-3">
                         <div class="mb-3 active-link tw-w-fit">Thông tin mặt hàng</div>
-                        <div class="mt-3 table-responsive custom-scroll">
+                        <div class="mt-3">
                             <table id="example2"
                                    class="table table-bordered dataTable dtr-inline"
                                    aria-describedby="example2_info">

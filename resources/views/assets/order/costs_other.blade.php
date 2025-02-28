@@ -1,11 +1,11 @@
-<div class="d-flex justify-content-between tw-pb-8">
+<div class="d-flex justify-content-between tw-pb-8" x-data="{ isDisabled: @json($disabled) }">
     <div class="col-4">
         <div class="mb-2">
             <label>Chi phí vận chuyển, lắp đặt</label>
             @include('common.input.input_price', [
                 'model' => 'data.shipping_costs',
                 'placeholder' => "Nhập số",
-                'disabled' => $disabled ?? false
+                'disabled' => 'isDisabled'
             ])
         </div>
         <div>
@@ -13,7 +13,7 @@
             @include('common.input.input_price', [
                 'model' => 'data.other_costs',
                 'placeholder' => "Nhập số",
-                'disabled' => $disabled ?? false
+                'disabled' => 'isDisabled'
             ])
         </div>
     </div>
