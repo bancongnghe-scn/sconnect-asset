@@ -57,11 +57,16 @@
             'disabled' => 'isDisabled'
         ])
     </div>
-    <div>
+    <div x-data="{statusUpdate: {
+            [ORDER_STATUS_NEW]: 'Mới tạo',
+            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
+            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+            [ORDER_STATUS_CANCEL]: 'Hủy'
+        }, statusOrder: []}" x-init="statusOrder = '{{$action ?? 'update'}}' === 'detail' ? LIST_STATUS_ORDER : statusUpdate">
         <label>Trạng thái</label>
         @include('common.select_custom.simple.select_single', [
              'selected' => 'data.status',
-             'options' => 'LIST_STATUS_ORDER',
+             'options' => 'statusOrder',
              'placeholder' => 'Chọn trạng thái',
              'disabled' => 'isDisabled'
         ])

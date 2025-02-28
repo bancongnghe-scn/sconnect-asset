@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
             this.getListUser()
             await this.findOrder(id)
             this.getShoppingAssetOrder()
-            this.$watch('data', (value) => console.log(value))
         },
 
         data: [],
@@ -106,6 +105,19 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
             }
+        },
+
+        addRows() {
+            let rows = {
+                code: null,
+                name: null,
+                vat_rate: null,
+                price: null,
+                asset_type_id: null,
+                description: null,
+                organization_id: null,
+            }
+            this.data.shopping_assets_order.push(rows)
         },
     }))
 })
