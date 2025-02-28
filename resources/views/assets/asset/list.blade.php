@@ -144,7 +144,7 @@
                         </select>
                     </div>
 
-                    <div class="col-2">
+                    <div class="col-1">
                         <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusSearch" x-model="status">
                             <option value="0" selected>Trạng thái</option>
                             <template x-for="(value, key) in listStatus">
@@ -189,7 +189,7 @@
                             </svg>
                         </span>
                     </div>
-                    <div class="col-2 d-flex position-relative" style="justify-content: flex-end;">
+                    <div class="col-1 d-flex position-relative" style="justify-content: flex-end;">
                         <span style="cursor: pointer;" @click="location.href='/asset/export-list-asset'">
                             <svg width="131" height="36" viewBox="0 0 131 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="0.5" width="130" height="35" rx="7.5" stroke="#379237"/>
@@ -399,7 +399,7 @@
                                 <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces; line-height: 1.5;"></td>
                                 <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
                                 <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
-                                <td class="text-center">
+                                <td class="text-center" style="min-width: 220px;">
                                     <div class="d-flex">
                                         <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar 
                                                 ? (asset.user.avatar.includes('/uploads/') 
@@ -417,7 +417,7 @@
                                         <div>-</div>
                                     </template>
                                 </td>
-                                <td class="text-center">
+                                <td class="text-center" style="min-width: 220px;">
                                     <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
                                         <div class="d-flex">
                                             <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar 
