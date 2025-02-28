@@ -48,14 +48,6 @@ document.addEventListener('alpine:init', () => {
         listUser: [],
         listAssetType: [],
         listOrganization: [],
-        listStatus: {
-            [ORDER_STATUS_NEW]: 'Mới tạo',
-            [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
-            [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
-            [ORDER_STATUS_CANCEL]: 'Hủy'
-        },
-        title: null,
-        action: null,
         id: null,
         showModal : false,
         reason: null,
@@ -235,25 +227,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async getShoppingAssetOrder() {
-            this.loading = true
-            try {
-                let response = await window.apiGetShoppingAssetOrder({
-                    order_id: [this.id]
-                })
-
-                if (response.success) {
-                    this.data.shopping_assets_order = response.data
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async getListAssetType() {
             this.loading = true
             try {
@@ -310,8 +283,6 @@ document.addEventListener('alpine:init', () => {
                 if (value !== null) {
                     if (+this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
                         this.getShoppingAssets()
-                    } else if (this.action !== 'create') {
-                        this.getShoppingAssetOrder()
                     }
                 }
             });
@@ -351,13 +322,13 @@ document.addEventListener('alpine:init', () => {
 
         addRows() {
             let rows = {
-                code: null,
                 name: null,
                 vat_rate: null,
                 price: null,
                 asset_type_id: null,
                 description: null,
                 organization_id: null,
+                quantity_approved: null,
             }
             this.data.shopping_assets_order.push(rows)
         },

@@ -1,7 +1,7 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('order_detail', (id) => ({
-        init() {
-            this.findOrder()
+        async init() {
+            await this.findOrder()
             this.getShoppingAssetOrder()
             this.getListUser()
         },
@@ -28,7 +28,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async getListUser(){
-            this.loading = true
             try {
                 const response = await window.apiGetUser({})
                 if (response.success) {
@@ -39,12 +38,10 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                this.loading = false
             }
         },
 
         async getShoppingAssetOrder() {
-            this.loading = true
             try {
                 let response = await window.apiGetShoppingAssetOrder({
                     order_id: [id]
@@ -58,7 +55,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                this.loading = false
             }
         },
     }))
