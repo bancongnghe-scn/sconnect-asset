@@ -11,6 +11,10 @@ class TransferAsset extends Model
 
     protected $table = 'transfer_assets';
 
+    public const TYPE_ALLOCATION = 1;
+    public const TYPE_RECOVERY   = 2;
+    public const TYPE_TRANSFER   = 3;
+
     protected $fillable = [
         'user_id',
         'org_id',
