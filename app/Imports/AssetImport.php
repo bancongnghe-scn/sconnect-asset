@@ -11,17 +11,15 @@ use App\Repositories\UserRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToCollection;
-use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Maatwebsite\Excel\Events\BeforeImport;
 use Modules\Service\Repositories\OrganizationRepository;
 use Modules\Service\Repositories\OrgInfoRepository;
 use Modules\Service\Repositories\UserGeneralRepository;
-use PhpOffice\PhpSpreadsheet\Calculation\Calculation;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class AssetImport implements ToCollection, WithHeadingRow, WithEvents
+class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
 {
     public $listError                    = [];
     private $maxRows                     = 1000;
@@ -47,22 +45,6 @@ class AssetImport implements ToCollection, WithHeadingRow, WithEvents
         $this->orgInfoRepository      = new OrgInfoRepository();
     }
 
-    public static function beforeImport(BeforeImport $event)
-    {
-        $spreadsheet = $event->getDelegate(); // Lấy đúng đối tượng Spreadsheet
-
-        // Xóa cache công thức để đảm bảo đọc giá trị thực tế
-        Calculation::getInstance($spreadsheet)->flushInstance();
-        dd(1); // Kiểm tra xem có chạy vào đây không
-    }
-
-    public function registerEvents(): array
-    {
-        return [
-            BeforeImport::class => [self::class, 'beforeImport'],
-        ];
-    }
-
     public function collection(Collection $collection)
     {
         if (count($collection) > $this->maxRows) {
@@ -70,6 +52,7 @@ class AssetImport implements ToCollection, WithHeadingRow, WithEvents
 
             return;
         }
+
         $assetTypeName = $collection->pluck('ten_tai_san')->unique()->toArray();
         if (empty($assetTypeName)) {
             $this->listError[] = 'Không có loại tài sản nào tồn tại, vui lòng tạo trước';
@@ -119,10 +102,12 @@ class AssetImport implements ToCollection, WithHeadingRow, WithEvents
         $listAssets     = $this->assetRepository->getListing(['code' => $listCodeAssets])->keyBy('code');
         $data           = [];
         foreach ($collection as $stt => $row) {
-            if ($stt < 2) {
+            if ($stt < 2 || is_null($row['stt'])) {
                 continue;
             }
-            dd($row['stt']);
+
+
+
             try {
                 if (empty($row['ma_tai_san'])) {
                     $this->listError[] = $this->getMessageError($row['mo_ta_chi_tiet_ve_tai_san'], 'cột mã tài sản không được để trống !');
@@ -186,8 +171,9 @@ class AssetImport implements ToCollection, WithHeadingRow, WithEvents
             }
         }
 
-        dump($this->listError);
-        dd($data);
+        //        if (!empty($data)) {
+        //            $this->assetRepository->insert($data);
+        //        }
     }
 
     private function getMessageError($key, $message)
