@@ -67,7 +67,7 @@
                             </td>
                             <td class="text-center align-middle" x-show="data.status_repair === 'Hoàn thành sửa chữa'">
                                 <button class="border-0 position-relative" @click="clickShowRepaired(data.id)">
-                                    <i class="fa-solid fa-eye">&#xF117;</i>
+                                    <i class="bi bi-eye text-info"></i>
                                     <span class="tooltip-text">Xem</span>
                                 </button>
                             </td>

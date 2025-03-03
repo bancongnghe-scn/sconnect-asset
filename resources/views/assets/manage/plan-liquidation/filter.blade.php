@@ -8,6 +8,7 @@
         <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusPlanLiquidation"
             x-model="filters.status">
             <option value="" disabled selected>Trạng thái</option>
+            <option value="-1">Chọn trạng thái</option>
             <template x-for="(value, key) in listStatusPlanLiquidation">
                 <option :value="key" x-text="value"></option>
             </template>

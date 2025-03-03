@@ -9,8 +9,8 @@
                         class="pl-2 pr-2 border-none rounded" 
                         :class="{
                             'tw-text-blue-400 tw-bg-blue-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
-                            'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ duyệt',
-                            'tw-text-green-400 tw-bg-green-200':    listStatusPlanLiquidation[data.status] === 'Đã duyệt',
+                            'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ xác nhận',
+                            'tw-text-green-400 tw-bg-green-200':    listStatusPlanLiquidation[data.status] === 'Hoàn thành',
                             'tw-text-red-500 tw-bg-red-100':    listStatusPlanLiquidation[data.status] === 'Từ chối',
                         }"
                     ></span>
@@ -56,6 +56,7 @@
                                         Danh sách tài sản thanh lý
                                     </div>
                                     <div class="col-2"></div>
+                                    @can('liquidation_asset.hr_manager_approval')
                                     <div class="col-6" x-show="dataTbodyListAssetLiqui.some(data => listStatusAssetOfPlan[data.status] === 'Chưa duyệt')">
                                         <div class="row">
                                             <div class="col-9 text-end">
@@ -76,6 +77,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endcan
                                 </div>
                                 <table class="mb-3 table table-bordered dataPlanLiquidation dtr-inline" x-show="data.id"
                                     aria-describedby="example2_info">
@@ -90,7 +92,7 @@
                                         <th rowspan="1" colspan="1" class="text-center">Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="font-size: 13px;">
                                     <template x-for="(data,index) in dataTbodyListAssetLiqui" x-data="{line: 1}">
                                         <tr>
                                             <td class="text-center align-middle">
@@ -99,19 +101,26 @@
                                                     x-model="selectedRowOfModalShowPlan[data.id]"
                                                     x-bind:checked="selectedRowOfModalShowPlan[data.id]">
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="data.asset.code" class="text-wrap"></span>
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center" style="max-width: 160px;">
                                                 <span x-text="data.asset.name" class="text-wrap"></span>
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="data.asset?.asset_history[0].description"></span>
                                             </td>
-                                            <td class="text-right">
-                                                <span x-text="data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
+                                            <td class="text-center align-middle text-align-center">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control text-right" 
+                                                    x-bind:value="formatPriceAssetLiqui(data.price ?? 0)" 
+                                                    @input="updatePriceAssetLiqui($event.target.value, index)"
+                                                    @change="showConfirmModal($event.target.value, index)"
+                                                    x-bind:disabled="listStatusAssetOfPlan[data.status] === 'Đã duyệt'"
+                                                >
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="listStatusAssetOfPlan[data.status]" class="pl-2 pr-2 border rounded" 
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':  listStatusAssetOfPlan[data.status] === 'Chưa duyệt',
@@ -123,15 +132,16 @@
                                                     <span class="tooltip-text" x-text="data?.note"></span>
                                                 </button>
                                             </td>
-                                            <td class="text-center align-middle" x-show="listStatusAssetOfPlan[data.status] === 'Chưa duyệt'">
+                                            @can('liquidation_asset.hr_manager_approval')
+                                            <td class="text-center text-align-center align-middle" x-show="listStatusAssetOfPlan[data.status] === 'Chưa duyệt'">
                                                 <button class="border-0 bg-body" x-show="showAction.approve ?? true" @click="$dispatch('approve', { id: data.id })">
                                                     <i class="fa-solid fa-check" style="color: #28c76f;;"></i>
                                                 </button>
-                                                {{-- <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="$dispatch('cancel', { id: data.id })"> --}}
                                                 <button class="border-0 bg-body" x-show="showAction.cancel ?? true" @click="showCancel(data.id)">
                                                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                                                 </button>
                                             </td>
+                                            @endcan
                                         </tr>
                                     </template>
                                     </tbody>
@@ -171,27 +181,36 @@
             </div>
             <div class="modal-footer">
                 @can('liquidation_asset.hr_manager_approval')
-                <button class="btn bg-body" 
-                    x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
+                <button class="btn btn-sc" 
+                    x-show="listStatusPlanLiquidation[data.status] === 'Chờ xác nhận'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
-                    @click="confirmPlan('Đã duyệt')"    
+                    @click="confirmPlan('Hoàn thành')"    
                 >
-                    <i class="fa-solid fa-check" style="color: #28c76f;;"></i>
+                    <i class="fa-solid fa-check" style="color: #28c76f;"></i>
                     Hoàn thành
                 </button>
-                <button class="btn bg-body" 
-                    x-show="listStatusPlanLiquidation[data.status] === 'Chờ duyệt'"
+                {{-- <button class="btn bg-body" 
+                    x-show="listStatusPlanLiquidation[data.status] === 'Chờ xác nhận'"
                     style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
                     @click="confirmPlan('Từ chối')"    
                 >
                     <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
                     Từ chối
-                </button>
+                </button> --}}
                 @endcan
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
             </div>
         </div>
     </div>
+</div>
+<div
+    x-data="{
+        modalId: 'confirmChangePriceLiquidation',
+        contentBody: 'Bạn có chắc muốn thay đổi giá trị thanh lý của tài sản này không ?'
+    }"
+    @ok="changePriceLiquidation()"
+>
+    @include('common.modal-confirm')
 </div>
 <style>
     .air-datepicker {

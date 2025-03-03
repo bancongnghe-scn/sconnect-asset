@@ -73,9 +73,10 @@
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal">
-                                <div class="col-12 mb-3">
+                                <div class="col-12 mb-3" x-data="{ displayValue: '' }">
                                     <span>Giá thanh lý</span>
-                                    <input type="number" class="form-control" placeholder="Giá thanh lý" x-model="priceLiquidation">
+                                    <input type="number" class="form-control" placeholder="Giá thanh lý" x-model="priceLiquidation" hidden>
+                                    <input type="text" class="form-control" placeholder="Giá thanh lý" x-model="displayValue" @input="priceLiquidation = $event.target.value.replace(/\D/g, ''); displayValue = formatNumber($event.target.value);">
                                 </div>
                             </div>
                             <div class="col-12 item-rotation-modal">
@@ -91,7 +92,7 @@
                 <div class="modal-footer">
                     <span class="d-flex" style="justify-content: flex-end; gap: 5px;">
                         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" @click="closeModal('#modalLiquidation')">Hủy</button>
-                        <button type="button" class="btn btn-success" @click="openModal('#confirmLiquidationModal')">Xác nhận</button>
+                        <button type="button" class="btn btn-success" @click="openModal('#confirmLiquidationModal');">Xác nhận</button>
                     </span>
                 </div>
             </div>
@@ -158,7 +159,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLiquidationModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLiquidationModal'); closeModal('#modalLiquidation');">Đóng</button>
             </div>
           </div>
         </div>
@@ -245,7 +246,7 @@
                 <div class="modal-footer">
                     <span class="d-flex" style="justify-content: flex-end; gap: 5px;">
                         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal" @click="closeModal('#modalCancel')">Hủy</button>
-                        <button type="button" class="btn btn-success" @click="openModal('#confirmCancelModal')">Xác nhận</button>
+                        <button type="button" class="btn btn-success" @click="openModal('#confirmCancelModal');">Xác nhận</button>
                     </span>
                 </div>
             </div>
@@ -312,7 +313,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLiquidationModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLiquidationModal'); closeModal('#modalCancel');">Đóng</button>
             </div>
           </div>
         </div>
@@ -458,7 +459,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successBrokenModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successBrokenModal'); closeModal('#modalBroken');">Đóng</button>
             </div>
           </div>
         </div>
@@ -604,7 +605,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLostModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successLostModal'); closeModal('#modalLost');">Đóng</button>
             </div>
           </div>
         </div>

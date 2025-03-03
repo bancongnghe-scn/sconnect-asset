@@ -335,6 +335,7 @@
             listHistory: [],
             linkReport: {},
             listAssetRepresent: [],
+            assetType: [],
 
             async fetchData(unit = '', nameUser = '') {
                 try {
@@ -360,12 +361,12 @@
                     const data = response.data;
                     this.listUserAsset = data.data.listUserAsset.data;
                     this.listUnit = data.data.listUnit;
-                    this.listAssetType = data.data.listAssetType;
+                    this.assetType = data.data.listAssetType;
 
                     this.totalPages = data.data.listUserAsset.last_page;
                     this.currentPage = data.data.listUserAsset.current_page;
 
-                    console.log(this.listUserAsset);
+                    console.log(this.assetType);
                                       
                 } catch (error) {
                     console.error('Lỗi khi gọi API:', error);
