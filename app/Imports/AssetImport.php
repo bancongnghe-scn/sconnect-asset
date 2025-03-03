@@ -9,17 +9,18 @@ use App\Repositories\AssetTypeRepository;
 use App\Repositories\SupplierRepository;
 use App\Repositories\UserRepository;
 use Carbon\Carbon;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToArray;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Modules\Service\Repositories\OrganizationRepository;
 use Modules\Service\Repositories\OrgInfoRepository;
 use Modules\Service\Repositories\UserGeneralRepository;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
+class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
 {
     public $listError                    = [];
     private $maxRows                     = 1000;
@@ -45,8 +46,9 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
         $this->orgInfoRepository      = new OrgInfoRepository();
     }
 
-    public function collection(Collection $collection)
+    public function array(array $array)
     {
+        $collection = collect($array);
         if (count($collection) > $this->maxRows) {
             $this->listError[] = 'Kích thước file không được quá 1000 dòng';
 
@@ -67,8 +69,10 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
             return;
         }
 
-        $userCode = $collection->pluck('nguoi_su_dung_hien_tai')->unique()->toArray();
-        $listUser = [];
+        $userCodeCurrent = $collection->pluck('nguoi_su_dung_hien_tai')->unique()->toArray();
+        $userCodeAfter   = $collection->pluck('nguoi_su_dung_lien_ke_truoc_khi_ban_giao_cho_nguoi_moi')->unique()->toArray();
+        $userCode        = array_merge($userCodeAfter, $userCodeCurrent);
+        $listUser        = [];
         if (!empty($userCode)) {
             $listUser = $this->userRepository->getListing(['code' => $userCode])->keyBy('code');
         }
@@ -80,7 +84,7 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
         }
 
         $organizationName = $collection->pluck($this->columnOrganizationName)->unique()->toArray();
-        $listOrganization = collect();
+        $listOrganization = [];
         if (!empty($organizationName)) {
             $listOrganization = $this->organizationRepository->getInfoOrganizationByFilters([])
                 ->mapWithKeys(function ($organization) {
@@ -100,38 +104,46 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
 
         $listCodeAssets = $collection->pluck('ma_tai_san')->toArray();
         $listAssets     = $this->assetRepository->getListing(['code' => $listCodeAssets])->keyBy('code');
-        $data           = [];
-        foreach ($collection as $stt => $row) {
+        foreach ($array as $stt => $row) {
             if ($stt < 2 || is_null($row['stt'])) {
                 continue;
             }
+            //            foreach ($row as $key => $value) {
+            //                if ($value === 'SCN1106') {
+            //                    dd($row);
+            //                }
+            //            }
+            $validator = Validator::make($row, [
+                'ma_tai_san'                => 'required',
+                'ten_tai_san'               => 'required|string',
+                'mo_ta_chi_tiet_ve_tai_san' => 'required|string',
+            ]);
 
+            if ($validator->fails()) {
+                $this->setError($row['ma_tai_san'] ?? $row['mo_ta_chi_tiet_ve_tai_san'], $validator->errors()->all());
+                continue;
+            }
 
+            if (!empty($listAssets[$row['ma_tai_san']])) {
+                $this->setError($row['ma_tai_san'], 'tài sản đã tồn tại !');
+                continue;
+            }
 
+            if (empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
+                $this->setError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
+                continue;
+            }
+
+            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
+                $this->setError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
+                continue;
+            }
+
+            DB::beginTransaction();
             try {
-                if (empty($row['ma_tai_san'])) {
-                    $this->listError[] = $this->getMessageError($row['mo_ta_chi_tiet_ve_tai_san'], 'cột mã tài sản không được để trống !');
-                    continue;
-                }
-
-                if (!empty($listAssets[$row['ma_tai_san']])) {
-                    $this->listError[] = $this->getMessageError($row['ma_tai_san'], 'tài sản đã tồn tại !');
-                    continue;
-                }
-
-                if (!is_null($row['ten_tai_san']) && empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
-                    $this->listError[] = $this->getMessageError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
-                    continue;
-                }
-
-                if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
-                    $this->listError[] = $this->getMessageError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
-                    continue;
-                }
-
-                $value = [
+                $dataAsset = [
                     'code'          => $row['ma_tai_san'],
-                    'asset_type_id' => $listAssetType[Str::slug($row['ten_tai_san'])]['id'] ?? null,
+                    'asset_type_id' => $listAssetType[Str::slug($row['ten_tai_san'])]['id'],
                     'description'   => $row['thanh_phan_cua_tai_san'],
                     'name'          => $row['mo_ta_chi_tiet_ve_tai_san'],
                     'price'         => (int) $row['don_gia'],
@@ -152,22 +164,30 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
                         : null,
                 ];
 
-                if (!empty($value['user_id'])) {
-                    $value['location'] = $listUserGeneral[$value['user_id']]['workplace_id'] ?? null;
-                    $value['status']   = Asset::STATUS_ACTIVE;
+                if (!empty($dataAsset['user_id'])) {
+                    $dataAsset['location'] = $listUserGeneral[$dataAsset['user_id']]['workplace_id'] ?? null;
+                    $dataAsset['status']   = Asset::STATUS_ACTIVE;
                 } else {
-                    if (is_null($value['organization_id'])) {
-                        $value['location'] = Asset::LOCATION_WAREHOUSE;
-                        $value['status']   = Asset::STATUS_PENDING;
+                    if (is_null($dataAsset['organization_id'])) {
+                        $dataAsset['location'] = Asset::LOCATION_WAREHOUSE;
+                        $dataAsset['status']   = Asset::STATUS_PENDING;
                     } else {
-                        $value['location'] = $this->orgInfoRepository->find($value['organization_id'])?->branch;
-                        $value['status']   = Asset::STATUS_ACTIVE;
+                        $dataAsset['location'] = $this->orgInfoRepository->find($dataAsset['organization_id'])?->branch;
+                        $dataAsset['status']   = Asset::STATUS_ACTIVE;
                     }
                 }
 
-                $data[] = $value;
+                $asset                   = $this->assetRepository->create($dataAsset);
+                $userCodeAllocationFirst = $row['nguoi_su_dung_lien_ke_truoc_khi_ban_giao_cho_nguoi_moi'];
+                $userCodeAllocationLast  = $row['nguoi_su_dung_hien_tai'];
+
+                // neu co cap phat ban dau
+                if (!empty($userCodeAllocationFirst)) {
+
+                }
+
             } catch (\Throwable $exception) {
-                $this->listError[] = $row['ma_tai_san'] . ' => ' .$exception->getMessage();
+                $row['ma_tai_san'] . ' => ' .$exception->getMessage();
             }
         }
 
@@ -176,8 +196,8 @@ class AssetImport implements ToCollection, SkipsEmptyRows, WithHeadingRow
         //        }
     }
 
-    private function getMessageError($key, $message)
+    private function setError($key, $message)
     {
-        return $key . ' => ' .$message;
+        $this->listError[$key] = $message;
     }
 }
