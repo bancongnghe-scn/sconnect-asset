@@ -19,8 +19,8 @@ class AssetController extends Controller
 
         $import = new AssetImport();
         Excel::import($import, $file);
-        if ($import->error) {
-            return response_error(AppErrorCode::CODE_1000, $import->message);
+        if (!empty($import->listError)) {
+            return response_error(extraData: $import->listError);
         }
 
         return response_success();

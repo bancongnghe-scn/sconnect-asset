@@ -21,6 +21,7 @@ class User extends Authenticatable
     use HasRoles;
     use MigrateAuthorize;
     public const STATUS_ACTIVE = 1;
+    public const USER_ADMIN    = 1;
     protected $guard_name      = 'web';
 
     /**
