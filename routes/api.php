@@ -298,8 +298,8 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('/cancel-asset', [AssetController::class, 'cancelAsset'])->name('assets.cancelAsset');
         Route::post('/broken-asset', [AssetController::class, 'brokenAsset'])->name('assets.brokenAsset');
         Route::post('/lost-asset', [AssetController::class, 'lostAsset'])->name('assets.lostAsset');
-
-    Route::post('/update-asset', [AssetController::class, 'updateAsset'])->name('assets.updateAsset');
-    Route::get('/info/{id}', [AssetController::class, 'getAssetInfo']);
-    Route::post('import', [App\Http\Controllers\AssetController::class, 'importAsset']);
+        Route::post('/update-asset', [AssetController::class, 'updateAsset'])->name('assets.updateAsset');
+        Route::get('/info/{id}', [AssetController::class, 'getAssetInfo']);
+        Route::post('import', [AssetController::class, 'importAsset']);
+    });
 });
