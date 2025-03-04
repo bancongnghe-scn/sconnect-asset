@@ -78,7 +78,7 @@
                 </td>
                 <td class="align-middle" x-text="assetRegister.asset_type_name ?? '-'"></td>
                 <td class="align-middle" x-text="assetRegister.job_name ?? '-'"></td>
-                <td class="text-center align-middle" x-text="assetRegister.receiving_time ?? '-'"></td>
+                <td class="text-center align-middle" x-text="formatDateVN(assetRegister.receiving_time) ?? '-'"></td>
                 <td class="align-middle text-center" x-text="assetRegister.quantity_registered ?? '-'"></td>
                 <td class="align-middle">
                     <input class="form-control tw-min-w-20" type="number" min="1" x-model="assetRegister.quantity_approved"
