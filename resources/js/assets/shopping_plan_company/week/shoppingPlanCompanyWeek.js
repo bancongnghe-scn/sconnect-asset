@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyWeek', () => ({
         init() {
@@ -8,6 +6,7 @@ document.addEventListener('alpine:init', () => {
             this.getListPlanCompanyQuarter()
             this.getListSupplier()
             this.watchFilters()
+            this.watch()
             this.setConfigButtons()
         },
 
@@ -53,6 +52,7 @@ document.addEventListener('alpine:init', () => {
         shoppingAssetWithAction: [],
         list_asset_type: [],
         list_job: [],
+        listMonth: [],
         id: null,
         action: null,
         checkedAll: false,
@@ -856,6 +856,19 @@ document.addEventListener('alpine:init', () => {
                     this.list(this.filters);
                 }
             }, { deep: true });
+        },
+
+        watch() {
+            this.$watch('data.plan_quarter_id', (value) => {
+                if (value !== null) {
+                    const time = this.listPlanCompanyQuarter.find(item => +item.id === +value).time
+                    this.listMonth = {}
+                    for (let i = (time * 3) - 2; i <= time * 3; i++) {
+                        this.listMonth[i] = LIST_MONTHS[i]
+                    }
+                    console.log(this.listMonth)
+                }
+            })
         },
 
         confirmRemoveMultiple() {
