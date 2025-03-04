@@ -22,9 +22,9 @@
         <th class="text-center" style="min-width: 12rem">Loại tài sản</th>
         <th class="text-center" style="min-width: 11rem">Chức danh</th>
         <th class="text-center">Thời gian cần</th>
-        <th class="text-center">SL</th>
-        <th class="text-center">SL duyệt</th>
-        <th class="text-center">Đơn giá</th>
+        <th class="text-center" x-text="`SL (${register.total_approved})`"></th>
+        <th class="text-center" x-text="`SL duyệt (${register.total_register})`"></th>
+        <th class="text-center" x-text="`Đơn giá (${formatCurrencyVND(register.total_price)})`">Đơn giá</th>
         <th class="text-center">Thuế</th>
         <th class="text-center" style="min-width: 9rem">Tổng</th>
         <th class="text-center" style="min-width: 14rem">NCC</th>

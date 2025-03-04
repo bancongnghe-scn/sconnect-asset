@@ -23,6 +23,8 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
         $data = [
             'organizations'  => [],
             'total_register' => 0,
+            'total_approved' => 0,
+            'total_price'    => 0,
         ];
         foreach ($shoppingPlanCompany->shoppingPlanOrganizations as $shoppingPlanOrganization) {
             $assetRegister = [];
@@ -45,6 +47,8 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
                     'reason'                   => $shoppingAsset->reason,
                 ];
                 $data['total_register'] += $shoppingAsset->quantity_registered;
+                $data['total_approved'] += $shoppingAsset->quantity_approved;
+                $data['total_price'] += $shoppingAsset->price;
             }
 
             $data['organizations'][] = [
