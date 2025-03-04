@@ -113,19 +113,18 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
             }
 
             if (!empty($listAssets[$row['ma_tai_san']])) {
-                $this->setError($row['ma_tai_san'], 'tài sản đã tồn tại !');
                 continue;
             }
 
-            //            if (empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
-            //                $this->setError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
-            //                continue;
-            //            }
+            if (empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
+                $this->setError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
+                continue;
+            }
 
-            //            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
-            //                $this->setError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
-            //                continue;
-            //            }
+            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
+                $this->setError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
+                continue;
+            }
 
             if (!is_null($row['nguoi_su_dung_lien_ke_truoc_khi_ban_giao_cho_nguoi_moi']) && is_null($row[$this->columnOrganizationNameBefore])) {
                 $this->setError($row['ma_tai_san'], 'BU/ Ban/ Học viện của người sử dụng liền kề không tồn tại !');
