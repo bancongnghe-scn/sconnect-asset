@@ -30,7 +30,8 @@ class TransferAssetService
             'to_user_id'  => $userIdFrom,
             'to_org_id'   => $orgIdFrom,
             'description' => $data['description'] ?? null,
-            'created_by'  => Auth::id(),
+            'created_at'  => $data['created_at'] ?? date('Y-m-d H:i:s'),
+            'created_by'  => $data['created_by'] ?? Auth::id(),
         ]);
 
         $insert = $this->moveAssetUserRepository->insert([
@@ -42,6 +43,7 @@ class TransferAssetService
             'user_id_after'     => $userIdTo,
             'description'       => $data['description'] ?? null,
             'transfer_asset_id' => $transferAsset->id,
+            'created_at'        => $data['created_at'] ?? date('Y-m-d H:i:s'),
         ]);
         if (!$insert) {
             return [
