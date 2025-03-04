@@ -9,6 +9,7 @@ use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\SupplierRepository;
 use App\Repositories\UserRepository;
+use App\Services\AssetService;
 use App\Services\TransferAssetService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -137,6 +138,7 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
             }
 
             $transferAssetService = resolve(TransferAssetService::class);
+            $assetService         = resolve(AssetService::class);
             DB::beginTransaction();
             try {
                 // luu thong tin tai san
@@ -173,6 +175,7 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
 
                 // luu thong tin cap phat thu hoi
                 $asset                   = $this->assetRepository->create($dataAsset);
+                $assetService->generalQrCodeAsset($asset->id);
                 $userCodeAllocationFirst = $row['nguoi_su_dung_lien_ke_truoc_khi_ban_giao_cho_nguoi_moi'];
                 $userCodeAllocationLast  = $row['nguoi_su_dung_hien_tai'];
 

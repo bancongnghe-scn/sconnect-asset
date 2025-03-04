@@ -61,18 +61,23 @@ class AssetService
 
         $assets = $this->assetRepository->getListing(['import_warehouse_id' => $importWarehouseId]);
         foreach ($assets as $asset) {
-            $link     = config('app.url').'/asset/info/'.$asset->id;
-            $savePath = public_path('qrcode/qr_image_'.$asset->id.'.png');
-            $qrCode   = Builder::create()
-                ->writer(new PngWriter())
-                ->data($link)
-                ->size(300)
-                ->margin(10)
-                ->build();
-
-            $qrCode->saveToFile($savePath);
+            $this->generalQrCodeAsset($asset->id);
         }
 
         return true;
+    }
+
+    public function generalQrCodeAsset($assetId)
+    {
+        $link     = config('app.url').'/asset/info/'.$assetId;
+        $savePath = public_path('qrcode/qr_image_'.$assetId.'.png');
+        $qrCode   = Builder::create()
+            ->writer(new PngWriter())
+            ->data($link)
+            ->size(300)
+            ->margin(10)
+            ->build();
+
+        $qrCode->saveToFile($savePath);
     }
 }
