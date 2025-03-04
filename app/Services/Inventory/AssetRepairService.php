@@ -208,25 +208,53 @@ class AssetRepairService
 
             $assetIds     = array_column($assetsRepaired, 'asset_id');
 
-            // Status asset: repair -> active
-            $updateStatusAsset = $this->assetRepository->changeStatusAsset($assetIds, Asset::STATUS_ACTIVE);
-            if (!$updateStatusAsset) {
-                DB::rollBack();
+            $checkOwnAsset = $this->assetRepository->checkOwnAssets($assetIds);
+            $asset_active  = $checkOwnAsset[0]->keys()->toArray();
+            $asset_pending = $checkOwnAsset[1]->keys()->toArray();
 
-                return [
-                    'success'       => false,
-                    'error_code'    => AppErrorCode::CODE_5001,
-                ];
+            // Status asset: repair -> active nếu có user_id, nếu ko thì repair -> pending
+            if (count($asset_active)) {
+                $updateStatusAsset = $this->assetRepository->changeStatusAsset($asset_active, Asset::STATUS_ACTIVE);
+                if (!$updateStatusAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'       => false,
+                        'error_code'    => AppErrorCode::CODE_5001,
+                    ];
+                }
+
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($asset_active, Asset::STATUS_ACTIVE);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
+                    ];
+                }
             }
 
-            $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($assetIds, Asset::STATUS_ACTIVE);
-            if (!$historyAsset) {
-                DB::rollBack();
+            if (count($asset_pending)) {
+                $updateStatusAsset = $this->assetRepository->changeStatusAsset($asset_pending, Asset::STATUS_ACTIVE);
+                if (!$updateStatusAsset) {
+                    DB::rollBack();
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_5011,
-                ];
+                    return [
+                        'success'       => false,
+                        'error_code'    => AppErrorCode::CODE_5001,
+                    ];
+                }
+
+                $historyAsset = $this->assetHistoryRepository->insertHistoryAsset($asset_pending, Asset::STATUS_ACTIVE);
+                if (!$historyAsset) {
+                    DB::rollBack();
+
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5011,
+                    ];
+                }
             }
 
             DB::commit();
