@@ -144,14 +144,14 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                 // luu thong tin tai san
                 $dataAsset = [
                     'code'                    => $row['ma_tai_san'],
-                    'asset_type_id'           => $listAssetType[Str::slug($row['ten_tai_san'])]['id'] ?? 1,
+                    'asset_type_id'           => $listAssetType[Str::slug($row['ten_tai_san'])]['id'],
                     'description'             => $row['thanh_phan_cua_tai_san'] ?? null,
                     'name'                    => $row['mo_ta_chi_tiet_ve_tai_san'],
                     'price'                   => (int) $row['don_gia'],
                     'date_purchase'           => $this->formatDate($row['ngay_giao_hang_tren_hoa_don']),
                     'warranty_months'         => (int) $row['thoi_gian_bao_hanh_thang'],
                     'depreciation_months'     => (int) $row['don_gia'] > Asset::PRICE_DEPRECIATION ? Asset::MONTH_DEPRECIATION_36 : Asset::MONTH_DEPRECIATION_12,
-                    'supplier_id'             => $listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])]['id'] ?? 1,
+                    'supplier_id'             => $listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])]['id'],
                     'user_id'                 => $listUser[$row['nguoi_su_dung_hien_tai']]['id'] ?? null,
                     'status'                  => is_null($row['nguoi_su_dung_hien_tai']) ? Asset::STATUS_PENDING : Asset::STATUS_ACTIVE,
                     'organization_id'         => $listOrganization[Str::slug($row[$this->columnOrganizationNameBefore])]['id'] ?? null,
