@@ -81,7 +81,7 @@ class PlanMaintainAssetRepository extends BaseRepository
         return $query->delete();
     }
 
-    public function updateWithConditions($caseString, $idString)
+    public function updateWithConditions($caseString, $idString): void
     {
         $sql = "
             UPDATE plan_maintain_asset
@@ -90,6 +90,6 @@ class PlanMaintainAssetRepository extends BaseRepository
             AND deleted_at IS NULL;
         ";
 
-        return DB::affectingStatement($sql); // return number records updated
+        DB::affectingStatement($sql);
     }
 }
