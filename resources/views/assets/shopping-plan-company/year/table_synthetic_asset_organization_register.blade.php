@@ -1,5 +1,4 @@
-<table id="example2" class="table table-bordered dataTable dtr-inline"
-       aria-describedby="example2_info">
+<table class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
     <thead>
         <tr>
             <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">

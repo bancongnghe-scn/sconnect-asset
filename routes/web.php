@@ -49,6 +49,7 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('shopping-plan-company')->group(function () {
         Route::prefix('year')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class, 'index']);
+            Route::view('detail/{id}', 'assets.shopping-plan-company.year.detail');
         });
         Route::prefix('quarter')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class, 'index']);

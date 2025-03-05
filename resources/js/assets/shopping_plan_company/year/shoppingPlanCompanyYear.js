@@ -355,11 +355,7 @@ document.addEventListener('alpine:init', () => {
 
                     await this.getOrganizationRegisterYear()
                     await this.getInfoShoppingPlanCompanyYear()
-                    if (action === 'view') {
-                        $('#modalDetail').modal('show')
-                    } else {
-                        $('#modalUpdate').modal('show')
-                    }
+                    $('#modalUpdate').modal('show')
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -634,15 +630,6 @@ document.addEventListener('alpine:init', () => {
                             {
                                 icon: 'bi bi-pencil-square color-sc',
                                 action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
-                    {
-                        condition: () => true,
-                        buttons: [
-                            {
-                                icon: 'bi bi-eye text-info',
-                                action: (id) => this.handleShowModal(id, 'view'),
                             },
                         ],
                     },
