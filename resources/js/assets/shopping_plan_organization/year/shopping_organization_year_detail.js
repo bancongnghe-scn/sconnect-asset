@@ -4,6 +4,7 @@ document.addEventListener('alpine:init', () => {
             this.getListAssetType()
             await this.getInfo()
             this.getRegisterAsset()
+            this.setConfigButtons()
         },
 
         list_job: [],
@@ -73,6 +74,42 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async saveReviewRegisterAsset() {
+            this.loading = true
+            try {
+                const response = await window.apiSaveReviewRegisterAsset(id, this.registersOrganization)
+                if (response.success) {
+                    toast.success('Lưu thông tin phê duyệt thành công')
+                    this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async accountApprovalShoppingPlanOrganization(type) {
+            this.loading = true
+            try {
+                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
+                if (response.success) {
+                    this.dataOrganization.status = type === ORGANIZATION_TYPE_APPROVAL
+                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                    toast.success('Duyệt thành công !')
+                    return
+                }
+
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         handleShowTable(index) {
             if (index === 'expand') {
                 this.table_index = [0,1,2,3,4,5,6,7,8,9,10,11]
@@ -90,5 +127,54 @@ document.addEventListener('alpine:init', () => {
                 this.table_index = this.table_index.filter(item => item !== index);
             }
         },
+
+        setConfigButtons() {
+            this.configButtonsOrganization = [
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Lưu',
+                            class: 'btn btn-primary',
+                            action: () => this.saveReviewRegisterAsset(),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: () => this.accountApprovalShoppingPlanOrganization(ORGANIZATION_TYPE_APPROVAL),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+                {
+                    condition: () => [
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
+                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
+                    ].includes(+this.dataOrganization.status),
+                    buttons: [
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.accountApprovalShoppingPlanOrganization(ORGANIZATION_TYPE_DISAPPROVAL),
+                            permission: 'shopping_plan_company.accounting_approval'
+                        },
+                    ],
+                },
+            ]
+        }
     }))
 })

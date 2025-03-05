@@ -160,42 +160,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async saveReviewRegisterAsset() {
-            this.loading = true
-            try {
-                const response = await window.apiSaveReviewRegisterAsset(this.id, this.registersOrganization)
-                if (response.success) {
-                    toast.success('Lưu thông tin phê duyệt thành công')
-                    this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async accountApprovalShoppingPlanOrganization(id, type) {
-            this.loading = true
-            try {
-                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
-                if (response.success) {
-                    this.dataOrganization.status = type === ORGANIZATION_TYPE_APPROVAL
-                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                    toast.success('Duyệt thành công !')
-                    return
-                }
-
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
             try {
                 const type = position_id === POSITION_ORGANIZATION.id ? TYPE_ALLOCATION_RATE_ORGANIZATION : TYPE_ALLOCATION_RATE_POSITION
@@ -231,11 +195,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show')
-                } else {
-                    $('#modalRegister').modal('show')
-                }
+                $('#modalRegister').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
