@@ -88,7 +88,7 @@
                                                     @input="updatePriceAssetLiqui($event.target.value, index)"
                                                 >
                                             </td>
-                                            <td class="text-center align-middle text-align-center">
+                                            <td class="text-center align-middle text-align-center" style="min-width: 110px;">
                                                 <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded" 
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,

@@ -495,15 +495,7 @@ class PlanLiquidationService
                     }
                     $caseString         = implode(' ', $cases);
                     $idString           = implode(', ', $ids);
-                    $numbRecordsUpdated = $this->planMaintainAssetRepository->updateWithConditions($caseString, $idString);
-                    if (!$numbRecordsUpdated) {
-                        DB::rollBack();
-
-                        return [
-                            'success'    => false,
-                            'error_code' => AppErrorCode::CODE_5011,
-                        ];
-                    }
+                    $this->planMaintainAssetRepository->updateWithConditions($caseString, $idString);
                 }
             }
 

@@ -99,4 +99,13 @@ class AssetRepository extends BaseRepository
             ->get();
 
     }
+
+    public function checkOwnAssets(array $asset_ids)
+    {
+        return $this->_model
+            ->whereIn('id', $asset_ids)
+            ->pluck('user_id', 'id')
+            ->mapWithKeys(fn ($user_id, $id) => [(int) $id => !is_null($user_id)])
+            ->partition(fn ($hasUser) => $hasUser);
+    }
 }
