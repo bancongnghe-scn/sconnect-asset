@@ -190,6 +190,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('detail/{id}', 'getAssetRepair');
         Route::post('multi', 'getMultiAssetRepair');
         Route::post('update/multi', 'updateMultiAssetRepaired');
+        Route::get('get-supplier', 'getSupplier');
     });
 
     Route::prefix('comment-v1')->controller(App\Http\Controllers\CommentV1Controller::class)->group(function () {
