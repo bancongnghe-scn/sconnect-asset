@@ -1,18 +1,12 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shopping_plan_year_detail', (id) => ({
+    Alpine.data('shopping_company_year_detail', (id) => ({
         async init() {
             await this.getListUser()
             this.getOrganizationRegisterYear()
             this.getInfoShoppingPlanCompanyYear()
         },
 
-        data: {
-            time: null,
-            status: null,
-            start_time: null,
-            end_time: null,
-            monitor_ids: [],
-        },
+        data: [],
         selectedRow: [],
         listUser: [],
         register: [],

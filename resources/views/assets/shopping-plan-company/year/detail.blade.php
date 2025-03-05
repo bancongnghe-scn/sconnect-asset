@@ -3,7 +3,7 @@
 ])
 
 @section('x-data')
-    x-data="shopping_plan_year_detail({{$id}})"
+    x-data="shopping_company_year_detail({{$id}})"
 @endsection
 
 
@@ -104,7 +104,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/shopping_plan_company/year/shopping_plan_year_detail.js',
+        'resources/js/assets/shopping_plan_company/year/shopping_company_year_detail.js',
         'resources/js/assets/api/shopping_plan_company/apiShoppingPlanCompany.js',
         'resources/js/app/api/apiUser.js'
     ])
