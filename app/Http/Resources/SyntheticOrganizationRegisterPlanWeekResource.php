@@ -48,7 +48,7 @@ class SyntheticOrganizationRegisterPlanWeekResource extends JsonResource
                 ];
                 $data['total_register'] += $shoppingAsset->quantity_registered;
                 $data['total_approved'] += $shoppingAsset->quantity_approved;
-                $data['total_price'] += $shoppingAsset->price;
+                $data['total_price'] += (int) $shoppingAsset->price + (int) $shoppingAsset->tax_money;
             }
 
             $data['organizations'][] = [

@@ -24,10 +24,10 @@
         <th class="text-center">Thời gian cần</th>
         <th class="text-center" x-text="`SL (${register.total_approved})`"></th>
         <th class="text-center" x-text="`SL duyệt (${register.total_register})`"></th>
-        <th class="text-center" x-text="`Đơn giá (${formatCurrencyVND(register.total_price)})`">Đơn giá</th>
+        <th class="text-center">Đơn giá</th>
         <th class="text-center">Thuế</th>
-        <th class="text-center" style="min-width: 9rem">Tổng</th>
-        <th class="text-center" style="min-width: 14rem">NCC</th>
+        <th class="text-center" style="min-width: 9rem" x-text="`Tổng (${formatCurrencyVND(register.total_price)})`"></th>
+        <th class="text-center" style="min-width: 20rem">NCC</th>
         <th class="text-center">Ghi chú</th>
         <th class="text-center" style="min-width: 10rem">Mô tả</th>
         <th class="text-center" style="width: 4rem">Thao tác</th>
@@ -65,7 +65,7 @@
                     class="tw-font-bold align-middle">
                     <span x-text="organization.name"></span>
                 </td>
-                <td class="align-middle"
+                <td class="align-middle text-center"
                     x-show="[
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
                         STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
