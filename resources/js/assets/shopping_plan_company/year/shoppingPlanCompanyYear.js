@@ -1,4 +1,3 @@
-import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => {
         return ({
