@@ -19,11 +19,7 @@
 
     {{--  modal--}}
     @include('assets.shopping-plan-company.quarter.modalInsert')
-    @include('assets.shopping-plan-company.quarter.detail')
     @include('assets.shopping-plan-company.quarter.update')
-    <div x-data="{registers: [], data: []}" x-effect="registers = registersOrganization, data = dataOrganization">
-        @include('assets.shopping_plan_organization.quarter.detail', ['id' => 'modalOrganizationCompany'])
-    </div>
     <div
         x-data="{
               modalId: 'idModalConfirmDelete',

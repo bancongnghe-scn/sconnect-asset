@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyQuarter', () => ({
         init() {
@@ -493,11 +491,7 @@ document.addEventListener('alpine:init', () => {
 
                 this.getOrganizationRegisterQuarter()
                 await this.getInfoShoppingPlanCompanyQuarter()
-                if (action === 'view') {
-                    $('#modalDetail').modal('show')
-                } else {
-                    $('#modalUpdate').modal('show')
-                }
+                $('#modalUpdate').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -585,15 +579,6 @@ document.addEventListener('alpine:init', () => {
                         {
                             icon: 'bi bi-pencil-square color-sc',
                             action: (id) => this.handleShowModal('update', id),
-                        },
-                    ],
-                },
-                {
-                    condition: () => true,
-                    buttons: [
-                        {
-                            icon: 'bi bi-eye text-info',
-                            action: (id) => this.handleShowModal('view', id),
                         },
                     ],
                 },
