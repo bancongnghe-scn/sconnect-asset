@@ -33,10 +33,9 @@
                                     @include('component.status.status_shopping_plan_organization', ['status' => 'value.status'])
                                 </td>
                                 <td class="align-middle">
-                                    <button class="border-0 bg-white"
-                                            @click="handleShowModal(value.id, 'view')">
+                                    <a :href="`/shopping-plan-organization/year/detail/${value.id}`" class="tw-no-underline mr-2">
                                         <i class="bi bi-eye text-info"></i>
-                                    </button>
+                                    </a>
 
                                     <template x-for="configBtnTable in configButtonsTable">
                                         <template x-if="configBtnTable.condition(+value.status, value.start_time, value.end_time)">

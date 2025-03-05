@@ -20,7 +20,7 @@
                         <label class="tw-font-bold">Tháng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                         @include('common.select_custom.simple.select_single', [
                                 'selected' => 'data.month',
-                                'options' => 'LIST_MONTHS',
+                                'options' => 'listMonth',
                                 'placeholder' => 'Chọn tháng',
                         ])
                     </div>
