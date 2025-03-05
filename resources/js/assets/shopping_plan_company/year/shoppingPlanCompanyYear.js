@@ -470,25 +470,6 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            async handleShowModalDetailOrganization(id) {
-                this.loading = true
-                try {
-                    this.idPlanOrganization = id
-                    this.table_index = []
-                    await this.getInfoOrganization(id)
-                    this.getRegisterAssetOrganization(id)
-                    if (this.list_asset_type.length === 0) {
-                        this.getListAssetType()
-                    }
-                    $('#modalOrganizationCompany').modal('show')
-                    this.setConfigButtons()
-                } catch (e) {
-                    toast.error(e)
-                } finally {
-                    this.loading = false
-                }
-            },
-
             calculateApproval(index) {
                 let total = 0
                 let price = 0

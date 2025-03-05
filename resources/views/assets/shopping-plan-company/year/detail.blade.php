@@ -95,8 +95,7 @@
             </div>
         </div>
 
-        <div class="col-3 border border-right-0 border-top-0 border-bottom-0"
-        >
+        <div class="col-3 border border-right-0 border-top-0 border-bottom-0">
 {{--            @include('assets.shopping-plan-company.history_comment')--}}
         </div>
     </div>

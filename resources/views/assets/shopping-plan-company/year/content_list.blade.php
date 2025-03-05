@@ -39,8 +39,5 @@
 
     @include('assets.shopping-plan-company.year.modalInsert')
     @include('assets.shopping-plan-company.year.update')
-    <div x-data="{id: null}" x-effect="id = idPlanOrganization">
-        @include('assets.shopping_plan_organization.year.detail', ['id' => 'modalOrganizationCompany'])
-    </div>
 </div>
 

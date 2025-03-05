@@ -83,7 +83,7 @@
                                     <div class="d-flex align-items-center" style="flex: 1;">
                                         <span class="me-2 flex-shrink-0 tw-font-bold">Tổng giá trị</span>
                                         <span class="form-control text-center"
-                                              x-text="`${window.formatCurrencyVND(register.approval.price)} / ${window.formatCurrencyVND(register.register.price)}`"
+                                              x-text="`${formatCurrencyVND(register.approval.price)} / ${formatCurrencyVND(register.register.price)}`"
                                         ></span>
                                     </div>
                                 </div>
@@ -127,7 +127,7 @@
                                                     'disabled' => true
                                                 ])
                                             </td>
-                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
+                                            <td class="align-middle" x-text="formatCurrencyVND(asset.price)"></td>
                                             <td>
                                                 <input class="form-control" type="number" x-model="asset.quantity_registered" disabled>
                                             </td>
@@ -137,7 +137,7 @@
                                                     @input="calculateApproval(index)"
                                                 >
                                             </td>
-                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
+                                            <td class="align-middle" x-text="formatCurrencyVND(asset.quantity_registered * asset.price)"></td>
                                             <td>
                                                 <input class="form-control" x-model="asset.description" type="text" disabled>
                                             </td>
@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
+        <div class="col-3 border border-right-0 border-top-0 border-bottom-0">
 {{--            @include('assets.shopping_plan_organization.history_comment')--}}
         </div>
     </div>
