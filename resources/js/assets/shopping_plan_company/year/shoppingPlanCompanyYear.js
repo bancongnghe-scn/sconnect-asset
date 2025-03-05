@@ -355,11 +355,7 @@ document.addEventListener('alpine:init', () => {
 
                     await this.getOrganizationRegisterYear()
                     await this.getInfoShoppingPlanCompanyYear()
-                    if (action === 'view') {
-                        $('#modalDetail').modal('show')
-                    } else {
-                        $('#modalUpdate').modal('show')
-                    }
+                    $('#modalUpdate').modal('show')
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -471,25 +467,6 @@ document.addEventListener('alpine:init', () => {
                     this.table_index.push(index)
                 } else {
                     this.table_index = this.table_index.filter(item => item !== index);
-                }
-            },
-
-            async handleShowModalDetailOrganization(id) {
-                this.loading = true
-                try {
-                    this.idPlanOrganization = id
-                    this.table_index = []
-                    await this.getInfoOrganization(id)
-                    this.getRegisterAssetOrganization(id)
-                    if (this.list_asset_type.length === 0) {
-                        this.getListAssetType()
-                    }
-                    $('#modalOrganizationCompany').modal('show')
-                    this.setConfigButtons()
-                } catch (e) {
-                    toast.error(e)
-                } finally {
-                    this.loading = false
                 }
             },
 
@@ -634,15 +611,6 @@ document.addEventListener('alpine:init', () => {
                             {
                                 icon: 'bi bi-pencil-square color-sc',
                                 action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
-                    {
-                        condition: () => true,
-                        buttons: [
-                            {
-                                icon: 'bi bi-eye text-info',
-                                action: (id) => this.handleShowModal(id, 'view'),
                             },
                         ],
                     },

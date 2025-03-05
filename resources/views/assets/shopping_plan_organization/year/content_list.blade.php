@@ -12,7 +12,6 @@
                         @include('assets.shopping_plan_organization.year.table')
                     </div>
 
-                    @include('assets.shopping_plan_organization.year.detail', ['id' => 'modalDetailOrganization'])
                     @include('assets.shopping_plan_organization.year.register')
                 </div>
             </div>
