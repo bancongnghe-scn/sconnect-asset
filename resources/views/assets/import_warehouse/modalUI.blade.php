@@ -1,8 +1,5 @@
 <div class="modal fade" id="modalUI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen"
-         x-data="{disabled: false}"
-         x-effect="disabled = action === 'view'"
-    >
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" x-text="title + ' phiếu nhập kho'"></h4>
@@ -20,7 +17,7 @@
 
                             <div class="tw-col-span-1">
                                 <label>Tên phiếu</label>
-                                <input class="form-control" type="text" x-model="data.name" placeholder="Tên phiếu" :disabled="disabled">
+                                <input class="form-control" type="text" x-model="data.name" placeholder="Tên phiếu">
                             </div>
 
                             <div class="tw-col-span-2">
@@ -29,13 +26,12 @@
                                   'placeholder' => 'Chọn đơn hàng',
                                   'options' => "action === 'view' ? listOrders : listOrdersDelivered",
                                   'selected' => 'data.order_ids',
-                                  'disabled' => 'disabled'
                                 ])
                             </div>
 
                             <div class="tw-col-span-4">
                                 <label>Ghi chú</label>
-                                <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú" :disabled="disabled"></textarea>
+                                <textarea class="form-control tw-h-40" x-model="data.description" placeholder="Nhập ghi chú"></textarea>
                             </div>
                         </div>
                     </div>
@@ -67,13 +63,13 @@
                                         class="align-middle"
                                     ></td>
                                     <td>
-                                        <input class="form-control" type="text" x-model="asset.name" :disabled="disabled">
+                                        <input class="form-control" type="text" x-model="asset.name">
                                     </td>
                                     <td>
-                                        <input class="form-control" type="number" min="1" x-model="asset.warranty_time" :disabled="disabled">
+                                        <input class="form-control" type="number" min="1" x-model="asset.warranty_time">
                                     </td>
                                     <td>
-                                        <input class="form-control" type="text" x-model="asset.seri_number" :disabled="disabled">
+                                        <input class="form-control" type="text" x-model="asset.seri_number">
                                     </td>
                                     <td class="align-middle" x-text="formatCurrencyVND(asset.price)"></td>
                                     <td class="align-middle" x-text="formatCurrencyVND(asset.price_last)"></td>
@@ -88,7 +84,7 @@
                     </div>
                 </div>
             </div>
-            <div x-show="action !== 'view'" class="modal-footer">
+            <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                 <button @click="action === 'create' ? create() : update()" type="button" class="btn btn-sc">Lưu</button>
                 <button @click="$('#modalConfirmComplete').modal('show')" type="button" class="btn btn-primary">Hoàn thành</button>

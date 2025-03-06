@@ -534,7 +534,7 @@ class comment {
             var textArea = $('#comment-input');
             var currentText = textArea.summernote("code");
             var userTag = '<u><font color="#085294"><span class="id-user-tag popup-user" userid="' + $(this).data('userid') + '">' + $(this).data('user') + '</span></font></u> <span>&nbsp;</span>';
-            
+
             if (currentText !== " ") {
                 textArea.summernote("code", currentText + userTag);
             } else {
@@ -545,7 +545,7 @@ class comment {
         });
     }
 
-    //di chuyển trỏ chuột tới ký tự cuối cùng 
+    //di chuyển trỏ chuột tới ký tự cuối cùng
     moveCursorToLast(element) {
         element.summernote('focus');
         var summernoteElement = element.next('.note-editor').find('.note-editable');
@@ -678,7 +678,7 @@ class comment {
             },
         }).done(function (result) {
             console.warn('result', result);
-            
+
             if (result.success == true) {
                 $('.btn-cancel-edit').trigger('click');
                 $('#cancel-comment').trigger('click');

@@ -21,9 +21,9 @@
                             <tr>
                                 <td x-text="from + index" class="text-center align-middle"></td>
                                 <td class="text-center align-middle">
-                                            <span class="tw-cursor-pointer tw-text-blue-500" x-text="value.code"
-                                                  @click="handleShowModalUI('view', value.id)">
-                                            </span>
+                                    <a class="tw-no-underline" x-text="value.code"
+                                       :href="`/import-warehouse/detail/${value.id}`"
+                                    ></a>
                                 </td>
                                 <td x-text="value.name" class="align-middle"></td>
                                 <td x-text="formatDateVN(value.created_at)" class="text-center align-middle"></td>

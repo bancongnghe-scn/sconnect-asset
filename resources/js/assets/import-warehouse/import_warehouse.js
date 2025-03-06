@@ -224,11 +224,7 @@ document.addEventListener('alpine:init', () => {
                     this.data.code = 'PN_'+code
                 })
             } else {
-                if (action === 'update') {
-                    this.title = 'Cập nhật'
-                } else {
-                    this.title = 'Chi tiết'
-                }
+                this.title = 'Cập nhật'
                 this.id = id
                 const response = await window.apiGetInfoImportWarehouse(id)
                 if (!response.success) {

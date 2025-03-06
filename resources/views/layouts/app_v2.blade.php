@@ -34,7 +34,10 @@
         <div class="modal-dialog modal-fullscreen" @yield('x-data')>
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">{{$title}}</h4>
+                    <div class="d-flex align-items-center tw-gap-x-3">
+                        <h4 class="modal-title">{{$title}}</h4>
+                        @yield('title_other')
+                    </div>
                     <div class="d-flex tw-gap-x-2">
                         @yield('btn-header')
                     </div>
