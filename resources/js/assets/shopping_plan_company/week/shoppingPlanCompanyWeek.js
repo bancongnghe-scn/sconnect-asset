@@ -226,11 +226,7 @@ document.addEventListener('alpine:init', () => {
                 this.resetData()
                 await this.getOrganizationRegisterWeek()
                 this.getInfoShoppingPlanCompanyWeek()
-                if (action === 'view') {
-                    $('#modalDetail').modal('show')
-                } else {
-                    $('#modalUpdate').modal('show')
-                }
+                $('#modalUpdate').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -300,27 +296,6 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 toast.error('Lấy danh sách loại tài sản thất bại !')
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async handleShowModalDetailOrganization(id) {
-            this.loading = true
-            try {
-                this.dataOrganization = []
-                this.registersOrganization = []
-                await this.getInfoPlanOrganization(id)
-                this.getRegisterAsset(id)
-                if (this.list_asset_type.length === 0) {
-                    this.getListAssetType()
-                }
-                if (this.list_job.length === 0) {
-                    this.getJobs()
-                }
-                $('#modalOrganizationCompany').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -776,16 +751,7 @@ document.addEventListener('alpine:init', () => {
                             action: (id) => this.handleShowModal(id, 'update'),
                         },
                     ],
-                },
-                {
-                    condition: () => true,
-                    buttons: [
-                        {
-                            icon: 'bi bi-eye text-info',
-                            action: (id) => this.handleShowModal(id, 'view'),
-                        },
-                    ],
-                },
+                }
             ]
             this.configButtonsApproval = [
                 {

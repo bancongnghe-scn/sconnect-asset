@@ -45,6 +45,10 @@
                                     @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                 </td>
                                 <td class="align-middle">
+                                    <a :href="`/shopping-plan-company/week/detail/${value.id}`" class="tw-no-underline mr-2">
+                                        <i class="bi bi-eye text-info"></i>
+                                    </a>
+
                                     <template x-for="configBtnTable in configButtonsTable">
                                         <template x-if="configBtnTable.condition(+value.status)">
                                             <template x-for="configBtn in configBtnTable.buttons">
