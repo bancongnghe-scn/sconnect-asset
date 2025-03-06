@@ -32,7 +32,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async getOrganizationRegisterWeek() {
-            this.loading = true
             try {
                 const response = await window.getOrganizationRegister(id)
                 if (response.success) {
@@ -44,7 +43,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                this.loading = false
             }
         },
 
@@ -104,14 +102,12 @@ document.addEventListener('alpine:init', () => {
         },
 
         async getListUser(filters){
-            this.loading = true
             const response = await window.apiGetUser(filters)
             if (response.success) {
                 this.listUser = response.data.data
             } else {
                 toast.error('Lấy danh sách nhân viên thất bại !')
             }
-            this.loading = false
         },
 
         handleShowActive(active) {
@@ -123,7 +119,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async getListSupplier() {
-            this.loading = true
             try {
                 const response = await window.apiGetSupplier({})
                 if (!response.success) {
@@ -135,7 +130,6 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
-                this.loading = false
             }
         },
     }))

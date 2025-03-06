@@ -65,7 +65,7 @@
                             @include('assets.shopping-plan-company.table_synthetic_organization_register')
                         </template>
                         <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                            @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
+                            @include('assets.shopping-plan-company.week.table_synthetic_asset_organization_register')
                         </template>
                     </div>
                 </div>
@@ -90,10 +90,10 @@
                     </div>
                     <div>
                         <div x-show="activeLink.new">
-                            @include('component.shopping_plan_company.week.table_synthetic_action_new')
+                            @include('assets.shopping-plan-company.week.table_synthetic_action_new')
                         </div>
                         <div x-show="activeLink.rotation">
-                            @include('component.shopping_plan_company.week.table_synthetic_action_rotation')
+                            @include('assets.shopping-plan-company.week.table_synthetic_action_rotation')
                         </div>
                     </div>
                 </div>

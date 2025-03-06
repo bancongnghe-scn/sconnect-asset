@@ -96,11 +96,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 await this.getInfo()
                 this.getRegisterAsset()
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show');
-                } else {
-                    $('#modalRegister').modal('show');
-                }
+                $('#modalRegister').modal('show');
             } catch (e) {
 
             } finally {

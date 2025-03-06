@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        @include('component.shopping_plan_company.week.filter')
+                        @include('assets.shopping_plan_organization.week.filter')
                     </div>
 
                     <div
@@ -20,7 +20,6 @@
 
     {{--modal--}}
     <div>
-        @include('assets.shopping_plan_organization.week.detail', ['id' => 'modalDetailOrganization'])
         @include('assets.shopping_plan_organization.week.register')
     </div>
 </div>
