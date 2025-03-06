@@ -23,16 +23,17 @@
                             }}, 0)}
                     })
 
-                    this.$watch('{{$model}}', (value) => {
+                    $watch('{{$model}}', (value) => {
                         this.selected = value != null ? format(value, 'dd/MM/yyyy') : null
+
                     })
 
-                    this.$watch('selected', (value) => {
+                    $watch('selected', (value) => {
                         {{$model}} = value != null ? formatDate(value) : null
                     })
                 },
 
-                selected: null
+                selected: {{$model}} != null ? format({{$model}}, 'dd/MM/yyyy') : null
            }"
     >
     <span class="input-group-text">

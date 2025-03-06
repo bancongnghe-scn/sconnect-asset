@@ -113,11 +113,9 @@
                 <td class="align-middle" x-text="assetRegister.description ?? '-'"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.new.length : 1"
                     class="text-center align-middle">
-                    {{-- button view --}}
-                    <button @click="handleShowModalDetailOrganization(organization.id)"
-                            class="border-0 bg-white">
+                    <a :href="`/shopping-plan-organization/week/detail/${organization.id}`" class="tw-no-underline mr-2" target="_blank">
                         <i class="bi bi-eye text-info"></i>
-                    </button>
+                    </a>
                 </td>
             </tr>
         </template>
