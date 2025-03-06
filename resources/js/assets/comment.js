@@ -472,6 +472,7 @@ class comment {
                     },
                     error: function (error) { },
                     async: false,
+                    contentType: "application/json",
                     processData: false,
                     contentType: false,
                 },
