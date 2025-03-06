@@ -96,3 +96,28 @@ window.apiGetMultiAssetRepair = async function (ids) {
         }
     }
 }
+
+window.apiGetSupplier = async function () {
+    try {
+
+        const res = await axios.get("/api/asset-repair/get-supplier")
+
+        const data = res.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}

@@ -17,7 +17,10 @@
     <div class="col-2">
         <div class="row align-items-center">
             <div class="tw-max-w-fit">
-                <span>Đã chọn (<span id="numberShow"></span>)</span>
+                <span x-data="{count: 0}" x-effect="count = Object.keys(selectedRow).filter(key => selectedRow[key] === true).length"
+                    x-text="`Đã chọn (${count})`"
+                    >
+                    </span>
             </div>
             <div class="tw-max-w-fit">
                 <button class="border-0 btn tw-text-red-400" @click="unselectedAll()">Bỏ chọn</button>

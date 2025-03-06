@@ -71,17 +71,8 @@ document.addEventListener('alpine:init', () => {
             1: 'Tại công ty',
             2: 'Nhà cung cấp'
         },
-        performer: {
-            1: 'Minh Hoàng',
-            2: 'Long sky',
-            3: 'Trường con',
-            4: 'Hiếu 9 ngón'
-        },
-        supplier: {
-            1: 'Sconnect studio',
-            2: 'Sconnect media',
-            3: 'Sconnect academy'
-        },
+        performer: {},
+        supplier: {},
 
         columnsRepair: {
             code: 'Mã tài sản',
@@ -168,6 +159,14 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetAssetRepair(id);
             if (response.success) {
                 this.dataRepair = [response.data.data]
+
+                const res = await window.apiGetSupplier()
+                if (res.success) {
+                    this.supplier = res.data.data.reduce((acc, e) => {
+                        acc[e.id] = e.name;
+                        return acc;
+                    }, {});
+                }
             } else {
                 toast.error(response.message)
             }
@@ -184,6 +183,14 @@ document.addEventListener('alpine:init', () => {
             const response = await window.apiGetAssetRepair(id);
             if (response.success) {
                 this.dataShowRepair = response.data.data[0]
+
+                const res = await window.apiGetSupplier()
+                if (res.success) {
+                    this.supplier = res.data.data.reduce((acc, e) => {
+                        acc[e.id] = e.name;
+                        return acc;
+                    }, {});
+                }
             } else {
                 toast.error(response.message)
             }
@@ -256,7 +263,7 @@ document.addEventListener('alpine:init', () => {
                 $("#"+this.idModalRepaired).modal('hide');
                 this.saveDraftId = []
             }
-            
+
         },
 
         handleAddressRepairChange(index, event) {
@@ -273,7 +280,7 @@ document.addEventListener('alpine:init', () => {
             const ids = Object.keys(this.selectedRow).filter(key => 
                 this.selectedRow[key] === true && this.selectedRow[key] !== undefined
             );
-            
+
             $('#'+this.numberShow).text(ids.length);
         },
 

@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Inventory;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\Inventory\AssetRepairService;
+use App\Services\SupplierService;
 use Illuminate\Support\Facades\Log;
 
 class AssetRepairController extends Controller
 {
     public function __construct(
         protected AssetRepairService $assetRepairService,
+        protected SupplierService $supplierService,
     ) {
 
     }
@@ -96,6 +98,23 @@ class AssetRepairController extends Controller
     {
         try {
             $result = $this->assetRepairService->getMultiAssetRepairById($request->asset_repair_ids);
+
+            return response_success($result);
+        } catch (\Exception $e) {
+            return response_error();
+        }
+    }
+
+    public function getSupplier()
+    {
+        try {
+            $supplier = $this->supplierService->getListSupplier();
+            $result   = array_map(function ($item) {
+                return [
+                    'id'   => $item['id'],
+                    'name' => $item['name'],
+                ];
+            }, $supplier['data']);
 
             return response_success($result);
         } catch (\Exception $e) {
