@@ -1,15 +1,17 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('order_detail', (id) => ({
         async init() {
+            this.getListUser()
+            this.getListIndustry()
             await this.findOrder()
             this.getShoppingAssetOrder()
-            this.getListUser()
         },
 
         data: [],
         listUser: [],
         listAssetType: [],
         listOrganization: [],
+        listIndustry: [],
 
         async findOrder(){
             this.loading = true
@@ -56,6 +58,17 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
             }
+        },
+
+        async getListIndustry() {
+            this.loading = true
+            const response = await window.apiGetIndustry()
+            if (response.success) {
+                this.listIndustry = response.data.data
+            } else {
+                toast.error('Lấy danh sách ngành hàng thất bại !')
+            }
+            this.loading = false
         },
     }))
 })

@@ -17,6 +17,7 @@ document.addEventListener('alpine:init', () => {
         to: 0,
         limit: 10,
         selectedRow: [],
+        listIndustry: [],
 
         //data
         filters: {
@@ -42,6 +43,7 @@ document.addEventListener('alpine:init', () => {
             shipping_costs: null,
             other_costs: null,
             shopping_assets_order: [],
+            industry_ids: [],
         },
         listShoppingPlanCompany: [],
         listSupplier: [],
@@ -134,6 +136,9 @@ document.addEventListener('alpine:init', () => {
             }
             if (this.listUser.length === 0) {
                 this.getListUser()
+            }
+            if (this.listIndustry.length === 0) {
+                this.getListIndustry()
             }
         },
 
@@ -259,6 +264,31 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getListIndustry() {
+            this.loading = true
+            const response = await window.apiGetIndustry()
+            if (response.success) {
+                this.listIndustry = response.data.data
+            } else {
+                toast.error('Lấy danh sách ngành hàng thất bại !')
+            }
+            this.loading = false
+        },
+
+        async getIndustriesForSupplier(id) {
+            try {
+                const response = await window.apiShowSupplier(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                const data = response.data.data
+                this.data.industry_ids = data.industry_ids
+            } catch (e) {
+                toast.error(e)
+            }
+        },
+
         watch() {
             this.$watch('data.type', (value) => {
                 if (value !== null) {
@@ -284,6 +314,7 @@ document.addEventListener('alpine:init', () => {
                     if (+this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
                         this.getShoppingAssets()
                     }
+                    this.getIndustriesForSupplier(value)
                 }
             });
         },
@@ -359,6 +390,7 @@ document.addEventListener('alpine:init', () => {
                 shipping_costs: null,
                 other_costs: null,
                 shopping_assets_order: [],
+                industry_ids: [],
             }
         },
 

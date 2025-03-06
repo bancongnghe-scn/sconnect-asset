@@ -76,8 +76,8 @@
                 @include('assets.order.costs_other', ['action' => 'detail'])
             </div>
         </div>
-        <div class="card col-2">
-            @include('assets.order.history_comment')
+        <div class="card col-3">
+{{--            @include('assets.order.history_comment')--}}
         </div>
     </div>
 @endsection
@@ -87,6 +87,7 @@
         'resources/js/assets/order/order_detail.js',
         'resources/js/assets/api/order/apiOrder.js',
         'resources/js/app/api/apiUser.js',
+        'resources/js/assets/api/apiIndustry.js',
         'resources/js/assets/api/apiShoppingAssetOrder.js',
     ])
 @endsection
