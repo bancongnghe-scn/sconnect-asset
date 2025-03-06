@@ -80,6 +80,7 @@ Route::middleware('checkAuth')->group(function () {
     });
     Route::prefix('import-warehouse')->group(function () {
         Route::view('list', 'assets.import_warehouse.list');
+        Route::view('detail/{id}', 'assets.import_warehouse.detail');
     });
     Route::prefix('cache')->group(function () {
         Route::get('key', function () {
