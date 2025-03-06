@@ -2,7 +2,7 @@
        aria-describedby="example2_info">
     <thead>
     <tr>
-        <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
+        <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">
             <input type="checkbox" @click="selectedAll">
         </th>
         <th rowspan="2" class="text-center">Đơn vị</th>
@@ -24,7 +24,7 @@
             <tr>
                 <td :rowspan="stt === 0 ? organization.asset_register.length : 1"
                     class="text-center align-middle"
-                    x-show="stt === 0 && +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL"
+                    x-show="stt === 0 && +data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'"
                 >
                     <input type="checkbox" x-model="selectedRow[organization.id]" x-bind:checked="selectedRow[organization.id]"
                            :disabled="![
@@ -48,10 +48,9 @@
                 <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                 <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                     {{-- button view --}}
-                    <button  @click="handleShowModalDetailOrganization(organization.id)"
-                             class="border-0 bg-white">
+                    <a :href="`/shopping-plan-organization/quarter/detail/${organization.id}`" target="_blank" class="tw-no-underline mr-2">
                         <i class="bi bi-eye text-info"></i>
-                    </button>
+                    </a>
 
                     {{-- button duyet --}}
                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">

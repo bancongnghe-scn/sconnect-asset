@@ -1,17 +1,18 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shopping_organization_year_detail', (id) => ({
+    Alpine.data('shopping_organization_quarter_detail', (id) => ({
         async init() {
-            this.getListAssetType()
             await this.getInfo()
             this.getRegisterAsset()
+            this.getListAssetType()
             this.setConfigButtons()
         },
 
+        data: [],
+        registers: [],
         list_job: [],
         table_index: [],
-        dataOrganization: [],
-        registersOrganization: [],
-        configButtonsOrganization: [],
+        list_asset_type: [],
+        configButtonsDetail: [],
 
         async getInfo(){
             this.loading = true
@@ -21,44 +22,17 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.dataOrganization = response.data
+                this.data = response.data
             } catch (e) {
                 toast.error(e)
             } finally {
                 this.loading = false
-                this.getJobs([this.dataOrganization.organization_id])
-            }
-        },
-
-        async getRegisterAsset(){
-            try {
-                const response = await window.apiGetRegisterShoppingPlanOrganization(id)
-                if (response.success) {
-                    this.registersOrganization = response.data
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-            }
-        },
-
-        async getListAssetType() {
-            try {
-                const response = await window.apiGetAssetType({})
-                if (response.success) {
-                    this.list_asset_type = response.data.data
-                    return
-                }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
-            } catch (e) {
-                toast.error(e)
-            } finally {
+                this.getJobs([this.data.organization_id])
             }
         },
 
         async getJobs(organization_id){
+            this.loading = true
             try {
                 const response = await window.apiGetListJob({'org_id': organization_id})
                 if (!response.success) {
@@ -71,16 +45,49 @@ document.addEventListener('alpine:init', () => {
             } catch (e) {
                 toast.error(e)
             } finally {
+                this.loading = false
+            }
+        },
+
+        async getRegisterAsset(){
+            this.loading = true
+            try {
+                const response = await window.apiGetRegisterShoppingPlanOrganization(id)
+                if (response.success) {
+                    this.registers = response.data
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async getListAssetType() {
+            this.loading = true
+            try {
+                const response = await window.apiGetAssetType({})
+                if (response.success) {
+                    this.list_asset_type = response.data.data
+                    return
+                }
+                toast.error('Lấy danh sách loại tài sản thất bại !')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
             }
         },
 
         async saveReviewRegisterAsset() {
             this.loading = true
             try {
-                const response = await window.apiSaveReviewRegisterAsset(id, this.registersOrganization)
+                const response = await window.apiSaveReviewRegisterAsset(id, this.registers)
                 if (response.success) {
                     toast.success('Lưu thông tin phê duyệt thành công')
-                    this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
+                    this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
                     return
                 }
                 toast.error(response.message)
@@ -96,7 +103,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
                 if (response.success) {
-                    this.dataOrganization.status = type === ORGANIZATION_TYPE_APPROVAL
+                    this.data.status = type === ORGANIZATION_TYPE_APPROVAL
                         ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
                     toast.success('Duyệt thành công !')
                     return
@@ -110,31 +117,25 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        handleShowTable(index) {
-            if (index === 'expand') {
-                this.table_index = [0,1,2,3,4,5,6,7,8,9,10,11]
-                return;
-            }
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registers[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
 
-            if (index === 'decrease') {
-                this.table_index = []
-                return;
-            }
-
-            if (!this.table_index.includes(index)) {
-                this.table_index.push(index)
-            } else {
-                this.table_index = this.table_index.filter(item => item !== index);
-            }
+            this.registers[index].approval.total = total
+            this.registers[index].approval.price = price
         },
 
         setConfigButtons() {
-            this.configButtonsOrganization = [
+            this.configButtonsDetail = [
                 {
                     condition: () => [
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.dataOrganization.status),
+                    ].includes(+this.data.status),
                     buttons: [
                         {
                             text: 'Lưu',
@@ -149,7 +150,7 @@ document.addEventListener('alpine:init', () => {
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
-                    ].includes(+this.dataOrganization.status),
+                    ].includes(+this.data.status),
                     buttons: [
                         {
                             text: 'Duyệt',
@@ -164,7 +165,7 @@ document.addEventListener('alpine:init', () => {
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
                         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                    ].includes(+this.dataOrganization.status),
+                    ].includes(+this.data.status),
                     buttons: [
                         {
                             text: 'Từ chối',
@@ -177,16 +178,22 @@ document.addEventListener('alpine:init', () => {
             ]
         },
 
-        calculateApproval(index) {
-            let total = 0
-            let price = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                total += +asset.quantity_approved
-                price += (asset.quantity_approved * asset.price)
-            })
+        handleShowTable(index) {
+            if (index === 'expand') {
+                this.table_index = [0,1,2]
+                return;
+            }
 
-            this.registersOrganization[index].approval.total = total
-            this.registersOrganization[index].approval.price = price
+            if (index === 'decrease') {
+                this.table_index = []
+                return;
+            }
+
+            if (!this.table_index.includes(index)) {
+                this.table_index.push(index)
+            } else {
+                this.table_index = this.table_index.filter(item => item !== index);
+            }
         },
     }))
 })

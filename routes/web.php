@@ -53,15 +53,23 @@ Route::middleware('checkAuth')->group(function () {
         });
         Route::prefix('quarter')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyQuarterController::class, 'index']);
+            Route::view('detail/{id}', 'assets.shopping-plan-company.quarter.detail');
         });
         Route::prefix('week')->group(function () {
             Route::get('list', [App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyWeekController::class, 'index']);
+            Route::view('detail/{id}', 'assets.shopping-plan-company.week.detail');
         });
     });
 
     Route::prefix('shopping-plan-organization')->group(function () {
         Route::prefix('year')->group(function () {
             Route::view('detail/{id}', 'assets.shopping_plan_organization.year.detail');
+        });
+        Route::prefix('quarter')->group(function () {
+            Route::view('detail/{id}', 'assets.shopping_plan_organization.quarter.detail');
+        });
+        Route::prefix('week')->group(function () {
+            Route::view('detail/{id}', 'assets.shopping_plan_organization.week.detail');
         });
     });
 

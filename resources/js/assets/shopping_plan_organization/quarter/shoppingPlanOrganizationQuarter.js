@@ -184,11 +184,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show')
-                } else {
-                    $('#modalRegister').modal('show')
-                }
+                $('#modalRegister').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -227,22 +223,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         setConfigButtons() {
-            this.configButtonsModalDetail = [
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.data.status),
-                    buttons: [
-                        {
-                            text: 'Lưu',
-                            class: 'btn btn-primary',
-                            action: () => this.saveReviewRegisterAsset(),
-                            permission: 'shopping_plan_company.accounting_approval'
-                        },
-                    ],
-                },
-            ]
             this.configButtonsTable = [
                 {
                     condition: (status, startTime, endTime) =>

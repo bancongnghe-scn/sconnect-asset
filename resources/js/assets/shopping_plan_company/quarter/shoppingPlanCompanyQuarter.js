@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyQuarter', () => ({
         init() {
@@ -427,23 +425,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async saveReviewRegisterAsset() {
-            this.loading = true
-            try {
-                const response = await window.apiSaveReviewRegisterAsset(this.idPlanOrganization, this.registersOrganization)
-                if (response.success) {
-                    toast.success('Lưu thông tin phê duyệt thành công')
-                    this.register.organizations.find((item) => +item.id === +this.idPlanOrganization).status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
         async sentRegisterAgain(id) {
             this.loading = true
             try {
@@ -453,25 +434,6 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async handleShowModalDetailOrganization(id) {
-            this.loading = true
-            try {
-                this.idPlanOrganization = id
-                this.table_index = []
-                await this.getInfoOrganization(id)
-                this.getRegisterAssetOrganization(id)
-                if (this.list_asset_type.length === 0) {
-                    this.getListAssetType()
-                }
-                $('#modalOrganizationCompany').modal('show')
-                this.setConfigButton()
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -493,11 +455,7 @@ document.addEventListener('alpine:init', () => {
 
                 this.getOrganizationRegisterQuarter()
                 await this.getInfoShoppingPlanCompanyQuarter()
-                if (action === 'view') {
-                    $('#modalDetail').modal('show')
-                } else {
-                    $('#modalUpdate').modal('show')
-                }
+                $('#modalUpdate').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -585,15 +543,6 @@ document.addEventListener('alpine:init', () => {
                         {
                             icon: 'bi bi-pencil-square color-sc',
                             action: (id) => this.handleShowModal('update', id),
-                        },
-                    ],
-                },
-                {
-                    condition: () => true,
-                    buttons: [
-                        {
-                            icon: 'bi bi-eye text-info',
-                            action: (id) => this.handleShowModal('view', id),
                         },
                     ],
                 },
@@ -706,52 +655,6 @@ document.addEventListener('alpine:init', () => {
                         },
                     ],
                 }
-            ]
-            this.configButtonsModalDetail = [
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.dataOrganization.status),
-                    buttons: [
-                        {
-                            text: 'Lưu',
-                            class: 'btn btn-primary',
-                            action: () => this.saveReviewRegisterAsset(),
-                            permission: 'shopping_plan_company.accounting_approval'
-                        },
-                    ],
-                },
-                // {
-                //     condition: () => [
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                //     ].includes(+this.data.status),
-                //     buttons: [
-                //         {
-                //             text: 'Duyệt',
-                //             class: 'btn bg-sc text-white',
-                //             action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_APPROVAL),
-                //             permission: 'shopping_plan_company.accounting_approval'
-                //         },
-                //     ],
-                // },
-                // {
-                //     condition: () => [
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                //         STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                //     ].includes(+this.data.status),
-                //     buttons: [
-                //         {
-                //             text: 'Từ chối',
-                //             class: 'btn bg-red',
-                //             action: (id) => this.accountApprovalShoppingPlanOrganization(this.idPlanOrganization, ORGANIZATION_TYPE_DISAPPROVAL),
-                //             permission: 'shopping_plan_company.accounting_approval'
-                //         },
-                //     ],
-                // },
             ]
         },
 

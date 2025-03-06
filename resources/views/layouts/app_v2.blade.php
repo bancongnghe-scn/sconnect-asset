@@ -35,7 +35,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">{{$title}}</h4>
-                    <div>
+                    <div class="d-flex tw-gap-x-2">
                         @yield('btn-header')
                     </div>
                 </div>
