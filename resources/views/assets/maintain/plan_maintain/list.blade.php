@@ -24,7 +24,7 @@
     </div>
 </div>
 @vite([
-    'resources/js/assets/maintain/plan_maintain.js',
+    'resources/js/assets/maintain/plan-maintain/plan_maintain.js',
     'resources/js/app/api/apiOrganization.js',
     'resources/js/assets/api/apiSupplier.js',
     'resources/js/app/api/apiUser.js'

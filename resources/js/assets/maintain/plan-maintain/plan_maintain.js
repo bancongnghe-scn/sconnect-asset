@@ -256,7 +256,6 @@ document.addEventListener('alpine:init', () => {
                 $('#modalInsertPlanMaintain').modal('show')
             } else {
                 await this.getInfoPlanMaintain()
-                this.title = action === 'update' ? 'Cập nhật' : 'Chi tiết'
                 $('#modalUpdatePlanMaintain').modal('show')
             }
         },

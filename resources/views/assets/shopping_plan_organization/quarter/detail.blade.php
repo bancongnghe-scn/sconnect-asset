@@ -6,7 +6,6 @@
     x-data="shopping_organization_quarter_detail({{$id}})"
 @endsection
 
-
 @section('btn-header')
     <template x-if="+data.status_company === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
         <template x-for="(config, key) in configButtonsDetail" :key="key">

@@ -98,6 +98,7 @@ Route::middleware('checkAuth')->group(function () {
     });
     Route::prefix('maintain')->group(function () {
         Route::view('list', 'assets.maintain.list');
+        Route::view('plan/detail/{id}', 'assets.maintain.plan_maintain.detail');
     });
     Route::prefix('plan-inventory')->group(function () {
         Route::view('list', 'assets.plan-inventory.list');
