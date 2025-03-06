@@ -86,7 +86,7 @@
                     <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_NEW">
                         @include('assets.shopping-plan-company.table_synthetic_organization_register')
                     </template>
-                    <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
+                    <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW" x-data="{action: 'view'}">
                         @include('assets.shopping-plan-company.quarter.table_synthetic_asset_organization_register')
                     </template>
                 </div>

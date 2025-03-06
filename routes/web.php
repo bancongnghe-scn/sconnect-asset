@@ -64,6 +64,9 @@ Route::middleware('checkAuth')->group(function () {
         Route::prefix('year')->group(function () {
             Route::view('detail/{id}', 'assets.shopping_plan_organization.year.detail');
         });
+        Route::prefix('quarter')->group(function () {
+            Route::view('detail/{id}', 'assets.shopping_plan_organization.quarter.detail');
+        });
     });
 
     Route::prefix('order')->group(function () {
