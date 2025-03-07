@@ -242,7 +242,7 @@ class AssetController extends Controller
     {
         try {
             return response_success([
-                'listUser' => User::where('status', 1)->limit(2000)->get(),
+                'listUser' => User::where('status', 1)->with(['organization', 'organization.deptType'])->limit(2000)->get(),
             ]);
         } catch (\Throwable $exception) {
             Log::error($exception);

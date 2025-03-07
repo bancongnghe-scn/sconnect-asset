@@ -87,6 +87,14 @@
                                         </template>
                                     </select>
                                 </div>
+                                <div class="mb-3" x-show="defaultCheckRotation == 'unit'">
+                                    <span>Người đại diện</span>
+                                    <input id="unitRepresent" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="mb-3" x-show="defaultCheckRotation == 'employee'">
+                                    <span>Đơn vị</span>
+                                    <input id="unitEmployee" type="text" class="form-control" disabled>
+                                </div>
                                 <div class="mb-3" x-show="defaultCheckRotation == 'employee'">
                                     <span>Nhân viên</span>
                                     <select class="form-control select2" data-placeholder="Người dùng" id="userToSelect">
@@ -206,7 +214,7 @@
                 </span>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRotationModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRotationModal'); closeModal('#modalRotation');">Đóng</button>
             </div>
           </div>
         </div>

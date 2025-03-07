@@ -328,7 +328,7 @@
                                             <tbody>
                                             <template x-for="history in listHistory">
                                                 <tr>
-                                                    <td style="position: sticky; left: 0; z-index: 1;" x-text="formatDateVN(history.created_at)"></td>
+                                                    <td style="position: sticky; left: 0; z-index: 1;" x-text="formatDateVN(history.date)"></td>
                                                     <td style="position: sticky; left: 95px; z-index: 1;" x-text="history.type == 1 ? 'Cấp phát' : ( history.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                     <td style="position: sticky; left: 186px; z-index: 1;">
                                                         <span class="text-primary" x-text="'BB0' + history.id" @click="window.open('/' + history.link_report, '_blank')" style="cursor: pointer;"></span>
