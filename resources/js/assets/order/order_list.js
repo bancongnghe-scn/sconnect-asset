@@ -369,15 +369,6 @@ document.addEventListener('alpine:init', () => {
                     this.list(this.filters)
                 }
             });
-
-            this.$watch('filters.status', (value) => {
-                if (value === '#') {
-                    this.filters.status = null
-                    this.list(this.filters)
-                } else if (value !== null) {
-                    this.list(this.filters)
-                }
-            });
         },
 
         confirmRemove(multiple = false, id = null) {
