@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="order_list">
+    <div x-data="order_list({{ request('tab_status') ?? null }})">
         <div class="row">
             <div class="col-12">
                 <div class="card">

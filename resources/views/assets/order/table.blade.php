@@ -29,7 +29,7 @@
                                     </td>
                                     <td class="text-center align-middle" x-text="from + index"></td>
                                     <td class="align-middle text-wrap tw-no-underline">
-                                        <a x-text="value.name" class="tw-no-underline tw-cursor-pointer" :href="`/order/detail/${value.id}`"></a>
+                                        <a x-text="value.name" class="tw-no-underline tw-cursor-pointer" :href="`/order/detail/${value.id}?status=${tab_status}`"></a>
                                     </td>
                                     <td class="text-center align-middle">
                                         <span x-text="value.code"></span>
@@ -50,13 +50,13 @@
                                         @include('component.status.status_order', ['status' => 'value.status'])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <a :href="`/order/detail/${value.id}`" class="tw-no-underline mr-2">
+                                        <a :href="`/order/detail/${value.id}?status=${tab_status}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-eye text-info"></i>
                                         </a>
-                                        <a x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" :href="`/order/update/${value.id}`" class="tw-no-underline mr-2">
+                                        <a x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" :href="`/order/update/${value.id}?status=${tab_status}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-pencil-square color-sc"></i>
                                         </a>
-                                        <a x-show="tab_status === ORDER_STATUS_DELIVERED" :href="`/import-warehouse/list?order_id=${value.id}`" class="tw-no-underline mr-2">
+                                        <a x-show="tab_status === ORDER_STATUS_DELIVERED" :href="`/import-warehouse/list?order_id=${value.id}`" target="_blank" class="tw-no-underline mr-2">
                                             <i class="bi bi-arrow-down-right-square color-sc"></i>
                                         </a>
                                         <span class="border-0 bg-white" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" @click="confirmRemove(false, value.id)">

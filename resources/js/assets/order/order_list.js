@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('order_list', () => ({
+    Alpine.data('order_list', (tab_status = null) => ({
         init() {
             this.getTotalStatusOrder()
             this.list(this.filters)
@@ -8,6 +8,9 @@ document.addEventListener('alpine:init', () => {
             this.$watch('tab_status', (value) => {
                 this.reloadPage()
             })
+            if (tab_status !== null) {
+                this.tab_status = tab_status
+            }
         },
 
         //dataTable

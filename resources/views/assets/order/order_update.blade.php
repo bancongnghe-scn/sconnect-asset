@@ -11,7 +11,7 @@
     <a class="btn btn-sc" :href="`/api/order/export/{{$id}}`" download>
         <i class="fa-solid fa-file-export"></i>Gửi NCC
     </a>
-    <a class="btn btn-warning" href="/order/list">Quay lại</a>
+    <a class="btn btn-warning" href="/order/list?tab_status={{ request('status') ?? null}}">Quay lại</a>
 @endsection
 
 @section('content')
