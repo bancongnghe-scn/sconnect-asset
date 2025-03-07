@@ -28,75 +28,13 @@ class ListAssetService
     }
 
     public function getListAsset($request): LengthAwarePaginator
-    {
-        $query = Asset::query();
-
-        if ($request->status && 0 != $request->status) {
-            $query->where('status', $request->status);
-        }
-
-        if ($request->location && 0 != $request->location) {
-            $query->where('location', $request->location);
-        }
-
-        if ($request->type && 0 != $request->type) {
-            $query->where('asset_type_id', $request->type);
-        }
-
-        if ($request->unitSearch && 0 != $request->unitSearch) {
-            $query->where('organization_id', $request->unitSearch);
-        }
-
-        if ($request->nameCodeAsset) {
-            $query->whereRaw('LOWER(name) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%'])
-                ->orWhereRaw('LOWER(code) LIKE ?', ['%' . strtolower($request->nameCodeAsset) . '%']);
-        }
-
-        if ($request->userId) {
-            $arrAssetIdOfUser = MoveAssetUser::where('user_id', $request->userId)
-                ->select('asset_id', \DB::raw('MAX(id) as latest_move_id'))
-                ->groupBy('asset_id');
-
-            $issuedAssetIds = MoveAssetUser::whereIn('id', $arrAssetIdOfUser->pluck('latest_move_id'))
-                ->where('type', 1)
-                ->pluck('asset_id');
-
-            $query->whereNotIn('id', $issuedAssetIds);
-            $query->whereNull('user_id');
-        }
-
-        return $query->with(['user', 'user.organization', 'user.organization.deptType', 'assetType', 'organization', 'organization.manager', 'organization.deptType', 'user.listAssetUse'])->orderBy('id', 'desc')->paginate($request->limit);
+    {      
+        return $this->assetRepository->getListAsset($request);
     }
 
     public function getListUserAsset($request): LengthAwarePaginator
     {
-        $query = User::query();
-
-        if ($request->unit && 0 != $request->unit) {
-            $arrOrg = Org::get();
-
-            $arrChildOrg = Org::getAllChildIds($request->unit, $arrOrg);
-
-            $arrChildOrg[] = $request->unit;
-
-            $query->whereIn('dept_id', $arrChildOrg);
-        }
-
-        if ($request->nameUser) {
-            $query->where('name', 'LIKE', "%{$request->nameUser}%")
-                ->orWhere('code', 'LIKE', "%{$request->nameUser}%");
-        }
-        $listAsset = $query->with(['organization', 'organization.deptType', 'listAssetUse'])->where('status', 1)->paginate($request->limit);
-
-        foreach ($listAsset->items() as $user) {
-            $listOrgIdOfUser = Org::where('manager_id', $user->id)->pluck('id');
-
-            $user->total_asset_represent = count($listOrgIdOfUser) > 0 ?
-                Asset::whereIn('organization_id', $listOrgIdOfUser)->count()
-                : 0;
-        }
-
-        return $listAsset;
+        return $this->assetRepository->getListUserAsset($request);
     }
 
     public function allocateAsset($request)
@@ -236,13 +174,7 @@ class ListAssetService
 
     public function getListOrgAsset($request): LengthAwarePaginator
     {
-        $query = Org::query();
-
-        if ($request->unit) {
-            $query->where('id', $request->unit);
-        }
-
-        return $query->whereIn('parent_id', [0, 1])->with(['manager', 'deptType', 'listAsset'])->paginate($request->limit);
+        return $this->assetRepository->getListOrgAsset($request);
     }
 
     public function allocateAssetOrg($request)
@@ -401,85 +333,17 @@ class ListAssetService
 
     public function getUserByUnit($request): Collection
     {
-        $query = User::query();
-
-        if ($request->orgId) {
-            $arrOrg = Org::get();
-
-            $arrChildOrg = Org::getAllChildIds($request->orgId, $arrOrg);
-
-            $arrChildOrg[] = $request->orgId;
-
-            $query->whereIn('dept_id', $arrChildOrg);
-        }
-
-        return $query->limit(2000)->get();
+        return $this->assetRepository->getUserByUnit($request);
     }
 
     public function getListLog($request)
     {
-        if ($request->assetId) {
-            $logRepair     = AssetHistory::where('asset_id', $request->assetId)->where('action', Asset::STATUS_DAMAGED)->with('assetRepair')->get();
-            $logLostCancel = AssetHistory::where('asset_id', $request->assetId)
-                ->whereIn('action', [
-                    Asset::STATUS_LOST,
-                    Asset::STATUS_CANCEL,
-                    Asset::STATUS_PROPOSAL_LIQUIDATION,
-                    Asset::STATUS_LIQUIDATED,
-                ])->with('createBy')->get();
-
-            return [
-                'logRepair'     => $logRepair,
-                'logLostCancel' => $logLostCancel,
-            ];
-        }
+        return $this->assetRepository->getListLog($request);
     }
 
     public function getListHistory($request)
     {
-        if ($request->userId) {
-            return TransferAsset::where('user_id', $request->userId)->with([
-                'user',
-                'organization.manager',
-                'organization.deptType',
-                'createBy',
-                'userTo',
-                'organizationTo.manager',
-                'organizationTo.deptType',
-            ])->get();
-        }
-
-        if ($request->orgId) {
-            return TransferAsset::where('org_id', $request->orgId)->whereNull('user_id')->with([
-                'user',
-                'organization.manager',
-                'organization.deptType',
-                'createBy',
-                'userTo',
-                'organizationTo.manager',
-                'organizationTo.deptType',
-            ])->get();
-        }
-
-        if ($request->assetId) {
-            return MoveAssetUser::whereIn('id', function ($query) use ($request) {
-                $query->selectRaw('MAX(id)')
-                    ->from('move_asset_users')
-                    ->where('asset_id', $request->assetId)
-                    ->groupBy('transfer_asset_id');
-            })
-                ->with([
-                    'transferAsset',
-                    'transferAsset.user',
-                    'transferAsset.organization.manager',
-                    'transferAsset.organization.deptType',
-                    'transferAsset.userTo',
-                    'transferAsset.organizationTo.manager',
-                    'transferAsset.organizationTo.deptType',
-                    'transferAsset.createBy',
-                ])
-                ->get();
-        }
+        return $this->assetRepository->getListHistory($request);
     }
 
     public function rotationAsset($request)
