@@ -1,9 +1,13 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('order_list', () => ({
         init() {
+            this.getTotalStatusOrder()
             this.list(this.filters)
             this.watch()
             this.watchFilters()
+            this.$watch('tab_status', (value) => {
+                this.reloadPage()
+            })
         },
 
         //dataTable
@@ -22,7 +26,7 @@ document.addEventListener('alpine:init', () => {
         //data
         filters: {
             code_name: null,
-            status: null,
+            status: ORDER_STATUS_NEW,
             created_at: null,
             page: 1,
             limit: 10
@@ -53,6 +57,14 @@ document.addEventListener('alpine:init', () => {
         id: null,
         showModal : false,
         reason: null,
+        tab_status: ORDER_STATUS_NEW,
+        total_order: {
+            new: 0,
+            transit: 0,
+            delivered: 0,
+            warehoused: 0,
+            cancel: 0,
+        },
 
         //methods
         async list(filters) {
@@ -157,6 +169,38 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+            }
+        },
+
+        async getTotalStatusOrder() {
+            try {
+                const response = await window.apiGetTotalStatusOrder()
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                const data = response.data
+                data.forEach((item) => {
+                    switch (item.status) {
+                        case ORDER_STATUS_NEW:
+                            this.total_order.new = item.total
+                            break
+                        case ORDER_STATUS_TRANSIT:
+                            this.total_order.transit = item.total
+                            break
+                        case ORDER_STATUS_DELIVERED:
+                            this.total_order.delivered = item.total
+                            break
+                        case ORDER_STATUS_WAREHOUSED:
+                            this.total_order.warehoused = item.total
+                            break
+                        case ORDER_STATUS_CANCEL:
+                            this.total_order.cancel = item.total
+                            break
+                    }
+                })
+            } catch (e) {
+                toast.error(e)
             }
         },
 
@@ -401,7 +445,9 @@ document.addEventListener('alpine:init', () => {
 
         resetFilters() {
             this.filters = {
-                name: null,
+                code_name: null,
+                status: this.tab_status,
+                created_at: null,
                 page: 1,
                 limit: 10
             }

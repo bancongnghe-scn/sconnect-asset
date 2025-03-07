@@ -127,4 +127,18 @@ class OrderController extends Controller
     {
         return Excel::download(new OrderExport($id), 'don_hang.xlsx');
     }
+
+    public function getTotalStatusOrder()
+    {
+        try {
+            $result = $this->orderService->getTotalStatusOrder();
+
+            return response_success($result);
+
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }
