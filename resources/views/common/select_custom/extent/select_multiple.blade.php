@@ -65,8 +65,9 @@
                         <span x-text="options.find(option => option.id === id)?.name" class="tw-pl-[3px]"></span>
                         <button
                             @click.stop="clearOption(id)"
-                            class="btn btn-sm text-gray p-0 d-flex align-items-center"
+                            class="btn btn-sm text-gray p-0 d-flex align-items-center border-0"
                             style="margin-left: 3px;font-size: 13px;font-weight: 600;"
+                            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
                         >x</button>
                     </span>
                 </template>
