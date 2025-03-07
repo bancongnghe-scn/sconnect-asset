@@ -70,12 +70,13 @@ document.addEventListener('alpine:init', () => {
         async list(filters) {
             this.loading = true
             try {
-                let filtersFormat = JSON.parse(JSON.stringify(filters))
-                if (filtersFormat.status !== null) {
-                    filtersFormat.status = [filtersFormat.status]
-                }
-
-                const response = await window.apiGetListOrder(filtersFormat)
+                const response = await window.apiGetListOrder({
+                    code_name: filters.code_name,
+                    created_at: filters.created_at,
+                    status: [filters.status],
+                    page: filters.page,
+                    limit: filters.limit
+                })
                 if (!response.success) {
                     toast.error(response.message)
                     return

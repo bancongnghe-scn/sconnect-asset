@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('import_warehouse_list', () => ({
+    Alpine.data('import_warehouse_list', (orderId = null) => ({
         init() {
             this.list(this.filters)
             this.getListOrder()
@@ -8,6 +8,10 @@ document.addEventListener('alpine:init', () => {
                 this.handleGetImportWarehouseAsset(newValue, oldValue)
             })
             this.watchFilters()
+            if (orderId !== null) {
+                this.handleShowModalUI('create')
+                this.data.order_ids = [orderId]
+            }
         },
 
         //dataTable
@@ -86,11 +90,18 @@ document.addEventListener('alpine:init', () => {
                 this.list({page: 1, limit: 10})
                 toast.success('Tạo phiếu nhập thành công')
                 $('#modalUI').modal('hide')
+                this.setUrlDefault()
             } catch (e) {
                 toast.error(e)
             } finally {
                 this.loading = false
             }
+        },
+
+        setUrlDefault() {
+           if (orderId !== null) {
+               history.replaceState(null, '', '/import-warehouse/list');
+           }
         },
 
         async update() {
@@ -161,6 +172,7 @@ document.addEventListener('alpine:init', () => {
                 toast.success('Hoàn thành phiếu nhập kho thành công')
                 $('#modalUI').modal('hide')
                 $('#modalConfirmComplete').modal('hide')
+                this.setUrlDefault()
             } catch (e) {
                 toast.error(e)
             } finally {

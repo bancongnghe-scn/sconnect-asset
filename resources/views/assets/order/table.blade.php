@@ -25,7 +25,7 @@
                             <template x-for="(value,index) in dataTable" :key="index">
                                 <tr>
                                     <td class="text-center align-middle" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)">
-                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]" :disabled="!isStatusActive">
+                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                     </td>
                                     <td class="text-center align-middle" x-text="from + index"></td>
                                     <td class="align-middle text-wrap tw-no-underline">
@@ -55,6 +55,9 @@
                                         </a>
                                         <a x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" :href="`/order/update/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-pencil-square color-sc"></i>
+                                        </a>
+                                        <a x-show="tab_status === ORDER_STATUS_DELIVERED" :href="`/import-warehouse/list?order_id=${value.id}`" class="tw-no-underline mr-2">
+                                            <i class="bi bi-arrow-down-right-square color-sc"></i>
                                         </a>
                                         <span class="border-0 bg-white" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" @click="confirmRemove(false, value.id)">
                                             <i class="bi bi-trash text-red"></i>
