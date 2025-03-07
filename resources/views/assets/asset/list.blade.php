@@ -620,7 +620,7 @@
                                                             <tbody>
                                                             <template x-for="history in listHistoryAsset">
                                                                 <tr>
-                                                                    <td x-text="formatDateVN(history.transfer_asset.created_at)" style="position: sticky; left: 0; z-index: 1;"></td>
+                                                                    <td x-text="formatDateVN(history.transfer_asset.date)" style="position: sticky; left: 0; z-index: 1;"></td>
                                                                     <td style="position: sticky; left: 95px; z-index: 1;" x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                                     <td style="position: sticky; left: 186px; z-index: 1;">
                                                                         <span class="text-primary" x-text="'BB0' + history.transfer_asset_id" @click="window.open('/' + history.transfer_asset.link_report, '_blank')" style="cursor: pointer;"></span>
@@ -1050,13 +1050,19 @@
                 const userToSelect = $('#userToSelect').select2();
           
                 userToSelect.on('change', (event) => {  
-                    this.userToSelect = $(event.target).val();               
+                    this.userToSelect = $(event.target).val(); 
+                    const userSelect = this.listUser.find(item => item.id == this.userToSelect);
+                    
+                    $('#unitEmployee').val(userSelect.organization.dept_type.cfg_key + ' ' + userSelect.organization.name);
                 });
 
                 const unitToSelect = $('#unitToSelect').select2();
           
                 unitToSelect.on('change', (event) => {  
-                    this.unitToSelect = $(event.target).val();               
+                    this.unitToSelect = $(event.target).val();
+                    const unitSelect = this.listOrg.find(item => item.id == this.unitToSelect);
+                    
+                    $('#unitRepresent').val(unitSelect.manager.code + ' - ' + unitSelect.manager.name);               
                 });
 
                 window.addEventListener('change-page', (event) => {

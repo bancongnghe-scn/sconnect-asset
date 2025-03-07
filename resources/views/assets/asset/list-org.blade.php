@@ -258,8 +258,18 @@
     }
 
     function closeModal(modalId) {
-        const modal = new bootstrap.Modal(document.querySelector(modalId));
-        modal.hide();
+        // const modal = new bootstrap.Modal(document.querySelector(modalId));
+        // modal.hide();
+
+        const modalEl = document.querySelector(modalId);
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        if (modal) {
+            modalEl.addEventListener('hidden.bs.modal', function onHidden() {
+                modalEl.removeEventListener('hidden.bs.modal', onHidden); // Xóa sự kiện sau khi chạy
+                
+            });
+            modal.hide();
+        }
     }
 
     function formatCurrency(value) {
