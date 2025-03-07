@@ -46,4 +46,17 @@ class OrganizationController extends Controller
             return response_error();
         }
     }
+
+    public function getListOrganizationMain()
+    {
+        try {
+            $result = $this->organizationService->getListOrganizationMain();
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }

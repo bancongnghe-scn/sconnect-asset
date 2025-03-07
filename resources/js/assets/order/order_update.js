@@ -97,7 +97,7 @@ document.addEventListener('alpine:init', () => {
 
         async getListOrganization() {
             try {
-                const response = await window.apiGetOrganization({})
+                const response = await window.apiGetOrganizationMain()
                 if (response.success) {
                     this.listOrganization = response.data.data
                     return
