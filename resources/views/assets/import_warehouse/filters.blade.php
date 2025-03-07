@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-between align-items-center form-group">
-    <div class="col-10 p-0">
+    <div class="col-9 p-0">
         <div class="d-grid tw-grid-cols-12 tw-gap-x-4 align-items-center">
             <div class="tw-col-span-3">
                 <input class="form-control" type="text" x-model="filters.code_name" placeholder="Tên/mã phiếu nhập" @keydown.enter="list(filters)">
@@ -42,6 +42,12 @@
             <button type="button" class="btn btn-sm btn-outline-success">
                 <i class="fa-solid fa-file-export"></i>
                 Xuất Excel
+            </button>
+        </a>
+        <a href="/asset/list-user-asset" target="_blank">
+            <button type="button" class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-arrow-right-circle"></i>
+                Cấp phát
             </button>
         </a>
     </div>
