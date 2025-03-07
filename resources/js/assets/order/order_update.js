@@ -2,9 +2,9 @@ document.addEventListener('alpine:init', () => {
     Alpine.data('order_update', (id) => ({
         async init() {
             this.getListUser()
-            this.getShoppingAssetOrder()
             this.getListIndustry()
             await this.findOrder(id)
+            this.getShoppingAssetOrder()
         },
 
         data: [],
