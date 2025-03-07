@@ -218,4 +218,11 @@ class OrderService
             'data'    => InfoOrderResource::make($order)->resolve(),
         ];
     }
+
+    public function getTotalStatusOrder()
+    {
+        $data = $this->orderRepository->getTotalStatusOrder();
+
+        return $data->toArray();
+    }
 }

@@ -7,7 +7,7 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            <th class="text-center">
+                            <th class="text-center" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)">
                                 <input type="checkbox" @click="selectedAll">
                             </th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 4rem">STT</th>
@@ -17,16 +17,14 @@
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày đơn hàng</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày giao hàng</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 18rem">Người phụ trách</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Trạng thái</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                             <template x-for="(value,index) in dataTable" :key="index">
-                                <tr x-data="{
-                                      isStatusActive: [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)
-                                    }" x-effect="isStatusActive = [ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(+value.status)">
-                                    <td class="text-center align-middle" >
+                                <tr>
+                                    <td class="text-center align-middle" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)">
                                         <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]" :disabled="!isStatusActive">
                                     </td>
                                     <td class="text-center align-middle" x-text="from + index"></td>
@@ -55,10 +53,10 @@
                                         <a :href="`/order/detail/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-eye text-info"></i>
                                         </a>
-                                        <a x-show="isStatusActive" :href="`/order/update/${value.id}`" class="tw-no-underline mr-2">
+                                        <a x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" :href="`/order/update/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-pencil-square color-sc"></i>
                                         </a>
-                                        <span class="border-0 bg-white" x-show="isStatusActive" @click="confirmRemove(false, value.id)">
+                                        <span class="border-0 bg-white" x-show="[ORDER_STATUS_NEW, ORDER_STATUS_TRANSIT].includes(tab_status)" @click="confirmRemove(false, value.id)">
                                             <i class="bi bi-trash text-red"></i>
                                         </span>
                                     </td>

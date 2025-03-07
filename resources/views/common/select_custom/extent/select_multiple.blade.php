@@ -1,7 +1,7 @@
 <div x-data="{
             init() {
-                this.options = {{$options}};
-                this.selected = {{$selected}};
+                this.options = {{$options}} || [];
+                this.selected = {{$selected}} || [];
                 this.$watch(`{{$selected}}`, (newValue) => {
                     this.selected = newValue;
                 });

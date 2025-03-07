@@ -1,9 +1,13 @@
 document.addEventListener('alpine:init', () => {
     Alpine.data('order_list', () => ({
         init() {
+            this.getTotalStatusOrder()
             this.list(this.filters)
             this.watch()
             this.watchFilters()
+            this.$watch('tab_status', (value) => {
+                this.reloadPage()
+            })
         },
 
         //dataTable
@@ -17,11 +21,12 @@ document.addEventListener('alpine:init', () => {
         to: 0,
         limit: 10,
         selectedRow: [],
+        listIndustry: [],
 
         //data
         filters: {
             code_name: null,
-            status: null,
+            status: ORDER_STATUS_NEW,
             created_at: null,
             page: 1,
             limit: 10
@@ -42,6 +47,7 @@ document.addEventListener('alpine:init', () => {
             shipping_costs: null,
             other_costs: null,
             shopping_assets_order: [],
+            industry_ids: [],
         },
         listShoppingPlanCompany: [],
         listSupplier: [],
@@ -51,6 +57,14 @@ document.addEventListener('alpine:init', () => {
         id: null,
         showModal : false,
         reason: null,
+        tab_status: ORDER_STATUS_NEW,
+        total_order: {
+            new: 0,
+            transit: 0,
+            delivered: 0,
+            warehoused: 0,
+            cancel: 0,
+        },
 
         //methods
         async list(filters) {
@@ -135,6 +149,9 @@ document.addEventListener('alpine:init', () => {
             if (this.listUser.length === 0) {
                 this.getListUser()
             }
+            if (this.listIndustry.length === 0) {
+                this.getListIndustry()
+            }
         },
 
         async getListShoppingPlanCompany() {
@@ -152,6 +169,38 @@ document.addEventListener('alpine:init', () => {
                 toast.error(e)
             } finally {
                 this.loading = false
+            }
+        },
+
+        async getTotalStatusOrder() {
+            try {
+                const response = await window.apiGetTotalStatusOrder()
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                const data = response.data
+                data.forEach((item) => {
+                    switch (item.status) {
+                        case ORDER_STATUS_NEW:
+                            this.total_order.new = item.total
+                            break
+                        case ORDER_STATUS_TRANSIT:
+                            this.total_order.transit = item.total
+                            break
+                        case ORDER_STATUS_DELIVERED:
+                            this.total_order.delivered = item.total
+                            break
+                        case ORDER_STATUS_WAREHOUSED:
+                            this.total_order.warehoused = item.total
+                            break
+                        case ORDER_STATUS_CANCEL:
+                            this.total_order.cancel = item.total
+                            break
+                    }
+                })
+            } catch (e) {
+                toast.error(e)
             }
         },
 
@@ -259,6 +308,31 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getListIndustry() {
+            this.loading = true
+            const response = await window.apiGetIndustry()
+            if (response.success) {
+                this.listIndustry = response.data.data
+            } else {
+                toast.error('Lấy danh sách ngành hàng thất bại !')
+            }
+            this.loading = false
+        },
+
+        async getIndustriesForSupplier(id) {
+            try {
+                const response = await window.apiShowSupplier(id)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                const data = response.data.data
+                this.data.industry_ids = data.industry_ids
+            } catch (e) {
+                toast.error(e)
+            }
+        },
+
         watch() {
             this.$watch('data.type', (value) => {
                 if (value !== null) {
@@ -284,6 +358,7 @@ document.addEventListener('alpine:init', () => {
                     if (+this.data.type === ORDER_TYPE_CREATE_WITH_PLAN) {
                         this.getShoppingAssets()
                     }
+                    this.getIndustriesForSupplier(value)
                 }
             });
         },
@@ -359,6 +434,7 @@ document.addEventListener('alpine:init', () => {
                 shipping_costs: null,
                 other_costs: null,
                 shopping_assets_order: [],
+                industry_ids: [],
             }
         },
 
@@ -369,7 +445,9 @@ document.addEventListener('alpine:init', () => {
 
         resetFilters() {
             this.filters = {
-                name: null,
+                code_name: null,
+                status: this.tab_status,
+                created_at: null,
                 page: 1,
                 limit: 10
             }

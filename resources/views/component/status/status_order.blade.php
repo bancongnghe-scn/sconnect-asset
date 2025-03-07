@@ -8,7 +8,7 @@
                     border: '1px solid #1890FF'
                 };
             }
-            else if (status === ORDER_STATUS_TRANSIT) {
+            else if ([ORDER_STATUS_TRANSIT, ORDER_STATUS_DELIVERED].includes(status)) {
                 return {
                     color: '#FAAD14',
                     backgroundColor: '#FFFBE6',
@@ -22,7 +22,7 @@
                     border: '1px solid #F5222D'
                 };
             }
-            else if ([ORDER_STATUS_DELIVERED, ORDER_STATUS_WAREHOUSED].includes(+status)) {
+            else if (status === ORDER_STATUS_WAREHOUSED) {
                 return {
                     color: '#52C41A',
                     backgroundColor: '#F6FFED',

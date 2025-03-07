@@ -37,14 +37,24 @@
         <label>Nhà cung cấp<span class="tw-text-red-600 mb-0">*</span></label>
         <input type="text" x-model="data.supplier_name" class="form-select" :disabled="!isCreate">
     </div>
-    <div class="tw-col-span-2">
+
+
+    {{--  hien thi o tat ca  --}}
+
+    <div>
+        <label>Ngành hàng</label>
+        @include('common.select_custom.extent.select_multiple', [
+            'options' => 'listIndustry',
+            'selected' => 'data.industry_ids',
+            'disabled' => true
+        ])
+    </div>
+    <div>
         <label>Tên đơn hàng<span class="tw-text-red-600 mb-0">*</span></label>
         <input class="form-control" type="text" x-model="data.name" placeholder="Tên đơn hàng"
                :disabled=isDetail
         >
     </div>
-
-    {{--  hien thi o tat ca  --}}
     <div>
         <label>Người phụ trách mua sắm<span
                 class="tw-text-red-600 mb-0">*</span></label>

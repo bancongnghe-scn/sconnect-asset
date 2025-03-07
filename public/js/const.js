@@ -141,7 +141,7 @@ ORDER_STATUS_CANCEL = 5
 LIST_STATUS_ORDER = {
     [ORDER_STATUS_NEW]: 'Mới tạo',
     [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
-    [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+    [ORDER_STATUS_DELIVERED]: 'Đã giao hàng',
     [ORDER_STATUS_WAREHOUSED]: 'Đã nhập kho',
     [ORDER_STATUS_CANCEL]: 'Hủy'
 }
