@@ -15,6 +15,7 @@ class LoginSSOController extends Controller
         try {
             $response = callApiSSO(env('API_LOGOUT_SSO'), $_COOKIE[env('SESSION_NAME')], env('SECRET_KEY'));
             if (200 == $response['code']) {
+                Log::info(444444444);
                 Cookie::queue(Cookie::forget('sso-authen'));
                 Auth::logout();
 
