@@ -25,7 +25,6 @@ class AssetTypeController extends Controller
             'limit'                  => 'nullable|integer|max:200',
         ]);
 
-        Auth::user()->canPer('asset_type.view');
         try {
             $result = $this->assetTypeService->getListAssetType($request->all());
 
@@ -72,8 +71,6 @@ class AssetTypeController extends Controller
      */
     public function show(string $id)
     {
-        Auth::user()->canPer('asset_type.view');
-
         try {
             $result = $this->assetTypeService->findAssetType($id);
 
