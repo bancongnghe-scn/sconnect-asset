@@ -28,6 +28,7 @@ class CheckAuth
 
             return redirect(env('URL_SERVER_SSO') . '/login?redirect_url=' . env('URL_CLIENT_SSO'));
         } else {
+            Auth::loginUsingId(Auth::id());
             Log::info(Auth::id());
         }
 
