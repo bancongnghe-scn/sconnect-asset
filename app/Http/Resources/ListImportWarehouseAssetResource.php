@@ -75,9 +75,8 @@ class ListImportWarehouseAssetResource extends JsonResource
 
         foreach ($data as &$value) {
             $priceLast           = (+$value['price']) + ((+$value['price'] / $totalPrice) * $totalCost);
-            $rounded             = ceil($priceLast / 1000) * 1000;
-            $formatted           = number_format($rounded, 3, '.', '');
-            $value['price_last'] = $formatted;
+            $rounded             = round($priceLast, 2);
+            $value['price_last'] = $rounded;
         }
 
         return $data;
