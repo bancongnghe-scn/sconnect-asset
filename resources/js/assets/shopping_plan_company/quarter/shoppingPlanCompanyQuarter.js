@@ -501,7 +501,7 @@ document.addEventListener('alpine:init', () => {
                 {
                     condition: (status) =>
                         STATUS_SHOPPING_PLAN_COMPANY_NEW === status
-                        && this.permission.includes('shopping_plan_company.sent_notification_register')
+                        && this.permission.includes('shopping_plan_company.year_quarter.sent_notification_register')
                     ,
                     buttons: [
                         {
@@ -555,7 +555,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notification_register'
+                            permission: 'shopping_plan_company.year_quarter.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
