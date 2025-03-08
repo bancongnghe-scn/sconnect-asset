@@ -26,12 +26,6 @@ Route::middleware(['authenSSO'])->group(function () {
 });
 
 Route::middleware('checkAuth')->group(function () {
-    Route::get('/login/{id}', function ($id) {
-        Illuminate\Support\Facades\Auth::loginUsingId($id);
-
-        return redirect('/');
-    })->name('login');
-
     Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
 
     Route::prefix('rbac')->group(function () {
