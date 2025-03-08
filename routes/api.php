@@ -32,7 +32,7 @@ Route::get('ping', function () {
     return 'pong';
 });
 
-Route::middleware(['auth:sanctum', 'checkAuth'])->group(function () {
+Route::middleware('checkAuth')->group(function () {
     Route::resources([
         'asset-type'        => AssetTypeController::class,
         'asset-type-group'  => AssetTypeGroupController::class,
