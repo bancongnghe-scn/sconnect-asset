@@ -12,6 +12,7 @@ use App\Repositories\Rbac\RoleRepository;
 use App\Repositories\Rbac\RoleUserRepository;
 use App\Services\Rbac\MenuUserService;
 use App\Support\Constants\AppErrorCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -27,8 +28,15 @@ class MenuService
 
     }
 
-    public function getMenuUser($userId)
+    public function getMenuUser()
     {
+        $userId = null;
+        while ($userId = null) {
+            if (!Auth::check()) {
+                $userId = Auth::id();
+            }
+        }
+
         if (is_null($userId)) {
             return [];
         }

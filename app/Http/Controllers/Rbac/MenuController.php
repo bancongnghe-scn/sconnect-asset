@@ -17,7 +17,7 @@ class MenuController extends Controller
     public function getMenuUserLogin()
     {
         try {
-            $result = $this->menuService->getMenuUser(Auth::id());
+            $result = $this->menuService->getMenuUser();
 
             return response_success($result);
         } catch (\Throwable $exception) {
