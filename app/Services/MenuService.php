@@ -29,6 +29,7 @@ class MenuService
 
     public function getMenuUser($userId)
     {
+        dd($userId);
         if (is_null($userId)) {
             return [];
         }
