@@ -129,7 +129,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

@@ -82,7 +82,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listPlanCompanyYear = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -146,7 +146,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {

@@ -7,7 +7,7 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            @can('shopping_plan_company.crud')
+                            @can('shopping_plan_company.year_quarter.crud')
                                 <th class="text-center" style="width: 3rem">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
@@ -24,7 +24,7 @@
                         <tbody>
                             <template x-for="(value,index) in dataTable" :key="index">
                                 <tr>
-                                    @can('shopping_plan_company.crud')
+                                    @can('shopping_plan_company.year_quarter.crud')
                                         <td class="text-center align-middle">
                                             <input type="checkbox" x-model="selectedRow[value.id]"
                                                    x-bind:checked="selectedRow[value.id]"

@@ -76,7 +76,7 @@ document.addEventListener('alpine:init', () => {
                     this.from = data.data.from ?? 0
                     this.to = data.data.to ?? 0
                 } else {
-                    toast.error('Lấy danh sách hợp đồng thất bại !')
+                    toast.error(response.message)
                 }
             } catch (e) {
 
@@ -152,7 +152,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -163,7 +163,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

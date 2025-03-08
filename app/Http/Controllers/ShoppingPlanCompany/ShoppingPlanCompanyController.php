@@ -121,7 +121,7 @@ class ShoppingPlanCompanyController extends Controller
 
     public function deleteShoppingPlanCompany(string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
@@ -145,7 +145,7 @@ class ShoppingPlanCompanyController extends Controller
             'type'  => 'required|integer',
         ]);
 
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'), $request->integer('type'));

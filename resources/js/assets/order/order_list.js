@@ -288,7 +288,7 @@ document.addEventListener('alpine:init', () => {
                     this.listAssetType = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -304,7 +304,7 @@ document.addEventListener('alpine:init', () => {
                     this.listOrganization = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách đơn vị thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -318,7 +318,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listIndustry = response.data.data
             } else {
-                toast.error('Lấy danh sách ngành hàng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

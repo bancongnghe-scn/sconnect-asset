@@ -101,7 +101,7 @@ document.addEventListener('alpine:init', () => {
                     this.listOrganization = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách đơn vị thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -115,7 +115,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

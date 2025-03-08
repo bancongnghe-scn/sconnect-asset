@@ -184,7 +184,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             const response = await window.apiGetUser({})
             if (!response.success) {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
                 return
             }
             this.listUser = response.data.data

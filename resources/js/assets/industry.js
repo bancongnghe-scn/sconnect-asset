@@ -55,7 +55,7 @@ document.addEventListener('alpine:init', () => {
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
             } else {
-                toast.error('Lấy danh sách ngành hàng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

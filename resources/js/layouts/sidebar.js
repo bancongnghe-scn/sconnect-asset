@@ -14,7 +14,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.menus = response.data.data
             } else {
-                toast.error('Lấy menu thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

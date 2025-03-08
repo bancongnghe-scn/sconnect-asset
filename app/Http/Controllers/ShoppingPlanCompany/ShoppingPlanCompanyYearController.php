@@ -52,7 +52,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $data         = $request->validated();
@@ -75,7 +75,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $data         = $request->validated();
