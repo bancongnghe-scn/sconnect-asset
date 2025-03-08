@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Services\MenuService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 
 class MenuController extends Controller
 {
@@ -18,7 +17,6 @@ class MenuController extends Controller
     public function getMenuUserLogin()
     {
         try {
-            Log::info(7777777777);
             $result = $this->menuService->getMenuUser(Auth::id());
 
             return response_success($result);
