@@ -152,7 +152,7 @@ class AssetRepository extends BaseRepository
             'organization',
             'organization.manager',
             'organization.deptType',
-            'user.listAssetUse'
+            'user.listAssetUse',
         ])->orderBy('id', 'desc')->paginate($request->limit);
     }
 
@@ -198,7 +198,7 @@ class AssetRepository extends BaseRepository
         return $query->whereIn('parent_id', [0, 1])->with([
             'manager',
             'deptType',
-            'listAsset'
+            'listAsset',
         ])->paginate($request->limit);
     }
 

@@ -22,7 +22,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ListAssetService
 {
-    const ID_HUE = 323;
+    public const ID_HUE = 323;
 
     public function __construct(
         protected AssetRepository $assetRepository,
@@ -30,7 +30,7 @@ class ListAssetService
     }
 
     public function getListAsset($request): LengthAwarePaginator
-    {      
+    {
         return $this->assetRepository->getListAsset($request);
     }
 
@@ -603,10 +603,10 @@ class ListAssetService
         $sheet->setCellValue('A14', 'Hôm nay, vào lúc ….  Ngày ' . Carbon::now()->day . ' tháng ' . Carbon::now()->month . ' năm ' . Carbon::now()->year . ' tại Văn phòng Công ty TNHH Đầu tư Công nghệ và Dịch vụ S-Connect Việt Nam.');
         $sheet->setCellValue('A7', $titleReport);
         $sheet->setCellValue('D17', $userFrom?->name);
-        $sheet->setCellValue('D18', $userFrom->job_position == '' && $userFrom->id == self::ID_HUE ? 'Chuyên viên Hành chính' : $userFrom?->job_position);
+        $sheet->setCellValue('D18', '' == $userFrom->job_position && self::ID_HUE == $userFrom->id ? 'Chuyên viên Hành chính' : $userFrom?->job_position);
         $sheet->setCellValue('D19', $userFrom?->organization?->name);
         $sheet->setCellValue('D21', $userTo?->name);
-        $sheet->setCellValue('D22', $userTo->job_position == '' && $userTo->id == self::ID_HUE ? 'Chuyên viên Hành chính' : $userTo?->job_position);
+        $sheet->setCellValue('D22', '' == $userTo->job_position && self::ID_HUE == $userTo->id ? 'Chuyên viên Hành chính' : $userTo?->job_position);
         $sheet->setCellValue('D23', $userTo?->organization?->name);
 
         $listAsset = Asset::whereIn('id', $arrAssetId)->with(['assetType'])->get();

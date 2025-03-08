@@ -31,6 +31,9 @@ class CheckAuth
             if (isset($data['code']) && Response::HTTP_OK === $data['code']) {
                 Cookie::queue('sso-authen', true, 5);
 
+                $user = @$data['data']['user'];
+                Auth::loginUsingId($user['id']);
+
                 return $next($request);
             }
             Auth::logout();
