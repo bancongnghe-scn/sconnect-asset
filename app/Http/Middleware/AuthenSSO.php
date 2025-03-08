@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 
 class AuthenSSO
 {
@@ -40,6 +41,8 @@ class AuthenSSO
             $user = @$data['data']['user'];
 
             Auth::loginUsingId($user['id']);
+
+            Log::info(1111111111111);
 
             return true;
         }
