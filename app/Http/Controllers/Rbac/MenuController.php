@@ -17,11 +17,10 @@ class MenuController extends Controller
     public function getMenuUserLogin()
     {
         try {
-            $result = $this->menuService->getMenuUser(Auth::id());
+            $result = $this->menuService->getMenuUser(Auth::id() ?? 1);
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
             report($exception);
 
             return response_error();
