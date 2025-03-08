@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AssetTypeService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssetTypeController extends Controller
 {
@@ -24,6 +25,7 @@ class AssetTypeController extends Controller
             'limit'                  => 'nullable|integer|max:200',
         ]);
 
+        Auth::user()->canPer('asset_type.view');
         try {
             $result = $this->assetTypeService->getListAssetType($request->all());
 
@@ -48,6 +50,8 @@ class AssetTypeController extends Controller
             'description'         => 'nullable|string',
         ]);
 
+        Auth::user()->canPer('asset_type.create');
+
         try {
             $result = $this->assetTypeService->createAssetType($request->all());
 
@@ -68,6 +72,8 @@ class AssetTypeController extends Controller
      */
     public function show(string $id)
     {
+        Auth::user()->canPer('asset_type.view');
+
         try {
             $result = $this->assetTypeService->findAssetType($id);
 
@@ -96,6 +102,8 @@ class AssetTypeController extends Controller
             'description'         => 'nullable|string',
         ]);
 
+        Auth::user()->canPer('asset_type.create');
+
         try {
             $result = $this->assetTypeService->updateAssetType($request->all(), $id);
 
@@ -116,6 +124,8 @@ class AssetTypeController extends Controller
      */
     public function destroy(string $id)
     {
+        Auth::user()->canPer('asset_type.delete');
+
         try {
             $result = $this->assetTypeService->deleteAssetTypeById($id);
             if (!$result['success']) {
@@ -136,6 +146,8 @@ class AssetTypeController extends Controller
             'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('asset_type.delete');
 
         try {
             $result = $this->assetTypeService->deleteMultipleByIds($request->get('ids'));

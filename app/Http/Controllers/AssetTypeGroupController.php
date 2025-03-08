@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\AssetTypeGroupService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AssetTypeGroupController extends Controller
 {
@@ -21,6 +22,8 @@ class AssetTypeGroupController extends Controller
             'page'  => 'nullable|integer',
             'limit' => 'nullable|integer|max:200',
         ]);
+
+        Auth::user()->canPer('asset_type_group.view');
 
         try {
             $result = $this->assetTypeGroupService->getListAssetTypeGroup($request->all());
@@ -42,6 +45,8 @@ class AssetTypeGroupController extends Controller
             ]
         );
 
+        Auth::user()->canPer('asset_type_group.create');
+
         try {
             $result = $this->assetTypeGroupService->createAssetTypeGroup($request->all());
 
@@ -59,6 +64,7 @@ class AssetTypeGroupController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('asset_type_group.delete');
         try {
             $result = $this->assetTypeGroupService->deleteAssetTypeGroup($id);
 
@@ -83,6 +89,7 @@ class AssetTypeGroupController extends Controller
             ]
         );
 
+        Auth::user()->canPer('asset_type_group.create');
         try {
             $result = $this->assetTypeGroupService->updateAssetTypeGroup($request->all(), $id);
 
@@ -100,6 +107,7 @@ class AssetTypeGroupController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('asset_type_group.view');
         try {
             $result = $this->assetTypeGroupService->findAssetTypeGroup($id);
 
@@ -122,6 +130,7 @@ class AssetTypeGroupController extends Controller
             'ids.*' => 'integer',
         ]);
 
+        Auth::user()->canPer('asset_type_group.delete');
         try {
             $result = $this->assetTypeGroupService->deleteAssetTypeGroupMultiple($request->get('ids'));
 

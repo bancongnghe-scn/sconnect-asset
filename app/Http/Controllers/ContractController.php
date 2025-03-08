@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContractRequest;
 use App\Services\ContractService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
 {
@@ -16,6 +17,8 @@ class ContractController extends Controller
 
     public function store(StoreContractRequest $request)
     {
+        Auth::user()->canPer('contract.create');
+
         try {
             $result = $this->contractService->createContract($request->validated());
 
@@ -47,6 +50,8 @@ class ContractController extends Controller
             'limit'              => 'nullable|integer|max:200',
         ]);
 
+        Auth::user()->canPer('contract.view');
+
         try {
             $result = $this->contractService->getListContract($request->all());
 
@@ -61,6 +66,8 @@ class ContractController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('contract.delete');
+
         try {
             $result = $this->contractService->deleteContractById($id);
             if (!$result['success']) {
@@ -77,6 +84,8 @@ class ContractController extends Controller
 
     public function update(StoreContractRequest $request, string $id)
     {
+        Auth::user()->canPer('contract.create');
+
         try {
             $result = $this->contractService->updateContract($request->validated(), $id);
 
@@ -94,6 +103,8 @@ class ContractController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('contract.view');
+
         try {
             $result = $this->contractService->findContract($id);
 
@@ -111,6 +122,8 @@ class ContractController extends Controller
             'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('contract.delete');
 
         try {
             $result = $this->contractService->deleteContractMultiple($request->get('ids'));
