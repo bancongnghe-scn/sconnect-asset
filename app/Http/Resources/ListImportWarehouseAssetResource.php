@@ -48,7 +48,7 @@ class ListImportWarehouseAssetResource extends JsonResource
         $totalCost         = (+$order->shipping_costs) + (+$order->other_costs);
         $totalPrice        = 0;
         foreach ($this->resource as $key => $value) {
-            $price      = +$value->price + ($value->price * $value->vate_rate ?? 0);
+            $price      = +$value->price + ($value->price * $value->vat_rate / 100 ?? 0);
             $assetInfo  = [
                 'name'                  => $value->name,
                 'price'                 => $price,
