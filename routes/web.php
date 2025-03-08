@@ -25,9 +25,9 @@ Route::middleware(['authenSSO'])->group(function () {
     Route::get('authen', function () {});
 });
 
-Route::middleware('checkAuth')->group(function () {
-    Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
+Route::get('/logout', [App\Http\Controllers\Auth\LoginSSOController::class, 'logout']);
 
+Route::middleware('checkAuth')->group(function () {
     Route::prefix('rbac')->group(function () {
         Route::view('role/list', 'rbac.role.list');
         Route::view('permission/list', 'rbac.permission.list');
