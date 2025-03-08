@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatePlanMaintainRequest;
 use App\Models\PlanMaintainAsset;
 use App\Services\MaintainService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MaintainController extends Controller
 {
@@ -34,6 +35,8 @@ class MaintainController extends Controller
             'limit'               => 'nullable|integer',
         ]);
 
+        Auth::user()->canPer('maintain.view');
+
         try {
             $result = $this->maintainService->getAssetNeedMaintain($request->all());
 
@@ -54,6 +57,8 @@ class MaintainController extends Controller
         $request->validate([
             'time' => 'required|date_format:m/Y',
         ]);
+
+        Auth::user()->canPer('maintain.view');
 
         try {
             $result = $this->maintainService->getAssetNeedMaintainWithMonth($request->get('time'));
@@ -80,6 +85,8 @@ class MaintainController extends Controller
             'page'                   => 'nullable|integer',
             'limit'                  => 'nullable|integer',
         ]);
+
+        Auth::user()->canPer('maintain.view');
 
         try {
             $filters           = $request->all();
@@ -110,6 +117,8 @@ class MaintainController extends Controller
             'limit'                     => 'nullable|integer',
         ]);
 
+        Auth::user()->canPer('maintain.view');
+
         try {
             $result = $this->maintainService->getPlanMaintain($request->all());
 
@@ -129,6 +138,8 @@ class MaintainController extends Controller
      */
     public function createPlanMaintain(CreatePlanMaintainRequest $request)
     {
+        Auth::user()->canPer('maintain.create');
+
         try {
             $result = $this->maintainService->createPlanMaintain($request->validated());
 
@@ -146,6 +157,8 @@ class MaintainController extends Controller
 
     public function getInfoPlanMaintain(string $id)
     {
+        Auth::user()->canPer('maintain.view');
+
         try {
             $result = $this->maintainService->getInfoPlanMaintain($id);
 
@@ -166,6 +179,8 @@ class MaintainController extends Controller
             'configs.*.note' => 'nullable|string',
         ]);
 
+        Auth::user()->canPer('maintain.complete');
+
         try {
             $result = $this->maintainService->completeAssetMaintain($request->get('configs'));
             if (!$result['success']) {
@@ -182,6 +197,8 @@ class MaintainController extends Controller
 
     public function updatePlanMaintain(string $id, UpdatePlanMaintainRequest $request)
     {
+        Auth::user()->canPer('maintain.create');
+
         try {
             $result = $this->maintainService->updatePlanMaintain($id, $request->validated());
             if (!$result['success']) {
@@ -198,6 +215,8 @@ class MaintainController extends Controller
 
     public function completePlanMaintain(string $id)
     {
+        Auth::user()->canPer('maintain.complete');
+
         try {
             $result = $this->maintainService->completePlanMaintain($id);
             if (!$result['success']) {
@@ -214,6 +233,8 @@ class MaintainController extends Controller
 
     public function deletePlanMaintain(string $id)
     {
+        Auth::user()->canPer('maintain.delete');
+
         try {
             $result = $this->maintainService->deletePlanMaintain($id);
             if (!$result['success']) {

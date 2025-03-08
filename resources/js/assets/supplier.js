@@ -80,7 +80,7 @@ document.addEventListener('alpine:init', () => {
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -153,7 +153,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listIndustry = response.data.data
             } else {
-                toast.error('Lấy danh sách ngành hàng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -164,7 +164,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listAssetType = response.data.data
             } else {
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },

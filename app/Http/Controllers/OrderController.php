@@ -28,7 +28,7 @@ class OrderController extends Controller
             'limit'      => 'nullable|integer',
         ]);
 
-        //        Auth::user()->canPer('order.view');
+        Auth::user()->canPer('order.view');
 
         try {
             $result = $this->orderService->getListOrder($request->all());
@@ -43,7 +43,7 @@ class OrderController extends Controller
 
     public function createOrder(CreateOrderRequest $request)
     {
-        //        Auth::user()->canPer('order.create');
+        Auth::user()->canPer('order.create');
 
         try {
             $result = $this->orderService->createOrder($request->validated());
@@ -62,7 +62,7 @@ class OrderController extends Controller
 
     public function updateOrder(UpdateOrderRequest $request)
     {
-        //        Auth::user()->canPer('order.update');
+        Auth::user()->canPer('order.create');
 
         try {
             $result = $this->orderService->updateOrder($request->validated());
@@ -87,7 +87,7 @@ class OrderController extends Controller
             'reason' => 'required|string',
         ]);
 
-        //        Auth::user()->canPer('order.delete');
+        Auth::user()->canPer('order.delete');
 
         try {
             $result = $this->orderService->deleteOrder($request->input('ids'), $request->input('reason'));
@@ -106,7 +106,7 @@ class OrderController extends Controller
 
     public function findOrder(string $id)
     {
-        //        Auth::user()->canPer('order.view');
+        Auth::user()->canPer('order.view');
 
         try {
             $result = $this->orderService->findOrder($id);
@@ -125,6 +125,8 @@ class OrderController extends Controller
 
     public function exportOrder(string $id)
     {
+        Auth::user()->canPer('order.export');
+
         return Excel::download(new OrderExport($id), 'don_hang.xlsx');
     }
 

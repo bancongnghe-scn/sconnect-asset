@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rbac;
 use App\Http\Controllers\Controller;
 use App\Services\Rbac\RoleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {
@@ -24,6 +25,8 @@ class RoleController extends Controller
             'permission_ids'   => 'nullable|array',
             'permission_ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('role.create');
 
         try {
             $result = $this->roleService->createRole($request->all());
@@ -48,6 +51,7 @@ class RoleController extends Controller
             'limit'   => 'nullable|integer|max:200',
         ]);
 
+        Auth::user()->canPer('role.view');
         try {
             $result = $this->roleService->getListRole($request->all());
 
@@ -61,6 +65,7 @@ class RoleController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('role.delete');
         try {
             $result = $this->roleService->deleteRoleById($id);
             if (!$result['success']) {
@@ -86,6 +91,7 @@ class RoleController extends Controller
             'permission_ids.*' => 'integer',
         ]);
 
+        Auth::user()->canPer('role.create');
         try {
             $result = $this->roleService->updateRole($request->all(), $id);
 
@@ -103,6 +109,7 @@ class RoleController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('role.view');
         try {
             $result = $this->roleService->findRole($id);
 

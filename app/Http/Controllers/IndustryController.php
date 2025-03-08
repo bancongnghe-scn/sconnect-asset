@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\IndustryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IndustryController extends Controller
 {
@@ -20,6 +21,8 @@ class IndustryController extends Controller
             'page'  => 'nullable|integer',
             'limit' => 'nullable|integer|max:200',
         ]);
+
+        Auth::user()->canPer('industry.view');
 
         try {
             $result = $this->industryService->getListIndustry($request->all());
@@ -42,6 +45,8 @@ class IndustryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        Auth::user()->canPer('industry.create');
+
         try {
             $result = $this->industryService->createIndustry($request->all());
 
@@ -62,6 +67,8 @@ class IndustryController extends Controller
      */
     public function show(string $id)
     {
+        Auth::user()->canPer('industry.view');
+
         try {
             $result = $this->industryService->findIndustry($id);
 
@@ -87,6 +94,8 @@ class IndustryController extends Controller
             'description' => 'nullable|string',
         ]);
 
+        Auth::user()->canPer('industry.create');
+
         try {
             $result = $this->industryService->updateIndustry($request->all(), $id);
 
@@ -107,6 +116,7 @@ class IndustryController extends Controller
      */
     public function destroy(string $id)
     {
+        Auth::user()->canPer('industry.delete');
         try {
             $result = $this->industryService->deleteIndustryById($id);
             if (!$result['success']) {
@@ -127,6 +137,8 @@ class IndustryController extends Controller
             'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('industry.delete');
 
         try {
             $result = $this->industryService->deleteIndustryMultiple($request->get('ids'));

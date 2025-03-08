@@ -55,6 +55,7 @@ class MenuController extends Controller
             'user_ids.*'        => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
+        Auth::user()->canPer('menu.create');
         try {
             $result = $this->menuService->createMenu($request->all());
 
@@ -80,6 +81,8 @@ class MenuController extends Controller
             'limit'       => 'nullable|integer|max:200',
         ]);
 
+        Auth::user()->canPer('menu.view');
+
         try {
             $result = $this->menuService->getListMenu($request->all());
 
@@ -93,6 +96,8 @@ class MenuController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('menu.delete');
+
         try {
             $result = $this->menuService->deleteMenuById($id);
             if (!$result['success']) {
@@ -122,6 +127,8 @@ class MenuController extends Controller
             'user_ids.*'       => 'integer',
         ], [], ['icon' => __('attributes.menu.icon')]);
 
+        Auth::user()->canPer('menu.create');
+
         try {
             $result = $this->menuService->updateMenu($request->all(), $id);
 
@@ -139,6 +146,8 @@ class MenuController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('menu.view');
+
         try {
             $result = $this->menuService->findMenu($id);
 

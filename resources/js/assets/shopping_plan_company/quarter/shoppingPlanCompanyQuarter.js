@@ -137,7 +137,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -148,7 +148,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listPlanCompanyYearComplete = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -401,7 +401,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -501,7 +501,7 @@ document.addEventListener('alpine:init', () => {
                 {
                     condition: (status) =>
                         STATUS_SHOPPING_PLAN_COMPANY_NEW === status
-                        && this.permission.includes('shopping_plan_company.sent_notification_register')
+                        && this.permission.includes('shopping_plan_company.year_quarter.sent_notification_register')
                     ,
                     buttons: [
                         {
@@ -513,7 +513,7 @@ document.addEventListener('alpine:init', () => {
                 {
                     condition: (status) =>
                         STATUS_SHOPPING_PLAN_COMPANY_NEW === status
-                        && this.permission.includes('shopping_plan_company.crud')
+                        && this.permission.includes('shopping_plan_company.year_quarter.crud')
                     ,
                     buttons: [
                         {
@@ -526,7 +526,7 @@ document.addEventListener('alpine:init', () => {
                     condition: (status) =>
                         (
                             [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status)
-                            && this.permission.includes('shopping_plan_company.crud')
+                            && this.permission.includes('shopping_plan_company.year_quarter.crud')
                         )
                         ||
                         (
@@ -555,13 +555,13 @@ document.addEventListener('alpine:init', () => {
                             text: 'Gửi thông báo',
                             class: 'btn btn-primary',
                             action: () => this.sentNotificationRegister(),
-                            permission: 'shopping_plan_company.sent_notification_register'
+                            permission: 'shopping_plan_company.year_quarter.sent_notification_register'
                         },
                         {
                             text: 'Xóa',
                             class: 'btn btn-danger',
                             action: (id) => this.confirmRemove(id),
-                            permission: 'shopping_plan_company.crud'
+                            permission: 'shopping_plan_company.year_quarter.crud'
                         },
                     ],
                 },
@@ -572,7 +572,7 @@ document.addEventListener('alpine:init', () => {
                             text: 'Lưu',
                             class: 'btn btn-sc',
                             action: () => this.updatePlanQuarter(),
-                            permission: 'shopping_plan_company.crud'
+                            permission: 'shopping_plan_company.year_quarter.crud'
                         },
                     ],
                 },
