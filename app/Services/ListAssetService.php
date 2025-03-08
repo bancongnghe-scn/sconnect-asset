@@ -22,6 +22,8 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ListAssetService
 {
+    const ID_HUE = 323;
+
     public function __construct(
         protected AssetRepository $assetRepository,
     ) {
@@ -567,9 +569,9 @@ class ListAssetService
 
         $transferAsset = TransferAsset::find($transferAssetId);
         $userFrom      = $transferAsset->user_id ? User::where('id', $transferAsset->user_id)->with(['organization'])->first()
-            : ($transferAsset->org_id ? Org::where('id', $transferAsset->org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
+            : ($transferAsset->org_id ? Org::where('id', $transferAsset->org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(self::ID_HUE));
         $userTo = $transferAsset->to_user_id ? User::where('id', $transferAsset->to_user_id)->with(['organization'])->first()
-            : ($transferAsset->to_org_id ? Org::where('id', $transferAsset->to_org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(323));
+            : ($transferAsset->to_org_id ? Org::where('id', $transferAsset->to_org_id)->with(['manager', 'manager.organization'])->first()->manager : User::find(self::ID_HUE));
 
         $userTemp = null;
 
@@ -601,10 +603,10 @@ class ListAssetService
         $sheet->setCellValue('A14', 'Hôm nay, vào lúc ….  Ngày ' . Carbon::now()->day . ' tháng ' . Carbon::now()->month . ' năm ' . Carbon::now()->year . ' tại Văn phòng Công ty TNHH Đầu tư Công nghệ và Dịch vụ S-Connect Việt Nam.');
         $sheet->setCellValue('A7', $titleReport);
         $sheet->setCellValue('D17', $userFrom?->name);
-        $sheet->setCellValue('D18', $userFrom?->job_position);
+        $sheet->setCellValue('D18', $userFrom->job_position == '' && $userFrom->id == self::ID_HUE ? 'Chuyên viên Hành chính' : $userFrom?->job_position);
         $sheet->setCellValue('D19', $userFrom?->organization?->name);
         $sheet->setCellValue('D21', $userTo?->name);
-        $sheet->setCellValue('D22', $userTo?->job_position);
+        $sheet->setCellValue('D22', $userTo->job_position == '' && $userTo->id == self::ID_HUE ? 'Chuyên viên Hành chính' : $userTo?->job_position);
         $sheet->setCellValue('D23', $userTo?->organization?->name);
 
         $listAsset = Asset::whereIn('id', $arrAssetId)->with(['assetType'])->get();
