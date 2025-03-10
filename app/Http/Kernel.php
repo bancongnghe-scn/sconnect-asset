@@ -34,30 +34,19 @@ class Kernel extends HttpKernel
         'web' => [
             Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Session\Middleware\StartSession::class, // Quan trọng
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        //        'api' => [
-        //            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-        //            \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
-        //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        //        ],
         'api' => [
-            //            'throttle:api',
-            //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            Middleware\EncryptCookies::class,
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Session\Middleware\StartSession::class, // Bắt buộc để giữ session
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            //            Middleware\VerifyCsrfToken::class,
         ],
     ];
+
 
     /**
      * The application's middleware aliases.
