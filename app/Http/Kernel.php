@@ -48,17 +48,14 @@ class Kernel extends HttpKernel
         'api' => [
             //            'throttle:api',
             //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            //            Middleware\EncryptCookies::class,
-            //            \Illuminate\Session\Middleware\StartSession::class,
-            //            \Illuminate\Session\Middleware\AuthenticateSession::class,
-            //            'throttle:api',
-            //            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             Middleware\EncryptCookies::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            Middleware\VerifyCsrfToken::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            //            Middleware\VerifyCsrfToken::class,
         ],
     ];
 

@@ -1,17 +1,10 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('history_comment_company', () => ({
+    Alpine.data('history_comment_company', (id) => ({
             init() {
-                this.$watch('showModal', (newValue, oldValue) => {
-                    if (newValue && this.id !== null && this.isActive) {
-                        this.getLogByRecordId()
-                        this.listComment()
-                        this.handleComment()
-                    }
-                })
-
-                $('.modal').on('shown.bs.modal',() => {
-                    this.scrollBottom()
-                });
+                this.getLogByRecordId()
+                this.listComment()
+                this.handleComment()
+                this.scrollBottom()
             },
             //data
             activeLink: {
@@ -30,7 +23,7 @@ document.addEventListener('alpine:init', () => {
                 }
                 const param = {
                     type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
-                    target_id: this.id,
+                    target_id: id,
                     message: this.comment_message,
                 }
                 const response = await window.apiSentComment(param)
@@ -44,7 +37,7 @@ document.addEventListener('alpine:init', () => {
             async listComment() {
                 const param = {
                     type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
-                    target_id: this.id,
+                    target_id: id,
                 }
                 const response = await window.apiGetComment(param)
                 if (response.success) {
@@ -55,7 +48,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             handleComment() {
-                window.Echo.channel('channel_shopping_plan_' + this.id)
+                window.Echo.channel('channel_shopping_plan_' + id)
                     .listen('.ShoppingPlanCommentEvent', (e) => {
 
                         this.comments.push(e)
@@ -72,7 +65,7 @@ document.addEventListener('alpine:init', () => {
             },
             //methods
             async getLogByRecordId() {
-                const response = await window.getShoppingPlanLogByRecordId(this.id)
+                const response = await window.getShoppingPlanLogByRecordId(id)
                 if (response.success) {
                     this.logs = response.data.data
                     return
