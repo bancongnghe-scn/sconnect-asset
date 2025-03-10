@@ -115,9 +115,7 @@
             <textarea
                 x-data="{
                     init() {
-{{--                        this.$watch('showModal', (value) => {--}}
-{{--                            this.initSummer();--}}
-{{--                        });--}}
+                        this.initSummer();
                         this.$watch('resetInput', (value) => {
                             this.resetInputSummer();
                         });
