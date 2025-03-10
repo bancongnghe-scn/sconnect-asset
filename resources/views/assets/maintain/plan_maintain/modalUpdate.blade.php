@@ -146,7 +146,7 @@
                         </div>
                     </div>
                     <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
-                        @include('assets.maintain.plan_maintain.history_comment')
+{{--                        @include('assets.maintain.plan_maintain.history_comment')--}}
                     </div>
                 </div>
             </div>
