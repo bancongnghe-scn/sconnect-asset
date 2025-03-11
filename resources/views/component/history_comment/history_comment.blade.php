@@ -24,6 +24,7 @@
     }
 </style>
 <div x-data="{tab: 'comment'}">
+    {{--button tab--}}
     <div class="container d-flex tw-gap-x-4 mt-3">
         <a class="tw-no-underline hover:tw-text-green-500"
            :class="tab === 'comment' ? 'active-link' : 'inactive-link'"
@@ -40,6 +41,7 @@
     </div>
 
     <div class="mt-3" style="border-top: 1px solid;">
+        {{--comment--}}
         <div x-show="tab === 'comment'">
             <div class="d-flex flex-column justify-content-between">
                 <div class="overflow-auto custom-scroll"
@@ -94,77 +96,98 @@
                 <hr>
 
                 <div x-data="{resetInput: false, unicode: null, showIcon: false, showUpload: false, showUser: false}">
-            <textarea
-                x-data="{
-                    init() {
-                        this.initSummer();
-                        this.$watch('resetInput', (value) => {
-                            this.resetInputSummer();
-                        });
-                        this.$watch('unicode', (value) => {
-                            if(value) {
-                                let editor = $($el);
-                                let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
-                                editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
-                                this.unicode = null
-                            }
-                        });
-                    },
+                    {{--input message--}}
+                    <textarea
+                        x-data="{
+                            init() {
+                                this.initSummer();
+                                this.$watch('resetInput', (value) => {
+                                    this.resetInputSummer();
+                                });
+                                this.$watch('unicode', (value) => {
+                                    if(value) {
+                                        let editor = $($el);
+                                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
+                                        editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
+                                        this.unicode = null
+                                    }
+                                });
+                                this.$watch('user_id', (value) => {
+                                    if(value) {
+                                        const user = this.listUser.find(option => option.id === value);
+                                        const userName = `<a href='#' target='_blank'>${user.name}</a>`;
+                                        let editor = $($el);
+                                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
+                                        editor.summernote('code', currentContent + userName); // Cộng thêm nội dung mới
+                                        this.user_id = null
+                                    }
+                                });
+                            },
 
-                    initSummer() {
-                        const summerNote = $($el);
-                        summerNote.summernote({
-                            height: 40,
-                            placeholder: 'Nhập nội dung...',
-                            toolbar: [
-                                ['style', ['bold', 'italic', 'underline', 'clear']],
-                                ['font', ['strikethrough', 'superscript', 'subscript']],
-                                ['fontsize', ['fontsize']],
-                                ['color', ['color']],
-                                ['para', ['ul', 'ol', 'paragraph']],
-                                ['height', ['height']],
-                                ['insert', ['link']],
-                            ],
-                            callbacks: {
-                                onChange: (contents) => {
-                                    this.comment_message = contents;
-                                }
-                            }
-                        }).summernote('code', '');
+                            initSummer() {
+                                const summerNote = $($el);
+                                summerNote.summernote({
+                                    height: 40,
+                                    placeholder: 'Nhập nội dung...',
+                                    toolbar: [
+                                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                                        ['fontsize', ['fontsize']],
+                                        ['color', ['color']],
+                                        ['para', ['ul', 'ol', 'paragraph']],
+                                        ['height', ['height']],
+                                        ['insert', ['link']],
+                                    ],
+                                    callbacks: {
+                                        onChange: (contents) => {
+                                            this.comment_message = contents;
+                                        }
+                                    }
+                                }).summernote('code', '');
 
-                        summerNote.on('summernote.keydown', (we, e) => {
-                            if (e.keyCode === 13 && !e.shiftKey) {
-                                e.preventDefault();
-                                this.sentComment();
-                                this.resetInputSummer();
-                            }
-                        });
-                    },
+                                summerNote.on('summernote.keydown', (we, e) => {
+                                    if (e.keyCode === 13 && !e.shiftKey) {
+                                        e.preventDefault();
+                                        this.sentComment();
+                                        this.resetInputSummer();
+                                    }
+                                });
+                            },
 
-                    resetInputSummer() {
-                        $($el).summernote('code', '');
-                    },
-                }"
-            ></textarea>
+                            resetInputSummer() {
+                                $($el).summernote('code', '');
+                            },
+                        }"
+                    ></textarea>
 
+                    {{--button action--}}
                     <div class="d-flex tw-gap-x-4 tw-relative">
-                        <span class="tw-text-gray-500 tw-cursor-pointer">@Nhắc đến</span>
+                        <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUser=!showUser">@Nhắc đến</span>
                         <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUpload = !showUpload"><i
                                 class="fa fa-upload"></i>Tập tin</span>
                         <span class="tw-text-gray-500 tw-cursor-pointer" @click="showIcon = true"><i
                                 class="fa fa-smile emoji"></i></span>
 
-                        <div class="tw-absolute">
-
+                        {{--select user nhac den--}}
+                        <div class="tw-absolute tw-bottom-[9.5rem]">
+                            @include('component.history_comment.select_user', [
+                                'selected' => 'user_id',
+                                'options' => 'listUser',
+                                'open' => 'showUser'
+                            ])
                         </div>
                     </div>
 
+                    {{--action--}}
                     <div>
+                        {{--emoji--}}
                         <emoji-picker id="emojiPicker" x-show="showIcon"
                                       style="position: absolute;right: 0;bottom: 12rem"
                                       @click.outside="showIcon = false"
                                       @emoji-click="comment_message += $event.detail.unicode; showIcon = false; unicode = $event.detail.unicode">
                         </emoji-picker>
+
+                        {{--form upload--}}
                         <div x-show="showUpload">
                             @include('common.uploadFile.form_upload_file')
                         </div>
