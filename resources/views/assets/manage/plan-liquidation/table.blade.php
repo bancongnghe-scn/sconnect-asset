@@ -36,14 +36,7 @@
                                     </template>
                                     <template x-if="key === 'status'">
                                         <div class="d-flex justify-content-center">
-                                            <span x-text="data[key]" class="rounded tw-p-1" style="border: 1px solid;font-size:11px;"
-                                                :class="{
-                                                    'tw-text-slate-500 tw-bg-slate-100':  data[key] === 'Mới tạo',
-                                                    'tw-text-yellow-500 tw-bg-yellow-100':  data[key] === 'Chờ xác nhận',
-                                                    'tw-text-green-500 tw-bg-green-100':    data[key] === 'Hoàn thành',
-                                                    'tw-text-red-500 tw-bg-red-100':    data[key] === 'Từ chối',
-                                                }"
-                                            ></span>
+                                            @include('common.table-status-asset-liquid', ['status' => 'data[key]'])
                                         </div>
                                     </template>
                                     <template x-if="key === 'date'">
