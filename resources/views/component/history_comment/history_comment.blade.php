@@ -187,14 +187,14 @@
                                         Thả tập tin của bạn vào đây
                                     </label>
                                     <input class="form-control d-none" type="file" id="fileInput" multiple
-                                           x-ref="fileInput" @change="handleFiles" accept=".pdf">
+                                           x-ref="fileInput" @change="handleFiles" accept="">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex tw-gap-x-4 mt-2">
-                        <button class="btn btn-sc" @click="sentComment()">Gửi</button>
+                        <button class="btn btn-sc" @click="sentComment(); resetInput = !resetInput">Gửi</button>
                         <button class="btn btn-light" @click="resetInput = !resetInput">Hủy bỏ</button>
                     </div>
                 </div>
@@ -250,7 +250,6 @@
                 this.initSummer();
                 this.$watch('resetInput', (value) => {
                     this.resetInputSummer();
-                    this.showUpload = false
                 });
                 this.$watch('unicode', (value) => {
                     if(value) {
@@ -304,6 +303,8 @@
 
             resetInputSummer() {
                 $(this.el).summernote('code', '');
+                this.showUpload = false
+                this.$refs.fileInput.value = '';
             },
         }
     }
