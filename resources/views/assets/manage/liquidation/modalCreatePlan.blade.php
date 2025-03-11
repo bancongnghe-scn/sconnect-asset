@@ -8,25 +8,18 @@
             <div class="modal-body">
                 <div class="container mb-3">
                     <div class="row mb-3">
-                        <div class="col-6 mb-3">
-                            <span>
-                                <label class="tw-font-bold">Mã kế hoạch</label>
-                            </span>
-                            <span class="text-danger">*</span>
-                            <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
-                        </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-6 mb-6">
                             <span>
                                 <label class="tw-font-bold">Tên kế hoạch</label>
                             </span>
                             <span class="text-danger">*</span>
                             <input type="text" class="form-control" x-model="data.name" placeholder="Nhập tên kế hoạch">
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-3 mb-3">
                             <label class="tw-font-bold">Được tạo bởi</label>
                             <input disabled type="text" class="form-control" value="{{ Auth::user()?->code . ' - ' . Auth::user()?->name ?? '' }}">
                         </div>
-                        <div class="col-6 mb-3">
+                        <div class="col-3 mb-3">
                             <label class="tw-font-bold">Ngày tạo</label>
                             <div class="input-group">
                                 <input type="text" class="form-control datepicker" id="selectSigningDate"
@@ -63,7 +56,17 @@
                                             <textarea x-model="data[key]" placeholder="Nhập mô tả" class="border-0 rounded-1 w-100"></textarea>
                                         </template>
                                         <template x-if="key == 'price_liquidation'">
-                                            <span x-text="formatPrice(data[key])" class="text-right"></span>
+                                            <input 
+                                                type="text" 
+                                                class="form-control text-right"
+                                                x-data="{ rawValue: formatPriceAssetLiqui(data[key] ?? 0) }"
+                                                x-model="rawValue"
+                                                @input="
+                                                    rawValue = formatPriceAssetLiqui($event.target.value.replace(/,/g, ''));
+                                                    data[key] = parseFloat($event.target.value.replace(/,/g, '')) || 0;
+                                                "
+                                            >
+
                                         </template>
                                     </td>
                                 </template>

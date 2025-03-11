@@ -30,9 +30,10 @@ class PlanLiquidationService
         try {
             DB::beginTransaction();
 
+            $lastId              = $this->planMaintainRepository->last()?->id + 1 ?? 1;
             $dataPlanLiquidation = [
                 'name'           => $data['name'],
-                'code'           => $data['code'],
+                'code'           => 'KHTL_' . $lastId,
                 'note'           => $data['note'] ?? '',
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
@@ -49,7 +50,7 @@ class PlanLiquidationService
                     $dataPlanLiquidationAsset[] = [
                         'plan_maintain_id'                  => $planLiquidation->id,
                         'asset_id'                          => $asset['id'],
-                        'price'                             => $asset['price'] ?? 0,
+                        'price'                             => $asset['price'] ?? ($asset['price_liquidation'] ?? 0),
                         'status'                            => PlanMaintainAsset::STATUS_NEW,
                         'created_at'                        => new \DateTime(),
                         'created_by'                        => Auth::id() ?? 1,
