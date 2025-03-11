@@ -24,3 +24,4 @@ yarn-error.log
 /config/telescope.php
 /app/Providers/TelescopeServiceProvider.php
 /public/qrcode
+/public/uploads
