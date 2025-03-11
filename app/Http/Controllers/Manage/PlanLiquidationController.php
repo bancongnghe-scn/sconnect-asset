@@ -18,7 +18,6 @@ class PlanLiquidationController extends Controller
     {
         $request->validate([
             'name'      => 'required|string|max:255',
-            'code'      => 'required|string|max:255',
             'note'      => 'nullable|string',
         ]);
         try {

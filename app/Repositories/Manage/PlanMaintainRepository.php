@@ -92,4 +92,9 @@ class PlanMaintainRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function last()
+    {
+        return $this->all()->last();
+    }
 }

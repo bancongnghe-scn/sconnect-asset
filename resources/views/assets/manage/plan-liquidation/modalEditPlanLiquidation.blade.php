@@ -24,14 +24,7 @@
                             <div class="container mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                                 <div class="row mb-3">
-                                    <div class="col-2 mb-3">
-                                        <span>
-                                            <label class="tw-font-bold">Mã kế hoạch</label>
-                                        </span>
-                                        <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
-                                    </div>
-                                    <div class="col-3 mb-3">
+                                    <div class="col-5 mb-6">
                                         <span>
                                             <label class="tw-font-bold">Tên kế hoạch</label>
                                         </span>
