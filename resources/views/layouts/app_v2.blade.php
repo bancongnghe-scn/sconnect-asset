@@ -9,7 +9,6 @@
 
     <title>{{$title}}</title>
     <link rel="icon" type="image/png" href="/images/fav-sc-icon.png"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-fileinput/css/fileinput.min.css">
 
     <!-- Scripts -->
     <script src="/js/const.js"></script>
@@ -17,7 +16,6 @@
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
     <script src='{{ asset('/js/summernote-lite.js') }}'></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-fileinput/js/fileinput.min.js"></script>
 
     @vite([
         'resources/css/app.css',

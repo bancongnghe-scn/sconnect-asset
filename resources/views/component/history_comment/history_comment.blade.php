@@ -43,12 +43,8 @@
     <div class="mt-3" style="border-top: 1px solid;">
         {{--comment--}}
         <div x-show="tab === 'comment'">
-            <div class="d-flex flex-column justify-content-between">
-                <div class="overflow-auto custom-scroll"
-                     x-data="{user_login: {{ \Illuminate\Support\Facades\Auth::id() }}}"
-                     id="historyComment"
-                     style="max-height: 61dvh"
-                >
+            <div class="d-flex flex-column justify-content-between overflow-auto custom-scroll" style="max-height: 85dvh"  id="historyComment">
+                <div x-data="{user_login: {{ \Illuminate\Support\Facades\Auth::id() }}}">
                     {{-- Comment --}}
                     <div :key="comment">
                         <template x-for="comment in comments" :key="comment.id">
@@ -95,78 +91,19 @@
 
                 <hr>
 
-                <div x-data="{resetInput: false, unicode: null, showIcon: false, showUpload: false, showUser: false}">
+                <div x-data="comment" class="tw-mb-4">
                     {{--input message--}}
-                    <textarea
-                        x-data="{
-                            init() {
-                                this.initSummer();
-                                this.$watch('resetInput', (value) => {
-                                    this.resetInputSummer();
-                                });
-                                this.$watch('unicode', (value) => {
-                                    if(value) {
-                                        let editor = $($el);
-                                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
-                                        editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
-                                        this.unicode = null
-                                    }
-                                });
-                                this.$watch('user_id', (value) => {
-                                    if(value) {
-                                        const user = this.listUser.find(option => option.id === value);
-                                        const userName = `<a href='#' target='_blank'>${user.name}</a>`;
-                                        let editor = $($el);
-                                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
-                                        editor.summernote('code', currentContent + userName); // Cộng thêm nội dung mới
-                                        this.user_id = null
-                                    }
-                                });
-                            },
-
-                            initSummer() {
-                                const summerNote = $($el);
-                                summerNote.summernote({
-                                    height: 40,
-                                    placeholder: 'Nhập nội dung...',
-                                    toolbar: [
-                                        ['style', ['bold', 'italic', 'underline', 'clear']],
-                                        ['font', ['strikethrough', 'superscript', 'subscript']],
-                                        ['fontsize', ['fontsize']],
-                                        ['color', ['color']],
-                                        ['para', ['ul', 'ol', 'paragraph']],
-                                        ['height', ['height']],
-                                        ['insert', ['link']],
-                                    ],
-                                    callbacks: {
-                                        onChange: (contents) => {
-                                            this.comment_message = contents;
-                                        }
-                                    }
-                                }).summernote('code', '');
-
-                                summerNote.on('summernote.keydown', (we, e) => {
-                                    if (e.keyCode === 13 && !e.shiftKey) {
-                                        e.preventDefault();
-                                        this.sentComment();
-                                        this.resetInputSummer();
-                                    }
-                                });
-                            },
-
-                            resetInputSummer() {
-                                $($el).summernote('code', '');
-                            },
-                        }"
-                    ></textarea>
+                    <textarea x-data="summerNoteEditor()"></textarea>
 
                     {{--button action--}}
-                    <div class="d-flex tw-gap-x-4 tw-relative">
-                        <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUser=!showUser">@Nhắc đến</span>
-                        <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUpload = !showUpload"><i
-                                class="fa fa-upload"></i>Tập tin</span>
-                        <span class="tw-text-gray-500 tw-cursor-pointer" @click="showIcon = true"><i
-                                class="fa fa-smile emoji"></i></span>
+                    <div class="tw-relative">
+                        <div class="d-flex tw-gap-x-4">
+                            <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUser=!showUser">@Nhắc đến</span>
+                            <span class="tw-text-gray-500 tw-cursor-pointer" @click="showUpload = !showUpload"><i
+                                    class="fa fa-upload"></i>Tập tin</span>
+                            <span class="tw-text-gray-500 tw-cursor-pointer" @click="showIcon = true"><i
+                                    class="fa fa-smile emoji"></i></span>
+                        </div>
 
                         {{--select user nhac den--}}
                         <div class="tw-absolute tw-bottom-[9.5rem]">
@@ -188,8 +125,45 @@
                         </emoji-picker>
 
                         {{--form upload--}}
-                        <div x-show="showUpload">
-                            @include('common.uploadFile.form_upload_file')
+                        <div x-show="showUpload" class="border border-1 tw-rounded-t-lg tw-rounded-b-3xl" style="background-color: #f8f9fa;">
+                            {{--list file--}}
+                            <div class="p-2 d-flex flex-wrap tw-gap-x-2">
+                                <template x-for="(file, index) in files" :key="index">
+                                    <div class="tw-relative tw-truncate tw-shadow-xl p-2 tw-rounded-2xl border border-2" style="width: 30%;">
+                                        <div style="height: 7rem;">
+                                            <!-- Nếu là ảnh, hiển thị preview -->
+                                            <template x-if="file.type.startsWith('image/')">
+                                                <img :src="file.preview" class="w-100 h-100">
+                                            </template>
+
+                                            <!-- Nếu là file khác, chỉ hiển thị tên file -->
+                                            <template x-if="!file.type.startsWith('image/')">
+                                                <img src="/images/file-icon.png" class="w-100 h-100">
+                                            </template>
+                                        </div>
+                                        <span style="text-align: center;font-size: 10px;"
+                                              x-text="file.name">
+                                        </span>
+
+                                        <!-- Nút xóa file -->
+                                        <button @click="removeFile(index)" class="tw-absolute top-0 tw-right-0 border-0 tw-rounded-full">x</button>
+                                    </div>
+                                </template>
+                            </div>
+
+                            {{--input file--}}
+                            <div class="border-top">
+                                <div class="text-center" style="padding: 10px 70px 10px 70px;">
+                                    <label class="tw-rounded-full tw-border-dashed tw-cursor-pointer tw-w-full m-0"
+                                         style="border-color: rgba(82, 92, 105, .15);"
+                                         for="fileInput"
+                                    >
+                                        Thả tập tin của bạn vào đây
+                                    </label>
+                                    <input class="form-control d-none" type="file" id="fileInput" multiple
+                                           x-ref="fileInput" @change="handleFiles" accept=".pdf">
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -226,4 +200,81 @@
     </div>
 </div>
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+<script>
+    function comment() {
+        return {
+            resetInput: false,
+            unicode: null,
+            showIcon: false,
+            showUpload: false,
+            showUser: false,
+            user_id: null
+        }
+    }
 
+    function summerNoteEditor() {
+        return {
+            el: null,
+            init() {
+                this.el = this.$el
+                this.initSummer();
+                this.$watch('resetInput', (value) => {
+                    this.resetInputSummer();
+                    this.showUpload = false
+                });
+                this.$watch('unicode', (value) => {
+                    if(value) {
+                        let editor = $(this.el);
+                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
+                        editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
+                        this.unicode = null
+                    }
+                });
+                this.$watch('user_id', (value) => {
+                    if(value) {
+                        const user = this.listUser.find(option => option.id === value);
+                        const userName = `<a href='#' target='_blank'>${user.name}</a>`;
+                        let editor = $(this.el);
+                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
+                        editor.summernote('code', currentContent + userName); // Cộng thêm nội dung mới
+                        this.user_id = null
+                    }
+                });
+            },
+
+            initSummer() {
+                const summerNote = $(this.el);
+                summerNote.summernote({
+                    height: 40,
+                    placeholder: 'Nhập nội dung...',
+                    toolbar: [
+                        ['style', ['bold', 'italic', 'underline', 'clear']],
+                        ['font', ['strikethrough', 'superscript', 'subscript']],
+                        ['fontsize', ['fontsize']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['height', ['height']],
+                        ['insert', ['link']],
+                    ],
+                    callbacks: {
+                        onChange: (contents) => {
+                            this.comment_message = contents;
+                        }
+                    }
+                }).summernote('code', '');
+
+                summerNote.on('summernote.keydown', (we, e) => {
+                    if (e.keyCode === 13 && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sentComment();
+                        this.resetInputSummer();
+                    }
+                });
+            },
+
+            resetInputSummer() {
+                $(this.el).summernote('code', '');
+            },
+        }
+    }
+</script>

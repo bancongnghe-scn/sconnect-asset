@@ -4,17 +4,17 @@ document.addEventListener('alpine:init', () => {
             this.getLogByRecordId()
             this.listComment()
             this.handleComment()
-            this.scrollBottom()
             this.getListUser()
+            this.$watch('comments', (value) => this.scrollBottom())
         },
         //data
         message_edit: null,
         id_comment_edit: null,
         comment_message: null,
-        user_id: null,
         logs: [],
         comments: [],
         listUser: [],
+        files: [],
 
         //methods
         async sentComment() {
@@ -113,10 +113,38 @@ document.addEventListener('alpine:init', () => {
         },
 
         scrollBottom() {
-            const scroll = $('#historyComment').get(0);
+            const scroll = document.getElementById("historyComment")
             if (scroll) {
-                scroll.scrollTop = scroll.scrollHeight; // Cuộn xuống dưới
+                scroll.scrollTop = scroll.scrollHeight;
             }
         },
+
+        handleFiles() {
+            const uploadedFiles = event.target.files;
+            this.files = []; // Reset danh sách file trước khi thêm mới
+
+            Array.from(uploadedFiles).forEach(file => {
+                const fileData = {
+                    name: file.name,
+                    type: file.type,
+                    preview: null // Nếu là ảnh, sẽ lưu base64 để hiển thị
+                };
+
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        fileData.preview = reader.result; // Chuyển ảnh sang base64
+                        this.files.push(fileData);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    this.files.push(fileData); // Nếu không phải ảnh, chỉ lưu thông tin file
+                }
+            });
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1); // Xóa file khỏi danh sách
+        }
     }))
 })
