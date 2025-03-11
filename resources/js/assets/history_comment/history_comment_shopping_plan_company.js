@@ -15,16 +15,18 @@ document.addEventListener('alpine:init', () => {
         comments: [],
         listUser: [],
         files: [],
+        filesUpload: [],
 
         //methods
         async sentComment() {
-            if (!this.comment_message) {
+            if (!this.comment_message && !this.filesUpload) {
                 return
             }
             const param = {
                 type: TYPE_COMMENT_SHOPPING_PLAN_COMPANY,
                 target_id: id,
                 message: this.comment_message,
+                files: this.filesUpload
             }
             const response = await window.apiSentComment(param)
             if (response.success) {
@@ -122,7 +124,7 @@ document.addEventListener('alpine:init', () => {
         handleFiles() {
             const uploadedFiles = event.target.files;
             this.files = []; // Reset danh sách file trước khi thêm mới
-
+            this.filesUpload = Array.from(uploadedFiles)
             Array.from(uploadedFiles).forEach(file => {
                 const fileData = {
                     name: file.name,

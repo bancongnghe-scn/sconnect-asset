@@ -12,9 +12,9 @@ class CommentRepository extends BaseRepository
         return Comment::class;
     }
 
-    public function getListing($filters, $columns = ['*'])
+    public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);

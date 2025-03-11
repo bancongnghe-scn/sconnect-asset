@@ -113,6 +113,8 @@ return [
     AppErrorCode::CODE_2107 => 'Đã tồn tại định mức cấp phát cho loại tài sản (:asset_type) !',
     AppErrorCode::CODE_2108 => 'Bạn có thể hoàn thành kế hoạch mà không cần gửi duyệt tới giám đốc, do không có tài sản nào cần giám đốc duyệt mua sắm !',
     AppErrorCode::CODE_2109 => 'Bạn chưa thể hoàn thành do vẫn còn tài sản cần được duyệt !',
+    AppErrorCode::CODE_2110 => 'Bình luận hoặc tài liệu không được để trống !',
+    AppErrorCode::CODE_2111 => 'Tải tài liệu thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

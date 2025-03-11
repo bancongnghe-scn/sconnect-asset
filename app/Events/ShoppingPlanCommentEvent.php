@@ -34,6 +34,7 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
             'user_created'  => $this->data['user_name'],
             'created_by'    => $this->data['user_id'],
             'created_at'    => $this->data['time'],
+            'files'         => $this->data['files'],
         ];
     }
 }

@@ -60,6 +60,32 @@
                                             <span class="text-xs opacity-50 ml-2" x-text="comment.created_at"></span>
                                         </div>
                                         <span x-html="comment.message"></span>
+                                        <div>
+                                            <div class="p-2 d-flex flex-wrap tw-gap-x-2">
+                                                <template x-for="(file, index) in comment.files">
+                                                    <div
+                                                        class="tw-truncate tw-shadow-xl p-2 tw-rounded-2xl border border-2" style="width: 30%;">
+                                                        <div style="height: 5rem;">
+                                                            <a x-data='{
+                                                                isImage: file.file_url.toLowerCase().endsWith(".jpg")
+                                                                || file.file_url.toLowerCase().endsWith(".png")
+                                                                || file.file_url.toLowerCase().endsWith(".jpeg")
+                                                            }' :href="'/uploads/'+file.file_url" class="tw-cursor-pointer" target="_blank">
+                                                                <template x-if="isImage">
+                                                                    <img :src="'/uploads/'+file.file_url" class="w-100 h-100">
+                                                                </template>
+                                                                <template x-if="!isImage">
+                                                                    <img src="/images/file-icon.png" class="w-100 h-100">
+                                                                </template>
+                                                            </a>
+                                                        </div>
+                                                        <span style="text-align: center;font-size: 10px;"
+                                                              x-text="file.file_name">
+                                                        </span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tw-ml-12">
@@ -208,7 +234,11 @@
             showIcon: false,
             showUpload: false,
             showUser: false,
-            user_id: null
+            user_id: null,
+
+            init() {
+                this.$watch('showUpload', (value) => this.scrollBottom())
+            },
         }
     }
 

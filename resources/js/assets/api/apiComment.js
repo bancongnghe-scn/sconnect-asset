@@ -1,6 +1,7 @@
 window.apiSentComment = async function (dataCreate) {
     try {
-        const response = await axios.post("/api/comment/sent",dataCreate)
+        const formData = window.formData(dataCreate)
+        const response = await axios.post("/api/comment/sent",formData)
         const data = response.data;
         if (!data.success) {
             return {
