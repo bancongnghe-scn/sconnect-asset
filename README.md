@@ -11,16 +11,15 @@
 - Check quyền Auth::user()->canPer('permission_name')
 - Tạo controller, service, repository, model : php artisan make:crms {name}
 ## Server
-ssh ubuntu@18.141.181.19
-ubuntu/abc@@123
-cd /var/www/html/sconnect-asset/
-docker ps
-docker exec -it asset /bin/bash
-docker logs container_name_or_id
-
-figma : https://www.figma.com/design/ebzV5jXxGnI2a5B6SgDxmD/S-Office-(LongPV)?node-id=13121-33455
-dbdiagram: https://dbdiagram.io/d/Quan-ly-tai-san-main-66c6e769a346f9518cc30b6d
+- docker ps
+- docker exec -it asset /bin/bash
+- docker logs container_name_or_id
+- mysql -u root -p
+- SHOW DATABASES;
+## Tài liệu
+- figma : https://www.figma.com/design/ebzV5jXxGnI2a5B6SgDxmD/S-Office-(LongPV)?node-id=1-3&p=f&t=QIfqqswefmELfTb0-0
+- dbdiagram: https://dbdiagram.io/d/Quan-ly-tai-san-main-66c6e769a346f9518cc30b6d
 
 ## Chạy lệnh pusher 
-php artisan websockets:serve --port=?
-php artisan queue:work
+- php artisan websockets:serve --port=?
+- php artisan queue:work

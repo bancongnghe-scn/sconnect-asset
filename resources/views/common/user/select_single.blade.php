@@ -19,7 +19,7 @@
                     return this.options;
                 }
                 return this.options.filter(option =>
-                    option.name.toLowerCase().includes(this.search.toLowerCase())
+                    option.name.toLowerCase().includes(this.search.toLowerCase()) || option.code.toLowerCase().includes(this.search.toLowerCase())
                 );
             },
 
@@ -81,7 +81,7 @@
                                  style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;"
                             >
                             <div class="d-flex flex-column align-items-start justify-content-center" style="margin-left: 10px">
-                                <span x-text="option ? (option.code + ' ' + option.name) : ''" class="text-sm"></span>
+                                <span x-text="option ? (option.code + '-' + option.name) : ''" class="text-sm"></span>
                                 <span x-text="option ? option.job_title : ''" style="color: #706f6f;"></span>
                             </div>
                         </div>
