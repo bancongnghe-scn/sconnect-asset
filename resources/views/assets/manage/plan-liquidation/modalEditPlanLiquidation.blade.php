@@ -71,7 +71,12 @@
                                                 <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
                                             <td style="max-width: 160px;">
-                                                <span x-text="dataAsset.asset && dataAsset.asset.asset_history && dataAsset.asset.asset_history.length > 0 ? dataAsset.asset.asset_history[0].description : ''"></span>
+                                                <textarea
+                                                    x-data="{ historyDescription: (dataAsset.asset?.asset_history?.length > 0) ? dataAsset.asset.asset_history[0].description : '' }"
+                                                    x-model="historyDescription"
+                                                    class="border-0 rounded-1 w-100"
+                                                    @input="dataAsset.asset?.asset_history?.length > 0 ? dataAsset.asset.asset_history[0].description = historyDescription : ''"
+                                                ></textarea>
                                             </td class="text-center align-middle text-align-center">
                                             <td class="text-center align-middle text-align-center">
                                                 <input 

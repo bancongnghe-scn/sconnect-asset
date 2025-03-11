@@ -49,11 +49,17 @@
                             <tr>
                                 <template x-for="(columnName, key) in dataColumnsMulti">
                                     <td :class="key == 'price_liquidation' ? 'text-right' : ''">
-                                        <template x-if="key !== 'find_reason' && key !== 'status' && key !== 'price_liquidation'">
+                                        <template x-if="key !== 'reason' && key !== 'status' && key !== 'price_liquidation'">
                                             <span x-text="data[key]"></span>
                                         </template>
-                                        <template x-if="key == 'find_reason'">
-                                            <textarea x-model="data[key]" placeholder="Nhập mô tả" class="border-0 rounded-1 w-100"></textarea>
+                                        <template x-if="key == 'reason'">
+                                            <textarea 
+                                                x-model="data[key]" 
+                                                placeholder="Nhập mô tả" 
+                                                class="border-0 rounded-1 w-100"
+                                                @input="data[key] = $event.target.value"
+                                            >
+                                            </textarea>
                                         </template>
                                         <template x-if="key == 'price_liquidation'">
                                             <input 
