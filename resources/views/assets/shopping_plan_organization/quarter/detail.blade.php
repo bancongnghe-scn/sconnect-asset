@@ -151,7 +151,7 @@
         </div>
 
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
-            @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_SHOPPING_PLAN_COMPANY'])
+            @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION'])
         </div>
     </div>
 @endsection
