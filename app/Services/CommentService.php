@@ -75,7 +75,7 @@ class CommentService
 
         $dataComment = [
             'target_id'        => $data['target_id'],
-            'comment_id'       => $comment->id,
+            'id'               => $comment->id,
             'message'          => $data['message'] ?? null,
             'created_by'       => $user['id'],
             'created_at'       => date('H:i d/m/Y', strtotime($data['created_at'])),
