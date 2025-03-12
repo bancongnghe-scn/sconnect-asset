@@ -305,6 +305,7 @@
                 $(this.el).summernote('code', '');
                 this.showUpload = false
                 this.$refs.fileInput.value = '';
+                this.$refs.fileInput.dispatchEvent(new Event('change'));
             },
         }
     }
