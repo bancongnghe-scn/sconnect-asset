@@ -368,6 +368,10 @@
                         channel = 'channel_plan_maintain_'
                         listen = 'PlanMaintainCommentEvent'
                         break
+                    case TYPE_COMMENT_ORDER:
+                        channel = 'channel_order'
+                        listen = 'OrderCommentEvent'
+                        break
                 }
 
                 window.Echo.channel(channel + this.id)

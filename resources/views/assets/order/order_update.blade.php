@@ -15,24 +15,22 @@
 @endsection
 
 @section('content')
-    <div class="d-flex tw-gap-x-4 h-100">
-        <div class="card col-10 mh-100 overflow-y-auto custom-scroll">
-            <div class="card-body">
-                <div class="mb-3">
-                    @include('assets.order.order_info_general', ['action' => 'update'])
-                </div>
-
-                <div class="mb-3">
-                    @include('assets.order.shopping_asset_info', ['action' => 'update'])
-                </div>
-
-                <hr>
-
-                @include('assets.order.costs_other', ['action' => 'update'])
+    <div class="d-flex tw-gap-x-3 h-100">
+        <div class="flex-grow-1 overflow-auto custom-scroll">
+            <div class="mb-3">
+                @include('assets.order.order_info_general', ['action' => 'update'])
             </div>
+
+            <div class="mb-3">
+                @include('assets.order.shopping_asset_info', ['action' => 'update'])
+            </div>
+
+            <hr>
+
+            @include('assets.order.costs_other', ['action' => 'update'])
         </div>
-        <div class="card col-3">
-{{--            @include('assets.order.history_comment')--}}
+        <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
+            @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_ORDER'])
         </div>
     </div>
 @endsection

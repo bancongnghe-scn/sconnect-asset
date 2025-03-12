@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderCommentEvent;
 use App\Events\PlanMaintainCommentEvent;
 use App\Events\ShoppingPlanCommentEvent;
 use App\Events\ShoppingPlanOrganizationCommentEvent;
@@ -91,6 +92,9 @@ class CommentService
                 break;
             case Comment::TYPE_PLAN_MAINTAIN:
                 PlanMaintainCommentEvent::dispatch($dataComment);
+                break;
+            case Comment::TYPE_ORDER:
+                OrderCommentEvent::dispatch($dataComment);
                 break;
             default:
         }
