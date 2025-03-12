@@ -93,6 +93,13 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        formatPriceAssetLiqui(value) {
+            if (value == null || isNaN(value)) {
+                return "0";
+            }
+            return parseFloat(value).toLocaleString("en-US");
+        },
+
         changePage(page) {
             this.filters.page = page
             this.list(this.filters)

@@ -24,14 +24,7 @@
                             <div class="container mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                                 <div class="row mb-3">
-                                    <div class="col-2 mb-3">
-                                        <span>
-                                            <label class="tw-font-bold">Mã kế hoạch</label>
-                                        </span>
-                                        <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
-                                    </div>
-                                    <div class="col-3 mb-3">
+                                    <div class="col-5 mb-6">
                                         <span>
                                             <label class="tw-font-bold">Tên kế hoạch</label>
                                         </span>
@@ -78,7 +71,12 @@
                                                 <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
                                             <td style="max-width: 160px;">
-                                                <span x-text="dataAsset.asset && dataAsset.asset.asset_history && dataAsset.asset.asset_history.length > 0 ? dataAsset.asset.asset_history[0].description : ''"></span>
+                                                <textarea
+                                                    x-data="{ historyDescription: (dataAsset.asset?.asset_history?.length > 0) ? dataAsset.asset.asset_history[0].description : '' }"
+                                                    x-model="historyDescription"
+                                                    class="border-0 rounded-1 w-100"
+                                                    @input="dataAsset.asset?.asset_history?.length > 0 ? dataAsset.asset.asset_history[0].description = historyDescription : ''"
+                                                ></textarea>
                                             </td class="text-center align-middle text-align-center">
                                             <td class="text-center align-middle text-align-center">
                                                 <input 

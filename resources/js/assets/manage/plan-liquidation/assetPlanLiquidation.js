@@ -68,6 +68,7 @@ document.addEventListener('alpine:init', () => {
             asset_quantity: null,
             total_price_liquidation: null,
         },
+        checkStatusApp: false,
         listStatusPlanLiquidation: {
             0: 'Mới tạo',
             1: 'Chờ xác nhận',
@@ -528,6 +529,13 @@ document.addEventListener('alpine:init', () => {
             }
             this.data = response.data.data
             this.dataTbodyListAssetLiqui = this.data?.plan_maintain_asset
+
+            // check approve
+            this.checkStatusApp = false
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+                Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
+            );
+
             this.originalPrice = JSON.parse(JSON.stringify(this.dataTbodyListAssetLiqui));
 
             $('#idModalShowPlanLiquidation').modal('show');
@@ -568,6 +576,11 @@ document.addEventListener('alpine:init', () => {
                     item.status = status_asset;
                 }
             });
+
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+                Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
+            );
+
             this.reasonCancel = ""
             this.idCancel = ""
             this.loading = false
@@ -598,6 +611,11 @@ document.addEventListener('alpine:init', () => {
                     item.note   = this.reasonCancel
                 }
             });
+
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+                Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
+            );
+
             this.selectedRowOfModalShowPlan = []
             if ($('.manage_assets #selectedAllAssetOfPlanLiqui').is(':checked')) {
                 $('.manage_assets #selectedAllAssetOfPlanLiqui').click();
