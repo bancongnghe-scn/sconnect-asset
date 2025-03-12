@@ -229,7 +229,8 @@
 @vite([
     'resources/js/assets/history_comment/history_comment_shopping_plan_company.js',
     'resources/js/assets/api/apiComment.js',
-    'resources/js/assets/api/log/apiLog.js'
+    'resources/js/assets/api/log/apiLog.js',
+    'resources/js/app/api/apiUser.js'
 ])
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 <script>
@@ -352,9 +353,25 @@
             },
 
             handleComment() {
-                window.Echo.channel('channel_shopping_plan_' + this.id)
-                    .listen('.ShoppingPlanCommentEvent', (e) => {
+                let channel = null
+                let listen = null
+                switch (type) {
+                    case TYPE_COMMENT_SHOPPING_PLAN_COMPANY:
+                        channel = 'channel_shopping_plan_'
+                        listen = 'ShoppingPlanCommentEvent'
+                        break
+                    case TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION:
+                        channel = 'channel_shopping_plan_organization'
+                        listen = 'ShoppingPlanOrganizationCommentEvent'
+                        break
+                    case TYPE_COMMENT_PLAN_MAINTAIN:
+                        channel = 'channel_plan_maintain_'
+                        listen = 'PlanMaintainCommentEvent'
+                        break
+                }
 
+                window.Echo.channel(channel + this.id)
+                    .listen('.'+listen, (e) => {
                         this.comments.push(e)
                     }).error((error) => {
                     alert(error)

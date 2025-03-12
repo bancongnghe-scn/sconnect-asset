@@ -74,13 +74,13 @@ class CommentService
         }
 
         $dataComment = [
-            'target_id'  => $data['target_id'],
-            'comment_id' => $comment->id,
-            'message'    => $data['message'] ?? null,
-            'user_id'    => $user['id'],
-            'time'       => date('H:i d/m/Y', strtotime($data['created_at'])),
-            'user_name'  => $user['name'],
-            'files'      => $commentFiles['data'] ?? [],
+            'target_id'        => $data['target_id'],
+            'comment_id'       => $comment->id,
+            'message'          => $data['message'] ?? null,
+            'created_by'       => $user['id'],
+            'created_at'       => date('H:i d/m/Y', strtotime($data['created_at'])),
+            'user_created'     => $user['name'],
+            'files'            => $commentFiles['data'] ?? [],
         ];
         switch ($data['type']) {
             case Comment::TYPE_SHOPPING_PLAN_COMPANY:

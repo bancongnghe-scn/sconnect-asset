@@ -28,13 +28,6 @@ class ShoppingPlanCommentEvent implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        return [
-            'id'            => $this->data['comment_id'],
-            'message'       => $this->data['message'],
-            'user_created'  => $this->data['user_name'],
-            'created_by'    => $this->data['user_id'],
-            'created_at'    => $this->data['time'],
-            'files'         => $this->data['files'],
-        ];
+        return $this->data;
     }
 }

@@ -162,8 +162,8 @@
                             </div>
                         </template>
                     </div>
-                    <div class="col-3 border border-right-0 border-top-0 border-bottom-0">
-{{--                        @include('assets.shopping-plan-company.history_comment')--}}
+                    <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-bind:id="id">
+                        @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_SHOPPING_PLAN_COMPANY'])
                     </div>
                 </div>
 
