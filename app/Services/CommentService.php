@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\OrderCommentEvent;
 use App\Events\PlanMaintainCommentEvent;
 use App\Events\ShoppingPlanCommentEvent;
 use App\Events\ShoppingPlanOrganizationCommentEvent;
@@ -74,13 +75,13 @@ class CommentService
         }
 
         $dataComment = [
-            'target_id'  => $data['target_id'],
-            'comment_id' => $comment->id,
-            'message'    => $data['message'] ?? null,
-            'user_id'    => $user['id'],
-            'time'       => date('H:i d/m/Y', strtotime($data['created_at'])),
-            'user_name'  => $user['name'],
-            'files'      => $commentFiles['data'] ?? [],
+            'target_id'        => $data['target_id'],
+            'id'               => $comment->id,
+            'message'          => $data['message'] ?? null,
+            'created_by'       => $user['id'],
+            'created_at'       => date('H:i d/m/Y', strtotime($data['created_at'])),
+            'user_created'     => $user['name'],
+            'files'            => $commentFiles['data'] ?? [],
         ];
         switch ($data['type']) {
             case Comment::TYPE_SHOPPING_PLAN_COMPANY:
@@ -91,6 +92,9 @@ class CommentService
                 break;
             case Comment::TYPE_PLAN_MAINTAIN:
                 PlanMaintainCommentEvent::dispatch($dataComment);
+                break;
+            case Comment::TYPE_ORDER:
+                OrderCommentEvent::dispatch($dataComment);
                 break;
             default:
         }

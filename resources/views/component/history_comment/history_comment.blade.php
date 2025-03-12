@@ -40,7 +40,7 @@
         </a>
     </div>
 
-    <div class="mt-3" style="border-top: 1px solid;">
+    <div class="mt-3" style="border-top: 1px solid;" x-data="history_comment({{$type}})">
         {{--comment--}}
         <div x-show="tab === 'comment'">
             <div class="d-flex flex-column justify-content-between overflow-auto custom-scroll" style="max-height: 85dvh"  id="historyComment">
@@ -117,7 +117,7 @@
 
                 <hr>
 
-                <div x-data="comment" class="tw-mb-4">
+                <div class="tw-mb-4">
                     {{--input message--}}
                     <textarea x-data="summerNoteEditor()"></textarea>
 
@@ -225,10 +225,26 @@
         </div>
     </div>
 </div>
+
+@vite([
+    'resources/js/assets/history_comment/history_comment_shopping_plan_company.js',
+    'resources/js/assets/api/apiComment.js',
+    'resources/js/assets/api/log/apiLog.js',
+    'resources/js/app/api/apiUser.js'
+])
 <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
 <script>
-    function comment() {
+    function history_comment(type) {
         return {
+            //data
+            message_edit: null,
+            id_comment_edit: null,
+            comment_message: null,
+            logs: [],
+            comments: [],
+            listUser: [],
+            files: [],
+            filesUpload: [],
             resetInput: false,
             unicode: null,
             showIcon: false,
@@ -237,8 +253,176 @@
             user_id: null,
 
             init() {
+                this.fetchData()
+                this.$watch('id', (value) => this.fetchData())
+                this.$watch('comments', (value) => this.scrollBottom())
                 this.$watch('showUpload', (value) => this.scrollBottom())
             },
+
+            fetchData() {
+                if (!this.id) return
+
+                this.getLogByRecordId()
+                this.listComment()
+                this.handleComment()
+                if (!this.listUser.length) {
+                    this.getListUser()
+                }
+            },
+
+            //methods
+            async sentComment() {
+                if (!this.comment_message && !this.filesUpload) {
+                    return
+                }
+                const param = {
+                    type: type,
+                    target_id: this.id,
+                    message: this.comment_message,
+                    files: this.filesUpload
+                }
+                const response = await window.apiSentComment(param)
+                if (response.success) {
+                    this.comment_message = null
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            async listComment() {
+                const param = {
+                    type: type,
+                    target_id: this.id,
+                }
+                const response = await window.apiGetComment(param)
+                if (response.success) {
+                    this.comments = response.data.data
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            async getLogByRecordId() {
+                const response = await window.getShoppingPlanLogByRecordId(this.id)
+                if (response.success) {
+                    this.logs = response.data.data
+                    return
+                }
+
+                toast.error('Lấy lịch sử của kế hoạch thất bại !')
+            },
+
+            async deleteComment(id) {
+                const response = await window.apiDeleteComment(id)
+                if (response.success) {
+                    this.comments = this.comments.filter(item => +item.id !== +id);
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            async editComment() {
+                const response = await window.apiEditComment({id: this.id_comment_edit, message: this.message_edit})
+                if (response.success) {
+                    let object = this.comments.find(obj => obj.id === this.id_comment_edit);
+
+                    if (object) {
+                        object.message = this.message_edit
+                    }
+
+                    this.id_comment_edit = null
+                    return
+                }
+                toast.error(response.message)
+            },
+
+            async getListUser() {
+                this.loading = true
+                const response = await window.apiGetUser({})
+                if (response.success) {
+                    this.listUser = response.data.data
+                } else {
+                    toast.error(response.message)
+                }
+                this.loading = false
+            },
+
+            handleEditComment(id, message) {
+                this.id_comment_edit = id
+                this.message_edit = message
+            },
+
+            handleComment() {
+                let channel = null
+                let listen = null
+                switch (type) {
+                    case TYPE_COMMENT_SHOPPING_PLAN_COMPANY:
+                        channel = 'channel_shopping_plan_'
+                        listen = 'ShoppingPlanCommentEvent'
+                        break
+                    case TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION:
+                        channel = 'channel_shopping_plan_organization'
+                        listen = 'ShoppingPlanOrganizationCommentEvent'
+                        break
+                    case TYPE_COMMENT_PLAN_MAINTAIN:
+                        channel = 'channel_plan_maintain_'
+                        listen = 'PlanMaintainCommentEvent'
+                        break
+                    case TYPE_COMMENT_ORDER:
+                        channel = 'channel_order'
+                        listen = 'OrderCommentEvent'
+                        break
+                }
+
+                window.Echo.channel(channel + this.id)
+                    .listen('.'+listen, (e) => {
+                        this.comments.push(e)
+                    }).error((error) => {
+                    alert(error)
+                });
+            },
+
+            replyComment(username) {
+                this.comment_message = `@${username} `;
+                this.$refs.input_message.focus();
+            },
+
+            scrollBottom() {
+                this.$nextTick(() => {
+                    const scroll = document.getElementById("historyComment")
+                    if (scroll) {
+                        scroll.scrollTop = scroll.scrollHeight;
+                    }
+                })
+            },
+
+            handleFiles() {
+                const uploadedFiles = event.target.files;
+                this.files = []; // Reset danh sách file trước khi thêm mới
+                this.filesUpload = Array.from(uploadedFiles)
+                Array.from(uploadedFiles).forEach(file => {
+                    const fileData = {
+                        name: file.name,
+                        type: file.type,
+                        preview: null // Nếu là ảnh, sẽ lưu base64 để hiển thị
+                    };
+
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            fileData.preview = reader.result; // Chuyển ảnh sang base64
+                            this.files.push(fileData);
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        this.files.push(fileData); // Nếu không phải ảnh, chỉ lưu thông tin file
+                    }
+                });
+            },
+
+            removeFile(index) {
+                this.files.splice(index, 1); // Xóa file khỏi danh sách
+            }
         }
     }
 
@@ -305,6 +489,7 @@
                 $(this.el).summernote('code', '');
                 this.showUpload = false
                 this.$refs.fileInput.value = '';
+                this.$refs.fileInput.dispatchEvent(new Event('change'));
             },
         }
     }

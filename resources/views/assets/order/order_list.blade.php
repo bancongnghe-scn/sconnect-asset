@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="d-flex tw-gap-x-2">
-                                @can('order.crud')
+                                @can('order.create')
                                     <button class="btn btn-sc btn-sm px-3" type="button" @click="$('#modalSelectTypeCreate').modal('show')">
                                         <span>+ Thêm</span>
                                     </button>

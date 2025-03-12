@@ -25,6 +25,7 @@ class Comment extends Model
     public const TYPE_SHOPPING_PLAN_ORGANIZATION = 2;
     public const TYPE_PLAN_MAINTAIN              = 3;
     public const TYPE_PLAN_LIQUIDATION           = 4;
+    public const TYPE_ORDER                      = 5;
 
     public function commentFiles(): HasMany
     {
