@@ -16,7 +16,7 @@ class ContractFileService
     {
         $contractFiles = [];
         foreach ($files as $file) {
-            $path            = $file->store('uploads', 'public');
+            $path            = $file->store('contract', 'public');
             $contractFiles[] = [
                 'contract_id' => $contractId,
                 'file_url'    => $path,
