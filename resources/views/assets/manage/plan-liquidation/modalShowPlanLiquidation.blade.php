@@ -108,7 +108,7 @@
                                                 <span x-text="data.asset.name" class="text-wrap"></span>
                                             </td>
                                             <td class="text-center align-middle text-align-center">
-                                                <span x-text="data.asset?.asset_history[0].description"></span>
+                                                <span x-text="data.asset?.asset_history[0]?.description"></span>
                                             </td>
                                             <td class="text-center align-middle text-align-center">
                                                 <input 
@@ -181,17 +181,7 @@
             </div>
             <div class="modal-footer">
                 <div
-                    x-data="{ 
-                        isDisabled: false, 
-                        checkDisabled() { 
-                            this.isDisabled = !this.dataTbodyListAssetLiqui.every(
-                                item => Array.isArray(item) && item.every(subItem => subItem.status === 2)
-                            ); 
-                        } 
-                    }"
-                    x-init="checkDisabled()"
-                    @update-data.window="checkDisabled()"
-                    :title="isDisabled ? 'Cần duyệt các tài sản' : ''"
+                    :title="checkStatusApp ? 'Cần duyệt các tài sản' : ''"
                 >
 
                     @can('liquidation_asset.hr_manager_approval')
@@ -199,19 +189,11 @@
                         x-show="listStatusPlanLiquidation[data.status] === 'Chờ xác nhận'"
                         style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
                         @click="confirmPlan('Hoàn thành')" 
-                        :disabled="isDisabled"
+                        :disabled="checkStatusApp ? true : false"
                     >
                         <i class="fa-solid fa-check" style="color: #28c76f;"></i>
                         Hoàn thành
                     </button>
-                    {{-- <button class="btn bg-body" 
-                        x-show="listStatusPlanLiquidation[data.status] === 'Chờ xác nhận'"
-                        style="border: 1px solid rgba(55, 146, 55, 1);border-radius: 8px;"
-                        @click="confirmPlan('Từ chối')"    
-                    >
-                        <i class="fa-solid fa-xmark" style="color: #cd1326;"></i>
-                        Từ chối
-                    </button> --}}
                     @endcan
                 </div>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
