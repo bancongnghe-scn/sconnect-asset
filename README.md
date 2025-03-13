@@ -25,5 +25,5 @@
 - php artisan queue:work
 
 ## Git
-- git rm --cached .php-cs-fixer.cache
-- git rm --cached path/to/.php-cs-fixer.cache
+- git rm -r --cached .
+
