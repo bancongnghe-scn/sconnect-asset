@@ -27,3 +27,20 @@
 ## Git
 - git rm --cached .php-cs-fixer.cache
 - git rm --cached path/to/.php-cs-fixer.cache
+
+## testing
+PUSHER_APP_ID=27071999
+PUSHER_APP_KEY=asset_pusher_key
+PUSHER_APP_SECRET=asset_pusher_secret
+PUSHER_HOST=10.2.0.18
+PUSHER_PORT=6002
+PUSHER_SCHEME=http
+PUSHER_APP_CLUSTER=mt1
+
+VITE_APP_NAME="${APP_NAME}"
+VITE_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
+VITE_PUSHER_HOST=asset-lab.sconnect.com.vn
+VITE_PUSHER_PORT=null
+VITE_PUSHER_SCHEME=https
+VITE_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+VITE_PUSHER_APP_PATH=/ws
