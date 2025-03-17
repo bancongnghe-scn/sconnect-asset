@@ -70,7 +70,7 @@ class AssetService
     public function generalQrCodeAsset($assetId)
     {
         $link     = config('app.url').'/asset/info/'.$assetId;
-        $savePath = public_path('qrcode/qr_image_'.$assetId.'.png');
+        $savePath = public_path('uploads/qrcode/qr_image_'.$assetId.'.png');
         $qrCode   = Builder::create()
             ->writer(new PngWriter())
             ->data($link)

@@ -16,7 +16,7 @@ class CommentFileService
     {
         $commentFiles = [];
         foreach ($files as $file) {
-            $path            = $file->store('comment_files', 'public');
+            $path            = $file->store('comment', 'public');
             $commentFiles[]  = [
                 'comment_id'  => $commentId,
                 'file_url'    => $path,

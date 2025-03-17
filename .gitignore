@@ -23,5 +23,6 @@ yarn-error.log
 /database/migrations/2018_08_08_100000_create_telescope_entries_table.php
 /config/telescope.php
 /app/Providers/TelescopeServiceProvider.php
-/public/qrcode
 /public/uploads
+supervisord.log
+supervisord.pid
