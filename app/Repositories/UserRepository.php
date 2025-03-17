@@ -15,7 +15,7 @@ class UserRepository extends BaseRepository
 
     public function getListing(array $filers, array $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns)->with($with)->where('status', User::STATUS_ACTIVE);
+        $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filers['name'])) {
             $query->where('name', 'like', $filers['name'] . '%');
