@@ -258,6 +258,8 @@ Route::middleware('checkAuth')->group(function () {
 
     Route::prefix('inventory')->controller(App\Http\InventoryController::class)->group(function () {
         Route::get('getPlanInventory', 'getPlanInventory');
+        Route::post('createPlanInventory', 'createPlanInventory');
+        Route::get('findPlanInventory/{id}', 'findPlanInventory');
     });
 
     Route::prefix('report')->group(function () {

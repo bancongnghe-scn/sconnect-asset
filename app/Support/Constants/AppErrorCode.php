@@ -116,6 +116,8 @@ class AppErrorCode
     public const CODE_2109 = 2109; //  Bạn chưa thể hoàn thành do vẫn còn tài sản cần được duyệt !
     public const CODE_2110 = 2110; //  Bình luận hoặc tài liệu không được để trống !
     public const CODE_2111 = 2111; //  Tải tài liệu thất bại !
+    public const CODE_2112 = 2112; //  Gắn loại tài sản cho kế hoạch kiểm kê thất bại !
+    public const CODE_2113 = 2113; //  Kế hoạch kiểm kê không tồn tại !
 
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !

@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\PlanMaintainAsset;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PlanInventoryResource extends JsonResource
+class ListPlanInventoryResource extends JsonResource
 {
     public function toArray($request)
     {

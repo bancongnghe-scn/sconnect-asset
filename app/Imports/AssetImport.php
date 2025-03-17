@@ -89,7 +89,6 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
             ->mapWithKeys(function ($assetType) {
                 return [Str::slug($assetType->name) => $assetType];
             });
-
         $supplierName  = $collection->pluck('thong_tin_ncc_ten_ncc_dia_chi_sdt')->unique()->toArray();
         $listSupplier  = $this->supplierRepository->getListSupplerByName($supplierName)
             ->mapWithKeys(function ($supplier) {

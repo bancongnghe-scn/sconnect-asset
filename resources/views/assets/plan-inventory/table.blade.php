@@ -26,7 +26,7 @@
                                         <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                     </td>
                                     <td>
-                                        <a x-text="value.name" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
+                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/plan-inventory/detail/${value.id}`"></a>
                                     </td>
                                     <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
                                     <td x-text="value.organizations.join(', ')">
@@ -54,12 +54,12 @@
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
-                                        <template x-if="value.status === STATUS_TAKING_INVENTORY">
+                                        <template x-if="[STATUS_INVENTORY_NEW, STATUS_TAKING_INVENTORY].includes(+value.status)">
                                             <span>
                                                 <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
+                                                    <i class="bi bi-pencil-square color-sc"></i>
                                                 </span>
-                                                <span class="tw-cursor-pointer" @click="">
+                                                <span class="tw-cursor-pointer">
                                                     <i class="bi bi-trash3 text-red"></i>
                                                 </span>
                                             </span>
@@ -79,14 +79,14 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
-                                            <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
+                                            <span class="tw-cursor-pointer">
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
                                         <template x-if="value.status === STATUS_MAINTAINING">
                                             <span>
                                                 <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
+                                                    <i class="bi bi-pencil-square color-sc" ></i>
                                                 </span>
                                                 <span class="tw-cursor-pointer" @click="handleShowModalConfirmDelete(value.id)">
                                                     <i class="bi bi-trash3 text-red"></i>

@@ -51,4 +51,20 @@ class InventoryController extends Controller
             return response_error();
         }
     }
+
+    public function findPlanInventory($id)
+    {
+        try {
+            $result = $this->inventoryService->findPlanInventory($id);
+            if ($result['success']) {
+                return response_success($result['data']);
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
 }
