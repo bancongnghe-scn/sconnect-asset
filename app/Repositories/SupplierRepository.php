@@ -98,6 +98,6 @@ class SupplierRepository extends BaseRepository
 
     public function getListSupplerByName($name)
     {
-        return $this->_model->where('name', Arr::wrap($name))->get();
+        return $this->_model->whereIn('name', Arr::wrap($name))->get();
     }
 }
