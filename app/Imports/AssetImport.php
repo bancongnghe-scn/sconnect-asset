@@ -97,6 +97,9 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
 
         $listCodeAssets = $collection->pluck('ma_tai_san')->toArray();
         $listAssets     = $this->assetRepository->getListing(['code' => $listCodeAssets])->keyBy('code');
+
+        $transferAssetService = resolve(TransferAssetService::class);
+        $assetService         = resolve(AssetService::class);
         foreach ($array as $stt => $row) {
             if ($stt < 1 || is_null($row['stt'])) {
                 continue;
@@ -136,8 +139,6 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                 continue;
             }
 
-            $transferAssetService = resolve(TransferAssetService::class);
-            $assetService         = resolve(AssetService::class);
             DB::beginTransaction();
             try {
                 // luu thong tin tai san
