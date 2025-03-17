@@ -98,12 +98,12 @@
                                     </template>
                                     <div class="d-flex tw-gap-x-3 opacity-50">
                                         <template x-if="+user_login !== +comment.created_by">
-                                            <span class="tw-cursor-pointer" @click="replyComment(comment.user_created)">Trả lời</span>
+                                            <span class="tw-cursor-pointer" @click="replyComment(comment.created_by)">Trả lời</span>
                                         </template>
                                         <template x-if="+user_login === +comment.created_by">
                                             <div class="d-flex tw-gap-x-3">
-                                                <span class="tw-cursor-pointer"
-                                                      @click="handleEditComment(comment.id, comment.message)">Sửa</span>
+{{--                                                <span class="tw-cursor-pointer"--}}
+{{--                                                      @click="handleEditComment(comment.id, comment.message)">Sửa</span>--}}
                                                 <span class="tw-cursor-pointer"
                                                       @click="deleteComment(comment.id)">Xóa</span>
                                             </div>
@@ -119,7 +119,7 @@
 
                 <div class="tw-mb-4">
                     {{--input message--}}
-                    <textarea x-data="summerNoteEditor()"></textarea>
+                    <textarea id="inputSummerNote" x-data="summerNoteEditor()"></textarea>
 
                     {{--button action--}}
                     <div class="tw-relative">
@@ -227,7 +227,6 @@
 </div>
 
 @vite([
-    'resources/js/assets/history_comment/history_comment_shopping_plan_company.js',
     'resources/js/assets/api/apiComment.js',
     'resources/js/assets/api/log/apiLog.js',
     'resources/js/app/api/apiUser.js'
@@ -382,11 +381,6 @@
                 });
             },
 
-            replyComment(username) {
-                this.comment_message = `@${username} `;
-                this.$refs.input_message.focus();
-            },
-
             scrollBottom() {
                 this.$nextTick(() => {
                     const scroll = document.getElementById("historyComment")
@@ -422,6 +416,10 @@
 
             removeFile(index) {
                 this.files.splice(index, 1); // Xóa file khỏi danh sách
+            },
+
+            replyComment(userId) {
+                this.user_id = userId
             }
         }
     }
@@ -437,9 +435,7 @@
                 });
                 this.$watch('unicode', (value) => {
                     if(value) {
-                        let editor = $(this.el);
-                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
-                        editor.summernote('code', currentContent + value); // Cộng thêm nội dung mới
+                        this.setValueSummernote(value)
                         this.unicode = null
                     }
                 });
@@ -447,9 +443,7 @@
                     if(value) {
                         const user = this.listUser.find(option => option.id === value);
                         const userName = `<a href='#' target='_blank'>${user.name}</a>`;
-                        let editor = $(this.el);
-                        let currentContent = editor.summernote('code'); // Lấy nội dung hiện tại
-                        editor.summernote('code', currentContent + userName); // Cộng thêm nội dung mới
+                        this.setValueSummernote(userName)
                         this.user_id = null
                     }
                 });
@@ -491,6 +485,12 @@
                 this.$refs.fileInput.value = '';
                 this.$refs.fileInput.dispatchEvent(new Event('change'));
             },
+
+            setValueSummernote(value) {
+                let editor = $(this.el);
+                let currentContent = editor.summernote('code');
+                editor.summernote('code', currentContent + value);
+            }
         }
     }
 </script>

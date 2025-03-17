@@ -24,3 +24,5 @@ yarn-error.log
 /config/telescope.php
 /app/Providers/TelescopeServiceProvider.php
 /public/uploads
+supervisord.log
+supervisord.pid

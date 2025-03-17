@@ -43,7 +43,7 @@ window.Echo = new Echo({
     wssPort: import.meta.env.VITE_PUSHER_SCHEME === "https" ? null : import.meta.env.VITE_PUSHER_PORT,
     forceTLS: import.meta.env.VITE_PUSHER_SCHEME === "https",
     enabledTransports: ["ws", "wss"],
-    wsPath: import.meta.env.VITE_PUSHER_APP_PATH ?? "/ws",
+    wsPath: import.meta.env.VITE_PUSHER_SCHEME === "https" ? "/ws" : null
 });
 
 
