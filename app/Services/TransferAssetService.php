@@ -31,6 +31,7 @@ class TransferAssetService
             'to_org_id'   => $orgIdFrom,
             'description' => $data['description'] ?? null,
             'created_at'  => $data['created_at'] ?? date('Y-m-d H:i:s'),
+            'date'        => $data['created_at'] ?? date('Y-m-d H:i:s'),
             'created_by'  => $data['created_by'] ?? Auth::id(),
         ]);
 
@@ -44,6 +45,7 @@ class TransferAssetService
             'description'       => $data['description'] ?? null,
             'transfer_asset_id' => $transferAsset->id,
             'created_at'        => $data['created_at'] ?? date('Y-m-d H:i:s'),
+            'date'              => $data['created_at'] ?? date('Y-m-d H:i:s'),
         ]);
         if (!$insert) {
             return [
