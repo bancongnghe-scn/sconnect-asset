@@ -3,13 +3,13 @@
 namespace App\Services;
 
 use App\Models\PlanMaintainOrganization;
-use App\Repositories\PlanMaintainOrganizationRepository;
+use App\Repositories\planMaintainOrganizationRepository;
 use App\Support\Constants\AppErrorCode;
 
 class PlanMaintainOrganizationService
 {
     public function __construct(
-        protected PlanMaintainOrganizationRepository $planMaintainOrganizationRepository,
+        protected planMaintainOrganizationRepository $planMaintainOrganizationRepository,
     ) {
 
     }

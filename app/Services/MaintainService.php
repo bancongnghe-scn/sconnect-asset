@@ -15,7 +15,7 @@ use App\Repositories\Manage\PlanMaintainAssetRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\PlanMaintainChargeRepository;
 use App\Repositories\PlanMaintainLogRepository;
-use App\Repositories\PlanMaintainOrganizationRepository;
+use App\Repositories\planMaintainOrganizationRepository;
 use App\Repositories\PlanMaintainSupplierRepository;
 use App\Repositories\SupplierRepository;
 use App\Support\Constants\AppErrorCode;
@@ -32,7 +32,7 @@ class MaintainService
         protected PlanMaintainRepository $planMaintainRepository,
         protected SupplierRepository $supplierRepository,
         protected OrganizationRepository $organizationRepository,
-        protected PlanMaintainOrganizationRepository $planMaintainOrganizationRepository,
+        protected planMaintainOrganizationRepository $planMaintainOrganizationRepository,
         protected PlanMaintainSupplierRepository $planMaintainSupplierRepository,
         protected PlanMaintainChargeRepository $planMaintainChargeRepository,
         protected AssetTypeRepository $assetTypeRepository,

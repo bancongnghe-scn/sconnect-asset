@@ -2,10 +2,12 @@
 
 namespace App\Services\Inventory;
 
-use App\Http\Resources\PlanInventoryResource;
+use App\Http\Resources\Inventory\PlanInventoryInfoResource;
+use App\Http\Resources\ListPlanInventoryResource;
 use App\Models\PlanMaintain;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
+use App\Services\PlanMaintainAssetTypeService;
 use App\Services\PlanMaintainChargeService;
 use App\Services\PlanMaintainOrganizationService;
 use App\Support\Constants\AppErrorCode;
@@ -35,22 +37,16 @@ class InventoryService
             return [];
         }
 
-        return PlanInventoryResource::make($data)->resolve();
+        return ListPlanInventoryResource::make($data)->resolve();
     }
 
     public function createPlanInventory($data)
     {
-        $planMaintainLast = PlanMaintain::orderBy('created_at', 'desc')->first();
-        if (empty($planMaintainLast)) {
-            $code = 'KHKK1';
-        } else {
-            $code = 'KHKK'. $planMaintainLast->id + 1;
-        }
-        $userId             = Auth::id();
-        $data['code']       = $code;
+        $planMaintainLast   = PlanMaintain::orderBy('created_at', 'desc')->first();
+        $data['code']       = empty($planMaintainLast) ? 'KHKK1' : 'KHKK'. $planMaintainLast->id + 1;
         $data['type']       = PlanMaintain::TYPE_INVENTORY;
-        $data['status']     = PlanMaintain::STATUS_MAINTAINING;
-        $data['created_by'] = $userId;
+        $data['status']     = PlanMaintain::STATUS_NEW;
+        $data['created_by'] = Auth::id();
 
         DB::beginTransaction();
         try {
@@ -64,6 +60,16 @@ class InventoryService
                 return $insert;
             }
 
+            // gan loai tai san cho ke hoach
+            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planMaintain->id, $data['asset_type_ids']);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2112,
+                ];
+            }
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
@@ -90,5 +96,21 @@ class InventoryService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function findPlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => PlanInventoryInfoResource::make($planInventory)->resolve(),
+        ];
     }
 }

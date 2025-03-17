@@ -20,9 +20,4 @@ class CreatePlanInventoryRequest extends FormRequest
             'sent_notification' => 'nullable|integer',
         ];
     }
-
-    public function attributes()
-    {
-
-    }
 }

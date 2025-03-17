@@ -115,6 +115,8 @@ return [
     AppErrorCode::CODE_2109 => 'Bạn chưa thể hoàn thành do vẫn còn tài sản cần được duyệt !',
     AppErrorCode::CODE_2110 => 'Bình luận hoặc tài liệu không được để trống !',
     AppErrorCode::CODE_2111 => 'Tải tài liệu thất bại !',
+    AppErrorCode::CODE_2112 => 'Gắn loại tài sản cho kế hoạch kiểm kê thất bại !',
+    AppErrorCode::CODE_2113 => ' Kế hoạch kiểm kê không tồn tại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

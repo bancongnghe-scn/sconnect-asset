@@ -23,6 +23,7 @@ class PlanMaintain extends Model
         'end_time',
         'maintain_costs',
         'sent_notification',
+        'type_inventory',
         'created_at',
         'created_by',
         'updated_at',
