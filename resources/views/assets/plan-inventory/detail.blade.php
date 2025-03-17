@@ -13,6 +13,11 @@
             <div class="mb-3">
                 @include('assets.plan-inventory.plan_inventory_info', ['disabled' => true])
             </div>
+
+            <div>
+                <div class="mb-3 active-link tw-w-fit" x-text="`Danh sách tài sản kiểm kê (${data.assets.length})`"></div>
+                @include('assets.plan-inventory.plan_inventory_asset')
+            </div>
         </div>
 
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
