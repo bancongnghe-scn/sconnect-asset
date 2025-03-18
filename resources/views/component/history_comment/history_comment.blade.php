@@ -56,7 +56,7 @@
                                     <div class="card border p-2 tw-w-full mb-0" style="background: #E0E4EA40;">
                                         <div>
                                             <span class="tw-font-bold" style="color: #2067B0;"
-                                                  x-text="comment.user_created"></span>
+                                                  x-text="listUser.find(item => item.id === comment.created_by)?.name"></span>
                                             <span class="text-xs opacity-50 ml-2" x-text="comment.created_at"></span>
                                         </div>
                                         <span x-html="comment.message"></span>
@@ -213,10 +213,10 @@
                     </div>
                     <div class="border rounded p-2 tw-bg-zinc-100 mb-3 flex-grow-1">
                         <p class="mb-1 text-muted small"
-                           x-text="log.created_at"
+                           x-text="format(log.created_at, 'dd/MM/yyyy HH:mm:ss')"
                         ></p>
                         <p class="mb-0">
-                            <a href="#" class="text-primary fw-bold" x-text="log.created_by"></a>
+                            <a href="#" class="text-primary fw-bold" x-text="listUser.find(item => item.id === log.created_by)?.name"></a>
                             <span x-text="log.desc"></span>
                         </p>
                     </div>
@@ -258,15 +258,15 @@
                 this.$watch('showUpload', (value) => this.scrollBottom())
             },
 
-            fetchData() {
+            async fetchData() {
                 if (!this.id) return
 
+                if (!this.listUser.length) {
+                    await this.getListUser()
+                }
                 this.getLogByRecordId()
                 this.listComment()
                 this.handleComment()
-                if (!this.listUser.length) {
-                    this.getListUser()
-                }
             },
 
             //methods
@@ -302,7 +302,22 @@
             },
 
             async getLogByRecordId() {
-                const response = await window.getShoppingPlanLogByRecordId(this.id)
+                let response = []
+                switch (type) {
+                    case TYPE_COMMENT_SHOPPING_PLAN_COMPANY:
+                    case TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION:
+                        response = await window.getShoppingPlanLogByRecordId(this.id)
+                        break
+                    case TYPE_COMMENT_PLAN_MAINTAIN:
+                        response = await window.apiGetPlanMaintainLogById(this.id)
+                        break
+                    case TYPE_COMMENT_ORDER:
+                        response = await window.apiGetLogByOrderId(this.id)
+                        break
+                    default:
+                        break
+                }
+
                 if (response.success) {
                     this.logs = response.data.data
                     return

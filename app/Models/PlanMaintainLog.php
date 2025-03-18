@@ -21,4 +21,9 @@ class PlanMaintainLog extends Model
     public const ACTION_UPDATE_PLAN_MAINTAIN   = 'action_update_plan_maintain';
     public const ACTION_COMPLETE_PLAN_MAINTAIN = 'action_complete_plan_maintain';
     public const ACTION_DELETE_PLAN_MAINTAIN   = 'action_delete_plan_maintain';
+
+    public const ACTION_CREATE_PLAN_INVENTORY   = 'action_create_plan_inventory';
+    public const ACTION_UPDATE_PLAN_INVENTORY   = 'action_update_plan_inventory';
+    public const ACTION_COMPLETE_PLAN_INVENTORY = 'action_complete_plan_inventory';
+    public const ACTION_DELETE_PLAN_INVENTORY   = 'action_delete_plan_inventory';
 }

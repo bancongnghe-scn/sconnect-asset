@@ -15,7 +15,7 @@
             </div>
 
             <div>
-                <div class="mb-3 active-link tw-w-fit" x-text="`Danh sách tài sản kiểm kê (${data.assets.length})`"></div>
+                <div class="mb-3 active-link tw-w-fit" x-text="`Danh sách tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
                 @include('assets.plan-inventory.plan_inventory_asset')
             </div>
         </div>

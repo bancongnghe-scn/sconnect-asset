@@ -218,6 +218,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('delete', 'deleteOrder');
         Route::get('export/{id}', 'exportOrder');
         Route::get('getTotalStatusOrder', 'getTotalStatusOrder');
+        Route::get('getLogByOrderId/{id}', 'getLogByOrderId');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {

@@ -7,9 +7,7 @@ document.addEventListener('alpine:init', () => {
             this.getListAssetType()
         },
 
-        data: {
-            assets: []
-        },
+        data: [],
         listOrganization : [],
         listAssetType : [],
         listUser : [],

@@ -5,8 +5,10 @@ namespace App\Services\Inventory;
 use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
 use App\Models\PlanMaintain;
+use App\Models\PlanMaintainLog;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
+use App\Repositories\PlanMaintainLogRepository;
 use App\Services\PlanMaintainAssetTypeService;
 use App\Services\PlanMaintainChargeService;
 use App\Services\PlanMaintainOrganizationService;
@@ -21,6 +23,7 @@ class InventoryService
         protected PlanMaintainRepository $planMaintainRepository,
         protected OrganizationRepository $organizationRepository,
         protected AssetTypeRepository $assetTypeRepository,
+        protected PlanMaintainLogRepository $planMaintainLogRepository,
     ) {
     }
 
@@ -42,18 +45,18 @@ class InventoryService
 
     public function createPlanInventory($data)
     {
-        $planMaintainLast   = PlanMaintain::orderBy('created_at', 'desc')->first();
-        $data['code']       = empty($planMaintainLast) ? 'KHKK1' : 'KHKK'. $planMaintainLast->id + 1;
-        $data['type']       = PlanMaintain::TYPE_INVENTORY;
-        $data['status']     = PlanMaintain::STATUS_NEW;
-        $data['created_by'] = Auth::id();
+        $planInventoryLast   = PlanMaintain::orderBy('created_at', 'desc')->first();
+        $data['code']        = empty($planInventoryLast) ? 'KHKK1' : 'KHKK'. $planInventoryLast->id + 1;
+        $data['type']        = PlanMaintain::TYPE_INVENTORY;
+        $data['status']      = PlanMaintain::STATUS_NEW;
+        $data['created_by']  = Auth::id();
 
         DB::beginTransaction();
         try {
-            $planMaintain = $this->planMaintainRepository->create($data);
+            $planInventory = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planMaintain->id);
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planInventory->id);
             if (!$insert['success']) {
                 DB::rollBack();
 
@@ -61,7 +64,7 @@ class InventoryService
             }
 
             // gan loai tai san cho ke hoach
-            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planMaintain->id, $data['asset_type_ids']);
+            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
             if (!$insert) {
                 DB::rollBack();
 
@@ -73,7 +76,7 @@ class InventoryService
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planMaintain->id);
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planInventory->id);
                 if (!$insert['success']) {
                     DB::rollBack();
 
@@ -81,6 +84,15 @@ class InventoryService
                 }
             }
 
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_CREATE_PLAN_INVENTORY, $planInventory->id);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
             DB::commit();
 
             return [
