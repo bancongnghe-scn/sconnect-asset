@@ -35,8 +35,8 @@
 
             <template x-if="data.status !== STATUS_INVENTORY_NEW">
                 <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
-                    @include('assets.plan-inventory.list_asset_new')
+                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>
+                    @include('assets.plan-inventory.list_asset_inventory', ['disabled' => true])
                 </div>
             </template>
         </div>

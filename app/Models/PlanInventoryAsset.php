@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PlanInventoryAsset extends Model
 {
@@ -30,4 +31,9 @@ class PlanInventoryAsset extends Model
 
     public const STATUS_NOT_INVENTORIED = 0;
     public const STATUS_INVENTORIED     = 1;
+
+    public function asset(): BelongsTo
+    {
+        return $this->belongsTo(Asset::class, 'asset_id');
+    }
 }

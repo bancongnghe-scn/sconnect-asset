@@ -12,9 +12,9 @@ class PlanInventoryAssetRepository extends BaseRepository
         return PlanInventoryAsset::class;
     }
 
-    public function getListing($filters, $columns = ['*'])
+    public function getListing($filters, $columns = ['*'], $with = [])
     {
-        $query = $this->_model->newQuery()->select($columns);
+        $query = $this->_model->newQuery()->select($columns)->with($with);
 
         if (!empty($filters['plan_maintain_id'])) {
             $query->where('plan_maintain_id', $filters['plan_maintain_id']);

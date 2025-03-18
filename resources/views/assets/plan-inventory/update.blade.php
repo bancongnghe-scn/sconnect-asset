@@ -34,10 +34,10 @@
             </template>
 
             <template x-if="data.status !== STATUS_INVENTORY_NEW">
-{{--                <div>--}}
-{{--                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>--}}
+                <div>
+                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>
 {{--                    @include('assets.plan-inventory.list_asset_inventory')--}}
-{{--                </div>--}}
+                </div>
 {{--                <div>--}}
 {{--                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản ngoài danh sách (${data?.assets?.inventory_outside.length ?? 0})`"></div>--}}
 {{--                    @include('assets.plan-inventory.list_asset_inventory_outside')--}}

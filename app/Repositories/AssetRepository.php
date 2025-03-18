@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\MoveAssetUser;
-use App\Models\Org;
 use App\Models\TransferAsset;
 use App\Models\User;
 use App\Repositories\Base\BaseRepository;
@@ -13,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Modules\Service\Models\Org;
 
 class AssetRepository extends BaseRepository
 {
@@ -145,7 +145,7 @@ class AssetRepository extends BaseRepository
                 ->groupBy('asset_id');
 
             $issuedAssetIds = MoveAssetUser::whereIn('id', $arrAssetIdOfUser->pluck('latest_move_id'))
-                ->where('type', 1)
+                ->where('type', MoveAssetUser::TYPE_ALLOCATION)
                 ->pluck('asset_id');
 
             $query->whereNotIn('id', $issuedAssetIds);

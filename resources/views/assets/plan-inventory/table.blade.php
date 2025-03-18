@@ -14,7 +14,7 @@
                                 <th rowspan="1" colspan="1" class="text-center tw-min-w-40">Thời gian</th>
                                 <th rowspan="1" colspan="1" class="text-center">Đơn vị</th>
                                 <th rowspan="1" colspan="1" class="text-center">Loại tài sản</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-40">Trạng thái</th>
+                                <th rowspan="1" colspan="1" class="text-center">Trạng thái</th>
                                 <th rowspan="1" colspan="1" class="text-center tw-min-w-60">Tiến độ</th>
                                 <th rowspan="1" colspan="1" class="text-center tw-min-w-24">Thao tác</th>
                             </tr>

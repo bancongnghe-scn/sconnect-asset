@@ -43,14 +43,6 @@ return [
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
         ],
 
-        'db_dev' => [
-            'driver'   => 'mysql',
-            'host'     => env('DB2_HOST', '10.2.0.18'),
-            'database' => env('DB2_DATABASE', 'soffice_dev'),
-            'username' => env('DB2_USERNAME', 'root'),
-            'password' => env('DB2_PASSWORD', 'Sconnect@123'),
-        ],
-
         'mysql' => [
             'driver'         => 'mysql',
             'url'            => env('DATABASE_URL'),

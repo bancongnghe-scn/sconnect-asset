@@ -11,6 +11,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Service\Models\Org;
+use Modules\Service\Models\OrgJobTitle;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable

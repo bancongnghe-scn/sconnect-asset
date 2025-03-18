@@ -50,6 +50,8 @@
         font-size: 12px;
         padding: 3px 12px 3px 12px;
         border-radius: 8px;
+        text-wrap: nowrap;
+        width: min-content;
     "
     :style="getStyle(+{{$status}})"
 >
