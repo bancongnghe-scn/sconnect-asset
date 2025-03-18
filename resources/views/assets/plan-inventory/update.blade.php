@@ -1,9 +1,9 @@
 @extends('layouts.app_v2', [
-    'title' => 'Chi tiết kế hoạch kiểm kê'
+    'title' => 'Cập nhật kế hoạch kiểm kê'
 ])
 
 @section('x-data')
-    x-data="plan_inventory_detail({{$id}})"
+    x-data="plan_inventory_update({{$id}})"
 @endsection
 
 @section('title_other')
@@ -23,7 +23,7 @@
         <div class="flex-grow-1 overflow-auto custom-scroll">
             {{-- thong tin chung--}}
             <div class="mb-3">
-                @include('assets.plan-inventory.plan_inventory_info', ['disabled' => true])
+                @include('assets.plan-inventory.plan_inventory_info', ['disabled' => false])
             </div>
 
             <template x-if="data.status === STATUS_INVENTORY_NEW">
@@ -34,10 +34,14 @@
             </template>
 
             <template x-if="data.status !== STATUS_INVENTORY_NEW">
-                <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
-                    @include('assets.plan-inventory.list_asset_new')
-                </div>
+{{--                <div>--}}
+{{--                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>--}}
+{{--                    @include('assets.plan-inventory.list_asset_inventory')--}}
+{{--                </div>--}}
+{{--                <div>--}}
+{{--                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản ngoài danh sách (${data?.assets?.inventory_outside.length ?? 0})`"></div>--}}
+{{--                    @include('assets.plan-inventory.list_asset_inventory_outside')--}}
+{{--                </div>--}}
             </template>
         </div>
 
@@ -47,9 +51,14 @@
     </div>
 @endsection
 
+@section('footer')
+    <button class="btn btn-outline-success">Hủy lịch kiểm kê</button>
+    <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
+@endsection
+
 @section('js')
     @vite([
-        'resources/js/assets/inventory/plan_inventory/plan_inventory_detail.js',
+        'resources/js/assets/inventory/plan_inventory/plan_inventory_update.js',
         'resources/js/assets/api/apiPlanInventory.js',
         'resources/js/app/api/apiUser.js',
         'resources/js/app/api/apiOrganization.js',

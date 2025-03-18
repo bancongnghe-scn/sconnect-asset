@@ -6,9 +6,11 @@ use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainLog;
+use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\PlanMaintainLogRepository;
+use App\Services\PlanInventoryAssetService;
 use App\Services\PlanMaintainAssetTypeService;
 use App\Services\PlanMaintainChargeService;
 use App\Services\PlanMaintainOrganizationService;
@@ -24,6 +26,7 @@ class InventoryService
         protected OrganizationRepository $organizationRepository,
         protected AssetTypeRepository $assetTypeRepository,
         protected PlanMaintainLogRepository $planMaintainLogRepository,
+        protected AssetRepository $assetRepository,
     ) {
     }
 
@@ -124,5 +127,62 @@ class InventoryService
             'success' => true,
             'data'    => PlanInventoryInfoResource::make($planInventory)->resolve(),
         ];
+    }
+
+    public function startPlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_NEW !== $planInventory->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        $planInventory->status = PlanMaintain::STATUS_MAINTAINING;
+        DB::beginTransaction();
+        try {
+            if (!$planInventory->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2114,
+                ];
+            }
+
+            $listAsset = $this->assetRepository->getListing([
+                'organization_id' => $planInventory->planMaintainOrganizations->pluck('organization_id')->toArray(),
+                'asset_type_id'   => $planInventory->planMaintainAssetTypes->pluck('asset_type_id')->toArray(),
+            ]);
+
+            $insert = resolve(PlanInventoryAssetService::class)->generalPlanInventoryAsset($listAsset, $planInventory->id);
+            if (!$insert['success']) {
+                DB::rollBack();
+
+                return $insert;
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 }

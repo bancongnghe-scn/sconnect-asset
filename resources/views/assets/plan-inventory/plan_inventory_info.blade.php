@@ -1,14 +1,15 @@
-<div class="tw-grid tw-grid-cols-4 tw-gap-4">
+<div class="tw-grid tw-grid-cols-4 tw-gap-4" x-data="{disabled: @json($disabled)}">
     <div>
         <label class="tw-font-bold">Tên kế hoạch<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-        <input class="form-control" type="text" x-model="data.name" placeholder="Nhập tên kế hoạch" :disabled="{{$disabled}}">
+        <input class="form-control" type="text" x-model="data.name" placeholder="Nhập tên kế hoạch" :disabled=disabled>
     </div>
     <div>
         <label class="tw-font-bold">Thời gian<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
         @include('common.datepicker.datepicker_range', [
             'placeholder' => 'Chọn khoảng thời gian',
             'start' => 'data.start_time',
-            'end' => 'data.end_time'
+            'end' => 'data.end_time',
+            'disabled' => 'disabled'
         ])
     </div>
     <div>
@@ -17,7 +18,8 @@
             @include('common.select_custom.extent.select_multiple', [
                 'placeholder' => 'Chọn đơn vị',
                 'options' => 'listOrganization',
-                'selected' => 'data.organization_ids'
+                'selected' => 'data.organization_ids',
+                'disabled' => 'disabled'
             ])
         </div>
     </div>
@@ -27,7 +29,8 @@
             @include('common.select_custom.extent.select_multiple', [
                 'placeholder' => 'Chọn loại tài sản',
                 'options' => 'listAssetType',
-                'selected' => 'data.asset_type_ids'
+                'selected' => 'data.asset_type_ids',
+                'disabled' => 'disabled'
             ])
         </div>
     </div>
@@ -35,11 +38,11 @@
         <label>Kiểm kê<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
         <div class="d-flex tw-gap-x-3">
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled="{{$disabled}}">
+                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled=disabled>
                 <label class="form-check-label" for="manual">Thủ công</label>
             </div>
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled="{{$disabled}}">
+                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled=disabled>
                 <label class="form-check-label" for="auto">Tự động</label>
             </div>
         </div>
@@ -49,17 +52,18 @@
         @include('common.user.select_multiple', [
             'placeholder' => 'Chọn người tham gia',
             'options' => 'listUser',
-            'selected' => 'data.user_ids'
+            'selected' => 'data.user_ids',
+            'disabled' => 'disabled'
         ])
     </div>
     <div>
         <label class="tw-font-bold">Mô tả</label>
-        <textarea class="form-control" x-model="data.note" placeholder="Nhập mô tả" style="min-height: 4rem" :disabled="{{$disabled}}"></textarea>
+        <textarea class="form-control" x-model="data.note" placeholder="Nhập mô tả" style="min-height: 4rem" :disabled=disabled></textarea>
     </div>
     <div>
         <label></label>
         <div class="align-content-between mt-2">
-            <input type="checkbox" class="" id="exampleCheck1" x-model="data.sent_notification" :disabled="{{$disabled}}">
+            <input type="checkbox" class="" id="exampleCheck1" x-model="data.sent_notification" :disabled=disabled>
             <label class="form-check-label" for="exampleCheck1">Gửi thông báo cho đơn vị</label>
         </div>
     </div>

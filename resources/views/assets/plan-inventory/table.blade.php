@@ -50,46 +50,19 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <template x-if="value.status === STATUS_INVENTORIED">
-                                            <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
+                                            <span class="tw-cursor-pointer" @click="window.location.href = `/plan-inventory/detail/${value.id}`">
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
                                         <template x-if="[STATUS_INVENTORY_NEW, STATUS_TAKING_INVENTORY].includes(+value.status)">
                                             <span>
-                                                <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc"></i>
+                                                <span class="tw-cursor-pointer mr-1"
+                                                      @click="window.location.href = `/plan-inventory/update/${value.id}`">
+                                                     <i class="bi bi-pencil-square color-sc"></i>
                                                 </span>
-                                                <span class="tw-cursor-pointer">
-                                                    <i class="bi bi-trash3 text-red"></i>
-                                                </span>
-                                            </span>
-                                        </template>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a x-text="value.code" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
-                                    </td>
-                                    <td x-text="value.name">
-                                    <td x-text="value.suppliers.join(', ')">
-                                    <td x-text="value.organizations.join(', ')">
-                                    <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
-                                    <td class="text-center align-middle">
-                                        @include('component.status.status_plan_maintain', ['status' => 'value.status'])
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
-                                            <span class="tw-cursor-pointer">
-                                                <i class="bi bi-eye text-info"></i>
-                                            </span>
-                                        </template>
-                                        <template x-if="value.status === STATUS_MAINTAINING">
-                                            <span>
-                                                <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc" ></i>
-                                                </span>
-                                                <span class="tw-cursor-pointer" @click="handleShowModalConfirmDelete(value.id)">
-                                                    <i class="bi bi-trash3 text-red"></i>
+                                                <span class="tw-cursor-pointer"
+                                                      @click="handleShowModalConfirmDelete(value.id)">
+                                                      <i class="bi bi-trash3 text-red"></i>
                                                 </span>
                                             </span>
                                         </template>

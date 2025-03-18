@@ -118,7 +118,9 @@ class AppErrorCode
     public const CODE_2111 = 2111; //  Tải tài liệu thất bại !
     public const CODE_2112 = 2112; //  Gắn loại tài sản cho kế hoạch kiểm kê thất bại !
     public const CODE_2113 = 2113; //  Kế hoạch kiểm kê không tồn tại !
-
+    public const CODE_2114 = 2114; //  Cập nhật kế hoạch kiểm kê thất bại !
+    public const CODE_2115 = 2115; //  Tạo tài sản kiểm kê thất bại !
+    public const CODE_2116 = 2116; //  Trạng thái kế hoạch kiểm kê không hợp lệ !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !

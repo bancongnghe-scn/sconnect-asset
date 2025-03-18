@@ -39,5 +39,4 @@
         </template>
         </tbody>
     </table>
-
 </div>

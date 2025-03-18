@@ -97,6 +97,7 @@ Route::middleware('checkAuth')->group(function () {
     Route::prefix('plan-inventory')->group(function () {
         Route::view('list', 'assets.plan-inventory.list');
         Route::view('detail/{id}', 'assets.plan-inventory.detail');
+        Route::view('update/{id}', 'assets.plan-inventory.update');
     });
     Route::view('summernote', 'common.summernote.summernote_comment');
 

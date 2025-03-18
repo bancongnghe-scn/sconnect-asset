@@ -49,14 +49,16 @@
                     <div :key="comment">
                         <template x-for="comment in comments" :key="comment.id">
                             <div class="mt-3">
-                                <div class="tw-flex tw-gap-x-2 align-items-center ">
+                                <div class="tw-flex tw-gap-x-2 align-items-center" x-data="{user: listUser.find(item => item.id === comment.created_by)}">
                                     <img
-                                        src="https://lh3.googleusercontent.com/a/ACg8ocJ-NELNG55xGTjMztdZpSLwO6SsJiKCfW1UluF-QjAddVaFSQ=s96-c"
+                                        x-bind:src="user && user.avatar ?
+                                        (user.avatar.includes('/uploads/') ? 'https://office.sconnect.com.vn' + user.avatar : user.avatar)
+                                        : 'https://office.sconnect.com.vn/images/avatar-default.png'"
                                         class="tw-w-10 tw-h-10 border tw-rounded-full">
                                     <div class="card border p-2 tw-w-full mb-0" style="background: #E0E4EA40;">
                                         <div>
                                             <span class="tw-font-bold" style="color: #2067B0;"
-                                                  x-text="listUser.find(item => item.id === comment.created_by)?.name"></span>
+                                                  x-text="user?.name"></span>
                                             <span class="text-xs opacity-50 ml-2" x-text="comment.created_at"></span>
                                         </div>
                                         <span x-html="comment.message"></span>

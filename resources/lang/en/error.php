@@ -116,7 +116,10 @@ return [
     AppErrorCode::CODE_2110 => 'Bình luận hoặc tài liệu không được để trống !',
     AppErrorCode::CODE_2111 => 'Tải tài liệu thất bại !',
     AppErrorCode::CODE_2112 => 'Gắn loại tài sản cho kế hoạch kiểm kê thất bại !',
-    AppErrorCode::CODE_2113 => ' Kế hoạch kiểm kê không tồn tại !',
+    AppErrorCode::CODE_2113 => 'Kế hoạch kiểm kê không tồn tại !',
+    AppErrorCode::CODE_2114 => 'Cập nhật kế hoạch kiểm kê thất bại !',
+    AppErrorCode::CODE_2115 => 'Tạo tài sản kiểm kê thất bại !',
+    AppErrorCode::CODE_2116 => 'Trạng thái kế hoạch kiểm kê không hợp lệ !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

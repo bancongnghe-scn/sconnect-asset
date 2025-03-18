@@ -4,6 +4,7 @@ namespace App\Http\Resources\Inventory;
 
 use App\Models\PlanMaintain;
 use App\Repositories\AssetRepository;
+use App\Repositories\PlanInventoryAssetOutsideRepository;
 use App\Repositories\PlanInventoryAssetRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -11,12 +12,14 @@ class PlanInventoryInfoResource extends JsonResource
 {
     protected $assetRepository;
     protected $planInventoryAssetRepository;
+    protected $planInventoryAssetOutsideRepository;
 
     public function __construct($resource)
     {
         parent::__construct($resource);
-        $this->assetRepository              = new AssetRepository();
-        $this->planInventoryAssetRepository = new PlanInventoryAssetRepository();
+        $this->assetRepository                     = new AssetRepository();
+        $this->planInventoryAssetRepository        = new PlanInventoryAssetRepository();
+        $this->planInventoryAssetOutsideRepository = new PlanInventoryAssetOutsideRepository();
     }
 
     public function toArray($request)
@@ -31,9 +34,14 @@ class PlanInventoryInfoResource extends JsonResource
                 'asset_type_id'   => $data['asset_type_ids'],
             ]);
         } else {
-            $listAsset = $this->planInventoryAssetRepository->getListing([
-                'plan_maintain_id' => $this->resource->id,
-            ]);
+            $listAsset = [
+                'inventory' => $this->planInventoryAssetRepository->getListing([
+                    'plan_maintain_id' => $this->resource->id,
+                ]),
+                'inventory_outside' => $this->planInventoryAssetOutsideRepository->getListing([
+                    'plan_maintain_id' => $this->resource->id,
+                ]),
+            ];
         }
         $data['assets'] = $listAsset;
 

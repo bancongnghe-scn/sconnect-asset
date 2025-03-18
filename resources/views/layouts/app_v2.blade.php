@@ -43,6 +43,9 @@
                 <div class="modal-body">
                     @yield('content')
                 </div>
+                <div class="modal-footer">
+                    @yield('footer')
+                </div>
             </div>
         </div>
         <div x-show="loading" class="tw-fixed tw-left-1/2 tw-top-20">
