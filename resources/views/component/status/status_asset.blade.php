@@ -1,5 +1,5 @@
 <span
-    x-text="LIST_STATUS_ASEET[{{$status}}]"
+    x-text="LIST_STATUS_ASSET[{{$status}}]"
     x-data="{
         getStyle(status) {
             if (status === ASSET_STATUS_ACTIVE) {

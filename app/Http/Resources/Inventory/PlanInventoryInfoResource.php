@@ -39,25 +39,22 @@ class PlanInventoryInfoResource extends JsonResource
                 'asset_type_id'   => $data['asset_type_ids'],
             ]);
         } else {
-            $planInventoryAssets = $this->planInventoryAssetRepository->getListing([
-                'plan_maintain_id' => $this->resource->id,
-            ], with: ['asset']);
             $listAsset = [
-                'inventory'         => $planInventoryAssets->toArray(),
+                'inventory'         => $this->planInventoryAssetRepository->getListing([
+                    'plan_maintain_id' => $this->resource->id,
+                ], with: ['asset']),
                 'inventory_outside' => $this->planInventoryAssetOutsideRepository->getListing([
                     'plan_maintain_id' => $this->resource->id,
                 ]),
             ];
         }
 
-        $dataAssets = $listAsset['inventory'] ?? $listAsset;
-        foreach ($dataAssets as &$asset) {
+        foreach ($listAsset['inventory'] ?? $listAsset as &$asset) {
             if (!$asset->user_id && $asset->organization_id && Asset::STATUS_PENDING != $asset->status) {
                 $asset->manager_id = $listOrganization[$asset->organization_id]['manager_id'] ?? null;
             }
         }
-
-        $data['assets'] = $dataAssets;
+        $data['assets'] = $listAsset;
 
         return $data;
     }

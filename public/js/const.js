@@ -222,7 +222,7 @@ ASSET_STATUS_LIQUIDATED              = 8;
 ASSET_STATUS_DAMAGED                 = 9;
 ASSET_STATUS_REPAIR                  = 10;
 ASSET_STATUS_MAINTAIN                = 11;
-LIST_STATUS_ASEET = {
+LIST_STATUS_ASSET = {
     [ASSET_STATUS_ACTIVE]: 'Đang sử dụng',
     [ASSET_STATUS_PENDING]: 'Chưa sử dụng',
     [ASSET_STATUS_NEW]: 'Mới',
