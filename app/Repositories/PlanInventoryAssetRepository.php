@@ -22,4 +22,19 @@ class PlanInventoryAssetRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function updatePlanInventoryAssetById($id, $data)
+    {
+        $planInventoryAsset = $this->_model->find($id);
+        if (empty($planInventoryAsset)) {
+            return false;
+        }
+
+        $planInventoryAsset->fill($data);
+        if ($planInventoryAsset->isDirty()) {
+            return $planInventoryAsset->save();
+        }
+
+        return true;
+    }
 }

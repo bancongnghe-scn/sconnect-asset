@@ -262,6 +262,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('createPlanInventory', 'createPlanInventory');
         Route::get('findPlanInventory/{id}', 'findPlanInventory');
         Route::get('startPlanInventory/{id}', 'startPlanInventory');
+        Route::post('updatePlanInventory/{id}', 'updatePlanInventory');
     });
 
     Route::prefix('report')->group(function () {

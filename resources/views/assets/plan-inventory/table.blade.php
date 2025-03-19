@@ -31,7 +31,7 @@
                                     <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
                                     <td x-text="value.organizations.join(', ')">
                                     <td x-text="value.asset_types.join(', ')">
-                                    <td class="text-center">
+                                    <td>
                                         @include('component.status.status_plan_inventory', [
                                             'status' => 'value.status'
                                         ])

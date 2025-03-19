@@ -25,6 +25,7 @@ class PlanInventoryAsset extends Model
         'manager_id_present',
         'status_asset_present',
         'location_present',
+        'total_present',
         'note',
         'created_by',
     ];

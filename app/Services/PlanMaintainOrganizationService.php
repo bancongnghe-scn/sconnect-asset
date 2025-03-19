@@ -37,7 +37,7 @@ class PlanMaintainOrganizationService
             }
         }
 
-        $organizationRemoveIds = array_diff($organizationOldIds, $organizationAddIds);
+        $organizationRemoveIds = array_diff($organizationOldIds, $organizationNewIds);
         if (!empty($organizationRemoveIds)) {
             PlanMaintainOrganization::where('plan_maintain_id', $planId)->whereIn('organization_id', $organizationRemoveIds)->delete();
         }

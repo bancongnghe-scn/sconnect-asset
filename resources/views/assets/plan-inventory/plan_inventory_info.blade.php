@@ -19,7 +19,7 @@
                 'placeholder' => 'Chọn đơn vị',
                 'options' => 'listOrganization',
                 'selected' => 'data.organization_ids',
-                'disabled' => 'disabled'
+                'disabled' => 'disabled || data.status !== STATUS_INVENTORY_NEW'
             ])
         </div>
     </div>
@@ -30,7 +30,7 @@
                 'placeholder' => 'Chọn loại tài sản',
                 'options' => 'listAssetType',
                 'selected' => 'data.asset_type_ids',
-                'disabled' => 'disabled'
+                'disabled' => 'disabled || data.status !== STATUS_INVENTORY_NEW'
             ])
         </div>
     </div>
@@ -38,11 +38,11 @@
         <label>Kiểm kê<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
         <div class="d-flex tw-gap-x-3">
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled=disabled>
+                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled='disabled || data.status !== STATUS_INVENTORY_NEW'>
                 <label class="form-check-label" for="manual">Thủ công</label>
             </div>
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled=disabled>
+                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled='disabled || data.status !== STATUS_INVENTORY_NEW'>
                 <label class="form-check-label" for="auto">Tự động</label>
             </div>
         </div>
@@ -63,7 +63,7 @@
     <div>
         <label></label>
         <div class="align-content-between mt-2">
-            <input type="checkbox" class="" id="exampleCheck1" x-model="data.sent_notification" :disabled=disabled>
+            <input type="checkbox" class="" id="exampleCheck1" x-model="data.sent_notification" :disabled='disabled || data.status !== STATUS_INVENTORY_NEW'>
             <label class="form-check-label" for="exampleCheck1">Gửi thông báo cho đơn vị</label>
         </div>
     </div>

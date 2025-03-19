@@ -21,6 +21,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
                 this.data = response.data.data
+                this.data.sent_notification = Boolean(this.data.sent_notification)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -82,6 +83,22 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiStartPlanInventory(id)
                 if (response.success) {
                     this.data.assets = response.data.data
+                    this.findPlanInventory()
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async updatePlanInventory() {
+            this.loading = true
+            try {
+                const response = await window.apiUpdatePlanInventory(id, this.data)
+                if (response.success) {
                     this.findPlanInventory()
                     return
                 }

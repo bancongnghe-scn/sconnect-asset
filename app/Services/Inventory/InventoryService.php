@@ -9,6 +9,7 @@ use App\Models\PlanMaintainLog;
 use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
+use App\Repositories\PlanInventoryAssetRepository;
 use App\Repositories\PlanMaintainLogRepository;
 use App\Services\PlanInventoryAssetService;
 use App\Services\PlanMaintainAssetTypeService;
@@ -27,6 +28,7 @@ class InventoryService
         protected AssetTypeRepository $assetTypeRepository,
         protected PlanMaintainLogRepository $planMaintainLogRepository,
         protected AssetRepository $assetRepository,
+        protected PlanInventoryAssetRepository $planInventoryAssetRepository,
     ) {
     }
 
@@ -178,6 +180,105 @@ class InventoryService
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function updatePlanInventory($id, $data)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_COMPLETE_MAINTAIN == $planInventory->staus) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['organization_ids'])) {
+                $update = resolve(PlanMaintainOrganizationService::class)
+                    ->updatePlanMaintainOrganization($data['organization_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['asset_type_ids'])) {
+                $update = resolve(PlanMaintainAssetTypeService::class)
+                    ->updatePlanMaintainAssetType($data['asset_type_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            if (!empty($data['user_ids'])) {
+                $update = resolve(PlanMaintainChargeService::class)->updatePlanMaintainCharge($data['user_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            $planInventory->fill([
+                'name'       => $data['name'],
+                'start_time' => $data['start_time'],
+                'end_time'   => $data['end_time'],
+                'note'       => $data['note'],
+            ]);
+            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
+                $planInventory->type_inventory    = $data['type_inventory'];
+                $planInventory->sent_notification = $data['sent_notification'];
+            }
+
+            if (!$planInventory->save()) {
+                DB::rollBack();
+
+                return  [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2114,
+                ];
+            }
+
+            if (PlanMaintain::STATUS_MAINTAINING == $planInventory->status && !empty($data['assets'])) {
+                $planInventoryAsset = $data['assets']['inventory'] ?? [];
+                foreach ($planInventoryAsset as $assetInventory) {
+                    $update = $this->planInventoryAssetRepository->updatePlanInventoryAssetById($assetInventory['id'], $assetInventory);
+                    if (!$update) {
+                        DB::rollBack();
+
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2117,
+                        ];
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
 
             return [
                 'success'    => false,

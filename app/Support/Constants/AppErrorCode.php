@@ -121,6 +121,7 @@ class AppErrorCode
     public const CODE_2114 = 2114; //  Cập nhật kế hoạch kiểm kê thất bại !
     public const CODE_2115 = 2115; //  Tạo tài sản kiểm kê thất bại !
     public const CODE_2116 = 2116; //  Trạng thái kế hoạch kiểm kê không hợp lệ !
+    public const CODE_2117 = 2117; //  Cập nhật tài sản kiểm kê thất bại !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !

@@ -52,8 +52,16 @@
 @endsection
 
 @section('footer')
-    <button class="btn btn-outline-success">Hủy lịch kiểm kê</button>
-    <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
+    <button class="btn btn-sc" @click="updatePlanInventory">Lưu</button>
+    <template x-if="data.status === STATUS_INVENTORY_NEW">
+        <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
+    </template>
+    <template x-if="data.status === STATUS_INVENTORY_NEW">
+        <button class="btn btn-outline-success">Hủy lịch kiểm kê</button>
+    </template>
+    <template x-if="data.status === STATUS_TAKING_INVENTORY">
+        <button class="btn btn-outline-success">Hoàn thành kiểm kê</button>
+    </template>
 @endsection
 
 @section('js')
