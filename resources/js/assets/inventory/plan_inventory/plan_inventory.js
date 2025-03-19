@@ -142,6 +142,37 @@ document.addEventListener('alpine:init', () => {
             $('#modalCreatePlanInventory').modal('show');
         },
 
+        async deletePlanInventory() {
+            this.loading = true
+            try {
+                const response = await window.apiDeletePlanInventory(this.id)
+                if (response.success) {
+                    this.getListPlanInventory(this.filters)
+                    $('#idModalConfirmDelete').modal('hide')
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        confirmRemovePlanInventory(multiple = false, id = null) {
+            if (multiple) {
+                this.id = []
+                this.selectedRow.filter((value, key) => {
+                    if (value) {
+                        this.id.push(+key)
+                    }
+                })
+            } else {
+                this.id = id
+            }
+            $("#idModalConfirmDelete").modal('show');
+        },
+
         watchFilters() {
             this.$watch('filters.start_time', (value) => {
                 if (value !== null && this.filters.end_time !== null) {
@@ -200,9 +231,13 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        confirmRemove(id) {
-            $("#"+this.idModalConfirmDelete).modal('show');
-            this.id = id
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.dataTable.forEach((item) => {
+                if (item.status === STATUS_INVENTORY_NEW) {
+                    this.selectedRow[item.id] = this.checkedAll
+                }
+            })
         },
     }));
 });

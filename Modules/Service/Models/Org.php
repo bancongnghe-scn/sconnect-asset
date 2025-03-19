@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Service\Models;
 
+use App\Models\Asset;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Org extends Model
+class Org extends BaseModel
 {
     use HasFactory;
-
-    protected $connection = 'db_dev';
 
     protected $table = 'organizations';
 

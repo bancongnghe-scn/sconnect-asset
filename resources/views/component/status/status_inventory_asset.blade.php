@@ -1,26 +1,18 @@
 <span
-    x-text="STATUS_CONTRACT[{{$status}}]"
+    x-text="LIST_STATUS_PLAN_INVENTORY_ASSET[{{$status}}]"
     x-data="{
         getStyle(status) {
-            if (status === CONTRACT_STATUS_PENDING) {
+            if (status === STATUS_ASSET_NOT_INVENTORIED) {
+                return {
+                    color: '#667085',
+                    backgroundColor: '#6670851A',
+                    border: '1px solid #667085'
+                };
+            } else if (status === STATUS_ASSET_INVENTORIED) {
                 return {
                     color: '#52C41A',
                     backgroundColor: '#F6FFED',
                     border: '1px solid #52C41A'
-                };
-            } else if (status === CONTRACT_STATUS_APPROVED)
-            {
-                return {
-                    color: '#FAAD14',
-                    backgroundColor: '#FFFBE6',
-                    border: '1px solid #FAAD14'
-                };
-            } else if (status === CONTRACT_STATUS_CANCEL)
-            {
-                return {
-                    color: '#F5222D',
-                    backgroundColor: '#FFF1F0',
-                    border: '1px solid #F5222D'
                 };
             }
             return {};

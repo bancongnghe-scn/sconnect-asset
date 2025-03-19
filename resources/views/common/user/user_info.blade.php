@@ -1,4 +1,4 @@
-<template x-if="{{$user}}.id">
+<template x-if="{{$user}}">
     <div class="d-flex justify-content-center">
         <img x-bind:src="{{$user}} && {{$user}}.avatar ?
             ({{$user}}.avatar.includes('/uploads/') ? 'https://office.sconnect.com.vn' + {{$user}}.avatar : {{$user}}.avatar)

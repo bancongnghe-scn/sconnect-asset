@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\PlanMaintain;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreatePlanInventoryRequest extends FormRequest
+class UpdatePlanInventoryRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -13,12 +12,13 @@ class CreatePlanInventoryRequest extends FormRequest
             'name'              => 'required|string',
             'start_time'        => 'required|date|date_format:Y-m-d',
             'end_time'          => 'required|date|date_format:Y-m-d',
-            'type_inventory'    => 'required|integer',
-            'organization_ids'  => 'required|array',
-            'asset_type_ids'    => 'required_if:type,' . PlanMaintain::TYPE_INVENTORY_NOT_AUTO .'|array',
+            'type_inventory'    => 'nullable|integer',
+            'organization_ids'  => 'nullable|array',
+            'asset_type_ids'    => 'nullable|array',
             'user_ids'          => 'nullable|array',
             'note'              => 'nullable|string',
             'sent_notification' => 'nullable|boolean',
+            'assets'            => 'nullable|array',
         ];
     }
 }

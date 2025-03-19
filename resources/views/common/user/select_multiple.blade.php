@@ -21,7 +21,7 @@
                     return this.options;
                 }
                 return this.options.filter(option =>
-                    option.name.toLowerCase().includes(this.search.toLowerCase())
+                    option.name.toLowerCase().includes(this.search.toLowerCase()) || option.code.toLowerCase().includes(this.search.toLowerCase())
                 );
             },
             toggleOption(value) {
@@ -58,11 +58,12 @@
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >
-        <template x-if="selected.length && options.length">
+        <template x-if="selected.length">
             <div class="d-flex flex-wrap gap-1">
                 <template x-for="id in selected" :key="id">
                     <span class="tw-bg-[#e5f2ff] tw-text-[#007aff] tw-p-[2px] rounded d-flex align-items-center tw-w-fit">
-                         <span x-data="{option: {}}" x-effect="option = options.find(option => option.id === id)" x-text="option?.code + '-' + option?.name"
+                         <span x-data="{option: {}}" x-effect="option = options.find(option => option.id === id)"
+                               x-text="option?.code + '-' + option?.name || ''"
                                class="tw-pl-[3px]"
                          ></span>
                         <button

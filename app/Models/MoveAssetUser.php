@@ -9,11 +9,12 @@ class MoveAssetUser extends Model
 {
     use HasFactory;
 
-    protected $connection = 'mysql';
-
     protected $table = 'move_asset_users';
 
     protected $guarded = [];
+
+    public const TYPE_ALLOCATION = 1;
+    public const TYPE_RECOVERY   = 2;
 
     public function transferAsset()
     {

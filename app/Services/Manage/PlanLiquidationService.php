@@ -114,8 +114,9 @@ class PlanLiquidationService
 
     public function listPlanLiquidation(array $filters = [])
     {
-        $filters['type'] = PlanMaintain::TYPE_LIQUIDATION;
-        $data            = $this->planMaintainRepository->getListing(
+        $filters['type']   = PlanMaintain::TYPE_LIQUIDATION;
+        $filters['status'] = $filters['status'] < 0 ? null : $filters['status'];
+        $data              = $this->planMaintainRepository->getListing(
             $filters,
             [
                 'id',

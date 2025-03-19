@@ -218,6 +218,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('delete', 'deleteOrder');
         Route::get('export/{id}', 'exportOrder');
         Route::get('getTotalStatusOrder', 'getTotalStatusOrder');
+        Route::get('getLogByOrderId/{id}', 'getLogByOrderId');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
@@ -260,6 +261,10 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('getPlanInventory', 'getPlanInventory');
         Route::post('createPlanInventory', 'createPlanInventory');
         Route::get('findPlanInventory/{id}', 'findPlanInventory');
+        Route::get('startPlanInventory/{id}', 'startPlanInventory');
+        Route::post('updatePlanInventory/{id}', 'updatePlanInventory');
+        Route::get('completePlanInventory/{id}', 'completePlanInventory');
+        Route::post('deletePlanInventory', 'deletePlanInventory');
     });
 
     Route::prefix('report')->group(function () {

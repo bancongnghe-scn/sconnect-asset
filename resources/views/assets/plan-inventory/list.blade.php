@@ -4,18 +4,31 @@
 
 @section('content')
     <div x-data="plan_inventory">
-        <div class="card card-body">
-            <div>
-                @include('assets.plan-inventory.filters')
+        <div>
+            <div class="card card-body">
+                <div>
+                    @include('assets.plan-inventory.filters')
+                </div>
+
+                <div class="mt-3">
+                    @include('assets.plan-inventory.table')
+                </div>
             </div>
 
-            <div class="mt-3">
-                @include('assets.plan-inventory.table')
+            <div>
+                @include('assets.plan-inventory.modal-insert')
             </div>
         </div>
 
-        <div>
-            @include('assets.plan-inventory.modal-insert')
+        {{--modal--}}
+        <div
+            x-data="{
+                modalId: 'idModalConfirmDelete',
+                contentBody: 'Bạn có chắc chắn muốn xóa kế hoạch kiểm kê này không ?'
+            }"
+            @ok="deletePlanInventory"
+        >
+            @include('common.modal-confirm')
         </div>
     </div>
 @endsection

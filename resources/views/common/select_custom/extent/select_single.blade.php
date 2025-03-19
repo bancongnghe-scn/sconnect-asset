@@ -1,19 +1,21 @@
 <div x-data="{
             init() {
-                this.options = {{$options}}
+                this.options = this.options.concat({{$options}})
                 this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
                     this.selected = newValue
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    this.options = newValue
+                    this.options = this.options.concat(newValue)
                 })
             },
             open: false,
             selected: null,
             search: '',
-            options: [],
+            options: [{
+                id: null, name: '-- Chọn --'
+            }],
             get filteredOptions() {
                 if (!this.search) {
                     return this.options;
@@ -64,7 +66,7 @@
         <ul
             class="list-unstyled mb-0 overflow-y-auto tw-max-h-64 custom-scroll"
         >
-            <template x-for="option in filteredOptions" :key="option.id">
+            <template x-for="option in filteredOptions" :key="option.id || 'key'">
                 <li>
                     <a
                         href="#"

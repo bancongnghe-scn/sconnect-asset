@@ -5,11 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Config extends Model
+class PlanInventoryAssetOutside extends Model
 {
     use HasFactory;
-
-    protected $connection = 'db_dev';
-
-    protected $table = 'configs';
+    protected $table = 'plan_inventory_asset_outside';
 }

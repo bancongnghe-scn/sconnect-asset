@@ -11,4 +11,9 @@ class PlanMaintainAssetTypeRepository extends BaseRepository
     {
         return PlanMaintainAssetType::class;
     }
+
+    public function getByPlanId($planId, $columns = ['*'])
+    {
+        return $this->_model->select($columns)->where('plan_maintain_id', $planId)->get();
+    }
 }

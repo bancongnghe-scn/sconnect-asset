@@ -38,3 +38,19 @@ window.getShoppingPlanLogByRecordId = async function (id) {
     }
 }
 
+window.apiGetLogByOrderId = async function (id) {
+    try {
+        const response = await axios.get("/api/order/getLogByOrderId/"+id)
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+

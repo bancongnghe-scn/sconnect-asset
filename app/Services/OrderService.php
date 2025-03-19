@@ -225,4 +225,11 @@ class OrderService
 
         return $data->toArray();
     }
+
+    public function getLogByOrderId($id)
+    {
+        $logs = $this->orderHistoryRepository->getListing(['order_id' => $id]);
+
+        return $logs->toArray();
+    }
 }

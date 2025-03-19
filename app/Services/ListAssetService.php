@@ -7,7 +7,6 @@ use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Models\MoveAssetOrg;
 use App\Models\MoveAssetUser;
-use App\Models\Org;
 use App\Models\TransferAsset;
 use App\Models\User;
 use App\Repositories\AssetRepository;
@@ -16,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Modules\Service\Models\Org;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -66,7 +66,7 @@ class ListAssetService
                     'user_id_after'           => $request->user['id'],
                     'org_id_after'            => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                     'asset_id'                => $asset['id'],
-                    'type'                    => 1,
+                    'type'                    => MoveAssetUser::TYPE_ALLOCATION,
                     'transfer_asset_id'       => $transferAsset->id,
                     'description'             => $request->description,
                     'date'                    => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
@@ -84,7 +84,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_ACTIVE,
                 'user_id'         => $request->user['id'],
                 'organization_id' => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
-                'location'        => DB::connection('db_dev')->table('user_generals')->where('user_id', $request->user['id'])->first()->workplace_id,
+                'location'        => DB::connection('mysql_service')->table('user_generals')->where('user_id', $request->user['id'])->first()->workplace_id,
             ]);
             $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
@@ -131,7 +131,7 @@ class ListAssetService
                     'user_id'              => $request->user['id'],
                     'org_id'               => $request->user['org_last_parent'] ? $request->user['org_last_parent']['id'] : $request->user['dept_id'],
                     'asset_id'             => $asset['id'],
-                    'type'                 => 2,
+                    'type'                 => MoveAssetUser::TYPE_RECOVERY,
                     'user_id_after'        => null,
                     'org_id_after'         => $orgIdAfter,
                     'description'          => $request->description,
@@ -151,7 +151,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_PENDING,
                 'user_id'         => null,
                 'organization_id' => $orgIdAfter,
-                'location'        => $request->recoveryCompany ? 1 : DB::connection('db_dev')->table('org_infos')->where('org_id', $orgIdAfter)->first()->branch_id,
+                'location'        => $request->recoveryCompany ? 1 : DB::connection('mysql_service')->table('org_infos')->where('org_id', $orgIdAfter)->first()->branch_id,
             ]);
 
             $this->exportReport($transferAsset->id, $arrAssetId);
@@ -207,8 +207,8 @@ class ListAssetService
                     'user_id'     => null,
                     'org_id'      => $request->org['id'],
                     'asset_id'    => $asset['id'],
-                    'type'        => 1,
-                    'is_rotation' => 1,
+                    'type'        => MoveAssetOrg::TYPE_ALLOCATION,
+                    'is_rotation' => MoveAssetOrg::IS_ROTATION,
                     'description' => $request->description,
                     'created_at'  => Carbon::now(),
                     'updated_at'  => Carbon::now(),
@@ -218,7 +218,7 @@ class ListAssetService
                     'user_id_after'        => null,
                     'org_id_after'         => $request->org['id'],
                     'asset_id'             => $asset['id'],
-                    'type'                 => 1,
+                    'type'                 => MoveAssetUser::TYPE_ALLOCATION,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->description,
                     'date'                 => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
@@ -238,7 +238,7 @@ class ListAssetService
                 'status'          => Asset::STATUS_ACTIVE,
                 'organization_id' => $request->org['id'],
                 'user_id'         => null,
-                'location'        => DB::connection('db_dev')->table('org_infos')->where('org_id', $request->org['id'])->first()->branch_id,
+                'location'        => DB::connection('mysql_service')->table('org_infos')->where('org_id', $request->org['id'])->first()->branch_id,
             ]);
             $this->exportReport($transferAsset->id, $arrAssetId);
             DB::commit();
@@ -278,8 +278,8 @@ class ListAssetService
                     'user_id'     => null,
                     'org_id'      => $request->org['id'],
                     'asset_id'    => $asset['id'],
-                    'type'        => 2,
-                    'is_rotation' => 1,
+                    'type'        => MoveAssetOrg::TYPE_RECOVERY,
+                    'is_rotation' => MoveAssetOrg::IS_ROTATION,
                     'description' => $request->description,
                     'created_at'  => Carbon::now(),
                     'updated_at'  => Carbon::now(),
@@ -384,8 +384,8 @@ class ListAssetService
                         'org_id'      => $assetRotation['organization_id'],
                         'user_id'     => $assetRotation['user_id'],
                         'asset_id'    => $assetRotation['id'],
-                        'type'        => 2,
-                        'is_rotation' => 1,
+                        'type'        => MoveAssetOrg::TYPE_RECOVERY,
+                        'is_rotation' => MoveAssetOrg::IS_ROTATION,
                         'description' => $request->descriptionRotation,
                         'created_at'  => Carbon::now(),
                         'updated_at'  => Carbon::now(),
@@ -395,7 +395,7 @@ class ListAssetService
                         'user_id_after'        => null,
                         'org_id_after'         => null,
                         'asset_id'             => $assetRotation['id'],
-                        'type'                 => 2,
+                        'type'                 => MoveAssetUser::TYPE_RECOVERY,
                         'org_id'               => $assetRotation['organization_id'],
                         'user_id'              => $assetRotation['user_id'],
                         'transfer_asset_id'    => $transferAsset->id,
@@ -412,8 +412,8 @@ class ListAssetService
                     'user_id'     => $userId,
                     'org_id'      => $orgId,
                     'asset_id'    => $assetRotation['id'],
-                    'type'        => 1,
-                    'is_rotation' => 1,
+                    'type'        => MoveAssetOrg::TYPE_ALLOCATION,
+                    'is_rotation' => MoveAssetOrg::IS_ROTATION,
                     'description' => $request->descriptionRotation,
                     'created_at'  => Carbon::now(),
                     'updated_at'  => Carbon::now(),
@@ -425,7 +425,7 @@ class ListAssetService
                     'user_id_after'        => $userId,
                     'org_id_after'         => $orgId,
                     'asset_id'             => $assetRotation['id'],
-                    'type'                 => 1,
+                    'type'                 => MoveAssetUser::TYPE_ALLOCATION,
                     'transfer_asset_id'    => $transferAsset->id,
                     'description'          => $request->descriptionRotation,
                     'date'                 => $dateChange->year.'0'.$dateChange->month.'0'.$dateChange->day,
@@ -439,8 +439,8 @@ class ListAssetService
                     'organization_id' => $orgId,
                     'user_id'         => $userId,
                     'location'        => $userId ?
-                        DB::connection('db_dev')->table('user_generals')->where('user_id', $userId)->first()->workplace_id
-                        : DB::connection('db_dev')->table('org_infos')->where('org_id', $orgId)->first()->branch_id,
+                        DB::connection('mysql_service')->table('user_generals')->where('user_id', $userId)->first()->workplace_id
+                        : DB::connection('mysql_service')->table('org_infos')->where('org_id', $orgId)->first()->branch_id,
                 ]);
             }
 

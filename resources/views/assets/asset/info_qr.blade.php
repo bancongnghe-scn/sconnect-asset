@@ -63,7 +63,7 @@
         </div>
         <div>
             <span class="tw-font-bold">Trạng thái:</span>
-            <span x-text="LIST_STATUS_ASEET[data.status]"></span>
+            <span x-text="LIST_STATUS_ASSET[data.status]"></span>
         </div>
     </div>
 </div>

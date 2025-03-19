@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Service\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class OrgJobTitle extends Model
+class OrgJobTitle extends BaseModel
 {
     use HasFactory;
-
-    protected $connection = 'db_dev';
 
     protected $table = 'org_job_titles';
 
