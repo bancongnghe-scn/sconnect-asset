@@ -200,9 +200,13 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        confirmRemove(id) {
-            $("#"+this.idModalConfirmDelete).modal('show');
-            this.id = id
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.dataTable.forEach((item) => {
+                if (item.status === STATUS_INVENTORY_NEW) {
+                    this.selectedRow[item.id] = this.checkedAll
+                }
+            })
         },
     }));
 });

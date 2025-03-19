@@ -22,8 +22,9 @@
                         <tbody>
                             <template x-for="(value, index) in dataTable" :key="index">
                                 <tr>
-                                    <td class="text-center align-middle" :disabled="+value.status === STATUS_INVENTORIED">
-                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
+                                    <td class="text-center align-middle">
+                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]"
+                                               :disabled="value.status !== STATUS_INVENTORY_NEW">
                                     </td>
                                     <td class="align-middle">
                                         <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/plan-inventory/detail/${value.id}`"></a>

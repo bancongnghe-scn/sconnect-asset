@@ -18,6 +18,14 @@
             @include('assets.plan-inventory.modal-insert')
         </div>
     </div>
+
+    {{--modal--}}
+    <div @ok="removeMultiple">
+        @include('common.modal-confirm', [
+            'modalId' => 'idModalConfirmDelete',
+            'contentBody' => 'Bạn có chắc chắn muốn xóa danh sách hợp đồng này không ?'
+        ])
+    </div>
 @endsection
 
 @section('js')
