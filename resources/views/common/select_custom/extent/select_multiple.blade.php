@@ -3,13 +3,17 @@
                 this.options = {{$options}} || [];
                 this.selected = {{$selected}} || [];
                 this.$watch(`{{$selected}}`, (newValue) => {
-                    this.selected = newValue;
+                    if(newValue) {
+                        this.selected = newValue
+                    }
                 });
                 this.$watch('selected', (newValue) => {
                     this.{{$selected}} = newValue;
                 });
                 this.$watch(`{{$options}}`, (newValue) => {
-                    this.options = newValue;
+                    if(newValue) {
+                        this.options = newValue
+                    }
                 });
             },
             open: false,

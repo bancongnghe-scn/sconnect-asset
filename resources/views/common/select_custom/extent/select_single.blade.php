@@ -3,11 +3,15 @@
                 this.options = this.options.concat({{$options}})
                 this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    this.selected = newValue
+                    if(newValue) {
+                        this.selected = newValue
+                    }
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    this.options = this.options.concat(newValue)
+                    if(newValue) {
+                        this.options = this.options.concat(newValue)
+                    }
                 })
             },
             open: false,
