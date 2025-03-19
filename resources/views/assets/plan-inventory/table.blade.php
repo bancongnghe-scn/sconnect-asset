@@ -62,7 +62,7 @@
                                                      <i class="bi bi-pencil-square color-sc"></i>
                                                 </span>
                                                 <span class="tw-cursor-pointer"
-                                                      @click="handleShowModalConfirmDelete(value.id)">
+                                                      @click="confirmRemovePlanInventory(false, value.id)">
                                                       <i class="bi bi-trash3 text-red"></i>
                                                 </span>
                                             </span>

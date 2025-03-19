@@ -41,12 +41,16 @@ class PlanMaintainRepository extends BaseRepository
             $query->whereDate('created_at', $filters['created_at']);
         }
 
-        if (!empty($filters['status']) && $filters['status'] > 0) {
+        if (isset($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
         }
 
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
+        }
+
+        if (!empty($filters['first'])) {
+            return $query->first();
         }
 
         if (!empty($filters['limit'])) {

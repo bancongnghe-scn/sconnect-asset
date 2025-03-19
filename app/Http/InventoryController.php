@@ -117,10 +117,10 @@ class InventoryController extends Controller
         }
     }
 
-    public function deletePlanInventory($id)
+    public function deletePlanInventory(Request $request)
     {
         try {
-            $result = $this->inventoryService->deletePlanInventory($id);
+            $result = $this->inventoryService->deletePlanInventory($request->get('id'));
             if ($result['success']) {
                 return response_success();
             }

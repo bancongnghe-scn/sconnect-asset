@@ -145,7 +145,9 @@ window.apiCompletePlanInventory = async function (id) {
 
 window.apiDeletePlanInventory = async function (id) {
     try {
-        const response = await axios.get("/api/inventory/deletePlanInventory/"+id)
+        const response = await axios.post("/api/inventory/deletePlanInventory", {
+            id: id
+        })
 
         const data = response.data;
         if (!data.success) {

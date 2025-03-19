@@ -326,22 +326,19 @@ class InventoryService
 
     public function deletePlanInventory($id)
     {
-        $planInventory = $this->planMaintainRepository->find($id);
-        if (empty($planInventory)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2113,
-            ];
-        }
-
-        if (PlanMaintain::STATUS_NEW != $planInventory->status) {
+        $planInventory = $this->planMaintainRepository->getListing([
+            'status' => [PlanMaintain::STATUS_MAINTAINING, PlanMaintain::STATUS_COMPLETE_MAINTAIN],
+            'id'     => $id,
+            'first'  => true,
+        ]);
+        if (!empty($planInventory)) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2116,
             ];
         }
 
-        if (!$planInventory->delete()) {
+        if (!$this->planMaintainRepository->deleteMultipleByIds($id)) {
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2119,

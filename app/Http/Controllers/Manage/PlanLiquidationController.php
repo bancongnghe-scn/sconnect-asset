@@ -34,7 +34,7 @@ class PlanLiquidationController extends Controller
         $request->validate([
             'name_code'         => 'nullable|string|max:255',
             'created_at'        => 'nullable|string',
-            'status'            => 'nullable|integer|max:200',
+            'status'            => 'nullable',
         ]);
         try {
             $result = $this->planLiquidationService->listPlanLiquidation($request->all());

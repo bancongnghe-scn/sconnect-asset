@@ -23,7 +23,9 @@
                 <span>+ Thêm</span>
             </button>
             <button class="btn btn-sm btn-outline-danger" type="button"
-                    :disabled="window.checkDisableSelectRow">
+                    :disabled="window.checkDisableSelectRow"
+                    @click="confirmRemovePlanInventory(true)"
+            >
                 <span><i class="bi bi-trash pr-1"></i>Xóa chọn</span>
             </button>
         </div>
