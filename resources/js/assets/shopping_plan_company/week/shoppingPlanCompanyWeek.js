@@ -830,7 +830,6 @@ document.addEventListener('alpine:init', () => {
                     for (let i = (time * 3) - 2; i <= time * 3; i++) {
                         this.listMonth[i] = LIST_MONTHS[i]
                     }
-                    console.log(this.listMonth)
                 }
             })
         },
