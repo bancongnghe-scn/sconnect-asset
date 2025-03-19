@@ -35,12 +35,12 @@
 
             <template x-if="data.status !== STATUS_INVENTORY_NEW">
                 <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>
+                    <div class="tw-w-fit active-link mb-3"
+                         x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"
+                         @click="tab = 'inventory'"
+                    >
+                    </div>
                     @include('assets.plan-inventory.list_asset_inventory', ['disabled' => false])
-                </div>
-                <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản ngoài danh sách (${data?.assets?.inventory_outside.length ?? 0})`"></div>
-{{--                    @include('assets.plan-inventory.list_asset_inventory_outside')--}}
                 </div>
             </template>
         </div>
@@ -67,11 +67,12 @@
     <template x-if="data.status === STATUS_INVENTORY_NEW">
         <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
     </template>
-    <template x-if="data.status === STATUS_INVENTORY_NEW">
-        <button class="btn btn-outline-success" @click="$('#modalConfirmRemove').modal('show')">Hủy lịch kiểm kê</button>
-    </template>
     <template x-if="data.status === STATUS_TAKING_INVENTORY">
         <button class="btn btn-outline-success" @click="completePlanInventory">Hoàn thành kiểm kê</button>
+    </template>
+    <button class="btn btn-outline-success" @click="findPlanInventory">Hủy</button>
+    <template x-if="data.status === STATUS_INVENTORY_NEW">
+        <button class="btn btn-outline-success" @click="$('#modalConfirmRemove').modal('show')">Hủy lịch kiểm kê</button>
     </template>
 @endsection
 
