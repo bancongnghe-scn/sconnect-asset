@@ -10,13 +10,13 @@
                                 <th class="text-center">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
-                                <th rowspan="1" colspan="1" class="text-center">Tên kế hoạch kiểm kê</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-40">Thời gian</th>
-                                <th rowspan="1" colspan="1" class="text-center">Đơn vị</th>
-                                <th rowspan="1" colspan="1" class="text-center">Loại tài sản</th>
-                                <th rowspan="1" colspan="1" class="text-center">Trạng thái</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-60">Tiến độ</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-24">Thao tác</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 18rem;">Tên kế hoạch kiểm kê</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 13rem;">Thời gian</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 17rem;">Đơn vị</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: auto;">Loại tài sản</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 8rem;">Trạng thái</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 20rem;">Tiến độ</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 5rem;">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,13 +25,13 @@
                                     <td class="text-center align-middle" :disabled="+value.status === STATUS_INVENTORIED">
                                         <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
                                     </td>
-                                    <td>
+                                    <td class="align-middle">
                                         <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/plan-inventory/detail/${value.id}`"></a>
                                     </td>
                                     <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
-                                    <td x-text="value.organizations.join(', ')">
-                                    <td x-text="value.asset_types.join(', ')">
-                                    <td>
+                                    <td class="align-middle" x-text="value.organizations.join(', ')">
+                                    <td class="align-middle" x-text="value.asset_types.join(', ')">
+                                    <td class="align-middle">
                                         @include('component.status.status_plan_inventory', [
                                             'status' => 'value.status'
                                         ])

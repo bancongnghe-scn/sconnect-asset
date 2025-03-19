@@ -15,9 +15,16 @@ class PlanInventoryAssetRepository extends BaseRepository
     public function getListing($filters, $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()->select($columns)->with($with);
-
         if (!empty($filters['plan_maintain_id'])) {
             $query->where('plan_maintain_id', $filters['plan_maintain_id']);
+        }
+
+        if (isset($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['first'])) {
+            return $query->first();
         }
 
         return $query->get();

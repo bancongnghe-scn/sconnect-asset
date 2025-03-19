@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
+use App\Models\PlanInventoryAsset;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainLog;
 use App\Repositories\AssetRepository;
@@ -36,7 +37,7 @@ class InventoryService
     {
         $filters['type'] = PlanMaintain::TYPE_INVENTORY;
         $data            = $this->planMaintainRepository->getListing($filters, with: [
-            'planMaintainAsset',
+            'planInventoryAsset',
             'planMaintainOrganizations' => ['organization'],
             'planMaintainAssetTypes'    => ['assetType'],
         ]);
@@ -285,5 +286,70 @@ class InventoryService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function completePlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        $planInventoryAsset = $this->planInventoryAssetRepository->getListing([
+            'plan_maintain_id' => $id,
+            'status'           => PlanInventoryAsset::STATUS_NOT_INVENTORIED,
+            'first'            => true,
+        ]);
+
+        if (!empty($planInventoryAsset)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2118,
+            ];
+        }
+
+        $planInventory->status = PlanMaintain::STATUS_COMPLETE_MAINTAIN;
+        if (!$planInventory->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2114,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deletePlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_NEW != $planInventory->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        if (!$planInventory->delete()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2119,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

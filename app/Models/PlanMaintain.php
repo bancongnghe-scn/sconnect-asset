@@ -82,4 +82,9 @@ class PlanMaintain extends Model
     {
         return $this->hasMany(PlanMaintainAssetType::class, 'plan_maintain_id');
     }
+
+    public function planInventoryAsset(): HasMany
+    {
+        return $this->hasMany(PlanInventoryAsset::class, 'plan_maintain_id');
+    }
 }

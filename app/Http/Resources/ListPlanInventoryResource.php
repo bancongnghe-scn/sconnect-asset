@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\PlanMaintainAsset;
+use App\Models\PlanInventoryAsset;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ListPlanInventoryResource extends JsonResource
@@ -11,8 +11,8 @@ class ListPlanInventoryResource extends JsonResource
     {
         $data = [];
         foreach ($this->resource as $planInventory) {
-            $assetInventoried    = $planInventory->planMaintainAsset->where('status', PlanMaintainAsset::STATUS_COMPLETE_MAINTAINING)->count();
-            $totalAssetInventory = $planInventory->planMaintainAsset->count();
+            $assetInventoried    = $planInventory->planInventoryAsset->where('status', PlanInventoryAsset::STATUS_INVENTORIED)->count();
+            $totalAssetInventory = $planInventory->planInventoryAsset->count();
             $process             = $assetInventoried > 0 ? round($assetInventoried / $totalAssetInventory, 2) * 100 : 0;
             $data[]              = [
                 'id'            => $planInventory->id,

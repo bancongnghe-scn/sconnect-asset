@@ -99,7 +99,39 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiUpdatePlanInventory(id, this.data)
                 if (response.success) {
-                    this.findPlanInventory()
+                    await this.findPlanInventory()
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async completePlanInventory() {
+            this.loading = true
+            try {
+                const response = await window.apiCompletePlanInventory(id)
+                if (response.success) {
+                    window.location.href = `/plan-inventory/list`
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async deletePlanInventory() {
+            this.loading = true
+            try {
+                const response = await window.apiDeletePlanInventory(id)
+                if (response.success) {
+                    window.location.href = `/plan-inventory/list`
                     return
                 }
                 toast.error(response.message)

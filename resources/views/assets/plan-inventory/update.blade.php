@@ -49,6 +49,17 @@
             @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_PLAN_MAINTAIN'])
         </div>
     </div>
+
+    {{--modal--}}
+    <div
+        x-data="{
+            modalId: 'modalConfirmRemove',
+            contentBody: 'Bạn có chắc chắn muốn hủy kế hoạch kiểm kê này không ?'
+        }"
+        @ok="deletePlanInventory"
+    >
+        @include('common.modal-confirm')
+    </div>
 @endsection
 
 @section('footer')
@@ -57,10 +68,10 @@
         <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
     </template>
     <template x-if="data.status === STATUS_INVENTORY_NEW">
-        <button class="btn btn-outline-success">Hủy lịch kiểm kê</button>
+        <button class="btn btn-outline-success" @click="$('#modalConfirmRemove').modal('show')">Hủy lịch kiểm kê</button>
     </template>
     <template x-if="data.status === STATUS_TAKING_INVENTORY">
-        <button class="btn btn-outline-success">Hoàn thành kiểm kê</button>
+        <button class="btn btn-outline-success" @click="completePlanInventory">Hoàn thành kiểm kê</button>
     </template>
 @endsection
 
