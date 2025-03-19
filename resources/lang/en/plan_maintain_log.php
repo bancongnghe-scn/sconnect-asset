@@ -10,5 +10,5 @@ return [
     PlanMaintainLog::ACTION_CREATE_PLAN_INVENTORY   => 'Tạo mới kế hoạch kiểm kê',
     PlanMaintainLog::ACTION_UPDATE_PLAN_INVENTORY   => 'Cập nhật kế hoạch kiểm kê',
     PlanMaintainLog::ACTION_COMPLETE_PLAN_INVENTORY => 'Hoàn thành kế hoạch kiểm kê',
-    PlanMaintainLog::ACTION_DELETE_PLAN_INVENTORY   => 'Xóa kế hoạch kiểm kê',
+    PlanMaintainLog::ACTION_START_PLAN_INVENTORY    => 'Bắt đầu hoạch kiểm kê',
 ];

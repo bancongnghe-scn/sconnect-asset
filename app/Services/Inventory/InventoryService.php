@@ -173,6 +173,16 @@ class InventoryService
                 return $insert;
             }
 
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_START_PLAN_INVENTORY, $planInventory->id);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
             DB::commit();
 
             return [
@@ -236,6 +246,17 @@ class InventoryService
                     return $update;
                 }
             }
+
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_UPDATE_PLAN_INVENTORY, $planInventory->id, $data, $planInventory->toArray());
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
 
             $planInventory->fill([
                 'name'       => $data['name'],
@@ -316,6 +337,14 @@ class InventoryService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2114,
+            ];
+        }
+
+        $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_COMPLETE_PLAN_INVENTORY, $planInventory->id);
+        if (!$insert) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2076,
             ];
         }
 
