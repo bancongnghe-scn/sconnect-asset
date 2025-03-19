@@ -3,11 +3,11 @@
                 this.options = {{$options}}
                 this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    this.selected = newValue
+                     this.selected = newValue || null
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    this.options = newValue
+                     this.options = newValue || []
                 })
             },
             open: false,

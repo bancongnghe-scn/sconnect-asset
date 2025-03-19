@@ -1,6 +1,6 @@
 <div class="tw-grid tw-grid-cols-5 tw-gap-x-3">
     <div>
-        <input type="text" class="form-control" x-model="filters.name" placeholder="Tên kế hoạch" @keydown.enter="list(filters)">
+        <input type="text" class="form-control" x-model="filters.name" placeholder="Tên kế hoạch" @keydown.enter="getListPlanInventory(filters)">
     </div>
     <div>
         @include('common.datepicker.datepicker_range', [

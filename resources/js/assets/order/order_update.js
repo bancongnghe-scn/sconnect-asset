@@ -16,7 +16,6 @@ document.addEventListener('alpine:init', () => {
         async update() {
             this.loading = true
             try {
-                console.log(this.data)
                 const response = await window.apiUpdateOrder(this.data)
                 if (!response.success) {
                     toast.error(response.message)

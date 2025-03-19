@@ -56,7 +56,6 @@
                 <section class="content">
                     <div class="container-fluid"
                          x-data="{permission: {{\Auth::user()->getAllPermissions()->pluck('name')}}}"
-                         x-effect="console.log(permission)"
                     >
                         @yield('content')
                     </div>

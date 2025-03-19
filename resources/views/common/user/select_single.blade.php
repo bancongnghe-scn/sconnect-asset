@@ -1,13 +1,13 @@
 <div x-data="{
             init() {
-                this.options = {{$options}}
-                this.selected = {{$selected}}
+                this.options = {{$options}} || [];
+                this.selected = {{$selected}} || null;
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    this.selected = newValue
+                     this.options = selected || null
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    this.options = newValue
+                     this.options = newValue || []
                 })
             },
             open: false,

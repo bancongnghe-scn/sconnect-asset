@@ -25,9 +25,7 @@
         </div>
 
         {{--  modal--}}
-        <div>
-            @include('rbac.menu.modalUI')
-        </div>
+        @include('rbac.menu.modalUI')
 
         <div
             x-data="{
