@@ -176,31 +176,31 @@ document.addEventListener('alpine:init', () => {
         watchFilters() {
             this.$watch('filters.start_time', (value) => {
                 if (value !== null && this.filters.end_time !== null) {
-                    this.list(this.filters)
+                    this.getListPlanInventory(this.filters)
                 }
             })
 
             this.$watch('filters.end_time', (value) => {
                 if (this.filters.start_time !== null && value !== null) {
-                    this.list(this.filters)
+                    this.getListPlanInventory(this.filters)
                 }
             })
 
             this.$watch('filters.status', (value) => {
                 if (value !== null) {
-                    this.list(this.filters)
+                    this.getListPlanInventory(this.filters)
                 }
             })
         },
 
         changePage(page) {
             this.filters.page = page
-            this.list(this.filters)
+            this.getListPlanInventory(this.filters)
         },
 
         changeLimit() {
             this.filters.limit = this.limit
-            this.list(this.filters)
+            this.getListPlanInventory(this.filters)
         },
 
         resetData() {
@@ -228,7 +228,7 @@ document.addEventListener('alpine:init', () => {
                 page: 1
             }
 
-            this.list(this.filters)
+            this.getListPlanInventory(this.filters)
         },
 
         selectedAll() {

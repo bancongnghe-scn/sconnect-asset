@@ -3,15 +3,11 @@
                 this.options = {{$options}}
                 this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    if(newValue) {
-                        this.selected = newValue
-                    }
+                     this.selected = newValue || null
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    if(newValue) {
-                        this.options = newValue
-                    }
+                     this.options = newValue || []
                 })
             },
             open: false,
