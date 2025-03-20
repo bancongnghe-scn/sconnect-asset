@@ -7,8 +7,6 @@
         @repaid="handleRepaidModalUI($event.detail.id)"
         @liquidation="handleLiquidationModalUI($event.detail.id)"
         @cancel="handleCancelModalUI($event.detail.id)"
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
     >
         @include('assets.inventory.damaged.table')
     </div>

@@ -12,10 +12,7 @@
                             @include('assets.import_warehouse.filters')
                         </div>
 
-                        <div
-                            @change-page.window="changePage($event.detail.page)"
-                            @change-limit.window="changeLimit"
-                        >
+                        <div>
                             @include('assets.import_warehouse.table')
                         </div>
                     </div>

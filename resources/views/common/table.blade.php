@@ -24,7 +24,8 @@
                             <tr>
                                 <template x-if="typeof showChecked !== 'undefined' ? showChecked : true">
                                     <td class="text-center align-middle">
-                                        <input type="checkbox" x-model="selectedRow[data.id]" x-bind:checked="selectedRow[data.id]">
+                                        <input type="checkbox" x-model="selectedRow[data.id]"
+                                               x-bind:checked="selectedRow[data.id]">
                                     </td>
                                 </template>
                                 <td x-text="from + index"></td>
@@ -32,13 +33,16 @@
                                     <td x-text="data[key]"></td>
                                 </template>
                                 <td class="text-center align-middle">
-                                    <button class="border-0 bg-white" x-show="showAction.view ?? true" @click="$dispatch('view', { id: data.id })">
+                                    <button class="border-0 bg-white" x-show="showAction.view ?? true"
+                                            @click="$dispatch('view', { id: data.id })">
                                         <i class="bi bi-eye text-info"></i>
                                     </button>
-                                    <button class="border-0 bg-white" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
+                                    <button class="border-0 bg-white" x-show="showAction.edit ?? true"
+                                            @click="$dispatch('edit', { id: data.id })">
                                         <i class="bi bi-pencil-square color-sc"></i>
                                     </button>
-                                    <button class="border-0 bg-white" x-show="showAction.remove ?? true" @click="$dispatch('remove', { id: data.id })">
+                                    <button class="border-0 bg-white" x-show="showAction.remove ?? true"
+                                            @click="$dispatch('remove', { id: data.id })">
                                         <i class="fa-regular fa-trash-can" style="color: #cd1326;"></i>
                                     </button>
                                 </td>
@@ -49,7 +53,11 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
 

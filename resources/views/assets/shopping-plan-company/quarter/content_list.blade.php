@@ -6,10 +6,7 @@
                     @include('assets.shopping-plan-company.quarter.filter')
 
                     <div
-                        @remove="confirmRemove($event.detail.id)"
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                        @remove="confirmRemove($event.detail.id)">
                         @include('assets.shopping-plan-company.quarter.table')
                     </div>
                 </div>

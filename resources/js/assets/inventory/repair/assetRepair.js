@@ -117,8 +117,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -194,7 +194,7 @@ document.addEventListener('alpine:init', () => {
             } else {
                 toast.error(response.message)
             }
-            
+
             $('#'+this.idModalShowRepaired).modal('show')
 
             this.loading = false
@@ -213,7 +213,7 @@ document.addEventListener('alpine:init', () => {
             } else {
                 toast.error(response.message)
             }
-            
+
             $('#'+this.idModalRepaired).modal('show')
 
             this.loading = false
@@ -277,7 +277,7 @@ document.addEventListener('alpine:init', () => {
         },
 
         count() {
-            const ids = Object.keys(this.selectedRow).filter(key => 
+            const ids = Object.keys(this.selectedRow).filter(key =>
                 this.selectedRow[key] === true && this.selectedRow[key] !== undefined
             );
 
