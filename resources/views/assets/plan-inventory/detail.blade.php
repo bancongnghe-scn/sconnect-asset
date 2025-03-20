@@ -21,6 +21,11 @@
 @section('content')
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
+            {{--thong ke--}}
+            <template x-if="data.status !== STATUS_INVENTORY_NEW">
+                @include('assets.plan-inventory.statistic_plan_inventory')
+            </template>
+
             {{-- thong tin chung--}}
             <div class="mb-3">
                 @include('assets.plan-inventory.plan_inventory_info', ['disabled' => true])
@@ -35,7 +40,7 @@
 
             <template x-if="data.status !== STATUS_INVENTORY_NEW">
                 <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.inventory.length ?? 0})`"></div>
+                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
                     @include('assets.plan-inventory.list_asset_inventory', ['disabled' => true])
                 </div>
             </template>

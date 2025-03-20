@@ -279,8 +279,7 @@ class InventoryService
             }
 
             if (PlanMaintain::STATUS_MAINTAINING == $planInventory->status && !empty($data['assets'])) {
-                $planInventoryAsset = $data['assets']['inventory'] ?? [];
-                foreach ($planInventoryAsset as $assetInventory) {
+                foreach ($data['assets'] as $assetInventory) {
                     $update = $this->planInventoryAssetRepository->updatePlanInventoryAssetById($assetInventory['id'], $assetInventory);
                     if (!$update) {
                         DB::rollBack();
