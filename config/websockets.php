@@ -12,7 +12,7 @@ return [
             'path'                   => env('PUSHER_APP_PATH', '/ws'),
             'capacity'               => null,
             'enable_client_messages' => true,
-            'enable_statistics'      => true,
+            'enable_statistics'      => false,
         ],
     ],
     'dashboard' => [
