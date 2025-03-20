@@ -258,8 +258,7 @@
                             </tbody>
                       </table>
                       @include('common.pagination')
-                    @include('assets.asset.common.modal-asset')
-
+                      @include('assets.asset.common.modal-asset')
                     </div>
                 </div>
             </div>
