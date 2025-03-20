@@ -7,10 +7,7 @@
                         @include('assets.shopping_plan_organization.week.filter')
                     </div>
 
-                    <div
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                    <div>
                         @include('assets.shopping_plan_organization.week.table')
                     </div>
                 </div>

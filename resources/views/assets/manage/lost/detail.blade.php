@@ -3,10 +3,7 @@
         @include('assets.manage.lost.filter')
     </div>
 
-    <div
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
-    >
+    <div>
         @include('assets.manage.lost.table')
     </div>
 

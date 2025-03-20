@@ -5,10 +5,7 @@
                 <div class="card-body">
                     @include('assets.shopping-plan-company.year.filters')
 
-                    <div
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                    <div>
                         @include('assets.shopping-plan-company.year.table')
                     </div>
                 </div>

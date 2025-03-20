@@ -8,8 +8,6 @@
     <div
         @edit="handleEditModalUI($event.detail.id)"
         @get="showPlanLiquidation($event.detail.id)"
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
         @change-limit-more.window="changeLimitMore"
     >
         @include('assets.manage.plan-liquidation.table')
