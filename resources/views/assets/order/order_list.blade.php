@@ -38,10 +38,7 @@
                         </div>
 
                         {{--table--}}
-                        <div
-                            @change-page.window="changePage($event.detail.page)"
-                            @change-limit.window="changeLimit"
-                        >
+                        <div>
                             @include('assets.order.table')
                         </div>
                     </div>

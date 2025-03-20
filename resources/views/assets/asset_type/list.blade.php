@@ -24,8 +24,6 @@
                         <div
                             @edit="handShowModalUI('update', $event.detail.id)"
                             @remove="confirmRemove($event.detail.id)"
-                            @change-page.window="changePage($event.detail.page)"
-                            @change-limit.window="changeLimit"
                         >
                             @include('common.table')
                         </div>

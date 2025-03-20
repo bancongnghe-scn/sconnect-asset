@@ -24,8 +24,6 @@
                         <div
                             @edit="handleShowModal('update', $event.detail.id)"
                             @remove="confirmRemove($event.detail.id)"
-                            @change-page.window="changePage($event.detail.page)"
-                            @change-limit.window="changLimit"
                         >
                             @include('common.table')
                         </div>

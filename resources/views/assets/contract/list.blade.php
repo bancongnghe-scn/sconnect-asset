@@ -17,8 +17,6 @@
             @edit="handleShowModalUI('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
             @view="handleShowModalInfo($event.detail.id)"
-            @change-page.window="changePage($event.detail.page)"
-            @change-limit.window="changeLimit"
         >
             @include('assets.contract.table')
         </div>

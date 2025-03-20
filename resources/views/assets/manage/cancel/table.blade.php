@@ -35,14 +35,14 @@
                                     </template>
                                     <template x-if="key === 'user_name'">
                                         <div class="d-flex">
-                                            <img x-show="data.user_name" x-bind:src="data.avatar 
-                                                    ? (data.avatar.includes('/uploads/') 
-                                                        ? 'https://office.sconnect.com.vn' + data.avatar 
-                                                        : data.avatar) 
-                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'" 
-                                                    alt="" 
+                                            <img x-show="data.user_name" x-bind:src="data.avatar
+                                                    ? (data.avatar.includes('/uploads/')
+                                                        ? 'https://office.sconnect.com.vn' + data.avatar
+                                                        : data.avatar)
+                                                    : 'https://office.sconnect.com.vn/images/avatar-default.png'"
+                                                    alt=""
                                                     style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">                                   
+                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
                                                 <span x-text="data.user_name ?? ''" style="font-weight: 600; font-size: 16px;"></span>
                                                 <span x-text="data.user_code ? 'Mã nhân sự:' + data.user_code : ''" style="color: #706f6f;"></span>
                                             </div>
@@ -58,7 +58,11 @@
             </div>
         </div>
     </div>
-    @include('common.pagination')
+    <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
 </div>
 
 <script>
