@@ -39,7 +39,7 @@
         </tr>
         </thead>
         <tbody>
-        <template x-for="value in data?.assets?.inventory" :key="value.id">
+        <template x-for="value in data?.assets" :key="value.id">
             <tr>
                 {{--thong tin tai san--}}
                 <td class="align-middle" x-text="value?.asset.code"></td>
