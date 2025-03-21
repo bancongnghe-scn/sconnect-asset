@@ -22,7 +22,7 @@
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
             {{--thong ke--}}
-            <template x-if="data.status !== STATUS_INVENTORY_NEW">
+            <template x-if="data.status && data.status !== STATUS_INVENTORY_NEW">
                 @include('assets.plan-inventory.statistic_plan_inventory')
             </template>
 
@@ -38,7 +38,7 @@
                 </div>
             </template>
 
-            <template x-if="data.status !== STATUS_INVENTORY_NEW">
+            <template x-if="data.status && data.status !== STATUS_INVENTORY_NEW">
                 <div>
                     <div class="tw-w-fit active-link mb-3"
                          x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"
@@ -65,17 +65,23 @@
     >
         @include('common.modal-confirm')
     </div>
+
+    @include('assets.plan-inventory.modal_confirm_complete')
 @endsection
 
 @section('footer')
-    <button class="btn btn-sc" @click="updatePlanInventory">Lưu</button>
+    <template x-if="data.status && data.status !== STATUS_INVENTORIED">
+        <button class="btn btn-sc" @click="updatePlanInventory">Lưu</button>
+    </template>
     <template x-if="data.status === STATUS_INVENTORY_NEW">
         <button class="btn btn-sc" @click="startPlanInventory">Bắt đầu kiểm kê</button>
     </template>
-    <template x-if="data.status === STATUS_TAKING_INVENTORY">
-        <button class="btn btn-outline-success" @click="completePlanInventory">Hoàn thành kiểm kê</button>
+    <template x-if="data.status && data.status === STATUS_TAKING_INVENTORY">
+        <button class="btn btn-outline-success" @click="$('#modalConfirmComplete').modal('show')">Hoàn thành kiểm kê</button>
     </template>
-    <button class="btn btn-outline-success" @click="findPlanInventory">Hủy</button>
+    <template x-if="data.status === STATUS_INVENTORY_NEW">
+        <button class="btn btn-outline-success" @click="findPlanInventory">Hủy</button>
+    </template>
     <template x-if="data.status === STATUS_INVENTORY_NEW">
         <button class="btn btn-outline-success" @click="$('#modalConfirmRemove').modal('show')">Hủy lịch kiểm kê</button>
     </template>
