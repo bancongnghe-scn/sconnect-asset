@@ -4,7 +4,6 @@ namespace App\Services\Inventory;
 
 use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
-use App\Models\PlanInventoryAsset;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainLog;
 use App\Repositories\AssetRepository;
@@ -315,19 +314,6 @@ class InventoryService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2113,
-            ];
-        }
-
-        $planInventoryAsset = $this->planInventoryAssetRepository->getListing([
-            'plan_maintain_id' => $id,
-            'status'           => PlanInventoryAsset::STATUS_NOT_INVENTORIED,
-            'first'            => true,
-        ]);
-
-        if (!empty($planInventoryAsset)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2118,
             ];
         }
 
