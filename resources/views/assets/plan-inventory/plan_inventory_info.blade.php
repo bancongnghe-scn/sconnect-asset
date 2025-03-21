@@ -46,6 +46,7 @@
                 <label class="form-check-label" for="auto">Tự động</label>
             </div>
         </div>
+        <span x-show="+data.type_inventory === TYPE_INVENTORY_AUTO" class="text-red">Lưu ý: kiểm kê tài sản tự động chỉ áp dụng với các loại tài sản(CPU, Card, Ram, HDD, SSD, Main)</span>
     </div>
     <div>
         <label class="tw-font-bold">Người tham gia</label>

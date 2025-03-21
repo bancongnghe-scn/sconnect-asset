@@ -40,11 +40,7 @@
 
             <template x-if="data.status && data.status !== STATUS_INVENTORY_NEW">
                 <div>
-                    <div class="tw-w-fit active-link mb-3"
-                         x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"
-                         @click="tab = 'inventory'"
-                    >
-                    </div>
+                    <div class="tw-w-fit active-link mb-3" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
                     @include('assets.plan-inventory.list_asset_inventory', ['disabled' => false])
                 </div>
             </template>
@@ -70,7 +66,7 @@
 @endsection
 
 @section('footer')
-    <template x-if="data.status && data.status !== STATUS_INVENTORIED">
+    <template x-if="data.status !== STATUS_INVENTORIED">
         <button class="btn btn-sc" @click="updatePlanInventory">Lưu</button>
     </template>
     <template x-if="data.status === STATUS_INVENTORY_NEW">

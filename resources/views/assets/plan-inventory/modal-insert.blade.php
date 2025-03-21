@@ -31,6 +31,7 @@
                                 <label class="form-check-label" for="auto">Tự động</label>
                             </div>
                         </div>
+                        <span x-show="+data.type_inventory === TYPE_INVENTORY_AUTO" class="text-red">Lưu ý: kiểm kê tài sản tự động chỉ áp dụng với các loại tài sản(CPU, Card, Ram, HDD, SSD, Main)</span>
                     </div>
                     <div>
                         <label class="tw-font-bold">Đơn vị<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
@@ -42,7 +43,7 @@
                             ])
                         </div>
                     </div>
-                    <div x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">
+                    <div>
                         <label class="tw-font-bold">Loại tài sản<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                         <div>
                             @include('common.select_custom.extent.select_multiple', [
