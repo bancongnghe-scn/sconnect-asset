@@ -32,6 +32,7 @@ class ShoppingPlanLog extends Model
     public const ACTION_SENT_INFO_SHOPPING_ASSET                       = 'sent_info_shopping_asset';
     public const ACTION_SEND_HR_MANAGER_APPROVAL                       = 'send_hr_manager_approval';
     public const ACTION_COMPLETE_SHOPPING_PLAN_WEEK                    = 'complete_shopping_plan_week';
+    public const ACTION_SENT_REGISTER_AGAIN                            = 'sent_register_again';
 
     //ORGANIZATION
     public const ACTION_ACCOUNT_APPROVAL_ORGANIZATION    = 'shopping_plan_organization_account_approval';

@@ -1,5 +1,4 @@
-<table id="example2" class="table table-bordered dataTable dtr-inline"
-       aria-describedby="example2_info">
+<table class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
     <thead>
         <tr>
             <th rowspan="2" class="text-center" x-show="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL">
@@ -8,9 +7,9 @@
             <th rowspan="2" class="text-center">Đơn vị</th>
             <th rowspan="2" class="text-center">Loại tài sản</th>
             <th colspan="12" class="text-center">Số lượng đăng ký theo tháng</th>
-            <th rowspan="2" class="text-center">Tổng Số lượng</th>
+            <th rowspan="2" class="text-center" style="width: 6rem">SL</th>
             <th rowspan="2" class="text-center">Tổng Thành tiền</th>
-            <th rowspan="2" class="text-center tw-w-28">Thao tác</th>
+            <th rowspan="2" class="text-center" style="width: 9rem">Thao tác</th>
         </tr>
         <tr>
             <template x-for="number in Array.from({ length: 12 }, (_, i) => i + 1)" :key="number">
@@ -33,7 +32,7 @@
                                ].includes(+organization.status)"
                         >
                     </td>
-                    <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold">
+                    <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="tw-font-bold align-middle">
                         <span x-text="organization.name"></span>
                         @include('component.status.status_shopping_plan_organization', [
                             'status' => 'organization.status',
@@ -48,10 +47,9 @@
                     <td x-text="window.formatCurrencyVND(organization.total_price)" x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center"></td>
                     <td x-show="stt === 0" :rowspan="stt === 0 ? organization.asset_register.length : 1" class="text-center">
                         {{-- button view --}}
-                        <button  @click="handleShowModalDetailOrganization(organization.id)"
-                                class="border-0 bg-white">
+                        <a :href="`/shopping-plan-organization/year/detail/${organization.id}`" target="_blank" class="tw-no-underline mr-2">
                             <i class="bi bi-eye text-info"></i>
-                        </button>
+                        </a>
 
                         {{-- button duyet --}}
                         <template x-if="+data.status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL && action === 'update'">

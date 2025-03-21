@@ -24,7 +24,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
 
         //data
         filters: {
@@ -81,7 +80,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listPlanCompanyQuarter = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch quý thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -96,11 +95,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 await this.getInfo()
                 this.getRegisterAsset()
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show');
-                } else {
-                    $('#modalRegister').modal('show');
-                }
+                $('#modalRegister').modal('show');
             } catch (e) {
 
             } finally {
@@ -117,7 +112,7 @@ document.addEventListener('alpine:init', () => {
                     this.registers = response.data
                     this.registers = this.registers.map(register => ({
                         ...register,
-                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                        receiving_time: register.receiving_time
                     }))
                     return
                 }
@@ -154,7 +149,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -184,10 +179,8 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentRegisterWeek(this.id, this.registers)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
-                    this.getRegisterAsset()
-                    if (+this.data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
-                        this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                    }
+                    this.dataTable.find(item => +item.id === +this.id).status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                    $('#modalRegister').modal('hide')
                     return
                 }
                 toast.error(response.message)
@@ -256,8 +249,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

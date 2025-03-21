@@ -30,9 +30,10 @@ class PlanLiquidationService
         try {
             DB::beginTransaction();
 
+            $lastId              = $this->planMaintainRepository->last()?->id + 1 ?? 1;
             $dataPlanLiquidation = [
                 'name'           => $data['name'],
-                'code'           => $data['code'],
+                'code'           => 'KHTL_' . $lastId,
                 'note'           => $data['note'] ?? '',
                 'status'         => PlanMaintain::STATUS_NEW,
                 'type'           => PlanMaintain::TYPE_LIQUIDATION,
@@ -49,7 +50,7 @@ class PlanLiquidationService
                     $dataPlanLiquidationAsset[] = [
                         'plan_maintain_id'                  => $planLiquidation->id,
                         'asset_id'                          => $asset['id'],
-                        'price'                             => $asset['price_liquidation'] ?? 1,
+                        'price'                             => $asset['price'] ?? ($asset['price_liquidation'] ?? 0),
                         'status'                            => PlanMaintainAsset::STATUS_NEW,
                         'created_at'                        => new \DateTime(),
                         'created_by'                        => Auth::id() ?? 1,
@@ -113,8 +114,9 @@ class PlanLiquidationService
 
     public function listPlanLiquidation(array $filters = [])
     {
-        $filters['type'] = PlanMaintain::TYPE_LIQUIDATION;
-        $data            = $this->planMaintainRepository->getListing(
+        $filters['type']   = PlanMaintain::TYPE_LIQUIDATION;
+        $filters['status'] = $filters['status'] < 0 ? null : $filters['status'];
+        $data              = $this->planMaintainRepository->getListing(
             $filters,
             [
                 'id',
@@ -188,7 +190,7 @@ class PlanLiquidationService
             $dataPlanLiquidationAsset[] = [
                 'plan_maintain_id' => $planId,
                 'asset_id'         => $asset->id,
-                'price'            => $asset->assetHistory->first()->price ?? 1,
+                'price'            => $asset->assetHistory->first()->price ?? 0,
                 'status'           => PlanMaintainAsset::STATUS_NEW,
                 'code'             => Str::upper(Str::random(8)),
                 'created_by'       => Auth::id() ?? 1,
@@ -343,19 +345,22 @@ class PlanLiquidationService
             ];
         }
 
-        $status = $dataUpdate['status'] ?? '';
+        $status                     = $dataUpdate['status'] ?? '';
+        $update_plan_maintain_asset = $dataUpdate['plan_maintain_asset'] ?? '';
 
         DB::beginTransaction();
         try {
 
-            $planMaintain->fill($dataUpdate);
-            if (!$planMaintain->save()) {
-                DB::rollBack();
+            if (!empty($dataUpdate['name']) || !empty($dataUpdate['status'])) {
+                $planMaintain->fill($dataUpdate);
+                if (!$planMaintain->save()) {
+                    DB::rollBack();
 
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_5003,
-                ];
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_5003,
+                    ];
+                }
             }
 
             $assetIds = $this->planMaintainAssetRepository->getAssetOfPlanMaintain($id, ['asset_id', 'status']);
@@ -452,7 +457,6 @@ class PlanLiquidationService
                 }
             }
 
-
             // send plan wait approval/reject
             if (!empty($status) && PlanMaintain::STATUS_PENDING == $status) {
 
@@ -465,6 +469,35 @@ class PlanLiquidationService
                         'success'    => false,
                         'error_code' => AppErrorCode::CODE_5011,
                     ];
+                }
+            }
+
+
+            if (!empty($update_plan_maintain_asset)) {
+                if (!empty($update_plan_maintain_asset['status'])) {
+                    // Thay đổi giá thanh lý của tài sản từ trạng thái từ chối
+                    $this->planMaintainAssetRepository->deleteByCondition($update_plan_maintain_asset);
+                    $dataPlanLiquidationAsset = [
+                        'plan_maintain_id'                  => $update_plan_maintain_asset['plan_maintain_id'],
+                        'asset_id'                          => $update_plan_maintain_asset['asset_id'],
+                        'price'                             => $update_plan_maintain_asset['price'],
+                        'status'                            => PlanMaintainAsset::STATUS_NEW,
+                        'created_at'                        => new \DateTime(),
+                        'created_by'                        => Auth::id() ?? 1,
+                        'code'                              => Str::upper(Str::random(8)),
+                    ];
+                    $this->planMaintainAssetRepository->insert($dataPlanLiquidationAsset);
+                } else {
+                    // Thay đổi giá thanh lý của 1/nhiều ts từ trang thái chờ duyệt
+                    $cases = [];
+                    $ids   = [];
+                    foreach ($update_plan_maintain_asset as $row) {
+                        $cases[] = "WHEN asset_id = {$row['asset_id']} AND plan_maintain_id = {$row['plan_maintain_id']} THEN {$row['price']}";
+                        $ids[]   = "({$row['asset_id']}, {$row['plan_maintain_id']})";
+                    }
+                    $caseString         = implode(' ', $cases);
+                    $idString           = implode(', ', $ids);
+                    $this->planMaintainAssetRepository->updateWithConditions($caseString, $idString);
                 }
             }
 

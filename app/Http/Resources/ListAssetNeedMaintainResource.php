@@ -46,7 +46,7 @@ class ListAssetNeedMaintainResource extends JsonResource
                 'name'                    => $asset->name,
                 'code'                    => $asset->code,
                 'asset_type_name'         => $assetTypes[$asset->asset_type_id]['name'] ?? '',
-                'serial_number'           => $asset->serial_number,
+                'seri_number'             => $asset->seri_number,
                 'user_id'                 => $asset->user_id,
                 'user'                    => $users[$asset->user_id] ?? [],
                 'organization_id'         => $asset->organization_id,

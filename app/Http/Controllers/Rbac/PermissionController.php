@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Rbac;
 use App\Http\Controllers\Controller;
 use App\Services\Rbac\PermissionService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PermissionController extends Controller
 {
@@ -25,6 +26,7 @@ class PermissionController extends Controller
             'user_ids.*'  => 'integer',
         ]);
 
+        Auth::user()->canPer('permission.create');
         try {
             $result = $this->permissionService->createPermission($request->all());
 
@@ -44,11 +46,11 @@ class PermissionController extends Controller
     {
         $request->validate([
             'name'         => 'nullable|string|max:255',
-            'description'  => 'nullable|string|max:255',
             'page'         => 'nullable|integer',
             'limit'        => 'nullable|integer|max:200',
         ]);
 
+        Auth::user()->canPer('permission.view');
         try {
             $result = $this->permissionService->getListPermission($request->all());
 
@@ -62,6 +64,7 @@ class PermissionController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('permission.delete');
         try {
             $result = $this->permissionService->deletePermissionById($id);
             if (!$result['success']) {
@@ -87,6 +90,7 @@ class PermissionController extends Controller
             'user_ids.*'  => 'integer',
         ]);
 
+        Auth::user()->canPer('permission.create');
         try {
             $result = $this->permissionService->updatePermission($request->all(), $id);
 
@@ -104,6 +108,7 @@ class PermissionController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('permission.view');
         try {
             $result = $this->permissionService->findPermission($id);
 

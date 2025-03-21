@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="permission">
+    <div x-data="permissions">
         <div class="mb-3 d-flex gap-2 justify-content-end">
             <button type="button" class="btn btn-sc" @click="handleShowModalUI('create')">
                 Thêm mới
@@ -18,17 +18,12 @@
             @edit="handleShowModalUI('update', $event.detail.id)"
             @remove="confirmRemove($event.detail.id)"
             @view="handleShowModalInfo($event.detail.id)"
-            @change-page.window="changePage($event.detail.page)"
-            @change-limit.window="changeLimit"
         >
             @include('common.table')
         </div>
 
         {{--  modal--}}
-        <div>
-            <div
-            @include('rbac.permission.modalUI')
-        </div>
+        @include('rbac.permission.modalUI')
 
         <div
             x-data="{

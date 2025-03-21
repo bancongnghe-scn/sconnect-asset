@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\PlanMaintainCharge;
 use App\Repositories\PlanMaintainChargeRepository;
 use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\DB;
 
 class PlanMaintainChargeService
 {
@@ -67,7 +66,7 @@ class PlanMaintainChargeService
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

@@ -52,4 +52,11 @@ class OrganizationService
 
         return $result;
     }
+
+    public function getListOrganizationMain()
+    {
+        $data = $this->organizationRepository->getOrganizationMain();
+
+        return $data->toArray();
+    }
 }

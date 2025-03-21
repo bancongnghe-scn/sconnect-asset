@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Http\Resources\ListShoppingPlanLogResource;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\UserRepository;
 
@@ -21,17 +20,6 @@ class ShoppingPlanLogService
             'record_id' => $id,
         ]);
 
-        if (empty($logs)) {
-            return [];
-        }
-
-        $createdBys = $logs->pluck('created_by')->toArray();
-        $users      = $this->userRepository->getListing([
-            'id' => $createdBys,
-        ])->keyBy('id');
-
-        return ListShoppingPlanLogResource::make($logs)->additional([
-            'users' => $users,
-        ])->resolve();
+        return $logs->toArray();
     }
 }

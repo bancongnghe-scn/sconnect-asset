@@ -24,11 +24,7 @@ window.apiGetAssetForImportWarehouse = async function (orderIds) {
 
 window.apiGetImportWarehouse = async function (filters) {
     try {
-        let filtersFormat = JSON.parse(JSON.stringify(filters))
-        if (filtersFormat.created_at !== null) {
-            filtersFormat.created_at = formatDate(filtersFormat.created_at)
-        }
-        const response = await axios.get("/api/import-warehouse/list", {params: filtersFormat})
+        const response = await axios.get("/api/import-warehouse/list", {params: filters})
 
         const data = response.data;
         if (!data.success) {

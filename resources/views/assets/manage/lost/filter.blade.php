@@ -7,7 +7,11 @@
         <div class="row align-items-center">
             <div class="d-flex">
                 <div class="align-content-center mr-3" style="min-height: 35px;">
-                    <span>Đã chọn (<span id="numberShow">0</span>)</span>
+                    <span x-data="{count: 0}" x-effect="count = Object.keys(selectedRow).filter(key => selectedRow[key] === true).length"
+                        x-text="`Đã chọn (${count})`"
+                    >
+{{--                        Đã chọn (<span id="numberShow">0</span>)--}}
+                    </span>
                 </div>
                 <div>
                     <button x-show="showButton" class="border-0 btn tw-text-red-400" @click="unselectedAll()">Bỏ chọn</button>
@@ -16,12 +20,12 @@
         </div>
     </div>
     <div class="col-7 text-right">
-        <button type="button" class="btn tw-bg-green-500 tw-text-white" style="line-height: 20.6px;"  x-show="showAction.back ?? true" @click="$dispatch('back')" :disabled="window.checkDisableSelectRow">
+        <button type="button" class="btn tw-bg-green-500 tw-text-white" style="line-height: 20.6px;" @click="handleBackMultiModalUI()" :disabled="window.checkDisableSelectRow">
             <span>
                 Tìm thấy
             </span>
         </button>
-        <button type="button" class="btn btn-red tw-bg-red-500 tw-text-white" style="line-height: 20.6px;"  x-show="showAction.cancel ?? true" @click="$dispatch('cancel')" :disabled="window.checkDisableSelectRow">
+        <button type="button" class="btn btn-red tw-bg-red-500 tw-text-white" style="line-height: 20.6px;" @click="handleCancelMultiModalUI()" :disabled="window.checkDisableSelectRow">
             <span>
                 Hủy tài sản
             </span>

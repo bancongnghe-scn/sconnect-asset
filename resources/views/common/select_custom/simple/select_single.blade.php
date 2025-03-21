@@ -1,11 +1,14 @@
 <div x-data="{
             init() {
+                this.options = {{$options}}
+                this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    this.selected = newValue
+                     this.selected = newValue
                 })
 
-                this.selected = {{$selected}}
-                this.options = {{$options}}
+                this.$watch(`{{$options}}`, (newValue, oldValue) => {
+                     this.options = newValue || []
+                })
             },
             open: false,
             selected: null,
@@ -37,9 +40,9 @@
     <button
         @click="open = !open"
         class="form-select tw-w-full"
-        :class="selected? '' : 'tw-text-gray-500'"
+        :class="selected !== null ? '' : 'tw-text-gray-500'"
         type="button"
-        x-text="selected ? options[selected] : '{{ $placeholder ?? 'Chọn ...' }}'"
+        x-text="options[selected] || '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
     >

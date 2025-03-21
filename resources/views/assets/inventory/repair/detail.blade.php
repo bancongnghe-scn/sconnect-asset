@@ -5,10 +5,7 @@
         @include('assets.inventory.repair.filter')
     </div>
 
-    <div
-        @change-page.window="changePage($event.detail.page)"
-        @change-limit.window="changeLimit"
-    >
+    <div>
         @include('assets.inventory.repair.table')
     </div>
 

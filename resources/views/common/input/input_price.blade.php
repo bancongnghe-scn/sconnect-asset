@@ -1,7 +1,10 @@
 <input x-data="{
             init() {
+                if (this.{{$model}} !== null) {
+                    this.formatPriceVnd = new Intl.NumberFormat('en-US').format(this.{{$model}})
+                }
                 this.$watch(`{{$model}}`, (newValue) => {
-                    this.formatPriceVnd = new Intl.NumberFormat('vi-VN').format(newValue)
+                    this.formatPriceVnd = new Intl.NumberFormat('en-US').format(newValue)
                 });
             },
             formatPriceVnd: 0,
@@ -23,13 +26,13 @@
                 // Định dạng lại số với dấu chấm
                 valueInput = valueInput.replace(/[.,]/g, '')
                 this.{{$model}} = valueInput
-                valueInput = new Intl.NumberFormat('vi-VN').format(valueInput);
+                valueInput = new Intl.NumberFormat('en-US').format(valueInput);
 
                 // Gán lại vào ô input
                 input.value = valueInput;
             }
 }" class="form-control" type="text" placeholder="{{$placeholder ?? 'Nhập số'}}"
            x-model="formatPriceVnd" @input="formatCurrencyVNDInput($event)"
-       @isset($disabled) disabled @endisset
+       @isset($disabled) :disabled = {{$disabled}} @endisset
 >
 

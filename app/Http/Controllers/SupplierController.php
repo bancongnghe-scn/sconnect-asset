@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Services\SupplierService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
 {
@@ -24,6 +25,8 @@ class SupplierController extends Controller
             'limit'          => 'integer|max:200',
         ]);
 
+        Auth::user()->canPer('supplier.view');
+
         try {
             $result = $this->supplierService->getListSupplier($request->all());
 
@@ -40,6 +43,8 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
+        Auth::user()->canPer('supplier.create');
+
         try {
             $result = $this->supplierService->createSupplier($request->validated());
 
@@ -60,6 +65,8 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
+        Auth::user()->canPer('supplier.view');
+
         try {
             $result = $this->supplierService->findSupplier($id);
 
@@ -80,6 +87,8 @@ class SupplierController extends Controller
      */
     public function update(StoreSupplierRequest $request, string $id)
     {
+        Auth::user()->canPer('supplier.create');
+
         try {
             $result = $this->supplierService->updateSupplier($request->validated(), $id);
 
@@ -100,6 +109,8 @@ class SupplierController extends Controller
      */
     public function destroy(string $id)
     {
+        Auth::user()->canPer('supplier.delete');
+
         try {
             $result = $this->supplierService->deleteSupplierById($id);
             if (!$result['success']) {
@@ -120,6 +131,8 @@ class SupplierController extends Controller
             'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('supplier.delete');
 
         try {
             $result = $this->supplierService->deleteSupplierMultiple($request->get('ids'));

@@ -23,6 +23,7 @@ class PlanMaintain extends Model
         'end_time',
         'maintain_costs',
         'sent_notification',
+        'type_inventory',
         'created_at',
         'created_by',
         'updated_at',
@@ -42,11 +43,13 @@ class PlanMaintain extends Model
     public const STATUS_REJECT                     = 3;
     public const STATUS_MAINTAINING                = 4;
     public const STATUS_COMPLETE_MAINTAIN          = 5;
+    public const TYPE_INVENTORY_NOT_AUTO           = 1;
+    public const TYPE_INVENTORY_AUTO               = 2;
 
     public const STATUS_NAME = [
         self::STATUS_NEW            => 'Mới tạo',
-        self::STATUS_PENDING        => 'Chờ duyệt',
-        self::STATUS_APPROVAL       => 'Đã duyệt',
+        self::STATUS_PENDING        => 'Chờ xác nhận',
+        self::STATUS_APPROVAL       => 'Hoàn thành',
         self::STATUS_REJECT         => 'Từ chối',
     ];
 
@@ -78,5 +81,10 @@ class PlanMaintain extends Model
     public function planMaintainAssetTypes(): HasMany
     {
         return $this->hasMany(PlanMaintainAssetType::class, 'plan_maintain_id');
+    }
+
+    public function planInventoryAsset(): HasMany
+    {
+        return $this->hasMany(PlanInventoryAsset::class, 'plan_maintain_id');
     }
 }

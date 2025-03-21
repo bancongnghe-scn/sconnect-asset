@@ -34,4 +34,15 @@ class JobTitleRepository extends BaseRepository
 
         return $query->get();
     }
+
+    public function getListing($filters, $columns = ['*'])
+    {
+        $query = $this->_model->newQuery()->select($columns);
+
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
+        return $query->get();
+    }
 }

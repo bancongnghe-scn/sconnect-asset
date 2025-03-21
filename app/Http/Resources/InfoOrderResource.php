@@ -2,13 +2,22 @@
 
 namespace App\Http\Resources;
 
+use App\Repositories\SupplierAssetIndustryRepository;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class InfoOrderResource extends JsonResource
 {
+    protected $supplierAssetIndustryRepository;
+
+    public function __construct($resource)
+    {
+        parent::__construct($resource);
+        $this->supplierAssetIndustryRepository = new SupplierAssetIndustryRepository();
+    }
+
     public function toArray($request)
     {
-        return [
+        $data = [
             'id'                       => $this->resource->id,
             'name'                     => $this->resource->name,
             'type'                     => $this->resource->type,
@@ -26,5 +35,11 @@ class InfoOrderResource extends JsonResource
             'plan_name'                => $this->resource->shoppingPlanCompany?->name,
             'supplier_name'            => $this->resource->supplier?->name,
         ];
+
+        $data['industry_ids'] = $this->supplierAssetIndustryRepository
+            ->getListing(['supplier_id' => $this->resource->supplier_id])
+            ->pluck('industries_id')->toArray();
+
+        return $data;
     }
 }

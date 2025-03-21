@@ -26,8 +26,8 @@ class AssetService
             with: ['assetType']
         );
 
-        $dataInsert = [];
-        $userId     = Auth::id();
+        $dataInsert   = [];
+        $userId       = Auth::id();
         $datePurchase = Carbon::now();
         foreach ($importWarehouseAssets as $importWarehouseAsset) {
             $data = [
@@ -36,7 +36,9 @@ class AssetService
                 'price'                   => $importWarehouseAsset->price_last,
                 'date_purchase'           => $datePurchase,
                 'warranty_months'         => $importWarehouseAsset->warranty_time,
-                'depreciation_months'     => $importWarehouseAsset->assetType?->depreciation_months,
+                'seri_number'             => $importWarehouseAsset->seri_number,
+                'depreciation_months'     => +$importWarehouseAsset->price_last >= Asset::PRICE_DEPRECIATION ?
+                    Asset::MONTH_DEPRECIATION_36 : Asset::MONTH_DEPRECIATION_12,
                 'recent_maintenance_date' => $importWarehouseAsset->date_purchase,
                 'next_maintenance_date'   => Carbon::create($importWarehouseAsset->date_purchase)
                     ->addMonths($importWarehouseAsset->assetType?->depreciation_months)
@@ -44,6 +46,7 @@ class AssetService
                 'asset_type_id'           => $importWarehouseAsset->asset_type_id,
                 'supplier_id'             => $importWarehouseAsset->supplier_id,
                 'status'                  => Asset::STATUS_PENDING,
+                'location'                => Asset::LOCATION_WAREHOUSE,
                 'import_warehouse_id'     => $importWarehouseId,
                 'created_by'              => $userId,
             ];
@@ -58,18 +61,23 @@ class AssetService
 
         $assets = $this->assetRepository->getListing(['import_warehouse_id' => $importWarehouseId]);
         foreach ($assets as $asset) {
-            $link     = config('app.url').'/assets/info/'.$asset->id;
-            $savePath = storage_path('app/public/qrcode/qr_image_'.$asset->id.'.png');
-            $qrCode   = Builder::create()
-                ->writer(new PngWriter())
-                ->data($link)
-                ->size(300)
-                ->margin(10)
-                ->build();
-
-            $qrCode->saveToFile($savePath);
+            $this->generalQrCodeAsset($asset->id);
         }
 
         return true;
+    }
+
+    public function generalQrCodeAsset($assetId)
+    {
+        $link     = config('app.url').'/asset/info/'.$assetId;
+        $savePath = public_path('uploads/qrcode/qr_image_'.$assetId.'.png');
+        $qrCode   = Builder::create()
+            ->writer(new PngWriter())
+            ->data($link)
+            ->size(300)
+            ->margin(10)
+            ->build();
+
+        $qrCode->saveToFile($savePath);
     }
 }

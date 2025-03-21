@@ -110,7 +110,20 @@ class AppErrorCode
     public const CODE_2103 = 2103; //  Trạng thái kế hoạch bảo dưỡng không hợp lệ !
     public const CODE_2104 = 2104; //  Cập nhật thời gian bảo dưỡng cho tài sản thất bại !
     public const CODE_2105 = 2105; //  Lưu lịch sử kế bảo dưỡng thất bại !
-
+    public const CODE_2106 = 2106; //  Không tồn tại thông tin tài sản !
+    public const CODE_2107 = 2107; //  Đã tồn tại định mức cấp phát cho loại tài sản (:asset_type) !
+    public const CODE_2108 = 2108; //  Bạn có thể hoàn thành kế hoạch mà không cần gửi duyệt tới giám đốc, do không có tài sản nào cần giám đốc duyệt mua sắm !
+    public const CODE_2109 = 2109; //  Bạn chưa thể hoàn thành do vẫn còn tài sản cần được duyệt !
+    public const CODE_2110 = 2110; //  Bình luận hoặc tài liệu không được để trống !
+    public const CODE_2111 = 2111; //  Tải tài liệu thất bại !
+    public const CODE_2112 = 2112; //  Gắn loại tài sản cho kế hoạch kiểm kê thất bại !
+    public const CODE_2113 = 2113; //  Kế hoạch kiểm kê không tồn tại !
+    public const CODE_2114 = 2114; //  Cập nhật kế hoạch kiểm kê thất bại !
+    public const CODE_2115 = 2115; //  Tạo tài sản kiểm kê thất bại !
+    public const CODE_2116 = 2116; //  Trạng thái kế hoạch kiểm kê không hợp lệ !
+    public const CODE_2117 = 2117; //  Cập nhật tài sản kiểm kê thất bại !
+    public const CODE_2118 = 2118; //  Bạn chưa duyệt hết tài sản kiểm kê, vui lòng kiểm tra lại !
+    public const CODE_2119 = 2119; //  Xóa kế hoạch kiểm kê thất bại !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !
@@ -124,5 +137,4 @@ class AppErrorCode
     public const CODE_5009 = 5009; //   Tạo tài sản sửa chữa thất bại !
     public const CODE_5010 = 5010; //   Sửa chữa tài sản thất bại !
     public const CODE_5011 = 5011; //   Cập nhật lịch sử tài sản thất bại !
-
 }

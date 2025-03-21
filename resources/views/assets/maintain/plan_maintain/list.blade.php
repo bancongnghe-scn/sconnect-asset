@@ -3,10 +3,7 @@
         @include('assets.maintain.plan_maintain.filters')
     </div>
 
-    <div class="mt-3"
-         @change-page.window="changePage($event.detail.page)"
-         @change-limit.window="changeLimit"
-    >
+    <div class="mt-3">
         @include('assets.maintain.plan_maintain.table')
     </div>
 
@@ -24,7 +21,7 @@
     </div>
 </div>
 @vite([
-    'resources/js/assets/maintain/plan_maintain.js',
+    'resources/js/assets/maintain/plan-maintain/plan_maintain.js',
     'resources/js/app/api/apiOrganization.js',
     'resources/js/assets/api/apiSupplier.js',
     'resources/js/app/api/apiUser.js'

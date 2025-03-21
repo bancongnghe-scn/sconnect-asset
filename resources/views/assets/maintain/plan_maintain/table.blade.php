@@ -20,7 +20,7 @@
                         <template x-for="(value, index) in dataTable" :key="index">
                             <tr>
                                 <td>
-                                    <a x-text="value.code" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
+                                    <a x-text="value.code" class="tw-no-underline" :href="`/maintain/plan/detail/${value.id}`"></a>
                                 </td>
                                 <td x-text="value.name">
                                 <td x-text="value.suppliers.join(', ')">
@@ -31,9 +31,9 @@
                                 </td>
                                 <td class="text-center align-middle">
                                     <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
-                                        <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
+                                        <a :href="`/maintain/plan/detail/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-eye text-info"></i>
-                                        </span>
+                                        </a>
                                     </template>
                                     <template x-if="value.status === STATUS_MAINTAINING">
                                         <span>
@@ -53,7 +53,11 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
 

@@ -144,7 +144,8 @@ class ShoppingPlanCompanyWeekController extends Controller
             'shopping_plan_company_id' => 'required|integer',
             'status'                   => 'required|integer',
         ]);
-        //        Auth::user()->canPer('shopping_plan_company.sent_account_approval');
+
+        Auth::user()->canPer('shopping_plan_company.sent_account_approval');
 
         try {
             $result = $this->planCompanyService->sendApprovalWeek($request->all());

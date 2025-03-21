@@ -22,12 +22,12 @@ document.addEventListener('alpine:init', () => {
         async getListOrganization() {
             this.loading = true
             try {
-                const response = await window.apiGetOrganization({})
+                const response = await window.apiGetOrganizationMain()
                 if (response.success) {
                     this.listOrganization = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách đơn vị thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -43,7 +43,7 @@ document.addEventListener('alpine:init', () => {
                     this.listAssetType = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {

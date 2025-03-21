@@ -5,9 +5,12 @@
                 <h4 class="modal-title">Kế hoạch mua sắm quý</h4>
                 <div class="mb-3 d-flex gap-2 justify-content-end">
                     <template x-if="
-                        (+data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
-                        || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED)
-                        && ( new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time))">
+                        ((
+                            +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER
+                            || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                        ) && (new Date() > new Date(data.start_time) &&  new Date() < new Date(data.end_time)))
+                        || +data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL
+                    ">
                         <button class="btn btn-primary" @click="sentRegister">Đăng ký</button>
                     </template>
                     <button type="button" data-bs-dismiss="modal" class="btn btn-warning">Quay lại</button>
@@ -49,7 +52,15 @@
 
                         {{-- Chi tiết--}}
                         <div class="mb-3">
-                            <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+                            <div class="d-flex justify-content-between">
+                                <div class="mb-3 active-link tw-w-fit">Chi tiết</div>
+                                <div x-data="{expand: true, decrease: false}">
+                                    <button class="btn btn-sm btn-secondary" @click="expand = !expand; decrease = !decrease; expand ? handleShowTable('decrease') : handleShowTable('expand')">
+                                        <i class="bi bi-arrows-angle-expand" x-show="expand"></i>
+                                        <i class="bi bi-arrows-angle-contract" x-show="decrease"></i>
+                                    </button>
+                                </div>
+                            </div>
                             <div>
                                 <template x-for="(register, index) in registers" :key="index">
                                     <div class="p-4 tw-bg-[#E4F0E6] mb-3">
@@ -94,16 +105,22 @@
                                                     <template x-for="(asset, key) in register.assets" :key="`asset_${asset.id || asset.id_fake}`">
                                                         <tr class="tw-text-nowrap"
                                                             x-data="{
-                                                                    get price() {
-                                                                        if (!asset.asset_type_id || !asset.job_id) {
-                                                                            return 0
+                                                                    async updatePrice() {
+                                                                        if (![STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(+data.status)) {
+                                                                            return
                                                                         }
-                                                                        asset.price = +(asset.asset_type_id + asset.job_id + 1000)
-                                                                        return +(asset.asset_type_id + asset.job_id + 1000)
+                                                                        if (asset.asset_type_id && asset.job_id) {
+                                                                            asset.price = await getPrice(asset.asset_type_id, asset.job_id);
+                                                                        } else {
+                                                                            asset.price = 0;
+                                                                        }
+                                                                    },
+                                                                    init() {
+                                                                        this.$watch('asset.asset_type_id', () => this.updatePrice());
+                                                                        this.$watch('asset.job_id', () => this.updatePrice());
+                                                                        this.$watch('asset.price', value => calculatePrice(index));
                                                                     }
-                                                            }"
-                                                            x-init="$watch('asset.price', value => calculatePrice(index))"
-                                                        >
+                                                            }">
                                                             <td>
                                                                 @include('common.select_custom.extent.select_single', [
                                                                         'placeholder' => 'Chọn tài sản',
@@ -111,7 +128,7 @@
                                                                         'options' => 'list_asset_type',
                                                                 ])
                                                             </td>
-                                                            <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id).measure : ''"></td>
+                                                            <td class="align-middle" x-text="asset.asset_type_id ? list_asset_type.find((item) => +item.id === +asset.asset_type_id)?.measure : ''"></td>
                                                             <td>
                                                                 @include('common.select_custom.extent.select_single', [
                                                                             'placeholder' => 'Chọn chức danh',
@@ -119,7 +136,7 @@
                                                                             'options' => 'list_job',
                                                                 ])
                                                             </td>
-                                                            <td class="align-middle" x-text="window.formatCurrencyVND(price)"></td>
+                                                            <td class="align-middle" x-text="window.formatCurrencyVND(asset.price)"></td>
                                                             <td>
                                                                 <input class="form-control" type="number" min="1"
                                                                        x-model="asset.quantity_registered"
@@ -152,8 +169,8 @@
                         </div>
                     </div>
 
-                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
-                        @include('assets.shopping_plan_organization.history_comment')
+                    <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-bind:id="id">
+                        @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION'])
                     </div>
                 </div>
             </div>

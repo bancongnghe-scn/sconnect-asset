@@ -14,7 +14,6 @@ use App\Repositories\ShoppingPlanLogRepository;
 use App\Repositories\ShoppingPlanOrganizationRepository;
 use App\Repositories\UserRepository;
 use App\Support\Constants\AppErrorCode;
-use App\Support\Constants\SOfficeConstant;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -32,19 +31,16 @@ class ShoppingPlanOrganizationService
     ) {
     }
 
-    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [], $status = ShoppingPlanOrganization::STATUS_OPEN_REGISTER)
+    public function insertShoppingPlanOrganizations($shoppingPlanCompanyId, $organizationIds = [])
     {
         if (empty($organizationIds)) {
-            $organizationIds   = $this->organizationRepository->getListing([
-                'status'    => SOfficeConstant::ORGANIZATION_STATUS_ACTIVE,
-                'parent_id' => SOfficeConstant::ORGANIZATION_PARENT_MAIN,
-            ])->pluck('id')->toArray();
+            $organizationIds   = $this->organizationRepository->getOrganizationMain()->pluck('id')->toArray();
         }
 
         $dataInsert = [];
         foreach ($organizationIds as $organizationId) {
             $dataInsert[] = [
-                'status'                   => $status,
+                'status'                   => ShoppingPlanOrganization::STATUS_OPEN_REGISTER,
                 'organization_id'          => $organizationId,
                 'shopping_plan_company_id' => $shoppingPlanCompanyId,
                 'created_by'               => Auth::id(),
@@ -109,8 +105,18 @@ class ShoppingPlanOrganizationService
         // Chi dang ky khi trang thai phu hop va con thoi gian dang ky
         $shoppingPlanCompany = $shoppingPlanOrganization->shoppingPlanCompany;
         if (
-            !in_array($shoppingPlanOrganization->status, [ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED])
-            || Carbon::now() > Carbon::parse($shoppingPlanCompany->end_time)
+            !(
+                (
+                    in_array($shoppingPlanOrganization->status, [
+                        ShoppingPlanOrganization::STATUS_OPEN_REGISTER, ShoppingPlanOrganization::STATUS_REGISTERED,
+                    ])
+                    && (
+                        Carbon::now() > Carbon::parse($shoppingPlanCompany->start_time)
+                        && Carbon::now() < Carbon::parse($shoppingPlanCompany->end_time)
+                    )
+                )
+                || ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL == $shoppingPlanOrganization->status
+            )
         ) {
             return [
                 'success'    => false,
@@ -132,8 +138,19 @@ class ShoppingPlanOrganizationService
 
         DB::beginTransaction();
         try {
-            if (ShoppingPlanOrganization::STATUS_OPEN_REGISTER === +$shoppingPlanOrganization->status) {
-                $shoppingPlanOrganization->status = ShoppingPlanOrganization::STATUS_REGISTERED;
+            $status = null;
+            switch (+$shoppingPlanOrganization->status) {
+                case ShoppingPlanOrganization::STATUS_OPEN_REGISTER:
+                    $status = ShoppingPlanOrganization::STATUS_REGISTERED;
+                    break;
+                case ShoppingPlanOrganization::STATUS_ACCOUNT_DISAPPROVAL:
+                    $status = ShoppingPlanOrganization::STATUS_PENDING_ACCOUNTANT_APPROVAL;
+                    break;
+                default:
+            }
+
+            if (!is_null($status)) {
+                $shoppingPlanOrganization->status = $status;
                 if (!$shoppingPlanOrganization->save()) {
                     DB::rollBack();
 
@@ -198,6 +215,7 @@ class ShoppingPlanOrganizationService
 
             DB::commit();
         } catch (\Throwable $exception) {
+
             report($exception);
             DB::rollBack();
 

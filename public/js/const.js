@@ -102,6 +102,7 @@ ORGANIZATION_TYPE_DISAPPROVAL = 'disapproval';
 TYPE_COMMENT_SHOPPING_PLAN_COMPANY = 1;
 TYPE_COMMENT_SHOPPING_PLAN_ORGANIZATION = 2;
 TYPE_COMMENT_PLAN_MAINTAIN = 3;
+TYPE_COMMENT_ORDER = 5;
 
 // USERS
 DEPT_IDS_FOLLOWERS = [7, 8, 9, 10, 11, 12, 41, 42, 149, 160]
@@ -141,7 +142,7 @@ ORDER_STATUS_CANCEL = 5
 LIST_STATUS_ORDER = {
     [ORDER_STATUS_NEW]: 'Mới tạo',
     [ORDER_STATUS_TRANSIT]: 'Đang vận chuyển',
-    [ORDER_STATUS_DELIVERED]: 'Đã bàn giao',
+    [ORDER_STATUS_DELIVERED]: 'Đã giao hàng',
     [ORDER_STATUS_WAREHOUSED]: 'Đã nhập kho',
     [ORDER_STATUS_CANCEL]: 'Hủy'
 }
@@ -160,7 +161,7 @@ LIST_STATUS_IMPORT_WAREHOUSE = {
 
 //SUPPLIER
 STATUS_SUPPLIER_PENDING_APPROVAL = 1
-STATUS_SUPPLIER_APPROVED  = 2
+STATUS_SUPPLIER_APPROVED = 2
 STATUS_SUPPLIER_CANCEL = 3
 LIST_STATUS_SUPPLIER = {
     [STATUS_SUPPLIER_PENDING_APPROVAL]: 'Chờ phê duyệt',
@@ -181,15 +182,33 @@ LEVEL_ALLOCATION_RATE = {
 }
 
 // ASSET
+LOCATION_CS_1      = 136;
+LOCATION_CS_4      = 303;
+LOCATION_CS_7      = 304;
+LOCATION_CS_8      = 305;
+LOCATION_CS_9      = 306;
+LOCATION_HCM       = 313;
+LOCATION_KVC       = 416;
+LOCATION_TQ_3      = 307;
+LOCATION_TQ_4      = 308;
+LOCATION_TQ_5      = 309;
+LOCATION_TQ_6      = 310;
+LOCATION_TQ_7      = 311;
+LOCATION_WAREHOUSE = 1;
 LIST_LOCATION_ASSET = {
-    1: 'HN_Tầng 1',
-    2: 'HN_Tầng 2',
-    3: 'HN_Tầng 3',
-    4: 'HN_Tầng 4',
-    5: 'HN_Tầng 5',
-    6: 'HN_Tầng 6',
-    7: 'HN_Tầng 7',
-    8: 'HCM',
+    [LOCATION_CS_1]      : 'CS_Tầng 1',
+    [LOCATION_CS_4]      : 'CS_Tầng 4',
+    [LOCATION_CS_7]      : 'CS_Tầng 7',
+    [LOCATION_CS_8]      : 'CS_Tầng 8',
+    [LOCATION_CS_9]      : 'CS_Tầng 9',
+    [LOCATION_TQ_3]      : 'TQ - Tầng 3',
+    [LOCATION_TQ_4]      : 'TQ - Tầng 4',
+    [LOCATION_TQ_5]      : 'TQ - Tầng 5',
+    [LOCATION_TQ_6]      : 'TQ - Tầng 6',
+    [LOCATION_TQ_7]      : 'TQ - Tầng 7',
+    [LOCATION_HCM]       : 'HCM',
+    [LOCATION_KVC]       : 'Khu vui chơi',
+    [LOCATION_WAREHOUSE] : 'Kho công ty',
 }
 
 ASSET_STATUS_ACTIVE                  = 1;
@@ -203,7 +222,19 @@ ASSET_STATUS_LIQUIDATED              = 8;
 ASSET_STATUS_DAMAGED                 = 9;
 ASSET_STATUS_REPAIR                  = 10;
 ASSET_STATUS_MAINTAIN                = 11;
-
+LIST_STATUS_ASSET = {
+    [ASSET_STATUS_ACTIVE]: 'Đang sử dụng',
+    [ASSET_STATUS_PENDING]: 'Chưa sử dụng',
+    [ASSET_STATUS_NEW]: 'Mới',
+    [ASSET_STATUS_LOST]: 'Đã mất',
+    [ASSET_STATUS_CANCEL]: 'Đã hủy',
+    [ASSET_STATUS_PROPOSAL_LIQUIDATION]: 'Đề nghị thanh lý',
+    [ASSET_STATUS_IN_LIQUIDATION]: 'Đang thanh lý',
+    [ASSET_STATUS_LIQUIDATED]: 'Đã thanh lý',
+    [ASSET_STATUS_DAMAGED]: 'Hỏng',
+    [ASSET_STATUS_REPAIR]: 'Đang sửa chữa',
+    [ASSET_STATUS_MAINTAIN]: 'Bảo Dưỡng',
+}
 // MAINTAIN
 LIST_STATUS_MAINTAIN = {
     [ASSET_STATUS_ACTIVE]  : 'Đang sử dụng',
@@ -226,15 +257,25 @@ LIST_STATUS_PLAN_MAINTAIN = {
     [STATUS_COMPLETE_MAINTAIN]: 'Hoàn thành'
 }
 
+// INVENTORY
+STATUS_INVENTORY_NEW = 0
 STATUS_TAKING_INVENTORY = 4
 STATUS_INVENTORIED = 5
 LIST_STATUS_PLAN_INVENTORY = {
+    [STATUS_INVENTORY_NEW]: 'Mới tạo',
     [STATUS_TAKING_INVENTORY]: 'Đang kiểm kê',
     [STATUS_INVENTORIED]: 'Hoàn thành'
 }
 
 TYPE_INVENTORY_NOT_AUTO = 1
 TYPE_INVENTORY_AUTO = 2
+
+STATUS_ASSET_NOT_INVENTORIED = 0;
+STATUS_ASSET_INVENTORIED = 1;
+LIST_STATUS_PLAN_INVENTORY_ASSET = {
+    [STATUS_ASSET_NOT_INVENTORIED]: 'Chưa kiểm kê',
+    [STATUS_ASSET_INVENTORIED]: 'Đã kiểm kê'
+}
 
 // OTHER
 LIST_QUARTER = {
@@ -286,8 +327,7 @@ localeVi = {
     firstDay: 1 // Thứ Hai là ngày đầu tuần
 };
 
-//
-window.LIST_STATUS_TEXT = {
+LIST_STATUS_TEXT = {
     1: 'Đang sử dụng',
     2: 'Chưa sử dụng',
     3: 'Mới',
@@ -299,4 +339,9 @@ window.LIST_STATUS_TEXT = {
     9: 'Hỏng',
     10: 'Đang sửa chữa',
     11: 'Bảo Dưỡng',
+}
+
+POSITION_ORGANIZATION = {
+    id : 1000000,
+    name: 'Đơn vị'
 }

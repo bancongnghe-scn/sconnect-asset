@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Order;
 use App\Repositories\Base\BaseRepository;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
 
 class OrderRepository extends BaseRepository
 {
@@ -67,5 +68,10 @@ class OrderRepository extends BaseRepository
     public function getLateOrder()
     {
         return $this->_model->latest()->first();
+    }
+
+    public function getTotalStatusOrder()
+    {
+        return $this->_model->newQuery()->select('status', DB::raw('count(*) as total'))->groupBy('status')->get();
     }
 }

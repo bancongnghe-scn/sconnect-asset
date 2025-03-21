@@ -1,15 +1,15 @@
 <div x-data="{
             init() {
-                this.options = {{$options}};
-                this.selected = {{$selected}};
+                this.options = {{$options}} || [];
+                this.selected = {{$selected}} || [];
                 this.$watch(`{{$selected}}`, (newValue) => {
-                    this.selected = newValue;
+                    this.selected = newValue || []
                 });
                 this.$watch('selected', (newValue) => {
                     this.{{$selected}} = newValue;
                 });
                 this.$watch(`{{$options}}`, (newValue) => {
-                    this.options = newValue;
+                    this.options = newValue || []
                 });
             },
             open: false,
@@ -53,7 +53,7 @@
     <!-- Nút chọn -->
     <button
         @click="open = !open"
-        class="form-select tw-w-full tw-text-gray-500 flex flex-wrap items-center"
+        class="form-select tw-w-full"
         type="button"
         style="text-align: start"
         @if(isset($disabled)) :disabled="{{$disabled}}" @endif
@@ -61,17 +61,19 @@
         <template x-if="selected.length">
             <div class="d-flex flex-wrap gap-1">
                 <template x-for="id in selected" :key="id">
-                    <span class="badge bg-primary d-flex align-items-center tw-w-fit">
-                        <span x-text="options.find(option => option.id === id)?.name"></span>
+                    <span class="tw-bg-[#e5f2ff] tw-text-[#007aff] tw-p-[2px] rounded d-flex align-items-center tw-w-fit">
+                        <span x-text="options.find(option => option.id === id)?.name" class="tw-pl-[3px]"></span>
                         <button
                             @click.stop="clearOption(id)"
-                            class="btn btn-sm text-white ms-2 p-0 d-flex align-items-center"
+                            class="btn btn-sm text-gray p-0 d-flex align-items-center border-0"
+                            style="margin-left: 3px;font-size: 13px;font-weight: 600;"
+                            @if(isset($disabled)) :disabled="{{$disabled}}" @endif
                         >x</button>
                     </span>
                 </template>
             </div>
         </template>
-        <span x-show="!selected.length">{{ $placeholder ?? 'Chọn ...' }}</span>
+        <span class="text-gray" x-show="!selected.length">{{ $placeholder ?? 'Chọn ...' }}</span>
     </button>
 
     <!-- Dropdown -->

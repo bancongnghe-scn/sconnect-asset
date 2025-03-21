@@ -66,17 +66,8 @@ document.addEventListener('alpine:init', () => {
         idModalLiquidationMore: "idModalLiquidationMore",
         idModalCancelMore: "idModalCancelMore",
         dataRepair: [],
-        performer: {
-            1: 'Minh Hoàng',
-            2: 'Long sky',
-            3: 'Trường con',
-            4: 'Hiếu 9 ngón'
-        },
-        supplier: {
-            1: 'Sconnect studio',
-            2: 'Sconnect media',
-            3: 'Sconnect academy'
-        },
+        performer: {},
+        supplier: {},
 
         columnsRepair: {
             code: 'Mã tài sản',
@@ -152,8 +143,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -181,8 +172,18 @@ document.addEventListener('alpine:init', () => {
             return `${day}/${month}/${year}`;
         },
 
-        handleRepaidModalUI(id) {
+        async handleRepaidModalUI(id) {
             this.loading = true
+
+            const response = await window.apiGetSupplier()
+            if (response.success) {
+                this.supplier = response.data.data.reduce((acc, e) => {
+                    acc[e.id] = e.name;
+                    return acc;
+                }, {});
+            } else {
+                toast.error(response.message)
+            }
 
             this.dataRepair = this.dataTable.filter(item => item.id == id)
             $('#' + this.idModalRepair).modal('show')

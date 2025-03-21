@@ -15,6 +15,7 @@
     <script src='{{ asset('/js/jquery.js') }}'></script>
     <script src='{{ asset('/js/select2.full.js') }}'></script>
     <script src='{{ asset('/js/adminlte.js') }}'></script>
+    <script src='{{ asset('/js/summernote-lite.js') }}'></script>
 
     @vite([
         'resources/css/app.css',
@@ -53,7 +54,9 @@
 
                 <!-- Main content -->
                 <section class="content">
-                    <div class="container-fluid" x-data="{permission: {{Auth::user()->getAllPermissions()->pluck('name')}}}" x-init="console.log(permission)">
+                    <div class="container-fluid"
+                         x-data="{permission: {{\Auth::user()->getAllPermissions()->pluck('name')}}}"
+                    >
                         @yield('content')
                     </div>
                 </section>

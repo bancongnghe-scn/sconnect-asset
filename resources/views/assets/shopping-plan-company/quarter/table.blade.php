@@ -7,24 +7,24 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            @can('shopping_plan_company.crud')
-                                <th class="text-center">
+                            @can('shopping_plan_company.year_quarter.crud')
+                                <th class="text-center" style="width: 3rem">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
                             @endcan
-                            <th rowspan="1" colspan="1" class="text-center">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 3rem">STT</th>
                             <th rowspan="1" colspan="1" class="text-center">Kế hoạch</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
+                            <th rowspan="1" colspan="1" class="text-center tw-w-48 2xl:tw-w-36">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 9rem">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                         <template x-for="(value,index) in dataTable" :key="index">
                             <tr>
-                                @can('shopping_plan_company.crud')
+                                @can('shopping_plan_company.year_quarter.crud')
                                     <td class="text-center align-middle">
                                         <input type="checkbox" x-model="selectedRow[value.id]"
                                                x-bind:checked="selectedRow[value.id]"
@@ -45,15 +45,17 @@
                                     @include('component.status.status_shopping_plan_company', ['status' => 'value.status'])
                                 </td>
                                 <td class="align-middle">
+                                    <a :href="`/shopping-plan-company/quarter/detail/${value.id}`" class="tw-no-underline mr-2">
+                                        <i class="bi bi-eye text-info"></i>
+                                    </a>
+
                                     <template x-for="configBtnTable in configButtonsTable">
-                                        <template x-if="configBtnTable.condition === true || configBtnTable.condition(+value.status)">
-                                            <template x-if="configBtnTable.permission === true || permission.includes(configBtnTable.permission)">
-                                                <template x-for="configBtn in configBtnTable.buttons">
-                                                    <button class="border-0 bg-white"
-                                                            @click="configBtn.action(value.id)">
-                                                        <i :class="configBtn.icon"></i>
-                                                    </button>
-                                                </template>
+                                        <template x-if="configBtnTable.condition(+value.status)">
+                                            <template x-for="configBtn in configBtnTable.buttons">
+                                                <button class="border-0 bg-white"
+                                                        @click="configBtn.action(value.id)">
+                                                    <i :class="configBtn.icon"></i>
+                                                </button>
                                             </template>
                                         </template>
                                     </template>
@@ -65,7 +67,11 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
 

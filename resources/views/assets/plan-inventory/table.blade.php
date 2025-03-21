@@ -10,28 +10,29 @@
                                 <th class="text-center">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
-                                <th rowspan="1" colspan="1" class="text-center">Tên kế hoạch kiểm kê</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-40">Thời gian</th>
-                                <th rowspan="1" colspan="1" class="text-center">Đơn vị</th>
-                                <th rowspan="1" colspan="1" class="text-center">Loại tài sản</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-40">Trạng thái</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-60">Tiến độ</th>
-                                <th rowspan="1" colspan="1" class="text-center tw-min-w-24">Thao tác</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 18rem;">Tên kế hoạch kiểm kê</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 13rem;">Thời gian</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 17rem;">Đơn vị</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: auto;">Loại tài sản</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 8rem;">Trạng thái</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 20rem;">Tiến độ</th>
+                                <th rowspan="1" colspan="1" class="text-center" style="width: 5rem;">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
                             <template x-for="(value, index) in dataTable" :key="index">
                                 <tr>
-                                    <td class="text-center align-middle" :disabled="+value.status === STATUS_INVENTORIED">
-                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
+                                    <td class="text-center align-middle">
+                                        <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]"
+                                               :disabled="value.status !== STATUS_INVENTORY_NEW">
                                     </td>
-                                    <td>
-                                        <a x-text="value.name" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
+                                    <td class="align-middle">
+                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/plan-inventory/detail/${value.id}`"></a>
                                     </td>
                                     <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
-                                    <td x-text="value.organizations.join(', ')">
-                                    <td x-text="value.asset_types.join(', ')">
-                                    <td class="text-center">
+                                    <td class="align-middle" x-text="value.organizations.join(', ')">
+                                    <td class="align-middle" x-text="value.asset_types.join(', ')">
+                                    <td class="align-middle">
                                         @include('component.status.status_plan_inventory', [
                                             'status' => 'value.status'
                                         ])
@@ -50,46 +51,19 @@
                                     </td>
                                     <td class="text-center align-middle">
                                         <template x-if="value.status === STATUS_INVENTORIED">
-                                            <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
+                                            <span class="tw-cursor-pointer" @click="window.location.href = `/plan-inventory/detail/${value.id}`">
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
-                                        <template x-if="value.status === STATUS_TAKING_INVENTORY">
+                                        <template x-if="[STATUS_INVENTORY_NEW, STATUS_TAKING_INVENTORY].includes(+value.status)">
                                             <span>
-                                                <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
+                                                <span class="tw-cursor-pointer mr-1"
+                                                      @click="window.location.href = `/plan-inventory/update/${value.id}`">
+                                                     <i class="bi bi-pencil-square color-sc"></i>
                                                 </span>
-                                                <span class="tw-cursor-pointer" @click="">
-                                                    <i class="bi bi-trash3 text-red"></i>
-                                                </span>
-                                            </span>
-                                        </template>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a x-text="value.code" class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)"></a>
-                                    </td>
-                                    <td x-text="value.name">
-                                    <td x-text="value.suppliers.join(', ')">
-                                    <td x-text="value.organizations.join(', ')">
-                                    <td class="text-center align-middle" x-text="formatDateVN(value.start_time) + ' - ' + formatDateVN(value.start_time)">
-                                    <td class="text-center align-middle">
-                                        @include('component.status.status_plan_maintain', ['status' => 'value.status'])
-                                    </td>
-                                    <td class="text-center align-middle">
-                                        <template x-if="value.status === STATUS_COMPLETE_MAINTAIN">
-                                            <span class="tw-cursor-pointer" @click="handleShowModalUI('view', value.id)">
-                                                <i class="bi bi-eye text-info"></i>
-                                            </span>
-                                        </template>
-                                        <template x-if="value.status === STATUS_MAINTAINING">
-                                            <span>
-                                                <span class="tw-cursor-pointer mr-1">
-                                                    <i class="bi bi-pencil-square color-sc" @click="handleShowModalUI('update', value.id)"></i>
-                                                </span>
-                                                <span class="tw-cursor-pointer" @click="handleShowModalConfirmDelete(value.id)">
-                                                    <i class="bi bi-trash3 text-red"></i>
+                                                <span class="tw-cursor-pointer"
+                                                      @click="confirmRemovePlanInventory(false, value.id)">
+                                                      <i class="bi bi-trash3 text-red"></i>
                                                 </span>
                                             </span>
                                         </template>
@@ -101,10 +75,10 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
-
-@include('assets.asset.common.commonSvg')
-
-

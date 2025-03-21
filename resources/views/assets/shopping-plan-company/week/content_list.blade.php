@@ -4,14 +4,11 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        @include('component.shopping_plan_company.week.filter')
+                        @include('assets.shopping-plan-company.week.filter')
                     </div>
 
                     <div
-                        @remove="confirmRemove($event.detail.id)"
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                        @remove="confirmRemove($event.detail.id)">
                         @include('assets.shopping-plan-company.week.table')
                     </div>
                 </div>
@@ -21,11 +18,7 @@
 
     {{--  modal--}}
     @include('assets.shopping-plan-company.week.modalInsert')
-    @include('assets.shopping-plan-company.week.detail')
     @include('assets.shopping-plan-company.week.update')
-    <div x-data="{data: [], registers: []}" x-effect="data = dataOrganization, registers = registersOrganization">
-        @include('assets.shopping_plan_organization.week.detail')
-    </div>
     <div
         x-data="{
               modalId: 'idModalConfirmDelete',

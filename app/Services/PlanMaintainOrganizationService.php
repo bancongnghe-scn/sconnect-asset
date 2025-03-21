@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\PlanMaintainOrganization;
 use App\Repositories\PlanMaintainOrganizationRepository;
 use App\Support\Constants\AppErrorCode;
-use Illuminate\Support\Facades\DB;
 
 class PlanMaintainOrganizationService
 {
@@ -38,7 +37,7 @@ class PlanMaintainOrganizationService
             }
         }
 
-        $organizationRemoveIds = array_diff($organizationOldIds, $organizationAddIds);
+        $organizationRemoveIds = array_diff($organizationOldIds, $organizationNewIds);
         if (!empty($organizationRemoveIds)) {
             PlanMaintainOrganization::where('plan_maintain_id', $planId)->whereIn('organization_id', $organizationRemoveIds)->delete();
         }

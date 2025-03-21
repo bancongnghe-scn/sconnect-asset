@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateImportWarehouseRequest;
 use App\Services\ImportWarehouseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ImportWarehouseController extends Controller
@@ -46,6 +47,7 @@ class ImportWarehouseController extends Controller
             'limit'      => 'nullable|integer',
         ]);
 
+        Auth::user()->canPer('import_warehouse.view');
         try {
             $result = $this->importWarehouseService->getListImportWarehouse($request->all());
 
@@ -59,6 +61,7 @@ class ImportWarehouseController extends Controller
 
     public function getInfoImportWarehouse(string $id)
     {
+        Auth::user()->canPer('import_warehouse.view');
         try {
             $result = $this->importWarehouseService->getInfoImportWarehouse($id);
 
@@ -76,6 +79,7 @@ class ImportWarehouseController extends Controller
 
     public function createImportWarehouse(CreateImportWarehouseRequest $request)
     {
+        Auth::user()->canPer('import_warehouse.create');
         try {
             $result = $this->importWarehouseService->createImportWarehouse($request->validated());
 
@@ -93,6 +97,7 @@ class ImportWarehouseController extends Controller
 
     public function completeImportWarehouse(string $id)
     {
+        Auth::user()->canPer('import_warehouse.complete');
         try {
             $result = $this->importWarehouseService->completeImportWarehouse($id);
 
@@ -110,6 +115,7 @@ class ImportWarehouseController extends Controller
 
     public function updateImportWarehouse(string $id, CreateImportWarehouseRequest $request)
     {
+        Auth::user()->canPer('import_warehouse.create');
         try {
             $result = $this->importWarehouseService->updateImportWarehouse($id, $request->validated());
 
@@ -127,6 +133,7 @@ class ImportWarehouseController extends Controller
 
     public function deleteImportWarehouse(string $id)
     {
+        Auth::user()->canPer('import_warehouse.delete');
         try {
             $result = $this->importWarehouseService->deleteImportWarehouse($id);
 
@@ -149,7 +156,15 @@ class ImportWarehouseController extends Controller
             'ids.*' => 'integer',
         ]);
 
+        Auth::user()->canPer('import_warehouse.export');
         $id = $request->ids ?? [];
+
+        return Excel::download(new ImportWarehouseExport($id), 'phieu_nhap_kho.xlsx');
+    }
+
+    public function exportImportWarehouseInfo($id)
+    {
+        Auth::user()->canPer('import_warehouse.export');
 
         return Excel::download(new ImportWarehouseExport($id), 'phieu_nhap_kho.xlsx');
     }

@@ -31,10 +31,10 @@ window.formData = function (data) {
 }
 
 window.formatCurrencyVND = function formatCurrencyVND(number) {
-    if (+number === 0 || typeof number === 'undefined') {
+    if (+number === 0 || number === undefined) {
         return 0
     }
-    return number.toLocaleString('vi-VN');
+    return (+number).toLocaleString("en-US");
 }
 
 window.initSelect2Modal = function initSelect2Modal(modalId) {

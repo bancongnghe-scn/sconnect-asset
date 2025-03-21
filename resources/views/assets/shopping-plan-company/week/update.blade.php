@@ -34,7 +34,7 @@
                                 <div class="tw-grid tw-grid-cols-3 tw-gap-4">
                                     <div>
                                         <label class="tw-font-bold">Kế hoạch quý<span
-                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                                class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.extent.select_single', [
                                             'selected' => 'data.plan_quarter_id',
                                             'options' => 'listPlanCompanyQuarter',
@@ -46,7 +46,7 @@
 
                                     <div>
                                         <label class="tw-font-bold">Tháng<span
-                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                                class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.simple.select_single', [
                                             'selected' => 'data.month',
                                             'options' => 'LIST_MONTHS',
@@ -58,7 +58,7 @@
 
                                     <div>
                                         <label class="tw-font-bold">Tuần<span
-                                                    class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                                class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                         @include('common.select_custom.simple.select_single', [
                                             'selected' => 'data.time',
                                             'options' => 'LIST_WEEK',
@@ -80,7 +80,7 @@
 
                                 <div>
                                     <label class="tw-font-bold">Thời gian đăng ký<span
-                                                class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
+                                            class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                                     @include('common.datepicker.datepicker_range', [
                                            'placeholder' => 'Chọn thời gian đăng ký',
                                            'disabled' => '!([STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(+data.status))',
@@ -110,7 +110,7 @@
                                         @include('assets.shopping-plan-company.table_synthetic_organization_register')
                                     </template>
                                     <template x-if="+data.status !== STATUS_SHOPPING_PLAN_COMPANY_NEW">
-                                        @include('component.shopping_plan_company.week.table_synthetic_asset_organization_register')
+                                        @include('assets.shopping-plan-company.week.table_synthetic_asset_organization_register')
                                     </template>
                                 </div>
                             </div>
@@ -153,17 +153,17 @@
                                 </div>
                                 <div>
                                     <div x-show="activeLink.new">
-                                        @include('component.shopping_plan_company.week.table_synthetic_action_new')
+                                        @include('assets.shopping-plan-company.week.table_synthetic_action_new')
                                     </div>
                                     <div x-show="activeLink.rotation">
-                                        @include('component.shopping_plan_company.week.table_synthetic_action_rotation')
+                                        @include('assets.shopping-plan-company.week.table_synthetic_action_rotation')
                                     </div>
                                 </div>
                             </div>
                         </template>
                     </div>
-                    <div class="col-2 border border-right-0 border-top-0 border-bottom-0">
-                        @include('assets.shopping-plan-company.history_comment')
+                    <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-bind:id="id">
+                        @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_SHOPPING_PLAN_COMPANY'])
                     </div>
                 </div>
 

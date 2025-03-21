@@ -36,14 +36,7 @@
                                     </template>
                                     <template x-if="key === 'status'">
                                         <div class="d-flex justify-content-center">
-                                            <span x-text="data[key]" class="rounded tw-p-1" style="border: 1px solid;font-size:11px;"
-                                                :class="{
-                                                    'tw-text-slate-500 tw-bg-slate-100':  data[key] === 'Mới tạo',
-                                                    'tw-text-yellow-500 tw-bg-yellow-100':  data[key] === 'Chờ duyệt',
-                                                    'tw-text-green-500 tw-bg-green-100':    data[key] === 'Đã duyệt',
-                                                    'tw-text-red-500 tw-bg-red-100':    data[key] === 'Từ chối',
-                                                }"
-                                            ></span>
+                                            @include('common.table-status-asset-liquid', ['status' => 'data[key]'])
                                         </div>
                                     </template>
                                     <template x-if="key === 'date'">
@@ -55,19 +48,19 @@
                                 </td>
                             </template>
                             <td class="text-center align-middle" x-show="data.status === 'Mới tạo'">
-                                <button class="border-0 position-relative" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
-                                    <i class="fa-solid fa-pencil">&#xF117;</i>
+                                <button class="border-0 bg-white position-relative" x-show="showAction.edit ?? true" @click="$dispatch('edit', { id: data.id })">
+                                    <i class="bi bi-pencil-square color-sc"></i>
                                     <span class="tooltip-text">Chỉnh sửa</span>
                                 </button>
-                                <button class="border-0 position-relative" @click="removeOnePlan(data.id)"
+                                <button class="border-0 bg-white position-relative" @click="removeOnePlan(data.id)"
                                 >
-                                    <i class="fa-solid fa-trash" style="color: #db4554;"></i>
+                                    <i class="bi bi-trash text-red"></i>
                                     <span class="tooltip-text">Xóa</span>
                                 </button>
                             </td>
                             <td class="text-center align-middle" x-show="data.status !== 'Mới tạo'">
-                                <button class="border-0 position-relative" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
-                                    <i class="fa-solid fa-eye">&#xF117;</i>
+                                <button class="border-0 bg-white position-relative" x-show="showAction.get ?? true" @click="$dispatch('get', { id: data.id })">
+                                    <i class="bi bi-eye text-info"></i>
                                     <span class="tooltip-text">Xem</span>
                                 </button>
                             </td>
@@ -78,7 +71,11 @@
             </div>
         </div>
     </div>
-    @include('common.pagination')
+    <div
+        @change-page.windows.stop="changePage($event.detail.page)"
+        @change-limit.window.stop="changeLimit($event.detail.limit)">
+        @include('common.pagination')
+    </div>
 </div>
 
 <script>

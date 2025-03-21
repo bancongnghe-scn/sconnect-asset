@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-sc" data-bs-dismiss="modal" @click="handleShowModalUI('create')">Xác nhận</button>
+                <button class="btn btn-sc" data-bs-dismiss="modal" @click="handleShowModalInsert()">Xác nhận</button>
             </div>
         </div>
     </div>

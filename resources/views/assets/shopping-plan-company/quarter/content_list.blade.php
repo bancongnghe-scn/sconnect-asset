@@ -6,10 +6,7 @@
                     @include('assets.shopping-plan-company.quarter.filter')
 
                     <div
-                        @remove="confirmRemove($event.detail.id)"
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                        @remove="confirmRemove($event.detail.id)">
                         @include('assets.shopping-plan-company.quarter.table')
                     </div>
                 </div>
@@ -19,11 +16,7 @@
 
     {{--  modal--}}
     @include('assets.shopping-plan-company.quarter.modalInsert')
-    @include('assets.shopping-plan-company.quarter.detail')
     @include('assets.shopping-plan-company.quarter.update')
-    <div x-data="{registers: [], data: []}" x-effect="registers = registersOrganization, data = dataOrganization">
-        @include('assets.shopping_plan_organization.quarter.detail')
-    </div>
     <div
         x-data="{
               modalId: 'idModalConfirmDelete',

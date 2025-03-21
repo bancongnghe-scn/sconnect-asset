@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    @can('shopping_plan_company.crud')
+    @can('shopping_plan_company.year_quarter.crud')
         <div class="d-flex tw-gap-x-2 align-items-center">
             <button class="btn btn-sc btn-sm px-3" type="button" @click="handleShowModal(null, 'create')">
                 <span>+ Thêm</span>

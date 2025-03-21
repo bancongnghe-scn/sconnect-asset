@@ -19,4 +19,5 @@ return [
     ShoppingPlanLog::ACTION_SENT_INFO_SHOPPING_ASSET                                     => 'Nhân sự điền thông tin mua sắm',
     ShoppingPlanLog::ACTION_SEND_HR_MANAGER_APPROVAL                                     => 'Gửi giám đốc nhân sự duyệt',
     ShoppingPlanLog::ACTION_COMPLETE_SHOPPING_PLAN_WEEK                                  => 'Hoàn thành kế hoạch mua sắm tuần',
+    ShoppingPlanLog::ACTION_SENT_REGISTER_AGAIN                                          => 'Gửi đăng ký lại tới đơn vị',
 ];

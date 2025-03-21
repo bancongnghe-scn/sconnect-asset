@@ -1,4 +1,3 @@
-import {format} from "date-fns";
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyYear', () => {
         return ({
@@ -38,6 +37,7 @@ document.addEventListener('alpine:init', () => {
             },
 
             id: null,
+            action: null,
             showModal: null,
             idPlanOrganization: null,
             note_disapproval: null,
@@ -122,7 +122,7 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     this.listUser = response.data.data
                 } else {
-                    toast.error('Lấy danh sách nhân viên thất bại !')
+                    toast.error(response.message)
                 }
                 this.loading = false
             },
@@ -152,8 +152,8 @@ document.addEventListener('alpine:init', () => {
                         const data = response.data.data
                         this.data.time = data.time
                         this.data.status = data.status
-                        this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
-                        this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
+                        this.data.start_time = data.start_time
+                        this.data.end_time = data.end_time
                         this.data.monitor_ids = data.monitor_ids
                         return
                     }
@@ -185,14 +185,20 @@ document.addEventListener('alpine:init', () => {
                 }
             },
 
-            async sentNotificationRegister() {
+            async sentNotificationRegister(type= 'sent_to_detail',id = null) {
                 this.loading = true
+                if (type === 'sent_to_table') {
+                    this.id = id
+                }
                 try {
                     const response = await window.apiSentNotificationRegister(this.id)
                     if (response.success) {
                         toast.success('Gửi thông báo thành công !')
                         this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                        this.getOrganizationRegisterYear()
+                        if (type === 'sent_to_detail') {
+                            this.getOrganizationRegisterYear()
+                        }
+                        this.list(this.filters)
                         return
                     }
 
@@ -349,11 +355,7 @@ document.addEventListener('alpine:init', () => {
 
                     await this.getOrganizationRegisterYear()
                     await this.getInfoShoppingPlanCompanyYear()
-                    if (action === 'view') {
-                        $('#modalDetail').modal('show')
-                    } else {
-                        $('#modalUpdate').modal('show')
-                    }
+                    $('#modalUpdate').modal('show')
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -436,7 +438,23 @@ document.addEventListener('alpine:init', () => {
                         this.list_asset_type = response.data.data
                         return
                     }
-                    toast.error('Lấy danh sách loại tài sản thất bại !')
+                    toast.error(response.message)
+                } catch (e) {
+                    toast.error(e)
+                } finally {
+                    this.loading = false
+                }
+            },
+
+            async sentRegisterAgain(id) {
+                this.loading = true
+                try {
+                    const response = await window.apiSentRegisterAgain(id)
+                    if (response.success) {
+                        this.list(this.filters)
+                        return
+                    }
+                    toast.error(response.message)
                 } catch (e) {
                     toast.error(e)
                 } finally {
@@ -449,25 +467,6 @@ document.addEventListener('alpine:init', () => {
                     this.table_index.push(index)
                 } else {
                     this.table_index = this.table_index.filter(item => item !== index);
-                }
-            },
-
-            async handleShowModalDetailOrganization(id) {
-                this.loading = true
-                try {
-                    this.idPlanOrganization = id
-                    this.table_index = []
-                    await this.getInfoOrganization(id)
-                    this.getRegisterAssetOrganization(id)
-                    if (this.list_asset_type.length === 0) {
-                        this.getListAssetType()
-                    }
-                    $('#modalDetailOrganization').modal('show')
-                    this.setConfigButtons()
-                } catch (e) {
-                    toast.error(e)
-                } finally {
-                    this.loading = false
                 }
             },
 
@@ -492,13 +491,13 @@ document.addEventListener('alpine:init', () => {
                                 text: 'Gửi thông báo',
                                 class: 'btn btn-primary',
                                 action: () => this.sentNotificationRegister(),
-                                permission: 'shopping_plan_company.sent_notification_register'
+                                permission: 'shopping_plan_company.year_quarter.sent_notification_register'
                             },
                             {
                                 text: 'Xóa',
                                 class: 'btn btn-danger',
                                 action: (id) => this.confirmRemove(id),
-                                permission: 'shopping_plan_company.crud'
+                                permission: 'shopping_plan_company.year_quarter.crud'
                             },
                         ],
                     },
@@ -509,7 +508,7 @@ document.addEventListener('alpine:init', () => {
                                 text: 'Lưu',
                                 class: 'btn btn-sc',
                                 action: () => this.updatePlanYear(),
-                                permission: 'shopping_plan_company.crud'
+                                permission: 'shopping_plan_company.year_quarter.crud'
                             },
                         ],
                     },
@@ -556,8 +555,34 @@ document.addEventListener('alpine:init', () => {
                 ]
                 this.configButtonsTable = [
                     {
-                        condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                        permission: 'shopping_plan_company.crud',
+                        condition: (status) =>
+                            STATUS_SHOPPING_PLAN_COMPANY_CANCEL === status
+                            && this.permission.includes('shopping_plan_company.sent_register_again')
+                        ,
+                        buttons: [
+                            {
+                                icon: 'bi bi-repeat color-sc',
+                                action: (id) => this.sentRegisterAgain(id),
+                            },
+                        ],
+                    },
+                    {
+                        condition: (status) =>
+                            STATUS_SHOPPING_PLAN_COMPANY_NEW === status
+                            && this.permission.includes('shopping_plan_company.year_quarter.sent_notification_register')
+                        ,
+                        buttons: [
+                            {
+                                icon: 'bi bi-send text-primary',
+                                action: (id) => this.sentNotificationRegister('sent_to_table',id),
+                            },
+                        ],
+                    },
+                    {
+                        condition: (status) => (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_NEW
+                            && this.permission.includes('shopping_plan_company.year_quarter.crud')
+                        ),
                         buttons: [
                             {
                                 icon: 'bi bi-trash text-red',
@@ -566,42 +591,26 @@ document.addEventListener('alpine:init', () => {
                         ],
                     },
                     {
-                        condition: (status) => [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status),
-                        permission: 'shopping_plan_company.crud',
+                        condition: (status) =>
+                            (
+                                [STATUS_SHOPPING_PLAN_COMPANY_NEW, STATUS_SHOPPING_PLAN_COMPANY_REGISTER].includes(status)
+                                && this.permission.includes('shopping_plan_company.year_quarter.crud')
+                            )
+                            ||
+                            (
+                                status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                                && this.permission.includes('shopping_plan_company.accounting_approval')
+                            )
+                            ||
+                            (
+                                status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                                && this.permission.includes('shopping_plan_company.general_approval')
+                            )
+                        ,
                         buttons: [
                             {
                                 icon: 'bi bi-pencil-square color-sc',
                                 action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
-                    {
-                        condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                        permission: 'shopping_plan_company.accounting_approval',
-                        buttons: [
-                            {
-                                icon: 'bi bi-pencil-square color-sc',
-                                action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
-                    {
-                        condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                        permission: 'shopping_plan_company.general_approval',
-                        buttons: [
-                            {
-                                icon: 'bi bi-pencil-square color-sc',
-                                action: (id) => this.handleShowModal(id, 'update'),
-                            },
-                        ],
-                    },
-                    {
-                        condition: () => true,
-                        permission: true,
-                        buttons: [
-                            {
-                                icon: 'bi bi-eye text-info',
-                                action: (id) => this.handleShowModal(id, 'view'),
                             },
                         ],
                     },
@@ -713,8 +722,8 @@ document.addEventListener('alpine:init', () => {
                 this.list(this.filters)
             },
 
-            changeLimit() {
-                this.filters.limit = this.limit
+            changeLimit(limit) {
+                this.filters.limit = limit
                 this.list(this.filters)
             },
 

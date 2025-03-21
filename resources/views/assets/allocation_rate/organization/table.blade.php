@@ -11,7 +11,7 @@
                                 <input type="checkbox" @click="selectedAll">
                             </th>
                             <th rowspan="1" colspan="1" class="tw-w-80 text-center">Đơn vị</th>
-                            <th rowspan="1" colspan="1" class="text-center tw-w-52">Loại tài sản</th>
+                            <th rowspan="1" colspan="1" style="width: 11rem;">Loại tài sản</th>
                             <th rowspan="1" colspan="1" class="text-center tw-w-24">Hạng</th>
                             <th rowspan="1" colspan="1" class="text-center tw-w-40">Giá</th>
                             <th rowspan="1" colspan="1" class="text-center">Ghi chú</th>
@@ -27,17 +27,16 @@
                                     </td>
                                     <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" x-text="value.organization_name"
                                         class="text-center align-middle"></td>
-                                    <td class="text-center">
-                                            <span class="border rounded p-1 tw-text-xs tw-shadow-md"
-                                                  x-text="config?.asset_type_name || ''"
-                                            ></span>
+                                    <td>
+                                        <span class="border rounded p-1 tw-text-xs tw-shadow-md" x-text="config?.asset_type_name || ''">
+                                        </span>
                                     </td>
                                     <td class="text-center">
                                             <span x-text="LEVEL_ALLOCATION_RATE[config.level]"
                                                   class="border rounded p-1 tw-text-xs tw-shadow-md">
                                             </span>
                                     </td>
-                                    <td x-text="formatCurrencyVND(+config.price)" class="text-center"></td>
+                                    <td x-text="formatCurrencyVND(config.price)" class="text-center"></td>
                                     <td x-text="config?.description || ''"></td>
                                     <td x-show="key === 0" :rowspan="key === 0 ? rowspan : 1" class="text-center align-middle">
                                         <button class="border-0 bg-white" @click="handleShowModal('update', value.organization_id)">
@@ -55,7 +54,11 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
 

@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <label>Kiểm kê<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-                        <div class="d-flex tw-gap-x-3" x-data="{data : {type_inventory: TYPE_INVENTORY_NOT_AUTO}}">
+                        <div class="d-flex tw-gap-x-3">
                             <div class="d-flex align-middle tw-gap-x-2">
                                 <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory">
                                 <label class="form-check-label" for="manual">Thủ công</label>
@@ -42,7 +42,7 @@
                             ])
                         </div>
                     </div>
-                    <div>
+                    <div x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">
                         <label class="tw-font-bold">Loại tài sản<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                         <div>
                             @include('common.select_custom.extent.select_multiple', [
@@ -69,6 +69,10 @@
                         <label class="form-check-label" for="exampleCheck1">Gửi thông báo cho đơn vị</label>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button @click="createPlanInventory" type="button" class="btn btn-sc">Thêm mới</button>
             </div>
         </div>
     </div>

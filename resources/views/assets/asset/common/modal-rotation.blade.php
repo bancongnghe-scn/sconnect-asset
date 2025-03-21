@@ -23,7 +23,7 @@
                                 </div>
                                 <div class="col-12 mb-3">
                                     <span>Ngày luân chuyển</span>
-                                    <input type="date" class="form-control" x-model="new Date().toISOString().slice(0, 10)" disabled>
+                                    <input type="date" class="form-control" x-model="dateChange" onclick="this.showPicker();">
                                 </div>
                             </div>
                             <div class="col-6 item-rotation-modal">
@@ -39,13 +39,13 @@
                                     <span>Đối tượng luân chuyển</span>
                                     <div class="d-flex" style="gap: 30px;">
                                         <div class="form-check">
-                                            <input class="form-check-input" :checked="assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom1">
+                                            <input class="form-check-input" :checked="assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom1" disabled>
                                             <label class="form-check-label" for="defaultCheckFrom1">
                                                 Nhân viên
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" :checked="assetSelect.organization"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom2">
+                                            <input class="form-check-input" :checked="!assetSelect.user"  type="radio" value="" name="changeTabFrom" id="defaultCheckFrom2" disabled>
                                             <label class="form-check-label" for="defaultCheckFrom2">
                                                 Đơn vị
                                             </label>
@@ -86,6 +86,14 @@
                                             <option :value="org.id" x-text="org.dept_type.cfg_key + ' ' + org.name"></option>
                                         </template>
                                     </select>
+                                </div>
+                                <div class="mb-3" x-show="defaultCheckRotation == 'unit'">
+                                    <span>Người đại diện</span>
+                                    <input id="unitRepresent" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="mb-3" x-show="defaultCheckRotation == 'employee'">
+                                    <span>Đơn vị</span>
+                                    <input id="unitEmployee" type="text" class="form-control" disabled>
                                 </div>
                                 <div class="mb-3" x-show="defaultCheckRotation == 'employee'">
                                     <span>Nhân viên</span>
@@ -201,12 +209,12 @@
                 <span>
                     Biên bản luân chuyển
                 </span>
-                <span class="text-primary">
-                    Bienbanluanchuyen
+                <span class="text-primary" x-text="'BB0' + linkReport.id" @click="window.open('/' + linkReport.link_report, '_blank')" style="cursor: pointer;">
+                    
                 </span>
             </div>
             <div class="modal-footer" style="background: #fff; border: none;">
-              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRotationModal');">Đóng</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" @click="closeModal('#successRotationModal'); closeModal('#modalRotation');">Đóng</button>
             </div>
           </div>
         </div>

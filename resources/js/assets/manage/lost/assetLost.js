@@ -23,13 +23,6 @@ document.addEventListener('alpine:init', () => {
             location: 'Vị trí tài sản',
             reason: 'Lý do mất',
         },
-        showAction: {
-            edit: true,
-            cancel: true,
-            delete: true,
-            back: true,
-        },
-
         dateValue: '',
 
         //pagination
@@ -131,8 +124,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

@@ -48,4 +48,9 @@ class AssetTypeRepository extends BaseRepository
     {
         return $this->_model->whereIn('id', Arr::wrap($ids))->delete();
     }
+
+    public function getAssetTypeByName($name)
+    {
+        return $this->_model->whereIn('name', Arr::wrap($name))->get();
+    }
 }

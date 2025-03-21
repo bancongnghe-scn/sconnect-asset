@@ -3,19 +3,16 @@
 ])
 
 @section('content')
-    <div x-data="import_warehouse_list">
+    <div x-data="import_warehouse_list({{request('order_id') ?? null}})">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <div class="tw-mt-8">
+                        <div>
                             @include('assets.import_warehouse.filters')
                         </div>
 
-                        <div
-                            @change-page.window="changePage($event.detail.page)"
-                            @change-limit.window="changeLimit"
-                        >
+                        <div>
                             @include('assets.import_warehouse.table')
                         </div>
                     </div>
@@ -54,7 +51,7 @@
 
 @section('js')
     @vite([
-        'resources/js/assets/import_warehouse.js',
+        'resources/js/assets/import-warehouse/import_warehouse.js',
         'resources/js/assets/api/apiImportWarehouse.js',
         'resources/js/assets/api/order/apiOrder.js',
         'resources/js/app/api/apiUser.js',

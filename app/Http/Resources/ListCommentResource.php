@@ -18,6 +18,7 @@ class ListCommentResource extends JsonResource
                 'user_created'  => $users[$comment->created_by]['name'] ?? null,
                 'created_at'    => date('H:i d/m/Y', strtotime($comment->created_at)),
                 'created_by'    => $comment->created_by,
+                'files'         => $comment->commentFiles,
             ];
         }
 

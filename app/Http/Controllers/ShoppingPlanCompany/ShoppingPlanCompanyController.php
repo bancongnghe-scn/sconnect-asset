@@ -39,7 +39,7 @@ class ShoppingPlanCompanyController extends Controller
             'organizations.*' => 'integer',
         ]);
 
-        Auth::user()->canPer('shopping_plan_company.sent_notification_register');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.sent_notification_register');
 
         try {
             $result = $this->planCompanyService->sentNotificationRegister($request->all());
@@ -121,7 +121,7 @@ class ShoppingPlanCompanyController extends Controller
 
     public function deleteShoppingPlanCompany(string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompany($id);
@@ -145,7 +145,7 @@ class ShoppingPlanCompanyController extends Controller
             'type'  => 'required|integer',
         ]);
 
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $result = $this->planCompanyService->deleteShoppingPlanCompanyMultiple($request->get('ids'), $request->integer('type'));
@@ -191,6 +191,27 @@ class ShoppingPlanCompanyController extends Controller
             $result = $this->planCompanyService->getListShoppingPlanByFilters($request->all());
 
             return response_success($result);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     * TKCT thực hiện gửi đăng ký lại cho đơn vị khi giám đốc từ chối
+     */
+    public function sentRegisterAgain($id)
+    {
+        Auth::user()->canPer('shopping_plan_company.sent_register_again');
+        try {
+            $result = $this->planCompanyService->sentRegisterAgain($id);
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
         } catch (\Throwable $exception) {
             report($exception);
 

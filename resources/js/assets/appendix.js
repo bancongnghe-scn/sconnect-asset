@@ -5,8 +5,6 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page: 1, limit: 10})
             this.getListContract()
-            window.initSelect2Modal(this.idModalUI);
-            window.initSelect2Modal(this.idModalInfo);
             this.watchFilters()
         },
 
@@ -33,7 +31,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
         selectedRow: [],
 
         //data
@@ -148,11 +145,11 @@ document.addEventListener('alpine:init', () => {
         async getListContract() {
             this.loading = true
             const response = await window.apiGetContract({status: CONTRACT_STATUS_APPROVED})
-            console.log(response)
+
             if (response.success) {
                 this.listContract = response.data.data
             } else {
-                toast.error('Lấy danh sách hợp đồng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -163,7 +160,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -182,7 +179,7 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.data = this.formatDateAppendix(response.data.data)
+                this.data = response.data.data
             }
 
             $('#'+this.idModalUI).modal('show');
@@ -196,7 +193,7 @@ document.addEventListener('alpine:init', () => {
                 toast.error(response.message)
                 return
             }
-            this.data = this.formatDateAppendix(response.data.data)
+            this.data = response.data.data
             $('#'+this.idModalInfo).modal('show');
             this.loading = false
         },
@@ -217,8 +214,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -289,13 +286,6 @@ document.addEventListener('alpine:init', () => {
             this.$nextTick(() => {
                 this.initDatePicker()
             });
-        },
-
-        formatDateAppendix(appendix) {
-            appendix.signing_date = appendix.signing_date !== null ? format(appendix.signing_date, 'dd/MM/yyyy') : null
-            appendix.from = appendix.from !== null ? format(appendix.from, 'dd/MM/yyyy') : null
-            appendix.to = appendix.to !== null ? format(appendix.to, 'dd/MM/yyyy') : null
-            return appendix
         },
     }));
 });

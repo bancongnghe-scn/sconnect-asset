@@ -42,7 +42,7 @@ class ShoppingPlanCompanyYearController extends Controller
             $filters['type'] = ShoppingPlanCompany::TYPE_YEAR;
             $result          = $this->planCompanyService->getListShoppingPlanCompany($filters);
 
-            return response_success($result['data'] ?? [], extraData: $result['extra_data'] ?? []);
+            return response_success($result['data'] ?? []);
         } catch (\Throwable $exception) {
             report($exception);
 
@@ -52,7 +52,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function createShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $data         = $request->validated();
@@ -66,7 +66,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();
@@ -75,7 +75,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
     public function updateShoppingPlanCompanyYear(CreateShoppingPlanCompanyYearRequest $request, string $id)
     {
-        Auth::user()->canPer('shopping_plan_company.crud');
+        Auth::user()->canPer('shopping_plan_company.year_quarter.crud');
 
         try {
             $data         = $request->validated();
@@ -88,7 +88,7 @@ class ShoppingPlanCompanyYearController extends Controller
 
             return response_success();
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();

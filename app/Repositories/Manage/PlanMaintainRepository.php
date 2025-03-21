@@ -41,12 +41,16 @@ class PlanMaintainRepository extends BaseRepository
             $query->whereDate('created_at', $filters['created_at']);
         }
 
-        if (!empty($filters['status'])) {
+        if (isset($filters['status'])) {
             $query->whereIn('status', Arr::wrap($filters['status']));
         }
 
         if (!empty($filters['type'])) {
             $query->where('type', $filters['type']);
+        }
+
+        if (!empty($filters['first'])) {
+            return $query->first();
         }
 
         if (!empty($filters['limit'])) {
@@ -91,5 +95,10 @@ class PlanMaintainRepository extends BaseRepository
         }
 
         return $query->get();
+    }
+
+    public function last()
+    {
+        return $this->all()->last();
     }
 }

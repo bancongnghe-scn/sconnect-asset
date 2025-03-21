@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AllocationRateController;
-use App\Http\Controllers\ListAssetController;
+use App\Http\Controllers\AssetController;
 use App\Http\Controllers\AssetTypeController;
 use App\Http\Controllers\AssetTypeGroupController;
 use App\Http\Controllers\ContractController;
@@ -67,6 +67,7 @@ Route::middleware('checkAuth')->group(function () {
             Route::delete('delete/{id}', 'deleteShoppingPlanCompany');
             Route::get('list', 'getListShoppingPlan');
             Route::get('get-organization-register/{id}', 'getOrganizationRegister');
+            Route::get('sentRegisterAgain/{id}', 'sentRegisterAgain');
         });
 
         Route::prefix('year')->controller(App\Http\Controllers\ShoppingPlanCompany\ShoppingPlanCompanyYearController::class)->group(function () {
@@ -189,6 +190,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('detail/{id}', 'getAssetRepair');
         Route::post('multi', 'getMultiAssetRepair');
         Route::post('update/multi', 'updateMultiAssetRepaired');
+        Route::get('get-supplier', 'getSupplier');
     });
 
     Route::prefix('comment-v1')->controller(App\Http\Controllers\CommentV1Controller::class)->group(function () {
@@ -215,6 +217,8 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('find/{id}', 'findOrder');
         Route::post('delete', 'deleteOrder');
         Route::get('export/{id}', 'exportOrder');
+        Route::get('getTotalStatusOrder', 'getTotalStatusOrder');
+        Route::get('getLogByOrderId/{id}', 'getLogByOrderId');
     });
 
     Route::prefix('shopping-asset-order')->controller(ShoppingAssetOrderController::class)->group(function () {
@@ -237,6 +241,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('createAllocationRate', 'createAllocationRate');
         Route::post('updateAllocationRate', 'updateAllocationRate');
         Route::post('deleteAllocationRate', 'deleteAllocationRate');
+        Route::get('getAllocationRateOfOrganization', 'getAllocationRateOfOrganization');
     });
 
     Route::prefix('maintain')->controller(MaintainController::class)->group(function () {
@@ -254,47 +259,56 @@ Route::middleware('checkAuth')->group(function () {
 
     Route::prefix('inventory')->controller(App\Http\InventoryController::class)->group(function () {
         Route::get('getPlanInventory', 'getPlanInventory');
+        Route::post('createPlanInventory', 'createPlanInventory');
+        Route::get('findPlanInventory/{id}', 'findPlanInventory');
+        Route::get('startPlanInventory/{id}', 'startPlanInventory');
+        Route::post('updatePlanInventory/{id}', 'updatePlanInventory');
+        Route::get('completePlanInventory/{id}', 'completePlanInventory');
+        Route::post('deletePlanInventory', 'deletePlanInventory');
     });
-});
 
-Route::prefix('report')->group(function () {
-    Route::get('/get-data-value-report', [ReportController::class, 'getDataValueReport'])->name('assets.report.getDataValueReport');
+    Route::prefix('report')->group(function () {
+        Route::get('/get-data-value-report', [ReportController::class, 'getDataValueReport'])->name('assets.report.getDataValueReport');
 
-    Route::get('/get-data-operating-report', [ReportController::class, 'getDataOperatingReport'])->name('assets.report.getDataOperatingReport');
+        Route::get('/get-data-operating-report', [ReportController::class, 'getDataOperatingReport'])->name('assets.report.getDataOperatingReport');
 
-    Route::get('/get-data-structure-report', [ReportController::class, 'getDataStructureReport'])->name('assets.report.getDataStructureReport');
+        Route::get('/get-data-structure-report', [ReportController::class, 'getDataStructureReport'])->name('assets.report.getDataStructureReport');
 
-    Route::get('/get-data-use-report', [ReportController::class, 'getDataUseReport'])->name('assets.report.getDataUseReport');
+        Route::get('/get-data-use-report', [ReportController::class, 'getDataUseReport'])->name('assets.report.getDataUseReport');
 
-    Route::get('/get-data-maintain-report', [ReportController::class, 'getDataMaintainReport'])->name('assets.report.getDataMaintainReport');
-});
+        Route::get('/get-data-maintain-report', [ReportController::class, 'getDataMaintainReport'])->name('assets.report.getDataMaintainReport');
+    });
 
-Route::prefix('asset')->group(function () {
-    Route::get('/get-data-list-asset', [ListAssetController::class, 'getListAsset'])->name('assets.getListAsset');
-    Route::get('/get-data-list-org', [ListAssetController::class, 'getListOrg'])->name('assets.getListOrg');
-    Route::get('/get-data-list-user-asset', [ListAssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
-    Route::get('/get-data-list-org-asset', [ListAssetController::class, 'getListOrgAsset'])->name('assets.getListOrgAsset');
+    Route::prefix('asset')->group(function () {
+        Route::get('/get-data-list-asset', [AssetController::class, 'getListAsset'])->name('assets.getListAsset');
+        Route::get('/get-data-list-org', [AssetController::class, 'getListOrg'])->name('assets.getListOrg');
+        Route::get('/get-data-list-user-asset', [AssetController::class, 'getListUserAsset'])->name('assets.getListUserAsset');
+        Route::get('/get-data-list-org-asset', [AssetController::class, 'getListOrgAsset'])->name('assets.getListOrgAsset');
 
-    Route::get('/get-list-asset-of-user', [ListAssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
-    Route::get('/get-list-asset-of-org', [ListAssetController::class, 'getListAssetOfOrg'])->name('assets.getListAssetOfOrg');
+        Route::get('/get-list-asset-of-user', [AssetController::class, 'getListAssetOfUser'])->name('assets.getListAssetOfUser');
+        Route::get('/get-list-asset-of-org', [AssetController::class, 'getListAssetOfOrg'])->name('assets.getListAssetOfOrg');
 
-    Route::get('/get-list-history', [ListAssetController::class, 'getListHistory'])->name('assets.getListHistory');
-    Route::get('/get-list-log', [ListAssetController::class, 'getListLog'])->name('assets.getListLog');
+        Route::get('/get-list-asset-represent', [AssetController::class, 'getListAssetRepresent'])->name('assets.getListAssetRepresent');
 
-    Route::post('/allocate-asset', [ListAssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
-    Route::post('/recovery-asset', [ListAssetController::class, 'recoveryAsset'])->name('assets.recoveryAsset');
-    Route::post('/rotation-asset', [ListAssetController::class, 'rotationAsset'])->name('assets.rotationAsset');
+        Route::get('/get-list-history', [AssetController::class, 'getListHistory'])->name('assets.getListHistory');
+        Route::get('/get-list-log', [AssetController::class, 'getListLog'])->name('assets.getListLog');
 
-    Route::post('/allocate-asset-org', [ListAssetController::class, 'allocateAssetOrg'])->name('assets.allocateAssetOrg');
-    Route::post('/recovery-asset-org', [ListAssetController::class, 'recoveryAssetOrg'])->name('assets.recoveryAssetOrg');
+        Route::post('/allocate-asset', [AssetController::class, 'allocateAsset'])->name('assets.allocateAsset');
+        Route::post('/recovery-asset', [AssetController::class, 'recoveryAsset'])->name('assets.recoveryAsset');
+        Route::post('/rotation-asset', [AssetController::class, 'rotationAsset'])->name('assets.rotationAsset');
 
-    Route::get('/get-user-by-unit', [ListAssetController::class, 'getUserByUnit'])->name('assets.getUserByUnit');
-    Route::get('/get-user', [ListAssetController::class, 'getUser'])->name('assets.getUser');
+        Route::post('/allocate-asset-org', [AssetController::class, 'allocateAssetOrg'])->name('assets.allocateAssetOrg');
+        Route::post('/recovery-asset-org', [AssetController::class, 'recoveryAssetOrg'])->name('assets.recoveryAssetOrg');
 
-    Route::post('/liquidation-asset', [ListAssetController::class, 'liquidationAsset'])->name('assets.liquidationAsset');
-    Route::post('/cancel-asset', [ListAssetController::class, 'cancelAsset'])->name('assets.cancelAsset');
-    Route::post('/broken-asset', [ListAssetController::class, 'brokenAsset'])->name('assets.brokenAsset');
-    Route::post('/lost-asset', [ListAssetController::class, 'lostAsset'])->name('assets.lostAsset');
+        Route::get('/get-user-by-unit', [AssetController::class, 'getUserByUnit'])->name('assets.getUserByUnit');
+        Route::get('/get-user', [AssetController::class, 'getUser'])->name('assets.getUser');
 
-    Route::post('/update-asset', [ListAssetController::class, 'updateAsset'])->name('assets.updateAsset');
+        Route::post('/liquidation-asset', [AssetController::class, 'liquidationAsset'])->name('assets.liquidationAsset');
+        Route::post('/cancel-asset', [AssetController::class, 'cancelAsset'])->name('assets.cancelAsset');
+        Route::post('/broken-asset', [AssetController::class, 'brokenAsset'])->name('assets.brokenAsset');
+        Route::post('/lost-asset', [AssetController::class, 'lostAsset'])->name('assets.lostAsset');
+        Route::post('/update-asset', [AssetController::class, 'updateAsset'])->name('assets.updateAsset');
+        Route::get('/info/{id}', [AssetController::class, 'getAssetInfo']);
+        Route::post('import', [AssetController::class, 'importAsset']);
+    });
 });

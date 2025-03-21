@@ -6,6 +6,7 @@ use App\Http\Requests\IndexAppendixRequest;
 use App\Http\Requests\StoreAppendixRequest;
 use App\Services\ContractAppendixService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContractAppendixController extends Controller
 {
@@ -17,6 +18,7 @@ class ContractAppendixController extends Controller
 
     public function index(IndexAppendixRequest $request)
     {
+        Auth::user()->canPer('contract.view');
         try {
             $result = $this->contractAppendixService->getListContractAppendix($request->validated());
 
@@ -30,6 +32,7 @@ class ContractAppendixController extends Controller
 
     public function store(StoreAppendixRequest $request)
     {
+        Auth::user()->canPer('contract.create');
         try {
             $result = $this->contractAppendixService->createAppendix($request->validated());
 
@@ -47,6 +50,7 @@ class ContractAppendixController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('contract.view');
         try {
             $result = $this->contractAppendixService->findAppendix($id);
 
@@ -60,6 +64,7 @@ class ContractAppendixController extends Controller
 
     public function update(StoreAppendixRequest $request, string $id)
     {
+        Auth::user()->canPer('contract.create');
         try {
             $result = $this->contractAppendixService->updateAppendix($request->validated(), $id);
 
@@ -77,6 +82,7 @@ class ContractAppendixController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('contract.delete');
         try {
             $result = $this->contractAppendixService->deleteAppendixById($id);
             if (!$result['success']) {
@@ -98,6 +104,7 @@ class ContractAppendixController extends Controller
             'ids.*' => 'integer',
         ]);
 
+        Auth::user()->canPer('contract.delete');
         try {
             $result = $this->contractAppendixService->deleteAppendixMultiple($request->get('ids'));
 

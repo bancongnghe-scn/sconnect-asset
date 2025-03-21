@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreContractRequest;
 use App\Services\ContractService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContractController extends Controller
 {
@@ -16,6 +17,8 @@ class ContractController extends Controller
 
     public function store(StoreContractRequest $request)
     {
+        Auth::user()->canPer('contract.create');
+
         try {
             $result = $this->contractService->createContract($request->validated());
 
@@ -34,25 +37,27 @@ class ContractController extends Controller
     public function index(Request $request)
     {
         $request->validate([
-            'name_code'    => 'nullable|string|max:255',
-            'type'         => 'nullable|integer',
-            'status'       => 'nullable|integer',
-            'signing_date' => 'nullable|array',
+            'name_code'          => 'nullable|string|max:255',
+            'type'               => 'nullable|integer',
+            'status'             => 'nullable|integer',
+            'signing_date'       => 'nullable|array',
             'signing_date.start' => 'date|date_format:Y-m-d',
-            'signing_date.end' => 'date|date_format:Y-m-d',
-            'from'         => 'nullable|array',
+            'signing_date.end'   => 'date|date_format:Y-m-d',
+            'from'               => 'nullable|array',
             'from.start'         => 'date|date_format:Y-m-d',
-            'from.end'         => 'date|date_format:Y-m-d',
-            'page'         => 'nullable|integer',
-            'limit'        => 'nullable|integer|max:200',
+            'from.end'           => 'date|date_format:Y-m-d',
+            'page'               => 'nullable|integer',
+            'limit'              => 'nullable|integer|max:200',
         ]);
+
+        Auth::user()->canPer('contract.view');
 
         try {
             $result = $this->contractService->getListContract($request->all());
 
             return response_success($result);
         } catch (\Throwable $exception) {
-            dd($exception);
+
             report($exception);
 
             return response_error();
@@ -61,6 +66,8 @@ class ContractController extends Controller
 
     public function destroy(string $id)
     {
+        Auth::user()->canPer('contract.delete');
+
         try {
             $result = $this->contractService->deleteContractById($id);
             if (!$result['success']) {
@@ -77,6 +84,8 @@ class ContractController extends Controller
 
     public function update(StoreContractRequest $request, string $id)
     {
+        Auth::user()->canPer('contract.create');
+
         try {
             $result = $this->contractService->updateContract($request->validated(), $id);
 
@@ -94,6 +103,8 @@ class ContractController extends Controller
 
     public function show(string $id)
     {
+        Auth::user()->canPer('contract.view');
+
         try {
             $result = $this->contractService->findContract($id);
 
@@ -111,6 +122,8 @@ class ContractController extends Controller
             'ids'   => 'required|array',
             'ids.*' => 'integer',
         ]);
+
+        Auth::user()->canPer('contract.delete');
 
         try {
             $result = $this->contractService->deleteContractMultiple($request->get('ids'));

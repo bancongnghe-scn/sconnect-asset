@@ -6,7 +6,10 @@
     <div class="col-2">
         <div class="row align-items-center">
             <div style="max-width: fit-content">
-                <span>Đã chọn (<span id="numberLiquidation"></span>)</span>
+                <span x-data="{count: 0}" x-effect="count = Object.keys(selectedRow).filter(key => selectedRow[key] === true).length"
+                    x-text="`Đã chọn (${count})`"
+                    >
+                    </span>
             </div>
             <div style="max-width: fit-content">
                 <button class="border-0 btn tw-text-red-400" @click="unselectedAllLiquidation()">Bỏ chọn</button>

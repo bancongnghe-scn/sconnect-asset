@@ -36,12 +36,16 @@ class CommentController extends Controller
         $request->validate([
             'type'      => 'required|integer',
             'target_id' => 'required|integer',
-            'message'   => 'required|string',
+            'message'   => 'nullable|string',
+            'files'     => 'nullable|array',
             'reply'     => 'nullable|integer',
         ]);
 
         try {
-            $this->commentService->sentComment($request->all());
+            $result = $this->commentService->sentComment($request->all());
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
 
             return response_success();
         } catch (\Throwable $exception) {

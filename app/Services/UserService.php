@@ -10,7 +10,7 @@ class UserService
 {
     public function __construct(
         protected UserRepository $userRepository,
-        protected JobTitleRepository $jobTitleRepository
+        protected JobTitleRepository $jobTitleRepository,
     ) {
 
     }
@@ -23,13 +23,13 @@ class UserService
         }
 
         $jobTitleIds = $users->pluck('job_title_id')->toArray();
-        $jobTitles = [];
+        $jobTitles   = [];
         if (!empty($jobTitleIds)) {
             $jobTitles = $this->jobTitleRepository->getJobs(['id' => $jobTitleIds]);
         }
 
         return ListUserResource::make($users)->additional([
-            'job_titles' => $jobTitles
+            'job_titles' => $jobTitles,
         ])->resolve();
     }
 }

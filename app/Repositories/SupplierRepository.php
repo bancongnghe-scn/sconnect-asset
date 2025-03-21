@@ -95,4 +95,9 @@ class SupplierRepository extends BaseRepository
     {
         return $this->_model->whereIn('id', $ids)->delete();
     }
+
+    public function getListSupplerByName($name)
+    {
+        return $this->_model->whereIn('name', Arr::wrap($name))->get();
+    }
 }

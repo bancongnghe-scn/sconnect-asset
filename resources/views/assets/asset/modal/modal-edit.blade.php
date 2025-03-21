@@ -29,7 +29,7 @@
                                     <div class="mb-3">
                                         <span>Loại tài sản <span class="text-danger">*</span></span>
                                         {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
-                                        <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAssetEditSelect" x-model="assetEdit.asset_type_id">
+                                        <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAssetEditSelect" x-model="assetEdit.asset_type_id" disabled>
                                             <option value="0" selected>Loại tài sản</option>
                                             <template x-for="(value, key) in assetType">
                                                 <option :value="value.id" x-text="value.name"></option>
@@ -51,14 +51,14 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Mã tài sản <span class="text-danger">*</span></span>
-                                        <input type="text" class="form-control" x-model="assetEdit.code">
+                                        <input type="text" class="form-control" x-model="assetEdit.code" disabled>
 
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày mua <span class="text-danger">*</span></span>
-                                        <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase">
+                                        <input type="date" class="form-control" id="locationSearch" x-model="assetEdit.date_purchase" onclick="this.showPicker();">
 
                                     </div>
                                 </div>
@@ -92,7 +92,6 @@
                                     <div class="mb-3">
                                         <span>Giá trị <span class="text-danger">*</span></span>
                                         <input type="number" class="form-control" x-model="assetEdit.price">
-
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -126,7 +125,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Thời gian bảo hành</span>
-                                        <input type="date" class="form-control" x-model="assetEdit.date_warranty" disabled>
+                                        <input type="date" class="form-control date-disabled" x-model="assetEdit.date_warranty" disabled>
                                     </div>
                                 </div>
                                 <div class="col-6">
@@ -152,13 +151,13 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bảo dưỡng gần nhất</span>
-                                        <input type="date" class="form-control" x-model="assetEdit.recent_maintenance_date">
+                                        <input type="date" class="form-control" x-model="assetEdit.recent_maintenance_date" onclick="this.showPicker();">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                        <input type="date" class="form-control" x-model="assetEdit.next_maintenance_date">
+                                        <input type="date" class="form-control" x-model="assetEdit.next_maintenance_date" onclick="this.showPicker();">
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +182,7 @@
                                 <div class="col-6">
                                     <div class="mb-3">
                                         <span>Ngày bắt đầu phân bổ</span>
-                                        <input type="date" class="form-control" value="2024-11-01">
+                                        <input type="date" class="form-control" value="2024-11-01" onclick="this.showPicker();">
                                     </div>
                                 </div>
                                 <div class="col-6">

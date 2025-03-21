@@ -4,7 +4,6 @@ document.addEventListener('alpine:init', () => {
             this.list({page: 1, limit: 10})
             this.getListIndustry()
             this.getListAssetType()
-            window.initSelect2Modal(this.idModalUI)
             this.onChangeSelect2()
             this.watchFilters()
         },
@@ -16,7 +15,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
         selectedRow: [],
 
         //data
@@ -81,7 +79,7 @@ document.addEventListener('alpine:init', () => {
                 this.from = data.data.from ?? 0
                 this.to = data.data.to ?? 0
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -154,7 +152,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listIndustry = response.data.data
             } else {
-                toast.error('Lấy danh sách ngành hàng thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -165,7 +163,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listAssetType = response.data.data
             } else {
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -198,8 +196,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

@@ -93,13 +93,20 @@ document.addEventListener('alpine:init', () => {
             this.loading = false
         },
 
+        formatPriceAssetLiqui(value) {
+            if (value == null || isNaN(value)) {
+                return "0";
+            }
+            return parseFloat(value).toLocaleString("en-US");
+        },
+
         changePage(page) {
             this.filters.page = page
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -139,7 +146,7 @@ document.addEventListener('alpine:init', () => {
 
         countLiquidation() {
             const ids = Object.keys(this.selectedRow).filter( key => this.selectedRow[key] === true )
-            
+
             $('#'+this.numberLiquidation).text(ids.length);
         },
 
@@ -197,13 +204,13 @@ document.addEventListener('alpine:init', () => {
 
         async createPlanLiquidation() {
             this.loading = true
-            
+
             const assets_id = { assets_id: this.dataPlanLiquidation.map(item => ({
                 id: item.id,
                 price_liquidation: item.price_liquidation
             }))};
 
-            
+
             const response = await window.apiCreatePlanLiquidationFromSelectAsset({
                 ...assets_id,
                 ...this.data

@@ -4,13 +4,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="tw-mt-8">
-                        @include('component.shopping_plan_company.week.filter')
+                        @include('assets.shopping_plan_organization.week.filter')
                     </div>
 
-                    <div
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                    <div>
                         @include('assets.shopping_plan_organization.week.table')
                     </div>
                 </div>
@@ -20,7 +17,6 @@
 
     {{--modal--}}
     <div>
-        @include('assets.shopping_plan_organization.week.detail')
         @include('assets.shopping_plan_organization.week.register')
     </div>
 </div>

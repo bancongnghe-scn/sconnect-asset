@@ -2,15 +2,19 @@
 
 namespace App\Services\Inventory;
 
-use App\Http\Resources\PlanInventoryResource;
+use App\Http\Resources\Inventory\PlanInventoryInfoResource;
+use App\Http\Resources\ListPlanInventoryResource;
 use App\Models\PlanMaintain;
-use App\Models\PlanMaintainAsset;
 use App\Models\PlanMaintainLog;
+use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
+use App\Repositories\PlanInventoryAssetRepository;
+use App\Repositories\PlanMaintainLogRepository;
+use App\Services\PlanInventoryAssetService;
+use App\Services\PlanMaintainAssetTypeService;
 use App\Services\PlanMaintainChargeService;
 use App\Services\PlanMaintainOrganizationService;
-use App\Services\PlanMaintainSupplierService;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,6 +26,9 @@ class InventoryService
         protected PlanMaintainRepository $planMaintainRepository,
         protected OrganizationRepository $organizationRepository,
         protected AssetTypeRepository $assetTypeRepository,
+        protected PlanMaintainLogRepository $planMaintainLogRepository,
+        protected AssetRepository $assetRepository,
+        protected PlanInventoryAssetRepository $planInventoryAssetRepository,
     ) {
     }
 
@@ -29,7 +36,7 @@ class InventoryService
     {
         $filters['type'] = PlanMaintain::TYPE_INVENTORY;
         $data            = $this->planMaintainRepository->getListing($filters, with: [
-            'planMaintainAsset',
+            'planInventoryAsset',
             'planMaintainOrganizations' => ['organization'],
             'planMaintainAssetTypes'    => ['assetType'],
         ]);
@@ -38,39 +45,43 @@ class InventoryService
             return [];
         }
 
-        return PlanInventoryResource::make($data)->resolve();
+        return ListPlanInventoryResource::make($data)->resolve();
     }
 
     public function createPlanInventory($data)
     {
-        $planMaintainLast = PlanMaintain::orderBy('created_at', 'desc')->first();
-        if (empty($planMaintainLast)) {
-            $code = 'KHKK1';
-        } else {
-            $code = 'KHKK'. $planMaintainLast->id + 1;
-        }
-        $userId             = Auth::id();
-        $data['code']       = $code;
-        $data['type']       = PlanMaintain::TYPE_INVENTORY;
-        $data['status']     = PlanMaintain::STATUS_MAINTAINING;
-        $data['created_by'] = $userId;
+        $planInventoryLast   = PlanMaintain::orderBy('created_at', 'desc')->first();
+        $data['code']        = empty($planInventoryLast) ? 'KHKK1' : 'KHKK'. $planInventoryLast->id + 1;
+        $data['type']        = PlanMaintain::TYPE_INVENTORY;
+        $data['status']      = PlanMaintain::STATUS_NEW;
+        $data['created_by']  = Auth::id();
 
         DB::beginTransaction();
         try {
-            $planMaintain = $this->planMaintainRepository->create($data);
+            $planInventory = $this->planMaintainRepository->create($data);
 
             // gan don vi cho ke hoach
-            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'],$planMaintain->id);
+            $insert = resolve(PlanMaintainOrganizationService::class)->insertPlanMaintainOrganization($data['organization_ids'], $planInventory->id);
             if (!$insert['success']) {
                 DB::rollBack();
 
                 return $insert;
             }
 
+            // gan loai tai san cho ke hoach
+            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2112,
+                ];
+            }
 
             if (!empty($data['user_ids'])) {
                 // gan nha nguoi phu trach cho ke hoach
-                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'],$planMaintain->id);
+                $insert = resolve(PlanMaintainChargeService::class)->insertPlanMaintainCharge($data['user_ids'], $planInventory->id);
                 if (!$insert['success']) {
                     DB::rollBack();
 
@@ -78,6 +89,15 @@ class InventoryService
                 }
             }
 
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_CREATE_PLAN_INVENTORY, $planInventory->id);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
             DB::commit();
 
             return [
@@ -93,5 +113,254 @@ class InventoryService
                 'error_code' => AppErrorCode::CODE_1000,
             ];
         }
+    }
+
+    public function findPlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'data'    => PlanInventoryInfoResource::make($planInventory)->resolve(),
+        ];
+    }
+
+    public function startPlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_NEW !== $planInventory->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        $planInventory->status = PlanMaintain::STATUS_MAINTAINING;
+        DB::beginTransaction();
+        try {
+            if (!$planInventory->save()) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2114,
+                ];
+            }
+
+            $listAsset = $this->assetRepository->getListing([
+                'organization_id' => $planInventory->planMaintainOrganizations->pluck('organization_id')->toArray(),
+                'asset_type_id'   => $planInventory->planMaintainAssetTypes->pluck('asset_type_id')->toArray(),
+            ]);
+
+            $insert = resolve(PlanInventoryAssetService::class)->generalPlanInventoryAsset($listAsset, $planInventory->id);
+            if (!$insert['success']) {
+                DB::rollBack();
+
+                return $insert;
+            }
+
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_START_PLAN_INVENTORY, $planInventory->id);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function updatePlanInventory($id, $data)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        if (PlanMaintain::STATUS_COMPLETE_MAINTAIN == $planInventory->staus) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['organization_ids'])) {
+                $update = resolve(PlanMaintainOrganizationService::class)
+                    ->updatePlanMaintainOrganization($data['organization_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['asset_type_ids'])) {
+                $update = resolve(PlanMaintainAssetTypeService::class)
+                    ->updatePlanMaintainAssetType($data['asset_type_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            if (!empty($data['user_ids'])) {
+                $update = resolve(PlanMaintainChargeService::class)->updatePlanMaintainCharge($data['user_ids'], $id);
+                if (!$update['success']) {
+                    DB::rollBack();
+
+                    return $update;
+                }
+            }
+
+            $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_UPDATE_PLAN_INVENTORY, $planInventory->id, $data, $planInventory->toArray());
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+
+            $planInventory->fill([
+                'name'       => $data['name'],
+                'start_time' => $data['start_time'],
+                'end_time'   => $data['end_time'],
+                'note'       => $data['note'],
+            ]);
+            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
+                $planInventory->type_inventory    = $data['type_inventory'];
+                $planInventory->sent_notification = $data['sent_notification'];
+            }
+
+            if (!$planInventory->save()) {
+                DB::rollBack();
+
+                return  [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2114,
+                ];
+            }
+
+            if (PlanMaintain::STATUS_MAINTAINING == $planInventory->status && !empty($data['assets'])) {
+                foreach ($data['assets'] as $assetInventory) {
+                    $update = $this->planInventoryAssetRepository->updatePlanInventoryAssetById($assetInventory['id'], $assetInventory);
+                    if (!$update) {
+                        DB::rollBack();
+
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2117,
+                        ];
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function completePlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->find($id);
+        if (empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2113,
+            ];
+        }
+
+        $planInventory->status = PlanMaintain::STATUS_COMPLETE_MAINTAIN;
+        if (!$planInventory->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2114,
+            ];
+        }
+
+        $insert = $this->planMaintainLogRepository->insertPlanMaintainLog(PlanMaintainLog::ACTION_COMPLETE_PLAN_INVENTORY, $planInventory->id);
+        if (!$insert) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2076,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function deletePlanInventory($id)
+    {
+        $planInventory = $this->planMaintainRepository->getListing([
+            'status' => [PlanMaintain::STATUS_MAINTAINING, PlanMaintain::STATUS_COMPLETE_MAINTAIN],
+            'id'     => $id,
+            'first'  => true,
+        ]);
+        if (!empty($planInventory)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2116,
+            ];
+        }
+
+        if (!$this->planMaintainRepository->deleteMultipleByIds($id)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2119,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
     }
 }

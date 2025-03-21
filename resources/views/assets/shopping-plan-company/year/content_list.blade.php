@@ -5,10 +5,7 @@
                 <div class="card-body">
                     @include('assets.shopping-plan-company.year.filters')
 
-                    <div
-                        @change-page.window="changePage($event.detail.page)"
-                        @change-limit.window="changeLimit"
-                    >
+                    <div>
                         @include('assets.shopping-plan-company.year.table')
                     </div>
                 </div>
@@ -38,10 +35,6 @@
     </div>
 
     @include('assets.shopping-plan-company.year.modalInsert')
-    @include('assets.shopping-plan-company.year.detail')
     @include('assets.shopping-plan-company.year.update')
-    <div x-data="{id: null}" x-effect="id = idPlanOrganization">
-        @include('assets.shopping_plan_organization.year.detail')
-    </div>
 </div>
 

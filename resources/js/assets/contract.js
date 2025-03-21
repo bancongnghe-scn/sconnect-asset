@@ -18,7 +18,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
 
         //data
         filters: {
@@ -66,7 +65,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const response = await window.apiGetContract(filters)
-                console.log(response)
+
                 if (response.success) {
                     const data = response.data
                     this.dataTable = data.data.data
@@ -76,10 +75,10 @@ document.addEventListener('alpine:init', () => {
                     this.from = data.data.from ?? 0
                     this.to = data.data.to ?? 0
                 } else {
-                    toast.error('Lấy danh sách hợp đồng thất bại !')
+                    toast.error(response.message)
                 }
             } catch (e) {
-                console.log(e)
+
             } finally {
                 this.loading = false
             }
@@ -152,7 +151,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listSupplier = response.data.data.data
             } else {
-                toast.error('Lấy danh sách nhà cung cấp thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -163,7 +162,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -206,8 +205,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -286,13 +285,9 @@ document.addEventListener('alpine:init', () => {
         },
 
         formatDataContract(contract) {
-            contract.signing_date = contract.signing_date !== null ? format(contract.signing_date, 'dd/MM/yyyy') : null
-            contract.from = contract.from !== null ? format(contract.from, 'dd/MM/yyyy') : null
-            contract.to = contract.to !== null ? format(contract.to, 'dd/MM/yyyy') : null
             contract.files = contract.files ?? []
             contract.appendixes = contract.appendixes ?? []
             contract.payments = contract.payments ?? []
-            contract.payments.map((payment) => payment.payment_date = format(payment.payment_date, 'dd/MM/yyyy'))
             return contract
         },
 

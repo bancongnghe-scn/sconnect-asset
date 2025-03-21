@@ -11,7 +11,7 @@
 
     <div class="d-flex gap-2 align-items-center">
         <span>Hiển thị</span>
-        <select class="form-select w-auto" x-model="limit" @change="$dispatch('change-limit')">
+        <select class="form-select w-auto" @change="$dispatch('change-limit', {limit: $event.target.value})">
             <option value="10">10</option>
             <option value="25">25</option>
             <option value="50">50</option>

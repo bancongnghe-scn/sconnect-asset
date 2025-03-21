@@ -22,6 +22,7 @@ Route::middleware('checkAuth')->prefix('service')->group(function () {
     Route::prefix('organization')->controller(Modules\Service\App\Http\Controllers\OrganizationController::class)->group(function () {
         Route::get('list', 'getListOrganization');
         Route::get('getOrganizationalStructure', 'getOrganizationalStructure');
+        Route::get('getListOrganizationMain', 'getListOrganizationMain');
     });
 
     Route::prefix('job-title')->controller(Modules\Service\App\Http\Controllers\JobTitleController::class)->group(function () {

@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
         init() {
             this.list({page:1, limit:10})
             this.watchFilters()
-            this.setConfigButtonsTable()
+            this.setConfigButtons()
         },
 
         //dataTable
@@ -15,7 +15,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
 
         //data
         filters: {
@@ -83,7 +82,9 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.list_job = response.data
+                let data = response.data
+                data.unshift(POSITION_ORGANIZATION)
+                this.list_job = data
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -132,7 +133,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -146,10 +147,8 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentRegisterYear(this.id, this.registersOrganization)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
-                    this.getRegisterAsset()
-                    if (+this.dataOrganization.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
-                        this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                    }
+                    this.list(this.filters)
+                    $('#modalRegister').modal('hide')
                     return
                 }
                 toast.error(response.message)
@@ -160,39 +159,26 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async saveReviewRegisterAsset() {
-            this.loading = true
+        async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
             try {
-                const response = await window.apiSaveReviewRegisterAsset(this.id, this.registersOrganization)
-                if (response.success) {
-                    toast.success('Lưu thông tin phê duyệt thành công')
-                    this.dataOrganization.status = STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    return
-                }
-                toast.error(response.message)
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
+                const type = position_id === POSITION_ORGANIZATION.id ? TYPE_ALLOCATION_RATE_ORGANIZATION : TYPE_ALLOCATION_RATE_POSITION
+                const response = type === TYPE_ALLOCATION_RATE_ORGANIZATION ?
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type) :
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type, position_id)
 
-        async accountApprovalShoppingPlanOrganization(id, type) {
-            this.loading = true
-            try {
-                const response = await window.apiAccountApprovalShoppingPlanOrganization([id], type)
-                if (response.success) {
-                    this.dataOrganization.status = type === ORGANIZATION_TYPE_APPROVAL
-                        ? STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL : STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                    toast.success('Duyệt thành công !')
-                    return
+                if (!response.success) {
+                    toast.error(response.message)
+                    return 0
                 }
 
-                toast.error(response.message)
+                if (response.data.data.length === 0) {
+                    toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
+                }
+
+                return response.data.data?.price ?? 0
+
             } catch (e) {
                 toast.error(e)
-            } finally {
-                this.loading = false
             }
         },
 
@@ -208,12 +194,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show')
-                    this.setConfigButtons()
-                } else {
-                    $('#modalRegister').modal('show')
-                }
+                $('#modalRegister').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -222,10 +203,33 @@ document.addEventListener('alpine:init', () => {
         },
 
         handleShowTable(index) {
+            if (index === 'expand') {
+                this.table_index = [0,1,2,3,4,5,6,7,8,9,10,11]
+                return;
+            }
+
+            if (index === 'decrease') {
+                this.table_index = []
+                return;
+            }
+
             if (!this.table_index.includes(index)) {
                 this.table_index.push(index)
             } else {
                 this.table_index = this.table_index.filter(item => item !== index);
+            }
+        },
+
+        async getPrice(asset_type_id, position_id) {
+            if (!asset_type_id || !position_id) {
+                return 0
+            }
+            return  await this.getAllocationRateOfOrganization(this.dataOrganization.organization_id, asset_type_id, position_id)
+        },
+
+        validateQuantityRegistered(value) {
+            if (+value < 1) {
+                toast.error('Số lượng đăng ký phải lớn hơn 0')
             }
         },
 
@@ -241,11 +245,33 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
-        getPrice(asset_type_id, job_id) {
-            if (!asset_type_id || !job_id) {
-                return 0
-            }
-            return +(asset_type_id + job_id + 1000)
+        deleteRow(index, key) {
+            this.registersOrganization[index].assets.splice(key,1)
+            this.calculateApproval(index)
+            this.calculateRegister(index)
+        },
+
+        watchFilters() {
+            this.$watch('filters', (value) => {
+                const watchedKeys = ['time', 'status'];
+                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
+
+                if (shouldCallList) {
+                    this.list(this.filters);
+                }
+            }, { deep: true });
+        },
+
+        calculateApproval(index) {
+            let total = 0
+            let price = 0
+            this.registersOrganization[index].assets.forEach((asset) => {
+                total += +asset.quantity_approved
+                price += (asset.quantity_approved * asset.price)
+            })
+
+            this.registersOrganization[index].approval.total = total
+            this.registersOrganization[index].approval.price = price
         },
 
         calculatePrice(index) {
@@ -272,83 +298,15 @@ document.addEventListener('alpine:init', () => {
             this.registersOrganization[index].register.price = price
         },
 
-        validateQuantityRegistered(value) {
-            if (+value < 1) {
-                toast.error('Số lượng đăng ký phải lớn hơn 0')
-            }
-        },
-
-        deleteRow(index, key) {
-            this.registersOrganization[index].assets.splice(key,1)
-            this.calculateApproval(index)
-            this.calculateRegister(index)
-        },
-
-        calculateApproval(index) {
-            let total = 0
-            let price = 0
-            this.registersOrganization[index].assets.forEach((asset) => {
-                total += +asset.quantity_approved
-                price += (asset.quantity_approved * asset.price)
-            })
-
-            this.registersOrganization[index].approval.total = total
-            this.registersOrganization[index].approval.price = price
-        },
-
         setConfigButtons() {
-            this.configButtonsOrganization = [
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.dataOrganization.status),
-                    buttons: [
-                        {
-                            text: 'Lưu',
-                            class: 'btn btn-primary',
-                            action: () => this.saveReviewRegisterAsset(),
-                            permission: 'shopping_plan_company.accounting_approval'
-                        },
-                    ],
-                },
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_CANCEL
-                    ].includes(+this.dataOrganization.status),
-                    buttons: [
-                        {
-                            text: 'Duyệt',
-                            class: 'btn bg-sc text-white',
-                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_APPROVAL),
-                            permission: 'shopping_plan_company.accounting_approval'
-                        },
-                    ],
-                },
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_MANAGER_APPROVAL
-                    ].includes(+this.dataOrganization.status),
-                    buttons: [
-                        {
-                            text: 'Từ chối',
-                            class: 'btn bg-red',
-                            action: (id) => this.accountApprovalShoppingPlanOrganization(id, ORGANIZATION_TYPE_DISAPPROVAL),
-                            permission: 'shopping_plan_company.accounting_approval'
-                        },
-                    ],
-                },
-            ]
-        },
-
-        setConfigButtonsTable() {
             this.configButtonsTable = [
                 {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
+                    condition: (status, startTime, endTime) =>
+                        (
+                            [STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(status)
+                            && new Date() >= new Date(window.formatDate(startTime))
+                            && new Date() <= new Date(window.formatDate(endTime))
+                        ) || status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL,
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
@@ -357,17 +315,6 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
             ]
-        },
-
-        watchFilters() {
-            this.$watch('filters', (value) => {
-                const watchedKeys = ['time', 'status'];
-                const shouldCallList = watchedKeys.some((key) => value[key] !== null);
-
-                if (shouldCallList) {
-                    this.list(this.filters);
-                }
-            }, { deep: true });
         },
 
         resetData() {
@@ -387,8 +334,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

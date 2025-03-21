@@ -1,5 +1,3 @@
-import {format} from "date-fns";
-
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanCompanyWeek', () => ({
         init() {
@@ -8,6 +6,7 @@ document.addEventListener('alpine:init', () => {
             this.getListPlanCompanyQuarter()
             this.getListSupplier()
             this.watchFilters()
+            this.watch()
             this.setConfigButtons()
         },
 
@@ -21,7 +20,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
 
         //data
         filters: {
@@ -53,6 +51,7 @@ document.addEventListener('alpine:init', () => {
         shoppingAssetWithAction: [],
         list_asset_type: [],
         list_job: [],
+        listMonth: [],
         id: null,
         action: null,
         checkedAll: false,
@@ -153,7 +152,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listUser = response.data.data
             } else {
-                toast.error('Lấy danh sách nhân viên thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -164,7 +163,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listPlanCompanyQuarter = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch quý thất bại !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -176,8 +175,8 @@ document.addEventListener('alpine:init', () => {
                 if (response.success) {
                     const data = response.data.data
                     this.data = data
-                    this.data.start_time = data.start_time ? format(data.start_time, 'dd/MM/yyyy') : null
-                    this.data.end_time = data.end_time ? format(data.end_time, 'dd/MM/yyyy') : null
+                    this.data.start_time = data.start_time
+                    this.data.end_time = data.end_time
                     return
                 }
 
@@ -192,7 +191,8 @@ document.addEventListener('alpine:init', () => {
                     STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_APPROVAL,
                     STATUS_SHOPPING_PLAN_COMPANY_CANCEL,
-                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                    STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                    STATUS_SHOPPING_PLAN_COMPANY_COMPLETE
                 ].includes(+this.data.status)) {
                     this.syntheticShoppingAssetWithAction()
                 }
@@ -225,11 +225,7 @@ document.addEventListener('alpine:init', () => {
                 this.resetData()
                 await this.getOrganizationRegisterWeek()
                 this.getInfoShoppingPlanCompanyWeek()
-                if (action === 'view') {
-                    $('#modalDetail').modal('show')
-                } else {
-                    $('#modalUpdate').modal('show')
-                }
+                $('#modalUpdate').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -278,7 +274,7 @@ document.addEventListener('alpine:init', () => {
                     this.registersOrganization = response.data
                     this.registersOrganization = this.registersOrganization.map(register => ({
                         ...register,
-                        receiving_time: register.receiving_time ? format(register.receiving_time, 'dd/MM/yyyy') : null
+                        receiving_time: register.receiving_time
                     }))
                     return
                 }
@@ -298,28 +294,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
-            } catch (e) {
-                toast.error(e)
-            } finally {
-                this.loading = false
-            }
-        },
-
-        async handleShowModalDetailOrganization(id) {
-            this.loading = true
-            try {
-                this.dataOrganization = []
-                this.registersOrganization = []
-                await this.getInfoPlanOrganization(id)
-                this.getRegisterAsset(id)
-                if (this.list_asset_type.length === 0) {
-                    this.getListAssetType()
-                }
-                if (this.list_job.length === 0) {
-                    this.getJobs()
-                }
-                $('#modalDetailOrganization').modal('show')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -344,14 +319,20 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async sentNotificationRegister() {
+        async sentNotificationRegister(type= 'sent_to_detail',id = null) {
             this.loading = true
+            if (type === 'sent_to_table') {
+                this.id = id
+            }
             try {
                 const response = await window.apiSentNotificationRegisterWeek(this.id)
                 if (response.success) {
                     toast.success('Gửi thông báo thành công !')
                     this.data.status = STATUS_SHOPPING_PLAN_COMPANY_REGISTER
-                    this.getOrganizationRegisterWeek()
+                    if (type === 'sent_to_detail') {
+                        this.getOrganizationRegisterWeek()
+                    }
+                    this.list(this.filters)
                     return
                 }
 
@@ -558,8 +539,6 @@ document.addEventListener('alpine:init', () => {
                     this.shoppingAssetWithAction.push(data)
                 }
             })
-
-            console.log(this.shoppingAssetWithAction)
         },
 
         selectedAll() {
@@ -711,13 +690,23 @@ document.addEventListener('alpine:init', () => {
             ]
             this.configButtonsTable = [
                 {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_NEW,
-                    permission: 'shopping_plan_company.week.crud',
+                    condition: (status) =>
+                        STATUS_SHOPPING_PLAN_COMPANY_NEW === status
+                        && this.permission.includes('shopping_plan_company.week.sent_notification_register')
+                    ,
                     buttons: [
                         {
-                            icon: 'bi bi-pencil-square color-sc',
-                            action: (id) => this.handleShowModal(id, 'update'),
+                            icon: 'bi bi-send text-primary',
+                            action: (id) => this.sentNotificationRegister('sent_to_table',id),
                         },
+                    ],
+                },
+                {
+                    condition: (status) =>
+                        status === STATUS_SHOPPING_PLAN_COMPANY_NEW
+                        && this.permission.includes('shopping_plan_company.week.crud')
+                    ,
+                    buttons: [
                         {
                             icon: 'bi bi-trash text-red',
                             action: (id) => this.confirmRemove(id),
@@ -725,59 +714,43 @@ document.addEventListener('alpine:init', () => {
                     ],
                 },
                 {
-                    condition: (status) => [
-                        STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
-                        STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE,
-                        STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
-                    ].includes(status),
-                    permission: 'shopping_plan_company.week.handle_shopping',
+                    condition: (status) =>
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_NEW
+                            && this.permission.includes('shopping_plan_company.week.crud')
+                        )
+                        ||
+                        (
+                            [
+                                STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
+                                STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE,
+                                STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
+                            ].includes(status)
+                            && this.permission.includes('shopping_plan_company.week.handle_shopping')
+                        )
+                        ||
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR
+                            && this.permission.includes('shopping_plan_company.week.hr_manager_approval')
+                        )
+                        ||
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL
+                            && this.permission.includes('shopping_plan_company.accounting_approval')
+                        )
+                        ||
+                        (
+                            status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
+                            && this.permission.includes('shopping_plan_company.general_approval')
+                        )
+                    ,
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
-                            action: (id) =>  this.handleShowModal(id, 'update'),
+                            action: (id) => this.handleShowModal(id, 'update'),
                         },
                     ],
-                },
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
-                    permission: 'shopping_asset.hr_manager_approval',
-                    buttons: [
-                        {
-                            icon: 'bi bi-box-arrow-in-up-right text-primary',
-                            action: (id) =>  this.handleShowModal(id, 'update'),
-                        },
-                    ],
-                },
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
-                    permission: 'shopping_plan_company.accounting_approval',
-                    buttons: [
-                        {
-                            icon: 'bi bi-box-arrow-in-up-right text-primary',
-                            action: (id) =>  this.handleShowModal(id, 'update'),
-                        },
-                    ],
-                },
-                {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL,
-                    permission: 'shopping_plan_company.general_approval',
-                    buttons: [
-                        {
-                            icon: 'bi bi-box-arrow-in-up-right text-primary',
-                            action: (id) =>  this.handleShowModal(id, 'update'),
-                        },
-                    ],
-                },
-                {
-                    condition: () => true,
-                    permission: true,
-                    buttons: [
-                        {
-                            icon: 'bi bi-eye text-info',
-                            action: (id) => this.handleShowModal(id, 'view'),
-                        },
-                    ],
-                },
+                }
             ]
             this.configButtonsApproval = [
                 {
@@ -848,6 +821,18 @@ document.addEventListener('alpine:init', () => {
             }, { deep: true });
         },
 
+        watch() {
+            this.$watch('data.plan_quarter_id', (value) => {
+                if (value !== null) {
+                    const time = this.listPlanCompanyQuarter.find(item => +item.id === +value).time
+                    this.listMonth = {}
+                    for (let i = (time * 3) - 2; i <= time * 3; i++) {
+                        this.listMonth[i] = LIST_MONTHS[i]
+                    }
+                }
+            })
+        },
+
         confirmRemoveMultiple() {
             const ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
             if (ids.length === 0) {
@@ -864,8 +849,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

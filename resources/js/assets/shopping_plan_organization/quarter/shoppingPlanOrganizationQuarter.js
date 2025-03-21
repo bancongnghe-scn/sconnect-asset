@@ -1,4 +1,3 @@
-import AirDatepicker from "air-datepicker";
 document.addEventListener('alpine:init', () => {
     Alpine.data('shoppingPlanOrganizationQuarter', () => ({
         init() {
@@ -17,7 +16,6 @@ document.addEventListener('alpine:init', () => {
         total: 0,
         from: 0,
         to: 0,
-        limit: 10,
 
         //data
         filters: {
@@ -83,7 +81,7 @@ document.addEventListener('alpine:init', () => {
             if (response.success) {
                 this.listPlanCompanyYear = response.data
             } else {
-                toast.error('Lấy danh sách kế hoạch năm !')
+                toast.error(response.message)
             }
             this.loading = false
         },
@@ -113,7 +111,9 @@ document.addEventListener('alpine:init', () => {
                     toast.error(response.message)
                     return
                 }
-                this.list_job = response.data
+                let data = response.data
+                data.unshift(POSITION_ORGANIZATION)
+                this.list_job = data
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -145,7 +145,7 @@ document.addEventListener('alpine:init', () => {
                     this.list_asset_type = response.data.data
                     return
                 }
-                toast.error('Lấy danh sách loại tài sản thất bại !')
+                toast.error(response.message)
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -159,10 +159,8 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiSentRegisterQuarter(this.id, this.registers)
                 if (response.success) {
                     toast.success('Đăng ký mua sắm thành công')
-                    this.getRegisterAsset()
-                    if (+this.data.status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER) {
-                        this.data.status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
-                    }
+                    this.dataTable.find(item => +item.id === +this.id).status = STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED
+                    $('#modalRegister').modal('hide')
                     return
                 }
                 toast.error(response.message)
@@ -185,11 +183,7 @@ document.addEventListener('alpine:init', () => {
                 if (this.list_asset_type.length === 0) {
                     this.getListAssetType()
                 }
-                if (action === 'view') {
-                    $('#modalDetailOrganization').modal('show')
-                } else {
-                    $('#modalRegister').modal('show')
-                }
+                $('#modalRegister').modal('show')
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -197,30 +191,49 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async getAllocationRateOfOrganization(organization_id, asset_type_id, position_id){
+            try {
+                const type = position_id === POSITION_ORGANIZATION.id ? TYPE_ALLOCATION_RATE_ORGANIZATION : TYPE_ALLOCATION_RATE_POSITION
+                const response = type === TYPE_ALLOCATION_RATE_ORGANIZATION ?
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type) :
+                    await window.apiGetAllocationRateOfOrganization(organization_id, asset_type_id, type, position_id)
+
+                if (!response.success) {
+                    toast.error(response.message)
+                    return 0
+                }
+
+                if (response.data.data.length === 0) {
+                    toast.error('Chưa có cấu hình định mức cho loại tài sản này !')
+                }
+
+                return response.data.data?.price ?? 0
+
+            } catch (e) {
+                toast.error(e)
+            }
+        },
+
+        async getPrice(asset_type_id, position_id) {
+            if (!asset_type_id || !position_id) {
+                return 0
+            }
+            return  await this.getAllocationRateOfOrganization(this.data.organization_id, asset_type_id, position_id)
+        },
+
         setConfigButtons() {
             this.configButtonsTable = [
                 {
-                    condition: (status) => status === STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER || status === STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED,
+                    condition: (status, startTime, endTime) =>
+                        (
+                            [STATUS_SHOPPING_PLAN_ORGANIZATION_OPEN_REGISTER, STATUS_SHOPPING_PLAN_ORGANIZATION_REGISTERED].includes(status)
+                            && new Date() >= new Date(window.formatDate(startTime))
+                            && new Date() <= new Date(window.formatDate(endTime))
+                        ) || status === STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNT_CANCEL,
                     buttons: [
                         {
                             icon: 'bi bi-pencil-square color-sc',
                             action: (id) => this.handleShowModal(id, 'register'),
-                        },
-                    ],
-                },
-            ]
-            this.configButtonsModalDetail = [
-                {
-                    condition: () => [
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_PENDING_ACCOUNTANT_APPROVAL,
-                        STATUS_SHOPPING_PLAN_ORGANIZATION_ACCOUNTANT_REVIEWED
-                    ].includes(+this.data.status),
-                    buttons: [
-                        {
-                            text: 'Lưu',
-                            class: 'btn btn-primary',
-                            action: () => this.saveReviewRegisterAsset(),
-                            permission: 'shopping_plan_company.accounting_approval'
                         },
                     ],
                 },
@@ -254,8 +267,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 
@@ -270,6 +283,16 @@ document.addEventListener('alpine:init', () => {
         },
 
         handleShowTable(index) {
+            if (index === 'expand') {
+                this.table_index = [0,1,2]
+                return;
+            }
+
+            if (index === 'decrease') {
+                this.table_index = []
+                return;
+            }
+
             if (!this.table_index.includes(index)) {
                 this.table_index.push(index)
             } else {

@@ -1,19 +1,21 @@
 <div x-data="{
             init() {
-                this.options = {{$options}}
+                this.options = this.options.concat({{$options}})
                 this.selected = {{$selected}}
                 this.$watch(`{{$selected}}`, (newValue, oldValue) => {
-                    this.selected = newValue
+                    this.selected = newValue || null
                 })
 
                 this.$watch(`{{$options}}`, (newValue, oldValue) => {
-                    this.options = newValue
+                    this.options = this.options.concat(newValue) || []
                 })
             },
             open: false,
             selected: null,
             search: '',
-            options: [],
+            options: [{
+                id: null, name: '-- Chọn --'
+            }],
             get filteredOptions() {
                 if (!this.search) {
                     return this.options;
@@ -30,7 +32,7 @@
             },
 }" class="dropdown"
      @if(isset($id)) id="{{$id}}" @endif
-     @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+     @isset($disabled) :disabled="{{$disabled}}" @endisset
 >
     <!-- Nút chọn -->
     <button
@@ -40,7 +42,7 @@
         :class="selected? '' : 'tw-text-gray-500'"
         x-text="options.find(item => +item.id === +selected)?.name || '{{ $placeholder ?? 'Chọn ...' }}'"
         style="text-align: start"
-        @if(isset($disabled)) :disabled="{{$disabled}}" @endif
+        @isset($disabled) :disabled="{{$disabled}}" @endisset
     >
     </button>
 
@@ -64,7 +66,7 @@
         <ul
             class="list-unstyled mb-0 overflow-y-auto tw-max-h-64 custom-scroll"
         >
-            <template x-for="option in filteredOptions" :key="option.id">
+            <template x-for="option in filteredOptions" :key="option.id || 'key'">
                 <li>
                     <a
                         href="#"

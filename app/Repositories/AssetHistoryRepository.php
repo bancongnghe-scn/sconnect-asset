@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Asset;
 use App\Models\AssetHistory;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 class AssetHistoryRepository extends BaseRepository
@@ -17,7 +18,7 @@ class AssetHistoryRepository extends BaseRepository
     public function insertHistoryAsset($assetIds, $status)
     {
         $dataHistory = [];
-        $assets      = Asset::whereIn('id', $assetIds)
+        $assets      = Asset::whereIn('id', Arr::wrap($assetIds))
             ->get()
             ->load(['user' => function ($query) {
                 $query->select('id', 'dept_id');

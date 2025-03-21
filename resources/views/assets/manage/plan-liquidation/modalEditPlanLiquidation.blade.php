@@ -24,14 +24,7 @@
                             <div class="container mb-3">
                                 <div class="mb-3 active-link tw-w-fit">Thông tin chung</div>
                                 <div class="row mb-3">
-                                    <div class="col-2 mb-3">
-                                        <span>
-                                            <label class="tw-font-bold">Mã kế hoạch</label>
-                                        </span>
-                                        <span class="text-danger">*</span>
-                                        <input type="text" class="form-control" x-model="data.code" placeholder="Nhập mã kế hoạch">
-                                    </div>
-                                    <div class="col-3 mb-3">
+                                    <div class="col-5 mb-6">
                                         <span>
                                             <label class="tw-font-bold">Tên kế hoạch</label>
                                         </span>
@@ -68,30 +61,40 @@
                                         <th rowspan="1" colspan="1" class="col-2 text-center">Thao tác</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody style="font-size: 13px;">
                                     <template x-for="(dataAsset, index) in (data.id ? dataTbodyListAssetLiqui : $store.globalData.dataAssetDraftForCreatePlanLiquidation)" x-data="{line: 1}">
                                         <tr>
                                             <td>
                                                 <span x-text="data.id ? dataAsset?.asset?.code : dataAsset?.code"></span>
                                             </td>
-                                            <td>
+                                            <td class="text-center align-middle text-align-center">
                                                 <span x-text="data.id ? dataAsset?.asset?.name : dataAsset?.name"></span>
                                             </td>
-                                            <td>
-                                                <span x-text="dataAsset.asset.asset_history[0].description ?? ''"></span>
+                                            <td style="max-width: 160px;">
+                                                <textarea
+                                                    x-data="{ historyDescription: (dataAsset.asset?.asset_history?.length > 0) ? dataAsset.asset.asset_history[0].description : '' }"
+                                                    x-model="historyDescription"
+                                                    class="border-0 rounded-1 w-100"
+                                                    @input="dataAsset.asset?.asset_history?.length > 0 ? dataAsset.asset.asset_history[0].description = historyDescription : ''"
+                                                ></textarea>
+                                            </td class="text-center align-middle text-align-center">
+                                            <td class="text-center align-middle text-align-center">
+                                                <input 
+                                                    type="text" 
+                                                    class="form-control text-right" 
+                                                    x-bind:value="formatPriceAssetLiqui(dataAsset.price ?? dataAsset.price_liquidation ?? 0)" 
+                                                    @input="updatePriceAssetLiqui($event.target.value, index)"
+                                                >
                                             </td>
-                                            <td class="text-right">
-                                                <span x-text="data.id ? dataAsset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : dataAsset.price_liquidation.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"></span>
-                                            </td>
-                                            <td>
-                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : dataAsset.status" class="pl-2 pr-2 border rounded" 
+                                            <td class="text-center align-middle text-align-center" style="min-width: 110px;">
+                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded" 
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,
                                                     'tw-text-green-500 tw-bg-green-100':    data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Đã duyệt'    : dataAsset.status,
                                                     'tw-text-red-500 tw-bg-red-100':        data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Từ chối'     : dataAsset.status,
                                                 }"></span>
                                             </td>
-                                            <td class="text-center align-middle">
+                                            <td class="text-center align-middle text-align-center">
                                                 <button class="border-0 bg-body" x-show="showAction.delete ?? true" @click="$dispatch('delete', { id: dataAsset.id })">
                                                     <i class="fa-solid fa-xmark tw-text-red-600"></i>
                                                 </button>

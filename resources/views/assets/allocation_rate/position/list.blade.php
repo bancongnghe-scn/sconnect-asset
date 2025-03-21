@@ -29,12 +29,7 @@
         </div>
     </div>
     <div class="mt-3">
-        <div
-            @change-page.window="changePage($event.detail.page)"
-            @change-limit.window="changeLimit"
-        >
-            @include('assets.allocation_rate.position.table')
-        </div>
+        @include('assets.allocation_rate.position.table')
     </div>
 
     @include('assets.allocation_rate.position.modalUI')

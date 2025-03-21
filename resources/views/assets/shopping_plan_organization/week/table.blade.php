@@ -6,12 +6,12 @@
                     <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            <th rowspan="1" colspan="1" class="text-center">STT</th>
+                            <th rowspan="1" colspan="1" class="text-center" style="width: 3rem;">STT</th>
                             <th rowspan="1" colspan="1" class="text-center">Kế hoạch</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 13rem">Thời gian đăng ký</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 16rem">Người tạo</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Ngày tạo</th>
-                            <th rowspan="1" colspan="1" class="text-center" style="width: 8rem">Trạng thái</th>
+                            <th rowspan="1" colspan="1" class="text-center tw-w-48 2xl:tw-w-36">Trạng thái</th>
                             <th rowspan="1" colspan="1" class="text-center" style="width: 6rem">Thao tác</th>
                         </tr>
                         </thead>
@@ -32,9 +32,9 @@
                                         @include('component.status.status_shopping_plan_organization', ['status' => 'value.status'])
                                     </td>
                                     <td class="align-middle">
-                                        <button class="border-0 bg-white" @click="handleShowModal(value.id, 'view')">
+                                        <a :href="`/shopping-plan-organization/week/detail/${value.id}`" class="tw-no-underline mr-2">
                                             <i class="bi bi-eye text-info"></i>
-                                        </button>
+                                        </a>
                                         <template x-if="new Date() >= new Date(window.formatDate(value.start_time))
                                             && new Date() <= new Date(window.formatDate(value.end_time))">
                                             <template x-for="configBtnTable in configButtonsTable">
@@ -56,6 +56,10 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
