@@ -69,7 +69,8 @@ class InventoryService
             }
 
             // gan loai tai san cho ke hoach
-            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
+            $data['asset_type_ids'] = PlanMaintain::TYPE_INVENTORY_NOT_AUTO == $data['type_inventory'] ? $data['asset_type_ids'] : PlanMaintain::ASSET_TYPE_INVENTORY_AUTO;
+            $insert                 = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
             if (!$insert) {
                 DB::rollBack();
 
@@ -217,24 +218,27 @@ class InventoryService
 
         DB::beginTransaction();
         try {
-            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['organization_ids'])) {
-                $update = resolve(PlanMaintainOrganizationService::class)
-                    ->updatePlanMaintainOrganization($data['organization_ids'], $id);
+            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
+                // cap nhat don vi
+                $update = resolve(PlanMaintainOrganizationService::class)->updatePlanMaintainOrganization($data['organization_ids'], $id);
                 if (!$update['success']) {
                     DB::rollBack();
 
                     return $update;
                 }
-            }
 
-            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['asset_type_ids'])) {
-                $update = resolve(PlanMaintainAssetTypeService::class)
+                // cap nhat loai tai san
+                $data['asset_type_ids'] = PlanMaintain::TYPE_INVENTORY_NOT_AUTO == $data['type_inventory'] ? $data['asset_type_ids'] : PlanMaintain::ASSET_TYPE_INVENTORY_AUTO;
+                $update                 = resolve(PlanMaintainAssetTypeService::class)
                     ->updatePlanMaintainAssetType($data['asset_type_ids'], $id);
                 if (!$update['success']) {
                     DB::rollBack();
 
                     return $update;
                 }
+
+                $planInventory->type_inventory    = $data['type_inventory'];
+                $planInventory->sent_notification = $data['sent_notification'];
             }
 
             if (!empty($data['user_ids'])) {
@@ -263,10 +267,6 @@ class InventoryService
                 'end_time'   => $data['end_time'],
                 'note'       => $data['note'],
             ]);
-            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
-                $planInventory->type_inventory    = $data['type_inventory'];
-                $planInventory->sent_notification = $data['sent_notification'];
-            }
 
             if (!$planInventory->save()) {
                 DB::rollBack();

@@ -25,7 +25,7 @@
                 <td class="align-middle">
                     @include('component.status.status_inventory_asset', ['status' => 'STATUS_ASSET_NOT_INVENTORIED'])
                 </td>
-                <td x-show="+data.type_inventory === TYPE_INVENTORY_AUTO" x-text="value.config_info"></td>
+                <td class="align-middle" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO" x-text="value.config_info"></td>
                 <td class="align-middle" x-text="listOrganization.find(item => item.id === value.organization_id)?.name"></td>
                 <td x-data="{userInfo: []}" x-effect="userInfo = listUser.find(item => item.id === value.user_id)">
                     @include('common.user.user_info', ['user' => 'userInfo'])

@@ -23,7 +23,7 @@
             ])
         </div>
     </div>
-    <div>
+    <div x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">
         <label class="tw-font-bold">Loại tài sản<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
         <div>
             @include('common.select_custom.extent.select_multiple', [
@@ -36,13 +36,13 @@
     </div>
     <div>
         <label>Kiểm kê<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
-        <div class="d-flex tw-gap-x-3">
+        <div class="d-flex tw-gap-x-3" x-data="{disabledType: true}" x-effect="disabledType = disabled || +data.status !== STATUS_INVENTORY_NEW">
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled='disabled || data.status !== STATUS_INVENTORY_NEW'>
+                <input type="radio" id="manual" :value="TYPE_INVENTORY_NOT_AUTO" x-model="data.type_inventory" :disabled=disabledType>
                 <label class="form-check-label" for="manual">Thủ công</label>
             </div>
             <div class="d-flex align-middle tw-gap-x-2">
-                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled='disabled || data.status !== STATUS_INVENTORY_NEW'>
+                <input type="radio" id="auto" :value="TYPE_INVENTORY_AUTO" x-model="data.type_inventory" :disabled=disabledType>
                 <label class="form-check-label" for="auto">Tự động</label>
             </div>
         </div>

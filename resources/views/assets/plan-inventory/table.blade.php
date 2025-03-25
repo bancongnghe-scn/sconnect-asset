@@ -50,12 +50,12 @@
                                         </div>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <template x-if="value.status === STATUS_INVENTORIED">
+                                        <template x-if="[STATUS_INVENTORIED, STATUS_TAKING_INVENTORY].includes(value.status)">
                                             <span class="tw-cursor-pointer" @click="window.location.href = `/plan-inventory/detail/${value.id}`">
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
-                                        <template x-if="[STATUS_INVENTORY_NEW, STATUS_TAKING_INVENTORY].includes(+value.status)">
+                                        <template x-if="STATUS_INVENTORY_NEW === +value.status">
                                             <span>
                                                 <span class="tw-cursor-pointer mr-1"
                                                       @click="window.location.href = `/plan-inventory/update/${value.id}`">

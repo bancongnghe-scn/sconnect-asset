@@ -33,12 +33,12 @@
 
             <div>
                 <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
-                <div x-show="data.status === STATUS_INVENTORY_NEW">
+                <template x-if="data.status === STATUS_INVENTORY_NEW">
                     @include('assets.plan-inventory.list_asset_new')
-                </div>
-                <div x-show="data.type_inventory === TYPE_INVENTORY_NOT_AUTO && data.status && data.status !== STATUS_INVENTORY_NEW">
+                </template>
+                <template x-if="data.status && data.status !== STATUS_INVENTORY_NEW">
                     @include('assets.plan-inventory.list_asset_inventory', ['disabled' => false])
-                </div>
+                </template>
             </div>
         </div>
 

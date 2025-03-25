@@ -26,6 +26,8 @@ class PlanInventoryAsset extends Model
         'status_asset_present',
         'location_present',
         'total_present',
+        'config_info',
+        'config_info_present',
         'note',
         'created_by',
     ];

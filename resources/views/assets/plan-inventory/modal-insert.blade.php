@@ -43,12 +43,15 @@
                             ])
                         </div>
                     </div>
-                    <div>
+                    <div x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO"
+                         x-data="{listAssetTypeSelect: []}"
+                         x-effect="listAssetTypeSelect = listAssetType.filter(option => !ASSET_TYPE_INVENTORY_AUTO.includes(option.id))"
+                    >
                         <label class="tw-font-bold">Loại tài sản<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></label>
                         <div>
                             @include('common.select_custom.extent.select_multiple', [
                                 'placeholder' => 'Chọn loại tài sản',
-                                'options' => 'listAssetType',
+                                'options' => 'listAssetTypeSelect',
                                 'selected' => 'data.asset_type_ids'
                             ])
                         </div>
