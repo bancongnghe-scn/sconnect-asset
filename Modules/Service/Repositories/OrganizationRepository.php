@@ -115,10 +115,10 @@ class OrganizationRepository extends BaseRepository
                 FROM organizations u
                          INNER JOIN unit_hierarchy uh ON u.id = uh.parent_id
             )
-            SELECT * FROM unit_hierarchy where parent_id ='.Organization::PARENT_MAIN,
+            SELECT * FROM unit_hierarchy',
             Arr::wrap($organizationId)
         );
 
-        return collect($organizations)->first();
+        return collect($organizations);
     }
 }
