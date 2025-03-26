@@ -19,6 +19,10 @@ class PlanInventoryAssetRepository extends BaseRepository
             $query->where('plan_maintain_id', $filters['plan_maintain_id']);
         }
 
+        if (!empty($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
+
         if (isset($filters['status'])) {
             $query->where('status', $filters['status']);
         }
