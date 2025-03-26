@@ -133,7 +133,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('list-user-asset', [AssetController::class, 'listUserAsset'])->name('assets.listUserAsset');
         Route::get('list-organization-asset', [AssetController::class, 'listOrgAsset'])->name('assets.listOrgAsset');
         Route::get('export-list-asset', [AssetController::class, 'exportListAsset'])->name('assets.exportListAsset');
-        Route::view('user', 'assets.asset.user.list');
+        Route::view('user', 'assets.asset.user.list')->name('asset.user');
     });
 });
 
