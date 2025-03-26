@@ -66,6 +66,10 @@ class OrganizationRepository extends BaseRepository
             ->where('organizations.status', Organization::STATUS_ACTIVE)->get();
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     * Lấy các đơn vị con
+     */
     public function departmentTreeCollection($parentId)
     {
         $organizations = DB::connection('mysql_service')->select(
@@ -90,5 +94,31 @@ class OrganizationRepository extends BaseRepository
         );
 
         return collect($organizations);
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     * Lấy ra đơn vị cha
+     */
+    public function getParentOrganization($organizationId)
+    {
+        $organizations = DB::connection('mysql_service')->select(
+            '
+            WITH RECURSIVE unit_hierarchy AS (
+                SELECT id, parent_id, name
+                FROM organizations
+                WHERE id = ?
+
+                UNION ALL
+
+                SELECT u.id, u.parent_id, u.name
+                FROM organizations u
+                         INNER JOIN unit_hierarchy uh ON u.id = uh.parent_id
+            )
+            SELECT * FROM unit_hierarchy where parent_id ='.Organization::PARENT_MAIN,
+            Arr::wrap($organizationId)
+        );
+
+        return collect($organizations)->first();
     }
 }

@@ -265,6 +265,9 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('updatePlanInventory/{id}', 'updatePlanInventory');
         Route::get('completePlanInventory/{id}', 'completePlanInventory');
         Route::post('deletePlanInventory', 'deletePlanInventory');
+        Route::post('uploadFileInventory', 'uploadFileInventory');
+        Route::get('getListPlanInventoryUser', 'getListPlanInventoryUser');
+        Route::get('getFileUploaded/{id}', 'getFileUploaded');
     });
 
     Route::prefix('report')->group(function () {

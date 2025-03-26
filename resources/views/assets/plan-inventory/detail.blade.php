@@ -31,19 +31,15 @@
                 @include('assets.plan-inventory.plan_inventory_info', ['disabled' => true])
             </div>
 
-            <template x-if="data.status === STATUS_INVENTORY_NEW">
-                <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
+            <div>
+                <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
+                <template x-if="data.status === STATUS_INVENTORY_NEW">
                     @include('assets.plan-inventory.list_asset_new')
-                </div>
-            </template>
-
-            <template x-if="data.status !== STATUS_INVENTORY_NEW">
-                <div>
-                    <div class="mb-3 active-link tw-w-fit" x-text="`Tài sản kiểm kê (${data?.assets?.length ?? 0})`"></div>
+                </template>
+                <template x-if="data.status && data.status !== STATUS_INVENTORY_NEW">
                     @include('assets.plan-inventory.list_asset_inventory', ['disabled' => true])
-                </div>
-            </template>
+                </template>
+            </div>
         </div>
 
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">

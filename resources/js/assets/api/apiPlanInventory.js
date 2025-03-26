@@ -169,3 +169,77 @@ window.apiDeletePlanInventory = async function (id) {
     }
 }
 
+window.apiGetListPlanInventoryUser = async function (filters) {
+    try {
+        const response = await axios.get("/api/inventory/getListPlanInventoryUser", {
+            params: filters
+        })
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.apiUploadFileInventory = async function (dataUpload) {
+    try {
+        const formData = window.formData(dataUpload)
+        const response = await axios.post("/api/inventory/uploadFileInventory", formData)
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.apiGetFileUploaded = async function (id) {
+    try {
+        const response = await axios.get("/api/inventory/getFileUploaded/"+id)
+
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}

@@ -19,7 +19,7 @@ class ListMenuUserResource extends JsonResource
     {
         $menus     = $this->resource->groupBy('parent_id');
         $parentIds = $this->resource->pluck('parent_id')->toArray();
-        $menuMain  = $this->menuRepository->getListing(['id' => $parentIds]);
+        $menuMain  = $this->menuRepository->getListing(['id' => array_unique($parentIds)]);
         $menuMain  = $menuMain->sortBy('order');
         $data      = [];
         foreach ($menuMain as $menu) {
