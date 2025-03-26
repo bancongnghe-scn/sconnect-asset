@@ -119,6 +119,9 @@ class InventoryController extends Controller
 
     public function deletePlanInventory(Request $request)
     {
+        $request->validate([
+            'id'       => 'required|integer',
+        ]);
         try {
             $result = $this->inventoryService->deletePlanInventory($request->get('id'));
             if ($result['success']) {
@@ -127,6 +130,57 @@ class InventoryController extends Controller
 
             return response_error($result['error_code']);
         } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function uploadFileInventory(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:txt',
+            'id'   => 'required|integer',
+        ]);
+
+        try {
+            $result = $this->inventoryService->uploadFileInventory($request->file('file'), $request->get('id'));
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getListPlanInventoryUser(Request $request)
+    {
+        try {
+            $result = $this->inventoryService->getListPlanInventoryUser($request->all());
+            if ($result['success']) {
+                return response_success($result['data']);
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function getFileUploaded($id)
+    {
+        try {
+            $result = $this->inventoryService->getFileUploaded($id);
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            dd($exception);
             report($exception);
 
             return response_error();

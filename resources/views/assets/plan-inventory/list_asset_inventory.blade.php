@@ -1,4 +1,4 @@
-<div class="table-responsive custom-scroll" x-data="{disabled: @json($disabled)}">
+<div class="table-responsive" x-data="{disabled: @json($disabled)}">
     <table id="example2" class="table table-bordered dataTable dtr-inline"
            aria-describedby="example2_info">
         <thead>
@@ -16,7 +16,7 @@
         <tr>
             {{--thuc te--}}
             <th class="text-center" style="min-width: 5rem" x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">SL</th>
-            <th class="text-center" style="min-width: 5rem" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
+            <th class="text-center" style="min-width: 15rem" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
             <th class="text-center" style="min-width: 13rem">Đơn vị</th>
             <th class="text-center" style="min-width: 14rem">Người sử dụng</th>
             <th class="text-center" style="min-width: 14rem">Người đại diện</th>

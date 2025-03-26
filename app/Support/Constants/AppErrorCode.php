@@ -124,6 +124,7 @@ class AppErrorCode
     public const CODE_2117 = 2117; //  Cập nhật tài sản kiểm kê thất bại !
     public const CODE_2118 = 2118; //  Bạn chưa duyệt hết tài sản kiểm kê, vui lòng kiểm tra lại !
     public const CODE_2119 = 2119; //  Xóa kế hoạch kiểm kê thất bại !
+    public const CODE_2120 = 2120; //  Người dùng chưa được cấu hình đơn vị !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !
