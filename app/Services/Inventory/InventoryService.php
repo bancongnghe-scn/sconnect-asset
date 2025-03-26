@@ -451,7 +451,15 @@ class InventoryService
                 'error_code' => AppErrorCode::CODE_2120,
             ];
         }
-        $organizationParent        = $this->organizationRepository->getParentOrganization($deptId);
+
+        $organizationParent        = $this->organizationRepository->getParentOrganization($deptId)->first();
+        if (empty($organizationParent)) {
+            return [
+                'success'    => true,
+                'data'       => [],
+            ];
+        }
+
         $planInventoryOrganization = $this->planMaintainOrganizationRepository->getByOrganizationId($organizationParent->id);
         if ($planInventoryOrganization->isEmpty()) {
             return [
