@@ -20,7 +20,7 @@
     </div>
     <div class="col-3">
         @include('common.datepicker.datepicker_range', [
-           'placeholder' => "Ngày ký", 'model' => "filters.signing_date",
+           'placeholder' => "Ngày ký",
            'start' => 'filters.signing_date.start',
            'end' => 'filters.signing_date.end',
         ])
