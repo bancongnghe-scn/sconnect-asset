@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
+use App\Models\Asset;
 use App\Models\PlanInventoryAsset;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainLog;
@@ -390,20 +391,24 @@ class InventoryService
         }
 
         $userId             = Auth::id();
+        $organizationParent = $this->organizationRepository->getParentOrganization(Auth::user()->dept_id)->first();
         $listAssetInventory = $this->planInventoryAssetRepository->getListing([
             'plan_maintain_id' => $planInventoryId,
             'user_id'          => $userId,
-        ], with: ['asset']);
+        ]);
 
         DB::beginTransaction();
         try {
             foreach ($listAssetInventory as $assetInventory) {
-                $key = array_search($assetInventory->asset?->asset_type_id, PlanMaintain::ASSET_TYPE_INVENTORY_AUTO);
+                $key = array_search($assetInventory->asset_type_id, PlanMaintain::ASSET_TYPE_INVENTORY_AUTO);
                 if (false !== $key) {
-                    $assetInventory->status = PlanInventoryAsset::STATUS_INVENTORIED;
-                    if (Str::slug($data[$key]) != Str::slug($assetInventory->asset->config_info)) {
+                    $assetInventory->status                  = PlanInventoryAsset::STATUS_INVENTORIED;
+                    $assetInventory->status_asset_present    = Asset::STATUS_ACTIVE;
+                    $assetInventory->organization_id_present = $organizationParent->id;
+                    if (Str::slug($data[$key]) != Str::slug($assetInventory->config_info)) {
                         $assetInventory->config_info_present = $data[$key];
                     }
+
                     if (!$assetInventory->save()) {
                         return [
                             'success'    => false,
