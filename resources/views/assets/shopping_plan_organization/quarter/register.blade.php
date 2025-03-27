@@ -123,7 +123,7 @@
                                                             }">
                                                             <td>
                                                                 @include('common.select_custom.extent.select_single', [
-                                                                        'placeholder' => 'Chọn tài sản',
+                                                                        'placeholder' => 'Chọn loại tài sản',
                                                                         'selected' => 'asset.asset_type_id',
                                                                         'options' => 'list_asset_type',
                                                                 ])

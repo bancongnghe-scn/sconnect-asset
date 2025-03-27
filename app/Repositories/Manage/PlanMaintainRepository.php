@@ -49,6 +49,10 @@ class PlanMaintainRepository extends BaseRepository
             $query->where('type', $filters['type']);
         }
 
+        if (!empty($filters['type_inventory'])) {
+            $query->where('type_inventory', $filters['type_inventory']);
+        }
+
         if (!empty($filters['first'])) {
             return $query->first();
         }
@@ -83,10 +87,6 @@ class PlanMaintainRepository extends BaseRepository
 
         if (!empty($filters['status'])) {
             $query->where('plan_maintain.status', $filters['status']);
-        }
-
-        if (!empty($filters['type'])) {
-            $query->where('plan_maintain.type', $filters['type']);
         }
 
         if (!empty($filters['supplier_id'])) {
