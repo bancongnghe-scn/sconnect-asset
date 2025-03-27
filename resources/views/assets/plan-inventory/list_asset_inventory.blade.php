@@ -18,15 +18,15 @@
             <th class="text-center" style="min-width: 5rem" x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">SL</th>
             <th class="text-center" style="min-width: 15rem" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
             <th class="text-center" style="min-width: 13rem">Đơn vị</th>
-            <th class="text-center" style="min-width: 14rem">Người sử dụng</th>
-            <th class="text-center" style="min-width: 14rem">Người đại diện</th>
+            <th class="text-center" style="min-width: 16rem">Người sử dụng</th>
+            <th class="text-center" style="min-width: 16rem">Người đại diện</th>
             <th class="text-center" style="min-width: 12rem">Tình trạng</th>
             <th class="text-center" style="min-width: 15rem">Ghi chú</th>
 
             {{--so sach--}}
             <th class="text-center" x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">SL</th>
-            <th class="text-center" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
-            <th class="text-center" style="min-width: 10rem">Đơn vị</th>
+            <th class="text-center" style="min-width: 15rem" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
+            <th class="text-center" style="min-width: 13rem">Đơn vị</th>
             <th class="text-center" style="min-width: 16rem">Người sử dụng</th>
             <th class="text-center" style="min-width: 16rem">Người đại diện</th>
             <th class="text-center" style="min-width: 8rem">Tình trạng</th>
