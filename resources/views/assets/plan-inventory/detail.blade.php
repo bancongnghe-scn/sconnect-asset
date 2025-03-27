@@ -22,9 +22,9 @@
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
             {{--thong ke--}}
-            <template x-if="data.status !== STATUS_INVENTORY_NEW">
+            <div x-show="data.status && data.status !== STATUS_INVENTORY_NEW">
                 @include('assets.plan-inventory.statistic_plan_inventory')
-            </template>
+            </div>
 
             {{-- thong tin chung--}}
             <div class="mb-3">

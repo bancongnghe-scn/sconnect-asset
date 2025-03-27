@@ -25,6 +25,7 @@ class PlanInventoryAssetService
             $data[] = [
                 'plan_maintain_id'             => $planInventoryId,
                 'asset_id'                     => $asset->id,
+                'asset_type_id'                => $asset->asset_type_id,
                 'status'                       => PlanInventoryAsset::STATUS_NOT_INVENTORIED,
                 'organization_id'              => $asset->organization_id,
                 'user_id'                      => $asset->user_id,

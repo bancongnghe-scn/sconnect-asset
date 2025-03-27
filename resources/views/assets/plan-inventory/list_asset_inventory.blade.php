@@ -9,8 +9,8 @@
             <th rowspan="2" colspan="1" class="text-center" style="min-width: 7rem">Số seri</th>
             <th rowspan="2" colspan="1" class="text-center" style="min-width: 10rem">Loại tài sản</th>
             <th rowspan="2" colspan="1" class="text-center" style="min-width: 10rem">Trạng thái kiểm kê</th>
-            <th colspan="7" class="text-center">Thực tế</th>
-            <th colspan="6" class="text-center">Sổ sách</th>
+            <th colspan="6" class="text-center">Thực tế</th>
+            <th colspan="5" class="text-center">Sổ sách</th>
             <th colspan="4" class="text-center">Chênh lệch</th>
         </tr>
         <tr>
@@ -21,7 +21,6 @@
             <th class="text-center" style="min-width: 14rem">Người sử dụng</th>
             <th class="text-center" style="min-width: 14rem">Người đại diện</th>
             <th class="text-center" style="min-width: 12rem">Tình trạng</th>
-            <th class="text-center" style="min-width: 10rem">Vị trí</th>
             <th class="text-center" style="min-width: 15rem">Ghi chú</th>
 
             {{--so sach--}}
@@ -31,14 +30,12 @@
             <th class="text-center" style="min-width: 16rem">Người sử dụng</th>
             <th class="text-center" style="min-width: 16rem">Người đại diện</th>
             <th class="text-center" style="min-width: 8rem">Tình trạng</th>
-            <th class="text-center" style="min-width: 7rem">Vị trí</th>
 
             {{--Chênh lệch--}}
             <th class="text-center" x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO">SL</th>
             <th class="text-center" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO">Cấu hình</th>
             <th class="text-center">Người sử dụng</th>
             <th class="text-center">Tình trạng</th>
-            <th class="text-center">Vị trí</th>
         </tr>
         </thead>
         <tbody>
@@ -93,13 +90,6 @@
                     ])
                 </td>
                 <td class="align-middle">
-                    @include('common.select_custom.simple.select_single', [
-                       'selected' => 'value.location_present',
-                       'options' => 'LIST_LOCATION_ASSET',
-                       'disabled' => 'disabled'
-                    ])
-                </td>
-                <td class="align-middle">
                     <input class="form-control" type="text" x-model="value.note" :disabled="disabled">
                 </td>
 
@@ -118,14 +108,12 @@
                 <td class="align-middle">
                     @include('component.status.status_asset', ['status' => 'value.status_asset'])
                 </td>
-                <td class="align-middle" x-text="LIST_LOCATION_ASSET[value?.asset.location]"></td>
 
                 {{--chenh lech--}}
                 <td class="align-middle text-center" x-text="+value.total_present !== 1 ? 'x': ''" x-show="+data.type_inventory === TYPE_INVENTORY_NOT_AUTO"></td>
                 <td class="align-middle text-center" x-text="value.config_info !== value.config_info_present ? 'x': ''" x-show="+data.type_inventory === TYPE_INVENTORY_AUTO"></td>
                 <td class="align-middle text-center" x-text="+value.user_id !== +value.user_id_present ? 'x': ''"></td>
                 <td class="align-middle text-center" x-text="+value.status_asset !== +value.status_asset_present ? 'x': ''"></td>
-                <td class="align-middle text-center" x-text="+value.location !== +value.location_present ? 'x': ''"></td>
             </tr>
         </template>
         </tbody>
