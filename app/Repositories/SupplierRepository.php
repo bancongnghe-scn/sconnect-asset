@@ -37,7 +37,7 @@ class SupplierRepository extends BaseRepository
         return $query->get();
     }
 
-    public function getListing($filters, $columns = ['*'], $with = [])
+    public function getListing($filters = [], $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()
             ->select($columns)
