@@ -84,17 +84,13 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                 });
         }
 
-        $assetTypeName = $collection->pluck('ten_tai_san')->unique()->toArray();
-        $listAssetType = $this->assetTypeRepository->getAssetTypeByName($assetTypeName)
+        $listAssetType = $this->assetTypeRepository->getListAssetType(columns: ['id', 'name'])
             ->mapWithKeys(function ($assetType) {
                 return [Str::slug($assetType->name) => $assetType];
             });
-        $supplierName  = $collection->pluck('thong_tin_ncc_ten_ncc_dia_chi_sdt')->unique()->toArray();
-        $listSupplier  = $this->supplierRepository->getListSupplerByName($supplierName)
-            ->mapWithKeys(function ($supplier) {
-                return [Str::slug($supplier->name) => $supplier];
-            });
-
+        $listSupplier  = $this->supplierRepository->getListing(columns: ['id', 'name'])->mapWithKeys(function ($supplier) {
+            return [Str::slug($supplier->name) => $supplier];
+        });
         $listCodeAssets = $collection->pluck('ma_tai_san')->toArray();
         $listAssets     = $this->assetRepository->getListing(['code' => $listCodeAssets])->keyBy('code');
 
@@ -119,12 +115,11 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                 continue;
             }
 
-            if (empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
+            if (empty($listAssetType[Str::slug($row['ten_tai_san'])] ?? [])) {
                 $this->setError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
                 continue;
             }
-
-            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
+            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])] ?? [])) {
                 $this->setError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
                 continue;
             }
