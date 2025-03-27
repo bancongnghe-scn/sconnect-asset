@@ -4,6 +4,7 @@ namespace App\Services\Inventory;
 
 use App\Http\Resources\Inventory\PlanInventoryInfoResource;
 use App\Http\Resources\ListPlanInventoryResource;
+use App\Models\Asset;
 use App\Models\PlanInventoryAsset;
 use App\Models\PlanMaintain;
 use App\Models\PlanMaintainLog;
@@ -11,7 +12,9 @@ use App\Repositories\AssetRepository;
 use App\Repositories\AssetTypeRepository;
 use App\Repositories\Manage\PlanMaintainRepository;
 use App\Repositories\PlanInventoryAssetRepository;
+use App\Repositories\PlanInventoryFileRepository;
 use App\Repositories\PlanMaintainLogRepository;
+use App\Repositories\PlanMaintainOrganizationRepository;
 use App\Services\PlanInventoryAssetService;
 use App\Services\PlanMaintainAssetTypeService;
 use App\Services\PlanMaintainChargeService;
@@ -19,6 +22,8 @@ use App\Services\PlanMaintainOrganizationService;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Modules\Service\Repositories\OrganizationRepository;
 
 class InventoryService
@@ -30,6 +35,8 @@ class InventoryService
         protected PlanMaintainLogRepository $planMaintainLogRepository,
         protected AssetRepository $assetRepository,
         protected PlanInventoryAssetRepository $planInventoryAssetRepository,
+        protected PlanInventoryFileRepository $planInventoryFileRepository,
+        protected PlanMaintainOrganizationRepository $planMaintainOrganizationRepository,
     ) {
     }
 
@@ -70,7 +77,8 @@ class InventoryService
             }
 
             // gan loai tai san cho ke hoach
-            $insert = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
+            $data['asset_type_ids'] = PlanMaintain::TYPE_INVENTORY_NOT_AUTO == $data['type_inventory'] ? $data['asset_type_ids'] : PlanMaintain::ASSET_TYPE_INVENTORY_AUTO;
+            $insert                 = resolve(PlanMaintainAssetTypeService::class)->insertPlanMaintainAssetType($planInventory->id, $data['asset_type_ids']);
             if (!$insert) {
                 DB::rollBack();
 
@@ -218,24 +226,27 @@ class InventoryService
 
         DB::beginTransaction();
         try {
-            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['organization_ids'])) {
-                $update = resolve(PlanMaintainOrganizationService::class)
-                    ->updatePlanMaintainOrganization($data['organization_ids'], $id);
+            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
+                // cap nhat don vi
+                $update = resolve(PlanMaintainOrganizationService::class)->updatePlanMaintainOrganization($data['organization_ids'], $id);
                 if (!$update['success']) {
                     DB::rollBack();
 
                     return $update;
                 }
-            }
 
-            if (PlanMaintain::STATUS_NEW == $planInventory->status && !empty($data['asset_type_ids'])) {
-                $update = resolve(PlanMaintainAssetTypeService::class)
+                // cap nhat loai tai san
+                $data['asset_type_ids'] = PlanMaintain::TYPE_INVENTORY_NOT_AUTO == $data['type_inventory'] ? $data['asset_type_ids'] : PlanMaintain::ASSET_TYPE_INVENTORY_AUTO;
+                $update                 = resolve(PlanMaintainAssetTypeService::class)
                     ->updatePlanMaintainAssetType($data['asset_type_ids'], $id);
                 if (!$update['success']) {
                     DB::rollBack();
 
                     return $update;
                 }
+
+                $planInventory->type_inventory    = $data['type_inventory'];
+                $planInventory->sent_notification = $data['sent_notification'];
             }
 
             if (!empty($data['user_ids'])) {
@@ -264,10 +275,6 @@ class InventoryService
                 'end_time'   => $data['end_time'],
                 'note'       => $data['note'],
             ]);
-            if (PlanMaintain::STATUS_NEW == $planInventory->status) {
-                $planInventory->type_inventory    = $data['type_inventory'];
-                $planInventory->sent_notification = $data['sent_notification'];
-            }
 
             if (!$planInventory->save()) {
                 DB::rollBack();
@@ -279,8 +286,7 @@ class InventoryService
             }
 
             if (PlanMaintain::STATUS_MAINTAINING == $planInventory->status && !empty($data['assets'])) {
-                $planInventoryAsset = $data['assets']['inventory'] ?? [];
-                foreach ($planInventoryAsset as $assetInventory) {
+                foreach ($data['assets'] as $assetInventory) {
                     $update = $this->planInventoryAssetRepository->updatePlanInventoryAssetById($assetInventory['id'], $assetInventory);
                     if (!$update) {
                         DB::rollBack();
@@ -316,19 +322,6 @@ class InventoryService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2113,
-            ];
-        }
-
-        $planInventoryAsset = $this->planInventoryAssetRepository->getListing([
-            'plan_maintain_id' => $id,
-            'status'           => PlanInventoryAsset::STATUS_NOT_INVENTORIED,
-            'first'            => true,
-        ]);
-
-        if (!empty($planInventoryAsset)) {
-            return [
-                'success'    => false,
-                'error_code' => AppErrorCode::CODE_2118,
             ];
         }
 
@@ -377,5 +370,132 @@ class InventoryService
         return [
             'success' => true,
         ];
+    }
+
+    /**
+     * @param $planInventoryId
+     * xu ly kiem ke voi file upload nhan su
+     */
+    public function uploadFileInventory($file, $planInventoryId)
+    {
+        $path     = $file->store('inventory', 'public');
+        $contents = File::get(public_path('uploads').'/'.$path);
+        $lines    = explode("\n", mb_convert_encoding($contents, 'UTF-8', 'UTF-16LE'));
+        $data     = [];
+
+        foreach ($lines as $line) {
+            if (str_contains($line, ':')) {
+                list($key, $value) = explode(':', $line, 2);
+                $data[trim($key)]  = trim($value);
+            }
+        }
+
+        $userId             = Auth::id();
+        $organizationParent = $this->organizationRepository->getParentOrganization(Auth::user()->dept_id)->first();
+        $listAssetInventory = $this->planInventoryAssetRepository->getListing([
+            'plan_maintain_id' => $planInventoryId,
+            'user_id'          => $userId,
+        ]);
+
+        DB::beginTransaction();
+        try {
+            foreach ($listAssetInventory as $assetInventory) {
+                $key = array_search($assetInventory->asset_type_id, PlanMaintain::ASSET_TYPE_INVENTORY_AUTO);
+                if (false !== $key) {
+                    $assetInventory->status                  = PlanInventoryAsset::STATUS_INVENTORIED;
+                    $assetInventory->status_asset_present    = Asset::STATUS_ACTIVE;
+                    $assetInventory->organization_id_present = $organizationParent->id;
+                    if (Str::slug($data[$key]) != Str::slug($assetInventory->config_info)) {
+                        $assetInventory->config_info_present = $data[$key];
+                    }
+
+                    if (!$assetInventory->save()) {
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2117,
+                        ];
+                    }
+                }
+            }
+
+            $insert = $this->planInventoryFileRepository->insert([
+                'plan_maintain_id' => $planInventoryId,
+                'file_url'         => $path,
+                'file_name'        => $file->getClientOriginalName(),
+                'user_id'          => $userId,
+            ]);
+            if (!$insert) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2111,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            DB::rollBack();
+            report($exception);
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function getListPlanInventoryUser($filters)
+    {
+        $deptId = Auth::user()?->dept_id;
+        if (empty($deptId)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2120,
+            ];
+        }
+
+        $organizationParent        = $this->organizationRepository->getParentOrganization($deptId)->first();
+        if (empty($organizationParent)) {
+            return [
+                'success'    => true,
+                'data'       => [],
+            ];
+        }
+
+        $planInventoryOrganization = $this->planMaintainOrganizationRepository->getByOrganizationId($organizationParent->id);
+        if ($planInventoryOrganization->isEmpty()) {
+            return [
+                'success'    => true,
+                'data'       => [],
+            ];
+        }
+
+        $planMaintainIds = $planInventoryOrganization->pluck('plan_maintain_id')->toArray();
+
+        $filters = array_merge($filters, [
+            'type'           => PlanMaintain::TYPE_INVENTORY,
+            'id'             => $planMaintainIds,
+            'status'         => [PlanMaintain::STATUS_MAINTAINING, PlanMaintain::STATUS_COMPLETE_MAINTAIN],
+            'type_inventory' => PlanMaintain::TYPE_INVENTORY_AUTO,
+        ]);
+        $planInventory = $this->planMaintainRepository->getListing($filters);
+
+        return [
+            'success' => true,
+            'data'    => $planInventory->toArray(),
+        ];
+    }
+
+    public function getFileUploaded($id)
+    {
+        $file = $this->planInventoryFileRepository->getFileUploadedLast($id);
+        if (empty($file)) {
+            return [];
+        }
+
+        return $file->toArray();
     }
 }

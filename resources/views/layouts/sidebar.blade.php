@@ -13,6 +13,12 @@
                         <p>Home</p>
                     </a>
                 </li>
+                <li class="nav-item rounded bg-white-opacity-10-hover {{request()->is('asset.user') ? 'bg-white-opacity-10' : ''}}">
+                    <a href="/asset/user" class="nav-link text-white align-middle">
+                        <i class="bi bi-stickies"></i>
+                        <p>Tài sản</p>
+                    </a>
+                </li>
                 <template x-for="menu in menus">
                     <li class="nav-item"
                         :class="menu.children.map(child => child.url).includes(window.location.pathname) ? 'menu-is-opening menu-open' : ''">

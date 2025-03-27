@@ -51,7 +51,8 @@ class CommentService
 
         DB::beginTransaction();
         try {
-            $comment     = $this->commentRepository->create($data);
+            $comment      = $this->commentRepository->create($data);
+            $commentFiles = [];
             if (!empty($data['files'])) {
                 $commentFiles = resolve(CommentFileService::class)->insertCommentFiles($data['files'], $comment->id);
                 if (!$commentFiles['success']) {

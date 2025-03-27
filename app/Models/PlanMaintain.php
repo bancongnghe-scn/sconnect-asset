@@ -45,6 +45,10 @@ class PlanMaintain extends Model
     public const STATUS_COMPLETE_MAINTAIN          = 5;
     public const TYPE_INVENTORY_NOT_AUTO           = 1;
     public const TYPE_INVENTORY_AUTO               = 2;
+    public const ASSET_TYPE_INVENTORY_AUTO         = [
+        'DISK_MODEL' => 35,
+        'GPU_MODEL'  => 36,
+    ];
 
     public const STATUS_NAME = [
         self::STATUS_NEW            => 'Mới tạo',

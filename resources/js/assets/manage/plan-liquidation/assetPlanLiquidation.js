@@ -151,7 +151,7 @@ document.addEventListener('alpine:init', () => {
 
         formatPrice(event) {
             if (event && (typeof event === 'string' || typeof event === 'number')) {
-                
+
                 let rawValue = String(event).replace(/[^0-9]/g, '');
                 return rawValue.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
             }
@@ -201,7 +201,7 @@ document.addEventListener('alpine:init', () => {
             let _id = e.plan_maintain_id
             let plan_maintain_asset = [];
 
-            // Update giá trị thanh lý của  "1 tài sản" 
+            // Update giá trị thanh lý của  "1 tài sản"
             plan_maintain_asset.push({
                 asset_id: e.asset_id,
                 plan_maintain_id: e.plan_maintain_id,
@@ -251,7 +251,7 @@ document.addEventListener('alpine:init', () => {
 
             $('#idModalEditPlanLiquidation').modal('show');
             $('#idModalEditPlanLiquidation').on('shown.bs.modal', function () {
-                $(this).removeAttr('aria-hidden'); 
+                $(this).removeAttr('aria-hidden');
             });
 
             $("[name='target_id']").val(this.id);
@@ -278,7 +278,7 @@ document.addEventListener('alpine:init', () => {
                 const ids_selected_pre = Alpine.store('globalData').dataAssetDraftForCreatePlanLiquidation.map(item => item.id)
                 this.dataTbodySelectAsset = this.dataTbodySelectAsset.filter(item => !ids_selected_pre.map(Number).includes(item.id))
             }
-            
+
             if ($('.modal-backdrop').length > 1) {
                 $('.modal-backdrop')[1].classList.add('custom-backdrop');
             }
@@ -358,9 +358,9 @@ document.addEventListener('alpine:init', () => {
             this.checkCreate = true
             $('#idModalEditPlanLiquidation').modal('show')
             $('#idModalEditPlanLiquidation').on('shown.bs.modal', function () {
-                $(this).removeAttr('aria-hidden'); 
+                $(this).removeAttr('aria-hidden');
             });
-            
+
             this.dataTbodyListAssetLiqui = []
 
             this.loading = false
@@ -437,7 +437,7 @@ document.addEventListener('alpine:init', () => {
                 note: this.data['note'] ?? '',
                 plan_maintain_asset: plan_maintain_asset,
             }
-            
+
             const response = await window.apiUpdatePlanLiquidation(id, _data)
             if (!response.success) {
                 toast.error(response.message)
@@ -532,7 +532,7 @@ document.addEventListener('alpine:init', () => {
 
             // check approve
             this.checkStatusApp = false
-            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i =>
                 Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
             );
 
@@ -577,7 +577,7 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i =>
                 Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
             );
 
@@ -612,7 +612,7 @@ document.addEventListener('alpine:init', () => {
                 }
             });
 
-            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i => 
+            this.checkStatusApp = !this.dataTbodyListAssetLiqui.every(i =>
                 Array.isArray(i) ? i.every(subItem => subItem.status === 2) : i.status === 2
             );
 
@@ -650,8 +650,8 @@ document.addEventListener('alpine:init', () => {
             this.list(this.filters)
         },
 
-        changeLimit() {
-            this.filters.limit = this.limit
+        changeLimit(limit) {
+            this.filters.limit = limit
             this.list(this.filters)
         },
 

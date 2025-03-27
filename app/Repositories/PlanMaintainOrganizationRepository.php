@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\PlanMaintainOrganization;
 use App\Repositories\Base\BaseRepository;
+use Illuminate\Support\Arr;
 
 class PlanMaintainOrganizationRepository extends BaseRepository
 {
@@ -20,5 +21,10 @@ class PlanMaintainOrganizationRepository extends BaseRepository
         }
 
         return $query->delete();
+    }
+
+    public function getByOrganizationId($organizationIds)
+    {
+        return $this->_model->newQuery()->whereIn('organization_id', Arr::wrap($organizationIds))->get();
     }
 }

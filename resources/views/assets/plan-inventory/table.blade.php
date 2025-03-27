@@ -50,22 +50,22 @@
                                         </div>
                                     </td>
                                     <td class="text-center align-middle">
-                                        <template x-if="value.status === STATUS_INVENTORIED">
+                                        <template x-if="STATUS_INVENTORIED === +value.status">
                                             <span class="tw-cursor-pointer" @click="window.location.href = `/plan-inventory/detail/${value.id}`">
                                                 <i class="bi bi-eye text-info"></i>
                                             </span>
                                         </template>
                                         <template x-if="[STATUS_INVENTORY_NEW, STATUS_TAKING_INVENTORY].includes(+value.status)">
-                                            <span>
-                                                <span class="tw-cursor-pointer mr-1"
-                                                      @click="window.location.href = `/plan-inventory/update/${value.id}`">
+                                            <span class="tw-cursor-pointer mr-1"
+                                                  @click="window.location.href = `/plan-inventory/update/${value.id}`">
                                                      <i class="bi bi-pencil-square color-sc"></i>
-                                                </span>
-                                                <span class="tw-cursor-pointer"
-                                                      @click="confirmRemovePlanInventory(false, value.id)">
-                                                      <i class="bi bi-trash3 text-red"></i>
-                                                </span>
                                             </span>
+                                        </template>
+                                        <template x-if="STATUS_INVENTORY_NEW === +value.status">
+                                             <span class="tw-cursor-pointer"
+                                                   @click="confirmRemovePlanInventory(false, value.id)">
+                                                      <i class="bi bi-trash3 text-red"></i>
+                                             </span>
                                         </template>
                                     </td>
                                 </tr>
@@ -75,10 +75,10 @@
                 </div>
             </div>
         </div>
-        @include('common.pagination')
+        <div
+            @change-page.windows.stop="changePage($event.detail.page)"
+            @change-limit.window.stop="changeLimit($event.detail.limit)">
+            @include('common.pagination')
+        </div>
     </div>
 </div>
-
-@include('assets.asset.common.commonSvg')
-
-

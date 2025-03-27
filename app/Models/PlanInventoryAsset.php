@@ -14,6 +14,7 @@ class PlanInventoryAsset extends Model
     protected $fillable = [
         'plan_maintain_id',
         'asset_id',
+        'asset_type_id',
         'status',
         'organization_id',
         'user_id',
@@ -26,6 +27,8 @@ class PlanInventoryAsset extends Model
         'status_asset_present',
         'location_present',
         'total_present',
+        'config_info',
+        'config_info_present',
         'note',
         'created_by',
     ];
