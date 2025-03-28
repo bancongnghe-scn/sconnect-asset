@@ -23,7 +23,7 @@ class AssetTypeGroupService
 
     public function createAssetTypeGroup(array $data)
     {
-        $assetTypeGroup = $this->assetTypeGroupRepository->getAssetTypeByName($data['name']);
+        $assetTypeGroup = $this->assetTypeGroupRepository->getAssetTypeGroupByName($data['name']);
         if (!empty($assetTypeGroup)) {
             return [
                 'success'    => false,
