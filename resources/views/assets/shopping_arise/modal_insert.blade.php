@@ -22,9 +22,9 @@
                             <table id="example2" class="table table-bordered dataTable dtr-inline" aria-describedby="example2_info">
                                 <thead>
                                 <tr>
-                                    <th class="text-center" style="width: 18rem;">Loại tài sản</th>
-                                    <th class="text-center" style="width: 6rem;">Số lượng</th>
-                                    <th class="text-center" style="width: 15rem;">Vị trí chức danh</th>
+                                    <th class="text-center" style="width: 18rem;">Loại tài sản<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></th>
+                                    <th class="text-center" style="width: 6rem;">Số lượng<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></th>
+                                    <th class="text-center" style="width: 15rem;">Vị trí chức danh<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></th>
                                     <th class="text-center" style="width: 11rem;">Thời gian cần</th>
                                     <th class="text-center" style="width: 15rem;">Mô tả</th>
                                     <th class="text-center"></th>

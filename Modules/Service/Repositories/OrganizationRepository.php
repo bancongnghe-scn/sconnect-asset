@@ -27,6 +27,12 @@ class OrganizationRepository extends BaseRepository
         if (!empty($filters['parent_id'])) {
             $query->whereIn('parent_id', Arr::wrap($filters['parent_id']));
         }
+        if (!empty($filters['manager_id'])) {
+            $query->where('manager_id', $filters['manager_id']);
+        }
+        if (!empty($filters['first'])) {
+            return $query->first();
+        }
 
         return $query->get();
     }

@@ -7,7 +7,7 @@
                            aria-describedby="example2_info">
                         <thead>
                         <tr>
-                            @can('shopping_plan_company.year_quarter.crud')
+                            @can('shopping_plan_company.week.crud')
                                 <th class="text-center" style="width: 3rem">
                                     <input type="checkbox" @click="selectedAll">
                                 </th>
