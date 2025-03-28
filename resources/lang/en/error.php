@@ -124,6 +124,7 @@ return [
     AppErrorCode::CODE_2118 => 'Bạn chưa duyệt hết tài sản kiểm kê, vui lòng kiểm tra lại !',
     AppErrorCode::CODE_2119 => 'Xóa kế hoạch kiểm kê thất bại !',
     AppErrorCode::CODE_2120 => 'Người dùng chưa được cấu hình đơn vị !',
+    AppErrorCode::CODE_2121 => 'Nhân viên không phải là trưởng đơn vị !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',
