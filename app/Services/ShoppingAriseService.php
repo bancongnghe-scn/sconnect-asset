@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\ShoppingArise;
+use App\Models\ShoppingAriseLog;
 use App\Models\ShoppingAsset;
+use App\Repositories\ShoppingAriseLogRepository;
 use App\Repositories\ShoppingAriseRepository;
+use App\Repositories\ShoppingAssetRepository;
 use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +19,8 @@ class ShoppingAriseService
     public function __construct(
         protected ShoppingAriseRepository $shoppingAriseRepository,
         protected OrganizationRepository $organizationRepository,
+        protected ShoppingAssetRepository $shoppingAssetRepository,
+        protected ShoppingAriseLogRepository $shoppingAriseLogRepository,
     ) {
 
     }
@@ -63,6 +68,36 @@ class ShoppingAriseService
                     'status'              => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL,
                 ];
             }
+
+            $insert = $this->shoppingAssetRepository->insert($dataInsert);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2121,
+                ];
+            }
+
+            $insert = $this->shoppingAriseLogRepository->insertShoppingAriseLog(
+                ShoppingAriseLog::ACTION_CREATE,
+                $shoppingArise->id,
+                $shoppingArise->toArray()
+            );
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success'    => true,
+            ];
         } catch (\Throwable $exception) {
             DB::rollBack();
             report($exception);
