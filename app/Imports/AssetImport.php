@@ -75,26 +75,18 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
             $listUserGeneral = $this->userGeneralRepository->getListing(['user_id' => $userIds])->keyBy('user_id');
         }
 
-        $organizationName = $collection->pluck($this->columnOrganizationNameAfter)->unique()->toArray();
-        $listOrganization = [];
-        if (!empty($organizationName)) {
-            $listOrganization = $this->organizationRepository->getInfoOrganizationByFilters([])
-                ->mapWithKeys(function ($organization) {
-                    return [Str::slug($organization->name) => $organization];
-                });
-        }
+        $listOrganization = $this->organizationRepository->getInfoOrganizationByFilters([])
+            ->mapWithKeys(function ($organization) {
+                return [Str::slug($organization->name) => $organization];
+            });
 
-        $assetTypeName = $collection->pluck('ten_tai_san')->unique()->toArray();
-        $listAssetType = $this->assetTypeRepository->getAssetTypeByName($assetTypeName)
+        $listAssetType = $this->assetTypeRepository->getListAssetType(columns: ['id', 'name'])
             ->mapWithKeys(function ($assetType) {
                 return [Str::slug($assetType->name) => $assetType];
             });
-        $supplierName  = $collection->pluck('thong_tin_ncc_ten_ncc_dia_chi_sdt')->unique()->toArray();
-        $listSupplier  = $this->supplierRepository->getListSupplerByName($supplierName)
-            ->mapWithKeys(function ($supplier) {
-                return [Str::slug($supplier->name) => $supplier];
-            });
-
+        $listSupplier  = $this->supplierRepository->getListing(columns: ['id', 'name'])->mapWithKeys(function ($supplier) {
+            return [Str::slug($supplier->name) => $supplier];
+        });
         $listCodeAssets = $collection->pluck('ma_tai_san')->toArray();
         $listAssets     = $this->assetRepository->getListing(['code' => $listCodeAssets])->keyBy('code');
 
@@ -119,12 +111,11 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                 continue;
             }
 
-            if (empty($listAssetType[Str::slug($row['ten_tai_san'])])) {
+            if (empty($listAssetType[Str::slug($row['ten_tai_san'])] ?? [])) {
                 $this->setError($row['ma_tai_san'], 'LTS chưa tồn tại, vui lòng tạo LTS !');
                 continue;
             }
-
-            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])])) {
+            if (!is_null($row['thong_tin_ncc_ten_ncc_dia_chi_sdt']) && empty($listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])] ?? [])) {
                 $this->setError($row['ma_tai_san'], 'NCC chưa tồn tại, vui lòng tạo NCC !');
                 continue;
             }
@@ -151,7 +142,7 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
                     'date_purchase'           => $this->formatDate($row['ngay_giao_hang_tren_hoa_don']),
                     'warranty_months'         => (int) $row['thoi_gian_bao_hanh_thang'],
                     'depreciation_months'     => (int) $row['don_gia'] > Asset::PRICE_DEPRECIATION ? Asset::MONTH_DEPRECIATION_36 : Asset::MONTH_DEPRECIATION_12,
-                    'supplier_id'             => $listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])]['id'],
+                    'supplier_id'             => $listSupplier[Str::slug($row['thong_tin_ncc_ten_ncc_dia_chi_sdt'])]['id'] ?? null,
                     'user_id'                 => $listUser[$row['nguoi_su_dung_hien_tai']]['id'] ?? null,
                     'status'                  => is_null($row['nguoi_su_dung_hien_tai']) ? Asset::STATUS_PENDING : Asset::STATUS_ACTIVE,
                     'organization_id'         => $listOrganization[Str::slug($row[$this->columnOrganizationNameBefore])]['id'] ?? null,
@@ -241,6 +232,10 @@ class AssetImport implements ToArray, SkipsEmptyRows, WithHeadingRow
     {
         if (is_null($date)) {
             return null;
+        }
+
+        if (is_string($date)) {
+            throw new \Exception('Định dạng ngày của cột (Ngày giao hàng trên hóa đơn || thời gian bảo dưỡng gần nhất || thời gian bảo dưỡng tiếp theo || Ngày bàn giao cho NSD) không hợp lệ');
         }
 
         return is_numeric($date)

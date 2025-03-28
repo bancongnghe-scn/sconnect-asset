@@ -31,7 +31,7 @@ class AssetTypeGroupRepository extends BaseRepository
         return $query->get();
     }
 
-    public function getAssetTypeByName($name)
+    public function getAssetTypeGroupByName($name)
     {
         return $this->_model->where('name', $name)->first();
     }

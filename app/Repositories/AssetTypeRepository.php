@@ -13,7 +13,7 @@ class AssetTypeRepository extends BaseRepository
         return AssetType::class;
     }
 
-    public function getListAssetType(array $filters, $columns = ['*'], $with = [])
+    public function getListAssetType(array $filters = [], $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()
             ->select($columns)
@@ -47,10 +47,5 @@ class AssetTypeRepository extends BaseRepository
     public function deleteMultipleByIds($ids)
     {
         return $this->_model->whereIn('id', Arr::wrap($ids))->delete();
-    }
-
-    public function getAssetTypeByName($name)
-    {
-        return $this->_model->whereIn('name', Arr::wrap($name))->get();
     }
 }

@@ -37,7 +37,7 @@ class SupplierRepository extends BaseRepository
         return $query->get();
     }
 
-    public function getListing($filters, $columns = ['*'], $with = [])
+    public function getListing($filters = [], $columns = ['*'], $with = [])
     {
         $query = $this->_model->newQuery()
             ->select($columns)
@@ -94,10 +94,5 @@ class SupplierRepository extends BaseRepository
     public function deleteMultipleByIds($ids)
     {
         return $this->_model->whereIn('id', $ids)->delete();
-    }
-
-    public function getListSupplerByName($name)
-    {
-        return $this->_model->whereIn('name', Arr::wrap($name))->get();
     }
 }
