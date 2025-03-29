@@ -90,6 +90,11 @@ class ShoppingAriseService
 
     public function getListShoppingArise($filters = [])
     {
+        if (ShoppingArise::GET_OF_ORGANIZATION == $filters['type']) {
+            $filters['created_by'] = Auth::id();
+        } else {
+            $filters['status_diff'] = ShoppingArise::STATUS_NEW;
+        }
         $listShoppingArise = $this->shoppingAriseRepository->getListing($filters);
         if ($listShoppingArise->isEmpty()) {
             return [];

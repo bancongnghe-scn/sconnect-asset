@@ -52,6 +52,7 @@ class ShoppingAriseController extends Controller
             'start_time' => 'nullable|date',
             'end_time'   => 'nullable|date',
             'status'     => 'nullable|integer',
+            'type'       => 'required|integer',
             'page'       => 'nullable|integer',
             'limit'      => 'nullable|integer',
         ]);

@@ -14,6 +14,7 @@ class ShoppingArise extends Model
 
     protected $table                                = 'shopping_arise';
     protected $guarded                              = [];
+
     public const STATUS_NEW                         = 1;
     public const STATUS_PENDING_PROCESSING          = 2;
     public const STATUS_HR_PROCESSING               = 3;
@@ -26,6 +27,7 @@ class ShoppingArise extends Model
     public const STATUS_MANAGER_HR_DISAPPROVAL      = 10;
     public const STATUS_ACCOUNTANT_DISAPPROVAL      = 11;
     public const STATUS_MANAGER_DISAPPROVAL         = 12;
+    public const GET_OF_ORGANIZATION                = 1;
 
     public function assets(): HasMany
     {

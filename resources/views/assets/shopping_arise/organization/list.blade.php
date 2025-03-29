@@ -3,7 +3,7 @@
 ])
 
 @section('content')
-    <div x-data="shopping_arise_list">
+    <div x-data="shopping_arise_organization_list">
         <div>
             <div class="card card-body">
                 <div>
