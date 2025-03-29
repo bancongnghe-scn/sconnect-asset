@@ -1,5 +1,5 @@
 document.addEventListener('alpine:init', () => {
-    Alpine.data('shopping_arise_organization', (id) => ({
+    Alpine.data('shopping_arise_organization_update', (id) => ({
         init() {
             this.findShoppingArise()
             this.getListAssetType()
@@ -35,6 +35,24 @@ document.addEventListener('alpine:init', () => {
                 const response = await window.apiUpdateShoppingArise(this.data, id)
                 if (response.success) {
                     toast.success('Cập nhật đề xuất mua sắm thành công !')
+                    return
+                }
+                toast.error(response.message)
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async sendShoppingArise() {
+            this.loading = true
+            try {
+                const response = await window.apiSendShoppingArise(id)
+                if (response.success) {
+                    toast.success('Gửi duyệt thành công !')
+                    $('#modalConfirmSend').modal('hide')
+                    window.location.href = `/shopping-arise/list`
                     return
                 }
                 toast.error(response.message)

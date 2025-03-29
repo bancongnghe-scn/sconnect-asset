@@ -126,6 +126,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('deleteShoppingArise', 'deleteShoppingArise');
         Route::get('findShoppingArise/{id}', 'findShoppingArise');
         Route::post('updateShoppingArise/{id}', 'updateShoppingArise');
+        Route::get('sendShoppingArise/{id}', 'sendShoppingArise');
     });
 
     Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {

@@ -72,6 +72,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('list', [ShoppingAriseController::class, 'index']);
         Route::prefix('organization')->group(function () {
             Route::view('update/{id}', 'assets.shopping_arise.organization.update');
+            Route::view('detail/{id}', 'assets.shopping_arise.organization.detail');
         });
     });
 

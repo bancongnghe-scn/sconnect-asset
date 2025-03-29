@@ -26,7 +26,7 @@
                                                :disabled="+value.status !== STATUS_SHOPPING_ARISE_NEW">
                                     </td>
                                     <td class="align-middle">
-                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/plan-inventory/detail/${value.id}`"></a>
+                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/shopping-arise/organization/detail/${value.id}`"></a>
                                     </td>
                                     <td class="align-middle">
                                         @include('common.user.user_info', ['user' => 'value.user'])
@@ -39,12 +39,16 @@
                                         ])
                                     </td>
                                     <td class="text-center align-middle">
-{{--                                        <span class="tw-cursor-pointer" @click="window.location.href = `/shopping-arise/detail/${value.id}`">--}}
-{{--                                           <i class="bi bi-eye text-info"></i>--}}
-{{--                                        </span>--}}
-                                        <span class="tw-cursor-pointer mr-1" @click="window.location.href = `/shopping-arise/organization/update/${value.id}`">
-                                            <i class="bi bi-pencil-square color-sc"></i>
-                                        </span>
+                                        <template x-if="+value.status !== STATUS_SHOPPING_ARISE_NEW">
+                                            <span class="tw-cursor-pointer" @click="window.location.href = `/shopping-arise/organization/detail/${value.id}`">
+                                               <i class="bi bi-eye text-info"></i>
+                                            </span>
+                                        </template>
+                                        <template x-if="+value.status === STATUS_SHOPPING_ARISE_NEW">
+                                            <span class="tw-cursor-pointer mr-1" @click="window.location.href = `/shopping-arise/organization/update/${value.id}`">
+                                                <i class="bi bi-pencil-square color-sc"></i>
+                                            </span>
+                                        </template>
                                         <template x-if="+value.status === STATUS_SHOPPING_ARISE_NEW">
                                             <span class="tw-cursor-pointer" @click="confirmRemove('single', value.id)">
                                                 <i class="bi bi-trash3 text-red"></i>

@@ -1,5 +1,5 @@
 @extends('layouts.app_v2',[
-    'title' => 'Đề xuất mua sắm phát sinh'
+    'title' => 'Chi tiết đề xuất mua sắm phát sinh'
 ])
 
 @section('x-data')
@@ -16,29 +16,17 @@
 @endsection
 
 @section('btn-header')
-    <button @click="$('#modalConfirmSend').modal('show')" type="button" class="btn btn-primary">Gửi đề xuất</button>
-    <button @click="updateShoppingArise()" type="button" class="btn btn-sc">Lưu</button>
     <a class="btn btn-warning" href="/shopping-arise/list">Quay lại</a>
 @endsection
 
 @section('content')
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
-            @include('assets.shopping_arise.organization.shopping_arise_info', ['view' => 'update'])
+            @include('assets.shopping_arise.organization.shopping_arise_info', ['view' => 'detail'])
         </div>
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
             @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_ORDER'])
         </div>
-    </div>
-
-    <div
-        x-data="{
-                modalId: 'modalConfirmSend',
-                contentBody: 'Nếu có thay đổi đề xuất, hãy chắc chắn rằng bạn đã lưu đề xuất trước khi gửi duyệt !'
-            }"
-        @ok="sendShoppingArise"
-    >
-        @include('common.modal-confirm')
     </div>
 @endsection
 

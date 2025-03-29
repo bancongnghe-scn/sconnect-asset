@@ -94,10 +94,32 @@ window.apiGetListShoppingArise = async function (filters) {
     }
 }
 
-
 window.apiFindShoppingArise = async function (id) {
     try {
         const response = await axios.get("/api/shopping-arise/findShoppingArise/"+id)
+        const data = response.data;
+        if (!data.success) {
+            return {
+                success: false,
+                message: data.message
+            }
+        }
+
+        return {
+            success: true,
+            data: data
+        }
+    } catch (error) {
+        return {
+            success: false,
+            message: error?.response?.data?.message || error?.message
+        }
+    }
+}
+
+window.apiSendShoppingArise = async function (id) {
+    try {
+        const response = await axios.get("/api/shopping-arise/sendShoppingArise/"+id)
         const data = response.data;
         if (!data.success) {
             return {

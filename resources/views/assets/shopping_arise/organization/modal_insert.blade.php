@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                @include('assets.shopping_arise.organization.shopping_arise_info')
+                @include('assets.shopping_arise.organization.shopping_arise_info', ['view' => 'insert'])
             </div>
             <div class="modal-footer">
                 <button @click="createShoppingArise" type="button" class="btn btn-sc">Thêm mới</button>
