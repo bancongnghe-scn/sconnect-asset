@@ -74,6 +74,10 @@ Route::middleware('checkAuth')->group(function () {
             Route::view('update/{id}', 'assets.shopping_arise.organization.update');
             Route::view('detail/{id}', 'assets.shopping_arise.organization.detail');
         });
+        Route::prefix('company')->group(function () {
+            Route::view('update/{id}', 'assets.shopping_arise.company.update');
+            Route::view('detail/{id}', 'assets.shopping_arise.company.detail');
+        });
     });
 
     Route::prefix('order')->group(function () {

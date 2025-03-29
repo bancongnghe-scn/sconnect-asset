@@ -19,7 +19,7 @@
                             <template x-for="(value, index) in dataTable" :key="index">
                                 <tr>
                                     <td class="align-middle">
-                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/shopping-arise/organization/detail/${value.id}`"></a>
+                                        <a x-text="value.name" class="tw-cursor-pointer tw-no-underline" :href="`/shopping-arise/company/detail/${value.id}`"></a>
                                     </td>
                                     <td class="align-middle">
                                         @include('common.user.user_info', ['user' => 'value.user'])
@@ -32,13 +32,15 @@
                                         ])
                                     </td>
                                     <td class="text-center align-middle">
-                                        <span class="tw-cursor-pointer" @click="window.location.href = `/shopping-arise/company/detail/${value.id}`">
+                                        <span class="tw-cursor-pointer mr-2"
+                                              @click="window.location.href = `/shopping-arise/company/detail/${value.id}`">
                                                <i class="bi bi-eye text-info"></i>
                                         </span>
-                                        <template x-if="+value.status === STATUS_SHOPPING_ARISE_NEW">
-                                            <span class="tw-cursor-pointer mr-1" @click="window.location.href = `/shopping-arise/company/update/${value.id}`">
-                                                <i class="bi bi-pencil-square color-sc"></i>
-                                            </span>
+                                        <template x-if="configButtonsTable.condition(+value.status)">
+                                                <span class="tw-cursor-pointer mr-1"
+                                                      @click="window.location.href = `/shopping-arise/company/update/${value.id}`">
+                                                    <i class="bi bi-pencil-square color-sc"></i>
+                                                </span>
                                         </template>
                                     </td>
                                 </tr>

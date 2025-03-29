@@ -114,7 +114,10 @@ document.addEventListener('alpine:init', () => {
                         [
                             STATUS_SHOPPING_ARISE_PENDING_PROCESSING,
                             STATUS_SHOPPING_ARISE_HR_PROCESSING,
-                            STATUS_SHOPPING_ARISE_HR_SYNTHETIC
+                            STATUS_SHOPPING_ARISE_HR_SYNTHETIC,
+                            STATUS_SHOPPING_ARISE_PENDING_MANAGER_HR,
+                            STATUS_SHOPPING_ARISE_PENDING_ACCOUNTANT,
+                            STATUS_SHOPPING_ARISE_PENDING_MANAGER
                         ].includes(status)
                         && this.permission.includes('shopping_plan_company.week.handle_shopping')
                     )
@@ -133,13 +136,6 @@ document.addEventListener('alpine:init', () => {
                         status === STATUS_SHOPPING_ARISE_PENDING_MANAGER
                         && this.permission.includes('shopping_plan_company.general_approval')
                     )
-                ,
-                buttons: [
-                    {
-                        icon: 'bi bi-pencil-square color-sc',
-                        action: (id) => this.handleShowModal(id, 'update'),
-                    },
-                ],
             }
         },
 

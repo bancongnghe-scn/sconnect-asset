@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\ListShoppingAriseResource;
+use App\Http\Resources\ShoppingAriseInfoResource;
 use App\Models\ShoppingArise;
 use App\Models\ShoppingAriseLog;
 use App\Repositories\ShoppingAriseLogRepository;
@@ -137,7 +138,7 @@ class ShoppingAriseService
             return [];
         }
 
-        return $shoppingArise->toArray();
+        return ShoppingAriseInfoResource::make($shoppingArise)->resolve();
     }
 
     public function updateShoppingArise($data, $id)

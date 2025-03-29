@@ -56,6 +56,10 @@ class OrganizationRepository extends BaseRepository
             $query->whereIn('organizations.status', Arr::wrap($filters['status']));
         }
 
+        if (!empty($filters['first'])) {
+            return $query->first();
+        }
+
         return $query->get();
     }
 
