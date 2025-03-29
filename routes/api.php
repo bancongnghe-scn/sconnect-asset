@@ -120,6 +120,14 @@ Route::middleware('checkAuth')->group(function () {
         });
     });
 
+    Route::prefix('shopping-arise')->controller(App\Http\Controllers\ShoppingAriseController::class)->group(function () {
+        Route::post('createShoppingArise', 'createShoppingArise');
+        Route::get('getListShoppingArise', 'getListShoppingArise');
+        Route::post('deleteShoppingArise', 'deleteShoppingArise');
+        Route::get('findShoppingArise/{id}', 'findShoppingArise');
+        Route::post('updateShoppingArise/{id}', 'updateShoppingArise');
+    });
+
     Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {
         Route::get('get-by-id/{id}', 'getShoppingPlanLogByRecordId');
     });
@@ -148,8 +156,6 @@ Route::middleware('checkAuth')->group(function () {
     Route::post('contract/{id}', [ContractController::class, 'update']);
 
     Route::post('contract-appendix/{id}', [App\Http\Controllers\ContractAppendixController::class, 'update']);
-
-    Route::get('getAllJob', [App\Http\Controllers\JobTitleController::class, 'getAllJob']);
 
     Route::prefix('cache')->controller(App\Http\Controllers\CachingController::class)->group(function () {
         Route::post('flush', 'flushCache');

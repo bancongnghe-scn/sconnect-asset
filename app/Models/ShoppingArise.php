@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ShoppingArise extends Model
@@ -12,6 +13,7 @@ class ShoppingArise extends Model
     use SoftDeletes;
 
     protected $table                                = 'shopping_arise';
+    protected $guarded                              = [];
     public const STATUS_NEW                         = 1;
     public const STATUS_HR_HANDLE                   = 2;
     public const STATUS_HR_SYNTHETIC                = 3;
@@ -23,4 +25,9 @@ class ShoppingArise extends Model
     public const STATUS_MANAGER_HR_DISAPPROVAL      = 9;
     public const STATUS_ACCOUNTANT_DISAPPROVAL      = 10;
     public const STATUS_MANAGER_DISAPPROVAL         = 11;
+
+    public function assets(): HasMany
+    {
+        return $this->hasMany(ShoppingAsset::class, 'shopping_arise_id');
+    }
 }

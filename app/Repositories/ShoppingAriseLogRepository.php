@@ -18,11 +18,11 @@ class ShoppingAriseLogRepository extends BaseRepository
         return $this->_model->insert([
             'action'            => $action,
             'shopping_arise_id' => $shoppingAriseId,
-            'new_value'         => $newValue,
-            'old_value'         => $oldValue,
+            'new_value'         => json_encode($newValue),
+            'old_value'         => json_encode($oldValue),
             'desc'              => $desc ?? __('shopping_arise_log.' . $action, [
-                'new_value' => $newValue,
-                'old_value' => $oldValue,
+                'new_value' => json_encode($newValue),
+                'old_value' => json_encode($oldValue),
             ]),
             'created_by' => Auth::id(),
         ]);

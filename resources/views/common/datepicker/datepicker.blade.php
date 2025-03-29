@@ -29,7 +29,7 @@
                     })
 
                     $watch('selected', (value) => {
-                        {{$model}} = value != null ? formatDate(value) : null
+                        this.{{$model}} = value != null ? formatDate(value) : null
                     })
                 },
 

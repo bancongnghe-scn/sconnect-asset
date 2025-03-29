@@ -126,6 +126,12 @@ class AppErrorCode
     public const CODE_2119 = 2119; //  Xóa kế hoạch kiểm kê thất bại !
     public const CODE_2120 = 2120; //  Người dùng chưa được cấu hình đơn vị !
     public const CODE_2121 = 2121; //  Nhân viên không phải là trưởng đơn vị !
+    public const CODE_2122 = 2122; //  Trạng thái không hợp lệ !
+    public const CODE_2123 = 2123; //  Lưu thông tin tài sản đăng ký thất bại !
+    public const CODE_2124 = 2124; //  Xóa đề xuất mua sắm thất bại !
+    public const CODE_2125 = 2125; //  Đề xuất mua sắm không tồn tại !
+    public const CODE_2126 = 2126; //  Lưu đề xuất mua sắm thất bại !
+    public const CODE_2127 = 2127; //  Xóa tài sản đăng ký mua sắm thất bại !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !

@@ -3,6 +3,7 @@
 use App\Exports\ReportExport;
 use App\Http\Controllers\AssetController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ShoppingAriseController;
 use Illuminate\Support\Facades\Route;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -68,7 +69,10 @@ Route::middleware('checkAuth')->group(function () {
     });
 
     Route::prefix('shopping-arise')->group(function () {
-        Route::view('list', 'assets.shopping_arise.list');
+        Route::get('list', [ShoppingAriseController::class, 'index']);
+        Route::prefix('organization')->group(function () {
+            Route::view('update/{id}', 'assets.shopping_arise.organization.update');
+        });
     });
 
     Route::prefix('order')->group(function () {

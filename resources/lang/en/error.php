@@ -125,6 +125,12 @@ return [
     AppErrorCode::CODE_2119 => 'Xóa kế hoạch kiểm kê thất bại !',
     AppErrorCode::CODE_2120 => 'Người dùng chưa được cấu hình đơn vị !',
     AppErrorCode::CODE_2121 => 'Nhân viên không phải là trưởng đơn vị !',
+    AppErrorCode::CODE_2122 => 'Trạng thái không hợp lệ !',
+    AppErrorCode::CODE_2123 => 'Lưu thông tin tài sản đăng ký thất bại !',
+    AppErrorCode::CODE_2124 => 'Xóa đề xuất mua sắm thất bại !',
+    AppErrorCode::CODE_2125 => 'Đề xuất mua sắm không tồn tại !',
+    AppErrorCode::CODE_2126 => 'Lưu đề xuất mua sắm thất bại !',
+    AppErrorCode::CODE_2127 => 'Xóa tài sản đăng ký mua sắm thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',

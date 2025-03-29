@@ -2,7 +2,7 @@
     <div class="col-10 p-0">
         <div class="d-grid tw-grid-cols-12 tw-gap-x-4 align-items-center">
             <div class="tw-col-span-3 pl-0">
-                <input class="form-control" type="text" x-model="filters.name" placeholder="Tên đề xuất">
+                <input class="form-control" type="text" x-model="filters.name" placeholder="Tên đề xuất" @keydown.enter="getListShoppingArise(filters)">
             </div>
 
             <div class="tw-col-span-3">
