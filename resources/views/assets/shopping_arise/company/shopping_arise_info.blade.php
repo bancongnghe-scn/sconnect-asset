@@ -4,7 +4,7 @@
         <div class="tw-grid tw-grid-cols-3 tw-gap-x-3 mb-3">
             <div>
                 <label>Ngày đề xuất</label>
-                <input class="form-control" x-model="formatDateVN(data.created_at)" disabled>
+                <input class="form-control" x-model="formatDateVN(data?.created_at)" disabled>
             </div>
             <div>
                 <label>Người đề xuất</label>

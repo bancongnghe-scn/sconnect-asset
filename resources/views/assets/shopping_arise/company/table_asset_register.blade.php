@@ -11,36 +11,11 @@
     <tbody>
     <template x-for="(value, index) in data.assets" :key="index">
         <tr>
-            <td class="align-middle">
-                @include('common.select_custom.extent.select_single', [
-                      'placeholder' => 'Chọn loại tài sản',
-                      'selected' => 'value.asset_type_id',
-                      'options' => 'list_asset_type',
-                      'disabled' => true
-                ])
-            </td>
-            <td class="align-middle">
-                <input class="form-control" type="number" min="1"
-                       x-model="value.quantity_registered" disabled>
-            </td>
-            <td class="align-middle">
-                @include('common.select_custom.extent.select_single', [
-                    'placeholder' => 'Chọn chức danh',
-                    'selected' => 'value.job_id',
-                    'options' => 'list_job',
-                    'disabled' => true
-                ])
-            </td>
-            <td class="align-middle">
-                @include('common.datepicker.datepicker', [
-                    'placeholder'=>"Thời gian cần",
-                    'model' => "value.receiving_time",
-                    'disabled' => true
-                ])
-            </td>
-            <td class="align-middle">
-                <input class="form-control" type="text" x-model="value.description" disabled>
-            </td>
+            <td class="align-middle" x-text="list_asset_type.find(item => item.id === value.asset_type_id)?.name"></td>
+            <td class="align-middle" x-text="value.quantity_registered"></td>
+            <td class="align-middle" x-text="list_job.find(item => item.id === value.job_id)?.name"></td>
+            <td class="align-middle" x-text="formatDateVN(value.receiving_time)"></td>
+            <td class="align-middle" x-text="value.description"></td>
         </tr>
     </template>
     </tbody>
