@@ -65,7 +65,7 @@
                 </div>
                 <div>
                     <div x-show="tab === 'new'" class="table-responsive custom-scroll">
-                        @include('assets.shopping_arise.company.table_synthetic_action_new')
+                        @include('assets.shopping_arise.company.table_synthetic_action_new', ['action' => $action])
                     </div>
                     <div x-show="tab === 'rotation'" class="table-responsive custom-scroll">
                         @include('assets.shopping_arise.company.table_synthetic_action_rotation')

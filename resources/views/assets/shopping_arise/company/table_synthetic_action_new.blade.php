@@ -85,12 +85,12 @@
                 },
 
                 isStatusHandle: false,
-                action: 'update',
+                action: @json($action),
 
                 isDisabled(status) {
                     return this.action === 'view' || (
                         this.action !== 'view' &&
-                        +this.data.status !== STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC &&
+                        +this.data.status !== STATUS_SHOPPING_ARISE_HR_SYNTHETIC &&
                         ![
                             SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL,
                             SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,

@@ -4,15 +4,13 @@
 
 @section('content')
     <div x-data="shopping_arise_company_list">
-        <div>
-            <div class="card card-body">
-                <div>
-                    @include('assets.shopping_arise.company.filters')
-                </div>
+        <div class="card card-body">
+            <div>
+                @include('assets.shopping_arise.company.filters')
+            </div>
 
-                <div class="mt-3">
-                    @include('assets.shopping_arise.company.table')
-                </div>
+            <div class="mt-3">
+                @include('assets.shopping_arise.company.table')
             </div>
         </div>
     </div>

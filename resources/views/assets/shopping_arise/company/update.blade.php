@@ -33,7 +33,7 @@
 @section('content')
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
-            @include('assets.shopping_arise.company.shopping_arise_info')
+            @include('assets.shopping_arise.company.shopping_arise_info', ['action' => 'update'])
         </div>
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
             @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_ORDER'])
