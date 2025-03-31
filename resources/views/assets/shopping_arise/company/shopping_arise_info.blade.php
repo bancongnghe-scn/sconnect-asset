@@ -22,11 +22,35 @@
     </div>
 
     <div class="mt-3">
-        <div class="mb-3 active-link tw-w-fit">Chi tiết kế hoạch</div>
-        <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
-             <template x-if="+data.status === STATUS_SHOPPING_ARISE_PENDING_PROCESSING">
-                 @include('assets.shopping_arise.company.table_asset_register')
-             </template>
-        </div>
+        <template x-if="[STATUS_SHOPPING_ARISE_PENDING_PROCESSING, STATUS_SHOPPING_ARISE_HR_PROCESSING].includes(+data.status)">
+            <div class="mb-3 active-link tw-w-fit">Chi tiết kế hoạch</div>
+            <div id="example2_wrapper" class="dataTables_wrapper dt-bootstrap4">
+                @include('assets.shopping_arise.company.table_asset_register')
+            </div>
+        </template>
+        <template x-if="![STATUS_SHOPPING_ARISE_PENDING_PROCESSING, STATUS_SHOPPING_ARISE_HR_PROCESSING].includes(+data.status)">
+            <div x-data="{tab: 'new'}">
+                <div class="d-flex tw-gap-x-4 mb-3">
+                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                       :class="tab === 'new' ? 'active-link' : 'inactive-link'"
+                       @click="tab = 'new'"
+                       x-text="`Danh sách tài sản mua sắm (${assetSynthetic?.new?.length})`"
+                    ></a>
+                    <a href="#" class="tw-no-underline hover:tw-text-green-500"
+                       :class="tab === 'rotation' ? 'active-link' : 'inactive-link'"
+                       @click="tab = 'rotation'"
+                       x-text="`Tài sản luân chuyển (${assetSynthetic?.rotation?.length})`"
+                    ></a>
+                </div>
+                <div>
+                    <div x-show="tab === 'new'" class="table-responsive custom-scroll">
+                        @include('assets.shopping_arise.company.table_synthetic_action_new')
+                    </div>
+                    <div x-show="tab === 'rotation'" class="table-responsive custom-scroll">
+                        @include('assets.shopping_arise.company.table_synthetic_action_rotation')
+                    </div>
+                </div>
+            </div>
+        </template>
     </div>
 </div>

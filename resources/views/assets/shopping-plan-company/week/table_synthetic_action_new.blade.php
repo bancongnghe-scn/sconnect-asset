@@ -37,9 +37,6 @@
     <template x-for="(organization, index) in shoppingAssetWithAction" :key="index">
         <template x-for="(assetRegister, stt) in organization.asset_register.new" :key="index + '_' + stt">
             <tr x-data="{
-                init() {
-
-                },
                 isDisabled: action === 'view' || (
                     action !== 'view' &&
                     +data.status !== STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC &&

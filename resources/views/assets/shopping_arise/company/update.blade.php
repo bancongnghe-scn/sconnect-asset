@@ -16,8 +16,17 @@
 @endsection
 
 @section('btn-header')
-    <button @click="$('#modalConfirmSend').modal('show')" type="button" class="btn btn-primary">Gửi đề xuất</button>
-    <button @click="updateShoppingArise()" type="button" class="btn btn-sc">Lưu</button>
+    <template x-for="(config, key) in configButtons" :key="key">
+        <template x-if="config.condition()">
+            <template x-for="(button, index) in config.buttons" :key="key + index">
+                <template x-if="!button.permission || permission.includes(button.permission)">
+                    <button :class="button.class" @click="button.action()">
+                        <span x-text="button.text"></span>
+                    </button>
+                </template>
+            </template>
+        </template>
+    </template>
     <a class="btn btn-warning" href="/shopping-arise/list">Quay lại</a>
 @endsection
 
@@ -36,7 +45,7 @@
                 modalId: 'modalConfirmSend',
                 contentBody: 'Nếu có thay đổi đề xuất, hãy chắc chắn rằng bạn đã lưu đề xuất trước khi gửi duyệt !'
             }"
-        @ok="sendShoppingArise"
+        @ok="managerSendShoppingArise"
     >
         @include('common.modal-confirm')
     </div>
@@ -49,5 +58,6 @@
         'resources/js/app/api/apiOrganization.js',
         'resources/js/assets/api/apiShoppingArise.js',
         'resources/js/app/api/apiJob.js',
+        'resources/js/assets/api/apiSupplier.js'
     ])
 @endsection
