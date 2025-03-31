@@ -56,6 +56,10 @@ class ShoppingAssetRepository extends BaseRepository
             $query->whereIn('status', Arr::wrap($filters['status']));
         }
 
+        if (!empty($filters['shopping_arise_id'])) {
+            $query->where('shopping_arise_id', $filters['shopping_arise_id']);
+        }
+
         if ($first) {
             return $query->first();
         }

@@ -27,5 +27,6 @@ Route::middleware('checkAuth')->prefix('service')->group(function () {
 
     Route::prefix('job-title')->controller(Modules\Service\App\Http\Controllers\JobTitleController::class)->group(function () {
         Route::get('list', 'getJobs');
+        Route::get('getListJobOfManager', 'getListJobOfManager');
     });
 });

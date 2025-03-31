@@ -14,6 +14,8 @@ class CreateShoppingAriseRequest extends FormRequest
             'assets.*.asset_type_id'       => 'required|integer',
             'assets.*.quantity_registered' => 'required|integer',
             'assets.*.job_id'              => 'required|integer',
+            'assets.*.receiving_time'      => 'nullable|date',
+            'assets.*.description'         => 'nullable|string',
         ];
     }
 

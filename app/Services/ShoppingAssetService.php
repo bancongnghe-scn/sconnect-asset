@@ -10,6 +10,8 @@ use App\Repositories\ShoppingAssetRepository;
 use App\Repositories\ShoppingPlanCompanyRepository;
 use App\Repositories\ShoppingPlanLogRepository;
 use App\Support\Constants\AppErrorCode;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Modules\Service\Repositories\OrganizationRepository;
 
@@ -212,5 +214,32 @@ class ShoppingAssetService
         }
 
         return $data->toArray();
+    }
+
+    public function insertShoppingAssetArise($assets, $organizationId, $shoppingAriseId)
+    {
+        $now        = Carbon::now();
+        $userId     = Auth::id();
+        $dataInsert = [];
+        foreach ($assets as $asset) {
+            $dataInsert[] = [
+                'asset_type_id'       => $asset['asset_type_id'],
+                'job_id'              => $asset['job_id'],
+                'organization_id'     => $organizationId,
+                'quantity_registered' => $asset['quantity_registered'],
+                'quantity_approved'   => $asset['quantity_registered'],
+                'receiving_time'      => $asset['receiving_time'] ?? null,
+                'shopping_arise_id'   => $shoppingAriseId,
+                'year'                => $now->year,
+                'quarter'             => $now->quarter,
+                'month'               => $now->month,
+                'week'                => $now->week,
+                'description'         => $asset['description'] ?? null,
+                'status'              => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL,
+                'created_by'          => $userId,
+            ];
+        }
+
+        return $this->shoppingAssetRepository->insert($dataInsert);
     }
 }

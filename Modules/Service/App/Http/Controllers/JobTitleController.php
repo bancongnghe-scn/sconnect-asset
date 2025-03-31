@@ -31,4 +31,15 @@ class JobTitleController extends Controller
             return response_error();
         }
     }
+
+    public function getListJobOfManager()
+    {
+        try {
+            $result = $this->jobTitleService->getListJobOfManager();
+
+            return response_success($result);
+        } catch (\Throwable $exception) {
+            return response_error();
+        }
+    }
 }

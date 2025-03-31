@@ -37,8 +37,8 @@ class PermissionRepository extends BaseRepository
         }
 
         if (!empty($filters['name'])) {
-            $query->where('name', 'like', $filters['name'] . '%')
-                ->orWhere('description', 'like', $filters['name'] . '%');
+            $query->where('name', 'like', '%' .$filters['name'] . '%')
+                ->orWhere('description', 'like', '%' .$filters['name'] . '%');
         }
 
         if (!empty($filters['limit'])) {

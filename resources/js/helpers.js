@@ -79,7 +79,7 @@ window.formatDate = function formatDate(date) {
 }
 
 window.formatDateVN = function formatDateVN(date) {
-    if (date === null) {
+    if (date === null || date === undefined) {
         return null
     }
 

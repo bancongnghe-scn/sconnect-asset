@@ -724,7 +724,10 @@ document.addEventListener('alpine:init', () => {
                             [
                                 STATUS_SHOPPING_PLAN_COMPANY_REGISTER,
                                 STATUS_SHOPPING_PLAN_COMPANY_HR_HANDLE,
-                                STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC
+                                STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC,
+                                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_HR,
+                                STATUS_SHOPPING_PLAN_COMPANY_PENDING_ACCOUNTANT_APPROVAL,
+                                STATUS_SHOPPING_PLAN_COMPANY_PENDING_MANAGER_APPROVAL
                             ].includes(status)
                             && this.permission.includes('shopping_plan_company.week.handle_shopping')
                         )
