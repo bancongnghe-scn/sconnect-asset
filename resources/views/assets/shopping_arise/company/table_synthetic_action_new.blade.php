@@ -27,9 +27,7 @@
     <tbody>
     <template x-for="(value, index) in assetSynthetic.new" :key="index">
          <tr>
-             <td class="text-center align-middle"
-                 x-show="isStatusHandle"
-             >
+             <td class="text-center align-middle" x-show="isStatusHandle">
                  <input type="checkbox" x-model="selectedRow[value.id]" x-bind:checked="selectedRow[value.id]">
              </td>
              <td class="align-middle" x-text="list_asset_type.find(item => item.id === value.asset_type_id)?.name"></td>
@@ -38,7 +36,7 @@
              </td>
              <td class="align-middle text-center" x-text="value.quantity_registered"></td>
              <td class="align-middle">
-                 <input class="form-control" x-model="value.quantity_approved" type="number">
+                 <input class="form-control" x-model="value.quantity_approved" type="number" :disabled="isDisabled(value.status)">
              </td>
              <td class="align-middle" x-text="list_job.find(item => item.id === value.job_id)?.name"></td>
              <td class="align-middle text-center" x-text="formatDateVN(value.receiving_time)"></td>
@@ -46,13 +44,15 @@
              <td class="align-middle">
                  @include('common.input.input_price', [
                       'model' => 'value.price',
-                      'placeholder' => 'Nhập giá'
+                      'placeholder' => 'Nhập giá',
+                      'disabled' => 'isDisabled(value.status)'
                  ])
              </td>
              <td class="align-middle">
                  @include('common.input.input_price', [
                       'model' => 'value.tax_money',
-                      'placeholder' => 'Nhập giá'
+                      'placeholder' => 'Nhập giá',
+                      'disabled' => 'isDisabled(value.status)'
                  ])
              </td>
              <td class="align-middle" x-text="formatCurrencyVND((+value.price + (+value.tax_money))*value.quantity_approved)"></td>
@@ -61,10 +61,11 @@
                     'selected' => 'value.supplier_id',
                     'options' => 'list_supplier',
                     'placeholder' => 'Chọn NCC',
+                    'disabled' => 'isDisabled(value.status)'
                  ])
              </td>
              <td class="align-middle">
-                 <input class="form-control" type="text" x-model="value.link">
+                 <input class="form-control" type="text" x-model="value.link" :disabled="isDisabled(value.status)">
              </td>
          </tr>
     </template>
@@ -84,6 +85,19 @@
                 },
 
                 isStatusHandle: false,
+                action: 'update',
+
+                isDisabled(status) {
+                    return this.action === 'view' || (
+                        this.action !== 'view' &&
+                        +this.data.status !== STATUS_SHOPPING_PLAN_COMPANY_HR_SYNTHETIC &&
+                        ![
+                            SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL,
+                            SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL,
+                            SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL
+                        ].includes(+status)
+                    )
+                }
             }
         }
     </script>

@@ -153,13 +153,18 @@ document.addEventListener('alpine:init', () => {
         },
 
         syntheticAssets() {
-             this.data.assets.forEach((item) => {
-                 if (+item.action === SHOPPING_ASSET_ACTION_NEW) {
-                     this.assetSynthetic.new.push(item)
-                 } else {
-                     this.assetSynthetic.rotation.push(item)
-                 }
-             })
+            this.assetSynthetic = {
+                new: [],
+                rotation: []
+            }
+
+            this.data.assets.forEach((item) => {
+                if (+item.action === SHOPPING_ASSET_ACTION_NEW) {
+                    this.assetSynthetic.new.push(item)
+                } else {
+                    this.assetSynthetic.rotation.push(item)
+                }
+            })
         },
 
         setConfigButtons() {
@@ -251,6 +256,62 @@ document.addEventListener('alpine:init', () => {
                         },
                     ],
                 },
+            ]
+            this.configButtonsApproval = [
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_ARISE_PENDING_MANAGER_HR,
+                    permission: 'shopping_asset.hr_manager_approval',
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_HR_MANAGER_APPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_HR_MANAGER_DISAPPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                    ]
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_ARISE_PENDING_ACCOUNTANT,
+                    permission: 'shopping_asset.accounting_approval',
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_ACCOUNTANT_APPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_ACCOUNTANT_DISAPPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                    ]
+                },
+                {
+                    condition: () => +this.data.status === STATUS_SHOPPING_ARISE_PENDING_MANAGER,
+                    permission: 'shopping_asset.general_approval',
+                    buttons: [
+                        {
+                            text: 'Duyệt',
+                            class: 'btn bg-sc text-white',
+                            action: () => this.approvalShoppingAsset(SHOPPING_ASSET_STATUS_GENERAL_APPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                        {
+                            text: 'Từ chối',
+                            class: 'btn bg-red',
+                            action: () => this.showModalNoteDisapproval(SHOPPING_ASSET_STATUS_GENERAL_DISAPPROVAL),
+                            disabled: () => window.checkDisableSelectRow
+                        },
+                    ]
+                }
             ]
         }
     }))
