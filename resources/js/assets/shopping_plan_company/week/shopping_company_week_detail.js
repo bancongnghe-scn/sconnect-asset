@@ -122,7 +122,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiGetSupplier({})
                 if (!response.success) {
-                    toast.success(response.message)
+                    toast.error(response.message)
                     return
                 }
 

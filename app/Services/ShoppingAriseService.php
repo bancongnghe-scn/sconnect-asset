@@ -370,4 +370,34 @@ class ShoppingAriseService
             ];
         }
     }
+
+    public function completeShoppingArise($id)
+    {
+        $shoppingArise = $this->shoppingAriseRepository->find($id);
+        if (empty($shoppingArise)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2125,
+            ];
+        }
+
+        if (!in_array($shoppingArise->status, [ShoppingArise::STATUS_PENDING_ACCOUNTANT, ShoppingArise::STATUS_PENDING_MANAGER])) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2122,
+            ];
+        }
+
+        $shoppingArise->status = ShoppingArise::STATUS_COMPLETE;
+        if (!$shoppingArise->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2126,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
 }

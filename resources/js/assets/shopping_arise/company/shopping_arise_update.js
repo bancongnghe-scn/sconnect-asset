@@ -16,6 +16,9 @@ document.addEventListener('alpine:init', () => {
             new: [],
             rotation: []
         },
+        note_disapproval: null,
+        statusDisapproval: null,
+        checkedAll: false,
 
         async findShoppingArise() {
             this.loading = true
@@ -123,7 +126,7 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiGetSupplier({})
                 if (!response.success) {
-                    toast.success(response.message)
+                    toast.error(response.message)
                     return
                 }
 
@@ -152,6 +155,23 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
+        async completeShoppingArise() {
+            this.loading = true
+            try {
+                const response = await window.apiCompleteShoppingArise(id)
+                if (!response.success) {
+                    toast.success(response.message)
+                    return
+                }
+
+                this.data.status = STATUS_SHOPPING_ARISE_COMPLETE
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
         syntheticAssets() {
             this.assetSynthetic = {
                 new: [],
@@ -167,6 +187,44 @@ document.addEventListener('alpine:init', () => {
             })
         },
 
+        async approvalShoppingAsset(status) {
+            this.loading = true
+            try {
+                let ids = Object.keys(this.selectedRow).filter(key => this.selectedRow[key] === true)
+                ids = ids.map(Number);
+                const response = await window.apiApprovalShoppingAsset(ids, status, this.note_disapproval)
+                if (!response.success) {
+                    toast.error(response.message)
+                    return
+                }
+                toast.success('Duyệt mua sắm thành công')
+                this.selectedRow = []
+                this.assetSynthetic.new.map((item) => {
+                    if (ids.includes(item.id)) {
+                        item.status = status
+                    }
+                })
+                $("#modalNoteDisapproval").modal('hide')
+            } catch (e) {
+                toast.error(e)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        selectedAll() {
+            this.checkedAll = !this.checkedAll
+            this.assetSynthetic.new.forEach((item) => {
+                this.selectedRow[item.id] = this.checkedAll
+            })
+        },
+
+        showModalNoteDisapproval(statusDisable) {
+            this.note_disapproval = null
+            this.statusDisapproval = statusDisable
+            $("#modalNoteDisapproval").modal('show')
+        },
+
         setConfigButtons() {
             this.configButtons = [
                 {
@@ -178,7 +236,7 @@ document.addEventListener('alpine:init', () => {
                         {
                             text: 'Hoàn thành',
                             class: 'btn btn-sc',
-                            action: () => 'this.completeShoppingArise()',
+                            action: () => this.completeShoppingArise(),
                             permission: 'shopping_arise.hr_processing'
                         },
                     ],

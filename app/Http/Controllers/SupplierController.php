@@ -25,7 +25,7 @@ class SupplierController extends Controller
             'limit'          => 'integer|max:200',
         ]);
 
-        Auth::user()->canPer('supplier.view');
+        //        Auth::user()->canPer('supplier.view');
 
         try {
             $result = $this->supplierService->getListSupplier($request->all());

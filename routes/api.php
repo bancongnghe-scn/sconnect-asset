@@ -130,6 +130,7 @@ Route::middleware('checkAuth')->group(function () {
         Route::get('hrProcessingShoppingArise/{id}', 'hrProcessingShoppingArise');
         Route::get('syntheticShoppingArise/{id}', 'syntheticShoppingArise');
         Route::get('sendApprovalShoppingArise/{id}', 'sendApprovalShoppingArise');
+        Route::get('completeShoppingArise/{id}', 'completeShoppingArise');
     });
 
     Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {

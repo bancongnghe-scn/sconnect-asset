@@ -49,6 +49,10 @@
     >
         @include('common.modal-confirm')
     </div>
+
+    <div @ok="approvalShoppingAsset(statusDisapproval)">
+        @include('common.modal-note', ['id' => 'modalNoteDisapproval', 'model' => 'note_disapproval'])
+    </div>
 @endsection
 
 @section('js')
@@ -58,6 +62,7 @@
         'resources/js/app/api/apiOrganization.js',
         'resources/js/assets/api/apiShoppingArise.js',
         'resources/js/app/api/apiJob.js',
-        'resources/js/assets/api/apiSupplier.js'
+        'resources/js/assets/api/apiSupplier.js',
+        'resources/js/assets/api/apiShoppingAsset.js'
     ])
 @endsection
