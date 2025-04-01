@@ -127,10 +127,6 @@
                                             <div class="col-12 pt-3 pb-2">
                                                 <div class="form-group">
                                                     <div class="proposal-comment">
-                                                        @include('common.form-create-comment', [
-                                                            'comment_type' => \App\Support\Constants\SOfficeConstant::TYPE_PLAN_LIQUIDATION,
-                                                            'target_id'    => ''
-                                                        ])
                                                     </div>
                                                 </div>
                                             </div>
