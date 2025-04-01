@@ -3,18 +3,22 @@
 namespace App\Services;
 
 use App\Models\Asset;
+use App\Repositories\AssetHistoryRepository;
 use App\Repositories\AssetRepository;
 use App\Repositories\ImportWarehouse\ImportWarehouseAssetRepository;
+use App\Support\Constants\AppErrorCode;
 use Carbon\Carbon;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AssetService
 {
     public function __construct(
         protected AssetRepository $assetRepository,
         protected ImportWarehouseAssetRepository $importWarehouseAssetRepository,
+        protected AssetHistoryRepository $assetHistoryRepository,
     ) {
 
     }
@@ -79,5 +83,60 @@ class AssetService
             ->build();
 
         $qrCode->saveToFile($savePath);
+    }
+
+    /**
+     * @return array
+     * đánh dấu tài sản
+     */
+    public function markAssets($data)
+    {
+        DB::beginTransaction();
+        try {
+            $update = $this->assetRepository->updateByCondition(['id' => $data['asset_ids']], ['status' => $data['status']]);
+            if (!$update) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2128,
+                ];
+            }
+
+            $data = [];
+            foreach ($data['asset_ids'] as $assetId) {
+                $data[] = [
+                    'asset_id'    => $assetId,
+                    'date'        => $data['date'],
+                    'action'      => $data['status'],
+                    'description' => $data['description'],
+                    'price'       => $data['price'] ?? null,
+                    'created_by'  => Auth::id(),
+                ];
+            }
+
+            $insert = $this->assetHistoryRepository->insert($data);
+            if (!$insert) {
+                DB::rollBack();
+
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2076,
+                ];
+            }
+
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
     }
 }

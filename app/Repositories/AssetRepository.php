@@ -301,4 +301,15 @@ class AssetRepository extends BaseRepository
             ->mapWithKeys(fn ($user_id, $id) => [(int) $id => !is_null($user_id)])
             ->partition(fn ($hasUser) => $hasUser);
     }
+
+    public function updateByCondition($filters, $dataUpdate)
+    {
+        $query = $this->_model->newQuery();
+
+        if (!empty($filters['id'])) {
+            $query->whereIn('id', Arr::wrap($filters['id']));
+        }
+
+        return $query->update($dataUpdate);
+    }
 }
