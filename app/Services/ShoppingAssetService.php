@@ -228,20 +228,20 @@ class ShoppingAssetService
         $dataInsert = [];
         foreach ($assets as $asset) {
             $dataInsert[] = [
-                'asset_type_id'       => $asset['asset_type_id'],
-                'job_id'              => $asset['job_id'],
-                'organization_id'     => $organizationId,
-                'quantity_registered' => $asset['quantity_registered'],
-                'quantity_approved'   => $asset['quantity_registered'],
-                'receiving_time'      => $asset['receiving_time'] ?? null,
-                'shopping_arise_id'   => $shoppingAriseId,
-                'year'                => $now->year,
-                'quarter'             => $now->quarter,
-                'month'               => $now->month,
-                'week'                => $now->week,
-                'description'         => $asset['description'] ?? null,
-                'status'              => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL,
-                'created_by'          => $userId,
+                'asset_type_id'              => $asset['asset_type_id'],
+                'job_id'                     => $asset['job_id'],
+                'organization_id'            => $organizationId,
+                'quantity_registered'        => $asset['quantity_registered'],
+                'quantity_approved'          => $asset['quantity_registered'],
+                'receiving_time'             => $asset['receiving_time'] ?? null,
+                'shopping_plan_company_id'   => $shoppingAriseId,
+                'year'                       => $now->year,
+                'quarter'                    => $now->quarter,
+                'month'                      => $now->month,
+                'week'                       => $now->week,
+                'description'                => $asset['description'] ?? null,
+                'status'                     => ShoppingAsset::STATUS_PENDING_HR_MANAGER_APPROVAL,
+                'created_by'                 => $userId,
             ];
         }
 

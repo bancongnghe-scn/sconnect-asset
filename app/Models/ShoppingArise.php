@@ -12,7 +12,7 @@ class ShoppingArise extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $table                                = 'shopping_arise';
+    protected $table                                = 'shopping_plan_company';
     protected $guarded                              = [];
 
     public const STATUS_NEW                         = 1;
@@ -27,6 +27,6 @@ class ShoppingArise extends Model
 
     public function assets(): HasMany
     {
-        return $this->hasMany(ShoppingAsset::class, 'shopping_arise_id');
+        return $this->hasMany(ShoppingAsset::class, 'shopping_plan_company_id');
     }
 }

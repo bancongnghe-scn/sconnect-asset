@@ -14,20 +14,7 @@ class PlanMaintainAsset extends Model
     use SoftDeletes;
     public $timestamps  = false;
     protected $table    = 'plan_maintain_asset';
-    protected $fillable = [
-        'plan_maintain_id',
-        'asset_id',
-        'name',
-        'asset_type_name',
-        'code',
-        'status',
-        'price',
-        'created_at',
-        'created_by',
-        'note',
-        'deleted_at',
-        'deleted_by',
-    ];
+    protected $guarded  = [];
 
     public const STATUS_NEW                     = 1;
     public const STATUS_APPROVAL                = 2;

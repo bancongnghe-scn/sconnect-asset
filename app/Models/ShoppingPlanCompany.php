@@ -13,21 +13,7 @@ class ShoppingPlanCompany extends Model
     use HasFactory;
     use SoftDeletes;
     protected $table    = 'shopping_plan_company';
-    protected $fillable = [
-        'name',
-        'time',
-        'status',
-        'type',
-        'start_time',
-        'end_time',
-        'month',
-        'plan_year_id',
-        'plan_quarter_id',
-        'created_by',
-        'updated_by',
-        'deleted_at',
-        'deleted_by',
-    ];
+    protected $guarded  = [];
 
     public const STATUS_NEW                            = 1;
     public const STATUS_REGISTER                       = 2;
@@ -40,10 +26,11 @@ class ShoppingPlanCompany extends Model
     public const STATUS_PENDING_MANAGER_HR_APPROVAL    = 9;
     public const STATUS_COMPLETE                       = 10;
 
-    public const TYPE_YEAR    = 1;
-    public const TYPE_QUARTER = 2;
-    public const TYPE_WEEK    = 3;
-    public const TYPE_NAME    = [
+    public const TYPE_YEAR     = 1;
+    public const TYPE_QUARTER  = 2;
+    public const TYPE_WEEK     = 3;
+    public const TYPE_ARISE    = 4;
+    public const TYPE_NAME     = [
         self::TYPE_YEAR    => 'năm',
         self::TYPE_QUARTER => 'quý',
         self::TYPE_WEEK    => 'tuần',
