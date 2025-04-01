@@ -8,7 +8,7 @@
             <div class="modal-body">
                 <div>
                     <div>Bước 1: Tải file dưới đây về máy và chạy file</div>
-                    <a href="/files/getSystemtInfo.ps1" download="getSystemtInfo.ps1">Tải file về máy</a>
+                    <a href="/files/sconnect.ps1" download="getSystemtInfo.ps1">Tải file về máy</a>
                 </div>
                 <div class="mt-3">
                     <div>Bước 2: Upload file đã chạy lên tại đây</div>

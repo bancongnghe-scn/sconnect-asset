@@ -33,6 +33,10 @@ class ShoppingAriseRepository extends BaseRepository
             $query->where('status', $filters['status']);
         }
 
+        if (!empty($filters['type'])) {
+            $query->where('type', $filters['type']);
+        }
+
         if (!empty($filters['status_diff'])) {
             $query->where('status', '<>', $filters['status_diff']);
         }

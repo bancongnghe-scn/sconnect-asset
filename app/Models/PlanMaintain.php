@@ -46,8 +46,12 @@ class PlanMaintain extends Model
     public const TYPE_INVENTORY_NOT_AUTO           = 1;
     public const TYPE_INVENTORY_AUTO               = 2;
     public const ASSET_TYPE_INVENTORY_AUTO         = [
-        'DISK_MODEL' => 35,
-        'GPU_MODEL'  => 36,
+        'MAIN_BOARD' => 35,
+        'RAM'        => 36,
+        'SSD'        => 37,
+        'HDD'        => 38,
+        'CHIP'       => 39,
+        'CARD'       => 40,
     ];
 
     public const STATUS_NAME = [

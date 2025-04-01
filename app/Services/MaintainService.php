@@ -79,7 +79,7 @@ class MaintainService
 
     public function getAssetMaintaining($filters)
     {
-        $result            = $this->planMaintainAssetRepository->getListing($filters);
+        $result = $this->planMaintainAssetRepository->getListing($filters);
         if ($result->isEmpty()) {
             return [];
         }

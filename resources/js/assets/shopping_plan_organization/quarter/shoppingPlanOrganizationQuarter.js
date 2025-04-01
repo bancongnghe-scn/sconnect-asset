@@ -77,7 +77,7 @@ document.addEventListener('alpine:init', () => {
 
         async getListPlanCompanyYear(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_YEAR})
+            const response = await window.apiGetShoppingPlanCompany({type: [TYPE_SHOPPING_PLAN_COMPANY_YEAR]})
             if (response.success) {
                 this.listPlanCompanyYear = response.data
             } else {

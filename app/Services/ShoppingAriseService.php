@@ -5,8 +5,7 @@ namespace App\Services;
 use App\Http\Resources\ListShoppingAriseResource;
 use App\Http\Resources\ShoppingAriseInfoResource;
 use App\Models\ShoppingArise;
-use App\Models\ShoppingAriseLog;
-use App\Repositories\ShoppingAriseLogRepository;
+use App\Models\ShoppingPlanCompany;
 use App\Repositories\ShoppingAriseRepository;
 use App\Repositories\ShoppingAssetRepository;
 use App\Support\Constants\AppErrorCode;
@@ -20,7 +19,6 @@ class ShoppingAriseService
         protected ShoppingAriseRepository $shoppingAriseRepository,
         protected OrganizationRepository $organizationRepository,
         protected ShoppingAssetRepository $shoppingAssetRepository,
-        protected ShoppingAriseLogRepository $shoppingAriseLogRepository,
     ) {
 
     }
@@ -46,6 +44,7 @@ class ShoppingAriseService
                 'name'            => $data['name'],
                 'status'          => ShoppingArise::STATUS_NEW,
                 'organization_id' => $organization->id,
+                'type'            => ShoppingPlanCompany::TYPE_ARISE,
                 'created_by'      => $userId,
             ]);
 
@@ -56,20 +55,6 @@ class ShoppingAriseService
                 return [
                     'success'    => false,
                     'error_code' => AppErrorCode::CODE_2123,
-                ];
-            }
-
-            $insert = $this->shoppingAriseLogRepository->insertShoppingAriseLog(
-                ShoppingAriseLog::ACTION_CREATE,
-                $shoppingArise->id,
-                $shoppingArise->toArray()
-            );
-            if (!$insert) {
-                DB::rollBack();
-
-                return [
-                    'success'    => false,
-                    'error_code' => AppErrorCode::CODE_2076,
                 ];
             }
 
@@ -96,6 +81,8 @@ class ShoppingAriseService
         } else {
             $filters['status_diff'] = ShoppingArise::STATUS_NEW;
         }
+
+        $filters['type']   = ShoppingPlanCompany::TYPE_ARISE;
         $listShoppingArise = $this->shoppingAriseRepository->getListing($filters);
         if ($listShoppingArise->isEmpty()) {
             return [];

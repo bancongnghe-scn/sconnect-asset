@@ -161,7 +161,7 @@ document.addEventListener('alpine:init', () => {
             this.loading = true
             try {
                 const response = await window.apiGetShoppingPlanCompany(
-                    {status: STATUS_SHOPPING_PLAN_COMPANY_COMPLETE, type: TYPE_SHOPPING_PLAN_COMPANY_WEEK}
+                    {status: STATUS_SHOPPING_PLAN_COMPANY_COMPLETE, type: [TYPE_SHOPPING_PLAN_COMPANY_WEEK, TYPE_SHOPPING_ARISE]}
                 )
                 if (!response.success) {
                     toast.error(response.message)

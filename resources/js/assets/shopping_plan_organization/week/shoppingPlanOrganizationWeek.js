@@ -76,7 +76,7 @@ document.addEventListener('alpine:init', () => {
 
         async getListPlanCompanyQuarter(){
             this.loading = true
-            const response = await window.apiGetShoppingPlanCompany({type: TYPE_SHOPPING_PLAN_COMPANY_QUARTER, status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
+            const response = await window.apiGetShoppingPlanCompany({type: [TYPE_SHOPPING_PLAN_COMPANY_QUARTER], status: STATUS_SHOPPING_PLAN_COMPANY_APPROVAL})
             if (response.success) {
                 this.listPlanCompanyQuarter = response.data
             } else {
