@@ -22,7 +22,7 @@ class ShoppingArise extends Model
     public const STATUS_PENDING_MANAGER_HR          = 5;
     public const STATUS_PENDING_ACCOUNTANT          = 6;
     public const STATUS_PENDING_MANAGER             = 7;
-    public const STATUS_COMPLETE                    = 8;
+    public const STATUS_COMPLETE                    = 10;
     public const GET_OF_ORGANIZATION                = 1;
 
     public function assets(): HasMany
