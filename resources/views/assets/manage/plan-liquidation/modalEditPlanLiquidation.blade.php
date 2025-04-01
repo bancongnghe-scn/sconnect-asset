@@ -5,8 +5,8 @@
                 <h4 class="modal-title tw-text-green-600" x-show="data.id" x-text="`${data.code} - ${data.name}`"></h4>
                 <h4 class="modal-title tw-text-green-600" x-show="!data.id">Tạo mới kế hoạch</h4>
                 <div class="ml-3 d-flex justify-content-center">
-                    <span x-text="listStatusPlanLiquidation[data.status]" 
-                        class="pl-2 pr-2 border-none rounded" 
+                    <span x-text="listStatusPlanLiquidation[data.status]"
+                        class="pl-2 pr-2 border-none rounded"
                         :class="{
                             'tw-text-slate-500 tw-bg-slate-100':  listStatusPlanLiquidation[data.status] === 'Mới tạo',
                             'tw-text-yellow-500 tw-bg-yellow-100':  listStatusPlanLiquidation[data.status] === 'Chờ duyệt',
@@ -79,15 +79,15 @@
                                                 ></textarea>
                                             </td class="text-center align-middle text-align-center">
                                             <td class="text-center align-middle text-align-center">
-                                                <input 
-                                                    type="text" 
-                                                    class="form-control text-right" 
-                                                    x-bind:value="formatPriceAssetLiqui(dataAsset.price ?? dataAsset.price_liquidation ?? 0)" 
+                                                <input
+                                                    type="text"
+                                                    class="form-control text-right"
+                                                    x-bind:value="formatPriceAssetLiqui(dataAsset.price ?? dataAsset.price_liquidation ?? 0)"
                                                     @input="updatePriceAssetLiqui($event.target.value, index)"
                                                 >
                                             </td>
                                             <td class="text-center align-middle text-align-center" style="min-width: 110px;">
-                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded" 
+                                                <span x-text="data.id ? listStatusAssetOfPlan[dataAsset.status] : 'Chưa duyệt'" class="pl-2 pr-2 border rounded"
                                                 :class="{
                                                     'tw-text-gray-500 tw-bg-gray-100':      data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Chưa duyệt'  : dataAsset.status,
                                                     'tw-text-green-500 tw-bg-green-100':    data.id ? listStatusAssetOfPlan[dataAsset.status] === 'Đã duyệt'    : dataAsset.status,
@@ -105,8 +105,8 @@
                                 </table>
 
                                 <button class="mb-3 tw-w-fit border-0 tw-text-green-600 tw-bg-transparent" x-show="showAction.get ?? true" @click="$dispatch('post')">+ Thêm</button>
-                                                                
-            
+
+
                             </div>
                         </div>
                         <div class="col-5" x-show="data.id">
@@ -127,10 +127,10 @@
                                             <div class="col-12 pt-3 pb-2">
                                                 <div class="form-group">
                                                     <div class="proposal-comment">
-                                                        @include('common.form-create-comment', [
-                                                            'comment_type' => \App\Support\Constants\SOfficeConstant::TYPE_PLAN_LIQUIDATION,
-                                                            'target_id'    => ''
-                                                        ])
+{{--                                                        @include('common.form-create-comment', [--}}
+{{--                                                            'comment_type' => \App\Support\Constants\SOfficeConstant::TYPE_PLAN_LIQUIDATION,--}}
+{{--                                                            'target_id'    => ''--}}
+{{--                                                        ])--}}
                                                     </div>
                                                 </div>
                                             </div>

@@ -25,6 +25,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -41,6 +43,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -52,6 +56,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -67,6 +73,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -78,6 +86,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -89,6 +99,8 @@ class PlanLiquidationController extends Controller
 
             return response_success($result);
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -112,6 +124,8 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -133,6 +147,8 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }
@@ -152,6 +168,8 @@ class PlanLiquidationController extends Controller
 
             return response_success();
         } catch (\Exception $e) {
+            report($e);
+
             return response_error();
         }
     }

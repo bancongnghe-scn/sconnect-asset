@@ -132,6 +132,7 @@ class AppErrorCode
     public const CODE_2125 = 2125; //  Đề xuất mua sắm không tồn tại !
     public const CODE_2126 = 2126; //  Lưu đề xuất mua sắm thất bại !
     public const CODE_2127 = 2127; //  Xóa tài sản đăng ký mua sắm thất bại !
+    public const CODE_2128 = 2128; //  Cập nhật tài sản thất bại !
     // hoangkiss
     public const CODE_5000 = 5000; //   Thay đổi trạng thái tài sản bị mất thất bại !
     public const CODE_5001 = 5001; //   Thay đổi trạng thái tài sản thất bại !

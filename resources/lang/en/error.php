@@ -131,6 +131,7 @@ return [
     AppErrorCode::CODE_2125 => 'Đề xuất mua sắm không tồn tại !',
     AppErrorCode::CODE_2126 => 'Lưu đề xuất mua sắm thất bại !',
     AppErrorCode::CODE_2127 => 'Xóa tài sản đăng ký mua sắm thất bại !',
+    AppErrorCode::CODE_2128 => 'Cập nhật tài sản thất bại !',
 
     AppErrorCode::CODE_5000 => 'Thay đổi trạng thái tài sản bị mất thất bại !',
     AppErrorCode::CODE_5001 => 'Thay đổi trạng thái tài sản thất bại !',
