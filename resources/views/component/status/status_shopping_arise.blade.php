@@ -23,7 +23,7 @@
                     backgroundColor: '#FFFBE6',
                     border: '1px solid #FAAD14'
                 };
-            } else if ([STATUS_SHOPPING_ARISE_COMPLETE, STATUS_SHOPPING_ARISE_MANAGER_APPROVAL].includes(status)) {
+            } else if (status === STATUS_SHOPPING_ARISE_COMPLETE) {
                 return {
                     color: '#52C41A',
                     backgroundColor: '#F6FFED',
