@@ -36,7 +36,7 @@
                 modalId: 'modalConfirmSend',
                 contentBody: 'Nếu có thay đổi đề xuất, hãy chắc chắn rằng bạn đã lưu đề xuất trước khi gửi duyệt !'
             }"
-        @ok="sendShoppingArise"
+        @ok="managerSendShoppingArise"
     >
         @include('common.modal-confirm')
     </div>

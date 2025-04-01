@@ -104,9 +104,14 @@ class ShoppingAssetService
         }
     }
 
-    public function setStatusWithMoneyByShoppingPlanCompanyId($shoppingPlanCompanyId)
+    public function setStatusWithMoneyByShoppingPlanCompanyId($shoppingId, $isShoppingPlan = true)
     {
-        $shoppingAssets = $this->shoppingAssetRepository->getListing(['shopping_plan_company_id' => $shoppingPlanCompanyId]);
+        if ($isShoppingPlan) {
+            $shoppingAssets = $this->shoppingAssetRepository->getListing(['shopping_plan_company_id' => $shoppingId]);
+        } else {
+            $shoppingAssets = $this->shoppingAssetRepository->getListing(['shopping_arise_id' => $shoppingId]);
+        }
+
 
         $shoppingAssetsHrApproval         = [];
         $shoppingAssetsAccountantApproval = [];

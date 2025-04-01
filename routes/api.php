@@ -126,7 +126,11 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('deleteShoppingArise', 'deleteShoppingArise');
         Route::get('findShoppingArise/{id}', 'findShoppingArise');
         Route::post('updateShoppingArise/{id}', 'updateShoppingArise');
-        Route::get('sendShoppingArise/{id}', 'sendShoppingArise');
+        Route::get('managerSendShoppingArise/{id}', 'managerSendShoppingArise');
+        Route::get('hrProcessingShoppingArise/{id}', 'hrProcessingShoppingArise');
+        Route::get('syntheticShoppingArise/{id}', 'syntheticShoppingArise');
+        Route::get('sendApprovalShoppingArise/{id}', 'sendApprovalShoppingArise');
+        Route::get('completeShoppingArise/{id}', 'completeShoppingArise');
     });
 
     Route::prefix('shopping-plan-log')->controller(App\Http\Controllers\ShoppingPlanLogController::class)->group(function () {

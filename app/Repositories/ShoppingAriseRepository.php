@@ -37,6 +37,10 @@ class ShoppingAriseRepository extends BaseRepository
             $query->where('status', '<>', $filters['status_diff']);
         }
 
+        if (!empty($filters['created_by'])) {
+            $query->where('created_by', $filters['created_by']);
+        }
+
         if (!empty($filters['limit'])) {
             return $query->paginate($filters['limit'], page: $filters['page'] ?? 1);
         }

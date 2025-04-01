@@ -108,7 +108,7 @@ class ShoppingAriseController extends Controller
 
     public function updateShoppingArise(Request $request, $id)
     {
-        //        Auth::user()->canPer('shopping_arise.create');
+        //        Auth::user()->canPer('shopping_arise.update');
         try {
             $result = $this->shoppingAriseService->updateShoppingArise($request->all(), $id);
             if ($result['success']) {
@@ -123,10 +123,79 @@ class ShoppingAriseController extends Controller
         }
     }
 
-    public function sendShoppingArise($id)
+    public function managerSendShoppingArise($id)
     {
+        //        Auth::user()->canPer('shopping_arise.manager_send');
         try {
-            $result = $this->shoppingAriseService->sendShoppingArise($id);
+            $result = $this->shoppingAriseService->managerSendShoppingArise($id);
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function hrProcessingShoppingArise($id)
+    {
+        //        Auth::user()->canPer('shopping_arise.hr_processing');
+        try {
+            $result = $this->shoppingAriseService->hrProcessingShoppingArise($id);
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function syntheticShoppingArise($id)
+    {
+        //        Auth::user()->canPer('shopping_arise.hr_synthetic');
+        try {
+            $result = $this->shoppingAriseService->syntheticShoppingArise($id);
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function sendApprovalShoppingArise($id)
+    {
+        Auth::user()->canAnyPer(['shopping_arise.hr_synthetic', 'shopping_arise.hr_send_approval', 'shopping_arise.account_send_approval']);
+        try {
+            $result = $this->shoppingAriseService->sendApprovalShoppingArise($id);
+            if ($result['success']) {
+                return response_success();
+            }
+
+            return response_error($result['error_code']);
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
+    }
+
+    public function completeShoppingArise($id)
+    {
+        Auth::user()->canPer('shopping_arise.hr_processing');
+        try {
+            $result = $this->shoppingAriseService->completeShoppingArise($id);
             if ($result['success']) {
                 return response_success();
             }

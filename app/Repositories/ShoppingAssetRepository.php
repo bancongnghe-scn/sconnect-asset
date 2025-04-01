@@ -67,11 +67,17 @@ class ShoppingAssetRepository extends BaseRepository
         return $query->get();
     }
 
-    public function getAssetManagerApproval($shoppingPlanCompanyId)
+    public function getAssetManagerApproval($shoppingPlanCompanyId, $isShoppingPlansCompany = true)
     {
-        return $this->_model->where('shopping_plan_company_id', $shoppingPlanCompanyId)
-            ->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
-            ->first();
+        if ($isShoppingPlansCompany) {
+            return $this->_model->where('shopping_plan_company_id', $shoppingPlanCompanyId)
+                ->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                ->first();
+        } else {
+            return $this->_model->where('shopping_arise_id', $shoppingPlanCompanyId)
+                ->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                ->first();
+        }
     }
 
     // Lấy tài sản chưa được duyệt
@@ -84,10 +90,26 @@ class ShoppingAssetRepository extends BaseRepository
                         ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL,
                         ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL,
                         ShoppingAsset::STATUS_HR_MANAGER_DISAPPROVAL,
-                    ]);
-            })->orWhere(function ($query) {
-                $query->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
-                    ->whereNotIn('status', [ShoppingAsset::STATUS_GENERAL_APPROVAL, ShoppingAsset::STATUS_GENERAL_DISAPPROVAL]);
+                    ])->orWhere(function ($query) {
+                        $query->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                            ->whereNotIn('status', [ShoppingAsset::STATUS_GENERAL_APPROVAL, ShoppingAsset::STATUS_GENERAL_DISAPPROVAL]);
+                    });
+            })->first();
+    }
+
+    public function getAssetUnApprovalShoppingArise($shoppingAriseId)
+    {
+        return $this->_model->where('shopping_arise_id', $shoppingAriseId)
+            ->where(function ($query) {
+                $query->where('price', '<=', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                    ->whereNotIn('status', [
+                        ShoppingAsset::STATUS_ACCOUNTANT_APPROVAL,
+                        ShoppingAsset::STATUS_ACCOUNTANT_DISAPPROVAL,
+                        ShoppingAsset::STATUS_HR_MANAGER_DISAPPROVAL,
+                    ])->orWhere(function ($query) {
+                        $query->where('price', '>', ShoppingAsset::PRICE_ACCOUNTANT_APPROVAL)
+                            ->whereNotIn('status', [ShoppingAsset::STATUS_GENERAL_APPROVAL, ShoppingAsset::STATUS_GENERAL_DISAPPROVAL]);
+                    });
             })->first();
     }
 }

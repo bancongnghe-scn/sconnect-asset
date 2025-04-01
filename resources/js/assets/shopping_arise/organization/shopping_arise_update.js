@@ -45,10 +45,10 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        async sendShoppingArise() {
+        async managerSendShoppingArise() {
             this.loading = true
             try {
-                const response = await window.apiSendShoppingArise(id)
+                const response = await window.apiManagerSendShoppingArise(id)
                 if (response.success) {
                     toast.success('Gửi duyệt thành công !')
                     $('#modalConfirmSend').modal('hide')

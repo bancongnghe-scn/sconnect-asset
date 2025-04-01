@@ -6,6 +6,7 @@
         <th class="text-center" style="width: 20rem;">Vị trí chức danh<span class="tw-ml-1 tw-text-red-600 mb-0">*</span></th>
         <th class="text-center" style="width: 11rem;">Thời gian cần</th>
         <th class="text-center">Mô tả</th>
+        <th class="text-center" style="width: 10rem" x-show="+data.status === STATUS_SHOPPING_ARISE_HR_PROCESSING">Xử lý</th>
     </tr>
     </thead>
     <tbody>
@@ -16,6 +17,12 @@
             <td class="align-middle" x-text="list_job.find(item => item.id === value.job_id)?.name"></td>
             <td class="align-middle" x-text="formatDateVN(value.receiving_time)"></td>
             <td class="align-middle" x-text="value.description"></td>
+            <td class="align-middle" x-show="+data.status === STATUS_SHOPPING_ARISE_HR_PROCESSING">
+                <select class="form-select" x-model="value.action">
+                    <option value="1">Mua mới</option>
+                    <option value="2">Luân chuyển</option>
+                </select>
+            </td>
         </tr>
     </template>
     </tbody>

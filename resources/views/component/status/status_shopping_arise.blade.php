@@ -29,15 +29,6 @@
                     backgroundColor: '#F6FFED',
                     border: '1px solid #52C41A'
                 };
-            }  else if ([
-                 STATUS_SHOPPING_ARISE_MANAGER_HR_DISAPPROVAL,STATUS_SHOPPING_ARISE_ACCOUNTANT_DISAPPROVAL,
-                 STATUS_SHOPPING_ARISE_MANAGER_DISAPPROVAL
-            ].includes(status)) {
-                return {
-                    color: '#F5222D',
-                    backgroundColor: '#FFF1F0',
-                    border: '1px solid #F5222D'
-                };
             } else if ([STATUS_SHOPPING_ARISE_HR_PROCESSING, STATUS_SHOPPING_ARISE_HR_SYNTHETIC].includes(status)) {
                 return {
                     color: '#FAAD14',

@@ -229,7 +229,7 @@ class ShoppingAriseService
         }
     }
 
-    public function sendShoppingArise($id)
+    public function managerSendShoppingArise($id)
     {
         $shoppingArise = $this->shoppingAriseRepository->find($id);
         if (empty($shoppingArise)) {
@@ -247,6 +247,165 @@ class ShoppingAriseService
         }
 
         $shoppingArise->status = ShoppingArise::STATUS_PENDING_PROCESSING;
+        if (!$shoppingArise->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2126,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function hrProcessingShoppingArise($id)
+    {
+        $shoppingArise = $this->shoppingAriseRepository->find($id);
+        if (empty($shoppingArise)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2125,
+            ];
+        }
+
+        if (ShoppingArise::STATUS_PENDING_PROCESSING != $shoppingArise->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2122,
+            ];
+        }
+
+        $shoppingArise->status = ShoppingArise::STATUS_HR_PROCESSING;
+        if (!$shoppingArise->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2126,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function syntheticShoppingArise($id)
+    {
+        $shoppingArise = $this->shoppingAriseRepository->find($id);
+        if (empty($shoppingArise)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2125,
+            ];
+        }
+
+        if (ShoppingArise::STATUS_HR_PROCESSING != $shoppingArise->status) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2122,
+            ];
+        }
+
+        $shoppingArise->status = ShoppingArise::STATUS_HR_SYNTHETIC;
+        if (!$shoppingArise->save()) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2126,
+            ];
+        }
+
+        return [
+            'success' => true,
+        ];
+    }
+
+    public function sendApprovalShoppingArise($id)
+    {
+        $shoppingArise = $this->shoppingAriseRepository->find($id);
+        if (empty($shoppingArise)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2125,
+            ];
+        }
+
+        DB::beginTransaction();
+        try {
+            switch ($shoppingArise->status) {
+                case ShoppingArise::STATUS_HR_SYNTHETIC:
+                    $shoppingArise->status = ShoppingArise::STATUS_PENDING_MANAGER_HR;
+                    resolve(ShoppingAssetService::class)->setStatusWithMoneyByShoppingPlanCompanyId($id, false);
+                    break;
+                case ShoppingArise::STATUS_PENDING_MANAGER_HR:
+                    $shoppingArise->status = ShoppingArise::STATUS_PENDING_ACCOUNTANT;
+                    break;
+                case ShoppingArise::STATUS_PENDING_ACCOUNTANT:
+                    // Kiểm tra xem có tài sản nào cần giám đốc duyệt không
+                    $shoppingAsset = $this->shoppingAssetRepository->getAssetManagerApproval($id, false);
+                    if (empty($shoppingAsset)) {
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2108,
+                        ];
+                    }
+                    $shoppingArise->status = ShoppingArise::STATUS_PENDING_MANAGER;
+                    break;
+                default:
+                    return [
+                        'success'    => false,
+                        'error_code' => AppErrorCode::CODE_2122,
+                    ];
+            }
+
+            if (!$shoppingArise->save()) {
+                return [
+                    'success'    => false,
+                    'error_code' => AppErrorCode::CODE_2126,
+                ];
+            }
+            DB::commit();
+
+            return [
+                'success' => true,
+            ];
+        } catch (\Throwable $exception) {
+            report($exception);
+            DB::rollBack();
+
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_1000,
+            ];
+        }
+    }
+
+    public function completeShoppingArise($id)
+    {
+        $shoppingArise = $this->shoppingAriseRepository->find($id);
+        if (empty($shoppingArise)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2125,
+            ];
+        }
+
+        if (!in_array($shoppingArise->status, [ShoppingArise::STATUS_PENDING_ACCOUNTANT, ShoppingArise::STATUS_PENDING_MANAGER])) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2122,
+            ];
+        }
+
+        //Kiểm tra xem còn tài sản nào chưa được duyệt không
+        $shoppingAsset = $this->shoppingAssetRepository->getAssetUnApprovalShoppingArise($id);
+        if (!empty($shoppingAsset)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2109,
+            ];
+        }
+
+        $shoppingArise->status = ShoppingArise::STATUS_COMPLETE;
         if (!$shoppingArise->save()) {
             return [
                 'success'    => false,

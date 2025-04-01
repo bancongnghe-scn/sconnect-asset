@@ -16,15 +16,24 @@
 @endsection
 
 @section('btn-header')
-    <button @click="$('#modalConfirmSend').modal('show')" type="button" class="btn btn-primary">Gửi đề xuất</button>
-    <button @click="updateShoppingArise()" type="button" class="btn btn-sc">Lưu</button>
+    <template x-for="(config, key) in configButtons" :key="key">
+        <template x-if="config.condition()">
+            <template x-for="(button, index) in config.buttons" :key="key + index">
+                <template x-if="!button.permission || permission.includes(button.permission)">
+                    <button :class="button.class" @click="button.action()">
+                        <span x-text="button.text"></span>
+                    </button>
+                </template>
+            </template>
+        </template>
+    </template>
     <a class="btn btn-warning" href="/shopping-arise/list">Quay lại</a>
 @endsection
 
 @section('content')
     <div class="d-flex tw-gap-x-3 h-100">
         <div class="flex-grow-1 overflow-auto custom-scroll">
-            @include('assets.shopping_arise.company.shopping_arise_info')
+            @include('assets.shopping_arise.company.shopping_arise_info', ['action' => 'update'])
         </div>
         <div class="col-3 border border-right-0 border-top-0 border-bottom-0" x-data="{ id: {{$id}} }">
             @include('component.history_comment.history_comment', ['type' => 'TYPE_COMMENT_ORDER'])
@@ -36,9 +45,13 @@
                 modalId: 'modalConfirmSend',
                 contentBody: 'Nếu có thay đổi đề xuất, hãy chắc chắn rằng bạn đã lưu đề xuất trước khi gửi duyệt !'
             }"
-        @ok="sendShoppingArise"
+        @ok="managerSendShoppingArise"
     >
         @include('common.modal-confirm')
+    </div>
+
+    <div @ok="approvalShoppingAsset(statusDisapproval)">
+        @include('common.modal-note', ['id' => 'modalNoteDisapproval', 'model' => 'note_disapproval'])
     </div>
 @endsection
 
@@ -49,5 +62,7 @@
         'resources/js/app/api/apiOrganization.js',
         'resources/js/assets/api/apiShoppingArise.js',
         'resources/js/app/api/apiJob.js',
+        'resources/js/assets/api/apiSupplier.js',
+        'resources/js/assets/api/apiShoppingAsset.js'
     ])
 @endsection
