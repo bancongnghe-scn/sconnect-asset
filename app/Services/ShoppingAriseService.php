@@ -340,7 +340,15 @@ class ShoppingAriseService
                     $shoppingArise->status = ShoppingArise::STATUS_PENDING_ACCOUNTANT;
                     break;
                 case ShoppingArise::STATUS_PENDING_ACCOUNTANT:
-                case $shoppingArise->status = ShoppingArise::STATUS_PENDING_MANAGER:
+                    // Kiểm tra xem có tài sản nào cần giám đốc duyệt không
+                    $shoppingAsset = $this->shoppingAssetRepository->getAssetManagerApproval($id, false);
+                    if (empty($shoppingAsset)) {
+                        return [
+                            'success'    => false,
+                            'error_code' => AppErrorCode::CODE_2108,
+                        ];
+                    }
+                    $shoppingArise->status = ShoppingArise::STATUS_PENDING_MANAGER;
                     break;
                 default:
                     return [
@@ -385,6 +393,15 @@ class ShoppingAriseService
             return [
                 'success'    => false,
                 'error_code' => AppErrorCode::CODE_2122,
+            ];
+        }
+
+        //Kiểm tra xem còn tài sản nào chưa được duyệt không
+        $shoppingAsset = $this->shoppingAssetRepository->getAssetUnApprovalShoppingArise($id);
+        if (!empty($shoppingAsset)) {
+            return [
+                'success'    => false,
+                'error_code' => AppErrorCode::CODE_2109,
             ];
         }
 

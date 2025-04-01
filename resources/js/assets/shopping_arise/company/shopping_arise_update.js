@@ -28,7 +28,9 @@ document.addEventListener('alpine:init', () => {
                     this.data = response.data.data
                     if (![STATUS_SHOPPING_ARISE_PENDING_PROCESSING, STATUS_SHOPPING_ARISE_HR_PROCESSING].includes(this.data.status)) {
                         this.syntheticAssets()
-                        this.getListSupplier()
+                        if (this.list_supplier.length === 0) {
+                            this.getListSupplier()
+                        }
                     }
                     return
                 }
@@ -147,7 +149,7 @@ document.addEventListener('alpine:init', () => {
                     return
                 }
 
-                this.findShoppingArise()
+                window.location.href = `/shopping-arise/list`
             } catch (e) {
                 toast.error(e)
             } finally {
@@ -160,11 +162,12 @@ document.addEventListener('alpine:init', () => {
             try {
                 const response = await window.apiCompleteShoppingArise(id)
                 if (!response.success) {
-                    toast.success(response.message)
+                    toast.error(response.message)
                     return
                 }
 
                 this.data.status = STATUS_SHOPPING_ARISE_COMPLETE
+                window.location.href = `/shopping-arise/list`
             } catch (e) {
                 toast.error(e)
             } finally {
