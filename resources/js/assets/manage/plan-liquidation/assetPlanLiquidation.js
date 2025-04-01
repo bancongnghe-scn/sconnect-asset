@@ -711,16 +711,6 @@ document.addEventListener('alpine:init', () => {
             }
         },
 
-        formatDate(date) {
-            if (!date) {
-                date = new Date();
-            }
-
-            // Tạo đối tượng Date và định dạng theo d/m/Y ngắn gọn
-            const parsedDate = new Date(date);
-            return isNaN(parsedDate) ? '' : parsedDate.toLocaleDateString('en-GB');
-        },
-
         filterPlanLiquidation() {
             $('#tableAssetPlanLiquidation #' + this.statusPlanLiquidation + ', #tableAssetPlanLiquidation #' + this.filterSigningDatePlan).on('change', function () {
                 let name_code = $('#tableAssetPlanLiquidation #namecodePlanLiquidation').val();
