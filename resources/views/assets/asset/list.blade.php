@@ -224,13 +224,22 @@
                         </span>
                         </div>
                     </div>
+                    <div class="mb-3" x-show="checkedAll">
+                        <button class="btn btn-sm btn-outline-danger mr-2" @click="selectedRow = [], checkedAll = false"
+                            x-text="`Bỏ chọn (${Object.keys(selectedRow).filter(key => selectedRow[key] === true).length})`"
+                        ></button>
+                        <button class="btn btn-sm btn-outline-success mr-2">Đề nghị thanh lý</button>
+                        <button class="btn btn-sm btn-outline-success mr-2">Hủy tài sản</button>
+                        <button class="btn btn-sm btn-outline-success mr-2">Đánh dấu hỏng</button>
+                        <button class="btn btn-sm btn-outline-success mr-2">Đánh dấu mất</button>
+                    </div>
                     <div class="custom-scroll" style="overflow-x: auto; width: 100%; margin-bottom: 10px;">
                         <table class="table table-bordered">
                             <thead>
                             <tr>
                                 {{-- <th class="text-center">STT</th> --}}
                                 <th class="text-center">
-                                    <input type="checkbox" @click="selectedAll">
+                                    <input type="checkbox" @click="selectedAll" x-bind:checked="checkedAll">
                                 </th>
                                 <th class="text-center">Thao tác</th>
                                 <th class="text-center">Mã tài sản</th>
@@ -769,13 +778,6 @@
                                                                    x-model="assetObj.warranty_months" disabled>
                                                         </div>
                                                     </div>
-                                                    {{-- <div class="col-12">
-                                                        <div class="mb-3">
-                                                            <span>Điều kiện bảo hành</span>
-                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" disabled></textarea>
-
-                                                        </div>
-                                                    </div> --}}
                                                 </div>
                                             </div>
                                             <div class="change-tab" x-show="tabDetail == 'change-tab'">
@@ -1195,6 +1197,9 @@
                 </div>
             </div>
         </div>
+
+        {{--modal--}}
+        @include('assets.asset.modal_mark_assets')
     </div>
     <style>
         table tr td {
@@ -1287,6 +1292,7 @@
                 priceLiquidation: '',
                 reasonLiquidation: '',
                 recoveryCompany: false,
+                checkedAll: false,
                 urlSearch: '',
                 listHistoryAsset: [],
                 assetEdit: {},
@@ -1904,7 +1910,12 @@
                         console.error('Lỗi khi gọi API:', error);
                         toast.error('Cập nhật thông tin tài sản không thành công!')
                     }
-                }
+                },
+
+                selectedAll() {
+                    this.checkedAll = !this.checkedAll
+                    this.listAsset.forEach((item) => this.selectedRow[item.id] = this.checkedAll)
+                },
             }));
         });
     </script>
