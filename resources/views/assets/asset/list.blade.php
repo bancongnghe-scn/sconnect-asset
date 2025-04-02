@@ -3,369 +3,491 @@
 ])
 
 @section('content')
-<style>
-    .dropdown-content {
-      position: absolute;
-      background-color: #f9f9f9;
-      min-width: 160px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-      z-index: 1000;
-      left: 105px;
-      border-radius: 10px;
-    }
-
-    .dropdown-content a {
-      color: black;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-    }
-
-    .dropdown-content a:hover {background-color: #f1f1f1}
-
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .dropbtn:hover .dropdown-content {
-      display: block;
-    }
-
-    tr td {
-        vertical-align: middle !important;
-    }
-
-    .title-menu {
-        margin-left: 10px;
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        justify-content: center;
-    }
-
-    .item-menu{
-        padding: 7px 10px !important;
-    }
-
-    ul.sidebar-tab li {
-        list-style-type: none;
-        padding: 7px 0px 7px 5px;
-        font-weight: 600;
-        cursor: pointer;
-        border-left: 3px solid #fff;
-    }
-
-    ul.sidebar-tab li.active-sidebar {
-        list-style-type: none;
-        border-left: 3px solid #379237;
-        padding: 7px 0px 7px 5px;
-        background: #E4F0E6;
-        color: #379237;
-        font-weight: 600;
-    }
-
-    .table-repair tr th {
-        background-color: #E7E9ED !important;
-    }
-
-    .btn-outline-success{
-        --bs-btn-color: #379237;
-        --bs-btn-border-color: #379237;
-        --bs-btn-hover-color: #fff;
-        --bs-btn-hover-bg: #379237;
-        --bs-btn-hover-border-color: #379237;
-        --bs-btn-focus-shadow-rgb: 25, 135, 84;
-        --bs-btn-active-color: #fff;
-        --bs-btn-active-bg: #379237;
-        --bs-btn-active-border-color: #379237;
-        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-        --bs-btn-disabled-color: #379237;
-        --bs-btn-disabled-bg: transparent;
-        --bs-btn-disabled-border-color: #379237;
-        --bs-gradient: none;
-    }
-
-    .btn-success{
-        --bs-btn-color: #fff;
-        --bs-btn-bg: #379237;
-        --bs-btn-border-color: #379237;
-        --bs-btn-hover-color: #fff;
-        --bs-btn-hover-bg: #379237;
-        --bs-btn-hover-border-color: #379237;
-        --bs-btn-focus-shadow-rgb: 60, 153, 110;
-        --bs-btn-active-color: #fff;
-        --bs-btn-active-bg: #379237;
-        --bs-btn-active-border-color: #379237;
-        --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-        --bs-btn-disabled-color: #fff;
-        --bs-btn-disabled-bg: #379237;
-        --bs-btn-disabled-border-color: #379237;
-    }
-    @media (min-width: 1200px) {
-        .modal-xl {
-            --bs-modal-width: 1250px !important;
+    <style>
+        .dropdown-content {
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            left: 105px;
+            border-radius: 10px;
         }
-    }
 
-    .modal-2{
-        --bs-modal-zindex: 1100 !important;
-    }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
 
-    .date-disabled{
-        background: #e9ecef url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 8v9a1 1 0 001 1h12a1 1 0 001-1V8H3z"/></svg>') no-repeat right 10px center;
-        background-size: 16px;
-        pointer-events: none;
-    }
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropbtn:hover .dropdown-content {
+            display: block;
+        }
+
+        tr td {
+            vertical-align: middle !important;
+        }
+
+        .title-menu {
+            margin-left: 10px;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+            justify-content: center;
+        }
+
+        .item-menu {
+            padding: 7px 10px !important;
+        }
+
+        ul.sidebar-tab li {
+            list-style-type: none;
+            padding: 7px 0px 7px 5px;
+            font-weight: 600;
+            cursor: pointer;
+            border-left: 3px solid #fff;
+        }
+
+        ul.sidebar-tab li.active-sidebar {
+            list-style-type: none;
+            border-left: 3px solid #379237;
+            padding: 7px 0px 7px 5px;
+            background: #E4F0E6;
+            color: #379237;
+            font-weight: 600;
+        }
+
+        .table-repair tr th {
+            background-color: #E7E9ED !important;
+        }
+
+        .btn-outline-success {
+            --bs-btn-color: #379237;
+            --bs-btn-border-color: #379237;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #379237;
+            --bs-btn-hover-border-color: #379237;
+            --bs-btn-focus-shadow-rgb: 25, 135, 84;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #379237;
+            --bs-btn-active-border-color: #379237;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #379237;
+            --bs-btn-disabled-bg: transparent;
+            --bs-btn-disabled-border-color: #379237;
+            --bs-gradient: none;
+        }
+
+        .btn-success {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #379237;
+            --bs-btn-border-color: #379237;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #379237;
+            --bs-btn-hover-border-color: #379237;
+            --bs-btn-focus-shadow-rgb: 60, 153, 110;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #379237;
+            --bs-btn-active-border-color: #379237;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #379237;
+            --bs-btn-disabled-border-color: #379237;
+        }
+
+        @media (min-width: 1200px) {
+            .modal-xl {
+                --bs-modal-width: 1250px !important;
+            }
+        }
+
+        .modal-2 {
+            --bs-modal-zindex: 1100 !important;
+        }
+
+        .date-disabled {
+            background: #e9ecef url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="gray"><path d="M6 2a1 1 0 011 1v1h6V3a1 1 0 112 0v1h1a2 2 0 012 2v11a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2h1V3a1 1 0 011-1zM3 8v9a1 1 0 001 1h12a1 1 0 001-1V8H3z"/></svg>') no-repeat right 10px center;
+            background-size: 16px;
+            pointer-events: none;
+        }
     </style>
-<div x-data="listAsset">
-    <div class="row" >
-        <div class="col-xxl-12 col-sm-12">
-            <div style="background: #fff; padding: 30px; border-radius: 15px;" >
-                <div class="d-flex align-items-end mt-3 mb-3">
-                    <div class="col-2 d-flex position-relative">
-                        <input type="text" class="form-control" id="nameCodeAsset" placeholder="Tên/mã tài sản">
-                        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
-                    </div>
+    <div x-data="listAsset">
+        <div class="row">
+            <div class="col-xxl-12 col-sm-12">
+                <div style="background: #fff; padding: 30px; border-radius: 15px;">
+                    <div class="d-flex align-items-end mt-3 mb-3">
+                        <div class="col-2 d-flex position-relative">
+                            <input type="text" class="form-control" id="nameCodeAsset" placeholder="Tên/mã tài sản">
+                            <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3"
+                               style="height: -webkit-fill-available;"></i>
+                        </div>
 
-                    <div class="col-2">
-                        <select class="form-control select2" data-placeholder="Loại" id="typeSearch">
-                            <option value="0" selected>Loại</option>
-                            <template x-for="(value, key) in assetType">
-                                <option :value="value.id" x-text="value.name"></option>
-                            </template>
-                        </select>
-                    </div>
+                        <div class="col-2">
+                            <select class="form-control select2" data-placeholder="Loại" id="typeSearch">
+                                <option value="0" selected>Loại</option>
+                                <template x-for="(value, key) in assetType">
+                                    <option :value="value.id" x-text="value.name"></option>
+                                </template>
+                            </select>
+                        </div>
 
-                    <div class="col-1">
-                        <select class="form-control select2" data-placeholder="Vị trí" id="locationSearch">
-                            <option value="0" selected>Vị trí</option>
-                            <template x-for="(value, key) in listLocation">
-                                <option :value="key" x-text="value"></option>
-                            </template>
-                        </select>
-                    </div>
+                        <div class="col-1">
+                            <select class="form-control select2" data-placeholder="Vị trí" id="locationSearch">
+                                <option value="0" selected>Vị trí</option>
+                                <template x-for="(value, key) in listLocation">
+                                    <option :value="key" x-text="value"></option>
+                                </template>
+                            </select>
+                        </div>
 
-                    <div class="col-1">
-                        <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusSearch" x-model="status">
-                            <option value="0" selected>Trạng thái</option>
-                            <template x-for="(value, key) in listStatus">
-                                <option :value="value.num" x-text="value.text"></option>
-                            </template>
-                        </select>
-                    </div>
+                        <div class="col-1">
+                            <select class="form-control select2" data-placeholder="Chọn trạng thái" id="statusSearch"
+                                    x-model="status">
+                                <option value="0" selected>Trạng thái</option>
+                                <template x-for="(value, key) in listStatus">
+                                    <option :value="value.num" x-text="value.text"></option>
+                                </template>
+                            </select>
+                        </div>
 
-                    <div class="col-2">
-                        <select class="form-control select2" data-placeholder="Chọn đơn vị" id="unitSearch">
-                            <option value="0" selected>Đơn vị</option>
-                            <template x-for="(unit, key) in listOrg">
-                                <option :value="unit.id" x-text="unit.dept_type.cfg_key + ' ' + unit.name"></option>
-                            </template>
-                        </select>
-                    </div>
+                        <div class="col-2">
+                            <select class="form-control select2" data-placeholder="Chọn đơn vị" id="unitSearch">
+                                <option value="0" selected>Đơn vị</option>
+                                <template x-for="(unit, key) in listOrg">
+                                    <option :value="unit.id" x-text="unit.dept_type.cfg_key + ' ' + unit.name"></option>
+                                </template>
+                            </select>
+                        </div>
 
-                    <div class="col-2 d-flex position-relative">
-                        <input type="text" class="form-control" id="nameUser" placeholder="Người sử dụng/người đại diện" style="padding: 0.375rem 1.75rem 0.375rem 0.75rem;">
-                        <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3" style="height: -webkit-fill-available;"></i>
-                    </div>
+                        <div class="col-2 d-flex position-relative">
+                            <input type="text" class="form-control" id="nameUser"
+                                   placeholder="Người sử dụng/người đại diện"
+                                   style="padding: 0.375rem 1.75rem 0.375rem 0.75rem;">
+                            <i class="fa-solid fa-magnifying-glass position-absolute mr-3 tw-right-0 tw-w-3"
+                               style="height: -webkit-fill-available;"></i>
+                        </div>
 
-                    <div class="col-1">
-                        <span @click="pageParam = 1; fetchData($('#statusSearch').val(), $('#locationSearch').val(), $('#typeSearch').val(), $('#nameCodeAsset').val(), $('#nameUser').val());" style="cursor: pointer;">
-                            <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div class="col-1">
+                        <span
+                            @click="pageParam = 1; fetchData($('#statusSearch').val(), $('#locationSearch').val(), $('#typeSearch').val(), $('#nameCodeAsset').val(), $('#nameUser').val());"
+                            style="cursor: pointer;">
+                            <svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_d_13695_32688)">
                                 <rect x="2" width="34" height="34" rx="6" fill="#379237"/>
-                                <path d="M27 24L23.2223 20.2156L27 24ZM25.3158 15.1579C25.3158 17.0563 24.5617 18.8769 23.2193 20.2193C21.8769 21.5617 20.0563 22.3158 18.1579 22.3158C16.2595 22.3158 14.4389 21.5617 13.0965 20.2193C11.7541 18.8769 11 17.0563 11 15.1579C11 13.2595 11.7541 11.4389 13.0965 10.0965C14.4389 8.75413 16.2595 8 18.1579 8C20.0563 8 21.8769 8.75413 23.2193 10.0965C24.5617 11.4389 25.3158 13.2595 25.3158 15.1579V15.1579Z" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                                <path
+                                    d="M27 24L23.2223 20.2156L27 24ZM25.3158 15.1579C25.3158 17.0563 24.5617 18.8769 23.2193 20.2193C21.8769 21.5617 20.0563 22.3158 18.1579 22.3158C16.2595 22.3158 14.4389 21.5617 13.0965 20.2193C11.7541 18.8769 11 17.0563 11 15.1579C11 13.2595 11.7541 11.4389 13.0965 10.0965C14.4389 8.75413 16.2595 8 18.1579 8C20.0563 8 21.8769 8.75413 23.2193 10.0965C24.5617 11.4389 25.3158 13.2595 25.3158 15.1579V15.1579Z"
+                                    stroke="white" stroke-width="2" stroke-linecap="round"/>
                                 </g>
                                 <defs>
-                                <filter id="filter0_d_13695_32688" x="0" y="0" width="38" height="38" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <filter id="filter0_d_13695_32688" x="0" y="0" width="38" height="38"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-                                <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                               values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                                 <feOffset dy="2"/>
                                 <feGaussianBlur stdDeviation="1"/>
                                 <feComposite in2="hardAlpha" operator="out"/>
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_13695_32688"/>
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_13695_32688" result="shape"/>
+                                <feBlend mode="normal" in2="BackgroundImageFix"
+                                         result="effect1_dropShadow_13695_32688"/>
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_13695_32688"
+                                         result="shape"/>
                                 </filter>
                                 </defs>
                             </svg>
                         </span>
-                    </div>
-                    <div class="col-1 d-flex position-relative" style="justify-content: flex-end;">
+                        </div>
+                        <div class="col-1 d-flex position-relative" style="justify-content: flex-end;">
                         <span style="cursor: pointer;" @click="location.href='/asset/export-list-asset'">
-                            <svg width="131" height="36" viewBox="0 0 131 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="131" height="36" viewBox="0 0 131 36" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" y="0.5" width="130" height="35" rx="7.5" stroke="#379237"/>
-                                <path d="M30 23L35 18M35 18L30 13M35 18L23 18" stroke="#379237" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M23 9L20 9C18.8954 9 18 9.89543 18 11L18 25C18 26.1046 18.8954 27 20 27L23 27" stroke="#379237" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M48.1875 12.8182L50.6236 16.8004H50.7031L53.1392 12.8182H54.919L51.7472 17.9091L54.9389 23H53.1491L50.7031 19.0724H50.6236L48.1776 23H46.3878L49.6342 17.9091L46.4077 12.8182H48.1875ZM61.1609 19.8331V15.3636H62.6523V23H61.1907V21.6776H61.1112C60.9355 22.0852 60.6538 22.425 60.266 22.6967C59.8815 22.9652 59.4026 23.0994 58.8292 23.0994C58.3387 23.0994 57.9045 22.9917 57.5266 22.7763C57.1521 22.5575 56.8571 22.2344 56.6417 21.8068C56.4296 21.3793 56.3235 20.8506 56.3235 20.2209V15.3636H57.81V20.0419C57.81 20.5623 57.9542 20.9766 58.2425 21.2848C58.5309 21.593 58.9054 21.7472 59.3661 21.7472C59.6445 21.7472 59.9213 21.6776 60.1964 21.5384C60.4748 21.3991 60.7051 21.1887 60.8874 20.907C61.073 20.6252 61.1642 20.2673 61.1609 19.8331ZM66.872 23.169C66.3881 23.169 65.9506 23.0795 65.5595 22.9006C65.1684 22.7183 64.8585 22.4548 64.6298 22.1101C64.4044 21.7654 64.2917 21.3428 64.2917 20.8423C64.2917 20.4115 64.3746 20.0568 64.5403 19.7784C64.706 19.5 64.9297 19.2796 65.2115 19.1172C65.4932 18.9548 65.8081 18.8321 66.1561 18.7493C66.5041 18.6664 66.8587 18.6035 67.22 18.5604C67.6774 18.5073 68.0486 18.4643 68.3336 18.4311C68.6187 18.3946 68.8258 18.3366 68.9551 18.2571C69.0843 18.1776 69.149 18.0483 69.149 17.8693V17.8345C69.149 17.4003 69.0263 17.0639 68.7811 16.8253C68.5391 16.5866 68.1779 16.4673 67.6973 16.4673C67.1968 16.4673 66.8024 16.5784 66.514 16.8004C66.229 17.0192 66.0318 17.2628 65.9224 17.5312L64.5254 17.2131C64.6911 16.7491 64.9331 16.3745 65.2512 16.0895C65.5727 15.8011 65.9423 15.5923 66.3599 15.4631C66.7775 15.3305 67.2167 15.2642 67.6774 15.2642C67.9823 15.2642 68.3055 15.3007 68.6468 15.3736C68.9915 15.4432 69.313 15.5724 69.6113 15.7614C69.9129 15.9503 70.1599 16.2204 70.3521 16.5717C70.5443 16.9197 70.6404 17.3722 70.6404 17.929V23H69.1887V21.956H69.1291C69.033 22.1482 68.8888 22.3371 68.6966 22.5227C68.5043 22.7083 68.2574 22.8625 67.9558 22.9851C67.6542 23.1077 67.2929 23.169 66.872 23.169ZM67.1951 21.9759C67.6061 21.9759 67.9574 21.8946 68.2491 21.7322C68.5441 21.5698 68.7678 21.3577 68.9203 21.0959C69.0761 20.8307 69.1539 20.5473 69.1539 20.2457V19.2614C69.1009 19.3144 68.9982 19.3641 68.8457 19.4105C68.6966 19.4536 68.5259 19.4917 68.3336 19.5249C68.1414 19.5547 67.9541 19.5829 67.7718 19.6094C67.5895 19.6326 67.4371 19.6525 67.3145 19.669C67.0261 19.7055 66.7626 19.7668 66.524 19.853C66.2886 19.9392 66.0997 20.0634 65.9572 20.2259C65.818 20.3849 65.7484 20.5971 65.7484 20.8622C65.7484 21.2301 65.8843 21.5085 66.1561 21.6974C66.4279 21.883 66.7742 21.9759 67.1951 21.9759ZM65.1816 14.4489L67.2001 12.7237H68.3088L70.3322 14.4489H68.8706L67.7669 13.4645L66.6532 14.4489H65.1816ZM69.8002 13.3452L70.8393 11.5305H72.3556L70.889 13.3452H69.8002ZM76.185 15.3636V16.5568H72.0138V15.3636H76.185ZM73.1325 13.5341H74.619V20.7578C74.619 21.0462 74.6621 21.2633 74.7482 21.4091C74.8344 21.5516 74.9454 21.6494 75.0813 21.7024C75.2205 21.7521 75.3713 21.777 75.5337 21.777C75.6531 21.777 75.7575 21.7687 75.8469 21.7521C75.9364 21.7356 76.006 21.7223 76.0558 21.7124L76.3242 22.9403C76.238 22.9735 76.1154 23.0066 75.9563 23.0398C75.7972 23.0762 75.5984 23.0961 75.3597 23.0994C74.9686 23.1061 74.604 23.0365 74.266 22.8906C73.9279 22.7448 73.6545 22.5194 73.4457 22.2145C73.2369 21.9096 73.1325 21.5268 73.1325 21.0661V13.5341ZM81.6538 23V12.8182H88.0373V14.1406H83.19V17.2429H87.7042V18.5604H83.19V21.6776H88.0969V23H81.6538ZM91.1433 15.3636L92.8287 18.3366L94.5289 15.3636H96.1547L93.7733 19.1818L96.1745 23H94.5488L92.8287 20.1463L91.1135 23H89.4828L91.8592 19.1818L89.5126 15.3636H91.1433ZM100.597 23.1541C99.8577 23.1541 99.2213 22.9867 98.6877 22.652C98.1574 22.3139 97.7497 21.8482 97.4647 21.255C97.1796 20.6617 97.0371 19.9822 97.0371 19.2166C97.0371 18.4411 97.1829 17.7566 97.4746 17.1634C97.7663 16.5668 98.1773 16.1011 98.7076 15.7663C99.2379 15.4316 99.8626 15.2642 100.582 15.2642C101.162 15.2642 101.679 15.3719 102.133 15.5874C102.587 15.7995 102.953 16.0978 103.232 16.4822C103.513 16.8667 103.681 17.3158 103.734 17.8295H102.287C102.208 17.4716 102.025 17.1634 101.74 16.9048C101.459 16.6463 101.081 16.517 100.607 16.517C100.192 16.517 99.8295 16.6264 99.5179 16.8452C99.2097 17.0606 98.9694 17.3688 98.7971 17.7699C98.6247 18.1676 98.5385 18.6383 98.5385 19.1818C98.5385 19.7386 98.623 20.2192 98.7921 20.6236C98.9611 21.0279 99.1998 21.3411 99.508 21.5632C99.8195 21.7853 100.186 21.8963 100.607 21.8963C100.888 21.8963 101.144 21.8449 101.372 21.7422C101.604 21.6361 101.798 21.4853 101.954 21.2898C102.113 21.0942 102.224 20.8589 102.287 20.5838H103.734C103.681 21.0777 103.52 21.5185 103.252 21.9062C102.983 22.294 102.624 22.599 102.173 22.821C101.725 23.0431 101.2 23.1541 100.597 23.1541ZM108.615 23.1541C107.862 23.1541 107.214 22.9934 106.671 22.6719C106.131 22.3471 105.713 21.8913 105.418 21.3047C105.126 20.7147 104.98 20.0237 104.98 19.2315C104.98 18.4493 105.126 17.7599 105.418 17.1634C105.713 16.5668 106.124 16.1011 106.651 15.7663C107.181 15.4316 107.801 15.2642 108.51 15.2642C108.941 15.2642 109.359 15.3355 109.763 15.478C110.167 15.6205 110.53 15.8442 110.852 16.1491C111.173 16.4541 111.427 16.8501 111.613 17.3374C111.798 17.8213 111.891 18.4096 111.891 19.1023V19.6293H105.821V18.5156H110.434C110.434 18.1245 110.355 17.7782 110.196 17.4766C110.037 17.1716 109.813 16.9313 109.525 16.7557C109.239 16.58 108.905 16.4922 108.52 16.4922C108.103 16.4922 107.738 16.5949 107.426 16.8004C107.118 17.0026 106.88 17.2678 106.711 17.5959C106.545 17.9207 106.462 18.2737 106.462 18.6548V19.5249C106.462 20.0353 106.551 20.4695 106.73 20.8274C106.913 21.1854 107.166 21.4588 107.491 21.6477C107.816 21.8333 108.195 21.9261 108.63 21.9261C108.911 21.9261 109.168 21.8864 109.4 21.8068C109.632 21.724 109.833 21.6013 110.002 21.4389C110.171 21.2765 110.3 21.076 110.39 20.8374L111.797 21.0909C111.684 21.5052 111.482 21.8681 111.19 22.1797C110.902 22.4879 110.539 22.7282 110.101 22.9006C109.667 23.0696 109.172 23.1541 108.615 23.1541ZM115.027 12.8182V23H113.54V12.8182H115.027Z" fill="#379237"/>
+                                <path d="M30 23L35 18M35 18L30 13M35 18L23 18" stroke="#379237" stroke-width="1.5"
+                                      stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M23 9L20 9C18.8954 9 18 9.89543 18 11L18 25C18 26.1046 18.8954 27 20 27L23 27"
+                                      stroke="#379237" stroke-width="1.5" stroke-linecap="round"
+                                      stroke-linejoin="round"/>
+                                <path
+                                    d="M48.1875 12.8182L50.6236 16.8004H50.7031L53.1392 12.8182H54.919L51.7472 17.9091L54.9389 23H53.1491L50.7031 19.0724H50.6236L48.1776 23H46.3878L49.6342 17.9091L46.4077 12.8182H48.1875ZM61.1609 19.8331V15.3636H62.6523V23H61.1907V21.6776H61.1112C60.9355 22.0852 60.6538 22.425 60.266 22.6967C59.8815 22.9652 59.4026 23.0994 58.8292 23.0994C58.3387 23.0994 57.9045 22.9917 57.5266 22.7763C57.1521 22.5575 56.8571 22.2344 56.6417 21.8068C56.4296 21.3793 56.3235 20.8506 56.3235 20.2209V15.3636H57.81V20.0419C57.81 20.5623 57.9542 20.9766 58.2425 21.2848C58.5309 21.593 58.9054 21.7472 59.3661 21.7472C59.6445 21.7472 59.9213 21.6776 60.1964 21.5384C60.4748 21.3991 60.7051 21.1887 60.8874 20.907C61.073 20.6252 61.1642 20.2673 61.1609 19.8331ZM66.872 23.169C66.3881 23.169 65.9506 23.0795 65.5595 22.9006C65.1684 22.7183 64.8585 22.4548 64.6298 22.1101C64.4044 21.7654 64.2917 21.3428 64.2917 20.8423C64.2917 20.4115 64.3746 20.0568 64.5403 19.7784C64.706 19.5 64.9297 19.2796 65.2115 19.1172C65.4932 18.9548 65.8081 18.8321 66.1561 18.7493C66.5041 18.6664 66.8587 18.6035 67.22 18.5604C67.6774 18.5073 68.0486 18.4643 68.3336 18.4311C68.6187 18.3946 68.8258 18.3366 68.9551 18.2571C69.0843 18.1776 69.149 18.0483 69.149 17.8693V17.8345C69.149 17.4003 69.0263 17.0639 68.7811 16.8253C68.5391 16.5866 68.1779 16.4673 67.6973 16.4673C67.1968 16.4673 66.8024 16.5784 66.514 16.8004C66.229 17.0192 66.0318 17.2628 65.9224 17.5312L64.5254 17.2131C64.6911 16.7491 64.9331 16.3745 65.2512 16.0895C65.5727 15.8011 65.9423 15.5923 66.3599 15.4631C66.7775 15.3305 67.2167 15.2642 67.6774 15.2642C67.9823 15.2642 68.3055 15.3007 68.6468 15.3736C68.9915 15.4432 69.313 15.5724 69.6113 15.7614C69.9129 15.9503 70.1599 16.2204 70.3521 16.5717C70.5443 16.9197 70.6404 17.3722 70.6404 17.929V23H69.1887V21.956H69.1291C69.033 22.1482 68.8888 22.3371 68.6966 22.5227C68.5043 22.7083 68.2574 22.8625 67.9558 22.9851C67.6542 23.1077 67.2929 23.169 66.872 23.169ZM67.1951 21.9759C67.6061 21.9759 67.9574 21.8946 68.2491 21.7322C68.5441 21.5698 68.7678 21.3577 68.9203 21.0959C69.0761 20.8307 69.1539 20.5473 69.1539 20.2457V19.2614C69.1009 19.3144 68.9982 19.3641 68.8457 19.4105C68.6966 19.4536 68.5259 19.4917 68.3336 19.5249C68.1414 19.5547 67.9541 19.5829 67.7718 19.6094C67.5895 19.6326 67.4371 19.6525 67.3145 19.669C67.0261 19.7055 66.7626 19.7668 66.524 19.853C66.2886 19.9392 66.0997 20.0634 65.9572 20.2259C65.818 20.3849 65.7484 20.5971 65.7484 20.8622C65.7484 21.2301 65.8843 21.5085 66.1561 21.6974C66.4279 21.883 66.7742 21.9759 67.1951 21.9759ZM65.1816 14.4489L67.2001 12.7237H68.3088L70.3322 14.4489H68.8706L67.7669 13.4645L66.6532 14.4489H65.1816ZM69.8002 13.3452L70.8393 11.5305H72.3556L70.889 13.3452H69.8002ZM76.185 15.3636V16.5568H72.0138V15.3636H76.185ZM73.1325 13.5341H74.619V20.7578C74.619 21.0462 74.6621 21.2633 74.7482 21.4091C74.8344 21.5516 74.9454 21.6494 75.0813 21.7024C75.2205 21.7521 75.3713 21.777 75.5337 21.777C75.6531 21.777 75.7575 21.7687 75.8469 21.7521C75.9364 21.7356 76.006 21.7223 76.0558 21.7124L76.3242 22.9403C76.238 22.9735 76.1154 23.0066 75.9563 23.0398C75.7972 23.0762 75.5984 23.0961 75.3597 23.0994C74.9686 23.1061 74.604 23.0365 74.266 22.8906C73.9279 22.7448 73.6545 22.5194 73.4457 22.2145C73.2369 21.9096 73.1325 21.5268 73.1325 21.0661V13.5341ZM81.6538 23V12.8182H88.0373V14.1406H83.19V17.2429H87.7042V18.5604H83.19V21.6776H88.0969V23H81.6538ZM91.1433 15.3636L92.8287 18.3366L94.5289 15.3636H96.1547L93.7733 19.1818L96.1745 23H94.5488L92.8287 20.1463L91.1135 23H89.4828L91.8592 19.1818L89.5126 15.3636H91.1433ZM100.597 23.1541C99.8577 23.1541 99.2213 22.9867 98.6877 22.652C98.1574 22.3139 97.7497 21.8482 97.4647 21.255C97.1796 20.6617 97.0371 19.9822 97.0371 19.2166C97.0371 18.4411 97.1829 17.7566 97.4746 17.1634C97.7663 16.5668 98.1773 16.1011 98.7076 15.7663C99.2379 15.4316 99.8626 15.2642 100.582 15.2642C101.162 15.2642 101.679 15.3719 102.133 15.5874C102.587 15.7995 102.953 16.0978 103.232 16.4822C103.513 16.8667 103.681 17.3158 103.734 17.8295H102.287C102.208 17.4716 102.025 17.1634 101.74 16.9048C101.459 16.6463 101.081 16.517 100.607 16.517C100.192 16.517 99.8295 16.6264 99.5179 16.8452C99.2097 17.0606 98.9694 17.3688 98.7971 17.7699C98.6247 18.1676 98.5385 18.6383 98.5385 19.1818C98.5385 19.7386 98.623 20.2192 98.7921 20.6236C98.9611 21.0279 99.1998 21.3411 99.508 21.5632C99.8195 21.7853 100.186 21.8963 100.607 21.8963C100.888 21.8963 101.144 21.8449 101.372 21.7422C101.604 21.6361 101.798 21.4853 101.954 21.2898C102.113 21.0942 102.224 20.8589 102.287 20.5838H103.734C103.681 21.0777 103.52 21.5185 103.252 21.9062C102.983 22.294 102.624 22.599 102.173 22.821C101.725 23.0431 101.2 23.1541 100.597 23.1541ZM108.615 23.1541C107.862 23.1541 107.214 22.9934 106.671 22.6719C106.131 22.3471 105.713 21.8913 105.418 21.3047C105.126 20.7147 104.98 20.0237 104.98 19.2315C104.98 18.4493 105.126 17.7599 105.418 17.1634C105.713 16.5668 106.124 16.1011 106.651 15.7663C107.181 15.4316 107.801 15.2642 108.51 15.2642C108.941 15.2642 109.359 15.3355 109.763 15.478C110.167 15.6205 110.53 15.8442 110.852 16.1491C111.173 16.4541 111.427 16.8501 111.613 17.3374C111.798 17.8213 111.891 18.4096 111.891 19.1023V19.6293H105.821V18.5156H110.434C110.434 18.1245 110.355 17.7782 110.196 17.4766C110.037 17.1716 109.813 16.9313 109.525 16.7557C109.239 16.58 108.905 16.4922 108.52 16.4922C108.103 16.4922 107.738 16.5949 107.426 16.8004C107.118 17.0026 106.88 17.2678 106.711 17.5959C106.545 17.9207 106.462 18.2737 106.462 18.6548V19.5249C106.462 20.0353 106.551 20.4695 106.73 20.8274C106.913 21.1854 107.166 21.4588 107.491 21.6477C107.816 21.8333 108.195 21.9261 108.63 21.9261C108.911 21.9261 109.168 21.8864 109.4 21.8068C109.632 21.724 109.833 21.6013 110.002 21.4389C110.171 21.2765 110.3 21.076 110.39 20.8374L111.797 21.0909C111.684 21.5052 111.482 21.8681 111.19 22.1797C110.902 22.4879 110.539 22.7282 110.101 22.9006C109.667 23.0696 109.172 23.1541 108.615 23.1541ZM115.027 12.8182V23H113.54V12.8182H115.027Z"
+                                    fill="#379237"/>
                             </svg>
                         </span>
+                        </div>
                     </div>
-                </div>
-                <div class="custom-scroll" style="overflow-x: auto; width: 100%; margin-bottom: 10px;">
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            {{-- <th class="text-center">STT</th> --}}
-                            <th class="text-center">Thao tác</th>
-                            <th class="text-center">Mã tài sản</th>
-                            <th class="text-left">Tên tài sản</th>
-                            <th class="text-left">Loại tài sản</th>
-                            <th class="text-left">Đơn vị</th>
-                            <th class="text-center">Nhân viên đang sử dụng</th>
-                            <th class="text-center">Người đại diện</th>
-                            <th class="text-center">Giá trị</th>
-                            <th class="text-center">Tình trạng</th>
-                            <th class="text-center">Vị trí</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <template x-for="(asset, index) in listAsset" :key="asset.id">
+                    <div class="custom-scroll" style="overflow-x: auto; width: 100%; margin-bottom: 10px;">
+                        <table class="table table-bordered">
+                            <thead>
                             <tr>
-                                {{-- <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td> --}}
-                                <style>
-                                    .dropdown-content-print {
-                                        display: none;
-                                        position: absolute;
-                                        background-color: #f1f1f1;
-                                        min-width: 160px;
-                                        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-                                        z-index: 1;
-                                    }
-                                    #printBtn:hover .dropdown-content-print {display: block;}
-                                </style>
-                                <td class="text-center" style="vertical-align: middle;" x-data="{ open: false, openPrintDropdown: false }">
-                                    <svg @click="open = !open" style="cursor: pointer" width="18" height="5" viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z" stroke="#3E3E3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <div
-                                        x-show="open"
-                                        class="dropdown-content"
-                                        @click.outside="open = false"
-                                        style="position: absolute; background: #fff; padding: 10px; z-index: 1000; display: block;">
-                                        {{-- <template x-if="matchStatus(asset.status, 'maintain')">
-                                            <a class="d-flex item-menu" href="#">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M21.767 4.69652C21.7536 4.67241 21.7348 4.6483 21.7134 4.62955C21.5795 4.49563 21.3625 4.49563 21.2286 4.62955L16.6134 9.24473L14.7946 7.42598L19.4125 2.80813C19.4339 2.7867 19.45 2.76527 19.4661 2.74116C19.5625 2.57777 19.5089 2.36884 19.3455 2.27241C16.7152 0.718839 13.2705 1.07509 11.0071 3.3358C9.21249 5.13045 8.61785 7.67509 9.22588 9.96259L1.37767 17.8108C1.29731 17.8912 1.30267 18.0224 1.38571 18.1054L5.93124 22.651C6.01428 22.734 6.14821 22.7394 6.22588 22.659L14.0714 14.8135C16.3616 15.4242 18.9062 14.8322 20.7036 13.0349C22.9643 10.7715 23.3205 7.32688 21.767 4.69652ZM19.3402 11.6688C17.7839 13.2251 15.4482 13.5251 13.592 12.5688L13.3562 12.8046L13.3536 12.8019L6.01428 20.1438L3.89285 18.0224L10.0562 11.859C10.0562 11.859 10.0562 11.8617 10.0589 11.8617L11.4732 10.4474C10.517 8.59116 10.817 6.25545 12.3732 4.6992C12.8751 4.19682 13.4796 3.80872 14.1453 3.5614C14.8109 3.31408 15.5222 3.21337 16.2304 3.26616L12.6705 6.8233C12.5097 6.98427 12.4194 7.20248 12.4194 7.43C12.4194 7.65752 12.5097 7.87573 12.6705 8.0367L16.0053 11.3715C16.1663 11.5323 16.3845 11.6226 16.612 11.6226C16.8396 11.6226 17.0578 11.5323 17.2187 11.3715L20.7759 7.81438C20.875 9.20188 20.3902 10.6215 19.3402 11.6688Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Bảo dưỡng</span>
-                                            </a>
-                                        </template> --}}
+                                {{-- <th class="text-center">STT</th> --}}
+                                <th class="text-center">
+                                    <input type="checkbox" @click="selectedAll">
+                                </th>
+                                <th class="text-center">Thao tác</th>
+                                <th class="text-center">Mã tài sản</th>
+                                <th class="text-left">Tên tài sản</th>
+                                <th class="text-left">Loại tài sản</th>
+                                <th class="text-left">Đơn vị</th>
+                                <th class="text-center">Nhân viên đang sử dụng</th>
+                                <th class="text-center">Người đại diện</th>
+                                <th class="text-center">Giá trị</th>
+                                <th class="text-center">Tình trạng</th>
+                                <th class="text-center">Vị trí</th>
 
-                                        <template x-if="matchStatus(asset.status, 'detail')">
-                                            <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset);">
-                                                <svg width="24" height="18" viewBox="0 0 24 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M23.5214 8.3106C20.9821 2.9615 17.1437 0.269531 11.9982 0.269531C6.84999 0.269531 3.01427 2.9615 0.474987 8.31328C0.373136 8.52895 0.320313 8.7645 0.320312 9.00301C0.320312 9.24152 0.373136 9.47708 0.474987 9.69275C3.01427 15.0419 6.85267 17.7338 11.9982 17.7338C17.1464 17.7338 20.9821 15.0419 23.5214 9.69007C23.7277 9.25614 23.7277 8.75257 23.5214 8.3106V8.3106ZM11.9982 15.8052C7.67767 15.8052 4.51427 13.6142 2.28302 9.00167C4.51427 4.38917 7.67767 2.1981 11.9982 2.1981C16.3187 2.1981 19.4821 4.38917 21.7134 9.00167C19.4848 13.6142 16.3214 15.8052 11.9982 15.8052ZM11.8911 4.28739C9.28749 4.28739 7.17677 6.3981 7.17677 9.00167C7.17677 11.6052 9.28749 13.716 11.8911 13.716C14.4946 13.716 16.6053 11.6052 16.6053 9.00167C16.6053 6.3981 14.4946 4.28739 11.8911 4.28739ZM11.8911 12.0017C10.233 12.0017 8.89106 10.6597 8.89106 9.00167C8.89106 7.34364 10.233 6.00167 11.8911 6.00167C13.5491 6.00167 14.8911 7.34364 14.8911 9.00167C14.8911 10.6597 13.5491 12.0017 11.8911 12.0017Z" fill="#344054"/>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <template x-for="(asset, index) in listAsset" :key="asset.id">
+                                <tr>
+                                    {{-- <td class="text-center" x-text="index + 1 + (pageParam-1) * limitParam"></td> --}}
+                                    <style>
+                                        .dropdown-content-print {
+                                            display: none;
+                                            position: absolute;
+                                            background-color: #f1f1f1;
+                                            min-width: 160px;
+                                            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+                                            z-index: 1;
+                                        }
+
+                                        #printBtn:hover .dropdown-content-print {
+                                            display: block;
+                                        }
+                                    </style>
+                                    <td class="text-center align-middle">
+                                        <input type="checkbox" x-model="selectedRow[asset.id]" x-bind:checked="selectedRow[asset.id]">
+                                    </td>
+                                    <td class="text-center" style="vertical-align: middle;"
+                                        x-data="{ open: false, openPrintDropdown: false }">
+                                        <svg @click="open = !open" style="cursor: pointer" width="18" height="5"
+                                             viewBox="0 0 18 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M10 2.5C10 1.94772 9.55228 1.5 9 1.5C8.44772 1.5 8 1.94772 8 2.5C8 3.05228 8.44772 3.5 9 3.5C9.55228 3.5 10 3.05228 10 2.5Z"
+                                                stroke="#3E3E3E" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"/>
+                                            <path
+                                                d="M3 2.5C3 1.94772 2.55228 1.5 2 1.5C1.44772 1.5 1 1.94772 1 2.5C1 3.05228 1.44772 3.5 2 3.5C2.55228 3.5 3 3.05228 3 2.5Z"
+                                                stroke="#3E3E3E" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"/>
+                                            <path
+                                                d="M17 2.5C17 1.94772 16.5523 1.5 16 1.5C15.4477 1.5 15 1.94772 15 2.5C15 3.05228 15.4477 3.5 16 3.5C16.5523 3.5 17 3.05228 17 2.5Z"
+                                                stroke="#3E3E3E" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round"/>
+                                        </svg>
+                                        <div
+                                            x-show="open"
+                                            class="dropdown-content"
+                                            @click.outside="open = false"
+                                            style="position: absolute; background: #fff; padding: 10px; z-index: 1000; display: block;">
+                                            {{-- <template x-if="matchStatus(asset.status, 'maintain')">
+                                                <a class="d-flex item-menu" href="#">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M21.767 4.69652C21.7536 4.67241 21.7348 4.6483 21.7134 4.62955C21.5795 4.49563 21.3625 4.49563 21.2286 4.62955L16.6134 9.24473L14.7946 7.42598L19.4125 2.80813C19.4339 2.7867 19.45 2.76527 19.4661 2.74116C19.5625 2.57777 19.5089 2.36884 19.3455 2.27241C16.7152 0.718839 13.2705 1.07509 11.0071 3.3358C9.21249 5.13045 8.61785 7.67509 9.22588 9.96259L1.37767 17.8108C1.29731 17.8912 1.30267 18.0224 1.38571 18.1054L5.93124 22.651C6.01428 22.734 6.14821 22.7394 6.22588 22.659L14.0714 14.8135C16.3616 15.4242 18.9062 14.8322 20.7036 13.0349C22.9643 10.7715 23.3205 7.32688 21.767 4.69652ZM19.3402 11.6688C17.7839 13.2251 15.4482 13.5251 13.592 12.5688L13.3562 12.8046L13.3536 12.8019L6.01428 20.1438L3.89285 18.0224L10.0562 11.859C10.0562 11.859 10.0562 11.8617 10.0589 11.8617L11.4732 10.4474C10.517 8.59116 10.817 6.25545 12.3732 4.6992C12.8751 4.19682 13.4796 3.80872 14.1453 3.5614C14.8109 3.31408 15.5222 3.21337 16.2304 3.26616L12.6705 6.8233C12.5097 6.98427 12.4194 7.20248 12.4194 7.43C12.4194 7.65752 12.5097 7.87573 12.6705 8.0367L16.0053 11.3715C16.1663 11.5323 16.3845 11.6226 16.612 11.6226C16.8396 11.6226 17.0578 11.5323 17.2187 11.3715L20.7759 7.81438C20.875 9.20188 20.3902 10.6215 19.3402 11.6688Z" fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Bảo dưỡng</span>
+                                                </a>
+                                            </template> --}}
+
+                                            <template x-if="matchStatus(asset.status, 'detail')">
+                                                <a class="d-flex item-menu" data-bs-toggle="modal"
+                                                   data-bs-target="#modalDetailAsset" style="cursor: pointer;"
+                                                   @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset);">
+                                                    <svg width="24" height="18" viewBox="0 0 24 18" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M23.5214 8.3106C20.9821 2.9615 17.1437 0.269531 11.9982 0.269531C6.84999 0.269531 3.01427 2.9615 0.474987 8.31328C0.373136 8.52895 0.320313 8.7645 0.320312 9.00301C0.320312 9.24152 0.373136 9.47708 0.474987 9.69275C3.01427 15.0419 6.85267 17.7338 11.9982 17.7338C17.1464 17.7338 20.9821 15.0419 23.5214 9.69007C23.7277 9.25614 23.7277 8.75257 23.5214 8.3106V8.3106ZM11.9982 15.8052C7.67767 15.8052 4.51427 13.6142 2.28302 9.00167C4.51427 4.38917 7.67767 2.1981 11.9982 2.1981C16.3187 2.1981 19.4821 4.38917 21.7134 9.00167C19.4848 13.6142 16.3214 15.8052 11.9982 15.8052ZM11.8911 4.28739C9.28749 4.28739 7.17677 6.3981 7.17677 9.00167C7.17677 11.6052 9.28749 13.716 11.8911 13.716C14.4946 13.716 16.6053 11.6052 16.6053 9.00167C16.6053 6.3981 14.4946 4.28739 11.8911 4.28739ZM11.8911 12.0017C10.233 12.0017 8.89106 10.6597 8.89106 9.00167C8.89106 7.34364 10.233 6.00167 11.8911 6.00167C13.5491 6.00167 14.8911 7.34364 14.8911 9.00167C14.8911 10.6597 13.5491 12.0017 11.8911 12.0017Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Xem chi tiết</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'edit')">
+                                                <a class="d-flex item-menu" data-bs-toggle="modal"
+                                                   data-bs-target="#modalEditAsset" style="cursor: pointer;"
+                                                   @click="fillDataEdit(asset); tab='general-tab';">
+                                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Chỉnh sửa</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'allocation')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm"
+                                                   @click="getUser(); assetSelect = asset;" style="cursor: pointer;">
+                                                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Cấp phát</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'recovery', asset)">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   @click="assetSelect = asset; fillDataModalAllocation('recovery');">
+                                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M15.4523 14.8377C16.1005 14.4895 16.8425 14.2913 17.6327 14.2913H17.6353C17.7157 14.2913 17.7532 14.1949 17.6943 14.1413C16.8725 13.4038 15.9338 12.8082 14.9166 12.3788C14.9059 12.3734 14.8952 12.3708 14.8844 12.3654C16.5478 11.1574 17.63 9.19397 17.63 6.9788C17.63 3.30915 14.6621 0.335938 11.0005 0.335938C7.33891 0.335938 4.37373 3.30915 4.37373 6.9788C4.37373 9.19397 5.45587 11.1574 7.12194 12.3654C7.11123 12.3708 7.10051 12.3734 7.0898 12.3788C5.89248 12.885 4.81837 13.6109 3.89426 14.5377C2.97549 15.4548 2.24403 16.542 1.74069 17.7386C1.24546 18.9104 0.978187 20.1658 0.953192 21.4377C0.952477 21.4663 0.957491 21.4948 0.96794 21.5214C0.978388 21.548 0.994059 21.5723 1.01403 21.5927C1.034 21.6132 1.05786 21.6295 1.08422 21.6406C1.11057 21.6517 1.13888 21.6574 1.16748 21.6574H2.77194C2.88712 21.6574 2.98355 21.5636 2.98623 21.4484C3.0398 19.3806 3.86748 17.444 5.33266 15.9761C6.84605 14.4574 8.86034 13.6217 11.0032 13.6217C12.5219 13.6217 13.9791 14.0422 15.2353 14.8297C15.2676 14.85 15.3047 14.8614 15.3427 14.8628C15.3808 14.8642 15.4186 14.8556 15.4523 14.8377V14.8377ZM11.0032 11.5859C9.77641 11.5859 8.62194 11.1065 7.75141 10.2359C7.32309 9.80873 6.98353 9.301 6.7523 8.74199C6.52106 8.18298 6.40272 7.58374 6.40409 6.9788C6.40409 5.74933 6.88355 4.59219 7.75141 3.72165C8.61926 2.85112 9.77373 2.37165 11.0032 2.37165C12.2327 2.37165 13.3844 2.85112 14.255 3.72165C14.6833 4.14886 15.0229 4.65659 15.2541 5.2156C15.4853 5.77461 15.6037 6.37385 15.6023 6.9788C15.6023 8.20826 15.1228 9.3654 14.255 10.2359C13.3844 11.1065 12.23 11.5859 11.0032 11.5859ZM20.855 17.9609H14.4264C14.3086 17.9609 14.2121 18.0574 14.2121 18.1752V19.6752C14.2121 19.7931 14.3086 19.8895 14.4264 19.8895H20.855C20.9728 19.8895 21.0693 19.7931 21.0693 19.6752V18.1752C21.0693 18.0574 20.9728 17.9609 20.855 17.9609Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Thu hồi</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'rotation')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   @click="fillDataModalRotation(); assetSelect = asset;">
+                                                    <svg width="22" height="24" viewBox="0 0 22 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M17.6173 7.25223C17.6173 3.58259 14.644 0.609375 10.9744 0.609375C7.30475 0.609375 4.33154 3.58259 4.33154 7.25223C4.33154 9.47009 5.41904 11.4362 7.09047 12.6415C7.07975 12.6469 7.07172 12.6496 7.06636 12.6522C5.86904 13.1585 4.79493 13.8844 3.87083 14.8112C2.95206 15.7283 2.22059 16.8154 1.71725 18.0121C1.22202 19.1838 0.95475 20.4393 0.929754 21.7112C0.92904 21.7397 0.934054 21.7682 0.944502 21.7948C0.954951 21.8214 0.970621 21.8457 0.990591 21.8662C1.01056 21.8866 1.03443 21.9029 1.06078 21.914C1.08713 21.9251 1.11544 21.9308 1.14404 21.9308H2.7485C2.86368 21.9308 2.96011 21.8371 2.96279 21.7219C3.01636 19.654 3.84404 17.7174 5.30922 16.2496C6.82261 14.7308 8.83154 13.8951 10.9744 13.8951C14.644 13.8951 17.6173 10.9219 17.6173 7.25223ZM10.9744 11.8594C8.42975 11.8594 6.36725 9.79687 6.36725 7.25223C6.36725 4.70759 8.42975 2.64509 10.9744 2.64509C13.519 2.64509 15.5815 4.70759 15.5815 7.25223C15.5815 9.79687 13.519 11.8594 10.9744 11.8594ZM13.7869 17.779H20.8583C20.9762 17.779 21.0726 17.6826 21.0726 17.5647V16.0647C21.0726 15.9469 20.9762 15.8504 20.8583 15.8504H16.1306L17.3949 14.2406C17.4241 14.203 17.4401 14.1569 17.4405 14.1094C17.4405 13.9915 17.344 13.8951 17.2262 13.8951H15.2815C15.1503 13.8951 15.0271 13.9567 14.944 14.0585L13.1092 16.3915C12.9914 16.5415 12.9271 16.729 12.9271 16.9219C12.9298 17.396 13.3128 17.779 13.7869 17.779ZM20.2155 19.4933H13.144C13.0262 19.4933 12.9298 19.5897 12.9298 19.7076V21.2076C12.9298 21.3254 13.0262 21.4219 13.144 21.4219H17.8717L16.6074 23.0317C16.5783 23.0693 16.5623 23.1154 16.5619 23.1629C16.5619 23.2808 16.6583 23.3772 16.7762 23.3772H18.7208C18.8521 23.3772 18.9753 23.3156 19.0583 23.2138L20.8931 20.8808C21.011 20.7308 21.0753 20.5433 21.0753 20.3504C21.0726 19.8763 20.6896 19.4933 20.2155 19.4933Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Luân chuyển</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'repair')">
+                                                <a class="d-flex item-menu" tyle="cursor: pointer;">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M23.0564 15.0496L21.3019 13.5496C21.3849 13.0406 21.4278 12.521 21.4278 12.0013C21.4278 11.4817 21.3849 10.9621 21.3019 10.4531L23.0564 8.95313C23.1887 8.83984 23.2834 8.68895 23.3279 8.52053C23.3724 8.35211 23.3646 8.17413 23.3055 8.01027L23.2814 7.94062C22.7984 6.5907 22.0751 5.33929 21.1465 4.24687L21.0983 4.19062C20.9857 4.05818 20.8356 3.96296 20.6677 3.91754C20.4999 3.87211 20.3222 3.87861 20.1582 3.93616L17.9805 4.71027C17.1769 4.05134 16.2796 3.5317 15.3099 3.16741L14.8894 0.890625C14.8577 0.719309 14.7746 0.561703 14.6511 0.438744C14.5277 0.315785 14.3698 0.233295 14.1983 0.202232L14.126 0.188839C12.7305 -0.0629464 11.2626 -0.0629464 9.86708 0.188839L9.79476 0.202232C9.62332 0.233295 9.46539 0.315785 9.34196 0.438744C9.21852 0.561703 9.13542 0.719309 9.10369 0.890625L8.68047 3.17813C7.71857 3.54249 6.8228 4.06185 6.02869 4.71562L3.83494 3.93616C3.67092 3.87815 3.49313 3.87142 3.32519 3.91687C3.15726 3.96233 3.00713 4.05781 2.89476 4.19062L2.84655 4.24687C1.91908 5.34006 1.19595 6.59126 0.711724 7.94062L0.687617 8.01027C0.567081 8.34509 0.666188 8.72009 0.936724 8.95313L2.71262 10.4692C2.62958 10.9728 2.5894 11.4871 2.5894 11.9987C2.5894 12.5129 2.62958 13.0272 2.71262 13.5281L0.936724 15.0442C0.804391 15.1575 0.709679 15.3084 0.665181 15.4768C0.620684 15.6452 0.628509 15.8232 0.687617 15.9871L0.711724 16.0567C1.19655 17.4067 1.9144 18.6522 2.84655 19.7504L2.89476 19.8067C3.00741 19.9391 3.15754 20.0344 3.32537 20.0798C3.49321 20.1252 3.67087 20.1187 3.83494 20.0612L6.02869 19.2817C6.8269 19.9379 7.71887 20.4576 8.68047 20.8192L9.10369 23.1067C9.13542 23.278 9.21852 23.4356 9.34196 23.5586C9.46539 23.6815 9.62332 23.764 9.79476 23.7951L9.86708 23.8085C11.2754 24.0616 12.7177 24.0616 14.126 23.8085L14.1983 23.7951C14.3698 23.764 14.5277 23.6815 14.6511 23.5586C14.7746 23.4356 14.8577 23.278 14.8894 23.1067L15.3099 20.8299C16.2792 20.4666 17.1816 19.9452 17.9805 19.2871L20.1582 20.0612C20.3222 20.1192 20.5 20.1259 20.6679 20.0804C20.8358 20.035 20.986 19.9395 21.0983 19.8067L21.1465 19.7504C22.0787 18.6496 22.7965 17.4067 23.2814 16.0567L23.3055 15.9871C23.426 15.6576 23.3269 15.2826 23.0564 15.0496V15.0496ZM19.4001 10.7692C19.4671 11.1737 19.5019 11.5888 19.5019 12.004C19.5019 12.4192 19.4671 12.8344 19.4001 13.2388L19.2233 14.3129L21.2242 16.0246C20.9209 16.7234 20.538 17.3849 20.0832 17.996L17.5974 17.1147L16.7564 17.8058C16.1162 18.3308 15.4037 18.7433 14.6323 19.0326L13.6117 19.4156L13.1323 22.0138C12.3758 22.0996 11.612 22.0996 10.8555 22.0138L10.376 19.4103L9.36351 19.0219C8.60012 18.7326 7.8903 18.3201 7.25547 17.7978L6.4144 17.104L3.91262 17.9933C3.45726 17.3799 3.0769 16.7183 2.77155 16.0219L4.79387 14.2942L4.61976 13.2228C4.55547 12.8237 4.52065 12.4112 4.52065 12.004C4.52065 11.5942 4.5528 11.1844 4.61976 10.7853L4.79387 9.71384L2.77155 7.98616C3.07422 7.28705 3.45726 6.62812 3.91262 6.01473L6.4144 6.90402L7.25547 6.21027C7.8903 5.68795 8.60012 5.27545 9.36351 4.98616L10.3787 4.60312L10.8582 1.99955C11.6108 1.91384 12.3796 1.91384 13.1349 1.99955L13.6144 4.59777L14.6349 4.9808C15.4037 5.27009 16.1189 5.68259 16.759 6.20759L17.6001 6.89866L20.0858 6.01741C20.5412 6.6308 20.9215 7.29241 21.2269 7.98884L19.226 9.70045L19.4001 10.7692ZM11.9992 7.02187C9.39565 7.02187 7.28494 9.13259 7.28494 11.7362C7.28494 14.3397 9.39565 16.4504 11.9992 16.4504C14.6028 16.4504 16.7135 14.3397 16.7135 11.7362C16.7135 9.13259 14.6028 7.02187 11.9992 7.02187ZM14.1207 13.8576C13.8424 14.1366 13.5117 14.3579 13.1477 14.5087C12.7836 14.6595 12.3933 14.7368 11.9992 14.7362C11.1983 14.7362 10.4457 14.4228 9.8778 13.8576C9.59875 13.5793 9.37748 13.2487 9.2267 12.8846C9.07592 12.5205 8.99861 12.1302 8.99922 11.7362C8.99922 10.9353 9.31262 10.1826 9.8778 9.61473C10.4457 9.04687 11.1983 8.73616 11.9992 8.73616C12.8001 8.73616 13.5528 9.04687 14.1207 9.61473C14.3997 9.89298 14.621 10.2236 14.7718 10.5877C14.9225 10.9518 14.9998 11.3421 14.9992 11.7362C14.9992 12.5371 14.6858 13.2897 14.1207 13.8576Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Sửa chữa</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'request-liquidation')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   data-bs-toggle="modal" data-bs-target="#modalLiquidation"
+                                                   @click="assetSelect = asset;">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <g clip-path="url(#clip0_13695_31778)">
+                                                            <path d="M9 21H4.714C3.767 21 3 20.233 3 19.286V15"
+                                                                  stroke="#344054" stroke-width="1.5"
+                                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path
+                                                                d="M3 4.35547V9.50047C3 9.77647 3.224 10.0005 3.5 10.0005H9.553C9.829 10.0005 10.053 9.77647 10.053 9.50047V4.35547"
+                                                                stroke="#344054" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M2 5L6.592 2L11 5" stroke="#344054"
+                                                                  stroke-width="1.5" stroke-linecap="round"
+                                                                  stroke-linejoin="round"/>
+                                                            <path d="M16 3H19.286C20.233 3 21 3.767 21 4.714V8"
+                                                                  stroke="#344054" stroke-width="1.5"
+                                                                  stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path
+                                                                d="M17 22C19.75 22 22 19.75 22 17.001C22 14.252 19.75 12 17 12C14.25 12 12 14.25 12 17.001C12 18.123 12.379 19.157 13.008 19.994C13.923 21.208 15.372 22 17 22Z"
+                                                                stroke="#344054" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M17 14.955V14.5" stroke="#344054"
+                                                                  stroke-width="1.5" stroke-linecap="round"
+                                                                  stroke-linejoin="round"/>
+                                                            <path d="M17 19.0459V19.5009" stroke="#344054"
+                                                                  stroke-width="1.5" stroke-linecap="round"
+                                                                  stroke-linejoin="round"/>
+                                                            <path
+                                                                d="M15.8177 18.5581C15.9937 18.8471 16.2957 19.0471 16.6607 19.0471H17.0017H17.4077C17.9367 19.0471 18.3647 18.6181 18.3647 18.0901C18.3647 17.6511 18.0657 17.2681 17.6397 17.1611L16.3617 16.8401C15.9367 16.7341 15.6367 16.3511 15.6367 15.9121C15.6367 15.3831 16.0657 14.9551 16.5937 14.9551H17.0017H17.3427C17.7067 14.9551 18.0077 15.1541 18.1837 15.4421"
+                                                                stroke="#344054" stroke-width="1.5"
+                                                                stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </g>
+                                                        <defs>
+                                                            <clipPath id="clip0_13695_31778">
+                                                                <rect width="24" height="24" fill="white"/>
+                                                            </clipPath>
+                                                        </defs>
+                                                    </svg>
+                                                    <span class="title-menu">Đề xuất thanh lý</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'cancel')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   data-bs-toggle="modal" data-bs-target="#modalCancel"
+                                                   @click="assetSelect = asset;">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M16.6443 7.76409C16.6443 7.64623 16.5478 7.5498 16.43 7.5498L14.6621 7.55784L11.9996 10.7319L9.3398 7.56052L7.56927 7.55248C7.45141 7.55248 7.35498 7.64623 7.35498 7.76677C7.35498 7.81766 7.37373 7.86588 7.40587 7.90606L10.8907 12.0578L7.40587 16.2069C7.37351 16.2462 7.35555 16.2954 7.35498 16.3462C7.35498 16.4641 7.45141 16.5605 7.56927 16.5605L9.3398 16.5525L11.9996 13.3784L14.6594 16.5498L16.4273 16.5578C16.5452 16.5578 16.6416 16.4641 16.6416 16.3436C16.6416 16.2927 16.6228 16.2444 16.5907 16.2043L13.1112 12.0552L16.5961 7.90338C16.6282 7.86588 16.6443 7.81498 16.6443 7.76409Z"
+                                                            fill="#344054"/>
+                                                        <path
+                                                            d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Hủy tài sản</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'mark-damaged')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   data-bs-toggle="modal" data-bs-target="#modalBroken"
+                                                   @click="assetSelect = asset;">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z"
+                                                            fill="#344054"/>
+                                                        <path
+                                                            d="M10.7139 16.7143C10.7139 17.0553 10.8493 17.3823 11.0904 17.6234C11.3316 17.8645 11.6586 18 11.9996 18C12.3406 18 12.6676 17.8645 12.9087 17.6234C13.1498 17.3823 13.2853 17.0553 13.2853 16.7143C13.2853 16.3733 13.1498 16.0463 12.9087 15.8051C12.6676 15.564 12.3406 15.4286 11.9996 15.4286C11.6586 15.4286 11.3316 15.564 11.0904 15.8051C10.8493 16.0463 10.7139 16.3733 10.7139 16.7143ZM11.3567 13.7143H12.6424C12.7603 13.7143 12.8567 13.6179 12.8567 13.5V6.21429C12.8567 6.09643 12.7603 6 12.6424 6H11.3567C11.2389 6 11.1424 6.09643 11.1424 6.21429V13.5C11.1424 13.6179 11.2389 13.7143 11.3567 13.7143Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Đánh dấu hỏng</span>
+                                                </a>
+                                            </template>
+                                            <template x-if="matchStatus(asset.status, 'mark-lost')">
+                                                <a class="d-flex item-menu" style="cursor: pointer;"
+                                                   data-bs-toggle="modal" data-bs-target="#modalLost"
+                                                   @click="assetSelect = asset;">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                         xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M16.9284 11.1416H7.07122C6.95336 11.1416 6.85693 11.238 6.85693 11.3559V12.6416C6.85693 12.7595 6.95336 12.8559 7.07122 12.8559H16.9284C17.0462 12.8559 17.1427 12.7595 17.1427 12.6416V11.3559C17.1427 11.238 17.0462 11.1416 16.9284 11.1416Z"
+                                                            fill="#344054"/>
+                                                        <path
+                                                            d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z"
+                                                            fill="#344054"/>
+                                                    </svg>
+                                                    <span class="title-menu">Đánh dấu mất</span>
+                                                </a>
+                                            </template>
+                                            <a style="cursor: pointer;" class="d-flex item-menu" id="printBtn"
+                                               @click="openPrintDropdown = !openPrintDropdown">
+                                                <svg width="24" height="22" viewBox="0 0 24 22" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z"
+                                                        fill="#344054"/>
                                                 </svg>
-                                                <span class="title-menu">Xem chi tiết</span>
+                                                <span class="title-menu">In</span>
                                             </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'edit')">
-                                            <a class="d-flex item-menu" data-bs-toggle="modal" data-bs-target="#modalEditAsset" style="cursor: pointer;" @click="fillDataEdit(asset); tab='general-tab';">
-                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M4.18784 17.4261C4.24141 17.4261 4.29498 17.4207 4.34855 17.4127L8.85391 16.6225C8.90748 16.6118 8.95837 16.5877 8.99587 16.5475L20.3503 5.19302C20.3752 5.16824 20.3949 5.13881 20.4083 5.10641C20.4218 5.074 20.4287 5.03927 20.4287 5.00419C20.4287 4.9691 20.4218 4.93437 20.4083 4.90196C20.3949 4.86956 20.3752 4.84013 20.3503 4.81535L15.8986 0.360882C15.8477 0.309989 15.7807 0.283203 15.7084 0.283203C15.636 0.283203 15.5691 0.309989 15.5182 0.360882L4.16373 11.7153C4.12355 11.7555 4.09944 11.8037 4.08873 11.8573L3.29855 16.3627C3.27249 16.5062 3.2818 16.6538 3.32568 16.7929C3.36955 16.932 3.44666 17.0583 3.55033 17.1609C3.72712 17.3323 3.94944 17.4261 4.18784 17.4261V17.4261ZM5.99319 12.7546L15.7084 3.04213L17.6718 5.00552L7.95659 14.718L5.57534 15.1386L5.99319 12.7546V12.7546ZM20.8566 19.6761H1.1423C0.668192 19.6761 0.285156 20.0591 0.285156 20.5332V21.4975C0.285156 21.6153 0.381585 21.7118 0.499442 21.7118H21.4994C21.6173 21.7118 21.7137 21.6153 21.7137 21.4975V20.5332C21.7137 20.0591 21.3307 19.6761 20.8566 19.6761Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Chỉnh sửa</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'allocation')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalAllocationConfirm" @click="getUser(); assetSelect = asset;" style="cursor: pointer;">
-                                                <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M15.4562 15.4862C16.1044 15.1379 16.8464 14.9397 17.6366 14.9397H17.6392C17.7196 14.9397 17.7571 14.8433 17.6982 14.7897C16.8764 14.0523 15.9377 13.4566 14.9205 13.0272C14.9098 13.0219 14.8991 13.0192 14.8883 13.0138C16.5517 11.8058 17.6339 9.84241 17.6339 7.62723C17.6339 3.95759 14.666 0.984375 11.0044 0.984375C7.34281 0.984375 4.37763 3.95759 4.37763 7.62723C4.37763 9.84241 5.45978 11.8058 7.12585 13.0138C7.11513 13.0192 7.10442 13.0219 7.09371 13.0272C5.89638 13.5335 4.82228 14.2594 3.89817 15.1862C2.9794 16.1033 2.24794 17.1904 1.7446 18.3871C1.24937 19.5588 0.982093 20.8143 0.957098 22.0862C0.956383 22.1147 0.961398 22.1432 0.971846 22.1698C0.982294 22.1964 0.997965 22.2207 1.01794 22.2412C1.0379 22.2616 1.06177 22.2779 1.08812 22.289C1.11448 22.3001 1.14279 22.3058 1.17138 22.3058H2.77585C2.89103 22.3058 2.98746 22.2121 2.99013 22.0969C3.04371 20.029 3.87138 18.0924 5.33656 16.6246C6.84996 15.1058 8.86424 14.2701 11.0071 14.2701C12.5258 14.2701 13.983 14.6906 15.2392 15.4781C15.2715 15.4984 15.3086 15.5098 15.3466 15.5112C15.3847 15.5126 15.4225 15.504 15.4562 15.4862V15.4862ZM11.0071 12.2344C9.78031 12.2344 8.62585 11.7549 7.75531 10.8844C7.327 10.4572 6.98744 9.94943 6.75621 9.39043C6.52497 8.83142 6.40663 8.23218 6.40799 7.62723C6.40799 6.39777 6.88746 5.24062 7.75531 4.37009C8.62317 3.49955 9.77763 3.02009 11.0071 3.02009C12.2366 3.02009 13.3883 3.49955 14.2589 4.37009C14.6872 4.7973 15.0268 5.30503 15.258 5.86404C15.4892 6.42305 15.6076 7.02229 15.6062 7.62723C15.6062 8.8567 15.1267 10.0138 14.2589 10.8844C13.3883 11.7549 12.2339 12.2344 11.0071 12.2344ZM20.8589 18.6094H18.6089V16.3594C18.6089 16.2415 18.5125 16.1451 18.3946 16.1451H16.8946C16.7767 16.1451 16.6803 16.2415 16.6803 16.3594V18.6094H14.4303C14.3125 18.6094 14.216 18.7058 14.216 18.8237V20.3237C14.216 20.4415 14.3125 20.5379 14.4303 20.5379H16.6803V22.7879C16.6803 22.9058 16.7767 23.0022 16.8946 23.0022H18.3946C18.5125 23.0022 18.6089 22.9058 18.6089 22.7879V20.5379H20.8589C20.9767 20.5379 21.0732 20.4415 21.0732 20.3237V18.8237C21.0732 18.7058 20.9767 18.6094 20.8589 18.6094Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Cấp phát</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'recovery', asset)">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" @click="assetSelect = asset; fillDataModalAllocation('recovery');">
-                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M15.4523 14.8377C16.1005 14.4895 16.8425 14.2913 17.6327 14.2913H17.6353C17.7157 14.2913 17.7532 14.1949 17.6943 14.1413C16.8725 13.4038 15.9338 12.8082 14.9166 12.3788C14.9059 12.3734 14.8952 12.3708 14.8844 12.3654C16.5478 11.1574 17.63 9.19397 17.63 6.9788C17.63 3.30915 14.6621 0.335938 11.0005 0.335938C7.33891 0.335938 4.37373 3.30915 4.37373 6.9788C4.37373 9.19397 5.45587 11.1574 7.12194 12.3654C7.11123 12.3708 7.10051 12.3734 7.0898 12.3788C5.89248 12.885 4.81837 13.6109 3.89426 14.5377C2.97549 15.4548 2.24403 16.542 1.74069 17.7386C1.24546 18.9104 0.978187 20.1658 0.953192 21.4377C0.952477 21.4663 0.957491 21.4948 0.96794 21.5214C0.978388 21.548 0.994059 21.5723 1.01403 21.5927C1.034 21.6132 1.05786 21.6295 1.08422 21.6406C1.11057 21.6517 1.13888 21.6574 1.16748 21.6574H2.77194C2.88712 21.6574 2.98355 21.5636 2.98623 21.4484C3.0398 19.3806 3.86748 17.444 5.33266 15.9761C6.84605 14.4574 8.86034 13.6217 11.0032 13.6217C12.5219 13.6217 13.9791 14.0422 15.2353 14.8297C15.2676 14.85 15.3047 14.8614 15.3427 14.8628C15.3808 14.8642 15.4186 14.8556 15.4523 14.8377V14.8377ZM11.0032 11.5859C9.77641 11.5859 8.62194 11.1065 7.75141 10.2359C7.32309 9.80873 6.98353 9.301 6.7523 8.74199C6.52106 8.18298 6.40272 7.58374 6.40409 6.9788C6.40409 5.74933 6.88355 4.59219 7.75141 3.72165C8.61926 2.85112 9.77373 2.37165 11.0032 2.37165C12.2327 2.37165 13.3844 2.85112 14.255 3.72165C14.6833 4.14886 15.0229 4.65659 15.2541 5.2156C15.4853 5.77461 15.6037 6.37385 15.6023 6.9788C15.6023 8.20826 15.1228 9.3654 14.255 10.2359C13.3844 11.1065 12.23 11.5859 11.0032 11.5859ZM20.855 17.9609H14.4264C14.3086 17.9609 14.2121 18.0574 14.2121 18.1752V19.6752C14.2121 19.7931 14.3086 19.8895 14.4264 19.8895H20.855C20.9728 19.8895 21.0693 19.7931 21.0693 19.6752V18.1752C21.0693 18.0574 20.9728 17.9609 20.855 17.9609Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Thu hồi</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'rotation')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" @click="fillDataModalRotation(); assetSelect = asset;">
-                                                <svg width="22" height="24" viewBox="0 0 22 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M17.6173 7.25223C17.6173 3.58259 14.644 0.609375 10.9744 0.609375C7.30475 0.609375 4.33154 3.58259 4.33154 7.25223C4.33154 9.47009 5.41904 11.4362 7.09047 12.6415C7.07975 12.6469 7.07172 12.6496 7.06636 12.6522C5.86904 13.1585 4.79493 13.8844 3.87083 14.8112C2.95206 15.7283 2.22059 16.8154 1.71725 18.0121C1.22202 19.1838 0.95475 20.4393 0.929754 21.7112C0.92904 21.7397 0.934054 21.7682 0.944502 21.7948C0.954951 21.8214 0.970621 21.8457 0.990591 21.8662C1.01056 21.8866 1.03443 21.9029 1.06078 21.914C1.08713 21.9251 1.11544 21.9308 1.14404 21.9308H2.7485C2.86368 21.9308 2.96011 21.8371 2.96279 21.7219C3.01636 19.654 3.84404 17.7174 5.30922 16.2496C6.82261 14.7308 8.83154 13.8951 10.9744 13.8951C14.644 13.8951 17.6173 10.9219 17.6173 7.25223ZM10.9744 11.8594C8.42975 11.8594 6.36725 9.79687 6.36725 7.25223C6.36725 4.70759 8.42975 2.64509 10.9744 2.64509C13.519 2.64509 15.5815 4.70759 15.5815 7.25223C15.5815 9.79687 13.519 11.8594 10.9744 11.8594ZM13.7869 17.779H20.8583C20.9762 17.779 21.0726 17.6826 21.0726 17.5647V16.0647C21.0726 15.9469 20.9762 15.8504 20.8583 15.8504H16.1306L17.3949 14.2406C17.4241 14.203 17.4401 14.1569 17.4405 14.1094C17.4405 13.9915 17.344 13.8951 17.2262 13.8951H15.2815C15.1503 13.8951 15.0271 13.9567 14.944 14.0585L13.1092 16.3915C12.9914 16.5415 12.9271 16.729 12.9271 16.9219C12.9298 17.396 13.3128 17.779 13.7869 17.779ZM20.2155 19.4933H13.144C13.0262 19.4933 12.9298 19.5897 12.9298 19.7076V21.2076C12.9298 21.3254 13.0262 21.4219 13.144 21.4219H17.8717L16.6074 23.0317C16.5783 23.0693 16.5623 23.1154 16.5619 23.1629C16.5619 23.2808 16.6583 23.3772 16.7762 23.3772H18.7208C18.8521 23.3772 18.9753 23.3156 19.0583 23.2138L20.8931 20.8808C21.011 20.7308 21.0753 20.5433 21.0753 20.3504C21.0726 19.8763 20.6896 19.4933 20.2155 19.4933Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Luân chuyển</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'repair')">
-                                            <a class="d-flex item-menu" tyle="cursor: pointer;">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M23.0564 15.0496L21.3019 13.5496C21.3849 13.0406 21.4278 12.521 21.4278 12.0013C21.4278 11.4817 21.3849 10.9621 21.3019 10.4531L23.0564 8.95313C23.1887 8.83984 23.2834 8.68895 23.3279 8.52053C23.3724 8.35211 23.3646 8.17413 23.3055 8.01027L23.2814 7.94062C22.7984 6.5907 22.0751 5.33929 21.1465 4.24687L21.0983 4.19062C20.9857 4.05818 20.8356 3.96296 20.6677 3.91754C20.4999 3.87211 20.3222 3.87861 20.1582 3.93616L17.9805 4.71027C17.1769 4.05134 16.2796 3.5317 15.3099 3.16741L14.8894 0.890625C14.8577 0.719309 14.7746 0.561703 14.6511 0.438744C14.5277 0.315785 14.3698 0.233295 14.1983 0.202232L14.126 0.188839C12.7305 -0.0629464 11.2626 -0.0629464 9.86708 0.188839L9.79476 0.202232C9.62332 0.233295 9.46539 0.315785 9.34196 0.438744C9.21852 0.561703 9.13542 0.719309 9.10369 0.890625L8.68047 3.17813C7.71857 3.54249 6.8228 4.06185 6.02869 4.71562L3.83494 3.93616C3.67092 3.87815 3.49313 3.87142 3.32519 3.91687C3.15726 3.96233 3.00713 4.05781 2.89476 4.19062L2.84655 4.24687C1.91908 5.34006 1.19595 6.59126 0.711724 7.94062L0.687617 8.01027C0.567081 8.34509 0.666188 8.72009 0.936724 8.95313L2.71262 10.4692C2.62958 10.9728 2.5894 11.4871 2.5894 11.9987C2.5894 12.5129 2.62958 13.0272 2.71262 13.5281L0.936724 15.0442C0.804391 15.1575 0.709679 15.3084 0.665181 15.4768C0.620684 15.6452 0.628509 15.8232 0.687617 15.9871L0.711724 16.0567C1.19655 17.4067 1.9144 18.6522 2.84655 19.7504L2.89476 19.8067C3.00741 19.9391 3.15754 20.0344 3.32537 20.0798C3.49321 20.1252 3.67087 20.1187 3.83494 20.0612L6.02869 19.2817C6.8269 19.9379 7.71887 20.4576 8.68047 20.8192L9.10369 23.1067C9.13542 23.278 9.21852 23.4356 9.34196 23.5586C9.46539 23.6815 9.62332 23.764 9.79476 23.7951L9.86708 23.8085C11.2754 24.0616 12.7177 24.0616 14.126 23.8085L14.1983 23.7951C14.3698 23.764 14.5277 23.6815 14.6511 23.5586C14.7746 23.4356 14.8577 23.278 14.8894 23.1067L15.3099 20.8299C16.2792 20.4666 17.1816 19.9452 17.9805 19.2871L20.1582 20.0612C20.3222 20.1192 20.5 20.1259 20.6679 20.0804C20.8358 20.035 20.986 19.9395 21.0983 19.8067L21.1465 19.7504C22.0787 18.6496 22.7965 17.4067 23.2814 16.0567L23.3055 15.9871C23.426 15.6576 23.3269 15.2826 23.0564 15.0496V15.0496ZM19.4001 10.7692C19.4671 11.1737 19.5019 11.5888 19.5019 12.004C19.5019 12.4192 19.4671 12.8344 19.4001 13.2388L19.2233 14.3129L21.2242 16.0246C20.9209 16.7234 20.538 17.3849 20.0832 17.996L17.5974 17.1147L16.7564 17.8058C16.1162 18.3308 15.4037 18.7433 14.6323 19.0326L13.6117 19.4156L13.1323 22.0138C12.3758 22.0996 11.612 22.0996 10.8555 22.0138L10.376 19.4103L9.36351 19.0219C8.60012 18.7326 7.8903 18.3201 7.25547 17.7978L6.4144 17.104L3.91262 17.9933C3.45726 17.3799 3.0769 16.7183 2.77155 16.0219L4.79387 14.2942L4.61976 13.2228C4.55547 12.8237 4.52065 12.4112 4.52065 12.004C4.52065 11.5942 4.5528 11.1844 4.61976 10.7853L4.79387 9.71384L2.77155 7.98616C3.07422 7.28705 3.45726 6.62812 3.91262 6.01473L6.4144 6.90402L7.25547 6.21027C7.8903 5.68795 8.60012 5.27545 9.36351 4.98616L10.3787 4.60312L10.8582 1.99955C11.6108 1.91384 12.3796 1.91384 13.1349 1.99955L13.6144 4.59777L14.6349 4.9808C15.4037 5.27009 16.1189 5.68259 16.759 6.20759L17.6001 6.89866L20.0858 6.01741C20.5412 6.6308 20.9215 7.29241 21.2269 7.98884L19.226 9.70045L19.4001 10.7692ZM11.9992 7.02187C9.39565 7.02187 7.28494 9.13259 7.28494 11.7362C7.28494 14.3397 9.39565 16.4504 11.9992 16.4504C14.6028 16.4504 16.7135 14.3397 16.7135 11.7362C16.7135 9.13259 14.6028 7.02187 11.9992 7.02187ZM14.1207 13.8576C13.8424 14.1366 13.5117 14.3579 13.1477 14.5087C12.7836 14.6595 12.3933 14.7368 11.9992 14.7362C11.1983 14.7362 10.4457 14.4228 9.8778 13.8576C9.59875 13.5793 9.37748 13.2487 9.2267 12.8846C9.07592 12.5205 8.99861 12.1302 8.99922 11.7362C8.99922 10.9353 9.31262 10.1826 9.8778 9.61473C10.4457 9.04687 11.1983 8.73616 11.9992 8.73616C12.8001 8.73616 13.5528 9.04687 14.1207 9.61473C14.3997 9.89298 14.621 10.2236 14.7718 10.5877C14.9225 10.9518 14.9998 11.3421 14.9992 11.7362C14.9992 12.5371 14.6858 13.2897 14.1207 13.8576Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Sửa chữa</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'request-liquidation')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLiquidation" @click="assetSelect = asset;">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <g clip-path="url(#clip0_13695_31778)">
-                                                    <path d="M9 21H4.714C3.767 21 3 20.233 3 19.286V15" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M3 4.35547V9.50047C3 9.77647 3.224 10.0005 3.5 10.0005H9.553C9.829 10.0005 10.053 9.77647 10.053 9.50047V4.35547" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M2 5L6.592 2L11 5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M16 3H19.286C20.233 3 21 3.767 21 4.714V8" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M17 22C19.75 22 22 19.75 22 17.001C22 14.252 19.75 12 17 12C14.25 12 12 14.25 12 17.001C12 18.123 12.379 19.157 13.008 19.994C13.923 21.208 15.372 22 17 22Z" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M17 14.955V14.5" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M17 19.0459V19.5009" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M15.8177 18.5581C15.9937 18.8471 16.2957 19.0471 16.6607 19.0471H17.0017H17.4077C17.9367 19.0471 18.3647 18.6181 18.3647 18.0901C18.3647 17.6511 18.0657 17.2681 17.6397 17.1611L16.3617 16.8401C15.9367 16.7341 15.6367 16.3511 15.6367 15.9121C15.6367 15.3831 16.0657 14.9551 16.5937 14.9551H17.0017H17.3427C17.7067 14.9551 18.0077 15.1541 18.1837 15.4421" stroke="#344054" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </g>
-                                                    <defs>
-                                                    <clipPath id="clip0_13695_31778">
-                                                    <rect width="24" height="24" fill="white"/>
-                                                    </clipPath>
-                                                    </defs>
-                                                </svg>
-                                                <span class="title-menu">Đề xuất thanh lý</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'cancel')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalCancel" @click="assetSelect = asset;">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M16.6443 7.76409C16.6443 7.64623 16.5478 7.5498 16.43 7.5498L14.6621 7.55784L11.9996 10.7319L9.3398 7.56052L7.56927 7.55248C7.45141 7.55248 7.35498 7.64623 7.35498 7.76677C7.35498 7.81766 7.37373 7.86588 7.40587 7.90606L10.8907 12.0578L7.40587 16.2069C7.37351 16.2462 7.35555 16.2954 7.35498 16.3462C7.35498 16.4641 7.45141 16.5605 7.56927 16.5605L9.3398 16.5525L11.9996 13.3784L14.6594 16.5498L16.4273 16.5578C16.5452 16.5578 16.6416 16.4641 16.6416 16.3436C16.6416 16.2927 16.6228 16.2444 16.5907 16.2043L13.1112 12.0552L16.5961 7.90338C16.6282 7.86588 16.6443 7.81498 16.6443 7.76409Z" fill="#344054"/>
-                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Hủy tài sản</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'mark-damaged')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalBroken" @click="assetSelect = asset;">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                                    <path d="M10.7139 16.7143C10.7139 17.0553 10.8493 17.3823 11.0904 17.6234C11.3316 17.8645 11.6586 18 11.9996 18C12.3406 18 12.6676 17.8645 12.9087 17.6234C13.1498 17.3823 13.2853 17.0553 13.2853 16.7143C13.2853 16.3733 13.1498 16.0463 12.9087 15.8051C12.6676 15.564 12.3406 15.4286 11.9996 15.4286C11.6586 15.4286 11.3316 15.564 11.0904 15.8051C10.8493 16.0463 10.7139 16.3733 10.7139 16.7143ZM11.3567 13.7143H12.6424C12.7603 13.7143 12.8567 13.6179 12.8567 13.5V6.21429C12.8567 6.09643 12.7603 6 12.6424 6H11.3567C11.2389 6 11.1424 6.09643 11.1424 6.21429V13.5C11.1424 13.6179 11.2389 13.7143 11.3567 13.7143Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Đánh dấu hỏng</span>
-                                            </a>
-                                        </template>
-                                        <template x-if="matchStatus(asset.status, 'mark-lost')">
-                                            <a class="d-flex item-menu" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalLost" @click="assetSelect = asset;">
-                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M16.9284 11.1416H7.07122C6.95336 11.1416 6.85693 11.238 6.85693 11.3559V12.6416C6.85693 12.7595 6.95336 12.8559 7.07122 12.8559H16.9284C17.0462 12.8559 17.1427 12.7595 17.1427 12.6416V11.3559C17.1427 11.238 17.0462 11.1416 16.9284 11.1416Z" fill="#344054"/>
-                                                    <path d="M12 0C5.37321 0 0 5.37321 0 12C0 18.6268 5.37321 24 12 24C18.6268 24 24 18.6268 24 12C24 5.37321 18.6268 0 12 0ZM12 21.9643C6.49821 21.9643 2.03571 17.5018 2.03571 12C2.03571 6.49821 6.49821 2.03571 12 2.03571C17.5018 2.03571 21.9643 6.49821 21.9643 12C21.9643 17.5018 17.5018 21.9643 12 21.9643Z" fill="#344054"/>
-                                                </svg>
-                                                <span class="title-menu">Đánh dấu mất</span>
-                                            </a>
-                                        </template>
-                                        <a style="cursor: pointer;" class="d-flex item-menu" id="printBtn" @click="openPrintDropdown = !openPrintDropdown">
-                                            <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20.25 8.96763H19.1786C19.0607 8.96763 18.9643 9.06406 18.9643 9.18192V10.2533C18.9643 10.3712 19.0607 10.4676 19.1786 10.4676H20.25C20.3679 10.4676 20.4643 10.3712 20.4643 10.2533V9.18192C20.4643 9.06406 20.3679 8.96763 20.25 8.96763ZM21.1071 6.18192H17.8929V0.503348C17.8929 0.385491 17.7964 0.289062 17.6786 0.289062H6.32143C6.20357 0.289062 6.10714 0.385491 6.10714 0.503348V6.18192H2.89286C1.70893 6.18192 0.75 7.14085 0.75 8.32478V17.1105C0.75 17.5846 1.13304 17.9676 1.60714 17.9676H6.10714V21.5033C6.10714 21.6212 6.20357 21.7176 6.32143 21.7176H17.6786C17.7964 21.7176 17.8929 21.6212 17.8929 21.5033V17.9676H22.3929C22.867 17.9676 23.25 17.5846 23.25 17.1105V8.32478C23.25 7.14085 22.2911 6.18192 21.1071 6.18192ZM7.92857 2.11049H16.0714V6.18192H7.92857V2.11049ZM16.0714 19.8962H7.92857V12.5033H16.0714V19.8962ZM21.4286 16.1462H17.8929V10.6819H6.10714V16.1462H2.57143V8.32478C2.57143 8.14799 2.71607 8.00335 2.89286 8.00335H21.1071C21.2839 8.00335 21.4286 8.14799 21.4286 8.32478V16.1462Z" fill="#344054"/>
-                                            </svg>
-                                            <span class="title-menu">In</span>
-                                        </a>
-                                        <div x-show="openPrintDropdown"
-                                        class="dropdown-content"
-                                        @click.outside="openPrintDropdown = false"  style="position: absolute; background: #fff; border-radius: 13px; box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); right: -105px; min-width: 100px !important; width: fit-content;">
-                                            <a @click="printImage('/qrcode/qr_image_'+asset.id+'.png')" style="cursor: pointer;">In mã QR</a>
-                                            <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalDetailAsset" style="cursor: pointer;" @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset); tabDetail = 'change-tab';">In biên bản</a>
-                                        </div>
-                                        <script>
-                                            function printImage(src) {
-                                                let newWin = window.open('', '_blank');
-                                                newWin.document.write(`
+                                            <div x-show="openPrintDropdown"
+                                                 class="dropdown-content"
+                                                 @click.outside="openPrintDropdown = false"
+                                                 style="position: absolute; background: #fff; border-radius: 13px; box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2); right: -105px; min-width: 100px !important; width: fit-content;">
+                                                <a @click="printImage('/qrcode/qr_image_'+asset.id+'.png')"
+                                                   style="cursor: pointer;">In mã QR</a>
+                                                <a style="cursor: pointer;" data-bs-toggle="modal"
+                                                   data-bs-target="#modalDetailAsset" style="cursor: pointer;"
+                                                   @click="fillData(asset); getDataHistoryOfAsset(asset); getDataLogOfAsset(asset); tabDetail = 'change-tab';">In
+                                                    biên bản</a>
+                                            </div>
+                                            <script>
+                                                function printImage(src) {
+                                                    let newWin = window.open('', '_blank');
+                                                    newWin.document.write(`
                                                     <html>
                                                         <head><title>In ảnh QR</title></head>
                                                         <body style="text-align: center;">
@@ -379,97 +501,132 @@
                                                         </body>
                                                     </html>
                                                 `);
-                                                newWin.document.close();
-                                            }
-                                        </script>
-                                        {{-- <a class="d-flex item-menu" href="#">
-                                            <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M3.66797 5.7998V22.9998C3.66797 24.1044 4.5634 24.9998 5.66797 24.9998H20.3346C21.4392 24.9998 22.3346 24.1044 22.3346 22.9998V5.7998" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M7.66797 5.8V3C7.66797 1.89543 8.5634 1 9.66797 1H16.3346C17.4392 1 18.3346 1.89543 18.3346 3V5.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M10.332 13L10.332 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                <path d="M15.668 13L15.668 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
+                                                    newWin.document.close();
+                                                }
+                                            </script>
+                                            {{-- <a class="d-flex item-menu" href="#">
+                                                <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M1 5.7998H25" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M3.66797 5.7998V22.9998C3.66797 24.1044 4.5634 24.9998 5.66797 24.9998H20.3346C21.4392 24.9998 22.3346 24.1044 22.3346 22.9998V5.7998" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M7.66797 5.8V3C7.66797 1.89543 8.5634 1 9.66797 1H16.3346C17.4392 1 18.3346 1.89543 18.3346 3V5.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M10.332 13L10.332 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M15.668 13L15.668 17.8" stroke="#F31111" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
 
-                                            <span class="title-menu text-danger">Xóa</span>
-                                        </a>                                         --}}
-                                    </div>
-                                </td>
-                                <td class="text-center" x-text="asset.code"></td>
-                                <td class="text-left" x-text="asset.name" style="max-width: 300px; white-space: break-spaces; line-height: 1.5;"></td>
-                                <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
-                                <td class="text-left" x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
-                                <td class="text-center" style="min-width: 220px;">
-                                    <div class="d-flex">
-                                        <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar
+                                                <span class="title-menu text-danger">Xóa</span>
+                                            </a>                                         --}}
+                                        </div>
+                                    </td>
+                                    <td class="text-center" x-text="asset.code"></td>
+                                    <td class="text-left" x-text="asset.name"
+                                        style="max-width: 300px; white-space: break-spaces; line-height: 1.5;"></td>
+                                    <td class="text-left" x-text="asset.asset_type ? asset.asset_type.name : ''"></td>
+                                    <td class="text-left"
+                                        x-text="asset.organization ? asset.organization.dept_type.cfg_key + ' ' + asset.organization.name : (asset.user ?  asset.user.organization.dept_type.cfg_key + ' ' + asset.user.organization.name : '-')"></td>
+                                    <td class="text-center" style="min-width: 220px;">
+                                        <div class="d-flex">
+                                            <img x-show="asset.user_id" x-bind:src="asset.user && asset.user.avatar
                                                 ? (asset.user.avatar.includes('/uploads/')
                                                     ? 'https://office.sconnect.com.vn' + asset.user.avatar
                                                     : asset.user.avatar)
                                                 : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                alt=""
-                                                style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                        <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                            <span x-text="asset.user ? asset.user.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                            <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''" style="color: #706f6f;"></span>
+                                                 alt=""
+                                                 style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
+                                            <div
+                                                style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                <span x-text="asset.user ? asset.user.name : ''"
+                                                      style="font-weight: 600; font-size: 14px;"></span>
+                                                <span x-text="asset.user ? 'Mã nhân sự:' + asset.user.code : ''"
+                                                      style="color: #706f6f;"></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <template x-if="!asset.user_id">
-                                        <div>-</div>
-                                    </template>
-                                </td>
-                                <td class="text-center" style="min-width: 220px;">
-                                    <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
-                                        <div class="d-flex">
-                                            <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar
+                                        <template x-if="!asset.user_id">
+                                            <div>-</div>
+                                        </template>
+                                    </td>
+                                    <td class="text-center" style="min-width: 220px;">
+                                        <template x-if="!asset.user_id && asset.organization_id && asset.status != 2">
+                                            <div class="d-flex">
+                                                <img x-bind:src="asset.organization.manager && asset.organization.manager.avatar
                                             ? (asset.organization.manager.avatar.includes('/uploads/')
                                                 ? 'https://office.sconnect.com.vn' + asset.organization.manager.avatar
                                                 : asset.organization.manager.avatar)
                                             : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                            alt=""
-                                            style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
-                                            <div class="d-flex" style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                                <span x-text="asset.organization.manager ? asset.organization.manager.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                                <span x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''" style="color: #706f6f;"></span>
+                                                     alt=""
+                                                     style="width: 35px; height: 35px; object-fit: cover; border-radius: 100px;">
+                                                <div class="d-flex"
+                                                     style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                    <span
+                                                        x-text="asset.organization.manager ? asset.organization.manager.name : ''"
+                                                        style="font-weight: 600; font-size: 14px;"></span>
+                                                    <span
+                                                        x-text="asset.organization.manager ? 'Mã nhân sự:' + asset.organization.manager.code : ''"
+                                                        style="color: #706f6f;"></span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </template>
-                                    <template x-if="!asset.organization_id || asset.user_id || asset.status == 2">
-                                        <div>-</div>
-                                    </template>
-                                </td>
-                                <td class="text-center" x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
-                                <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
-                                <td class="text-center" x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
+                                        </template>
+                                        <template x-if="!asset.organization_id || asset.user_id || asset.status == 2">
+                                            <div>-</div>
+                                        </template>
+                                    </td>
+                                    <td class="text-center"
+                                        x-text="asset.price ? asset.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '-'"></td>
+                                    <td class="text-center" x-html="arrSvgStatus[asset.status]"></td>
+                                    <td class="text-center"
+                                        x-text="asset.location ? LIST_LOCATION_ASSET[asset.location] : '-'"></td>
 
-                            </tr>
-                        </template>
-                        </tbody>
-                  </table>
-                </div>
+                                </tr>
+                            </template>
+                            </tbody>
+                        </table>
+                    </div>
 
-              @include('common.pagination')
-                <!-- Modal -->
-                    <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    @include('common.pagination')
+                    <!-- Modal -->
+                    <div class="modal fade" id="modalDetailAsset" data-bs-backdrop="static" data-bs-keyboard="false"
+                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog modal-xl" style="--bs-modal-width: 1400px !important">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="mb-0" style="font-weight: bold; color: #379237">Xem chi tiết tài sản</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-3" style="padding-right: 60px;">
                                             <ul class="sidebar-tab" style="padding: 0;">
-                                                <li @click="tabDetail='general-tab'" :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông tin chung</li>
-                                                <li @click="tabDetail='guarantee-tab'" :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo hành</li>
-                                                <li @click="tabDetail='change-tab'" :class="tabDetail == 'change-tab' ? 'active-sidebar' : ''">Cấp phát/Thu hồi/Luân chuyển</li>
-                                                <li @click="tabDetail='maintain-tab'" :class="tabDetail == 'maintain-tab' ? 'active-sidebar' : ''">Bảo dưỡng</li>
-                                                <li @click="tabDetail='allocation-tab'" :class="tabDetail == 'allocation-tab' ? 'active-sidebar' : ''">Phân bổ</li>
-                                                <li @click="tabDetail='repair-tab'" :class="tabDetail == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa</li>
-                                                <li @click="tabDetail='lost-tab'" :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy - thanh lý</li>
+                                                <li @click="tabDetail='general-tab'"
+                                                    :class="tabDetail == 'general-tab' ? 'active-sidebar' : ''">Thông
+                                                    tin chung
+                                                </li>
+                                                <li @click="tabDetail='guarantee-tab'"
+                                                    :class="tabDetail == 'guarantee-tab' ? 'active-sidebar' : ''">Bảo
+                                                    hành
+                                                </li>
+                                                <li @click="tabDetail='change-tab'"
+                                                    :class="tabDetail == 'change-tab' ? 'active-sidebar' : ''">Cấp
+                                                    phát/Thu hồi/Luân chuyển
+                                                </li>
+                                                <li @click="tabDetail='maintain-tab'"
+                                                    :class="tabDetail == 'maintain-tab' ? 'active-sidebar' : ''">Bảo
+                                                    dưỡng
+                                                </li>
+                                                <li @click="tabDetail='allocation-tab'"
+                                                    :class="tabDetail == 'allocation-tab' ? 'active-sidebar' : ''">Phân
+                                                    bổ
+                                                </li>
+                                                <li @click="tabDetail='repair-tab'"
+                                                    :class="tabDetail == 'repair-tab' ? 'active-sidebar' : ''">Sửa chữa
+                                                </li>
+                                                <li @click="tabDetail='lost-tab'"
+                                                    :class="tabDetail == 'lost-tab' ? 'active-sidebar' : ''">Mất - hủy -
+                                                    thanh lý
+                                                </li>
                                             </ul>
                                             <span>Mã QR</span>
-                                            <img :src="'/qrcode/qr_image_'+assetObj.id+'.png'" alt="" style="width: 100%;">
+                                            <img :src="'/qrcode/qr_image_'+assetObj.id+'.png'" alt=""
+                                                 style="width: 100%;">
                                         </div>
                                         <div class="col-9">
                                             <div class="name-asset d-flex" style="gap: 10px;">
@@ -483,10 +640,14 @@
                                                         <div class="mb-3">
                                                             <span>Loại tài sản</span>
                                                             {{-- <input type="text" class="form-control" x-model="assetObj.type"> --}}
-                                                            <select class="form-control select2" data-placeholder="Chọn loại tài sản" id="typeAsetSelect" x-model="assetObj.asset_type_id" disabled>
+                                                            <select class="form-control select2"
+                                                                    data-placeholder="Chọn loại tài sản"
+                                                                    id="typeAsetSelect" x-model="assetObj.asset_type_id"
+                                                                    disabled>
                                                                 <option value="0" selected>Loại tài sản</option>
                                                                 <template x-for="(value, key) in assetType">
-                                                                    <option :value="value.id" x-text="value.name"></option>
+                                                                    <option :value="value.id"
+                                                                            x-text="value.name"></option>
                                                                 </template>
                                                             </select>
                                                         </div>
@@ -494,7 +655,9 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Vị trí tài sản</span>
-                                                            <select class="form-control select2" data-placeholder="Vị trí" id="locationSearch" x-model="assetObj.location" disabled>
+                                                            <select class="form-control select2"
+                                                                    data-placeholder="Vị trí" id="locationSearch"
+                                                                    x-model="assetObj.location" disabled>
                                                                 <option value="0" selected>Vị trí</option>
                                                                 <template x-for="(value, key) in listLocation">
                                                                     <option :value="key" x-text="value"></option>
@@ -505,31 +668,38 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Mã tài sản</span>
-                                                            <input type="text" class="form-control" x-model="assetObj.code" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="assetObj.code" disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày mua</span>
-                                                            <input type="date" class="form-control date-disabled" id="locationSearch" x-model="assetObj.date_purchase" disabled>
+                                                            <input type="date" class="form-control date-disabled"
+                                                                   id="locationSearch" x-model="assetObj.date_purchase"
+                                                                   disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Tên tài sản</span>
-                                                            <input type="text" class="form-control" x-model="assetObj.name" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="assetObj.name" disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Nhà cung cấp</span>
-                                                            <select class="form-control select2" data-placeholder="Vị trí" id="supplierDetail" x-model="assetObj.supplier_id" disabled>
+                                                            <select class="form-control select2"
+                                                                    data-placeholder="Vị trí" id="supplierDetail"
+                                                                    x-model="assetObj.supplier_id" disabled>
                                                                 <option value="0" selected>Nhà cung cấp</option>
                                                                 <template x-for="(supplier, key) in listSupplier">
-                                                                    <option :value="supplier.id" x-text="supplier.name"></option>
+                                                                    <option :value="supplier.id"
+                                                                            x-text="supplier.name"></option>
                                                                 </template>
                                                             </select>
 
@@ -538,35 +708,43 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Đơn vị tính</span>
-                                                            <input type="text" class="form-control" x-model="LIST_MEASURE[assetObj.asset_type.measure]" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="LIST_MEASURE[assetObj.asset_type.measure]"
+                                                                   disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị</span>
-                                                            <input type="text" class="form-control" x-model="assetObj.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="assetObj.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')"
+                                                                   disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số lượng</span></span>
-                                                            <input type="number" class="form-control" value="1" disabled>
+                                                            <input type="number" class="form-control" value="1"
+                                                                   disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số serial</span>
-                                                            <input type="text" class="form-control" x-model="assetObj.seri_number" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="assetObj.seri_number" disabled>
 
                                                         </div>
                                                     </div>
                                                     <div class="col-12">
                                                         <div class="mb-3">
                                                             <span>Ghi chú</span>
-                                                            <textarea name="" class="form-control" style="width: 100%" rows="3" x-model="assetObj.description" disabled></textarea>
+                                                            <textarea name="" class="form-control" style="width: 100%"
+                                                                      rows="3" x-model="assetObj.description"
+                                                                      disabled></textarea>
 
                                                         </div>
                                                     </div>
@@ -580,13 +758,15 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Thời gian bảo hành</span>
-                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.date_warranty" disabled>
+                                                            <input type="date" class="form-control date-disabled"
+                                                                   x-model="assetObj.date_warranty" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Hạn bảo hành</span></span>
-                                                            <input type="text" class="form-control" x-model="assetObj.warranty_months" disabled>
+                                                            <input type="text" class="form-control"
+                                                                   x-model="assetObj.warranty_months" disabled>
                                                         </div>
                                                     </div>
                                                     {{-- <div class="col-12">
@@ -603,13 +783,23 @@
                                                     Cấp phát/Thu hồi/Luân chuyển
                                                 </h6>
                                                 <div class="row">
-                                                    <div class="col-12 custom-scroll" style="overflow-x: auto; width: 100%; padding: 0;">
-                                                        <table class="table table-bordered table-repair" style="width: 1000px;">
+                                                    <div class="col-12 custom-scroll"
+                                                         style="overflow-x: auto; width: 100%; padding: 0;">
+                                                        <table class="table table-bordered table-repair"
+                                                               style="width: 1000px;">
                                                             <thead>
                                                             <tr style="font-size: 14px;">
-                                                                <th scope="col" style="position: sticky; left: 0; z-index: 1;">Ngày</th>
-                                                                <th scope="col" style="position: sticky; left: 95px; z-index: 1;">Hành động</th>
-                                                                <th scope="col" style="position: sticky; left: 186px; z-index: 1;">Biên bản</th>
+                                                                <th scope="col"
+                                                                    style="position: sticky; left: 0; z-index: 1;">Ngày
+                                                                </th>
+                                                                <th scope="col"
+                                                                    style="position: sticky; left: 95px; z-index: 1;">
+                                                                    Hành động
+                                                                </th>
+                                                                <th scope="col"
+                                                                    style="position: sticky; left: 186px; z-index: 1;">
+                                                                    Biên bản
+                                                                </th>
                                                                 <th scope="col">Người thực hiện</th>
                                                                 <th scope="col">Bàn giao cho</th>
                                                                 <th scope="col">Cá nhân/Đại diện</th>
@@ -620,82 +810,145 @@
                                                             <tbody>
                                                             <template x-for="history in listHistoryAsset">
                                                                 <tr>
-                                                                    <td x-text="formatDateVN(history.transfer_asset.date)" style="position: sticky; left: 0; z-index: 1;"></td>
-                                                                    <td style="position: sticky; left: 95px; z-index: 1;" x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
+                                                                    <td x-text="formatDateVN(history.transfer_asset.date)"
+                                                                        style="position: sticky; left: 0; z-index: 1;"></td>
+                                                                    <td style="position: sticky; left: 95px; z-index: 1;"
+                                                                        x-text="history.transfer_asset.type == 1 ? 'Cấp phát' : ( history.transfer_asset.type == 2 ? 'Thu hồi' : 'Luân chuyển') "></td>
                                                                     <td style="position: sticky; left: 186px; z-index: 1;">
-                                                                        <span class="text-primary" x-text="'BB0' + history.transfer_asset_id" @click="window.open('/' + history.transfer_asset.link_report, '_blank')" style="cursor: pointer;"></span>
+                                                                        <span class="text-primary"
+                                                                              x-text="'BB0' + history.transfer_asset_id"
+                                                                              @click="window.open('/' + history.transfer_asset.link_report, '_blank')"
+                                                                              style="cursor: pointer;"></span>
                                                                     </td>
                                                                     <td>
                                                                         <div class="d-flex">
-                                                                            <img x-show="history.transfer_asset.create_by" x-bind:src="history.transfer_asset.create_by && history.transfer_asset.create_by.avatar
+                                                                            <img
+                                                                                x-show="history.transfer_asset.create_by"
+                                                                                x-bind:src="history.transfer_asset.create_by && history.transfer_asset.create_by.avatar
                                                                                     ? (history.transfer_asset.create_by.avatar.includes('/uploads/')
                                                                                         ? 'https://office.sconnect.com.vn' + history.transfer_asset.create_by.avatar
                                                                                         : history.transfer_asset.create_by.avatar)
                                                                                     : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                                                    alt=""
-                                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                                                            <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                                                                <span x-text="history.transfer_asset.create_by ? history.transfer_asset.create_by.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                                <span x-text="history.transfer_asset.create_by ? 'Mã nhân sự:' + history.transfer_asset.create_by.code : ''" style="color: #706f6f;"></span>
+                                                                                alt=""
+                                                                                style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                            <div
+                                                                                style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                                                <span
+                                                                                    x-text="history.transfer_asset.create_by ? history.transfer_asset.create_by.name : ''"
+                                                                                    style="font-weight: 600; font-size: 16px;"></span>
+                                                                                <span
+                                                                                    x-text="history.transfer_asset.create_by ? 'Mã nhân sự:' + history.transfer_asset.create_by.code : ''"
+                                                                                    style="color: #706f6f;"></span>
                                                                             </div>
                                                                         </div>
                                                                     </td>
                                                                     <td>
-                                                                        <template x-if="history.transfer_asset.type !== 3">
+                                                                        <template
+                                                                            x-if="history.transfer_asset.type !== 3">
                                                                             <div>
-                                                                                <svg x-show="history.transfer_asset.user_id" width="76" height="30" viewBox="0 0 76 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <rect x="1" y="0.5" width="74" height="29" rx="5.5" stroke="#379237"/>
-                                                                                    <path d="M19.9261 13H18.6932C18.6203 12.6454 18.4927 12.3338 18.3104 12.0653C18.1314 11.7969 17.9126 11.5715 17.6541 11.3892C17.3989 11.2036 17.1155 11.0644 16.804 10.9716C16.4924 10.8788 16.1676 10.8324 15.8295 10.8324C15.2131 10.8324 14.6546 10.9882 14.1541 11.2997C13.657 11.6113 13.2609 12.0703 12.9659 12.6768C12.6742 13.2834 12.5284 14.0275 12.5284 14.9091C12.5284 15.7907 12.6742 16.5348 12.9659 17.1413C13.2609 17.7479 13.657 18.2069 14.1541 18.5185C14.6546 18.83 15.2131 18.9858 15.8295 18.9858C16.1676 18.9858 16.4924 18.9394 16.804 18.8466C17.1155 18.7538 17.3989 18.6162 17.6541 18.4339C17.9126 18.2483 18.1314 18.0213 18.3104 17.7528C18.4927 17.4811 18.6203 17.1695 18.6932 16.8182H19.9261C19.8333 17.3385 19.6643 17.8042 19.419 18.2152C19.1738 18.6262 18.8688 18.9759 18.5043 19.2642C18.1397 19.5492 17.7304 19.7663 17.2763 19.9155C16.8255 20.0646 16.3433 20.1392 15.8295 20.1392C14.9612 20.1392 14.1889 19.9271 13.5128 19.5028C12.8366 19.0786 12.3047 18.4754 11.9169 17.6932C11.5291 16.911 11.3352 15.983 11.3352 14.9091C11.3352 13.8352 11.5291 12.9072 11.9169 12.125C12.3047 11.3428 12.8366 10.7396 13.5128 10.3153C14.1889 9.8911 14.9612 9.67898 15.8295 9.67898C16.3433 9.67898 16.8255 9.75355 17.2763 9.9027C17.7304 10.0518 18.1397 10.2706 18.5043 10.5589C18.8688 10.844 19.1738 11.192 19.419 11.603C19.6643 12.0107 19.8333 12.4763 19.9261 13ZM24.0066 20.179C23.5227 20.179 23.0835 20.0878 22.6891 19.9055C22.2947 19.7199 21.9815 19.4531 21.7495 19.1051C21.5175 18.7538 21.4015 18.3295 21.4015 17.8324C21.4015 17.3949 21.4876 17.0402 21.66 16.7685C21.8323 16.4934 22.0627 16.2779 22.351 16.1222C22.6394 15.9664 22.9576 15.8504 23.3056 15.7741C23.6569 15.6946 24.0099 15.6316 24.3645 15.5852C24.8285 15.5256 25.2047 15.4808 25.4931 15.451C25.7847 15.4179 25.9969 15.3632 26.1294 15.2869C26.2653 15.2107 26.3333 15.0781 26.3333 14.8892V14.8494C26.3333 14.3589 26.199 13.9777 25.9306 13.706C25.6654 13.4342 25.2627 13.2983 24.7225 13.2983C24.1623 13.2983 23.7232 13.4209 23.405 13.6662C23.0868 13.9115 22.8631 14.1733 22.7338 14.4517L21.6202 14.054C21.8191 13.59 22.0842 13.2287 22.4157 12.9702C22.7504 12.7083 23.115 12.526 23.5094 12.4233C23.9071 12.3172 24.2982 12.2642 24.6827 12.2642C24.928 12.2642 25.2097 12.294 25.5279 12.3537C25.8494 12.41 26.1593 12.5277 26.4576 12.7067C26.7592 12.8857 27.0094 13.1558 27.2083 13.517C27.4071 13.8783 27.5066 14.3622 27.5066 14.9688V20H26.3333V18.9659H26.2736C26.1941 19.1316 26.0615 19.3089 25.8759 19.4979C25.6903 19.6868 25.4434 19.8475 25.1351 19.9801C24.8269 20.1127 24.4507 20.179 24.0066 20.179ZM24.1855 19.125C24.6496 19.125 25.0407 19.0339 25.3588 18.8516C25.6803 18.6693 25.9223 18.4339 26.0847 18.1456C26.2504 17.8572 26.3333 17.554 26.3333 17.2358V16.1619C26.2836 16.2216 26.1742 16.2763 26.0051 16.326C25.8394 16.3724 25.6472 16.4138 25.4284 16.4503C25.213 16.4834 25.0025 16.5133 24.7971 16.5398C24.5949 16.563 24.4308 16.5829 24.3049 16.5994C23.9999 16.6392 23.7149 16.7038 23.4498 16.7933C23.1879 16.8795 22.9758 17.0104 22.8134 17.1861C22.6543 17.3584 22.5748 17.5937 22.5748 17.892C22.5748 18.2997 22.7256 18.608 23.0272 18.8168C23.3321 19.0223 23.7182 19.125 24.1855 19.125ZM24.2253 11.3295L25.4384 9.02273H26.8105L25.2594 11.3295H24.2253ZM34.7589 15.4062V20H33.5856V12.3636H34.7191V13.5568H34.8185C34.9975 13.169 35.2693 12.8575 35.6339 12.6222C35.9985 12.3835 36.4691 12.2642 37.0458 12.2642C37.5629 12.2642 38.0153 12.3703 38.4031 12.5824C38.7908 12.7912 39.0924 13.1094 39.3079 13.5369C39.5233 13.9612 39.631 14.4981 39.631 15.1477V20H38.4577V15.2273C38.4577 14.6274 38.302 14.16 37.9904 13.8253C37.6789 13.4872 37.2513 13.3182 36.7077 13.3182C36.3332 13.3182 35.9985 13.3994 35.7035 13.5618C35.4118 13.7242 35.1815 13.9612 35.0124 14.2727C34.8434 14.5843 34.7589 14.9621 34.7589 15.4062ZM42.9483 15.4062V20H41.775V9.81818H42.9483V13.5568H43.0478C43.2267 13.1624 43.4952 12.8492 43.8532 12.6172C44.2144 12.3819 44.695 12.2642 45.2949 12.2642C45.8153 12.2642 46.271 12.3686 46.6621 12.5774C47.0532 12.7829 47.3565 13.0994 47.5719 13.527C47.7907 13.9512 47.9 14.4915 47.9 15.1477V20H46.7267V15.2273C46.7267 14.6207 46.5693 14.1518 46.2544 13.8203C45.9429 13.4856 45.5104 13.3182 44.9569 13.3182C44.5724 13.3182 44.2277 13.3994 43.9228 13.5618C43.6212 13.7242 43.3825 13.9612 43.2069 14.2727C43.0345 14.5843 42.9483 14.9621 42.9483 15.4062ZM52.2937 20.179C51.8098 20.179 51.3706 20.0878 50.9762 19.9055C50.5818 19.7199 50.2686 19.4531 50.0366 19.1051C49.8046 18.7538 49.6886 18.3295 49.6886 17.8324C49.6886 17.3949 49.7747 17.0402 49.9471 16.7685C50.1194 16.4934 50.3498 16.2779 50.6381 16.1222C50.9265 15.9664 51.2447 15.8504 51.5927 15.7741C51.944 15.6946 52.297 15.6316 52.6516 15.5852C53.1156 15.5256 53.4918 15.4808 53.7802 15.451C54.0719 15.4179 54.284 15.3632 54.4165 15.2869C54.5524 15.2107 54.6204 15.0781 54.6204 14.8892V14.8494C54.6204 14.3589 54.4862 13.9777 54.2177 13.706C53.9525 13.4342 53.5498 13.2983 53.0096 13.2983C52.4495 13.2983 52.0103 13.4209 51.6921 13.6662C51.3739 13.9115 51.1502 14.1733 51.021 14.4517L49.9073 14.054C50.1062 13.59 50.3713 13.2287 50.7028 12.9702C51.0375 12.7083 51.4021 12.526 51.7965 12.4233C52.1942 12.3172 52.5853 12.2642 52.9698 12.2642C53.2151 12.2642 53.4968 12.294 53.815 12.3537C54.1365 12.41 54.4464 12.5277 54.7447 12.7067C55.0463 12.8857 55.2965 13.1558 55.4954 13.517C55.6942 13.8783 55.7937 14.3622 55.7937 14.9688V20H54.6204V18.9659H54.5607C54.4812 19.1316 54.3486 19.3089 54.163 19.4979C53.9774 19.6868 53.7305 19.8475 53.4222 19.9801C53.114 20.1127 52.7378 20.179 52.2937 20.179ZM52.4727 19.125C52.9367 19.125 53.3278 19.0339 53.646 18.8516C53.9674 18.6693 54.2094 18.4339 54.3718 18.1456C54.5375 17.8572 54.6204 17.554 54.6204 17.2358V16.1619C54.5707 16.2216 54.4613 16.2763 54.2923 16.326C54.1265 16.3724 53.9343 16.4138 53.7156 16.4503C53.5001 16.4834 53.2897 16.5133 53.0842 16.5398C52.882 16.563 52.7179 16.5829 52.592 16.5994C52.2871 16.6392 52.002 16.7038 51.7369 16.7933C51.475 16.8795 51.2629 17.0104 51.1005 17.1861C50.9414 17.3584 50.8619 17.5937 50.8619 17.892C50.8619 18.2997 51.0127 18.608 51.3143 18.8168C51.6192 19.0223 52.0053 19.125 52.4727 19.125ZM54.0835 11.4489L53.0494 10.0568L52.0153 11.4489H50.9016V11.3693L52.5124 9.30114H53.5863L55.1971 11.3693V11.4489H54.0835ZM59.1085 15.4062V20H57.9352V12.3636H59.0687V13.5568H59.1681C59.3471 13.169 59.6189 12.8575 59.9835 12.6222C60.3481 12.3835 60.8187 12.2642 61.3954 12.2642C61.9125 12.2642 62.3649 12.3703 62.7527 12.5824C63.1404 12.7912 63.4421 13.1094 63.6575 13.5369C63.8729 13.9612 63.9806 14.4981 63.9806 15.1477V20H62.8074V15.2273C62.8074 14.6274 62.6516 14.16 62.34 13.8253C62.0285 13.4872 61.6009 13.3182 61.0574 13.3182C60.6828 13.3182 60.3481 13.3994 60.0531 13.5618C59.7614 13.7242 59.5311 13.9612 59.362 14.2727C59.193 14.5843 59.1085 14.9621 59.1085 15.4062Z" fill="#379237"/>
+                                                                                <svg
+                                                                                    x-show="history.transfer_asset.user_id"
+                                                                                    width="76" height="30"
+                                                                                    viewBox="0 0 76 30" fill="none"
+                                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                                    <rect x="1" y="0.5" width="74"
+                                                                                          height="29" rx="5.5"
+                                                                                          stroke="#379237"/>
+                                                                                    <path
+                                                                                        d="M19.9261 13H18.6932C18.6203 12.6454 18.4927 12.3338 18.3104 12.0653C18.1314 11.7969 17.9126 11.5715 17.6541 11.3892C17.3989 11.2036 17.1155 11.0644 16.804 10.9716C16.4924 10.8788 16.1676 10.8324 15.8295 10.8324C15.2131 10.8324 14.6546 10.9882 14.1541 11.2997C13.657 11.6113 13.2609 12.0703 12.9659 12.6768C12.6742 13.2834 12.5284 14.0275 12.5284 14.9091C12.5284 15.7907 12.6742 16.5348 12.9659 17.1413C13.2609 17.7479 13.657 18.2069 14.1541 18.5185C14.6546 18.83 15.2131 18.9858 15.8295 18.9858C16.1676 18.9858 16.4924 18.9394 16.804 18.8466C17.1155 18.7538 17.3989 18.6162 17.6541 18.4339C17.9126 18.2483 18.1314 18.0213 18.3104 17.7528C18.4927 17.4811 18.6203 17.1695 18.6932 16.8182H19.9261C19.8333 17.3385 19.6643 17.8042 19.419 18.2152C19.1738 18.6262 18.8688 18.9759 18.5043 19.2642C18.1397 19.5492 17.7304 19.7663 17.2763 19.9155C16.8255 20.0646 16.3433 20.1392 15.8295 20.1392C14.9612 20.1392 14.1889 19.9271 13.5128 19.5028C12.8366 19.0786 12.3047 18.4754 11.9169 17.6932C11.5291 16.911 11.3352 15.983 11.3352 14.9091C11.3352 13.8352 11.5291 12.9072 11.9169 12.125C12.3047 11.3428 12.8366 10.7396 13.5128 10.3153C14.1889 9.8911 14.9612 9.67898 15.8295 9.67898C16.3433 9.67898 16.8255 9.75355 17.2763 9.9027C17.7304 10.0518 18.1397 10.2706 18.5043 10.5589C18.8688 10.844 19.1738 11.192 19.419 11.603C19.6643 12.0107 19.8333 12.4763 19.9261 13ZM24.0066 20.179C23.5227 20.179 23.0835 20.0878 22.6891 19.9055C22.2947 19.7199 21.9815 19.4531 21.7495 19.1051C21.5175 18.7538 21.4015 18.3295 21.4015 17.8324C21.4015 17.3949 21.4876 17.0402 21.66 16.7685C21.8323 16.4934 22.0627 16.2779 22.351 16.1222C22.6394 15.9664 22.9576 15.8504 23.3056 15.7741C23.6569 15.6946 24.0099 15.6316 24.3645 15.5852C24.8285 15.5256 25.2047 15.4808 25.4931 15.451C25.7847 15.4179 25.9969 15.3632 26.1294 15.2869C26.2653 15.2107 26.3333 15.0781 26.3333 14.8892V14.8494C26.3333 14.3589 26.199 13.9777 25.9306 13.706C25.6654 13.4342 25.2627 13.2983 24.7225 13.2983C24.1623 13.2983 23.7232 13.4209 23.405 13.6662C23.0868 13.9115 22.8631 14.1733 22.7338 14.4517L21.6202 14.054C21.8191 13.59 22.0842 13.2287 22.4157 12.9702C22.7504 12.7083 23.115 12.526 23.5094 12.4233C23.9071 12.3172 24.2982 12.2642 24.6827 12.2642C24.928 12.2642 25.2097 12.294 25.5279 12.3537C25.8494 12.41 26.1593 12.5277 26.4576 12.7067C26.7592 12.8857 27.0094 13.1558 27.2083 13.517C27.4071 13.8783 27.5066 14.3622 27.5066 14.9688V20H26.3333V18.9659H26.2736C26.1941 19.1316 26.0615 19.3089 25.8759 19.4979C25.6903 19.6868 25.4434 19.8475 25.1351 19.9801C24.8269 20.1127 24.4507 20.179 24.0066 20.179ZM24.1855 19.125C24.6496 19.125 25.0407 19.0339 25.3588 18.8516C25.6803 18.6693 25.9223 18.4339 26.0847 18.1456C26.2504 17.8572 26.3333 17.554 26.3333 17.2358V16.1619C26.2836 16.2216 26.1742 16.2763 26.0051 16.326C25.8394 16.3724 25.6472 16.4138 25.4284 16.4503C25.213 16.4834 25.0025 16.5133 24.7971 16.5398C24.5949 16.563 24.4308 16.5829 24.3049 16.5994C23.9999 16.6392 23.7149 16.7038 23.4498 16.7933C23.1879 16.8795 22.9758 17.0104 22.8134 17.1861C22.6543 17.3584 22.5748 17.5937 22.5748 17.892C22.5748 18.2997 22.7256 18.608 23.0272 18.8168C23.3321 19.0223 23.7182 19.125 24.1855 19.125ZM24.2253 11.3295L25.4384 9.02273H26.8105L25.2594 11.3295H24.2253ZM34.7589 15.4062V20H33.5856V12.3636H34.7191V13.5568H34.8185C34.9975 13.169 35.2693 12.8575 35.6339 12.6222C35.9985 12.3835 36.4691 12.2642 37.0458 12.2642C37.5629 12.2642 38.0153 12.3703 38.4031 12.5824C38.7908 12.7912 39.0924 13.1094 39.3079 13.5369C39.5233 13.9612 39.631 14.4981 39.631 15.1477V20H38.4577V15.2273C38.4577 14.6274 38.302 14.16 37.9904 13.8253C37.6789 13.4872 37.2513 13.3182 36.7077 13.3182C36.3332 13.3182 35.9985 13.3994 35.7035 13.5618C35.4118 13.7242 35.1815 13.9612 35.0124 14.2727C34.8434 14.5843 34.7589 14.9621 34.7589 15.4062ZM42.9483 15.4062V20H41.775V9.81818H42.9483V13.5568H43.0478C43.2267 13.1624 43.4952 12.8492 43.8532 12.6172C44.2144 12.3819 44.695 12.2642 45.2949 12.2642C45.8153 12.2642 46.271 12.3686 46.6621 12.5774C47.0532 12.7829 47.3565 13.0994 47.5719 13.527C47.7907 13.9512 47.9 14.4915 47.9 15.1477V20H46.7267V15.2273C46.7267 14.6207 46.5693 14.1518 46.2544 13.8203C45.9429 13.4856 45.5104 13.3182 44.9569 13.3182C44.5724 13.3182 44.2277 13.3994 43.9228 13.5618C43.6212 13.7242 43.3825 13.9612 43.2069 14.2727C43.0345 14.5843 42.9483 14.9621 42.9483 15.4062ZM52.2937 20.179C51.8098 20.179 51.3706 20.0878 50.9762 19.9055C50.5818 19.7199 50.2686 19.4531 50.0366 19.1051C49.8046 18.7538 49.6886 18.3295 49.6886 17.8324C49.6886 17.3949 49.7747 17.0402 49.9471 16.7685C50.1194 16.4934 50.3498 16.2779 50.6381 16.1222C50.9265 15.9664 51.2447 15.8504 51.5927 15.7741C51.944 15.6946 52.297 15.6316 52.6516 15.5852C53.1156 15.5256 53.4918 15.4808 53.7802 15.451C54.0719 15.4179 54.284 15.3632 54.4165 15.2869C54.5524 15.2107 54.6204 15.0781 54.6204 14.8892V14.8494C54.6204 14.3589 54.4862 13.9777 54.2177 13.706C53.9525 13.4342 53.5498 13.2983 53.0096 13.2983C52.4495 13.2983 52.0103 13.4209 51.6921 13.6662C51.3739 13.9115 51.1502 14.1733 51.021 14.4517L49.9073 14.054C50.1062 13.59 50.3713 13.2287 50.7028 12.9702C51.0375 12.7083 51.4021 12.526 51.7965 12.4233C52.1942 12.3172 52.5853 12.2642 52.9698 12.2642C53.2151 12.2642 53.4968 12.294 53.815 12.3537C54.1365 12.41 54.4464 12.5277 54.7447 12.7067C55.0463 12.8857 55.2965 13.1558 55.4954 13.517C55.6942 13.8783 55.7937 14.3622 55.7937 14.9688V20H54.6204V18.9659H54.5607C54.4812 19.1316 54.3486 19.3089 54.163 19.4979C53.9774 19.6868 53.7305 19.8475 53.4222 19.9801C53.114 20.1127 52.7378 20.179 52.2937 20.179ZM52.4727 19.125C52.9367 19.125 53.3278 19.0339 53.646 18.8516C53.9674 18.6693 54.2094 18.4339 54.3718 18.1456C54.5375 17.8572 54.6204 17.554 54.6204 17.2358V16.1619C54.5707 16.2216 54.4613 16.2763 54.2923 16.326C54.1265 16.3724 53.9343 16.4138 53.7156 16.4503C53.5001 16.4834 53.2897 16.5133 53.0842 16.5398C52.882 16.563 52.7179 16.5829 52.592 16.5994C52.2871 16.6392 52.002 16.7038 51.7369 16.7933C51.475 16.8795 51.2629 17.0104 51.1005 17.1861C50.9414 17.3584 50.8619 17.5937 50.8619 17.892C50.8619 18.2997 51.0127 18.608 51.3143 18.8168C51.6192 19.0223 52.0053 19.125 52.4727 19.125ZM54.0835 11.4489L53.0494 10.0568L52.0153 11.4489H50.9016V11.3693L52.5124 9.30114H53.5863L55.1971 11.3693V11.4489H54.0835ZM59.1085 15.4062V20H57.9352V12.3636H59.0687V13.5568H59.1681C59.3471 13.169 59.6189 12.8575 59.9835 12.6222C60.3481 12.3835 60.8187 12.2642 61.3954 12.2642C61.9125 12.2642 62.3649 12.3703 62.7527 12.5824C63.1404 12.7912 63.4421 13.1094 63.6575 13.5369C63.8729 13.9612 63.9806 14.4981 63.9806 15.1477V20H62.8074V15.2273C62.8074 14.6274 62.6516 14.16 62.34 13.8253C62.0285 13.4872 61.6009 13.3182 61.0574 13.3182C60.6828 13.3182 60.3481 13.3994 60.0531 13.5618C59.7614 13.7242 59.5311 13.9612 59.362 14.2727C59.193 14.5843 59.1085 14.9621 59.1085 15.4062Z"
+                                                                                        fill="#379237"/>
                                                                                 </svg>
-                                                                                <svg x-show="!history.transfer_asset.user_id" width="62" height="30" viewBox="0 0 62 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <rect x="0.5" y="0.5" width="61" height="29" rx="5.5" stroke="#379237"/>
-                                                                                    <path d="M14.375 20H11.929V18.9062H14.2955C15.1373 18.9062 15.835 18.7438 16.3885 18.419C16.942 18.0942 17.3546 17.6319 17.6264 17.032C17.8982 16.4321 18.0341 15.7178 18.0341 14.8892C18.0341 14.0672 17.8999 13.3596 17.6314 12.7663C17.3629 12.1697 16.9619 11.7124 16.4283 11.3942C15.8946 11.0727 15.2301 10.9119 14.4347 10.9119H11.8693V9.81818H14.5142C15.5019 9.81818 16.3471 10.022 17.0497 10.4297C17.7524 10.834 18.291 11.4157 18.6655 12.1747C19.04 12.9304 19.2273 13.8352 19.2273 14.8892C19.2273 15.9498 19.0384 16.8629 18.6605 17.6286C18.2827 18.3909 17.7325 18.9775 17.0099 19.3885C16.2874 19.7962 15.4091 20 14.375 20ZM12.4659 9.81818V20H11.233V9.81818H12.4659ZM9.66193 15.2074V14.2926H14.0369V15.2074H9.66193ZM27.3409 11.7869H28.4347C28.4347 12.5426 28.2689 13.1425 27.9375 13.5866C27.6094 14.0308 27.0327 14.2528 26.2074 14.2528V13.4176C26.5388 13.4176 26.7841 13.3497 26.9432 13.2138C27.1056 13.0779 27.2116 12.8873 27.2614 12.642C27.3144 12.3968 27.3409 12.1117 27.3409 11.7869ZM24.2386 20.1591C23.5492 20.1591 22.9444 19.995 22.424 19.6669C21.907 19.3388 21.5026 18.8797 21.2109 18.2898C20.9226 17.6998 20.7784 17.0104 20.7784 16.2216C20.7784 15.4261 20.9226 14.7318 21.2109 14.1385C21.5026 13.5452 21.907 13.0845 22.424 12.7564C22.9444 12.4283 23.5492 12.2642 24.2386 12.2642C24.928 12.2642 25.5313 12.4283 26.0483 12.7564C26.5687 13.0845 26.973 13.5452 27.2614 14.1385C27.553 14.7318 27.6989 15.4261 27.6989 16.2216C27.6989 17.0104 27.553 17.6998 27.2614 18.2898C26.973 18.8797 26.5687 19.3388 26.0483 19.6669C25.5313 19.995 24.928 20.1591 24.2386 20.1591ZM24.2386 19.1051C24.7623 19.1051 25.1932 18.9709 25.5312 18.7024C25.8693 18.4339 26.1196 18.081 26.282 17.6435C26.4444 17.206 26.5256 16.732 26.5256 16.2216C26.5256 15.7112 26.4444 15.2356 26.282 14.7947C26.1196 14.3539 25.8693 13.9976 25.5312 13.7259C25.1932 13.4541 24.7623 13.3182 24.2386 13.3182C23.715 13.3182 23.2841 13.4541 22.946 13.7259C22.608 13.9976 22.3577 14.3539 22.1953 14.7947C22.0329 15.2356 21.9517 15.7112 21.9517 16.2216C21.9517 16.732 22.0329 17.206 22.1953 17.6435C22.3577 18.081 22.608 18.4339 22.946 18.7024C23.2841 18.9709 23.715 19.1051 24.2386 19.1051ZM30.6768 15.4062V20H29.5036V12.3636H30.6371V13.5568H30.7365C30.9155 13.169 31.1873 12.8575 31.5518 12.6222C31.9164 12.3835 32.3871 12.2642 32.9638 12.2642C33.4808 12.2642 33.9332 12.3703 34.321 12.5824C34.7088 12.7912 35.0104 13.1094 35.2259 13.5369C35.4413 13.9612 35.549 14.4981 35.549 15.1477V20H34.3757V15.2273C34.3757 14.6274 34.2199 14.16 33.9084 13.8253C33.5968 13.4872 33.1693 13.3182 32.6257 13.3182C32.2512 13.3182 31.9164 13.3994 31.6214 13.5618C31.3298 13.7242 31.0994 13.9612 30.9304 14.2727C30.7614 14.5843 30.6768 14.9621 30.6768 15.4062ZM47.8748 12.3636L45.051 20H43.8578L41.0339 12.3636H42.3066L44.4146 18.4489H44.4941L46.6021 12.3636H47.8748ZM49.4235 20V12.3636H50.5968V20H49.4235ZM50.0201 11.0909C49.7914 11.0909 49.5942 11.013 49.4284 10.8572C49.266 10.7015 49.1848 10.5142 49.1848 10.2955C49.1848 10.0767 49.266 9.88944 49.4284 9.73366C49.5942 9.57789 49.7914 9.5 50.0201 9.5C50.2488 9.5 50.4443 9.57789 50.6067 9.73366C50.7724 9.88944 50.8553 10.0767 50.8553 10.2955C50.8553 10.5142 50.7724 10.7015 50.6067 10.8572C50.4443 11.013 50.2488 11.0909 50.0201 11.0909ZM50.0201 22.5256C49.7914 22.5256 49.5942 22.4477 49.4284 22.2919C49.266 22.1361 49.1848 21.9489 49.1848 21.7301C49.1848 21.5114 49.266 21.3241 49.4284 21.1683C49.5942 21.0125 49.7914 20.9347 50.0201 20.9347C50.2488 20.9347 50.4443 21.0125 50.6067 21.1683C50.7724 21.3241 50.8553 21.5114 50.8553 21.7301C50.8553 21.9489 50.7724 22.1361 50.6067 22.2919C50.4443 22.4477 50.2488 22.5256 50.0201 22.5256Z" fill="#379237"/>
+                                                                                <svg
+                                                                                    x-show="!history.transfer_asset.user_id"
+                                                                                    width="62" height="30"
+                                                                                    viewBox="0 0 62 30" fill="none"
+                                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                                    <rect x="0.5" y="0.5" width="61"
+                                                                                          height="29" rx="5.5"
+                                                                                          stroke="#379237"/>
+                                                                                    <path
+                                                                                        d="M14.375 20H11.929V18.9062H14.2955C15.1373 18.9062 15.835 18.7438 16.3885 18.419C16.942 18.0942 17.3546 17.6319 17.6264 17.032C17.8982 16.4321 18.0341 15.7178 18.0341 14.8892C18.0341 14.0672 17.8999 13.3596 17.6314 12.7663C17.3629 12.1697 16.9619 11.7124 16.4283 11.3942C15.8946 11.0727 15.2301 10.9119 14.4347 10.9119H11.8693V9.81818H14.5142C15.5019 9.81818 16.3471 10.022 17.0497 10.4297C17.7524 10.834 18.291 11.4157 18.6655 12.1747C19.04 12.9304 19.2273 13.8352 19.2273 14.8892C19.2273 15.9498 19.0384 16.8629 18.6605 17.6286C18.2827 18.3909 17.7325 18.9775 17.0099 19.3885C16.2874 19.7962 15.4091 20 14.375 20ZM12.4659 9.81818V20H11.233V9.81818H12.4659ZM9.66193 15.2074V14.2926H14.0369V15.2074H9.66193ZM27.3409 11.7869H28.4347C28.4347 12.5426 28.2689 13.1425 27.9375 13.5866C27.6094 14.0308 27.0327 14.2528 26.2074 14.2528V13.4176C26.5388 13.4176 26.7841 13.3497 26.9432 13.2138C27.1056 13.0779 27.2116 12.8873 27.2614 12.642C27.3144 12.3968 27.3409 12.1117 27.3409 11.7869ZM24.2386 20.1591C23.5492 20.1591 22.9444 19.995 22.424 19.6669C21.907 19.3388 21.5026 18.8797 21.2109 18.2898C20.9226 17.6998 20.7784 17.0104 20.7784 16.2216C20.7784 15.4261 20.9226 14.7318 21.2109 14.1385C21.5026 13.5452 21.907 13.0845 22.424 12.7564C22.9444 12.4283 23.5492 12.2642 24.2386 12.2642C24.928 12.2642 25.5313 12.4283 26.0483 12.7564C26.5687 13.0845 26.973 13.5452 27.2614 14.1385C27.553 14.7318 27.6989 15.4261 27.6989 16.2216C27.6989 17.0104 27.553 17.6998 27.2614 18.2898C26.973 18.8797 26.5687 19.3388 26.0483 19.6669C25.5313 19.995 24.928 20.1591 24.2386 20.1591ZM24.2386 19.1051C24.7623 19.1051 25.1932 18.9709 25.5312 18.7024C25.8693 18.4339 26.1196 18.081 26.282 17.6435C26.4444 17.206 26.5256 16.732 26.5256 16.2216C26.5256 15.7112 26.4444 15.2356 26.282 14.7947C26.1196 14.3539 25.8693 13.9976 25.5312 13.7259C25.1932 13.4541 24.7623 13.3182 24.2386 13.3182C23.715 13.3182 23.2841 13.4541 22.946 13.7259C22.608 13.9976 22.3577 14.3539 22.1953 14.7947C22.0329 15.2356 21.9517 15.7112 21.9517 16.2216C21.9517 16.732 22.0329 17.206 22.1953 17.6435C22.3577 18.081 22.608 18.4339 22.946 18.7024C23.2841 18.9709 23.715 19.1051 24.2386 19.1051ZM30.6768 15.4062V20H29.5036V12.3636H30.6371V13.5568H30.7365C30.9155 13.169 31.1873 12.8575 31.5518 12.6222C31.9164 12.3835 32.3871 12.2642 32.9638 12.2642C33.4808 12.2642 33.9332 12.3703 34.321 12.5824C34.7088 12.7912 35.0104 13.1094 35.2259 13.5369C35.4413 13.9612 35.549 14.4981 35.549 15.1477V20H34.3757V15.2273C34.3757 14.6274 34.2199 14.16 33.9084 13.8253C33.5968 13.4872 33.1693 13.3182 32.6257 13.3182C32.2512 13.3182 31.9164 13.3994 31.6214 13.5618C31.3298 13.7242 31.0994 13.9612 30.9304 14.2727C30.7614 14.5843 30.6768 14.9621 30.6768 15.4062ZM47.8748 12.3636L45.051 20H43.8578L41.0339 12.3636H42.3066L44.4146 18.4489H44.4941L46.6021 12.3636H47.8748ZM49.4235 20V12.3636H50.5968V20H49.4235ZM50.0201 11.0909C49.7914 11.0909 49.5942 11.013 49.4284 10.8572C49.266 10.7015 49.1848 10.5142 49.1848 10.2955C49.1848 10.0767 49.266 9.88944 49.4284 9.73366C49.5942 9.57789 49.7914 9.5 50.0201 9.5C50.2488 9.5 50.4443 9.57789 50.6067 9.73366C50.7724 9.88944 50.8553 10.0767 50.8553 10.2955C50.8553 10.5142 50.7724 10.7015 50.6067 10.8572C50.4443 11.013 50.2488 11.0909 50.0201 11.0909ZM50.0201 22.5256C49.7914 22.5256 49.5942 22.4477 49.4284 22.2919C49.266 22.1361 49.1848 21.9489 49.1848 21.7301C49.1848 21.5114 49.266 21.3241 49.4284 21.1683C49.5942 21.0125 49.7914 20.9347 50.0201 20.9347C50.2488 20.9347 50.4443 21.0125 50.6067 21.1683C50.7724 21.3241 50.8553 21.5114 50.8553 21.7301C50.8553 21.9489 50.7724 22.1361 50.6067 22.2919C50.4443 22.4477 50.2488 22.5256 50.0201 22.5256Z"
+                                                                                        fill="#379237"/>
                                                                                 </svg>
                                                                             </div>
 
                                                                         </template>
-                                                                        <template x-if="history.transfer_asset.type == 3">
+                                                                        <template
+                                                                            x-if="history.transfer_asset.type == 3">
                                                                             <div>
-                                                                                <svg x-show="history.transfer_asset.to_user_id" width="76" height="30" viewBox="0 0 76 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <rect x="1" y="0.5" width="74" height="29" rx="5.5" stroke="#379237"/>
-                                                                                    <path d="M19.9261 13H18.6932C18.6203 12.6454 18.4927 12.3338 18.3104 12.0653C18.1314 11.7969 17.9126 11.5715 17.6541 11.3892C17.3989 11.2036 17.1155 11.0644 16.804 10.9716C16.4924 10.8788 16.1676 10.8324 15.8295 10.8324C15.2131 10.8324 14.6546 10.9882 14.1541 11.2997C13.657 11.6113 13.2609 12.0703 12.9659 12.6768C12.6742 13.2834 12.5284 14.0275 12.5284 14.9091C12.5284 15.7907 12.6742 16.5348 12.9659 17.1413C13.2609 17.7479 13.657 18.2069 14.1541 18.5185C14.6546 18.83 15.2131 18.9858 15.8295 18.9858C16.1676 18.9858 16.4924 18.9394 16.804 18.8466C17.1155 18.7538 17.3989 18.6162 17.6541 18.4339C17.9126 18.2483 18.1314 18.0213 18.3104 17.7528C18.4927 17.4811 18.6203 17.1695 18.6932 16.8182H19.9261C19.8333 17.3385 19.6643 17.8042 19.419 18.2152C19.1738 18.6262 18.8688 18.9759 18.5043 19.2642C18.1397 19.5492 17.7304 19.7663 17.2763 19.9155C16.8255 20.0646 16.3433 20.1392 15.8295 20.1392C14.9612 20.1392 14.1889 19.9271 13.5128 19.5028C12.8366 19.0786 12.3047 18.4754 11.9169 17.6932C11.5291 16.911 11.3352 15.983 11.3352 14.9091C11.3352 13.8352 11.5291 12.9072 11.9169 12.125C12.3047 11.3428 12.8366 10.7396 13.5128 10.3153C14.1889 9.8911 14.9612 9.67898 15.8295 9.67898C16.3433 9.67898 16.8255 9.75355 17.2763 9.9027C17.7304 10.0518 18.1397 10.2706 18.5043 10.5589C18.8688 10.844 19.1738 11.192 19.419 11.603C19.6643 12.0107 19.8333 12.4763 19.9261 13ZM24.0066 20.179C23.5227 20.179 23.0835 20.0878 22.6891 19.9055C22.2947 19.7199 21.9815 19.4531 21.7495 19.1051C21.5175 18.7538 21.4015 18.3295 21.4015 17.8324C21.4015 17.3949 21.4876 17.0402 21.66 16.7685C21.8323 16.4934 22.0627 16.2779 22.351 16.1222C22.6394 15.9664 22.9576 15.8504 23.3056 15.7741C23.6569 15.6946 24.0099 15.6316 24.3645 15.5852C24.8285 15.5256 25.2047 15.4808 25.4931 15.451C25.7847 15.4179 25.9969 15.3632 26.1294 15.2869C26.2653 15.2107 26.3333 15.0781 26.3333 14.8892V14.8494C26.3333 14.3589 26.199 13.9777 25.9306 13.706C25.6654 13.4342 25.2627 13.2983 24.7225 13.2983C24.1623 13.2983 23.7232 13.4209 23.405 13.6662C23.0868 13.9115 22.8631 14.1733 22.7338 14.4517L21.6202 14.054C21.8191 13.59 22.0842 13.2287 22.4157 12.9702C22.7504 12.7083 23.115 12.526 23.5094 12.4233C23.9071 12.3172 24.2982 12.2642 24.6827 12.2642C24.928 12.2642 25.2097 12.294 25.5279 12.3537C25.8494 12.41 26.1593 12.5277 26.4576 12.7067C26.7592 12.8857 27.0094 13.1558 27.2083 13.517C27.4071 13.8783 27.5066 14.3622 27.5066 14.9688V20H26.3333V18.9659H26.2736C26.1941 19.1316 26.0615 19.3089 25.8759 19.4979C25.6903 19.6868 25.4434 19.8475 25.1351 19.9801C24.8269 20.1127 24.4507 20.179 24.0066 20.179ZM24.1855 19.125C24.6496 19.125 25.0407 19.0339 25.3588 18.8516C25.6803 18.6693 25.9223 18.4339 26.0847 18.1456C26.2504 17.8572 26.3333 17.554 26.3333 17.2358V16.1619C26.2836 16.2216 26.1742 16.2763 26.0051 16.326C25.8394 16.3724 25.6472 16.4138 25.4284 16.4503C25.213 16.4834 25.0025 16.5133 24.7971 16.5398C24.5949 16.563 24.4308 16.5829 24.3049 16.5994C23.9999 16.6392 23.7149 16.7038 23.4498 16.7933C23.1879 16.8795 22.9758 17.0104 22.8134 17.1861C22.6543 17.3584 22.5748 17.5937 22.5748 17.892C22.5748 18.2997 22.7256 18.608 23.0272 18.8168C23.3321 19.0223 23.7182 19.125 24.1855 19.125ZM24.2253 11.3295L25.4384 9.02273H26.8105L25.2594 11.3295H24.2253ZM34.7589 15.4062V20H33.5856V12.3636H34.7191V13.5568H34.8185C34.9975 13.169 35.2693 12.8575 35.6339 12.6222C35.9985 12.3835 36.4691 12.2642 37.0458 12.2642C37.5629 12.2642 38.0153 12.3703 38.4031 12.5824C38.7908 12.7912 39.0924 13.1094 39.3079 13.5369C39.5233 13.9612 39.631 14.4981 39.631 15.1477V20H38.4577V15.2273C38.4577 14.6274 38.302 14.16 37.9904 13.8253C37.6789 13.4872 37.2513 13.3182 36.7077 13.3182C36.3332 13.3182 35.9985 13.3994 35.7035 13.5618C35.4118 13.7242 35.1815 13.9612 35.0124 14.2727C34.8434 14.5843 34.7589 14.9621 34.7589 15.4062ZM42.9483 15.4062V20H41.775V9.81818H42.9483V13.5568H43.0478C43.2267 13.1624 43.4952 12.8492 43.8532 12.6172C44.2144 12.3819 44.695 12.2642 45.2949 12.2642C45.8153 12.2642 46.271 12.3686 46.6621 12.5774C47.0532 12.7829 47.3565 13.0994 47.5719 13.527C47.7907 13.9512 47.9 14.4915 47.9 15.1477V20H46.7267V15.2273C46.7267 14.6207 46.5693 14.1518 46.2544 13.8203C45.9429 13.4856 45.5104 13.3182 44.9569 13.3182C44.5724 13.3182 44.2277 13.3994 43.9228 13.5618C43.6212 13.7242 43.3825 13.9612 43.2069 14.2727C43.0345 14.5843 42.9483 14.9621 42.9483 15.4062ZM52.2937 20.179C51.8098 20.179 51.3706 20.0878 50.9762 19.9055C50.5818 19.7199 50.2686 19.4531 50.0366 19.1051C49.8046 18.7538 49.6886 18.3295 49.6886 17.8324C49.6886 17.3949 49.7747 17.0402 49.9471 16.7685C50.1194 16.4934 50.3498 16.2779 50.6381 16.1222C50.9265 15.9664 51.2447 15.8504 51.5927 15.7741C51.944 15.6946 52.297 15.6316 52.6516 15.5852C53.1156 15.5256 53.4918 15.4808 53.7802 15.451C54.0719 15.4179 54.284 15.3632 54.4165 15.2869C54.5524 15.2107 54.6204 15.0781 54.6204 14.8892V14.8494C54.6204 14.3589 54.4862 13.9777 54.2177 13.706C53.9525 13.4342 53.5498 13.2983 53.0096 13.2983C52.4495 13.2983 52.0103 13.4209 51.6921 13.6662C51.3739 13.9115 51.1502 14.1733 51.021 14.4517L49.9073 14.054C50.1062 13.59 50.3713 13.2287 50.7028 12.9702C51.0375 12.7083 51.4021 12.526 51.7965 12.4233C52.1942 12.3172 52.5853 12.2642 52.9698 12.2642C53.2151 12.2642 53.4968 12.294 53.815 12.3537C54.1365 12.41 54.4464 12.5277 54.7447 12.7067C55.0463 12.8857 55.2965 13.1558 55.4954 13.517C55.6942 13.8783 55.7937 14.3622 55.7937 14.9688V20H54.6204V18.9659H54.5607C54.4812 19.1316 54.3486 19.3089 54.163 19.4979C53.9774 19.6868 53.7305 19.8475 53.4222 19.9801C53.114 20.1127 52.7378 20.179 52.2937 20.179ZM52.4727 19.125C52.9367 19.125 53.3278 19.0339 53.646 18.8516C53.9674 18.6693 54.2094 18.4339 54.3718 18.1456C54.5375 17.8572 54.6204 17.554 54.6204 17.2358V16.1619C54.5707 16.2216 54.4613 16.2763 54.2923 16.326C54.1265 16.3724 53.9343 16.4138 53.7156 16.4503C53.5001 16.4834 53.2897 16.5133 53.0842 16.5398C52.882 16.563 52.7179 16.5829 52.592 16.5994C52.2871 16.6392 52.002 16.7038 51.7369 16.7933C51.475 16.8795 51.2629 17.0104 51.1005 17.1861C50.9414 17.3584 50.8619 17.5937 50.8619 17.892C50.8619 18.2997 51.0127 18.608 51.3143 18.8168C51.6192 19.0223 52.0053 19.125 52.4727 19.125ZM54.0835 11.4489L53.0494 10.0568L52.0153 11.4489H50.9016V11.3693L52.5124 9.30114H53.5863L55.1971 11.3693V11.4489H54.0835ZM59.1085 15.4062V20H57.9352V12.3636H59.0687V13.5568H59.1681C59.3471 13.169 59.6189 12.8575 59.9835 12.6222C60.3481 12.3835 60.8187 12.2642 61.3954 12.2642C61.9125 12.2642 62.3649 12.3703 62.7527 12.5824C63.1404 12.7912 63.4421 13.1094 63.6575 13.5369C63.8729 13.9612 63.9806 14.4981 63.9806 15.1477V20H62.8074V15.2273C62.8074 14.6274 62.6516 14.16 62.34 13.8253C62.0285 13.4872 61.6009 13.3182 61.0574 13.3182C60.6828 13.3182 60.3481 13.3994 60.0531 13.5618C59.7614 13.7242 59.5311 13.9612 59.362 14.2727C59.193 14.5843 59.1085 14.9621 59.1085 15.4062Z" fill="#379237"/>
+                                                                                <svg
+                                                                                    x-show="history.transfer_asset.to_user_id"
+                                                                                    width="76" height="30"
+                                                                                    viewBox="0 0 76 30" fill="none"
+                                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                                    <rect x="1" y="0.5" width="74"
+                                                                                          height="29" rx="5.5"
+                                                                                          stroke="#379237"/>
+                                                                                    <path
+                                                                                        d="M19.9261 13H18.6932C18.6203 12.6454 18.4927 12.3338 18.3104 12.0653C18.1314 11.7969 17.9126 11.5715 17.6541 11.3892C17.3989 11.2036 17.1155 11.0644 16.804 10.9716C16.4924 10.8788 16.1676 10.8324 15.8295 10.8324C15.2131 10.8324 14.6546 10.9882 14.1541 11.2997C13.657 11.6113 13.2609 12.0703 12.9659 12.6768C12.6742 13.2834 12.5284 14.0275 12.5284 14.9091C12.5284 15.7907 12.6742 16.5348 12.9659 17.1413C13.2609 17.7479 13.657 18.2069 14.1541 18.5185C14.6546 18.83 15.2131 18.9858 15.8295 18.9858C16.1676 18.9858 16.4924 18.9394 16.804 18.8466C17.1155 18.7538 17.3989 18.6162 17.6541 18.4339C17.9126 18.2483 18.1314 18.0213 18.3104 17.7528C18.4927 17.4811 18.6203 17.1695 18.6932 16.8182H19.9261C19.8333 17.3385 19.6643 17.8042 19.419 18.2152C19.1738 18.6262 18.8688 18.9759 18.5043 19.2642C18.1397 19.5492 17.7304 19.7663 17.2763 19.9155C16.8255 20.0646 16.3433 20.1392 15.8295 20.1392C14.9612 20.1392 14.1889 19.9271 13.5128 19.5028C12.8366 19.0786 12.3047 18.4754 11.9169 17.6932C11.5291 16.911 11.3352 15.983 11.3352 14.9091C11.3352 13.8352 11.5291 12.9072 11.9169 12.125C12.3047 11.3428 12.8366 10.7396 13.5128 10.3153C14.1889 9.8911 14.9612 9.67898 15.8295 9.67898C16.3433 9.67898 16.8255 9.75355 17.2763 9.9027C17.7304 10.0518 18.1397 10.2706 18.5043 10.5589C18.8688 10.844 19.1738 11.192 19.419 11.603C19.6643 12.0107 19.8333 12.4763 19.9261 13ZM24.0066 20.179C23.5227 20.179 23.0835 20.0878 22.6891 19.9055C22.2947 19.7199 21.9815 19.4531 21.7495 19.1051C21.5175 18.7538 21.4015 18.3295 21.4015 17.8324C21.4015 17.3949 21.4876 17.0402 21.66 16.7685C21.8323 16.4934 22.0627 16.2779 22.351 16.1222C22.6394 15.9664 22.9576 15.8504 23.3056 15.7741C23.6569 15.6946 24.0099 15.6316 24.3645 15.5852C24.8285 15.5256 25.2047 15.4808 25.4931 15.451C25.7847 15.4179 25.9969 15.3632 26.1294 15.2869C26.2653 15.2107 26.3333 15.0781 26.3333 14.8892V14.8494C26.3333 14.3589 26.199 13.9777 25.9306 13.706C25.6654 13.4342 25.2627 13.2983 24.7225 13.2983C24.1623 13.2983 23.7232 13.4209 23.405 13.6662C23.0868 13.9115 22.8631 14.1733 22.7338 14.4517L21.6202 14.054C21.8191 13.59 22.0842 13.2287 22.4157 12.9702C22.7504 12.7083 23.115 12.526 23.5094 12.4233C23.9071 12.3172 24.2982 12.2642 24.6827 12.2642C24.928 12.2642 25.2097 12.294 25.5279 12.3537C25.8494 12.41 26.1593 12.5277 26.4576 12.7067C26.7592 12.8857 27.0094 13.1558 27.2083 13.517C27.4071 13.8783 27.5066 14.3622 27.5066 14.9688V20H26.3333V18.9659H26.2736C26.1941 19.1316 26.0615 19.3089 25.8759 19.4979C25.6903 19.6868 25.4434 19.8475 25.1351 19.9801C24.8269 20.1127 24.4507 20.179 24.0066 20.179ZM24.1855 19.125C24.6496 19.125 25.0407 19.0339 25.3588 18.8516C25.6803 18.6693 25.9223 18.4339 26.0847 18.1456C26.2504 17.8572 26.3333 17.554 26.3333 17.2358V16.1619C26.2836 16.2216 26.1742 16.2763 26.0051 16.326C25.8394 16.3724 25.6472 16.4138 25.4284 16.4503C25.213 16.4834 25.0025 16.5133 24.7971 16.5398C24.5949 16.563 24.4308 16.5829 24.3049 16.5994C23.9999 16.6392 23.7149 16.7038 23.4498 16.7933C23.1879 16.8795 22.9758 17.0104 22.8134 17.1861C22.6543 17.3584 22.5748 17.5937 22.5748 17.892C22.5748 18.2997 22.7256 18.608 23.0272 18.8168C23.3321 19.0223 23.7182 19.125 24.1855 19.125ZM24.2253 11.3295L25.4384 9.02273H26.8105L25.2594 11.3295H24.2253ZM34.7589 15.4062V20H33.5856V12.3636H34.7191V13.5568H34.8185C34.9975 13.169 35.2693 12.8575 35.6339 12.6222C35.9985 12.3835 36.4691 12.2642 37.0458 12.2642C37.5629 12.2642 38.0153 12.3703 38.4031 12.5824C38.7908 12.7912 39.0924 13.1094 39.3079 13.5369C39.5233 13.9612 39.631 14.4981 39.631 15.1477V20H38.4577V15.2273C38.4577 14.6274 38.302 14.16 37.9904 13.8253C37.6789 13.4872 37.2513 13.3182 36.7077 13.3182C36.3332 13.3182 35.9985 13.3994 35.7035 13.5618C35.4118 13.7242 35.1815 13.9612 35.0124 14.2727C34.8434 14.5843 34.7589 14.9621 34.7589 15.4062ZM42.9483 15.4062V20H41.775V9.81818H42.9483V13.5568H43.0478C43.2267 13.1624 43.4952 12.8492 43.8532 12.6172C44.2144 12.3819 44.695 12.2642 45.2949 12.2642C45.8153 12.2642 46.271 12.3686 46.6621 12.5774C47.0532 12.7829 47.3565 13.0994 47.5719 13.527C47.7907 13.9512 47.9 14.4915 47.9 15.1477V20H46.7267V15.2273C46.7267 14.6207 46.5693 14.1518 46.2544 13.8203C45.9429 13.4856 45.5104 13.3182 44.9569 13.3182C44.5724 13.3182 44.2277 13.3994 43.9228 13.5618C43.6212 13.7242 43.3825 13.9612 43.2069 14.2727C43.0345 14.5843 42.9483 14.9621 42.9483 15.4062ZM52.2937 20.179C51.8098 20.179 51.3706 20.0878 50.9762 19.9055C50.5818 19.7199 50.2686 19.4531 50.0366 19.1051C49.8046 18.7538 49.6886 18.3295 49.6886 17.8324C49.6886 17.3949 49.7747 17.0402 49.9471 16.7685C50.1194 16.4934 50.3498 16.2779 50.6381 16.1222C50.9265 15.9664 51.2447 15.8504 51.5927 15.7741C51.944 15.6946 52.297 15.6316 52.6516 15.5852C53.1156 15.5256 53.4918 15.4808 53.7802 15.451C54.0719 15.4179 54.284 15.3632 54.4165 15.2869C54.5524 15.2107 54.6204 15.0781 54.6204 14.8892V14.8494C54.6204 14.3589 54.4862 13.9777 54.2177 13.706C53.9525 13.4342 53.5498 13.2983 53.0096 13.2983C52.4495 13.2983 52.0103 13.4209 51.6921 13.6662C51.3739 13.9115 51.1502 14.1733 51.021 14.4517L49.9073 14.054C50.1062 13.59 50.3713 13.2287 50.7028 12.9702C51.0375 12.7083 51.4021 12.526 51.7965 12.4233C52.1942 12.3172 52.5853 12.2642 52.9698 12.2642C53.2151 12.2642 53.4968 12.294 53.815 12.3537C54.1365 12.41 54.4464 12.5277 54.7447 12.7067C55.0463 12.8857 55.2965 13.1558 55.4954 13.517C55.6942 13.8783 55.7937 14.3622 55.7937 14.9688V20H54.6204V18.9659H54.5607C54.4812 19.1316 54.3486 19.3089 54.163 19.4979C53.9774 19.6868 53.7305 19.8475 53.4222 19.9801C53.114 20.1127 52.7378 20.179 52.2937 20.179ZM52.4727 19.125C52.9367 19.125 53.3278 19.0339 53.646 18.8516C53.9674 18.6693 54.2094 18.4339 54.3718 18.1456C54.5375 17.8572 54.6204 17.554 54.6204 17.2358V16.1619C54.5707 16.2216 54.4613 16.2763 54.2923 16.326C54.1265 16.3724 53.9343 16.4138 53.7156 16.4503C53.5001 16.4834 53.2897 16.5133 53.0842 16.5398C52.882 16.563 52.7179 16.5829 52.592 16.5994C52.2871 16.6392 52.002 16.7038 51.7369 16.7933C51.475 16.8795 51.2629 17.0104 51.1005 17.1861C50.9414 17.3584 50.8619 17.5937 50.8619 17.892C50.8619 18.2997 51.0127 18.608 51.3143 18.8168C51.6192 19.0223 52.0053 19.125 52.4727 19.125ZM54.0835 11.4489L53.0494 10.0568L52.0153 11.4489H50.9016V11.3693L52.5124 9.30114H53.5863L55.1971 11.3693V11.4489H54.0835ZM59.1085 15.4062V20H57.9352V12.3636H59.0687V13.5568H59.1681C59.3471 13.169 59.6189 12.8575 59.9835 12.6222C60.3481 12.3835 60.8187 12.2642 61.3954 12.2642C61.9125 12.2642 62.3649 12.3703 62.7527 12.5824C63.1404 12.7912 63.4421 13.1094 63.6575 13.5369C63.8729 13.9612 63.9806 14.4981 63.9806 15.1477V20H62.8074V15.2273C62.8074 14.6274 62.6516 14.16 62.34 13.8253C62.0285 13.4872 61.6009 13.3182 61.0574 13.3182C60.6828 13.3182 60.3481 13.3994 60.0531 13.5618C59.7614 13.7242 59.5311 13.9612 59.362 14.2727C59.193 14.5843 59.1085 14.9621 59.1085 15.4062Z"
+                                                                                        fill="#379237"/>
                                                                                 </svg>
-                                                                                <svg x-show="!history.transfer_asset.to_user_id" width="62" height="30" viewBox="0 0 62 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <rect x="0.5" y="0.5" width="61" height="29" rx="5.5" stroke="#379237"/>
-                                                                                    <path d="M14.375 20H11.929V18.9062H14.2955C15.1373 18.9062 15.835 18.7438 16.3885 18.419C16.942 18.0942 17.3546 17.6319 17.6264 17.032C17.8982 16.4321 18.0341 15.7178 18.0341 14.8892C18.0341 14.0672 17.8999 13.3596 17.6314 12.7663C17.3629 12.1697 16.9619 11.7124 16.4283 11.3942C15.8946 11.0727 15.2301 10.9119 14.4347 10.9119H11.8693V9.81818H14.5142C15.5019 9.81818 16.3471 10.022 17.0497 10.4297C17.7524 10.834 18.291 11.4157 18.6655 12.1747C19.04 12.9304 19.2273 13.8352 19.2273 14.8892C19.2273 15.9498 19.0384 16.8629 18.6605 17.6286C18.2827 18.3909 17.7325 18.9775 17.0099 19.3885C16.2874 19.7962 15.4091 20 14.375 20ZM12.4659 9.81818V20H11.233V9.81818H12.4659ZM9.66193 15.2074V14.2926H14.0369V15.2074H9.66193ZM27.3409 11.7869H28.4347C28.4347 12.5426 28.2689 13.1425 27.9375 13.5866C27.6094 14.0308 27.0327 14.2528 26.2074 14.2528V13.4176C26.5388 13.4176 26.7841 13.3497 26.9432 13.2138C27.1056 13.0779 27.2116 12.8873 27.2614 12.642C27.3144 12.3968 27.3409 12.1117 27.3409 11.7869ZM24.2386 20.1591C23.5492 20.1591 22.9444 19.995 22.424 19.6669C21.907 19.3388 21.5026 18.8797 21.2109 18.2898C20.9226 17.6998 20.7784 17.0104 20.7784 16.2216C20.7784 15.4261 20.9226 14.7318 21.2109 14.1385C21.5026 13.5452 21.907 13.0845 22.424 12.7564C22.9444 12.4283 23.5492 12.2642 24.2386 12.2642C24.928 12.2642 25.5313 12.4283 26.0483 12.7564C26.5687 13.0845 26.973 13.5452 27.2614 14.1385C27.553 14.7318 27.6989 15.4261 27.6989 16.2216C27.6989 17.0104 27.553 17.6998 27.2614 18.2898C26.973 18.8797 26.5687 19.3388 26.0483 19.6669C25.5313 19.995 24.928 20.1591 24.2386 20.1591ZM24.2386 19.1051C24.7623 19.1051 25.1932 18.9709 25.5312 18.7024C25.8693 18.4339 26.1196 18.081 26.282 17.6435C26.4444 17.206 26.5256 16.732 26.5256 16.2216C26.5256 15.7112 26.4444 15.2356 26.282 14.7947C26.1196 14.3539 25.8693 13.9976 25.5312 13.7259C25.1932 13.4541 24.7623 13.3182 24.2386 13.3182C23.715 13.3182 23.2841 13.4541 22.946 13.7259C22.608 13.9976 22.3577 14.3539 22.1953 14.7947C22.0329 15.2356 21.9517 15.7112 21.9517 16.2216C21.9517 16.732 22.0329 17.206 22.1953 17.6435C22.3577 18.081 22.608 18.4339 22.946 18.7024C23.2841 18.9709 23.715 19.1051 24.2386 19.1051ZM30.6768 15.4062V20H29.5036V12.3636H30.6371V13.5568H30.7365C30.9155 13.169 31.1873 12.8575 31.5518 12.6222C31.9164 12.3835 32.3871 12.2642 32.9638 12.2642C33.4808 12.2642 33.9332 12.3703 34.321 12.5824C34.7088 12.7912 35.0104 13.1094 35.2259 13.5369C35.4413 13.9612 35.549 14.4981 35.549 15.1477V20H34.3757V15.2273C34.3757 14.6274 34.2199 14.16 33.9084 13.8253C33.5968 13.4872 33.1693 13.3182 32.6257 13.3182C32.2512 13.3182 31.9164 13.3994 31.6214 13.5618C31.3298 13.7242 31.0994 13.9612 30.9304 14.2727C30.7614 14.5843 30.6768 14.9621 30.6768 15.4062ZM47.8748 12.3636L45.051 20H43.8578L41.0339 12.3636H42.3066L44.4146 18.4489H44.4941L46.6021 12.3636H47.8748ZM49.4235 20V12.3636H50.5968V20H49.4235ZM50.0201 11.0909C49.7914 11.0909 49.5942 11.013 49.4284 10.8572C49.266 10.7015 49.1848 10.5142 49.1848 10.2955C49.1848 10.0767 49.266 9.88944 49.4284 9.73366C49.5942 9.57789 49.7914 9.5 50.0201 9.5C50.2488 9.5 50.4443 9.57789 50.6067 9.73366C50.7724 9.88944 50.8553 10.0767 50.8553 10.2955C50.8553 10.5142 50.7724 10.7015 50.6067 10.8572C50.4443 11.013 50.2488 11.0909 50.0201 11.0909ZM50.0201 22.5256C49.7914 22.5256 49.5942 22.4477 49.4284 22.2919C49.266 22.1361 49.1848 21.9489 49.1848 21.7301C49.1848 21.5114 49.266 21.3241 49.4284 21.1683C49.5942 21.0125 49.7914 20.9347 50.0201 20.9347C50.2488 20.9347 50.4443 21.0125 50.6067 21.1683C50.7724 21.3241 50.8553 21.5114 50.8553 21.7301C50.8553 21.9489 50.7724 22.1361 50.6067 22.2919C50.4443 22.4477 50.2488 22.5256 50.0201 22.5256Z" fill="#379237"/>
+                                                                                <svg
+                                                                                    x-show="!history.transfer_asset.to_user_id"
+                                                                                    width="62" height="30"
+                                                                                    viewBox="0 0 62 30" fill="none"
+                                                                                    xmlns="http://www.w3.org/2000/svg">
+                                                                                    <rect x="0.5" y="0.5" width="61"
+                                                                                          height="29" rx="5.5"
+                                                                                          stroke="#379237"/>
+                                                                                    <path
+                                                                                        d="M14.375 20H11.929V18.9062H14.2955C15.1373 18.9062 15.835 18.7438 16.3885 18.419C16.942 18.0942 17.3546 17.6319 17.6264 17.032C17.8982 16.4321 18.0341 15.7178 18.0341 14.8892C18.0341 14.0672 17.8999 13.3596 17.6314 12.7663C17.3629 12.1697 16.9619 11.7124 16.4283 11.3942C15.8946 11.0727 15.2301 10.9119 14.4347 10.9119H11.8693V9.81818H14.5142C15.5019 9.81818 16.3471 10.022 17.0497 10.4297C17.7524 10.834 18.291 11.4157 18.6655 12.1747C19.04 12.9304 19.2273 13.8352 19.2273 14.8892C19.2273 15.9498 19.0384 16.8629 18.6605 17.6286C18.2827 18.3909 17.7325 18.9775 17.0099 19.3885C16.2874 19.7962 15.4091 20 14.375 20ZM12.4659 9.81818V20H11.233V9.81818H12.4659ZM9.66193 15.2074V14.2926H14.0369V15.2074H9.66193ZM27.3409 11.7869H28.4347C28.4347 12.5426 28.2689 13.1425 27.9375 13.5866C27.6094 14.0308 27.0327 14.2528 26.2074 14.2528V13.4176C26.5388 13.4176 26.7841 13.3497 26.9432 13.2138C27.1056 13.0779 27.2116 12.8873 27.2614 12.642C27.3144 12.3968 27.3409 12.1117 27.3409 11.7869ZM24.2386 20.1591C23.5492 20.1591 22.9444 19.995 22.424 19.6669C21.907 19.3388 21.5026 18.8797 21.2109 18.2898C20.9226 17.6998 20.7784 17.0104 20.7784 16.2216C20.7784 15.4261 20.9226 14.7318 21.2109 14.1385C21.5026 13.5452 21.907 13.0845 22.424 12.7564C22.9444 12.4283 23.5492 12.2642 24.2386 12.2642C24.928 12.2642 25.5313 12.4283 26.0483 12.7564C26.5687 13.0845 26.973 13.5452 27.2614 14.1385C27.553 14.7318 27.6989 15.4261 27.6989 16.2216C27.6989 17.0104 27.553 17.6998 27.2614 18.2898C26.973 18.8797 26.5687 19.3388 26.0483 19.6669C25.5313 19.995 24.928 20.1591 24.2386 20.1591ZM24.2386 19.1051C24.7623 19.1051 25.1932 18.9709 25.5312 18.7024C25.8693 18.4339 26.1196 18.081 26.282 17.6435C26.4444 17.206 26.5256 16.732 26.5256 16.2216C26.5256 15.7112 26.4444 15.2356 26.282 14.7947C26.1196 14.3539 25.8693 13.9976 25.5312 13.7259C25.1932 13.4541 24.7623 13.3182 24.2386 13.3182C23.715 13.3182 23.2841 13.4541 22.946 13.7259C22.608 13.9976 22.3577 14.3539 22.1953 14.7947C22.0329 15.2356 21.9517 15.7112 21.9517 16.2216C21.9517 16.732 22.0329 17.206 22.1953 17.6435C22.3577 18.081 22.608 18.4339 22.946 18.7024C23.2841 18.9709 23.715 19.1051 24.2386 19.1051ZM30.6768 15.4062V20H29.5036V12.3636H30.6371V13.5568H30.7365C30.9155 13.169 31.1873 12.8575 31.5518 12.6222C31.9164 12.3835 32.3871 12.2642 32.9638 12.2642C33.4808 12.2642 33.9332 12.3703 34.321 12.5824C34.7088 12.7912 35.0104 13.1094 35.2259 13.5369C35.4413 13.9612 35.549 14.4981 35.549 15.1477V20H34.3757V15.2273C34.3757 14.6274 34.2199 14.16 33.9084 13.8253C33.5968 13.4872 33.1693 13.3182 32.6257 13.3182C32.2512 13.3182 31.9164 13.3994 31.6214 13.5618C31.3298 13.7242 31.0994 13.9612 30.9304 14.2727C30.7614 14.5843 30.6768 14.9621 30.6768 15.4062ZM47.8748 12.3636L45.051 20H43.8578L41.0339 12.3636H42.3066L44.4146 18.4489H44.4941L46.6021 12.3636H47.8748ZM49.4235 20V12.3636H50.5968V20H49.4235ZM50.0201 11.0909C49.7914 11.0909 49.5942 11.013 49.4284 10.8572C49.266 10.7015 49.1848 10.5142 49.1848 10.2955C49.1848 10.0767 49.266 9.88944 49.4284 9.73366C49.5942 9.57789 49.7914 9.5 50.0201 9.5C50.2488 9.5 50.4443 9.57789 50.6067 9.73366C50.7724 9.88944 50.8553 10.0767 50.8553 10.2955C50.8553 10.5142 50.7724 10.7015 50.6067 10.8572C50.4443 11.013 50.2488 11.0909 50.0201 11.0909ZM50.0201 22.5256C49.7914 22.5256 49.5942 22.4477 49.4284 22.2919C49.266 22.1361 49.1848 21.9489 49.1848 21.7301C49.1848 21.5114 49.266 21.3241 49.4284 21.1683C49.5942 21.0125 49.7914 20.9347 50.0201 20.9347C50.2488 20.9347 50.4443 21.0125 50.6067 21.1683C50.7724 21.3241 50.8553 21.5114 50.8553 21.7301C50.8553 21.9489 50.7724 22.1361 50.6067 22.2919C50.4443 22.4477 50.2488 22.5256 50.0201 22.5256Z"
+                                                                                        fill="#379237"/>
                                                                                 </svg>
                                                                             </div>
                                                                         </template>
                                                                     </td>
                                                                     <td>
-                                                                        <template x-if="history.transfer_asset.type != 3">
-                                                                            <div class="d-flex" x-show="history.transfer_asset.type != 3">
-                                                                                <img x-show="history.transfer_asset.user_id" x-bind:src="history.transfer_asset.user && history.transfer_asset.user.avatar
+                                                                        <template
+                                                                            x-if="history.transfer_asset.type != 3">
+                                                                            <div class="d-flex"
+                                                                                 x-show="history.transfer_asset.type != 3">
+                                                                                <img
+                                                                                    x-show="history.transfer_asset.user_id"
+                                                                                    x-bind:src="history.transfer_asset.user && history.transfer_asset.user.avatar
                                                                                         ? (history.transfer_asset.user.avatar.includes('/uploads/')
                                                                                             ? 'https://office.sconnect.com.vn' + history.transfer_asset.user.avatar
                                                                                             : history.transfer_asset.user.avatar)
                                                                                         : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                                                        alt=""
-                                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                                                                    <span x-text="history.transfer_asset.user ? history.transfer_asset.user.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                                    <span x-text="history.transfer_asset.user ? 'Mã nhân sự:' + history.transfer_asset.user.code : ''" style="color: #706f6f;"></span>
+                                                                                    alt=""
+                                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                                <div
+                                                                                    style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                                                    <span
+                                                                                        x-text="history.transfer_asset.user ? history.transfer_asset.user.name : ''"
+                                                                                        style="font-weight: 600; font-size: 16px;"></span>
+                                                                                    <span
+                                                                                        x-text="history.transfer_asset.user ? 'Mã nhân sự:' + history.transfer_asset.user.code : ''"
+                                                                                        style="color: #706f6f;"></span>
                                                                                 </div>
                                                                             </div>
                                                                         </template>
 
-                                                                        <template x-if="history.transfer_asset.type == 3">
+                                                                        <template
+                                                                            x-if="history.transfer_asset.type == 3">
                                                                             <div class="d-flex">
-                                                                                <img x-show="history.transfer_asset.to_user_id" x-bind:src="history.transfer_asset.user_to && history.transfer_asset.user_to.avatar
+                                                                                <img
+                                                                                    x-show="history.transfer_asset.to_user_id"
+                                                                                    x-bind:src="history.transfer_asset.user_to && history.transfer_asset.user_to.avatar
                                                                                         ? (history.transfer_asset.user_to.avatar.includes('/uploads/')
                                                                                             ? 'https://office.sconnect.com.vn' + history.transfer_asset.user_to.avatar
                                                                                             : history.transfer_asset.user_to.avatar)
                                                                                         : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                                                        alt=""
-                                                                                        style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
-                                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                                                                    <span x-text="history.transfer_asset.user_to ? history.transfer_asset.user_to.name : ''" style="font-weight: 600; font-size: 16px;"></span>
-                                                                                    <span x-text="history.transfer_asset.user_to ? 'Mã nhân sự:' + history.transfer_asset.user_to.code : ''" style="color: #706f6f;"></span>
+                                                                                    alt=""
+                                                                                    style="width: 55px; height: 55px; object-fit: cover; border-radius: 100px;">
+                                                                                <div
+                                                                                    style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                                                    <span
+                                                                                        x-text="history.transfer_asset.user_to ? history.transfer_asset.user_to.name : ''"
+                                                                                        style="font-weight: 600; font-size: 16px;"></span>
+                                                                                    <span
+                                                                                        x-text="history.transfer_asset.user_to ? 'Mã nhân sự:' + history.transfer_asset.user_to.code : ''"
+                                                                                        style="color: #706f6f;"></span>
                                                                                 </div>
                                                                             </div>
                                                                         </template>
@@ -724,13 +977,15 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng gần nhất</span>
-                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.recent_maintenance_date" disabled>
+                                                            <input type="date" class="form-control date-disabled"
+                                                                   x-model="assetObj.recent_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bảo dưỡng tiếp theo</span></span>
-                                                            <input type="date" class="form-control date-disabled" x-model="assetObj.next_maintenance_date" disabled>
+                                                            <input type="date" class="form-control date-disabled"
+                                                                   x-model="assetObj.next_maintenance_date" disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -743,25 +998,29 @@
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị tính phân bổ</span>
-                                                            <input type="number" class="form-control" value="2,000,000" disabled>
+                                                            <input type="number" class="form-control" value="2,000,000"
+                                                                   disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Số kì phân bổ còn lại (tháng)</span></span>
-                                                            <input type="number" class="form-control" value="24" disabled>
+                                                            <input type="number" class="form-control" value="24"
+                                                                   disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Ngày bắt đầu phân bổ</span>
-                                                            <input type="date" class="form-control date-disabled" value="2024-11-01" disabled>
+                                                            <input type="date" class="form-control date-disabled"
+                                                                   value="2024-11-01" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-6">
                                                         <div class="mb-3">
                                                             <span>Giá trị đã phân bổ</span></span>
-                                                            <input type="number" class="form-control" value="83,333" disabled>
+                                                            <input type="number" class="form-control" value="83,333"
+                                                                   disabled>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -771,8 +1030,10 @@
                                                     Sửa chữa
                                                 </h6>
                                                 <div class="row">
-                                                    <div class="col-12 custom-scroll" style="overflow-x: auto;width: 100%;">
-                                                        <table class="table table-bordered table-repair" style="width: 1000px;">
+                                                    <div class="col-12 custom-scroll"
+                                                         style="overflow-x: auto;width: 100%;">
+                                                        <table class="table table-bordered table-repair"
+                                                               style="width: 1000px;">
                                                             <thead>
                                                             <tr style="font-size: 14px;">
                                                                 <th>Ngày báo hỏng</th>
@@ -817,28 +1078,33 @@
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <template x-for="item in listLogAsset.logLostCancel">
-                                                                    <tr>
-                                                                        <td x-text="LIST_STATUS_TEXT[item.action]"></td>
-                                                                        <td x-text="formatDateVN(item.date)"></td>
-                                                                        <td>
-                                                                            <div class="d-flex">
-                                                                                <img x-show="item.create_by" x-bind:src="item.create_by && item.create_by.avatar
+                                                            <template x-for="item in listLogAsset.logLostCancel">
+                                                                <tr>
+                                                                    <td x-text="LIST_STATUS_TEXT[item.action]"></td>
+                                                                    <td x-text="formatDateVN(item.date)"></td>
+                                                                    <td>
+                                                                        <div class="d-flex">
+                                                                            <img x-show="item.create_by" x-bind:src="item.create_by && item.create_by.avatar
                                                                                         ? (item.create_by.avatar.includes('/uploads/')
                                                                                             ? 'https://office.sconnect.com.vn' + item.create_by.avatar
                                                                                             : item.create_by.avatar)
                                                                                         : 'https://office.sconnect.com.vn/images/avatar-default.png'"
-                                                                                        alt=""
-                                                                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 100px;">
-                                                                                <div style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
-                                                                                    <span x-text="item.create_by ? item.create_by.name : ''" style="font-weight: 600; font-size: 14px;"></span>
-                                                                                    <span x-text="item.create_by ? 'Mã nhân sự:' + item.create_by.code : ''" style="color: #706f6f;"></span>
-                                                                                </div>
+                                                                                 alt=""
+                                                                                 style="width: 40px; height: 40px; object-fit: cover; border-radius: 100px;">
+                                                                            <div
+                                                                                style="display: flex; flex-direction: column; align-items: flex-start; justify-content: center; margin-left: 10px;">
+                                                                                <span
+                                                                                    x-text="item.create_by ? item.create_by.name : ''"
+                                                                                    style="font-weight: 600; font-size: 14px;"></span>
+                                                                                <span
+                                                                                    x-text="item.create_by ? 'Mã nhân sự:' + item.create_by.code : ''"
+                                                                                    style="color: #706f6f;"></span>
                                                                             </div>
-                                                                        </td>
-                                                                        <td x-text="item.description"></td>
-                                                                    </tr>
-                                                                </template>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td x-text="item.description"></td>
+                                                                </tr>
+                                                            </template>
                                                             </tbody>
                                                         </table>
                                                     </div>
@@ -854,12 +1120,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal fade" id="modalAllocationConfirm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalAllocationConfirm" data-bs-backdrop="static"
+                         data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                         aria-hidden="true">
                         <div class="modal-dialog modal-md">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="mb-0" style="font-weight: bold; color: #379237">Cấp phát tài sản <span x-model="asset.name"></span></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="mb-0" style="font-weight: bold; color: #379237">Cấp phát tài sản <span
+                                            x-model="asset.name"></span></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <h6 class="text-bold">Thông tin cấp phát tài sản</h6>
@@ -868,13 +1138,18 @@
                                             <span>Theo</span>
                                             <div class="d-flex" style="gap: 30px;">
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="defaultCheck == 'employee'"  type="radio" value="" name="changeAllocation" id="defaultCheck1" @click="defaultCheck='employee'">
+                                                    <input class="form-check-input"
+                                                           :checked="defaultCheck == 'employee'" type="radio" value=""
+                                                           name="changeAllocation" id="defaultCheck1"
+                                                           @click="defaultCheck='employee'">
                                                     <label class="form-check-label" for="defaultCheck1">
                                                         Nhân viên
                                                     </label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" :checked="defaultCheck == 'unit'"  type="radio" value="" name="changeAllocation" id="defaultCheck2" @click="defaultCheck='unit'">
+                                                    <input class="form-check-input" :checked="defaultCheck == 'unit'"
+                                                           type="radio" value="" name="changeAllocation"
+                                                           id="defaultCheck2" @click="defaultCheck='unit'">
                                                     <label class="form-check-label" for="defaultCheck2">
                                                         Đơn vị
                                                     </label>
@@ -883,26 +1158,32 @@
                                         </div>
                                         <div class="mb-3" x-show="defaultCheck == 'unit'">
                                             <span>Đơn vị</span>
-                                            <select class="form-control select2" data-placeholder="Đơn vị" id="unitSelect">
+                                            <select class="form-control select2" data-placeholder="Đơn vị"
+                                                    id="unitSelect">
                                                 <option value="" selected>Đơn vị</option>
                                                 <template x-for="(org, key) in listOrg">
-                                                    <option :value="org.id" x-text="org.dept_type.cfg_key + ' ' + org.name"></option>
+                                                    <option :value="org.id"
+                                                            x-text="org.dept_type.cfg_key + ' ' + org.name"></option>
                                                 </template>
                                             </select>
                                         </div>
                                         <div class="mb-3" x-show="defaultCheck == 'employee'">
                                             <span>Nhân viên</span>
-                                            <select class="form-control select2" data-placeholder="Người dùng" id="userSelect">
+                                            <select class="form-control select2" data-placeholder="Người dùng"
+                                                    id="userSelect">
                                                 <option value="" selected>Người dùng</option>
                                                 <template x-for="(user, key) in listUser">
-                                                    <option :value="user.id" x-text="user.code + ' - ' + user.name"></option>
+                                                    <option :value="user.id"
+                                                            x-text="user.code + ' - ' + user.name"></option>
                                                 </template>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" aria-label="Close" @click="fillDataModalAllocation('allocation');">Xác nhận</button>
+                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal"
+                                            aria-label="Close" @click="fillDataModalAllocation('allocation');">Xác nhận
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -911,719 +1192,720 @@
                     @include('assets.asset.common.modal-asset')
                     @include('assets.asset.common.modal-rotation')
                     @include('assets.asset.common.modal-operation')
+                </div>
             </div>
         </div>
     </div>
-</div>
-<style>
-    table tr td{
-        background-color: #fff !important;
-        font-size: 14px !important;
-    }
-</style>
+    <style>
+        table tr td {
+            background-color: #fff !important;
+            font-size: 14px !important;
+        }
+    </style>
 @endsection
 
 @include('assets.asset.common.commonSvg')
 
 @section('js')
-<script>
-    function openModal(modalId) {
-        const modal = new bootstrap.Modal(document.querySelector(modalId));
-        modal.show();
-
-        const backdrops = document.querySelectorAll('.modal-backdrop');
-        if (backdrops.length > 1) {
-            backdrops[1].classList.add('custom-backdrop');
-        }
-    }
-
-    function closeModal(modalId) {
-        // const modal = new bootstrap.Modal(document.querySelector(modalId));
-        // modal.hide();
-
-        const modalEl = document.querySelector(modalId);
-        const modal = bootstrap.Modal.getInstance(modalEl);
-        if (modal) {
-            modalEl.addEventListener('hidden.bs.modal', function onHidden() {
-                modalEl.removeEventListener('hidden.bs.modal', onHidden); // Xóa sự kiện sau khi chạy
-
-            });
-            modal.hide();
-        }
-    }
-
-    function formatNumber(value) {
-        let number = value.replace(/\D/g, '');
-
-        return new Intl.NumberFormat('en-US').format(number);
-    }
-
-    function formatCurrency(value) {
-        return value.toLocaleString('vi-VN') + 'đ';
-    }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('listAsset', () => ({
-            totalPages: null,
-            currentPage: 1,
-
-            listAsset: [],
-            assetType: [],
-            listLocation: [],
-            listStatus: [],
-            listSupplier: [],
-            tabDetail: 'general-tab',
-            tab: 'general-tab',
-            tabAllocation: 'allocation-tab',
-            assetName: '',
-            assetStatus: 1,
-            assetObj: {},
-            pageParam: 1,
-            limitParam: 25,
-            listOrg: [],
-            listUser: [],
-            defaultCheck: 'employee',
-            userObj: {},
-            orgObj: {},
-            listAssetOfUser: [],
-            listAssetAllocate: [],
-            listAssetRecovery: [],
-            listHistory: [],
-            unitSelect: 0,
-            userSelect: 0,
-            assetSelect: {},
-            listAssetSelect: [],
-            description: '',
-            defaultCheckRotation: 'employee',
-            listAssetRotation: [],
-            descriptionRotation: '',
-            rotationToType: 'employee',
-            rotationTo: 0,
-            unitToSelect: 0,
-            userToSelect: 0,
-            dateLiquidation: '',
-            priceLiquidation: '',
-            reasonLiquidation: '',
-            recoveryCompany: false,
-            urlSearch: '',
-            listHistoryAsset: [],
-            assetEdit: {},
-            listLogAsset: [],
-            limit: 25,
-            from: 0,
-            to: 0,
-            total: 0,
-            linkReport: {},
-            listAssetRepresent: {},
-            dateChange: new Date().toISOString().slice(0, 10),
-
-            init (){
-                window.initSelect2Modal('modalAllocationConfirm');
-                window.initSelect2Modal('modalRotation');
-                window.initSelect2Modal('modalDetailAsset');
-                window.initSelect2Modal('modalEditAsset');
-                window.initSelect2Modal('searchAssetModal');
-
-                this.fetchData();
-                this.getListOrg();
-                this.getUser();
-
-                // const select = $('#unitSelect').select2();
-
-                // select.on('change', (event) => {
-                //     this.unitSelect = $(event.target).val();
-                //     this.getUserByUnit($(event.target).val());
-                // });
-
-                const userSelect = $('#userSelect').select2();
-
-                userSelect.on('change', (event) => {
-                    this.userSelect = $(event.target).val();
-                });
-
-                const unitSelect = $('#unitSelect').select2();
-
-                unitSelect.on('change', (event) => {
-                    this.unitSelect = $(event.target).val();
-                });
-
-                const userToSelect = $('#userToSelect').select2();
-
-                userToSelect.on('change', (event) => {
-                    this.userToSelect = $(event.target).val();
-                    const userSelect = this.listUser.find(item => item.id == this.userToSelect);
-
-                    $('#unitEmployee').val(userSelect.organization.dept_type.cfg_key + ' ' + userSelect.organization.name);
-                });
-
-                const unitToSelect = $('#unitToSelect').select2();
-
-                unitToSelect.on('change', (event) => {
-                    this.unitToSelect = $(event.target).val();
-                    const unitSelect = this.listOrg.find(item => item.id == this.unitToSelect);
-
-                    $('#unitRepresent').val(unitSelect.manager.code + ' - ' + unitSelect.manager.name);
-                });
-
-                window.addEventListener('change-page', (event) => {
-                    this.pageParam = event.detail.page;
-                    this.fetchData('', '', '', '', '', this.urlSearch.replace(/([?&])page=\d+&?/, '$1').replace(/([?&])$/, '') + '&page=' + this.pageParam);
-                });
-
-                window.addEventListener('change-limit', (event) => {
-                    this.pageParam = 1;
-                    this.limitParam = event.target.value;
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                });
-            },
-
-            async getListOrg() {
-                try {
-                    let urlSearch = '/api/asset/get-data-list-org';
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listOrg = data.data.listOrg;
-
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-
-            async fetchData(status = '' ,location = '' ,type ='', nameCodeAsset = '', nameUser = '', urlSearchParam = null) {
-                try {
-                    let urlSearch = '/api/asset/get-data-list-asset?';
-
-                    if (this.limitParam) {
-                        urlSearch += 'limit=' + this.limitParam + '&';
-                    }
-
-                    if (this.pageParam) {
-                        urlSearch += 'page=' + this.pageParam + '&';
-                    }
-
-                    if (status) {
-                        urlSearch += 'status=' + status + '&';
-                    }
-
-                    if (location) {
-                        urlSearch += 'location=' + location + '&';
-                    }
-
-                    if (type) {
-                        urlSearch += 'type=' + type + '&';
-                    }
-
-                    if (nameCodeAsset) {
-                        urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
-                    }
-
-                    if (nameUser) {
-                        urlSearch += 'nameUser=' + nameUser + '&';
-                    }
-
-                    if ($('#unitSearch').val() != 0) {
-                        urlSearch += 'unitSearch=' + $('#unitSearch').val() + '&';
-                    }
-
-                    if (urlSearchParam) {
-                        urlSearch = urlSearchParam;
-                    }
-
-                    this.urlSearch = urlSearch;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listAsset = data.data.listAsset.data;
-                    this.assetType = data.data.listAssetType;
-                    this.listLocation = data.data.listLocation;
-                    this.listStatus = data.data.listStatus;
-                    this.listSupplier = data.data.listSupplier;
-                    this.totalPages = data.data.listAsset.last_page;
-                    this.currentPage = data.data.listAsset.current_page;
-                    this.from = data.data.listAsset.per_page * (data.data.listAsset.current_page - 1) + 1;
-                    this.to = data.data.listAsset.per_page * data.data.listAsset.current_page;
-                    this.total = data.data.listAsset.total;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-
-            async getDataAsset(type = '', nameCodeAsset = '') {
-                try {
-                    let urlSearch = '/api/asset/get-data-list-asset?status=2&';
-
-                    if (type) {
-                        urlSearch += 'type=' + type + '&';
-                    }
-
-                    if (nameCodeAsset) {
-                        urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
-                    }
-
-                    urlSearch += 'userId=' + this.userObj.id + '&';
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listAssetSelect = data.data.listAsset.data;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-
-            fillDataEdit(assetEdit){
-                this.assetEdit = assetEdit;
-            },
-
-            // async getUserByUnit(unitId) {
-            //     try {
-            //         let urlSearch = '/api/asset/get-user-by-unit?orgId=' + unitId;
-
-            //         const response = await axios.get(urlSearch);
-            //         const data = response.data;
-            //         this.listUser = data.data.listUser;
-
-            //         this.$nextTick(() => {
-            //             const modalElement = document.querySelector('#modalAllocationConfirm');
-            //             $(modalElement).on('shown.bs.modal', () => {
-            //                 const selectElement = document.querySelector('#userSelect');
-            //                 if (selectElement) {
-            //                     $(selectElement).select2();
-            //                     $(selectElement).val('').trigger('change');
-            //                 }
-            //             });
-            //         });
-            //     } catch (error) {
-            //         console.error('Lỗi khi gọi API:', error);
-            //     }
-            // },
-
-            async getUser() {
-                try {
-                    let urlSearch = '/api/asset/get-user?';
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listUser = data.data.listUser;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-
-            fillData(asset) {
-                this.assetName = asset.name;
-                this.assetStatus = asset.status;
-                this.assetObj = asset;
-            },
-            async getDataAssetOf() {
-                try {
-                    let urlSearch = '/api/asset/get-list-asset-of-' + (this.defaultCheck == 'employee' ? 'user' : 'org') + '?' + (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=')  + this.obj.id;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfObj;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async getDataHistoryOf() {
-                try {
-                    let urlSearch = '/api/asset/get-list-history?'+ (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=')  + this.obj.id;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listHistory = data.data.listHistory;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async getDataHistoryOfAsset(assetSelect) {
-                try {
-                    let urlSearch = '/api/asset/get-list-history?assetId='+ assetSelect.id;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listHistoryAsset = data.data.listHistory;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async getListAssetRepresent(userId) {
-                try {
-                    let urlSearch = '/api/asset/get-list-asset-represent?userId='+ userId;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listAssetRepresent = data.data.listAssetRepresent;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async getDataLogOfAsset(assetSelect) {
-                try {
-                    let urlSearch = '/api/asset/get-list-log?assetId='+ assetSelect.id;
-
-                    const response = await axios.get(urlSearch);
-                    const data = response.data;
-                    this.listLogAsset = data.data.listLog;
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            fillDataModalAllocation(type) {
-                if (type == 'allocation') {
-                    let obj;
-
-                    if (this.defaultCheck == 'employee') {
-                        obj = this.listUser.find(user => user.id == this.userSelect);
-                        this.userObj = obj;
-                        this.orgObj = {};
-                    }
-
-                    if (this.defaultCheck == 'unit') {
-                        obj = this.listOrg.find(user => user.id == this.unitSelect);
-                        this.orgObj = obj;
-                        this.userObj = {};
-                    }
-
-                    this.obj = obj;
-                    this.listAssetAllocate = [];
-                    this.listAssetAllocate.push(this.assetSelect);
-
-                    this.getDataAssetOf();
-                    this.getDataHistoryOf();
-                    this.getListAssetRepresent(this.assetSelect.user_id);
-                    this.tab = 'allocation-tab';
-                    this.tabAllocation = 'allocation-tab';
-                } else {
-                    let obj;
-
-                    if (this.assetSelect.user_id) {
-                        obj = this.assetSelect.user;
-                        this.userObj = obj;
-                        this.orgObj = {};
-                        this.defaultCheck = 'employee';
-                    }
-
-                    if (!this.assetSelect.user_id && this.assetSelect.organization_id) {
-                        obj = this.assetSelect.organization;
-                        this.orgObj = obj;
-                        this.userObj = {};
-                        this.defaultCheck = 'unit';
-                    }
-
-                    this.obj = obj;
-
-                    this.listAssetRecovery = [];
-                    this.listAssetRecovery.push(this.assetSelect);
-                    this.getDataAssetOf();
-                    this.getDataHistoryOf();
-                    this.getListAssetRepresent(this.assetSelect.user_id);
-                    this.tab = 'allocation-tab';
-                    this.tabAllocation = 'recovery-tab';
-                }
-
-                const modal = new bootstrap.Modal(document.querySelector('#modalDetail'));
-                modal.show();
-            },
-            toggleSelection(asset, isChecked) {
-                if (isChecked) {
-                    if (!this.listAssetAllocate.some(selected => selected.id === asset.id)) {
-                        this.listAssetAllocate.push(asset);
-                    }
-                } else {
-                    this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== asset.id);
-                }
-            },
-            toggleAllSelection(isChecked) {
-                if (isChecked) {
-                    this.listAssetSelect.forEach(assetSelect => {
-                        if (!this.listAssetAllocate.some(selected => selected.id === assetSelect.id)) {
-                            this.listAssetAllocate.push(assetSelect);
-                        }
-                    });
-                } else {
-                    this.listAssetSelect.forEach(assetSelect => {
-                        this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetSelect.id);
-                    });
-                }
-            },
-            deleteSelection(assetId){
-                this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetId);
-            },
-            toggleSelectionRecovery(asset, isChecked) {
-                if (isChecked) {
-                    if (!this.listAssetRecovery.some(selected => selected.id === asset.id)) {
-                        this.listAssetRecovery.push(asset);
-                    }
-                } else {
-                    this.listAssetRecovery = this.listAssetRecovery.filter(assetAllocate => assetAllocate.id !== asset.id);
-                }
-            },
-            async allocateAsset(){
-                try {
-                    if (this.defaultCheck == 'employee') {
-                        let urlSearch = '/api/asset/allocate-asset';
-
-                        const response = await axios.post(urlSearch, {
-                            listAssetAllocate: this.listAssetAllocate,
-                            user: this.userObj,
-                            description: this.description,
-                            dateChange: this.dateChange
-                        }, {
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-
-                        const data = response.data;
-                        this.listAssetOfUser = data.data.listAssetOfObj;
-                        this.listAssetAllocate = [];
-                        this.description = '';
-                        this.linkReport = data.data.linkReport;
-
-                        openModal('#successAllocateModal');
-                    } else {
-                        let urlSearch = '/api/asset/allocate-asset-org';
-
-                        const response = await axios.post(urlSearch, {
-                            listAssetAllocate: this.listAssetAllocate,
-                            org: this.orgObj,
-                            description: this.description,
-                            dateChange: this.dateChange
-                        }, {
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-
-                        const data = response.data;
-                        this.listAssetOfUser = data.data.listAssetOfObj;
-                        this.listAssetAllocate = [];
-                        this.description = '';
-                        this.linkReport = data.data.linkReport;
-
-                        openModal('#successAllocateModal');
-                    }
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async recoveryAsset(){
-                try {
-                    if (this.defaultCheck == 'employee') {
-                        let urlSearch = '/api/asset/recovery-asset';
-
-                        const response = await axios.post(urlSearch, {
-                            listAssetRecovery: this.listAssetRecovery,
-                            user: this.userObj,
-                            description: this.description,
-                            recoveryCompany: this.recoveryCompany,
-                            dateChange: this.dateChange
-                        }, {
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-
-                        const data = response.data;
-                        this.listAssetOfUser = data.data.listAssetOfObj;
-                        this.listAssetRecovery = [];
-                        this.description = '';
-                        this.recoveryCompany = false;
-                        this.linkReport = data.data.linkReport;
-
-                        openModal('#successRecoveryModal');
-                    } else {
-                        let urlSearch = '/api/asset/recovery-asset-org';
-
-                        const response = await axios.post(urlSearch, {
-                            listAssetRecovery: this.listAssetRecovery,
-                            org: this.orgObj,
-                            description: this.description,
-                            dateChange: this.dateChange
-                        }, {
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            }
-                        });
-
-                        const data = response.data;
-                        this.listAssetOfUser = data.data.listAssetOfObj;
-                        this.listAssetRecovery = [];
-                        this.description = '';
-                        this.linkReport = data.data.linkReport;
-
-                        openModal('#successRecoveryModal');
-                    }
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            fillDataModalRotation(){
-                this.getUser();
-                const modal = new bootstrap.Modal(document.querySelector('#modalRotation'));
-                modal.show();
-            },
-            async rotationAsset(){
-                try {
-                    let urlSearch = '/api/asset/rotation-asset';
-
-                    this.listAssetRotation.push(this.assetSelect);
-
-                    if (this.rotationToType == 'unit') {
-                        this.rotationTo = $('#unitToSelect').val();
-                    } else {
-                        this.rotationTo = $('#userToSelect').val();
-                    }
-
-                    const response = await axios.post(urlSearch, {
-                        listAssetRotation: this.listAssetRotation,
-                        rotationToId: this.rotationTo,
-                        rotationToType: this.rotationToType,
-                        descriptionRotation: this.descriptionRotation,
-                        dateChange: this.dateChange
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    const data = response.data;
-                    this.listAssetOfUser = data.data.listAssetOfObj;
-                    this.listAssetRotation = [];
-                    this.descriptionRotation = '';
-                    this.linkReport = data.data.linkReport;
-
-                    openModal('#successRotationModal');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async liquidationAsset(){
-                try {
-                    let urlSearch = '/api/asset/liquidation-asset';
-
-                    const response = await axios.post(urlSearch, {
-                        assetSelect: this.assetSelect,
-                        dateLiquidation: this.dateLiquidation,
-                        priceLiquidation: this.priceLiquidation,
-                        reasonLiquidation: this.reasonLiquidation,
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    const data = response.data;
-                    this.dateLiquidation = '';
-                    this.priceLiquidation = '';
-                    this.reasonLiquidation = '';
-
-                    openModal('#successLiquidationModal');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async cancelAsset(){
-                try {
-                    let urlSearch = '/api/asset/cancel-asset';
-
-                    const response = await axios.post(urlSearch, {
-                        assetSelect: this.assetSelect,
-                        dateLiquidation: this.dateLiquidation,
-                        reasonLiquidation: this.reasonLiquidation,
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    const data = response.data;
-                    this.dateLiquidation = '';
-                    this.reasonLiquidation = '';
-
-                    openModal('#successCancelModal');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async brokenAsset(){
-                try {
-                    let urlSearch = '/api/asset/broken-asset';
-
-                    const response = await axios.post(urlSearch, {
-                        assetSelect: this.assetSelect,
-                        dateLiquidation: this.dateLiquidation,
-                        reasonLiquidation: this.reasonLiquidation,
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    const data = response.data;
-                    this.dateLiquidation = '';
-                    this.reasonLiquidation = '';
-
-                    openModal('#successBrokenModal');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async lostAsset(){
-                try {
-                    let urlSearch = '/api/asset/lost-asset';
-
-                    const response = await axios.post(urlSearch, {
-                        assetSelect: this.assetSelect,
-                        dateLiquidation: this.dateLiquidation,
-                        reasonLiquidation: this.reasonLiquidation,
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    const data = response.data;
-                    this.dateLiquidation = '';
-                    this.reasonLiquidation = '';
-
-                    openModal('#successLostModal');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                }
-            },
-            async updateDataAsset() {
-                try {
-                    let urlSearch = '/api/asset/update-asset';
-
-                    const response = await axios.post(urlSearch, {
-                        assetEdit: this.assetEdit,
-                        typeAsset: $('#typeAssetEditSelect').val(),
-                        location: $('#locationSearchEdit').val(),
-                        supplier: $('#supplierEdit').val(),
-                    }, {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        }
-                    });
-
-                    toast.success('Cập nhật thông tin tài sản thành công!');
-                    this.fetchData('', '', '', '', '', this.urlSearch);
-                } catch (error) {
-                    console.error('Lỗi khi gọi API:', error);
-                    toast.error('Cập nhật thông tin tài sản không thành công!')
-                }
+    <script>
+        function openModal(modalId) {
+            const modal = new bootstrap.Modal(document.querySelector(modalId));
+            modal.show();
+
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            if (backdrops.length > 1) {
+                backdrops[1].classList.add('custom-backdrop');
             }
-        }));
-    });
-</script>
+        }
+
+        function closeModal(modalId) {
+            // const modal = new bootstrap.Modal(document.querySelector(modalId));
+            // modal.hide();
+
+            const modalEl = document.querySelector(modalId);
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            if (modal) {
+                modalEl.addEventListener('hidden.bs.modal', function onHidden() {
+                    modalEl.removeEventListener('hidden.bs.modal', onHidden); // Xóa sự kiện sau khi chạy
+
+                });
+                modal.hide();
+            }
+        }
+
+        function formatNumber(value) {
+            let number = value.replace(/\D/g, '');
+
+            return new Intl.NumberFormat('en-US').format(number);
+        }
+
+        function formatCurrency(value) {
+            return value.toLocaleString('vi-VN') + 'đ';
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('listAsset', () => ({
+                totalPages: null,
+                currentPage: 1,
+                selectedRow: [],
+
+                listAsset: [],
+                assetType: [],
+                listLocation: [],
+                listStatus: [],
+                listSupplier: [],
+                tabDetail: 'general-tab',
+                tab: 'general-tab',
+                tabAllocation: 'allocation-tab',
+                assetName: '',
+                assetStatus: 1,
+                assetObj: {},
+                pageParam: 1,
+                limitParam: 25,
+                listOrg: [],
+                listUser: [],
+                defaultCheck: 'employee',
+                userObj: {},
+                orgObj: {},
+                listAssetOfUser: [],
+                listAssetAllocate: [],
+                listAssetRecovery: [],
+                listHistory: [],
+                unitSelect: 0,
+                userSelect: 0,
+                assetSelect: {},
+                listAssetSelect: [],
+                description: '',
+                defaultCheckRotation: 'employee',
+                listAssetRotation: [],
+                descriptionRotation: '',
+                rotationToType: 'employee',
+                rotationTo: 0,
+                unitToSelect: 0,
+                userToSelect: 0,
+                dateLiquidation: '',
+                priceLiquidation: '',
+                reasonLiquidation: '',
+                recoveryCompany: false,
+                urlSearch: '',
+                listHistoryAsset: [],
+                assetEdit: {},
+                listLogAsset: [],
+                limit: 25,
+                from: 0,
+                to: 0,
+                total: 0,
+                linkReport: {},
+                listAssetRepresent: {},
+                dateChange: new Date().toISOString().slice(0, 10),
+
+                init() {
+                    window.initSelect2Modal('modalAllocationConfirm');
+                    window.initSelect2Modal('modalRotation');
+                    window.initSelect2Modal('modalDetailAsset');
+                    window.initSelect2Modal('modalEditAsset');
+                    window.initSelect2Modal('searchAssetModal');
+
+                    this.fetchData();
+                    this.getListOrg();
+                    this.getUser();
+
+                    // const select = $('#unitSelect').select2();
+
+                    // select.on('change', (event) => {
+                    //     this.unitSelect = $(event.target).val();
+                    //     this.getUserByUnit($(event.target).val());
+                    // });
+
+                    const userSelect = $('#userSelect').select2();
+
+                    userSelect.on('change', (event) => {
+                        this.userSelect = $(event.target).val();
+                    });
+
+                    const unitSelect = $('#unitSelect').select2();
+
+                    unitSelect.on('change', (event) => {
+                        this.unitSelect = $(event.target).val();
+                    });
+
+                    const userToSelect = $('#userToSelect').select2();
+
+                    userToSelect.on('change', (event) => {
+                        this.userToSelect = $(event.target).val();
+                        const userSelect = this.listUser.find(item => item.id == this.userToSelect);
+
+                        $('#unitEmployee').val(userSelect.organization.dept_type.cfg_key + ' ' + userSelect.organization.name);
+                    });
+
+                    const unitToSelect = $('#unitToSelect').select2();
+
+                    unitToSelect.on('change', (event) => {
+                        this.unitToSelect = $(event.target).val();
+                        const unitSelect = this.listOrg.find(item => item.id == this.unitToSelect);
+
+                        $('#unitRepresent').val(unitSelect.manager.code + ' - ' + unitSelect.manager.name);
+                    });
+
+                    window.addEventListener('change-page', (event) => {
+                        this.pageParam = event.detail.page;
+                        this.fetchData('', '', '', '', '', this.urlSearch.replace(/([?&])page=\d+&?/, '$1').replace(/([?&])$/, '') + '&page=' + this.pageParam);
+                    });
+
+                    window.addEventListener('change-limit', (event) => {
+                        this.pageParam = 1;
+                        this.limitParam = event.target.value;
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    });
+                },
+
+                async getListOrg() {
+                    try {
+                        let urlSearch = '/api/asset/get-data-list-org';
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listOrg = data.data.listOrg;
+
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+
+                async fetchData(status = '', location = '', type = '', nameCodeAsset = '', nameUser = '', urlSearchParam = null) {
+                    try {
+                        let urlSearch = '/api/asset/get-data-list-asset?';
+
+                        if (this.limitParam) {
+                            urlSearch += 'limit=' + this.limitParam + '&';
+                        }
+
+                        if (this.pageParam) {
+                            urlSearch += 'page=' + this.pageParam + '&';
+                        }
+
+                        if (status) {
+                            urlSearch += 'status=' + status + '&';
+                        }
+
+                        if (location) {
+                            urlSearch += 'location=' + location + '&';
+                        }
+
+                        if (type) {
+                            urlSearch += 'type=' + type + '&';
+                        }
+
+                        if (nameCodeAsset) {
+                            urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
+                        }
+
+                        if (nameUser) {
+                            urlSearch += 'nameUser=' + nameUser + '&';
+                        }
+
+                        if ($('#unitSearch').val() != 0) {
+                            urlSearch += 'unitSearch=' + $('#unitSearch').val() + '&';
+                        }
+
+                        if (urlSearchParam) {
+                            urlSearch = urlSearchParam;
+                        }
+
+                        this.urlSearch = urlSearch;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listAsset = data.data.listAsset.data;
+                        this.assetType = data.data.listAssetType;
+                        this.listLocation = data.data.listLocation;
+                        this.listStatus = data.data.listStatus;
+                        this.listSupplier = data.data.listSupplier;
+                        this.totalPages = data.data.listAsset.last_page;
+                        this.currentPage = data.data.listAsset.current_page;
+                        this.from = data.data.listAsset.per_page * (data.data.listAsset.current_page - 1) + 1;
+                        this.to = data.data.listAsset.per_page * data.data.listAsset.current_page;
+                        this.total = data.data.listAsset.total;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+
+                async getDataAsset(type = '', nameCodeAsset = '') {
+                    try {
+                        let urlSearch = '/api/asset/get-data-list-asset?status=2&';
+
+                        if (type) {
+                            urlSearch += 'type=' + type + '&';
+                        }
+
+                        if (nameCodeAsset) {
+                            urlSearch += 'nameCodeAsset=' + nameCodeAsset + '&';
+                        }
+
+                        urlSearch += 'userId=' + this.userObj.id + '&';
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listAssetSelect = data.data.listAsset.data;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+
+                fillDataEdit(assetEdit) {
+                    this.assetEdit = assetEdit;
+                },
+
+                // async getUserByUnit(unitId) {
+                //     try {
+                //         let urlSearch = '/api/asset/get-user-by-unit?orgId=' + unitId;
+
+                //         const response = await axios.get(urlSearch);
+                //         const data = response.data;
+                //         this.listUser = data.data.listUser;
+
+                //         this.$nextTick(() => {
+                //             const modalElement = document.querySelector('#modalAllocationConfirm');
+                //             $(modalElement).on('shown.bs.modal', () => {
+                //                 const selectElement = document.querySelector('#userSelect');
+                //                 if (selectElement) {
+                //                     $(selectElement).select2();
+                //                     $(selectElement).val('').trigger('change');
+                //                 }
+                //             });
+                //         });
+                //     } catch (error) {
+                //         console.error('Lỗi khi gọi API:', error);
+                //     }
+                // },
+
+                async getUser() {
+                    try {
+                        let urlSearch = '/api/asset/get-user?';
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listUser = data.data.listUser;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+
+                fillData(asset) {
+                    this.assetName = asset.name;
+                    this.assetStatus = asset.status;
+                    this.assetObj = asset;
+                },
+                async getDataAssetOf() {
+                    try {
+                        let urlSearch = '/api/asset/get-list-asset-of-' + (this.defaultCheck == 'employee' ? 'user' : 'org') + '?' + (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=') + this.obj.id;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async getDataHistoryOf() {
+                    try {
+                        let urlSearch = '/api/asset/get-list-history?' + (this.defaultCheck == 'employee' ? 'userId=' : 'orgId=') + this.obj.id;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listHistory = data.data.listHistory;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async getDataHistoryOfAsset(assetSelect) {
+                    try {
+                        let urlSearch = '/api/asset/get-list-history?assetId=' + assetSelect.id;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listHistoryAsset = data.data.listHistory;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async getListAssetRepresent(userId) {
+                    try {
+                        let urlSearch = '/api/asset/get-list-asset-represent?userId=' + userId;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listAssetRepresent = data.data.listAssetRepresent;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async getDataLogOfAsset(assetSelect) {
+                    try {
+                        let urlSearch = '/api/asset/get-list-log?assetId=' + assetSelect.id;
+
+                        const response = await axios.get(urlSearch);
+                        const data = response.data;
+                        this.listLogAsset = data.data.listLog;
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                fillDataModalAllocation(type) {
+                    if (type == 'allocation') {
+                        let obj;
+
+                        if (this.defaultCheck == 'employee') {
+                            obj = this.listUser.find(user => user.id == this.userSelect);
+                            this.userObj = obj;
+                            this.orgObj = {};
+                        }
+
+                        if (this.defaultCheck == 'unit') {
+                            obj = this.listOrg.find(user => user.id == this.unitSelect);
+                            this.orgObj = obj;
+                            this.userObj = {};
+                        }
+
+                        this.obj = obj;
+                        this.listAssetAllocate = [];
+                        this.listAssetAllocate.push(this.assetSelect);
+
+                        this.getDataAssetOf();
+                        this.getDataHistoryOf();
+                        this.getListAssetRepresent(this.assetSelect.user_id);
+                        this.tab = 'allocation-tab';
+                        this.tabAllocation = 'allocation-tab';
+                    } else {
+                        let obj;
+
+                        if (this.assetSelect.user_id) {
+                            obj = this.assetSelect.user;
+                            this.userObj = obj;
+                            this.orgObj = {};
+                            this.defaultCheck = 'employee';
+                        }
+
+                        if (!this.assetSelect.user_id && this.assetSelect.organization_id) {
+                            obj = this.assetSelect.organization;
+                            this.orgObj = obj;
+                            this.userObj = {};
+                            this.defaultCheck = 'unit';
+                        }
+
+                        this.obj = obj;
+
+                        this.listAssetRecovery = [];
+                        this.listAssetRecovery.push(this.assetSelect);
+                        this.getDataAssetOf();
+                        this.getDataHistoryOf();
+                        this.getListAssetRepresent(this.assetSelect.user_id);
+                        this.tab = 'allocation-tab';
+                        this.tabAllocation = 'recovery-tab';
+                    }
+
+                    const modal = new bootstrap.Modal(document.querySelector('#modalDetail'));
+                    modal.show();
+                },
+                toggleSelection(asset, isChecked) {
+                    if (isChecked) {
+                        if (!this.listAssetAllocate.some(selected => selected.id === asset.id)) {
+                            this.listAssetAllocate.push(asset);
+                        }
+                    } else {
+                        this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== asset.id);
+                    }
+                },
+                toggleAllSelection(isChecked) {
+                    if (isChecked) {
+                        this.listAssetSelect.forEach(assetSelect => {
+                            if (!this.listAssetAllocate.some(selected => selected.id === assetSelect.id)) {
+                                this.listAssetAllocate.push(assetSelect);
+                            }
+                        });
+                    } else {
+                        this.listAssetSelect.forEach(assetSelect => {
+                            this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetSelect.id);
+                        });
+                    }
+                },
+                deleteSelection(assetId) {
+                    this.listAssetAllocate = this.listAssetAllocate.filter(assetAllocate => assetAllocate.id !== assetId);
+                },
+                toggleSelectionRecovery(asset, isChecked) {
+                    if (isChecked) {
+                        if (!this.listAssetRecovery.some(selected => selected.id === asset.id)) {
+                            this.listAssetRecovery.push(asset);
+                        }
+                    } else {
+                        this.listAssetRecovery = this.listAssetRecovery.filter(assetAllocate => assetAllocate.id !== asset.id);
+                    }
+                },
+                async allocateAsset() {
+                    try {
+                        if (this.defaultCheck == 'employee') {
+                            let urlSearch = '/api/asset/allocate-asset';
+
+                            const response = await axios.post(urlSearch, {
+                                listAssetAllocate: this.listAssetAllocate,
+                                user: this.userObj,
+                                description: this.description,
+                                dateChange: this.dateChange
+                            }, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            });
+
+                            const data = response.data;
+                            this.listAssetOfUser = data.data.listAssetOfObj;
+                            this.listAssetAllocate = [];
+                            this.description = '';
+                            this.linkReport = data.data.linkReport;
+
+                            openModal('#successAllocateModal');
+                        } else {
+                            let urlSearch = '/api/asset/allocate-asset-org';
+
+                            const response = await axios.post(urlSearch, {
+                                listAssetAllocate: this.listAssetAllocate,
+                                org: this.orgObj,
+                                description: this.description,
+                                dateChange: this.dateChange
+                            }, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            });
+
+                            const data = response.data;
+                            this.listAssetOfUser = data.data.listAssetOfObj;
+                            this.listAssetAllocate = [];
+                            this.description = '';
+                            this.linkReport = data.data.linkReport;
+
+                            openModal('#successAllocateModal');
+                        }
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async recoveryAsset() {
+                    try {
+                        if (this.defaultCheck == 'employee') {
+                            let urlSearch = '/api/asset/recovery-asset';
+
+                            const response = await axios.post(urlSearch, {
+                                listAssetRecovery: this.listAssetRecovery,
+                                user: this.userObj,
+                                description: this.description,
+                                recoveryCompany: this.recoveryCompany,
+                                dateChange: this.dateChange
+                            }, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            });
+
+                            const data = response.data;
+                            this.listAssetOfUser = data.data.listAssetOfObj;
+                            this.listAssetRecovery = [];
+                            this.description = '';
+                            this.recoveryCompany = false;
+                            this.linkReport = data.data.linkReport;
+
+                            openModal('#successRecoveryModal');
+                        } else {
+                            let urlSearch = '/api/asset/recovery-asset-org';
+
+                            const response = await axios.post(urlSearch, {
+                                listAssetRecovery: this.listAssetRecovery,
+                                org: this.orgObj,
+                                description: this.description,
+                                dateChange: this.dateChange
+                            }, {
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            });
+
+                            const data = response.data;
+                            this.listAssetOfUser = data.data.listAssetOfObj;
+                            this.listAssetRecovery = [];
+                            this.description = '';
+                            this.linkReport = data.data.linkReport;
+
+                            openModal('#successRecoveryModal');
+                        }
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                fillDataModalRotation() {
+                    this.getUser();
+                    const modal = new bootstrap.Modal(document.querySelector('#modalRotation'));
+                    modal.show();
+                },
+                async rotationAsset() {
+                    try {
+                        let urlSearch = '/api/asset/rotation-asset';
+
+                        this.listAssetRotation.push(this.assetSelect);
+
+                        if (this.rotationToType == 'unit') {
+                            this.rotationTo = $('#unitToSelect').val();
+                        } else {
+                            this.rotationTo = $('#userToSelect').val();
+                        }
+
+                        const response = await axios.post(urlSearch, {
+                            listAssetRotation: this.listAssetRotation,
+                            rotationToId: this.rotationTo,
+                            rotationToType: this.rotationToType,
+                            descriptionRotation: this.descriptionRotation,
+                            dateChange: this.dateChange
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.listAssetOfUser = data.data.listAssetOfObj;
+                        this.listAssetRotation = [];
+                        this.descriptionRotation = '';
+                        this.linkReport = data.data.linkReport;
+
+                        openModal('#successRotationModal');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async liquidationAsset() {
+                    try {
+                        let urlSearch = '/api/asset/liquidation-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            assetSelect: this.assetSelect,
+                            dateLiquidation: this.dateLiquidation,
+                            priceLiquidation: this.priceLiquidation,
+                            reasonLiquidation: this.reasonLiquidation,
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.dateLiquidation = '';
+                        this.priceLiquidation = '';
+                        this.reasonLiquidation = '';
+
+                        openModal('#successLiquidationModal');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async cancelAsset() {
+                    try {
+                        let urlSearch = '/api/asset/cancel-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            assetSelect: this.assetSelect,
+                            dateLiquidation: this.dateLiquidation,
+                            reasonLiquidation: this.reasonLiquidation,
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.dateLiquidation = '';
+                        this.reasonLiquidation = '';
+
+                        openModal('#successCancelModal');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async brokenAsset() {
+                    try {
+                        let urlSearch = '/api/asset/broken-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            assetSelect: this.assetSelect,
+                            dateLiquidation: this.dateLiquidation,
+                            reasonLiquidation: this.reasonLiquidation,
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.dateLiquidation = '';
+                        this.reasonLiquidation = '';
+
+                        openModal('#successBrokenModal');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async lostAsset() {
+                    try {
+                        let urlSearch = '/api/asset/lost-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            assetSelect: this.assetSelect,
+                            dateLiquidation: this.dateLiquidation,
+                            reasonLiquidation: this.reasonLiquidation,
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        const data = response.data;
+                        this.dateLiquidation = '';
+                        this.reasonLiquidation = '';
+
+                        openModal('#successLostModal');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                    }
+                },
+                async updateDataAsset() {
+                    try {
+                        let urlSearch = '/api/asset/update-asset';
+
+                        const response = await axios.post(urlSearch, {
+                            assetEdit: this.assetEdit,
+                            typeAsset: $('#typeAssetEditSelect').val(),
+                            location: $('#locationSearchEdit').val(),
+                            supplier: $('#supplierEdit').val(),
+                        }, {
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
+
+                        toast.success('Cập nhật thông tin tài sản thành công!');
+                        this.fetchData('', '', '', '', '', this.urlSearch);
+                    } catch (error) {
+                        console.error('Lỗi khi gọi API:', error);
+                        toast.error('Cập nhật thông tin tài sản không thành công!')
+                    }
+                }
+            }));
+        });
+    </script>
 @endsection

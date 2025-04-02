@@ -324,5 +324,6 @@ Route::middleware('checkAuth')->group(function () {
         Route::post('/update-asset', [AssetController::class, 'updateAsset'])->name('assets.updateAsset');
         Route::get('/info/{id}', [AssetController::class, 'getAssetInfo']);
         Route::post('import', [AssetController::class, 'importAsset']);
+        Route::post('markAssets', [AssetController::class, 'markAssets']);
     });
 });

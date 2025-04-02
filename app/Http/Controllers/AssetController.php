@@ -8,6 +8,7 @@ use App\Models\AssetType;
 use App\Models\Org;
 use App\Models\Supplier;
 use App\Models\User;
+use App\Services\AssetService;
 use App\Services\ListAssetService;
 use App\Support\Constants\AppErrorCode;
 use Illuminate\Contracts\View\View;
@@ -18,8 +19,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class AssetController extends Controller
 {
-    public function __construct(private readonly ListAssetService $assetService)
-    {
+    public function __construct(
+        private readonly ListAssetService $assetService,
+        protected AssetService $assetServiceV2,
+    ) {
     }
 
     public function listAsset(): View
@@ -387,5 +390,28 @@ class AssetController extends Controller
         }
 
         return response_success();
+    }
+
+    public function markAssets(Request $request)
+    {
+        $request->validate([
+            'asset_ids'   => 'required|array',
+            'date'        => 'required|date',
+            'status'      => 'required|integer',
+            'description' => 'required|string',
+        ]);
+        try {
+            $result = $this->assetServiceV2->markAssets($request->all());
+
+            if (!$result['success']) {
+                return response_error($result['error_code']);
+            }
+
+            return response_success();
+        } catch (\Throwable $exception) {
+            report($exception);
+
+            return response_error();
+        }
     }
 }
